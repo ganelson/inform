@@ -81,33 +81,25 @@ not to use these now dated conventions.
 ];
 
 @h Status Line.
-Status line printing happens on the upper screen window, and outside of the
-paragraph control system.
-
-Support for version 6 of the Z-machine is best described as grudging. It
-requires a heavily rewritten |DrawStatusLine| equivalent, to be found
-in "ZMachine.i6t".
+The default status line rule is a little bit more efficient than the table-based
+system from Basic Inform.
 
 =
-+replacing(from BasicInformKit) [ DrawStatusLine width posb;
-	@push say__p; @push say__pc;
-	BeginActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	VM_StatusLineHeight(1); VM_MoveCursorInStatusLine(1, 1);
+[ DEFAULT_STATUS_LINE_R width posb;
+	VM_StatusLineHeight(1);
+	VM_MoveCursorInStatusLine(1, 1);
 	if (statuswin_current) {
-		width = VM_ScreenWidth(); posb = width-15;
+		width = VM_ScreenWidth();
+		posb = width - 15;
 		spaces width;
 		ClearParagraphing(17);
-		if (ForActivity(CONSTRUCTING_STATUS_LINE_ACT) == false) {
-			VM_MoveCursorInStatusLine(1, 2);
-			TEXT_TY_Say(left_hand_status_line);
-			VM_MoveCursorInStatusLine(1, posb);
-			TEXT_TY_Say(right_hand_status_line);
-		}
-		VM_MoveCursorInStatusLine(1, 1); VM_MainWindow();
+		VM_MoveCursorInStatusLine(1, 2);
+		TEXT_TY_Say(left_hand_status_line);
+		VM_MoveCursorInStatusLine(1, posb);
+		TEXT_TY_Say(right_hand_status_line);
+		VM_MoveCursorInStatusLine(1, 1);
 	}
-	ClearParagraphing(18);
-	EndActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	@pull say__pc; @pull say__p;
+	rtrue;
 ];
 
 @h Status Line Utilities.

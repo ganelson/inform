@@ -343,7 +343,6 @@ definitions which apply only to Basic Inform programs. More elaborate
 always is for non-Basic Inform projects.
 
 =
-[ DrawStatusLine width posb; ]; ! No status line is displayed
 [ DefaultTopic; return 0; ]; ! Topics exist only in CommandParserKit
 [ PrintSnippet x; ]; ! Snippets exist only in CommandParserKit
 [ PRINT_PROTAGONIST_INTERNAL_R; ]; ! There is no player in Basic Inform

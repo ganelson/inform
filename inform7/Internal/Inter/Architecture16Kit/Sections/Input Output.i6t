@@ -116,20 +116,46 @@ the dictionary table, but mid-word) really do not matter.
 The VM must provide three routines for keyboard input:
 
 (a) |VM_KeyChar()| waits for a key to be pressed and then returns the
-character chosen as a ZSCII character.
+character chosen as a ZSCII character. Function keys are mapped to unicode
+characters so that Z-Machine and Glulxe key input can be handled the same.
 (b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
 returning the ZSCII character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
-into the buffer |b|, then parses it into a word stream in the table |t|.
+into the buffer |b|. If the |t| parser table is specified then it also parses it.
 
 There are elaborations to due with mouse clicks, but this isn't the place
 to document all of that.
 
 =
 [ VM_KeyChar win  key;
-    if (win) @set_window win;
-    @read_char 1 -> key;
-    return key;
+	if (win) @set_window win;
+	@read_char 1 -> key;
+	switch (key) {
+		8: key = KEY_DELETE;
+		13: key = KEY_RETURN;
+		27: key = KEY_ESCAPE;
+		129, 153: key = KEY_UP;
+		130, 147: key = KEY_DOWN;
+		131, 149: key = KEY_LEFT;
+		132, 151: key = KEY_RIGHT;
+		133: key = KEY_F1;
+		134: key = KEY_F2;
+		135: key = KEY_F3;
+		136: key = KEY_F4;
+		137: key = KEY_F5;
+		138: key = KEY_F6;
+		139: key = KEY_F7;
+		140: key = KEY_F8;
+		141: key = KEY_F9;
+		142: key = KEY_F10;
+		143: key = KEY_F11;
+		144: key = KEY_F12;
+		146: key = KEY_END;
+		148: key = KEY_PAGE_DOWN;
+		152: key = KEY_HOME;
+		154: key = KEY_PAGE_UP;
+	}
+	return key;
 ];
 
 [ VM_KeyDelay tenths  key;
@@ -156,6 +182,10 @@ The Z-machine buffer and parse buffer formats are documented in the DM4.
 
 |VM_CopyBuffer(to, from)| copies one buffer into another.
 
+|VM_PrintBuffer(buf)| prints a buffer.
+
+|VM_PrintToBuffer(buf, len, a, b, c)| prints something into a buffer.
+
 |VM_Tokenise(buff, parse_buff)| takes the text in the buffer |buff| and
 produces the corresponding data in the parse buffer |parse_buff| -- this is
 called tokenisation since the characters are divided into words: in traditional
@@ -169,6 +199,13 @@ languages of play.
 =
 [ VM_CopyBuffer bto bfrom i;
     for (i=0: i<INPUT_BUFFER_LEN: i++) bto->i = bfrom->i;
+];
+
+[ VM_PrintBuffer buf  len i;
+	len = (buf-->0) + WORDSIZE;
+	for (i = WORDSIZE: i < len: i++) {
+		print (char) buf->i;
+	}
 ];
 
 [ VM_PrintToBuffer buf len a b c;
@@ -285,41 +322,22 @@ in order to keep it accurate.
 [ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
 
 @h Window Colours.
-Each window can have its own foreground and background colours.
-
-The colour of individual letters or words of type is not controllable in
-Glulx, to the frustration of many, and so the template layer of I7 has no
-framework for handling this (even though it is controllable on the Z-machine,
-which is greatly superior in this respect).
+We can now change foreground and background colours in both Z-Machine and Glulx
+(through a widely implement extension.) Inform does not keep track of which
+colours have been set.
 
 =
-[ VM_SetWindowColours f b window;
-    if (clr_on && f && b) {
-        if (window == 0) {  ! if setting both together, set reverse
-            clr_fgstatus = b;
-            clr_bgstatus = f;
-            }
-        if (window == 1) {
-            clr_fgstatus = f;
-            clr_bgstatus = b;
-        }
-        if (window == 0 or 2) {
-            clr_fg = f;
-            clr_bg = b;
-        }
-        if (statuswin_current)
-            @set_colour clr_fgstatus clr_bgstatus;
-        else
-            @set_colour clr_fg clr_bg;
-    }
+[ VM_SetWindowColours fg bg;
+	@set_colour fg bg;
 ];
 
-[ VM_RestoreWindowColours; ! compare I6 library patch L61007
-    if (clr_on) { ! check colour has been used
-        VM_SetWindowColours(clr_fg, clr_bg, 2); ! make sure both sets of variables are restored
-        VM_SetWindowColours(clr_fgstatus, clr_bgstatus, 1, true);
-        VM_ClearScreen();
-    }
+[ VM_SetReverseMode val;
+	if (val) {
+		@set_text_style 1;
+	}
+	else {
+		@set_text_style 0;
+	}
 ];
 
 @h Main Window.
@@ -333,8 +351,7 @@ emulates the Glulx model of window rather than text colours.
 =
 [ VM_MainWindow;
     if (statuswin_current) {
-        if (clr_on && clr_bgstatus > 1) @set_colour clr_fg clr_bg;
-        else style roman;
+        style roman;
         @set_window 0;
     }
     statuswin_current = false;
@@ -352,9 +369,9 @@ of type. (The width of the status line is always the width of the whole
 screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
-|VM_MoveCursorInStatusLine(x, y)| switches printing to the status line,
+|VM_MoveCursorInStatusLine(line, column)| switches printing to the status line,
 positioning the "cursor" -- the position at which printing will begin --
-at the given character grid position $(x, y)$. Line 1 represents the top
+at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.
 
@@ -362,8 +379,7 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 [ VM_MoveCursorInStatusLine line column; ! 1-based position on text grid
     if (~~statuswin_current) {
          @set_window 1;
-         if (clr_on && clr_bgstatus > 1) @set_colour clr_fgstatus clr_bgstatus;
-         else                            style reverse;
+         style reverse;
     }
     if (line == 0) {
         line = 1;
