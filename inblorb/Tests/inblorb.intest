@@ -74,16 +74,6 @@
 	match platform text: $CA $CI
 	or: 'produced the wrong inblorb console output'
 
-	mkdir: $PATH/_Tree_Actual
-	mkdir: $PATH/_Tree_Ideal
-
-	set: $TA = $PATH/_Tree_Actual/$CASE.txt
-	set: $TI = $PATH/_Tree_Ideal/$CASE.txt
-	step: find $WORK/Example.materials/Release >$TA 2>&1
-	or: 'failed find'
-	match text: $TA $TI
-	or: 'produced the wrong tree structure of files in Release'
-
 	if: $$platform macos
 		exists: inblorb/Tests/Assistants/blorblib/blorbscan
 		or: 'incompletely tested because no blorbscan tool is available'

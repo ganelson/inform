@@ -1,2 +1,0 @@
-/Users/gnelson/Natural Inform/intest/Workspace/T5/Example.materials/Release
-/Users/gnelson/Natural Inform/intest/Workspace/T5/Example.materials/Release/interpreter
