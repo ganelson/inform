@@ -118,15 +118,6 @@ Check an actor taking (this is the can't take people's possessions rule):
 			stop the action;
 		let the owner be the not-counting-parts holder of the owner;
 
-Check an actor taking (this is the can't take items out of play rule):
-	let H be the noun;
-	while H is not nothing and H is not a room:
-		let H be the not-counting-parts holder of H;
-	if H is nothing:
-		if the actor is the player:
-			say "[regarding the noun][Those] [aren't] available." (A);
-		stop the action.
-
 Check an actor taking (this is the can't take what you're inside rule):
 	let the local ceiling be the common ancestor of the actor with the noun;
 	if the local ceiling is the noun:
@@ -145,12 +136,6 @@ Check an actor taking (this is the can't take scenery rule):
 	if the noun is scenery:
 		if the actor is the player:
 			say "[regarding the noun][They're] hardly portable." (A);
-		stop the action.
-
-Check an actor taking (this is the can only take things rule):
-	if the noun is not a thing:
-		if the actor is the player:
-			say "[We] [cannot] carry [the noun]." (A);
 		stop the action.
 
 Check an actor taking (this is the can't take what's fixed in place rule):
@@ -418,6 +403,7 @@ collection box."
 @ Check.
 
 =
+
 Check an actor inserting something into (this is the convert insert to drop where
 	possible rule):
 	if the second noun is down or the actor is in the second noun,
@@ -1354,7 +1340,7 @@ Report an actor consulting something about (this is the block consulting rule):
 =
 Section 5 - Standard actions which change the state of things
 
-Locking it with is an action applying to one thing and one carried thing.
+Locking it with is an action applying to two things.
 The locking it with action is accessible to Inter as "Lock".
 
 The specification of the locking it with action is "Locking is the act of
@@ -1409,6 +1395,11 @@ Check an actor locking something with (this is the can't lock what's open rule):
 			say "First [we] [would have] to close [the noun]." (A);
 		stop the action.
 
+Check an actor locking something with (this is the can't lock without holding the key rule):
+	if the holder of the second noun is not the actor:
+		carry out the implicitly taking activity with the second noun;
+		if the actor is not the holder of the second noun, stop the action.
+
 Check an actor locking something with (this is the can't lock without the correct key rule):
 	if the holder of the second noun is not the actor or
 		the noun does not provide the property matching key or
@@ -1437,7 +1428,7 @@ Report an actor locking something with (this is the standard report locking rule
 @h Unlocking it with.
 
 =
-Unlocking it with is an action applying to one thing and one carried thing.
+Unlocking it with is an action applying to two things.
 The unlocking it with action is accessible to Inter as "Unlock".
 
 The specification of the unlocking it with action is "Unlocking undoes the
@@ -1483,6 +1474,11 @@ Check an actor unlocking something with (this is the can't unlock what's already
 			say "[regarding the noun][They're] unlocked at the [if story tense is present
 				tense]moment[otherwise]time[end if]." (A);
 		stop the action.
+
+Check an actor unlocking something with (this is the can't unlock without holding the key rule):
+	if the holder of the second noun is not the actor:
+		carry out the implicitly taking activity with the second noun;
+		if the actor is not the holder of the second noun, stop the action.
 
 Check an actor unlocking something with (this is the can't unlock without the correct key rule):
 	if the holder of the second noun is not the actor or
@@ -1740,7 +1736,7 @@ Report an actor closing (this is the standard report closing rule):
 @h Wearing.
 
 =
-Wearing is an action applying to one carried thing.
+Wearing is an action applying to one thing.
 The wearing action is accessible to Inter as "Wear".
 
 The specification of the wearing action is "The Standard Rules give Inform
@@ -1766,9 +1762,8 @@ Check an actor wearing (this is the can't wear what's not clothing rule):
 
 Check an actor wearing (this is the can't wear what's not held rule):
 	if the holder of the noun is not the actor:
-		if the actor is the player:
-			say "[We] [aren't] holding [regarding the noun][those]!" (A);
-		stop the action.
+		carry out the implicitly taking activity with the noun;
+		if the actor is not the holder of the noun, stop the action.
 
 Check an actor wearing (this is the can't wear what's already worn rule):
 	if the actor is wearing the noun:
@@ -1848,7 +1843,7 @@ Report an actor taking off (this is the standard report taking off rule):
 =
 Section 6 - Standard actions concerning other people
 
-Giving it to is an action applying to one carried thing and one thing.
+Giving it to is an action applying to two things.
 The giving it to action is accessible to Inter as "Give".
 
 The specification of the giving it to action is "This action is indexed by
@@ -1871,11 +1866,11 @@ letting others run on into the carry out and report rules."
 @ Check.
 
 =
+
 Check an actor giving something to (this is the can't give what you haven't got rule):
 	if the actor is not the holder of the noun:
-		if the actor is the player:
-			say "[We] [aren't] holding [the noun]." (A);
-		stop the action.
+		carry out the implicitly taking activity with the noun;
+		if the actor does not hold the noun, stop the action.
 
 Check an actor giving something to (this is the can't give to yourself rule):
 	if the actor is the second noun:
@@ -1928,7 +1923,7 @@ Report an actor giving something to (this is the standard report giving rule):
 @h Showing it to.
 
 =
-Showing it to is an action applying to one carried thing and one visible thing.
+Showing it to is an action applying to one thing and one visible thing.
 The showing it to action is accessible to Inter as "Show".
 
 The specification of the showing it to action is "Anyone can show anyone
@@ -1948,13 +1943,15 @@ write Instead rules to handle them."
 
 @ Check.
 
+
+
+
 =
 Check an actor showing something to (this is the can't show what you haven't
 	got rule):
 	if the actor is not the holder of the noun:
-		if the actor is the player:
-			say "[We] [aren't] holding [the noun]." (A);
-		stop the action.
+		carry out the implicitly taking activity with the noun;
+		if the actor is not the holder of the noun, stop the action.
 
 Check an actor showing something to (this is the convert show to yourself to
 	examine rule):
@@ -1991,7 +1988,7 @@ Check an actor waking (this is the block waking rule):
 @h Throwing it at.
 
 =
-Throwing it at is an action applying to one carried thing and one visible thing.
+Throwing it at is an action applying to one thing and one visible thing.
 The throwing it at action is accessible to Inter as "ThrowAt".
 
 The specification of the throwing it at action is "Throwing something at
@@ -2024,6 +2021,11 @@ Check an actor throwing something at (this is the implicitly remove thrown cloth
 		say "(first taking [the noun] off)[command clarification break]" (A);
 		silently try the actor trying taking off the noun;
 		if the actor is wearing the noun, stop the action;
+
+Check an actor throwing something at (this is the implicitly take thrown object rule):
+	if the actor is not the holder of the noun:
+		carry out the implicitly taking activity with the noun;
+		if the actor is not the holder of the noun, stop the action.
 
 Check an actor throwing something at (this is the futile to throw things at inanimate
 	objects rule):

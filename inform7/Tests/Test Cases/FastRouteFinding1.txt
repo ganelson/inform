@@ -46,8 +46,9 @@ northeast of Graveyard.
 
 Understand "[any room]" as going by name. Understand "go to [any room]" as going by name.
 
-Going by name is an action applying to one thing.
+Going by name is an action applying to one room.
 
+The basic tangibility rule does nothing when an actor going by name.
 
 Carry out an actor going by name:
 	let step count be 0;

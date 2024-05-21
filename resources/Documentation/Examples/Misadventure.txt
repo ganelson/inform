@@ -19,13 +19,14 @@ The original Adventure allowed the player to type the names of rooms in order to
 	
 	Northwest of the Alcove is the Misty Cavern. The description of Misty Cavern is "You are following a wide path around the outer edge of a large cavern. Far below, through a heavy white mist, strange splashing noises can be heard. The mist rises up through a fissure in the ceiling. The path exits to the south and west." West of Misty Cavern is the Alcove.
 	
-	Understand "[any room]" as going by name. Understand "go to [any room]" as going by name.
+	Understand "[any room]" as going by name to. Understand "go to [any room]" as going by name to.
 	
-	Going by name is an action applying to one thing.
-
+	Going by name to is an action applying to one room.
+	The basic tangibility rule does nothing when an actor going by name to.
+	
 We should reject movement to the player's current location, or to anywhere they haven't been and can't see:
 
-	{**}Check going by name:
+	{**}Check going by name to:
 		if the noun is the location, say "You're already in [the location]." instead;
 		if the noun is not adjacent and the noun is unvisited, say "That noun did not make sense in this context." instead.
 
@@ -33,7 +34,7 @@ The assumption here is that the player does know the names of the rooms adjacent
 
 Now for the travel itself. The simplest way to ensure that the usual movement rules will still apply is to convert ``GO BY [NAME]`` into a ``GO`` action, and here the best route comes to our aid:
 
-	{**}Carry out going by name:
+	{**}Carry out going by name to:
 		let aim be the best route from the location to the noun, using doors;
 		if aim is not a direction, say "You can't think how to get there from here." instead;
 		say "(heading [aim])[command clarification break]";

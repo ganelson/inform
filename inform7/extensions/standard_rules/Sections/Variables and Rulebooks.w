@@ -819,6 +819,7 @@ The set pronouns from items from multiple object lists rule is listed first in t
 The announce items from multiple object lists rule is listed first in the
 	action-processing rules. [1st.]
 The basic visibility rule is listed in the action-processing rules.
+The basic tangibility rule is listed in the action-processing rules.
 The basic accessibility rule is listed in the action-processing rules.
 The carrying requirements rule is listed in the action-processing rules.
 The instead stage rule is listed last in the action-processing rules. [4th from last.]
@@ -895,6 +896,15 @@ instance, "check taking" is the specific check rulebook for the
 the names aren't so visible).
 
 =
+This is the basic tangibility rule:
+	if action requires a touchable noun and the noun is not a thing:
+		if an actor listening to a room or an actor smelling a room, continue the action;
+		if the actor is the player, say "You must name something more substantial than [the noun]." (A);
+		stop the action;
+	if action requires a touchable second noun and the second noun is not a thing:
+		if the actor is the player, say "You must name something more substantial than [the second noun]." (B);
+		stop the action.
+
 The basic accessibility rule is defined by Inter as "BASIC_ACCESSIBILITY_R" with
 	"You must name something more substantial." (A).
 The basic visibility rule is defined by Inter as "BASIC_VISIBILITY_R" with

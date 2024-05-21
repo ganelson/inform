@@ -122,7 +122,9 @@ Instead of examining something which is in a room (called the space) which is no
  	
 Understand "examine [any room]" as distance viewing.
 
-Distance viewing is an action applying to one thing.
+Distance viewing is an action applying to one room.
+
+The basic tangibility rule does nothing when an actor distance viewing.
 
 Check distance viewing:
 	if the location offers a view of the noun
