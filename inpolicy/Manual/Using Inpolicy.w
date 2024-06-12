@@ -19,7 +19,7 @@ style rules.
 
 @ When it runs, Inpolicy needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
-(on some Unixes, a program cannot determine its own location), so Inpolicy
+(on some Unixes, a program cannot determine its own location see http://www.faqs.org/faqs/unix-faq/faq/part4/section-4.html ), so Inpolicy
 decides by the following set of rules:
 
 (a) If the user, at the command line, specified |-at P|, for some path
