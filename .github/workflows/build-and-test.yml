@@ -1,0 +1,19 @@
+name: build-and-test
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: .github/workflows/prepare.sh
+      - run: bash scripts/first.sh
+      - run: make check
+      # rebuild docs here
+      - name: Deploy docs to Github Pages
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs
