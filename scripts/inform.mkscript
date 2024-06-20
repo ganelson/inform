@@ -192,11 +192,13 @@ SENGLISHPATH = $(INFORM7WEB)/Internal/Extensions/Graham Nelson/English Language.
 localintegration: \
 	$(ENGLISHPATH)/Syntax.preform \
 	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h \
-	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c
+	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c \
+	$(INFORM7WEB)/Internal/Miscellany/inform7_cslib.cs
 
 # When tangled, the inform7 web most importantly makes inform7.c, of course,
-# but it makes three side files as well: Syntax.preform, a grammar file, and
-# a small C library used when compiling Inform projects to C.
+# but it makes four side files as well: Syntax.preform, a grammar file,
+# a small C library used when compiling Inform projects to C, and a similar
+# one for C#.
 
 $(ENGLISHPATH)/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
 	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(SENGLISHPATH)/Syntax.preform"
@@ -207,13 +209,19 @@ $(INFORM7WEB)/Internal/Miscellany/inform7_clib.h: $(INFORM7WEB)/Tangled/inform7_
 $(INFORM7WEB)/Internal/Miscellany/inform7_clib.c: $(INFORM7WEB)/Tangled/inform7_clib.c
 	cp -f "$(INFORM7WEB)/Tangled/inform7_clib.c" "$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c"
 
+$(INFORM7WEB)/Internal/Miscellany/inform7_cslib.cs: $(INFORM7WEB)/Tangled/inform7_cslib.cs
+	cp -f "$(INFORM7WEB)/Tangled/inform7_cslib.cs" "$(INFORM7WEB)/Internal/Miscellany/inform7_cslib.cs"
+
 # It is in fact sufficient to tangle just the inter subset of inform7 to make
-# the two C-library files:
+# the library files:
 
 $(INFORM7WEB)/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
 	$(INWEBX) $(INTERWEB) -tangle
 
 $(INFORM7WEB)/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
+	$(INWEBX) $(INTERWEB) -tangle
+
+$(INFORM7WEB)/Tangled/inform7_cslib.cs: inter/final-module/Chapter\ 6/*.w
 	$(INWEBX) $(INTERWEB) -tangle
 
 # -----------------------------------------------------------------------------
