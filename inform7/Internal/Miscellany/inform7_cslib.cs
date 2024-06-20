@@ -853,12 +853,12 @@ partial class Process {
 }
 partial class Story {
 	internal int i7_strings_base;
+	internal string[] i7_texts;
 }
 
 partial class Process {
-	string[] i7_texts;
 	public string i7_text_to_CLR_string(int str) {
-		return i7_texts[str - story.i7_strings_base];
+		return story.i7_texts[str - story.i7_strings_base];
 	}
 }
 partial class Process {

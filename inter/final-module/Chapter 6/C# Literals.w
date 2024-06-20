@@ -95,12 +95,12 @@ and the range they spread out over can be very large.)
 = (text to inform7_cslib.cs)
 partial class Story {
 	internal int i7_strings_base;
+	internal string[] i7_texts;
 }
 
 partial class Process {
-	string[] i7_texts;
 	public string i7_text_to_CLR_string(int str) {
-		return i7_texts[str - story.i7_strings_base];
+		return story.i7_texts[str - story.i7_strings_base];
 	}
 }
 =
@@ -199,10 +199,13 @@ void CSLiteralsModel::end_text(code_generation *gen) {
 	segmentation_pos saved = CodeGen::select(gen, cs_quoted_text_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("const int i7_mgl_Grammar__Version = 2;\n");
-	WRITE("string[] i7_texts = {\n");
+	CodeGen::deselect(gen, saved);
+	saved = CodeGen::select(gen, cs_constructor_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("i7_texts = new[] {\n");
 	text_stream *T;
 	LOOP_OVER_LINKED_LIST(T, text_stream, CS_GEN_DATA(litdata.texts))
-		WRITE("%S, ", T);
+	WRITE("%S, ", T);
 	WRITE("\"\" };\n");
 	CodeGen::deselect(gen, saved);
 }
