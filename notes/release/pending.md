@@ -27,6 +27,9 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	command parser, in a debug build (such as in the app). See
 	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
 
+- The transcript file is, in Glulx, now written as UTF-8 text. See
+	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).
+
 ## Gender neutrality
 
 "Writing with Inform" and "The Recipe Book" benefit from a revision throughout to

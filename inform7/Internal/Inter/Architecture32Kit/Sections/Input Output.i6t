@@ -43,7 +43,7 @@ Global gg_scriptstr = 0;
 			if (gg_scriptfref == 0) rfalse;
 		}
 		! stream_open_file
-		gg_scriptstr = glk_stream_open_file(gg_scriptfref, $05, GG_SCRIPTSTR_ROCK);
+		gg_scriptstr = glk_stream_open_file_uni(gg_scriptfref, $05, GG_SCRIPTSTR_ROCK);
 		if (gg_scriptstr == 0) {
 			! Could not open selected file; select again
 			glk_fileref_destroy(gg_scriptfref);

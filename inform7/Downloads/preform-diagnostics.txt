@@ -713,6 +713,8 @@
           constraint CS = {29} extremes [2, 2]
         *uz 0es 
           constraint CS = {29} extremes [2, 2]
+        *zz 0es 
+          constraint CS = {29} extremes [2, 2]
         *ay 0s 
           constraint CS = {29} extremes [2, 2]
         *by 1ies 
