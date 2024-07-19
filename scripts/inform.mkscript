@@ -803,7 +803,6 @@ $(INTERNALEXEMPLUMFROM):
 
 $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
-		$(INFORM7WEB)/Internal/Languages/*/*.* \
 		$(INFORM7WEB)/Internal/Templates/*/*.* \
 		$(INFORM7WEB)/Internal/HTML/[A-Za-z]*.* \
 		$(INFORM7WEB)/Internal/Delia/[A-Za-z]*.* \
