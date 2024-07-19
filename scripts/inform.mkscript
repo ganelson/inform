@@ -620,7 +620,6 @@ forceintegration: \
 		forcetransferindext \
 		forcetransferkits \
 		forcetransferextensions \
-		forcetransferlanguages \
 		forcetransferplanguages \
 		forcetransferimages \
 		forcetransferotherinternals \
@@ -730,19 +729,6 @@ forcetransferextensions:
 	{transfer-extensions}
 
 # -----------------------------------------------------------------------------
-# Copying language bundles into the app
-
-{define: transfer-languages}
-	mkdir -p "$(INTERNAL)/Languages"
-	cp -R -f $(INFORM7WEB)/Internal/Languages $(INTERNAL)/Languages/..
-	rm -f $(INTERNAL)/Languages/*/about.txt
-{end-define}
-
-.PHONY: forcetransferlanguages
-forcetransferlanguages:
-	{transfer-languages}
-
-# -----------------------------------------------------------------------------
 # Copying programming language defns into the app
 
 {define: transfer-planguages}
@@ -831,7 +817,6 @@ $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Miscellany/[A-Za-z]*.*
 	touch $(INTERNALEXEMPLUMFROM)
 	{transfer-extensions}
-	{transfer-languages}
 	{transfer-planguages}
 	{transfer-templates}
 	{transfer-other-internals}
