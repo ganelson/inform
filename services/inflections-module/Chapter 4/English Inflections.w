@@ -418,6 +418,7 @@ word endings.
 	*iz             0es |
 	*oz             0es |
 	*uz             0es |
+	*zz             0es |
 	*ay             0s |            /* Step 10 begins here */
 	*by             1ies |
 	*cy             1ies |
