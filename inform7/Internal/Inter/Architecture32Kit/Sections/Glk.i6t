@@ -63,9 +63,9 @@ Global current_glk_object_reference = 0;
 
 =
 [ RESET_GLK_REFERENCES_R;
-	Main_Window.glk_window_type = GG_MAINWIN_ROCK;
-	Status_Window.glk_window_type = GG_STATUSWIN_ROCK;
-	Quote_Window.glk_window_type = GG_QUOTEWIN_ROCK;
+	Main_Window.glk_rock = GG_MAINWIN_ROCK;
+	Status_Window.glk_rock = GG_STATUSWIN_ROCK;
+	Quote_Window.glk_rock = GG_QUOTEWIN_ROCK;
 	gg_mainwin = 0;
 	gg_statuswin = 0;
 	gg_quotewin = 0;
