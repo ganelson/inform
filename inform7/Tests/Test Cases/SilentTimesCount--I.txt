@@ -1,7 +1,7 @@
    Square One
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Square One
   You can see an elegant jacket and a top hat here.
@@ -19,7 +19,7 @@
   The jacket resists!
   [(1) taking the elegant jacket - silently - failed]
   
-  [wearing the elegant jacket - failed the carrying requirements rule]
+  [wearing the elegant jacket - failed the can't wear what's not held rule]
   
   >[3] wear hat
   [wearing the top hat]
@@ -28,6 +28,6 @@
   The top hat resists!
   [(1) taking the top hat - silently - failed]
   
-  [wearing the top hat - failed the carrying requirements rule]
+  [wearing the top hat - failed the can't wear what's not held rule]
   
 > >

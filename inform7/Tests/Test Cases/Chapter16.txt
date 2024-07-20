@@ -103,7 +103,9 @@ Section 7 - Understanding any, understanding rooms
 
 Understand "teleport to [any room]" as teleporting to.
 
-Teleporting to is an action applying to one thing.
+Teleporting to is an action applying to one room.
+
+The basic tangibility rule does nothing when an actor teleporting to.
 
 Carry out teleporting to:
     move the player to the noun.
