@@ -27,6 +27,12 @@ pcalc_prop *Descriptions::to_proposition(parse_node *spec) {
 	return NULL;
 }
 
+pcalc_prop *Descriptions::to_unbound_proposition(parse_node *spec) {
+	pcalc_prop *prop = Descriptions::to_proposition(spec);
+	if (prop) prop = Binding::unbind(prop);
+	return prop;
+}
+
 @ We are going to need to edit the proposition, using the following:
 
 =

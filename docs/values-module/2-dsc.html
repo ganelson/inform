@@ -97,6 +97,12 @@ proposition \(\phi(x)\) with one free variable \(x\) expected to range over \(K\
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-spc.html#SP4" class="function-link"><span class="function-syntax">Specifications::to_proposition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Descriptions::to_unbound_proposition</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="2-dsc.html#SP1" class="function-link"><span class="function-syntax">Descriptions::to_proposition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Binding::unbind</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We are going to need to edit the proposition, using the following:
 </p>

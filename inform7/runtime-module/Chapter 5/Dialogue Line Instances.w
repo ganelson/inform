@@ -493,7 +493,7 @@ void RTDialogueLines::fn_body_matching(local_variable *par, parse_node *desc) {
 				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
 			EmitCode::up();		
 		} else if ((Specifications::is_description(desc)) || (Node::is(desc, TEST_VALUE_NT))) {
-			pcalc_prop *prop = Descriptions::to_proposition(desc);
+			pcalc_prop *prop = Descriptions::to_unbound_proposition(desc);
 			if (prop) {
 				TypecheckPropositions::type_check(prop,
 					TypecheckPropositions::tc_no_problem_reporting());

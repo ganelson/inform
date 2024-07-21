@@ -401,9 +401,18 @@ kind *Binding::infer_kind_of_variable_0(pcalc_prop *prop) {
 	return NULL;
 }
 
+@h Unbinding.
+
+=
+pcalc_prop *Binding::unbind(pcalc_prop *prop) {
+	if ((prop) && (Binding::number_free(prop) == 0) && (Atoms::is_existence_quantifier(prop)))
+		prop = prop->next;
+	return prop;
+}
+
 @h Detect locals.
-Properly speaking, this has nothing to do with variables,
-but it solves a similar problem.
+Properly speaking, this has nothing to do with variables, but it solves a similar
+problem.
 
 Here we search a proposition to look for any term involving a local variable.
 This is used to verify past tense propositions, which cannot rely on local
