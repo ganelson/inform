@@ -1374,6 +1374,11 @@ Short, which is included with all distributions of Inform."
 @ Check.
 
 =
+First check an actor locking something with (this is the can't lock without holding the key rule):
+	if the holder of the second noun is not the actor:
+		carry out the implicitly taking activity with the second noun;
+		if the actor is not the holder of the second noun, stop the action.
+
 Check an actor locking something with (this is the can't lock without a lock rule):
 	if the noun provides the property lockable and the noun is lockable:
 		continue the action;
@@ -1394,11 +1399,6 @@ Check an actor locking something with (this is the can't lock what's open rule):
 		if the actor is the player:
 			say "First [we] [would have] to close [the noun]." (A);
 		stop the action.
-
-Check an actor locking something with (this is the can't lock without holding the key rule):
-	if the holder of the second noun is not the actor:
-		carry out the implicitly taking activity with the second noun;
-		if the actor is not the holder of the second noun, stop the action.
 
 Check an actor locking something with (this is the can't lock without the correct key rule):
 	if the holder of the second noun is not the actor or
@@ -1461,6 +1461,11 @@ Short, which is included with all distributions of Inform."
 @ Check.
 
 =
+First check an actor unlocking something with (this is the can't unlock without holding the key rule):
+	if the holder of the second noun is not the actor:
+		carry out the implicitly taking activity with the second noun;
+		if the actor is not the holder of the second noun, stop the action.
+
 Check an actor unlocking something with (this is the can't unlock without a lock rule):
 	if the noun provides the property lockable and the noun is lockable:
 		continue the action;
@@ -1474,11 +1479,6 @@ Check an actor unlocking something with (this is the can't unlock what's already
 			say "[regarding the noun][They're] unlocked at the [if story tense is present
 				tense]moment[otherwise]time[end if]." (A);
 		stop the action.
-
-Check an actor unlocking something with (this is the can't unlock without holding the key rule):
-	if the holder of the second noun is not the actor:
-		carry out the implicitly taking activity with the second noun;
-		if the actor is not the holder of the second noun, stop the action.
 
 Check an actor unlocking something with (this is the can't unlock without the correct key rule):
 	if the holder of the second noun is not the actor or
@@ -1754,16 +1754,16 @@ as enforced by the 'can't wear what's not held rule'."
 @ Check.
 
 =
+First check an actor wearing (this is the can't wear what's not held rule):
+	if the holder of the noun is not the actor:
+		carry out the implicitly taking activity with the noun;
+		if the actor is not the holder of the noun, stop the action.
+
 Check an actor wearing (this is the can't wear what's not clothing rule):
 	if the noun is not a thing or the noun is not wearable:
 		if the actor is the player:
 			say "[We] [can't wear] [regarding the noun][those]!" (A);
 		stop the action.
-
-Check an actor wearing (this is the can't wear what's not held rule):
-	if the holder of the noun is not the actor:
-		carry out the implicitly taking activity with the noun;
-		if the actor is not the holder of the noun, stop the action.
 
 Check an actor wearing (this is the can't wear what's already worn rule):
 	if the actor is wearing the noun:
@@ -1866,8 +1866,7 @@ letting others run on into the carry out and report rules."
 @ Check.
 
 =
-
-Check an actor giving something to (this is the can't give what you haven't got rule):
+First check an actor giving something to (this is the can't give what you haven't got rule):
 	if the actor is not the holder of the noun:
 		carry out the implicitly taking activity with the noun;
 		if the actor does not hold the noun, stop the action.

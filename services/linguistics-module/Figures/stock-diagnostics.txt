@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2415 items
+noun: 2417 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3360
+total in all categories: 3362
 
 adjective: 'even'
 adjective: 'odd'
@@ -302,6 +302,7 @@ noun: proper: 'announce items from multiple object lists rule'
 noun: proper: 'before stage rule'
 noun: proper: 'instead stage rule'
 noun: proper: 'end action-processing in success rule'
+noun: proper: 'basic tangibility rule'
 noun: proper: 'investigate player's awareness before action rule'
 noun: proper: 'check stage rule'
 noun: proper: 'carry out stage rule'
@@ -369,11 +370,9 @@ noun: proper: 'can't take yourself rule'
 noun: proper: 'can't take other people rule'
 noun: proper: 'can't take component parts rule'
 noun: proper: 'can't take people's possessions rule'
-noun: proper: 'can't take items out of play rule'
 noun: proper: 'can't take what you're inside rule'
 noun: proper: 'can't take what's already taken rule'
 noun: proper: 'can't take scenery rule'
-noun: proper: 'can only take things rule'
 noun: proper: 'can't take what's fixed in place rule'
 noun: proper: 'use player's holdall to avoid exceeding carrying capacity rule'
 noun: proper: 'can't exceed carrying capacity rule'
@@ -473,12 +472,14 @@ noun: proper: 'standard search containers rule'
 noun: proper: 'standard search supporters rule'
 noun: proper: 'report other people searching rule'
 noun: proper: 'block consulting rule'
+noun: proper: 'can't lock without holding the key rule'
 noun: proper: 'can't lock without a lock rule'
 noun: proper: 'can't lock what's already locked rule'
 noun: proper: 'can't lock what's open rule'
 noun: proper: 'can't lock without the correct key rule'
 noun: proper: 'standard locking rule'
 noun: proper: 'standard report locking rule'
+noun: proper: 'can't unlock without holding the key rule'
 noun: proper: 'can't unlock without a lock rule'
 noun: proper: 'can't unlock what's already unlocked rule'
 noun: proper: 'can't unlock without the correct key rule'
@@ -502,8 +503,8 @@ noun: proper: 'can't close unless openable rule'
 noun: proper: 'can't close what's already closed rule'
 noun: proper: 'standard closing rule'
 noun: proper: 'standard report closing rule'
-noun: proper: 'can't wear what's not clothing rule'
 noun: proper: 'can't wear what's not held rule'
+noun: proper: 'can't wear what's not clothing rule'
 noun: proper: 'can't wear what's already worn rule'
 noun: proper: 'standard wearing rule'
 noun: proper: 'standard report wearing rule'
@@ -524,6 +525,7 @@ noun: proper: 'convert show to yourself to examine rule'
 noun: proper: 'block showing rule'
 noun: proper: 'block waking rule'
 noun: proper: 'implicitly remove thrown clothing rule'
+noun: proper: 'implicitly take thrown object rule'
 noun: proper: 'futile to throw things at inanimate objects rule'
 noun: proper: 'block throwing at rule'
 noun: proper: 'block attacking rule'

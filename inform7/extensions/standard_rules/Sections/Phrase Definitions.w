@@ -309,7 +309,6 @@ To decide whether the action requires a/-- carried second noun
 To decide whether the action requires light
 	(documented at ph_requireslight):
 	(- (NeedLightForAction()) -).
-
 To anonymously abide by (RL - a rule)
 	(documented at ph_abideanon):
 	(- if (temporary_value = FollowRulebook({RL})) {
@@ -818,6 +817,8 @@ To convert to request of (X - object) to perform (AN - action name) with
 	(- return ConvertToRequest({X}, {AN}, {Y}, {Z}); -).
 To convert to special going-with-push action:
 	(- return ConvertToGoingWithPush(); -).
+To decide whether the action makes a request:
+	(- (act_requester) -).
 
 @ The "surreptitiously" phrases shouldn't be used except in the Standard Rules
 because they temporarily violate invariants for the object tree and the
