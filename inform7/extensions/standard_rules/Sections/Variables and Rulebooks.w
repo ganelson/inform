@@ -900,10 +900,12 @@ This is the basic tangibility rule:
 	if action requires a touchable noun and the noun is not a thing:
 		if an actor listening to a room or an actor smelling a room, continue the action;
 		if the actor is the player, say "You must name something more substantial than [the noun]." (A);
-		stop the action;
+		now the reason the action failed is the basic tangibility rule;
+		rule fails;
 	if action requires a touchable second noun and the second noun is not a thing:
 		if the actor is the player, say "You must name something more substantial than [the second noun]." (B);
-		stop the action.
+		now the reason the action failed is the basic tangibility rule;
+		rule fails;
 
 The basic accessibility rule is defined by Inter as "BASIC_ACCESSIBILITY_R" with
 	"You must name something more substantial." (A).
