@@ -1,0 +1,18 @@
+   Stage
+  1.
+  1.
+  1.
+  1.
+  1.
+  1.
+  1.
+  1.
+  1.
+  1.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+> >   Stage
+> Are you sure you want to quit? 

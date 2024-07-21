@@ -30,6 +30,9 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 - The transcript file is, in Glulx, now written as UTF-8 text. See
 	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).
 
+- The Inform 6 compiler's built-in pseudofunction "random()" can now be replaced. See
+	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2435).
+
 ## Gender neutrality
 
 "Writing with Inform" and "The Recipe Book" benefit from a revision throughout to

@@ -1,0 +1,13 @@
+Test: Unrandom
+For: Z-Machine
+
+When play begins:
+	repeat with N running from 1 to 10:
+		say "[a random number from 1 to 10].";
+
+Include (-
+[ random range result;
+	result = 1;
+	return result;
+];
+-) replacing "random".

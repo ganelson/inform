@@ -142,6 +142,7 @@ int CTarget::begin_generation(code_generator *gtr, code_generation *gen) {
 	CGlobals::begin(gen);
 	CAssembly::begin(gen);
 	CInputOutputModel::begin(gen);
+
 	return FALSE;
 }
 
@@ -199,6 +200,8 @@ tables, but other compilers do not, of course, so generators for other languages
 
 =
 int CTarget::end_generation(code_generator *gtr, code_generation *gen) {
+	@<Compile a random function if necessary@>;
+
 	VanillaIF::compile_dictionary_table(gen);
 	VanillaIF::compile_verb_table(gen);
 	VanillaIF::compile_actions_table(gen);
@@ -214,6 +217,16 @@ int CTarget::end_generation(code_generator *gtr, code_generation *gen) {
 	if ((F) && (C_GEN_DATA(compile_symbols))) @<String the symbols header target together@>;
 	return FALSE;
 }
+
+@<Compile a random function if necessary@> =
+	if (gen->defines_random == FALSE) {
+		segmentation_pos saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("i7word_t i7_fn_random(i7process_t *proc, i7word_t x) {\n");
+		WRITE("    i7word_t r; i7_opcode_random(proc, x, &r); return r+1;\n");
+		WRITE("}\n");
+		CodeGen::deselect(gen, saved);
+	}
 
 @<Compile end to clang pragmas@> =
 	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);

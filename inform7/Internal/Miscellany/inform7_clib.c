@@ -545,12 +545,6 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 		proc->state.seed.interval = 0;
     }
 }
-
-i7word_t i7_random(i7process_t *proc, i7word_t x) {
-	i7word_t r;
-	i7_opcode_random(proc, x, &r);
-	return r+1;
-}
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 }
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {

@@ -45,7 +45,7 @@ int CArithmetic::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 			WRITE("("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 			VNODE_3C; WRITE(")"); break;
 		case RANDOM_BIP:
-			WRITE("i7_random(proc, "); VNODE_1C; WRITE(")"); break;
+			WRITE("i7_fn_random(proc, "); VNODE_1C; WRITE(")"); break;
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;

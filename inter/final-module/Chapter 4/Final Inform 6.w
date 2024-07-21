@@ -267,6 +267,12 @@ void I6Target::mangle(code_generator *gtr, OUTPUT_STREAM, text_stream *identifie
 
 =
 int I6Target::end_generation(code_generator *gtr, code_generation *gen) {
+	if (gen->defines_random) {
+		segmentation_pos saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("Replace random;\n");
+		CodeGen::deselect(gen, saved);
+	}
 	I6TargetObjects::end_generation(gtr, gen);
 	I6TargetCode::end_generation(gtr, gen);
 	return FALSE;

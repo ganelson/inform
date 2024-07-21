@@ -94,10 +94,12 @@ void CFunctionModel::C_function_prototype(code_generation *gen, OUTPUT_STREAM,
 	WRITE("i7word_t ");
 	CFunctionModel::C_function_identifier(gen, OUT, vf);
 	WRITE("(i7process_t *proc");
-	text_stream *local_name;
+
+	text_stream *local_name; int c = 0;
 	LOOP_OVER_LINKED_LIST(local_name, text_stream, vf->locals) {
 		WRITE(", i7word_t ");
 		Generators::mangle(gen, OUT, local_name);
+		if (++c == vf->max_arity) break;
 	}
 	WRITE(")");
 }
@@ -342,10 +344,14 @@ void CFunctionModel::declare_function(code_generator *gtr, code_generation *gen,
 	WRITE("i7word_t rv = ");
 	CFunctionModel::unsafe_C_function_identifier(gen, OUT, vf);
 	WRITE("(proc");
+	int c = 0;
 	text_stream *local_name;
 	LOOP_OVER_LINKED_LIST(local_name, text_stream, vf->locals) {
 		WRITE(", ");
-		Generators::mangle(gen, OUT, local_name);
+		if (++c <= vf->max_arity)
+			Generators::mangle(gen, OUT, local_name);
+		else
+			WRITE("0");
 	}
 	WRITE(");\n");
 	WRITE("proc->state.stack_pointer = ssp;\n", vf->identifier);

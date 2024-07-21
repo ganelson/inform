@@ -200,7 +200,7 @@ Total memory consumption was 144529K = 141 MB
      ----  relation_guard                           5 objects, 640 bytes
      ----  implication                              13 objects, 624 bytes
      ----  chapter_md                               7 objects, 616 bytes
-     ----  code_generation                          1 object, 592 bytes
+     ----  code_generation                          1 object, 600 bytes
      ----  index_lemma                              4 objects, 576 bytes
      ----  inter_annotation_form                    14 objects, 560 bytes
      ----  inter_warehouse_room                     10 objects, 560 bytes
@@ -267,7 +267,7 @@ Total memory consumption was 144529K = 141 MB
 
 99.9% was used for memory not allocated for objects:
 
-    63.2%  text stream storage                      93565512 bytes in 547056 claims
+    63.2%  text stream storage                      93565488 bytes in 547056 claims
      4.0%  dictionary storage                       5934528 bytes in 7849 claims
      ----  sorting                                  6648 bytes in 1611 claims
      4.8%  source text                              7200000 bytes in 3 claims
@@ -285,5 +285,5 @@ Total memory consumption was 144529K = 141 MB
      ----  code generation workspace for objects    3560 bytes in 19 claims
      0.1%  emitter array storage                    290048 bytes in 2074 claims
 
--139.-3% was overhead - -206233160 bytes = -201399K = -196 MB
+-139.-3% was overhead - -206233168 bytes = -201399K = -196 MB
 

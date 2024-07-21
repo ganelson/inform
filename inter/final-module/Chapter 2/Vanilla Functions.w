@@ -104,7 +104,11 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 	fn_s->translation_data = STORE_POINTER_vanilla_function(vf);
 	VanillaFunctions::seek_locals(gen, vf->function_body, vf);
 	vf->max_arity = LinkedLists::len(vf->locals);
-	vf->formal_arity = VanillaFunctions::formal_arity(vf);		
+	vf->formal_arity = VanillaFunctions::formal_arity(vf);
+	if (Str::eq_insensitive(vf->identifier, I"random")) {
+		gen->defines_random = TRUE;
+		vf->max_arity = 1;
+	}
 	return vf;
 }
 

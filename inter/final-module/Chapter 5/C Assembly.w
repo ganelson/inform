@@ -748,7 +748,6 @@ in the Z-machine standards document.
 i7rngseed_t i7_initial_rng_seed(void);
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
-i7word_t i7_random(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
@@ -787,12 +786,6 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 		proc->state.seed.A = s;
 		proc->state.seed.interval = 0;
     }
-}
-
-i7word_t i7_random(i7process_t *proc, i7word_t x) {
-	i7word_t r;
-	i7_opcode_random(proc, x, &r);
-	return r+1;
 }
 =
 

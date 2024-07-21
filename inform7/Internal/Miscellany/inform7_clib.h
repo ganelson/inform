@@ -150,7 +150,6 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x);
 i7rngseed_t i7_initial_rng_seed(void);
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
-i7word_t i7_random(i7process_t *proc, i7word_t x);
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y);
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
