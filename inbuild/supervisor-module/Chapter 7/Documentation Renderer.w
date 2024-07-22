@@ -389,7 +389,9 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 	}
 	DISCARD_TEXT(title)
 	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
+	HTML::comment(OUT, I"CONTENT BEGINS");
 	DocumentationRenderer::render_extended(OUT, cd, file_marker);
+	HTML::comment(OUT, I"CONTENT ENDS");
 	HTML_CLOSE("div");
 	@<Enter the small print@>;
 	if (prev_file) {
@@ -649,12 +651,21 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(alt_EN->user_state);
 		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 		InformFlavouredMarkdown::render_example_heading(OUT, E, NULL);
-
+		HTML::comment(OUT, I"CONTENT BEGINS");
+		TEMPORARY_TEXT(eg_comment)
+		WRITE_TO(eg_comment, "START EXAMPLE \"%S: %S\" \"eganchor%S\"",
+			egc->insignia, egc->name, egc->insignia);
+		HTML::comment(OUT, eg_comment);
+		DISCARD_TEXT(eg_comment)
+		HTML_OPEN_WITH("a", "id=\"eganchor%S\"", egc->insignia);
+		HTML_CLOSE("a");
 		markdown_item *passage_node = alt_EN->down;
 		while (passage_node) {
 			DocumentationRenderer::render_extended(OUT, cd, passage_node);
 			passage_node = passage_node->next;
 		}
+		HTML::comment(OUT, I"END EXAMPLE");
+		HTML::comment(OUT, I"CONTENT ENDS");
 		HTML_CLOSE("div");
 		@<Enter the small print@>;
 		markdown_item *origin = (egc->cue)?(egc->cue->down):NULL;
