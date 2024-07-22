@@ -642,7 +642,7 @@ then the first room to be created will actually be the Y2 Rock Room, so that's w
 
 ## Rooms and the map {kind_room} {MAP} {PM_SameKindEquated} {PM_DescriptionsEquated}
 
-^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
+^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing <-- going+action+: between rooms} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
 
 Rooms are joined together at their edges by "map connections", most of which are pathways in one of the eight cardinal compass directions: north, northeast (written without a hyphen), east, southeast, south, southwest, west, northwest. We also have up and down, suitable for staircases or ladders. In real life, people are seldom conscious of their compass bearing when walking around buildings, but it makes a concise and unconfusing way for the player to say where to go next, so is generally accepted as a convention of the genre.
 
@@ -3832,7 +3832,7 @@ This supposes that the radio is so loud that it can be heard from any room: we c
 
 ## Going from, going to
 
-^^{going+action+} ^^{going+action+: going nowhere+action+} ^^{going+action+: going from+action+} ^^{going+action+: going to+action+} ^^{going+action+: default failure response} ^^{going+action+: rules for going to and from places} ^^{|nowhere: rules for going nowhere} ^^{actions: (going), special cases+sourcepart+} ^^{rules: for (going), special cases+sourcepart+} ^^{actions: rules applying to rooms and regions} ^^{rules: applying to rooms and regions} ^^{rooms+kind+: rules applying to rooms} ^^{(in), location conditions for rules+sourcepart+} ^^{connections between rooms: rules applying to map connections}
+^^{going+action+ <-- movement (player)} ^^{going+action+: going nowhere+action+} ^^{going+action+: going from+action+} ^^{going+action+: going to+action+} ^^{going+action+: default failure response} ^^{going+action+: rules for going to and from places} ^^{|nowhere: rules for going nowhere} ^^{actions: (going), special cases+sourcepart+} ^^{rules: for (going), special cases+sourcepart+} ^^{actions: rules applying to rooms and regions} ^^{rules: applying to rooms and regions} ^^{rooms+kind+: rules applying to rooms} ^^{(in), location conditions for rules+sourcepart+} ^^{connections between rooms: rules applying to map connections}
 
 Going is an action defined like any other: it is the one which happens when the player tries to go from one location to another. But it is unlike other actions because it happens in two locations, not just one, and has other complications such as vehicles and doors to contend with. To make it easier to write legible and flexible rules, `going` is allowed to be described in a number of special ways not open to other actions, as demonstrated by the following example story:
 
