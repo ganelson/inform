@@ -5,7 +5,7 @@ Index: Disenchantment Bay 5. Cabin door and deck
 Description: Disenchantment Bay: adding the door and the deck to our charter boat.
 For: Untestable
 
-^^{Disenchantment Bay 5. Cabin door and deck}
+^^{doors+kind+}
 
 We mentioned that there is a door out to the deck in our example. The following two sentences will create both the door and the other room:
 

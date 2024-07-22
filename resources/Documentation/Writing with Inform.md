@@ -1132,7 +1132,7 @@ During play, all three items will be able to be extracted from the purse with co
 
 ## Possessions and clothing
 
-^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
+^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+ <-- clothing} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
 
 We have seen how to place objects in rooms, and in containers or on supporters. But what about people? Perhaps it could be said that they "contain" the fillings in their teeth, or "support" a top hat, but this is not very natural. Inform therefore never speaks of things being `in` or `on` people. Instead, they have two sorts of possessions: the things they `carry`, and the things they `wear`. (Body parts, such as arms and legs, are different again: see [Parts of things] below for a clue to how to do these.) Thus:
 
