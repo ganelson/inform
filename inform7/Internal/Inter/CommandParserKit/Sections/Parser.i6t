@@ -4029,15 +4029,15 @@ this to be typed at the keyboard, then returns the choice made.
         #Endif;
         if (j) { ! at least one word entered
             sign = 1; base = 10; digit_count = 0;
-			#Iftrue CHARSIZE == 1;
-			ch = wa->0;
-			#Ifnot;
-			ch = wa-->0;
-			#Endif; ! CHARSIZE
-			if (ch ~= '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9')
-				jump Retry;
 			n = 0;
 			while (wl > 0) {
+				#Iftrue CHARSIZE == 1;
+				ch = wa->0;
+				#Ifnot;
+				ch = wa-->0;
+				#Endif; ! CHARSIZE
+				if (ch ~= '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9')
+					jump Retry;
 				digit = ch - '0';
 				digit_count++;
 				switch (base) {

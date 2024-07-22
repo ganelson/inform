@@ -6293,7 +6293,7 @@ Such vague descriptions sometimes match multiple possible speakers, and if so, t
 
 - On-stage (i.e., enclosed by some room) rather than off-stage.
 
-- Audible to the plyer rather than not.
+- Audible to the player rather than not.
 
 - Being the interlocutor of the previous speech in the same beat rather than not.
 
