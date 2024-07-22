@@ -38,6 +38,7 @@ PM_InstancesExplicit
 PM_NotASpeaker
 Dialogue
 DialogueBeats
+OpeningBeatAgain
 BeatRelevance
 DialogueParserException
 VariableSpeaker

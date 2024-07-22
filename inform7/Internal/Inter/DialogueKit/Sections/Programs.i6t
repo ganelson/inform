@@ -322,6 +322,10 @@ the PC as well) or to the last time a new beat began.
 [ DirectorAgain;
 	while (director_sp > 0) {
 		if (debug_dialogue >= 2) { print "-- again at: "; DirectorTraceStack(); }
+		if (director_sp == 1) {
+			DirectorStackPC-->0 = 0;
+			break;
+		}
 		DirectorPop();
 		if (DirectorStackDecisionPC-->(director_sp-1) >= 0) {
 			DirectorStackPC-->(director_sp-1) = DirectorStackDecisionPC-->(director_sp-1);
