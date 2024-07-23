@@ -214,7 +214,7 @@ to document all of that.
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          5: ! evtype_Arrange
+          evtype_Arrange:
             if (nostat) {
                 glk_cancel_char_event(win);
                 res = $80000000;
@@ -222,17 +222,12 @@ to document all of that.
                 break;
             }
             DrawStatusLine();
-          2: ! evtype_CharInput
+          evtype_CharInput:
             if (gg_event-->1 == win) {
                 res = gg_event-->2;
                 done = true;
-                }
+            }
         }
-        ix = HandleGlkEvent(gg_event, 1, gg_arguments);
-        if (ix == 2) {
-            res = gg_arguments-->0;
-            done = true;
-        } else if (ix == -1)  done = false;
     }
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         if (res < 32 || res >= 256 || (res == '\' or ' ')) {
@@ -259,16 +254,12 @@ to document all of that.
     return res;
 ];
 
-[ VM_KeyDelay tenths  key done ix;
+[ VM_KeyDelay tenths  key done;
     glk_request_char_event(gg_mainwin);
     glk_request_timer_events(tenths*100);
     while (~~done) {
         glk_select(gg_event);
-        ix = HandleGlkEvent(gg_event, 1, gg_arguments);
-        if (ix == 2) {
-            key = gg_arguments-->0;
-            done = true;
-        } else if (ix >= 0 && gg_event-->0 == 1 or 2) {
+        if (gg_event-->0 == evtype_Timer or evtype_CharInput) {
             key = gg_event-->2;
             done = true;
         }
@@ -305,18 +296,22 @@ Constant UnicodeWhitespaceLen = 8;
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          5: ! evtype_Arrange
+          evtype_Arrange:
             DrawStatusLine();
-          3: ! evtype_LineInput
+          evtype_LineInput:
             if (gg_event-->1 == gg_mainwin) {
                 a_buffer-->0 = gg_event-->2;
                 done = true;
             }
         }
-        ix = HandleGlkEvent(gg_event, 0, a_buffer);
-        if (ix == 2) done = true;
-        else if (ix == -1) done = false;
     }
+	! Manually echo the command if required
+	if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
+		glk_set_style(style_Input);
+		glk_put_buffer_uni(a_buffer + WORDSIZE, a_buffer-->0);
+		glk_set_style(style_Normal);
+		glk_put_char(10); ! newline
+	}
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer-->0);
         glk_put_char_stream(gg_commandstr, 10); ! newline
@@ -824,10 +819,10 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 
 =
 [ VM_StatusLineHeight hgt;
-    if (gg_statuswin == 0) return;
-    if (hgt == statuswin_cursize) return;
-    glk_window_set_arrangement(glk_window_get_parent(gg_statuswin), $12, hgt, 0);
-    statuswin_cursize = hgt;
+	if (gg_statuswin == 0) return;
+	if (hgt == statuswin_cursize) return;
+	glk_window_set_arrangement(glk_window_get_parent(gg_statuswin), winmethod_Fixed + winmethod_Above, hgt, 0);
+	statuswin_cursize = hgt;
 ];
 
 [ VM_MoveCursorInStatusLine line column;
@@ -846,34 +841,37 @@ text just appears in the main window.
 
 =
 [ Box__Routine maxwid arr ix lines lastnl parwin;
-    maxwid = 0; ! squash compiler warning
-    lines = arr-->0;
+	maxwid = 0; ! squash compiler warning
+	lines = arr-->0;
 
-    if (gg_quotewin == 0) {
-        gg_arguments-->0 = lines;
-        ix = InitGlkWindow(GG_QUOTEWIN_ROCK);
-        if (ix == 0)
-            gg_quotewin =
-            	glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-            		lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
-    } else {
-        parwin = glk_window_get_parent(gg_quotewin);
-        glk_window_set_arrangement(parwin, $12, lines, 0);
-    }
+	if (gg_quotewin == 0) {
+		gg_arguments-->0 = lines;
+		if (ix == 0) {
+			gg_quotewin =
+				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+					lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
+			Quote_Window.glk_ref = gg_quotewin;
+		}
+	} else {
+		parwin = glk_window_get_parent(gg_quotewin);
+		glk_window_set_arrangement(parwin, winmethod_Fixed + winmethod_Above, lines, 0);
+	}
 
-    lastnl = true;
-    if (gg_quotewin) {
-        glk_window_clear(gg_quotewin);
-        glk_set_window(gg_quotewin);
-        lastnl = false;
-    }
+	lastnl = true;
+	if (gg_quotewin) {
+		glk_window_clear(gg_quotewin);
+		glk_set_window(gg_quotewin);
+		lastnl = false;
+	}
 
 	VM_Style(BLOCKQUOTE_VMSTY);
-    for (ix=0 : ix<lines : ix++) {
-        print (string) arr-->(ix+1);
-        if (ix < lines-1 || lastnl) new_line;
-    }
+	for (ix=0 : ix<lines : ix++) {
+		print (string) arr-->(ix+1);
+		if (ix < lines-1 || lastnl) new_line;
+	}
 	VM_Style(NORMAL_VMSTY);
 
-    if (gg_quotewin) glk_set_window(gg_mainwin);
+	if (gg_quotewin) {
+		glk_set_window(gg_mainwin);
+	}
 ];

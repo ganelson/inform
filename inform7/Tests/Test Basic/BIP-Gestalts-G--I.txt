@@ -1,0 +1,34 @@
+Glk version: 705
+Graphics window mouse input: false
+Grid window mouse input: false
+Timers: false
+Glk graphics: false
+Buffer window images: false
+Graphics window images: false
+Basic sounds: false
+Sound volume: false
+Sound notifications: false
+Hyperlinks: false
+Buffer window hyperlinks: false
+Grid window hyperlinks: false
+MOD sounds: false
+PNG transparency: false
+Glk unicode: true
+Unicode normalization: true
+Line input echo suppression: false
+Line input terminators: false
+System clock: true
+Extended sounds: false
+Resource streams: true
+Graphics window character input: false
+Text formatting: false
+Glulx version: 30103
+Interpreter version: 600
+Memory resizing: true
+Undo: true
+Glulx unicode: true
+Memory copying: true
+Glulx acceleration: true
+Real numbers: true
+Extended undo: true
+Double precision real numbers: true

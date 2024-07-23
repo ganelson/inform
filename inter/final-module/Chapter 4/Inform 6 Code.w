@@ -128,7 +128,7 @@ functions do not exist in earlier Glulx implementations. However, takeup of
 
 @<Inject code at the top of PLATFORM_SPECIFIC_STARTUP_R@> =
 	WRITE("#ifdef TARGET_GLULX;\n");
-	WRITE("@gestalt 9 0 res;\n");
+	WRITE("@gestalt GLULX_GESTALT_Acceleration 0 res;\n");
 	WRITE("if (res == 0) rfalse;\n");
 	WRITE("addr = #classes_table;\n");
 	WRITE("@accelparam 0 addr;\n");

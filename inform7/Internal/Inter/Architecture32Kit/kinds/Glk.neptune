@@ -1,0 +1,99 @@
+new base GLK_FEATURE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: glk feature
+	plural: glk features
+
+	specification-text: Glk features which may or may not be supported by the interpreter.
+
+	instance: timers                          = gestalt_Timer_                = 5
+	instance: glk graphics                    = gestalt_Graphics_             = 6
+	instance: basic sounds                    = gestalt_Sound_                = 8
+	instance: sound volume                    = gestalt_SoundVolume_          = 9
+	instance: sound notifications             = gestalt_SoundNotify_          = 10
+	instance: hyperlinks                      = gestalt_Hyperlinks_           = 11
+	instance: MOD sounds                      = gestalt_SoundMusic_           = 13
+	instance: PNG transparency                = gestalt_GraphicsTransparency_ = 14
+	instance: glk unicode                     = gestalt_Unicode_              = 15
+	instance: unicode normalization           = gestalt_UnicodeNorm_          = 16
+	instance: line input echo suppression     = gestalt_LineInputEcho_        = 17
+	instance: line input terminators          = gestalt_LineTerminators_      = 18
+	instance: system clock                    = gestalt_DateTime_             = 20
+	instance: extended sounds                 = gestalt_Sound2_               = 21
+	instance: resource streams                = gestalt_ResourceStream_       = 22
+	instance: graphics window character input = gestalt_GraphicsCharInput_    = 23
+	instance: text formatting                 = gestalt_GarglkText_FAKE       = 24
+}
+
+new base GLULX_FEATURE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: glulx feature
+	plural: glulx features
+
+	specification-text: Glulx features which may or may not be supported by the interpreter.
+
+	instance: memory resizing               = GLULX_GESTALT_ResizeMem    = 2
+	instance: undo                          = GLULX_GESTALT_Undo         = 3
+	instance: glulx unicode                 = GLULX_GESTALT_Unicode      = 5
+	instance: memory copying                = GLULX_GESTALT_MemCopy      = 6
+	instance: memory allocations            = GLULX_GESTALT_MAlloc       = 7
+	instance: glulx acceleration            = GLULX_GESTALT_Acceleration = 9
+	instance: real numbers                  = GLULX_GESTALT_Float        = 11
+	instance: extended undo                 = GLULX_GESTALT_ExtUndo      = 12
+	instance: double precision real numbers = GLULX_GESTALT_Double       = 13
+}
+
+new base GLK_EVENT_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: glk event
+	plural: glk events
+
+	specification-text: A Glk event sent from the interpreter.
+
+	instance: null event               = evtype_None_         = 0
+	instance: timer event              = evtype_Timer_        = 1
+	instance: character event          = evtype_CharInput_    = 2
+	instance: line event               = evtype_LineInput_    = 3
+	instance: mouse event              = evtype_MouseInput_   = 4
+	instance: arrange event            = evtype_Arrange_      = 5
+	instance: redraw event             = evtype_Redraw_       = 6
+	instance: sound notification event = evtype_SoundNotify_  = 7
+	instance: hyperlink event          = evtype_Hyperlink_    = 8
+	instance: volume event             = evtype_VolumeNotify_ = 9
+}
+
+new base GLK_WINDOW_TYPE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: glk window type
+	plural: glk window types
+
+	specification-text: Type of a Glk window.
+
+	instance: text buffer = wintype_TextBuffer_ = 3
+	instance: text grid   = wintype_TextGrid_   = 4
+	instance: graphics    = wintype_Graphics_   = 5
+}
+
+new base TEXT_INPUT_STATUS_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: text input status
+	plural: text input statuses
+
+	specification-text: The current text input status of a Glk window.
+
+	instance: inactive text input               = INPUT_STATUS_NONE
+	instance: active line input                 = INPUT_STATUS_ACTIVE_LINE
+	instance: active unicode line input         = INPUT_STATUS_ACTIVE_LINE_UNI
+	instance: active character input            = INPUT_STATUS_ACTIVE_CHAR
+	instance: active unicode character input    = INPUT_STATUS_ACTIVE_CHAR_UNI
+	instance: suspended line input              = INPUT_STATUS_SUSPENDED_LINE
+	instance: suspended unicode line input      = INPUT_STATUS_SUSPENDED_LINE_UNI
+	instance: suspended character input         = INPUT_STATUS_SUSPENDED_CHAR
+	instance: suspended unicode character input = INPUT_STATUS_SUSPENDED_CHAR_UNI
+}
+
+properties of glk window {
+	property: line_input_buffer_addr
+	property: line_input_buffer_curlen
+	property: line_input_buffer_maxlen
+	property: line_input_buffer_uni
+}

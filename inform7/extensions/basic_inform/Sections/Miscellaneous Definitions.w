@@ -112,7 +112,7 @@ way to make deterministic tests of programs which use random values).
 (e) The "recover Glk objects rule" runs the object recovery process in order to
 identify and pre-existing Glk objects after a restart.
 
-(f) The "open built-in windows rule" opens the Glk windows; only after this
+(f) The "open built in windows rule" opens the Glk windows; only after this
 point is it safe to print anything.
 
 =
@@ -156,11 +156,14 @@ The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 @ These rules now set up the built in sound channels and windows.
 
 =
+The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
+
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
 The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
 
-The open built-in windows rule is listed in the for starting the virtual machine rules.
-The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+The open built in windows rule is listed in the for starting the virtual machine rules.
+The open built in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
 
 The display captured startup text rule is listed in the for starting the virtual machine rules.
 The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
