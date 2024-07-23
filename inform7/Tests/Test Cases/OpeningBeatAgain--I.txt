@@ -1,0 +1,167 @@
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Ferris: "May I offer you an ice cream?"
+  
+  (1) Vanilla Bean
+  (2) French Vanilla
+  (3) Chocolate
+  (4) Chocolate Chip
+  (5) Mint Chip
+  (6) Rocky Road
+  (7) Strawberry
+  (8) Neapolitan
+  (9) Pistachio
+  (10) Hazelnut Ripple
+  (11) Brownie Chunk
+  (12) Lemon Sorbet
+  (13) Orange Sorbet
+  (14) Raspberry Sorbet
+  (15) Daiquiri
+  (16) Ginger
+  (17) Rum Raisin
+  (18) Creme De Menthe
+  
+> >  
+  Vanilla Bean
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) French Vanilla
+  (2) Chocolate
+  (3) Chocolate Chip
+  (4) Mint Chip
+  (5) Rocky Road
+  (6) Strawberry
+  (7) Neapolitan
+  (8) Pistachio
+  (9) Hazelnut Ripple
+  (10) Brownie Chunk
+  (11) Lemon Sorbet
+  (12) Orange Sorbet
+  (13) Raspberry Sorbet
+  (14) Daiquiri
+  (15) Ginger
+  (16) Rum Raisin
+  (17) Creme De Menthe
+  
+> >  
+  Chocolate
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) French Vanilla
+  (2) Chocolate Chip
+  (3) Mint Chip
+  (4) Rocky Road
+  (5) Strawberry
+  (6) Neapolitan
+  (7) Pistachio
+  (8) Hazelnut Ripple
+  (9) Brownie Chunk
+  (10) Lemon Sorbet
+  (11) Orange Sorbet
+  (12) Raspberry Sorbet
+  (13) Daiquiri
+  (14) Ginger
+  (15) Rum Raisin
+  (16) Creme De Menthe
+  
+> >  
+  Mint Chip
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) French Vanilla
+  (2) Chocolate Chip
+  (3) Rocky Road
+  (4) Strawberry
+  (5) Neapolitan
+  (6) Pistachio
+  (7) Hazelnut Ripple
+  (8) Brownie Chunk
+  (9) Lemon Sorbet
+  (10) Orange Sorbet
+  (11) Raspberry Sorbet
+  (12) Daiquiri
+  (13) Ginger
+  (14) Rum Raisin
+  (15) Creme De Menthe
+  
+> >  
+  Chocolate Chip
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) French Vanilla
+  (2) Rocky Road
+  (3) Strawberry
+  (4) Neapolitan
+  (5) Pistachio
+  (6) Hazelnut Ripple
+  (7) Brownie Chunk
+  (8) Lemon Sorbet
+  (9) Orange Sorbet
+  (10) Raspberry Sorbet
+  (11) Daiquiri
+  (12) Ginger
+  (13) Rum Raisin
+  (14) Creme De Menthe
+  
+> >  
+  Rocky Road
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) French Vanilla
+  (2) Strawberry
+  (3) Neapolitan
+  (4) Pistachio
+  (5) Hazelnut Ripple
+  (6) Brownie Chunk
+  (7) Lemon Sorbet
+  (8) Orange Sorbet
+  (9) Raspberry Sorbet
+  (10) Daiquiri
+  (11) Ginger
+  (12) Rum Raisin
+  (13) Creme De Menthe
+  
+> >  
+  French Vanilla
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) Strawberry
+  (2) Neapolitan
+  (3) Pistachio
+  (4) Hazelnut Ripple
+  (5) Brownie Chunk
+  (6) Lemon Sorbet
+  (7) Orange Sorbet
+  (8) Raspberry Sorbet
+  (9) Daiquiri
+  (10) Ginger
+  (11) Rum Raisin
+  (12) Creme De Menthe
+  
+> >  
+  Ginger
+  
+  Ferris: "May I offer you another ice cream?"
+  
+  (1) Strawberry
+  (2) Neapolitan
+  (3) Pistachio
+  (4) Hazelnut Ripple
+  (5) Brownie Chunk
+  (6) Lemon Sorbet
+  (7) Orange Sorbet
+  (8) Raspberry Sorbet
+  (9) Daiquiri
+  (10) Rum Raisin
+  (11) Creme De Menthe
+  
+> >

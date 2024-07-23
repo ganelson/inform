@@ -43,7 +43,7 @@ phs_linebreak phs_nolinebreak phs_runparaon phs_parabreak phs_condparabreak ph_b
 phs_bold phs_italic phs_roman phs_fixedspacing phs_varspacing _ WI_5_9 "5.9" "5.9. Text with type styles"
 PM_UnicodeOutOfRange PM_MidTextUnicode PM_SayUnicode _ WI_5_11 "5.11" "5.11. Unicode characters"
 ph_boxed _ WI_5_12 "5.12" "5.12. Displaying quotations"
-DESCRIPTIONS ph_numberof _ WI_6_1 "6.1" "6.1. What are descriptions?"
+DESCRIPTIONS ph_numberof _ WI_6_1 "6.1" "6.1. Giving general descriptions"
 PM_ArticleAsAdjective PM_AdjDomainUnknown PM_AdjDomainSurreal PM_AdjDomainSlippery PM_DefinitionWithoutCondition PM_DefinitionBadCondition _ WI_6_3 "6.3" "6.3. Defining new adjectives"
 PM_MultiwordGrading PM_GradingWrongKOV PM_GradingUnless PM_GradingUnknownProperty PM_GradingNonLiteral PM_GradingMisphrased PM_GradingCalled PM_ComparativeMisapplied _ WI_6_6 "6.6" "6.6. Comparatives"
 PM_OutOfPlay _ WI_6_9 "6.9" "6.9. Existence and there"

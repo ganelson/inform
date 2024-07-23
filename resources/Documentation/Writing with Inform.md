@@ -2878,13 +2878,15 @@ And now Inform will act on `"[Security Notice]"` differently from `"[security no
 
 - [The phrasebook] for other forms of phrase besides To say....
 
-# Descriptions
+# Generalisations
 
-## What are descriptions? {DESCRIPTIONS}
+## Giving general descriptions {DESCRIPTIONS}
 
 ^^{descriptions (references to things)} ^^{things+kind+: references to (descriptions)} ^^{+tosay+"[list of (description)]" --> list of} ^^{+to+say "[list of (description)]"}
 
-It is in describing circumstances that Inform really capitalises on the concise, expressive power of natural language, and this chapter brings together the facts about _descriptions_.
+One of the reasons natural languages like English are so concise and expressive is that they can describe things in so many ways. As well as being literal about exactly what we mean — "the Z-ray beam locator" — we can be vague, and talk about "a switched on device in the Laboratory", or for that matter just "a device". We can even talk about "three devices". People who study languages call these "noun phrases", but Inform calls them _descriptions_. They allow us to give general instructions in a highly flexible way.
+
+Note that this is a quite different meaning of the word from the `description` property of a thing. This chapter is all about how we describe values when we're writing source text, not about how the story describes things to the eventual player when it runs.
 
 The simplest descriptions consist of a noun alone. Some refer to single things (`lantern`, or `wine cask`), others to kinds of thing (`dead end` or `container`). But we have also seen adjectives alone:
 
@@ -6293,7 +6295,7 @@ Such vague descriptions sometimes match multiple possible speakers, and if so, t
 
 - On-stage (i.e., enclosed by some room) rather than off-stage.
 
-- Audible to the plyer rather than not.
+- Audible to the player rather than not.
 
 - Being the interlocutor of the previous speech in the same beat rather than not.
 

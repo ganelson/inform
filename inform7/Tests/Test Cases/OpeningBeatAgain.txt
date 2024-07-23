@@ -1,0 +1,52 @@
+Test: OpeningBeatAgain
+For: Z-Machine
+
+Section 1 - Stuff
+
+The Stage Set is a room. Ferris is a man in Stage Set.
+
+Instead of looking: do nothing instead. 
+
+Section 2 - More Stuff (dialogue)
+
+(This is the starting beat.)
+
+Ferris (recurring): "May I offer you [one of]an[or]another[stopping] ice cream?"
+
+-- "Vanilla Bean"
+
+-- "French Vanilla"
+
+-- "Chocolate"
+
+-- "Chocolate Chip"
+
+-- "Mint Chip"
+
+-- "Rocky Road"
+
+-- "Strawberry"
+
+-- "Neapolitan"
+
+-- "Pistachio"
+
+-- "Hazelnut Ripple"
+
+-- "Brownie Chunk"
+
+-- "Lemon Sorbet"
+
+-- "Orange Sorbet"
+
+-- "Raspberry Sorbet"
+
+-- "Daiquiri"
+
+-- "Ginger"
+
+-- "Rum Raisin"
+
+-- "Creme De Menthe"
+
+<-
