@@ -5,7 +5,7 @@ Index: Disenchantment Bay 9. The Captain
 Description: Disenchantment Bay: enter the charter boat's Captain.
 For: Untestable
 
-^^{Disenchantment Bay 9. The Captain}
+^^{person+kind+} ^^{man+kind+}
 
 Now finally we can put a Captain in the boat:
 
