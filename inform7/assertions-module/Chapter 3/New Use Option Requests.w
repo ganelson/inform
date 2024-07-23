@@ -328,7 +328,9 @@ void NewUseOptions::set(parsed_use_option_setting *puos) {
 	} else {
 		ADD_TO_LINKED_LIST(puos, parsed_use_option_setting, uo->settings_made);
 	}
-	source_file *from = Lexer::file_of_origin(Wordings::first_wn(puos->textual_option));
+	source_file *from = NULL;
+	if (Wordings::nonempty(puos->textual_option))
+		from = Lexer::file_of_origin(Wordings::first_wn(puos->textual_option));
 	if (uo->source_file_scoped) {
 		inform_extension *E = Extensions::corresponding_to(from);
 		if (E) puos->made_at = NULL;
