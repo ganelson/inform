@@ -577,6 +577,7 @@ keyword_group system_constants =
     "lowest_object_number", "highest_object_number",
     "oddeven_packing",
     "grammar_table", "dictionary_table", "dynam_string_table",
+    "highest_meta_action_number",
     "" },
     SYSTEM_CONSTANT_TT, FALSE, TRUE
 };
@@ -783,8 +784,8 @@ extern void construct_local_variable_tables(void)
         local_variables.keywords[i] = p;
         if (p[1] == 0)
         {   one_letter_locals[(uchar)p[0]] = i;
-            if (isupper(p[0])) one_letter_locals[tolower(p[0])] = i;
-            if (islower(p[0])) one_letter_locals[toupper(p[0])] = i;
+            if (isupper((uchar)p[0])) one_letter_locals[tolower((uchar)p[0])] = i;
+            if (islower((uchar)p[0])) one_letter_locals[toupper((uchar)p[0])] = i;
         }
         h = hash_code_from_string(p);
         if (local_variable_hash_table[h] == -1)

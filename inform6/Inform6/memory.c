@@ -258,8 +258,10 @@ int MAX_LOCAL_VARIABLES;
 int DICT_WORD_SIZE; /* number of characters in a dict word */
 int DICT_CHAR_SIZE; /* (glulx) 1 for one-byte chars, 4 for Unicode chars */
 int DICT_WORD_BYTES; /* DICT_WORD_SIZE*DICT_CHAR_SIZE */
+int GRAMMAR_META_FLAG; /* indicate which actions are meta */
 int ZCODE_HEADER_EXT_WORDS; /* (zcode 1.0) requested header extension size */
 int ZCODE_HEADER_FLAGS_3; /* (zcode 1.1) value to place in Flags 3 word */
+int ZCODE_FILE_END_PADDING; /* 0: no, 1: yes (default) */
 int ZCODE_LESS_DICT_DATA; /* (zcode) use 2 data bytes per dict word instead of 3 */
 int ZCODE_MAX_INLINE_STRING; /* (zcode) length of string literals that can be inlined */
 int NUM_ATTR_BYTES;
@@ -283,6 +285,10 @@ static int DICT_WORD_SIZE_z, DICT_WORD_SIZE_g;
 static int NUM_ATTR_BYTES_z, NUM_ATTR_BYTES_g;
 static int MAX_DYNAMIC_STRINGS_z, MAX_DYNAMIC_STRINGS_g;
 
+/* These hold the given parameter. See the grammar_version_number variable
+   for the final validated setting. */
+int GRAMMAR_VERSION_z, GRAMMAR_VERSION_g;
+
 /* ------------------------------------------------------------------------- */
 /*   Memory control from the command line                                    */
 /* ------------------------------------------------------------------------- */
@@ -296,12 +302,19 @@ static void list_memory_sizes(void)
     printf("|  %25s = %-7d |\n","DICT_WORD_SIZE",DICT_WORD_SIZE);
     if (glulx_mode)
       printf("|  %25s = %-7d |\n","DICT_CHAR_SIZE",DICT_CHAR_SIZE);
+    if (!glulx_mode)
+      printf("|  %25s = %-7d |\n","GRAMMAR_VERSION",GRAMMAR_VERSION_z);
+    else
+      printf("|  %25s = %-7d |\n","GRAMMAR_VERSION",GRAMMAR_VERSION_g);
+    printf("|  %25s = %-7d |\n","GRAMMAR_META_FLAG",GRAMMAR_META_FLAG);
     printf("|  %25s = %-7d |\n","MAX_DYNAMIC_STRINGS",MAX_DYNAMIC_STRINGS);
     printf("|  %25s = %-7d |\n","HASH_TAB_SIZE",HASH_TAB_SIZE);
     if (!glulx_mode)
       printf("|  %25s = %-7d |\n","ZCODE_HEADER_EXT_WORDS",ZCODE_HEADER_EXT_WORDS);
     if (!glulx_mode)
       printf("|  %25s = %-7d |\n","ZCODE_HEADER_FLAGS_3",ZCODE_HEADER_FLAGS_3);
+    if (!glulx_mode)
+      printf("|  %25s = %-7d |\n","ZCODE_FILE_END_PADDING",ZCODE_FILE_END_PADDING);
     if (!glulx_mode)
       printf("|  %25s = %-7d |\n","ZCODE_LESS_DICT_DATA",ZCODE_LESS_DICT_DATA);
     if (!glulx_mode)
@@ -333,6 +346,9 @@ extern void set_memory_sizes(void)
     DICT_CHAR_SIZE = 1;
     DICT_WORD_SIZE_z = 6;
     DICT_WORD_SIZE_g = 9;
+    GRAMMAR_VERSION_z = 1;
+    GRAMMAR_VERSION_g = 2;
+    GRAMMAR_META_FLAG = 0;
     NUM_ATTR_BYTES_z = 6;
     NUM_ATTR_BYTES_g = 7;
     MAX_ABBREVS = 64;
@@ -343,6 +359,7 @@ extern void set_memory_sizes(void)
        there's no unicode table. */
     ZCODE_HEADER_EXT_WORDS = 3;
     ZCODE_HEADER_FLAGS_3 = 0;
+    ZCODE_FILE_END_PADDING = 1;
     ZCODE_LESS_DICT_DATA = 0;
     ZCODE_MAX_INLINE_STRING = 32;
     GLULX_OBJECT_EXT_BYTES = 0;
@@ -404,6 +421,21 @@ static void explain_parameter(char *command)
   input.)\n");
         return;
     }
+    if (strcmp(command,"GRAMMAR_VERSION")==0)
+    {   printf(
+"  GRAMMAR_VERSION defines the table format for the verb grammar. 2 is \n\
+  the Inform standard. 1 is an older version based on Infocom's format. \n\
+  The default is 1 in Z-code, 2 in Glulx.\n");
+        return;
+    }
+    if (strcmp(command,"GRAMMAR_META_FLAG")==0)
+    {   printf(
+"  GRAMMAR_META_FLAG indicates actions which have the 'meta' flag by \n\
+  ensure that their values are <= #largest_meta_action. This allows \n\
+  individual actions to be marked 'meta', rather than relying on dict \n\
+  word flags.\n");
+        return;
+    }
     if (strcmp(command,"NUM_ATTR_BYTES")==0)
     {   printf(
 "  NUM_ATTR_BYTES is the space used to store attribute flags. Each byte \n\
@@ -424,6 +456,12 @@ static void explain_parameter(char *command)
     {   printf(
 "  ZCODE_HEADER_FLAGS_3 is the value to store in the Flags 3 word of the \n\
   header extension table (Z-Spec 1.1).\n");
+        return;
+    }
+    if (strcmp(command,"ZCODE_FILE_END_PADDING")==0)
+    {   printf(
+"  ZCODE_FILE_END_PADDING, if set, pads the game file length to a multiple \n\
+  of 512 bytes. (Z-code only.)\n");
         return;
     }
     if (strcmp(command,"ZCODE_LESS_DICT_DATA")==0)
@@ -622,8 +660,8 @@ static void add_predefined_symbol(char *command)
     }
     
     for (ix=0; command[ix]; ix++) {
-        if ((ix == 0 && isdigit(command[ix]))
-            || !(isalnum(command[ix]) || command[ix] == '_')) {
+        if ((ix == 0 && isdigit((uchar)command[ix]))
+            || !(isalnum((uchar)command[ix]) || command[ix] == '_')) {
             printf("Attempt to define invalid symbol: %s\n", command);
             return;
         }
@@ -647,7 +685,8 @@ static void set_trace_option(char *command)
     
     if (!command || *command == '\0') {
         printf("The full list of trace options:\n\n");
-        printf("  ACTIONS: show actions defined\n");
+        printf("  ACTIONS: show all actions\n");
+        printf("    ACTIONS=2: also list them as they are defined\n");
         printf("  ASM: trace assembly (same as -a)\n");
         printf("    ASM=2: also show hex dumps\n");
         printf("    ASM=3: also show branch optimization info\n");
@@ -778,7 +817,7 @@ extern void memory_command(char *command)
 {   int i, k;
 
     for (k=0; command[k]!=0; k++)
-        if (islower(command[k])) command[k]=toupper(command[k]);
+        if (islower((uchar)command[k])) command[k]=toupper((uchar)command[k]);
 
     if (command[0]=='?') { explain_parameter(command+1); return; }
     if (command[0]=='#') { add_predefined_symbol(command+1); return; }
@@ -831,6 +870,10 @@ extern void memory_command(char *command)
             }
             if (strcmp(command,"DICT_CHAR_SIZE")==0)
                 DICT_CHAR_SIZE=j, flag=1;
+            if (strcmp(command,"GRAMMAR_VERSION")==0)
+                GRAMMAR_VERSION_z=GRAMMAR_VERSION_g=j, flag=1;
+            if (strcmp(command,"GRAMMAR_META_FLAG")==0)
+                GRAMMAR_META_FLAG=j, flag=1;
             if (strcmp(command,"NUM_ATTR_BYTES")==0) 
             {   NUM_ATTR_BYTES=j, flag=1;
                 NUM_ATTR_BYTES_g=NUM_ATTR_BYTES_z=j;
@@ -839,6 +882,8 @@ extern void memory_command(char *command)
                 ZCODE_HEADER_EXT_WORDS=j, flag=1;
             if (strcmp(command,"ZCODE_HEADER_FLAGS_3")==0)
                 ZCODE_HEADER_FLAGS_3=j, flag=1;
+            if (strcmp(command,"ZCODE_FILE_END_PADDING")==0)
+                ZCODE_FILE_END_PADDING=j, flag=1;
             if (strcmp(command,"ZCODE_LESS_DICT_DATA")==0)
                 ZCODE_LESS_DICT_DATA=j, flag=1;
             if (strcmp(command,"ZCODE_MAX_INLINE_STRING")==0)

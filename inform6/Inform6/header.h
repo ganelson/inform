@@ -494,8 +494,16 @@
 #define NORETURN __attribute__((__noreturn__))
 #endif /* defined(__GNUC__) || defined(__clang__) */
 
+#if defined(_MSC_VER)
+#define NORETURN_PRE __declspec(noreturn)
+#endif
+ 
 #ifndef NORETURN
 #define NORETURN
+#endif
+
+#ifndef NORETURN_PRE
+#define NORETURN_PRE
 #endif
 
 /* ------------------------------------------------------------------------- */
@@ -562,8 +570,8 @@
 
 /* These checked the glulx_mode global during development, but are no
    longer needed. */
-#define ASSERT_ZCODE() (0)
-#define ASSERT_GLULX() (0)
+#define ASSERT_ZCODE()
+#define ASSERT_GLULX()
 
 
 #define ReadInt32(ptr)                               \
@@ -600,7 +608,6 @@
 
 #define  MAX_ERRORS            100
 #define  MAX_NUM_ATTR_BYTES     39
-#define  MAX_VERB_WORD_SIZE    120
 
 #define  VENEER_CONSTRAINT_ON_CLASSES_Z       256
 #define  VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_Z 128
@@ -679,7 +686,13 @@ typedef struct actioninfo_s {
     int32 symbol;      /* The symbol table index of the action name */
     int32 byte_offset; /* The (byte) offset in the Z-machine code area of 
                           the ...Sub routine */
+    int meta;          /* Only used if $GRAMMAR_META_FLAG */
 } actioninfo;
+
+typedef struct actionsort_s {
+    int internal_to_ext;
+    int external_to_int;
+} actionsort;
 
 /* Information about an object class. */
 typedef struct classinfo_s {
@@ -1541,7 +1554,7 @@ typedef struct operator_s
 
 /*  Index numbers into the keyword group "system_constants" (see "lexer.c")  */
 
-#define NO_SYSTEM_CONSTANTS   62
+#define NO_SYSTEM_CONSTANTS   63
 
 #define adjectives_table_SC   0
 #define actions_table_SC      1
@@ -1617,6 +1630,7 @@ typedef struct operator_s
 #define grammar_table_SC              59
 #define dictionary_table_SC           60
 #define dynam_string_table_SC         61     /* Glulx-only */
+#define highest_meta_action_number_SC 62
 
 
 /*  Index numbers into the keyword group "system_functions" (see "lexer.c")  */
@@ -1939,10 +1953,9 @@ typedef struct operator_s
 #define MAIN_MV               10     /* "Main" routine */
 #define SYMBOL_MV             11     /* Forward ref to unassigned symbol */
 
-/* Additional marker values used in module backpatch areas (most are
-   obsolete). */
-/* (In Glulx, OBJECT_MV and VARIABLE_MV are used in backpatching, even
-   without modules.) */
+/* Additional marker values (most are obsolete). */
+/* (In Glulx, OBJECT_MV and VARIABLE_MV are used in backpatching.) */
+/* (If GRAMMAR_META_FLAG is set, ACTION_MV is used in backpatching.) */
 
 #define VARIABLE_MV           12     /* Global variable */
 #define IDENT_MV              13     /* Property identifier number */
@@ -2340,10 +2353,10 @@ extern int  no_errors, no_warnings, no_suppressed_warnings, no_compiler_errors;
 
 extern ErrorPosition ErrorReport;
 
-extern void fatalerror(char *s) NORETURN;
-extern void fatalerror_fmt(const char *format, ...) NORETURN;
-extern void fatalerror_named(char *s1, char *s2) NORETURN;
-extern void fatalerror_memory_out(int32 size, int32 howmany, char *name) NORETURN;
+NORETURN_PRE extern void fatalerror(char *s) NORETURN;
+NORETURN_PRE extern void fatalerror_fmt(const char *format, ...) NORETURN;
+NORETURN_PRE extern void fatalerror_named(char *s1, char *s2) NORETURN;
+NORETURN_PRE extern void fatalerror_memory_out(int32 size, int32 howmany, char *name) NORETURN;
 
 extern void error(char *s);
 extern void error_fmt(const char *format, ...);
@@ -2600,7 +2613,10 @@ extern int32 MAX_STACK_SIZE, MEMORY_MAP_EXTENSION;
 
 extern int MAX_LOCAL_VARIABLES;
 extern int DICT_WORD_SIZE, DICT_CHAR_SIZE, DICT_WORD_BYTES;
+extern int GRAMMAR_VERSION_z, GRAMMAR_VERSION_g;
+extern int GRAMMAR_META_FLAG;
 extern int ZCODE_HEADER_EXT_WORDS, ZCODE_HEADER_FLAGS_3;
+extern int ZCODE_FILE_END_PADDING;
 extern int ZCODE_LESS_DICT_DATA;
 extern int ZCODE_MAX_INLINE_STRING;
 extern int NUM_ATTR_BYTES, GLULX_OBJECT_EXT_BYTES;
@@ -2856,7 +2872,8 @@ extern void  write_dictionary_to_transcript(void);
 extern void  sort_dictionary(void);
 extern void  dictionary_prepare(char *dword, uchar *optresult);
 extern int   dictionary_add(char *dword, int x, int y, int z);
-extern void  dictionary_set_verb_number(char *dword, int to);
+extern int   dictionary_find(char *dword);
+extern void  dictionary_set_verb_number(int dictword, int to);
 extern int   compare_sorts(uchar *d1, uchar *d2);
 extern void  copy_sorts(uchar *d1, uchar *d2);
 
@@ -2884,16 +2901,22 @@ extern verbt *Inform_verbs;
 extern uchar *grammar_lines;
 extern int32 grammar_lines_top;
 extern actioninfo *actions;
+extern actionsort *sorted_actions;
+extern int no_meta_actions;
 extern memory_list actions_memlist;
 extern int32 *grammar_token_routine,
              *adjectives;
 
+extern void set_grammar_version(int val);
 extern void find_the_actions(void);
+extern int lowest_fake_action(void);
 extern void make_fake_action(void);
 extern assembly_operand action_of_name(char *name);
 extern void locate_dead_grammar_lines(void);
 extern void make_verb(void);
 extern void extend_verb(void);
+extern void sort_actions(void);
 extern void list_verb_table(void);
+extern void list_action_table(void);
 
 /* ========================================================================= */

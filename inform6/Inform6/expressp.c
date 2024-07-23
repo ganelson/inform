@@ -272,21 +272,24 @@ but not used as a value:", unicode);
                     if ((previous_token.type == OP_TT)
                         || (previous_token.type == SUBOPEN_TT)
                         || (previous_token.type == ENDEXP_TT))
-                    current_token.value = UNARY_MINUS_SEP; break;
+                        current_token.value = UNARY_MINUS_SEP;
+                    break;
 
                 case INC_SEP:
                     if ((previous_token.type == VARIABLE_TT)
                         || (previous_token.type == SUBCLOSE_TT)
                         || (previous_token.type == LARGE_NUMBER_TT)
                         || (previous_token.type == SMALL_NUMBER_TT))
-                    current_token.value = POST_INC_SEP; break;
+                        current_token.value = POST_INC_SEP;
+                    break;
 
                 case DEC_SEP:
                     if ((previous_token.type == VARIABLE_TT)
                         || (previous_token.type == SUBCLOSE_TT)
                         || (previous_token.type == LARGE_NUMBER_TT)
                         || (previous_token.type == SMALL_NUMBER_TT))
-                    current_token.value = POST_DEC_SEP; break;
+                        current_token.value = POST_DEC_SEP;
+                    break;
 
                 case HASHHASH_SEP:
                     token_text = current_token.text + 2;
@@ -405,7 +408,7 @@ but not used as a value:", unicode);
     {   v = separators_to_operators[current_token.value];
         if (v != NOT_AN_OPERATOR)
         {   if ((veneer_mode)
-                || ((v!=MESSAGE_OP) && (v!=MPROP_NUM_OP) && (v!=MPROP_NUM_OP)))
+                || ((v!=MESSAGE_OP) && (v!=MPROP_NUM_OP)))
             {   current_token.type = OP_TT; current_token.value = v;
                 if (array_init_ambiguity &&
                     ((v==MINUS_OP) || (v==UNARY_MINUS_OP)) &&
@@ -708,7 +711,7 @@ static int32 value_of_system_constant_z(int t)
             return action_names_offset;
 
         case highest_fake_action_number_SC:
-            return ((grammar_version_number==1)?256:4096) + no_fake_actions-1;
+            return lowest_fake_action() + no_fake_actions-1;
         case fake_action_names_array_SC:
             return fake_action_names_offset;
 
@@ -744,6 +747,10 @@ static int32 value_of_system_constant_z(int t)
             return class_numbers_offset;
         case highest_object_number_SC:
             return no_objects-1;
+        case highest_meta_action_number_SC:
+            if (!GRAMMAR_META_FLAG)
+                error_named("Must set $GRAMMAR_META_FLAG to use option:", system_constants.keywords[t]);
+            return (no_meta_actions-1) & 0xFFFF;
     }
 
     error_named("System constant not implemented in Z-code",
@@ -796,6 +803,21 @@ static int32 value_of_system_constant_g(int t)
     return no_classes-1;
   case highest_object_number_SC:
     return no_objects-1;
+  case highest_action_number_SC:
+    return no_actions-1;
+  case action_names_array_SC:
+    return Write_RAM_At + action_names_offset;
+  case lowest_fake_action_number_SC:
+    return lowest_fake_action();
+  case highest_fake_action_number_SC:
+    return lowest_fake_action() + no_fake_actions-1;
+  case fake_action_names_array_SC:
+    return Write_RAM_At + fake_action_names_offset;
+
+  case highest_meta_action_number_SC:
+    if (!GRAMMAR_META_FLAG)
+      error_named("Must set $GRAMMAR_META_FLAG to use option:", system_constants.keywords[t]);
+    return no_meta_actions-1;
   }
 
   error_named("System constant not implemented in Glulx",
@@ -944,7 +966,7 @@ static int evaluate_term(const token_data *t, assembly_operand *o)
                      o->type = SHORT_CONSTANT_OT; o->marker = 0; v = 16; break;
                  case lowest_fake_action_number_SC:
                      o->type = LONG_CONSTANT_OT; o->marker = 0;
-                     v = ((grammar_version_number==1)?256:4096); break;
+                     v = lowest_fake_action(); break;
                  case oddeven_packing_SC:
                      o->type = SHORT_CONSTANT_OT; o->marker = 0;
                      v = oddeven_packing_switch; break;
@@ -996,8 +1018,6 @@ static int evaluate_term(const token_data *t, assembly_operand *o)
                      v = 1;
                      break;
  
-                 /* ###fix: need to fill more of these in! */
-
                  default:
                      v = t->value;
                      o->marker = INCON_MV;
@@ -1249,12 +1269,14 @@ static void emit_token(const token_data *t)
                 case MPROP_ADD_OP: case MESSAGE_OP:
                 case PROPERTY_OP:
                     if (i < arity) break;
+                    /* Fall through */
                 case GE_OP: case LE_OP:
                     /* Direction properties "n_to", etc *are* compared
                        in some libraries. They have STAR_SFLAG to tell us
                        to skip the warning. */
                     if ((i < arity)
                         && (symbols[o1.symindex].flags & STAR_SFLAG)) break;
+                    /* Fall through */
                 default:
                     warning("Property name in expression is not qualified by object");
             }
@@ -1774,6 +1796,7 @@ static void insert_exp_to_cond(int n, int context)
         case 1:                                 /* Forms of '=' have level 1 */
             if (context == CONDITION_CONTEXT)
                 warning("'=' used as condition: '==' intended?");
+            /* Fall through */
         default:
             if (context != CONDITION_CONTEXT) break;
 
@@ -2048,6 +2071,7 @@ extern assembly_operand parse_expression(int context)
             case ASSOC_E:            /* Associativity error                  */
                 error_named("Brackets mandatory to clarify order of:",
                     a.text);
+                /* Fall through */
 
             case LOWER_P:
             case EQUAL_P:
@@ -2087,6 +2111,7 @@ extern assembly_operand parse_expression(int context)
                                     }
                                     /* Non-argument-separating commas get treated like any other operator; we fall through to the default case. */
                                 }
+                                /* Fall through */
                             default:
                                 {
                                     /* Add a marker for the brackets implied by operator precedence */
