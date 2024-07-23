@@ -804,7 +804,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things: from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -1251,7 +1251,7 @@ maps turnwise directions as if they were east, that is, pointing rightwards on t
 
 ## Concealment
 
-^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
+^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things: carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
 
 The final sections of this chapter can safely be skipped on a first reading.
 
@@ -2831,7 +2831,7 @@ This is no longer the case: no such inclusion need now be made, and indeed, thos
 
 ## Displaying quotations
 
-^^{quotations, displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
+^^{quotations: displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
 
 A feature of Inform now best avoided is that, in a limited way and only on a narrow set of platforms now rarely used, it can display a message in a sort of floating window over the main text. This is called a _boxed quotation_ for historical reasons, and Inform allows one to be produced. But time has moved on from the simple terminal emulators which enabled crude text effects like this, and now boxed quotations will either be missing altogether or will look ugly on almost any modern platform.
 
@@ -7193,7 +7193,7 @@ All the same, ``SHOWME`` can be very useful in tinkering with rules to make them
 
 ## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
 
-^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player yes/no} ^^{asking the player yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
+^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player: yes/no} ^^{asking the player: yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
 
 A variety of "conditions" have already appeared in this documentation. A condition is a phrase which describes a situation which might be true, or might be false, and examples might include:
 
@@ -10135,6 +10135,8 @@ Inform lets us use plain numbers if we want to, but it also allows us to create 
 That kind of definition, and the consequences, will be the subject of this chapter. But we will first look a little harder at the two numerical kinds of value we get for free: `number` and `real number`.
 
 ## Numbers, ranges, overflows, and number bases {kind_number} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
+
+^^{numbers} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{numbers: hexadecimal and other bases} ^^{numbers: asking the player for} ^^{querying the player: for a number} ^^{asking the player: for a number}
 
 What Inform calls a `number` is a whole number, positive, negative or zero. Numbers from `zero` to `twelve` may also be written out in words, but all others must be written as numerals. So `twelve` or `12`, but `13` only.
 
@@ -13694,7 +13696,7 @@ The rest of this chapter covers every activity built in to Inform, with one sect
 
 ## Deciding the concealed possessions of something {act_con} {var_particular}
 
-^^{hiding things carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
+^^{hiding things: carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
 
 **1. When it happens.** Frequently – whenever Inform needs to check whether something is visible or not. Nothing should be printed, and the activity needs to run quickly, so it should not (for instance) calculate best routes through complicated maps before getting an answer.
 
