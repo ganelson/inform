@@ -642,7 +642,7 @@ then the first room to be created will actually be the Y2 Rock Room, so that's w
 
 ## Rooms and the map {kind_room} {MAP} {PM_SameKindEquated} {PM_DescriptionsEquated}
 
-^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
+^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing <-- going+action+: between rooms} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
 
 Rooms are joined together at their edges by "map connections", most of which are pathways in one of the eight cardinal compass directions: north, northeast (written without a hyphen), east, southeast, south, southwest, west, northwest. We also have up and down, suitable for staircases or ladders. In real life, people are seldom conscious of their compass bearing when walking around buildings, but it makes a concise and unconfusing way for the player to say where to go next, so is generally accepted as a convention of the genre.
 
@@ -1132,7 +1132,7 @@ During play, all three items will be able to be extracted from the purse with co
 
 ## Possessions and clothing
 
-^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
+^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+ <-- clothing} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
 
 We have seen how to place objects in rooms, and in containers or on supporters. But what about people? Perhaps it could be said that they "contain" the fillings in their teeth, or "support" a top hat, but this is not very natural. Inform therefore never speaks of things being `in` or `on` people. Instead, they have two sorts of possessions: the things they `carry`, and the things they `wear`. (Body parts, such as arms and legs, are different again: see [Parts of things] below for a clue to how to do these.) Thus:
 
@@ -3834,7 +3834,7 @@ This supposes that the radio is so loud that it can be heard from any room: we c
 
 ## Going from, going to
 
-^^{going+action+} ^^{going+action+: going nowhere+action+} ^^{going+action+: going from+action+} ^^{going+action+: going to+action+} ^^{going+action+: default failure response} ^^{going+action+: rules for going to and from places} ^^{|nowhere: rules for going nowhere} ^^{actions: (going), special cases+sourcepart+} ^^{rules: for (going), special cases+sourcepart+} ^^{actions: rules applying to rooms and regions} ^^{rules: applying to rooms and regions} ^^{rooms+kind+: rules applying to rooms} ^^{(in), location conditions for rules+sourcepart+} ^^{connections between rooms: rules applying to map connections}
+^^{going+action+ <-- movement (player)} ^^{going+action+: going nowhere+action+} ^^{going+action+: going from+action+} ^^{going+action+: going to+action+} ^^{going+action+: default failure response} ^^{going+action+: rules for going to and from places} ^^{|nowhere: rules for going nowhere} ^^{actions: (going), special cases+sourcepart+} ^^{rules: for (going), special cases+sourcepart+} ^^{actions: rules applying to rooms and regions} ^^{rules: applying to rooms and regions} ^^{rooms+kind+: rules applying to rooms} ^^{(in), location conditions for rules+sourcepart+} ^^{connections between rooms: rules applying to map connections}
 
 Going is an action defined like any other: it is the one which happens when the player tries to go from one location to another. But it is unlike other actions because it happens in two locations, not just one, and has other complications such as vehicles and doors to contend with. To make it easier to write legible and flexible rules, `going` is allowed to be described in a number of special ways not open to other actions, as demonstrated by the following example story:
 
@@ -12466,7 +12466,7 @@ The first is actually allowed by Inform, even though it supplies no things at al
 
 ## New commands for old grammar {PM_ThreeValuedLine} {PM_TooManyAliases} {PM_TooManyGrammarLines} {PM_GrammarIllFounded}
 
-^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns, reversed, in understanding actions} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
+^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns, reversed, in understanding actions} ^^{grammar tokens: for kinds of thing} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
 
 In the photography example, we are providing entirely new grammar for an action  not ordinarily built in to Inform. But we often want simply to provide alternative grammar for existing actions, or even to put new interpretations on commands that Inform already recognises. For instance:
 
@@ -12520,7 +12520,7 @@ The commands ``TAKE`` and ``GET`` will still exist, but now they'll only have th
 
 ## Standard tokens of grammar {things_token} {TOKENS}
 
-^^{understanding: arbitrary objects} ^^{grammar tokens <-- tokens of grammar <-- understanding: grammar tokens} ^^{someone+token+} ^^{something+token+} ^^{something preferably held+token+} ^^{things+token+} ^^{things inside+token+} ^^{other things+token+} ^^{punctuation: slash: separating synonymous words in grammar} ^^{|/: separating synonymous words in grammar} ^^{actions: applying to multiple objects}
+^^{understanding: arbitrary objects} ^^{grammar tokens <-- tokens of grammar <-- understanding: grammar tokens} ^^{grammar tokens: for kinds of thing} ^^{kinds: in grammar tokens} ^^{descriptions (references to things): in grammar tokens} ^^{someone+token+} ^^{something+token+} ^^{something preferably held+token+} ^^{things+token+} ^^{things inside+token+} ^^{other things+token+} ^^{punctuation: slash: separating synonymous words in grammar} ^^{|/: separating synonymous words in grammar} ^^{actions: applying to multiple objects}
 
 The square-bracketed parts of `Understand` grammar are called _tokens_. Rather than matching a single specific word, they will normally match a range of possibilities. For example, the grammar `"[number]"` will match ``SIX`` or ``1935``, whereas `"number"` only matches the word ``NUMBER``.
 
@@ -14416,7 +14416,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{reading a command+activitycat+} ^^{reading a command+activity+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 

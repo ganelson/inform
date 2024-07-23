@@ -5,7 +5,7 @@ Index: Radios and other devices active when switched on
 Description: Modifying the rules for examining a device so that all devices have some specific behaviour when switched on, which is described at various times.
 For: Z-Machine
 
-^^{Radios and other devices active when switched on}
+^^{activities: defining} ^^{defining: activities} ^^{switched on / off (device)+prop+}
 
 The built-in behaviour of Inform is to print a line after a device is examined, saying whether the item is on or off. This is often inappropriate, and we could simply turn off that behaviour in general by instructing Inform to ignore the `examine devices rule` (see the chapter on [Rulebooks]).
 
