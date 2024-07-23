@@ -23,7 +23,7 @@ Resource streams: true
 Graphics window character input: false
 Text formatting: false
 Glulx version: 30103
-Interpreter version: 600
+Interpreter version: 601
 Memory resizing: true
 Undo: true
 Glulx unicode: true

@@ -4,6 +4,16 @@
 language of play - <i>natural language</i><br>
 parameter-object - <i>object</i><br>
 </p>
+<p><b>Glk events</b><br>
+glk event type - <i>glk event</i><br>
+glk event window - <i>glk window</i><br>
+glk event value 1 - <i>number</i><br>
+glk event value 2 - <i>number</i><br>
+</p>
+<p><b>Glk object recovery</b><br>
+current glk object rock number - <i>number</i><br>
+current glk object reference number - <i>number</i><br>
+</p>
 <p><b>Situation</b><br>
 player - <i>person</i><br>
 location&nbsp;<a href=inform:/wi_4_13.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
