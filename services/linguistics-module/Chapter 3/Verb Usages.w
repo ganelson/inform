@@ -173,7 +173,7 @@ reader might be aware of.
 Partly because of that, we don't allow these forms for the copular verb:
 "He is being difficult" doesn't quite mean "He is difficult", which is the
 best sense we could make of it, and "He is being in the Dining Room" has
-an unfortunate mock-Indian sound to it.
+an awkward sound to it.
 
 @<Add present participle forms@> =
 	if (WordAssemblages::nonempty(vc->present_participle)) {
