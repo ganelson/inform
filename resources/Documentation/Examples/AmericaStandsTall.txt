@@ -5,7 +5,7 @@ Index: Feet and inches
 Description: Describing height in feet and inches.
 For: Z-Machine
 
-^^{Feet and inches}
+^^{units of measure: with multiple numeric components} ^^{defining: units of measure with parts} ^^{understanding: numbers with units}
 
 	{*}"America Stands Tall"
 	

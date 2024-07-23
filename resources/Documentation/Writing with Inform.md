@@ -12464,7 +12464,7 @@ The first is actually allowed by Inform, even though it supplies no things at al
 
 ## New commands for old grammar {PM_ThreeValuedLine} {PM_TooManyAliases} {PM_TooManyGrammarLines} {PM_GrammarIllFounded}
 
-^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns, reversed, in understanding actions} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
+^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns, reversed, in understanding actions} ^^{grammar tokens: for kinds of thing} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
 
 In the photography example, we are providing entirely new grammar for an action  not ordinarily built in to Inform. But we often want simply to provide alternative grammar for existing actions, or even to put new interpretations on commands that Inform already recognises. For instance:
 
@@ -12518,7 +12518,7 @@ The commands ``TAKE`` and ``GET`` will still exist, but now they'll only have th
 
 ## Standard tokens of grammar {things_token} {TOKENS}
 
-^^{understanding: arbitrary objects} ^^{grammar tokens <-- tokens of grammar <-- understanding: grammar tokens} ^^{someone+token+} ^^{something+token+} ^^{something preferably held+token+} ^^{things+token+} ^^{things inside+token+} ^^{other things+token+} ^^{punctuation: slash: separating synonymous words in grammar} ^^{|/: separating synonymous words in grammar} ^^{actions: applying to multiple objects}
+^^{understanding: arbitrary objects} ^^{grammar tokens <-- tokens of grammar <-- understanding: grammar tokens} ^^{grammar tokens: for kinds of thing} ^^{kinds: in grammar tokens} ^^{descriptions (references to things): in grammar tokens} ^^{someone+token+} ^^{something+token+} ^^{something preferably held+token+} ^^{things+token+} ^^{things inside+token+} ^^{other things+token+} ^^{punctuation: slash: separating synonymous words in grammar} ^^{|/: separating synonymous words in grammar} ^^{actions: applying to multiple objects}
 
 The square-bracketed parts of `Understand` grammar are called _tokens_. Rather than matching a single specific word, they will normally match a range of possibilities. For example, the grammar `"[number]"` will match ``SIX`` or ``1935``, whereas `"number"` only matches the word ``NUMBER``.
 
@@ -14414,7 +14414,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{reading a command+activitycat+} ^^{reading a command+activity+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 
