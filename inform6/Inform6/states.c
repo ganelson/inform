@@ -473,6 +473,7 @@ static void parse_print_z(int finally_return)
                           QUANTITY_CONTEXT, -1));
                   break;
               }
+              /* Fall through */
 
             default:
               put_token_back(); misc_keywords.enabled = FALSE;
@@ -704,6 +705,7 @@ static void parse_print_g(int finally_return)
                           QUANTITY_CONTEXT, -1));
                   break;
               }
+              /* Fall through */
 
             default:
               put_token_back(); misc_keywords.enabled = FALSE;
@@ -859,7 +861,7 @@ static void parse_statement_z(int break_label, int continue_label)
                              if (token_text[i] == '@')
                              {   if (token_text[i+1] == '@')
                                  {   i = i + 2;
-                                     while (isdigit(token_text[i])) i++;
+                                     while (isdigit((uchar)token_text[i])) i++;
                                  }
                                  else
                                  {   i++;
@@ -1828,7 +1830,7 @@ static void parse_statement_g(int break_label, int continue_label)
                              if (token_text[i] == '@')
                              {   if (token_text[i+1] == '@')
                                  {   i = i + 2;
-                                     while (isdigit(token_text[i])) i++;
+                                     while (isdigit((uchar)token_text[i])) i++;
                                  }
                                  else
                                  {   i++;

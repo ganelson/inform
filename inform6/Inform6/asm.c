@@ -860,6 +860,13 @@ static opcodez internal_number_to_opcode_z(int32 i)
     return extension_table_z[x.extension];
 }
 
+static char *opcode_name_z(int32 i)
+{
+    if (i >= 0 && i < MAX_KEYWORD_GROUP_SIZE && opcode_names.keywords[i])
+        return opcode_names.keywords[i];
+    return "(unnamed)";
+}
+
 static void make_opcode_syntax_z(opcodez opco)
 {   char *p = "", *q = opcode_syntax_string;
     /* TODO: opcode_syntax_string[128] is unsafe */
@@ -876,6 +883,7 @@ static void make_opcode_syntax_z(opcodez opco)
         case LABEL: sprintf(q+strlen(q), " <label>"); return;
         case VARIAB:
             sprintf(q+strlen(q), " <variable>");
+            /* Fall through */
         case CALL:
             if (opco.op_rules==CALL) sprintf(q+strlen(q), " <routine>");
             switch(opco.no)
@@ -971,8 +979,10 @@ static void write_operand(assembly_operand op)
             byteout(j/256, op.marker); byteout(j%256, 0); return;
         case SHORT_CONSTANT_OT:
             if (op.marker == 0)
-            byteout(j, 0);
-            else byteout(j, 0x80 + op.marker); return;
+                byteout(j, 0);
+            else
+                byteout(j, 0x80 + op.marker);
+            return;
         case VARIABLE_OT:
             byteout(j, 0); return;
         case CONSTANT_OT:
@@ -987,6 +997,8 @@ static void write_operand(assembly_operand op)
             return;
     }
 }
+
+#define MAX_TRACE_STRING_LEN (35)
 
 extern void assemblez_instruction(const assembly_instruction *AI)
 {
@@ -1029,7 +1041,7 @@ extern void assemblez_instruction(const assembly_instruction *AI)
     opco = internal_number_to_opcode_z(AI->internal_number);
     if (opco.version1==0)
     {   error_named("Opcode unavailable in this Z-machine version",
-            opcode_names.keywords[AI->internal_number]);
+            opcode_name_z(AI->internal_number));
         return;
     }
 
@@ -1200,8 +1212,20 @@ extern void assemblez_instruction(const assembly_instruction *AI)
         if ((AI->internal_number == print_zc)
             || (AI->internal_number == print_ret_zc))
         {   printf("\"");
-            for (i=0;(AI->text)[i]!=0 && i<35; i++) printf("%c",(AI->text)[i]);
-            if (i == 35) printf("...");
+            for (i=0;(AI->text)[i]!=0 && i<MAX_TRACE_STRING_LEN; i++) {
+                if ((AI->text)[i] == 1) {
+                    /* This text has been overwritten with an abbreviation
+                       marker. Print "<ABBR>" for the first null character
+                       only.
+                       (Unimportant bug: two adjacent abbreviations only
+                       print one "<ABBR>" flag.) */
+                    if (!(i>0 && (AI->text)[i-1] == 1))
+                        printf("<ABBR>");
+                    continue;
+                }
+                printf("%c",(AI->text)[i]);
+            }
+            if (i == MAX_TRACE_STRING_LEN) printf("...");
             printf("\"");
         }
 
@@ -1801,21 +1825,22 @@ extern int32 assemble_routine_header(int routine_asterisked, char *name,
 
           if (define_INFIX_switch)
           {
-                if (embedded_flag)
-            {   SLF.value = 251; SLF.type = VARIABLE_OT; SLF.marker = 0;
-                  CON.value = 0; CON.type = SHORT_CONSTANT_OT; CON.marker = 0;
+            if (embedded_flag)
+            {
+                INITAOTV(&SLF, VARIABLE_OT, 251);
+                INITAOTV(&CON, SHORT_CONSTANT_OT, 0);
                 assemblez_2_branch(test_attr_zc, SLF, CON, ln2, FALSE);
             }
             else
             {   i = no_named_routines++;
                 ensure_memory_list_available(&named_routine_symbols_memlist, no_named_routines);
                 named_routine_symbols[i] = the_symbol;
-                CON.value = i/8; CON.type = LONG_CONSTANT_OT; CON.marker = 0;
-                RFA.value = routine_flags_array_SC;
-                RFA.type = LONG_CONSTANT_OT; RFA.marker = INCON_MV;
-                STP.value = 0; STP.type = VARIABLE_OT; STP.marker = 0;
+                INITAOTV(&CON, LONG_CONSTANT_OT, i/8);
+                INITAOTV(&RFA, LONG_CONSTANT_OT, routine_flags_array_SC);
+                RFA.marker = INCON_MV;
+                INITAOTV(&STP, VARIABLE_OT, 0);
                 assemblez_2_to(loadb_zc, RFA, CON, STP);
-                CON.value = (1 << (i%8)); CON.type = SHORT_CONSTANT_OT;
+                INITAOTV(&CON, SHORT_CONSTANT_OT, (1 << (i%8)));
                 assemblez_2_to(and_zc, STP, CON, STP);
                 assemblez_1_branch(jz_zc, STP, ln2, TRUE);
             }
@@ -1824,13 +1849,13 @@ extern int32 assemble_routine_header(int routine_asterisked, char *name,
         AI.text = fnt; assemblez_0(print_zc);
         for (i=1; (i<=7)&&(i<=no_locals); i++)
         {   if (version_number >= 5)
-            {   PV.type = SHORT_CONSTANT_OT;
-                PV.value = i; PV.marker = 0;
+            {
+                INITAOTV(&PV, SHORT_CONSTANT_OT, i);
                 assemblez_1_branch(check_arg_count_zc, PV, ln, FALSE);
             }
             sprintf(fnt, "%s%s = ", (i==1)?"":", ", variable_name(i));
             AI.text = fnt; assemblez_0(print_zc);
-            PV.type = VARIABLE_OT; PV.value = i; PV.marker = 0;
+            INITAOTV(&PV, VARIABLE_OT, i);
             assemblez_1(print_num_zc, PV);
         }
         assemble_label_no(ln);
@@ -1889,6 +1914,8 @@ extern int32 assemble_routine_header(int routine_asterisked, char *name,
             named_routine_symbols[i] = the_symbol;
           }
         }
+        INITAO(&AO);
+        INITAO(&AO2);
         sprintf(fnt, "[ %s(", name);
         AO.marker = STRING_MV;
         AO.type   = CONSTANT_OT;
@@ -2258,9 +2285,13 @@ static void transfer_routine_z(void)
                 case ERROR_MV: break;
                 case VARIABLE_MV:
                 case OBJECT_MV:
-                case ACTION_MV:
                 case IDENT_MV:
                     break;
+                case ACTION_MV:
+                    if (!GRAMMAR_META_FLAG) break;
+                    /* Actions are backpatchable if GRAMMAR_META_FLAG; fall
+                       through and create entry */
+                    /* Fall through */
                 default:
                     if ((zcode_markers[i] & 0x7f) > LARGEST_BPATCH_MV)
                     {   compiler_error("Illegal code backpatch value");
@@ -2483,9 +2514,13 @@ static void transfer_routine_g(void)
             break;
         case ERROR_MV:
             break;
-        case ACTION_MV:
         case IDENT_MV:
             break;
+        case ACTION_MV:
+            if (!GRAMMAR_META_FLAG) break;
+            /* Actions are backpatchable if GRAMMAR_META_FLAG; fall
+               through and create entry */
+            /* Fall through */
         case OBJECT_MV:
         case VARIABLE_MV:
         default:
@@ -2873,7 +2908,7 @@ void assemblez_jump(int n)
     if (n==-4) assemblez_0(rtrue_zc);
     else if (n==-3) assemblez_0(rfalse_zc);
     else
-    {   AO.type = LONG_CONSTANT_OT; AO.value = n; AO.marker = 0;
+    {   INITAOTV(&AO, LONG_CONSTANT_OT, n);
         assemblez_1(jump_zc, AO);
     }
 }
@@ -3113,7 +3148,7 @@ static void parse_assembly_z(void)
         custom_opcode_z.no = n;
 
         custom_opcode_z.code = atoi(token_text+i);
-        while (isdigit(token_text[i])) i++;
+        while (isdigit((uchar)token_text[i])) i++;
 
         {   max = 0; min = 0;
             switch(n)
@@ -3137,7 +3172,8 @@ static void parse_assembly_z(void)
                 case 'T': custom_opcode_z.op_rules = TEXT; break;
                 case 'I': custom_opcode_z.op_rules = VARIAB; break;
                 case 'F': custom_opcode_z.flags2_set = atoi(token_text+i);
-                          while (isdigit(token_text[i])) i++; break;
+                          while (isdigit((uchar)token_text[i])) i++;
+                          break;
                 default:
                     error("Unknown flag: options are B (branch), S (store), \
 T (text), I (indirect addressing), F** (set this Flags 2 bit)");
@@ -3340,7 +3376,7 @@ T (text), I (indirect addressing), F** (set this Flags 2 bit)");
 
     if (O.version1 == 0)
     {   error_named("Opcode unavailable in this Z-machine version:",
-            opcode_names.keywords[AI.internal_number]);
+            opcode_name_z(AI.internal_number));
         return;
     }
 
@@ -3474,7 +3510,7 @@ static void parse_assembly_g(void)
                 custom_opcode_g.flags |= Rf;
                 break;
             default:
-                if (isdigit(*cx)) {
+                if (isdigit((uchar)*cx)) {
                     custom_opcode_g.no = (*cx) - '0';
                     break;
                 }

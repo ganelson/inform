@@ -159,6 +159,8 @@ static int32 backpatch_value_z(int32 value)
                     final_dict_order[value]*(DICT_ENTRY_BYTE_LENGTH);
             break;
         case ACTION_MV:
+            if (GRAMMAR_META_FLAG)
+                value = sorted_actions[value].internal_to_ext;
             break;
         case INHERIT_MV:
             value = 256*zmachine_paged_memory[value + prop_values_offset]
@@ -317,6 +319,8 @@ static int32 backpatch_value_g(int32 value)
               + final_dict_order[value]*DICT_ENTRY_BYTE_LENGTH;
             break;
         case ACTION_MV:
+            if (GRAMMAR_META_FLAG)
+                value = sorted_actions[value].internal_to_ext;
             break;
         case INHERIT_MV:
             valaddr = (prop_values_offset - Write_RAM_At) + value;
@@ -437,7 +441,7 @@ static void backpatch_zmachine_z(int mv, int zmachine_area, int32 offset)
 {   
     if (mv == OBJECT_MV) return;
     if (mv == IDENT_MV) return;
-    if (mv == ACTION_MV) return;
+    if (mv == ACTION_MV && !GRAMMAR_META_FLAG) return;
 
     if (bpatch_trace_setting >= 2)
         printf("BP added: MV %d ZA %d Off %04x\n", mv, zmachine_area, offset);
@@ -452,7 +456,7 @@ static void backpatch_zmachine_z(int mv, int zmachine_area, int32 offset)
 static void backpatch_zmachine_g(int mv, int zmachine_area, int32 offset)
 {   
     if (mv == IDENT_MV) return;
-    if (mv == ACTION_MV) return;
+    if (mv == ACTION_MV && !GRAMMAR_META_FLAG) return;
 
 /* The backpatch table format for Glulx:
    First, the marker byte.
