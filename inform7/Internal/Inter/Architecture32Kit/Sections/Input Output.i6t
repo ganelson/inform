@@ -261,9 +261,11 @@ Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KCPContinue;
-	@binarysearch res WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
-	if (ix ~= -1) {
-		res = MappedFunctionKeyCodes-->ix;
+	if (res < 0) {
+		@binarysearch res WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
+		if (ix ~= -1) {
+			res = MappedFunctionKeyCodes-->ix;
+		}
 	}
     return res;
 ];
@@ -437,7 +439,7 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
 
     dictlen = #dictionary_table-->0;
     bytesperword = DICT_WORD_SIZE * WORDSIZE;
-    uninormavail = glk_gestalt(16, 0);
+    uninormavail = Cached_Glk_Gestalts-->gestalt_UnicodeNorm;
 
     for (wx=0 : wx<numwords : wx++) {
         wlen = tab-->(wx*3+2);
@@ -760,15 +762,13 @@ colours have been set.
 
 =
 [ VM_SetWindowColours fg bg;
-	! TODO: once Glk foundations are merged, check the cached gestalt
-	if (glk_gestalt($1100, 0)) {
+	if (Cached_Glk_Gestalts-->gestalt_GarglkText_FAKE) {
 		garglk_set_zcolors(fg, bg);
 	}
 ];
 
 [ VM_SetReverseMode val;
-	! TODO: once Glk foundations are merged, check the cached gestalt
-	if (glk_gestalt($1100, 0)) {
+	if (Cached_Glk_Gestalts-->gestalt_GarglkText_FAKE) {
 		garglk_set_reversevideo(val);
 	}
 ];

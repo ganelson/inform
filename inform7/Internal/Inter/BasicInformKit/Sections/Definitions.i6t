@@ -78,8 +78,21 @@ Constant NOTE_VMSTY       = 6;
 Constant BLOCKQUOTE_VMSTY = 7;
 Constant INPUT_VMSTY      = 8;
 
+@h Colour Codes.
+While most colour numbers are defined through the basic colour kind in the
+Architecture16/32Kits, these two colour codes are defined here instead.
+
+=
+#Ifdef TARGET_GLULX;
+	Constant BASIC_COLOUR_CURRENT = -2;
+	Constant BASIC_COLOUR_DEFAULT = -1;
+#Ifnot;
+	Constant BASIC_COLOUR_CURRENT = 0;
+	Constant BASIC_COLOUR_DEFAULT = 1;
+#Endif;
+
 @h Window Numbers.
-Although Glulx can support elaborate tessalations of windows on screen (if
+Although Glulx can support elaborate tessellations of windows on screen (if
 the complexity of handling this can be mastered), the Z-machine has much
 more limited resources in general, so the template layer assumes a simple
 screen model: there are just two screen areas, the scrolling main window
