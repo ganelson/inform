@@ -398,31 +398,6 @@ To say first time -- beginning say_first_time (documented at phs_firsttime):
 		-).
 To say only -- ending say_first_time (documented at phs_firsttime):
 	(- {-close-brace} -).
-
-@ Now some visual effects, which may or may not be rendered the way the user
-hopes: that's partly up to the virtual machine, unfortunately.
-
-See test case |BIP-SayFonts|, though since |intest| runs on plain text only,
-you may need to run this in the Inform application to be convinced.
-
-=
-Section 7 - Saying Fonts and Visual Effects
-
-To say bold type -- running on
-	(documented at phs_bold):
-	(- style bold; -).
-To say italic type -- running on
-	(documented at phs_italic):
-	(- style underline; -).
-To say roman type -- running on
-	(documented at phs_roman):
-	(- style roman; -).
-To say fixed letter spacing -- running on
-	(documented at phs_fixedspacing):
-	(- font off; -).
-To say variable letter spacing -- running on
-	(documented at phs_varspacing):
-	(- font on; -).
 	
 @ These are lists in the sense of the "list of" kind of value constructor, and
 the first two phrases here might list any values, not just objects.
@@ -430,7 +405,7 @@ the first two phrases here might list any values, not just objects.
 See test case |BIP-SayLists|.
 
 =
-Section 8 - Saying Lists of Values
+Section 7 - Saying Lists of Values
 
 To say (L - a list of values) in brace notation
 	(documented at phs_listbraced):
@@ -1795,14 +1770,223 @@ To decide which rulebook outcome is the outcome of the rulebook
 	(documented at ph_rulebookoutcome):
 	(- (ResultOfRule()) -).
 
+@h Basic IO.
+
+Basic input/output phrases, that mostly used to be in the Basic Screen Effects extension.
+
+=
+Chapter 9 - Basic Input/Output
+
+@ Some basic visual effects, which may or may not be rendered the way the user
+hopes: that's partly up to the virtual machine, unfortunately.
+
+See test case |BIP-SayFonts|, though since |intest| runs on plain text only,
+you may need to run this in the Inform application to be convinced.
+
+=
+Section 1 - Saying Fonts and Visual Effects
+
+To say bold type -- running on
+	(documented at phs_bold):
+	(- style bold; -).
+To say italic type -- running on
+	(documented at phs_italic):
+	(- style underline; -).
+To say roman type -- running on
+	(documented at phs_roman):
+	(- style roman; -).
+To say fixed letter spacing -- running on
+	(documented at phs_fixedspacing):
+	(- font off; -).
+To say variable letter spacing -- running on
+	(documented at phs_varspacing):
+	(- font on; -).
+
+To say reverse mode -- running on:
+	(- VM_SetReverseMode(1); -).
+To say reverse mode off -- running on:
+	(- VM_SetReverseMode(0); -).
+
+@ Basic colours are supported in both architectures, but RGB colours are only
+supported in Glulx.
+
+=
+Section 2 - Basic Colours
+
+To set the foreground/-- colour/color/-- to (C - basic colour):
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - basic colour) letters:
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To set the background colour/color/-- to (C - basic colour):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+To reset the screen/window colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+To say default colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+Section 3 - RGB Colours (for Glulx only)
+
+RGB colour is a kind of value.
+#<red level><green level><blue level> specifies a RGB colour with parts
+	red level (2 hexadecimal digits),
+	green level (2 hexadecimal digits) and
+	blue level (2 hexadecimal digits).
+
+To set the foreground/-- colour/color/-- to (C - RGB colour):
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - RGB colour) letters:
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To set the background colour/color/-- to (C - RGB colour):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+@ Some basic window phrases, which are supported by both the Z-Machine and Glulx.
+(See the Glk Foundations for Glk-specific phrases.)
+
+=
+Section 4 - Basic Window Effects
+
+To clear the/-- screen:
+	(- VM_ClearScreen(0); -).
+
+To clear only/-- the/-- main screen:
+	(- VM_ClearScreen(2); -).
+
+To clear only/-- the/-- status line:
+	(- VM_ClearScreen(1); -).
+
+To decide what number is the/-- screen height:
+	(- VM_ScreenHeight() -).
+
+To decide what number is the/-- screen width:
+	(- VM_ScreenWidth() -).
+
+@ Pausing the game.
+
+=
+Section 5 - Pausing the game
+
+[ Exclude navigation keys ]
+To wait for any key:
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- the down key:
+				next;
+			-- the page down key:
+				next;
+			-- the page up key:
+				next;
+			-- the up key:
+				next;
+			-- unicode U+003F [?, which might be used for an unknown character]:
+				next;
+			-- otherwise:
+				break;
+
+[ Technically the space or return key ]
+To wait for the/-- SPACE key/bar:
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- unicode U+0020 [space]:
+				break;
+			-- the return key:
+				break;
+
+To pause the game/story:
+	say "[paragraph break]Please press SPACE to continue.";
+	wait for the space key;
+	clear the screen;
+
+To stop the game/story abruptly:
+	(- quit; -).
+
+To show the/-- current quotation:
+	(- ClearBoxedText(); -).
+
+@ Keyboard input phrases.
+
+=
+Section 6 - Keyboard Input
+
+To decide what unicode character is the code of the next pressed key:
+	(- VM_KeyChar() -).
+
+To prompt the player to enter a line of text:
+	(- VM_ReadKeyboard(buffer2); -).
+
+To say the/-- player's text input:
+	(- VM_PrintBuffer(buffer2); -).
+
+
+@ Function keys.
+Keyboard function keys are defined as unicode character constants. A mix of
+actual control codes, unicode characters which kind of represent the keys, and
+private use area codes.
+
+=
+
+The delete key is always unicode U+0008. [Both the Z-Machine and Glulx standards call it the delete key, even though backspace is perhaps more accurate.]
+The down key is always unicode U+2193.
+The end key is always unicode U+21F2.
+The escape key is always unicode U+001B.
+The f1 key is always unicode U+EF01.
+The f2 key is always unicode U+EF02.
+The f3 key is always unicode U+EF03.
+The f4 key is always unicode U+EF04.
+The f5 key is always unicode U+EF05.
+The f6 key is always unicode U+EF06.
+The f7 key is always unicode U+EF07.
+The f8 key is always unicode U+EF08.
+The f9 key is always unicode U+EF09.
+The f10 key is always unicode U+EF0A.
+The f11 key is always unicode U+EF0B.
+The f12 key is always unicode U+EF0C.
+The home key is always unicode U+21F1.
+The left key is always unicode U+2190.
+The page down key is always unicode U+21DF.
+The page up key is always unicode U+21DE.
+The return key is always unicode U+000A.
+The right key is always unicode U+2192.
+The tab key is always unicode U+0009.
+The unknown key is always unicode U+FFFD.
+The up key is always unicode U+2191.
+
+@ Customising the status line.
+
+=
+Section 7 - The Status Window
+
+To redraw the/-- status bar/line/window:
+	(- DrawStatusLine(); -).
+
+The status window table is a table-name that varies.
+The status window table variable translates into Inter as "status_window_table".
+
+To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
+	let old status window table be the status window table;
+	now the status window table is new status table;
+	redraw the status window;
+	if once only:
+		now the status window table is the old status window table;
+
+To move the status bar/line/window cursor to row (row - number) column (col - number):
+	(- VM_MoveCursorInStatusLine({row}, {col}); -).
+
 @h External Files.
-Inform has a quirky level of support for file-handling, which comes out what
+Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.
 
 See test case |BIP-Files-G|, which has no Z-machine counterpart.
 
 =
-Chapter 9 - External Files (not for Z-machine)
+Chapter 10 - External Files (not for Z-machine)
 
 Section 1 - Files of Text
 
@@ -1851,7 +2035,7 @@ To mark (filename - external file) as not ready to read
 @h Use Options.
 
 =
-Chapter 10 - Use Options
+Chapter 11 - Use Options
 
 Section 1 - Numerical Value
 
