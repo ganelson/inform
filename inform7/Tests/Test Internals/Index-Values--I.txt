@@ -4,6 +4,36 @@
 language of play - <i>natural language</i><br>
 parameter-object - <i>object</i><br>
 </p>
+<p><b>Keyboard Input</b><br>
+delete key - <i>unicode character</i><br>
+down key - <i>unicode character</i><br>
+end key - <i>unicode character</i><br>
+escape key - <i>unicode character</i><br>
+f1 key - <i>unicode character</i><br>
+f2 key - <i>unicode character</i><br>
+f3 key - <i>unicode character</i><br>
+f4 key - <i>unicode character</i><br>
+f5 key - <i>unicode character</i><br>
+f6 key - <i>unicode character</i><br>
+f7 key - <i>unicode character</i><br>
+f8 key - <i>unicode character</i><br>
+f9 key - <i>unicode character</i><br>
+f10 key - <i>unicode character</i><br>
+f11 key - <i>unicode character</i><br>
+f12 key - <i>unicode character</i><br>
+home key - <i>unicode character</i><br>
+left key - <i>unicode character</i><br>
+page down key - <i>unicode character</i><br>
+page up key - <i>unicode character</i><br>
+return key - <i>unicode character</i><br>
+right key - <i>unicode character</i><br>
+tab key - <i>unicode character</i><br>
+unknown key - <i>unicode character</i><br>
+up key - <i>unicode character</i><br>
+</p>
+<p><b>The Status Window</b><br>
+status window table - <i>table name</i><br>
+</p>
 <p><b>Glk events</b><br>
 glk event type - <i>glk event</i><br>
 glk event window - <i>glk window</i><br>

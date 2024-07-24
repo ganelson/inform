@@ -1,7 +1,7 @@
 1. Mp
 
 
-<!--WORLD WRITE MAP BEGINS-->
+<!-- WORLD WRITE MAP BEGINS -->
 <p>
 
     <table border="0" cellspacing="0" cellpadding="0">
@@ -535,7 +535,7 @@
 
 <p><i>mapping starboard as east</i>; <i>mapping port as west</i>; <i>mapping fore as north</i>; <i>mapping aft as south</i></p>
 </p>
-<!--WORLD WRITE MAP ENDS-->
+<!-- WORLD WRITE MAP ENDS -->
 <a name=MDETAILS></a>
 
 <p><a name=fi21></a><a name=wo_21><table border="0" cellspacing="0" cellpadding="0">
