@@ -154,10 +154,13 @@ Section - Startup C (for Glulx only)
 The start capturing startup text rule is listed first in the before starting the virtual machine rules. [1st]
 The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
+The calculate hyperlink tag width rule is listed in the before starting the virtual machine rules. [6th]
+The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
+
 @ These rules now set up the built in sound channels and windows.
 
 =
-The set default stylehints rule is listed in the before starting the virtual machine rules. [6th]
+The set default stylehints rule is listed in the before starting the virtual machine rules. [7th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
