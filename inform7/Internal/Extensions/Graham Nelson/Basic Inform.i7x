@@ -172,6 +172,9 @@ The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMB
 
 Section - Startup C (for Glulx only)
 
+The calculate hyperlink tag width rule is listed in the before starting the virtual machine rules.
+The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
+
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 
@@ -1797,6 +1800,9 @@ Definition: a glk event is dependent on the player rather than independent of th
 To set the/-- glk event type to (t - glk event):
 	(- SetGlkEventType({t}); -).
 
+To say current line input of (w - glk window):
+	(- glk_put_buffer_uni({w}.line_input_buffer_addr, {w}.line_input_buffer_curlen); -).
+
 To decide what text is the current line input of (w - glk window):
 	(- CopyWindowBufferToText({w}, {-new:text}) -).
 
@@ -1810,6 +1816,45 @@ First glk event handling rule (this is the update text input status rule):
 		now the glk event window is not requesting hyperlink input;
 	if the glk event type is mouse event:
 		now the glk event window is not requesting mouse input;
+
+Chapter - Hyperlinks
+
+A hyperlink tag is a kind of value.
+
+The hyperlink value is a number variable.
+The hyperlink value variable is defined by Inter as "hyperlink_value".
+
+The hyperlink handling rules is a hyperlink tag based rulebook.
+The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
+
+The handle hyperlinks rule is listed in the glk event handling rules.
+The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
+
+To say end link:
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+
+Rule hyperlink is a hyperlink tag.
+
+To say link (R - rule):
+	(- MakeTaggedHyperlink((+ rule hyperlink +), {R}); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	run rule at address hyperlink value;
+
+Keypress hyperlink is a hyperlink tag.
+
+To say link (C - unicode character):
+	(- MakeTaggedHyperlink((+ keypress hyperlink +), {C}); -).
+
+Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
+	set the glk event type to character event;
+	now glk event value 1 is hyperlink value;
+
+Section - unindexed
+
+To run rule at address (R - number):
+	(- ({R})(); -).
 
 Chapter - Suspending and resuming input
 
