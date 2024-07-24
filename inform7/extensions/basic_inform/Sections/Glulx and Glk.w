@@ -183,6 +183,57 @@ To process (ev - glk event):
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;
 
+@h Hyperlinks.
+A simple framework for handling hyperlinks in an interoperable manner.
+
+=
+Chapter - Hyperlinks
+
+A hyperlink tag is a kind of value.
+
+The hyperlink value is a number variable.
+The hyperlink value variable is defined by Inter as "hyperlink_value".
+
+The hyperlink handling rules is a hyperlink tag based rulebook.
+The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
+
+The handle hyperlinks rule is listed in the glk event handling rules.
+The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
+
+To say end link:
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+@ And some built-in hyperlink tags:
+
+- A rule hyperlink runs a rule when clicked; that in turn allows you to run any other code you like.
+- A keypress hyperlink converts a hyperlink event into a character event, for the specified unicode character.
+
+=
+
+Rule hyperlink is a hyperlink tag.
+
+To say link (R - rule):
+	(- MakeTaggedHyperlink((+ rule hyperlink +), {R}); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	run rule at address hyperlink value;
+
+Keypress hyperlink is a hyperlink tag.
+
+To say link (C - unicode character):
+	(- MakeTaggedHyperlink((+ keypress hyperlink +), {C}); -).
+
+Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
+	process a character event for (hyperlink value of the current glk event as a unicode character) in (window of the current glk event);
+
+Section - unindexed
+
+To run rule at address (R - number):
+	(- ({R})(); -).
+
+To decide what unicode character is (N - number) as a unicode character:
+	(- ({N}) -).
+
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
 

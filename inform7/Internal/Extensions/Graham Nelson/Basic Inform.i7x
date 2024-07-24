@@ -175,7 +175,10 @@ Section - Startup C (for Glulx only)
 The start capturing startup text rule is listed first in the before starting the virtual machine rules. [1st]
 The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The set default stylehints rule is listed in the before starting the virtual machine rules. [6th]
+The calculate hyperlink tag width rule is listed in the before starting the virtual machine rules. [6th]
+The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
+
+The set default stylehints rule is listed in the before starting the virtual machine rules. [7th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
@@ -1841,6 +1844,47 @@ To process (ev - glk event):
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;
+
+Chapter - Hyperlinks
+
+A hyperlink tag is a kind of value.
+
+The hyperlink value is a number variable.
+The hyperlink value variable is defined by Inter as "hyperlink_value".
+
+The hyperlink handling rules is a hyperlink tag based rulebook.
+The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
+
+The handle hyperlinks rule is listed in the glk event handling rules.
+The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
+
+To say end link:
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+
+Rule hyperlink is a hyperlink tag.
+
+To say link (R - rule):
+	(- MakeTaggedHyperlink((+ rule hyperlink +), {R}); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	run rule at address hyperlink value;
+
+Keypress hyperlink is a hyperlink tag.
+
+To say link (C - unicode character):
+	(- MakeTaggedHyperlink((+ keypress hyperlink +), {C}); -).
+
+Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
+	process a character event for (hyperlink value of the current glk event as a unicode character) in (window of the current glk event);
+
+Section - unindexed
+
+To run rule at address (R - number):
+	(- ({R})(); -).
+
+To decide what unicode character is (N - number) as a unicode character:
+	(- ({N}) -).
 
 Chapter - Suspending and resuming input
 

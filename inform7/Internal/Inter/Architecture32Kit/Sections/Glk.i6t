@@ -717,6 +717,63 @@ requested.
 	return 0;
 ];
 
+@h Hyperlinks.
+A simple framework for handling hyperlinks in an interoperable manner.
+We combine a hyperlink tag with a payload in one 32-bit value. The tag is stored
+in the lowest bits, and the payload above it.
+
+=
+Global hyperlink_payload_mask;
+Global hyperlink_tag_mask;
+Global hyperlink_tag_width;
+Global hyperlink_value;
+
+[ CALCULATE_HYPERLINK_TAG_WIDTH_R;
+	if (ICOUNT_HYPERLINK_TAG < 8) {
+		hyperlink_tag_mask = $07;
+		hyperlink_tag_width = 3;
+	}
+	else if (ICOUNT_HYPERLINK_TAG < 16) {
+		hyperlink_tag_mask = $0F;
+		hyperlink_tag_width = 4;
+	}
+	else {
+		! Enough for 31 tags, which better be enough!
+		hyperlink_tag_mask = $1F;
+		hyperlink_tag_width = 5;
+	}
+	hyperlink_payload_mask = ~hyperlink_tag_mask;
+	rfalse;
+];
+
+[ MakeTaggedHyperlink tag val;
+	if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) {
+		if (val > 0) {
+			@shiftl val hyperlink_tag_width val;
+		}
+		else {
+			val = val & hyperlink_payload_mask;
+		}
+		glk_set_hyperlink(tag | val);
+	}
+];
+
+[ HANDLE_HYPERLINK_R val;
+	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_Hyperlink) {
+		val = current_glk_event-->GLK_EVENT_VALUE1_SF;
+		glk_request_hyperlink_event((current_glk_event-->GLK_EVENT_WINDOW_SF).glk_ref);
+		hyperlink_value = val & hyperlink_payload_mask;
+		if (hyperlink_value < 0) {
+			hyperlink_value = hyperlink_value | hyperlink_tag_mask;
+		}
+		else {
+			@ushiftr hyperlink_value hyperlink_tag_width hyperlink_value;
+		}
+		FollowRulebook(HYPERLINK_HANDLING_RB, val & hyperlink_tag_mask, true);
+	}
+	rfalse;
+];
+
 @h Suspending and resuming text input.
 These functions allow the author to suspend and then resume a window's text
 input requests.
