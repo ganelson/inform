@@ -5,6 +5,8 @@ Index: International aviation alphabet
 Description: Aircraft tail numbers using the international aviation alphabet.
 For: Glulx
 
+^^{units of measure: defining: with parts of a kind of value} ^^{defining: units of measure with parts: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
+
 Since 1956, pilots have identified their aircraft over radio channels using a standard international alphabet, which has several names and numerous parent organisations. It goes like so:
 
 	{*}"Hello Shanwick"

@@ -10136,7 +10136,7 @@ That kind of definition, and the consequences, will be the subject of this chapt
 
 ## Numbers, ranges, overflows, and number bases {kind_number} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
 
-^^{numbers} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{numbers: hexadecimal and other bases} ^^{numbers: asking the player for} ^^{querying the player: for a number} ^^{asking the player: for a number}
+^^{numbers} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{numbers: hexadecimal and other bases <-- binary numbers <-- hexadecimal numbers <-- octal numbers} ^^{numbers: asking the player for} ^^{querying the player: for a number} ^^{asking the player: for a number}
 
 What Inform calls a `number` is a whole number, positive, negative or zero. Numbers from `zero` to `twelve` may also be written out in words, but all others must be written as numerals. So `twelve` or `12`, but `13` only.
 
@@ -11083,7 +11083,7 @@ And this establishes that, for example,
 ## Notations with multiple parts {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
 
 ^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
-^^{units of measure: understanding} ^^{understanding: numbers with units}
+^^{units of measure: understanding} ^^{understanding: numbers with units} ^^{numbers: hexadecimal and other bases: in units of measure}
 
 The chapter on [Quantities and Equations] featured many variations on specifications like this one:
 
@@ -11150,7 +11150,7 @@ So Inform reads the notation `#FF_FF_FF` as having three number parts.
 
 ## The parts of a notation {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
 
-^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(preamble optional), when defining units+sourcepart+} ^^{(without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+}
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{units of measure: defining: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
 
 If a value has been constructed out of multiple parts, we will sometimes want to extract those parts. For instance, suppose we want to know the dollars part of `$1.99`? We can do this provided the parts have names:
 
@@ -11219,6 +11219,8 @@ is equivalent to:
 
 ## Optional notation parts
 
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining: with optional parts} ^^{defining: units of measure with parts: with multiple numeric components} ^^{defining: units of measure with parts: with optional parts} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+}
+
 If a part of a notation is specified as `optional` then it can be missed out, and the result will be as if 0 had been given. For example, if we want the pre-Euro currency of France:
 
 	French monetary value is a kind of value.
@@ -11233,6 +11235,8 @@ This allows both `12F50` and `14F` to be valid; `14F` is exactly like typing `14
 This declares not only that the `cents` part is optional – it will be 0 if not specified – but also that if it is omitted, the `.` should be left out as well. Thus `$3` is now valid and equivalent to `$3.00`: indeed, it will be the preferred form when Inform prints out a monetary value which is an exact number of dollars.
 
 ## Range and number base of notation parts
+
+^^{units of measure: defining: with other bases} ^^{defining: units of measure with parts: with other bases} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+}
 
 The _range_ of a part is the set of values it can hold. For example:
 
@@ -11258,7 +11262,7 @@ An alternative way to give the range is to write `D digits` or `up to D digits`.
 
 If a part uses both ways to give a range, e.g., `0 to 39, 2 digits`, then the explicit range, in this case 0 to 39, wins out. An impossible combination such as `0 to 199, 2 digits` is rejected with a problem message.
 
-The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations including more than one number] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
+The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations with multiple parts] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
 
 And we can combine the range and number base settings with the options `D BASE digit/digits` and `up to D BASE digit/digits`.
 
@@ -11273,6 +11277,8 @@ is equivalent to:
 and means that, for example, `_01101_` is a valid `DIP switch setting`.
 
 ## Angle-bracketed part names
+
+^^{units of measure: defining: with named parts} ^^{defining: units of measure with parts: with named parts} ^^{(< >), for defining parts of units of measure+sourcepart+} ^^{punctuation: angle brackets, for defining parts of units of measure} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
 
 In all the notations so far, the "parts" have been written in something resembling numerical form. For example:
 
@@ -11320,6 +11326,8 @@ in the tail of the sentence, and in the same order: Inform will throw a problem 
 
 ## Unusual digits
 
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{characters (letters): accented and exotic letters and symbols}
+
 The parts option `digits "TEXT"` tells Inform to use the supplied digit characters in place of the regular ones.
 
 The text must contain exactly the number of characters which equals the number base (2 for binary, 8 for octal, and so on), must have no repeats, and must not use spaces or square brackets.
@@ -11353,6 +11361,8 @@ Throwing in emoji or other symbols can make some intriguing textual effects:
 prints all 256 possible wall carvings using a row of 4 shapes, each of which can be of 4 types.
 
 ## Parts which do not look like numbers
+
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts}
 
 So far, all the parts of a specification have been basically numerical, if possibly with unusual digits. But we can break away from that completely with two more options supplied for parts.
 
@@ -11445,6 +11455,8 @@ The trouble with this is that the square which White calls KB2 is the square Bla
 
 ## Parts corresponding to kinds
 
+^^{units of measure: defining: with parts of a kind of value} ^^{defining: units of measure with parts: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
+
 One last option available for parts of a specification is `corresponding to KIND`, which says that the part contains a value of the given `KIND`, which must be either numerical or an enumeration, rather than a `number`.
 
 Let's return to chess notation. The best specification so far looks like this:
@@ -11507,6 +11519,8 @@ trail position: Kilometer 230
 Note that `67.51km` was rounded here to the nearest `number` value, 68. 
 
 ## Counting and repeating through specified values
+
+^^{units of measure: repeating through}
 
 The final version of `chessboard square` which we reached was this:
 
@@ -11620,7 +11634,7 @@ Note that the first row in a table is row number 1, and that the last can be fou
 
 ## Corresponding entries
 
-^^{tables: looking up by cross-reference} ^^{(corresponding to), in tables+sourcepart+}
+^^{tables: looking up by cross-reference} ^^{|corresponding to: in tables}
 
 Continuing our example of the elements:
 
