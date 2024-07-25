@@ -390,6 +390,7 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 	DISCARD_TEXT(title)
 	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 	HTML::comment(OUT, I"CONTENT BEGINS");
+	@<Place searchability comments@>;
 	DocumentationRenderer::render_extended(OUT, cd, file_marker);
 	HTML::comment(OUT, I"CONTENT ENDS");
 	HTML_CLOSE("div");
@@ -413,11 +414,51 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 	DocumentationRenderer::render_footer(OUT);
 }
 
+@<Place searchability comments@> =
+	markdown_item *head = file_marker->down;
+	if ((head) && (head->type == HEADING_MIT) &&
+		(Markdown::get_heading_level(head) == 1)) {
+		if ((head->next) && (head->next->type == HEADING_MIT) &&
+			(Markdown::get_heading_level(head->next) == 2))
+			head = head->next;
+	}
+	text_stream *title = DocumentationRenderer::file_title_as_text(head);
+	int cn = 0, sn = 0;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, title, U"Section (%d+).(%d+): (%c+)")) {
+		cn = Str::atoi(mr.exp[0], 0);
+		sn = Str::atoi(mr.exp[1], 0);
+		title = mr.exp[2];
+	} else if (Regexp::match(&mr, title, U"Chapter (%d+): (%c+)")) {
+		cn = Str::atoi(mr.exp[0], 0);
+		sn = 1;
+		title = mr.exp[1];
+	}
+	TEMPORARY_TEXT(comm)
+	WRITE_TO(comm, "SEARCH TITLE \"%S\"", title);
+	HTML::comment(OUT, comm);
+	Str::clear(comm);
+	WRITE_TO(comm, "SEARCH SECTION \"%d.%d\"", cn, sn);
+	HTML::comment(OUT, comm);
+	Str::clear(comm);
+	WRITE_TO(comm, "SEARCH SORT \"%03d-%03d-%03d-%03d\"", vcount, cn, sn, 0);
+	HTML::comment(OUT, comm);
+	DISCARD_TEXT(comm)
+	Regexp::dispose_of(&mr);
+
+@ =
 void DocumentationRenderer::file_title(OUTPUT_STREAM, markdown_item *file_marker) {
 	if ((file_marker->down) && (file_marker->down->type == HEADING_MIT))
 		InformFlavouredMarkdown::render_text(OUT, file_marker->down->stashed);
 	else
 		WRITE("Preface");
+}
+
+text_stream *DocumentationRenderer::file_title_as_text(markdown_item *head) {
+	if ((head) && (head->type == HEADING_MIT))
+		return head->stashed;
+	else
+		return I"Preface";
 }
 
 @ Each of these pages is equipped with the same Javascript and CSS.
@@ -655,6 +696,7 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		TEMPORARY_TEXT(eg_comment)
 		WRITE_TO(eg_comment, "START EXAMPLE \"%S: %S\" \"eganchor%S\"",
 			egc->insignia, egc->name, egc->insignia);
+		@<Place example searchability comments@>;
 		HTML::comment(OUT, eg_comment);
 		DISCARD_TEXT(eg_comment)
 		HTML_OPEN_WITH("a", "id=\"eganchor%S\"", egc->insignia);
@@ -680,6 +722,24 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 	}
 }
 
+@<Place example searchability comments@> =
+	int en = 0;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, egc->insignia, U"%d+"))
+		en = Str::atoi(egc->insignia, 0);
+	TEMPORARY_TEXT(comm)
+	WRITE_TO(comm, "SEARCH TITLE \"%S\"", egc->name);
+	HTML::comment(OUT, comm);
+	Str::clear(comm);
+	WRITE_TO(comm, "SEARCH SECTION \"Example %S\"", egc->insignia);
+	HTML::comment(OUT, comm);
+	Str::clear(comm);
+	WRITE_TO(comm, "SEARCH SORT \"%03d-%03d-%03d-%03d\"", 3, en, 0, 0);
+	HTML::comment(OUT, comm);
+	DISCARD_TEXT(comm)
+	Regexp::dispose_of(&mr);
+
+@ =
 void DocumentationRenderer::render_extended(OUTPUT_STREAM, compiled_documentation *cd,
 	markdown_item *md) {
 	if ((cd) && (cd->compiled_from_extension_scrap))

@@ -1405,6 +1405,9 @@ the same indefinite appearance text as
 the same printed name as
 the same printed plural name as
 the same indefinite article as
+the same type as
+the same rock number as
+the same reference number as
 the same adaptive text viewpoint as
 the same description as
 the same map region as
@@ -1418,6 +1421,7 @@ the same destination as
 the same conversation as
 the same walk style as
 the same last opener as
+the same text input status as
 the same ownership relation storage as
 the same infection color as
 the same unbolting relation storage as
