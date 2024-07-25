@@ -7142,6 +7142,8 @@ If we need more variation than that, we should make more than one definition.
 
 ## The showme phrase
 
+^^{testing phrases: showme (value)+phr+}
+
 We've already seen the ``SHOWME`` command, which can be typed into the Story panel to look at the state of something, usually a thing or room. ``SHOWME`` is a testing command which has no effect once the work is released; eventual players can't use it.
 
 Inform also has a phrase called `showme`, which works in much the same way:
@@ -8745,7 +8747,7 @@ Since many of these examples have involved people, it might be worth mentioning 
 
 ## Relations in groups
 
-^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS}
+^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS} ^^{testing phrases: show relation (relation of values to values)+phr+}
 
 Finally, there is a kind of relation which binds even more strongly.
 
@@ -11669,7 +11671,7 @@ The condition `if there is...` can be used with any reference to a table entry: 
 
 ## Changing entries
 
-^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables}
+^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables} ^^{testing phrases: showme the contents of (table name)+phr+}
 
 Here is another rather definitive, immutable-looking table:
 
