@@ -22362,6 +22362,8 @@ The `instead of` option now cannot work at all, and throws a problem message. Th
 
 ## How I6 differs from Inform 6
 
+^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6}
+
 To recap: I6 is the notation we are using when writing low-level code inside `(-` and `-)` markers. It looks very like the programming language Inform 6, but there are a handful of differences.
 
 In particular:
