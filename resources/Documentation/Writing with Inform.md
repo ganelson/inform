@@ -20525,7 +20525,7 @@ In releases of Inform before 2024, extension documentation was tacked on to the 
 
 ## Headings and organisation
 
-^^{headings: in extension documentation} 
+^^{headings: in extension documentation} ^^{extensions: documenting: headings}
 
 The Markdown notation for headings looks like so:
 
@@ -20584,6 +20584,7 @@ A small technical caveat: Inform-flavoured Markdown does not allow level 1 (Chap
 
 ## Textual effects and short code samples
 
+^^{extensions: documenting: formatting}
 ^^{italics: in extension documentation} 
 ^^{bold: in extension documentation} 
 ^^{strikethrough: in extension documentation} 
@@ -20652,7 +20653,7 @@ As a general piece of guidance, then, pieces of source text should be never be q
 
 ### Backslash escapes
 
-^^{backslash escapes: in extension documentation} 
+^^{backslash escapes: in extension documentation} ^^{extensions: documenting: formatting}
 
 Markdown also supports so-called HTML entities, which provide a way to type certain unusual characters by name rather than literally. For example, ```&HilbertSpace;``` produces &HilbertSpace;, a mathematical symbol. Nowadays it's usually better just to type the character directly: ```ℋ``` also produces ℋ. But it does raise the question: how do we write \&HilbertSpace; without it coming out as &HilbertSpace;?
 
@@ -20662,8 +20663,8 @@ Note that none of this applies inside code examples, where a backslash is just a
 
 ## Longer code samples
 
-^^{code examples: in extension documentation} 
-^^{syntax colouring: in extension documentation} 
+^^{code examples: in extension documentation} ^^{extensions: documenting: code examples}
+^^{syntax colouring: in extension documentation} ^^{extensions: documenting: syntax colouring}
 
 Inform documentation tends to be broken up with examples of source text, and this can be done very simply, by indenting the material one tab stop from the margin. (Or, equivalently, by four spaces.)
 
@@ -20769,7 +20770,7 @@ Here the ```{**}``` notation means that the sample continues the previous one, a
 
 ## Block quotations and phrase boxes
 
-^^{quotations: in extension documentation} 
+^^{quotations: in extension documentation} ^^{extensions: documenting: formatting}
 
 "Block quotations" are suitable for quoting a piece of human writing, rather than code, and are introduced by ```>``` characters on the left margin:
 
@@ -20836,7 +20837,7 @@ One of the main uses of block quotations in Inform documentation is to provide t
 
 ## Tables
 
-^^{tables: in extension documentation} 
+^^{tables: in extension documentation} ^^{extensions: documenting: tables}
 
 A simple table looks like so, with pipe characters ```|``` dividing the columns; it will only become a table if there is a ruler line under the column headings.
 
@@ -20904,8 +20905,8 @@ producing:
 
 ## Lists and to-do items
 
-^^{lists: in extension documentation} 
-^^{to-do items: in extension documentation} 
+^^{lists: in extension documentation} ^^{extensions: documenting: lists}
+^^{to-do items: in extension documentation} ^^{extensions: documenting: to-do items}
 
 We have three sorts of list. Bulleted lists:
 
@@ -21027,7 +21028,7 @@ For Inform documentation, we prefer loose lists, which are easier to read on scr
 
 ## Links and cross-references
 
-^^{links: in extension documentation} 
+^^{links: in extension documentation} ^^{extensions: documenting: links}
 
 The standard Markdown syntax ```[Label]``` or ```[this is a link][Label]``` makes a link where the destination is referred to by a label, rather than given explicitly. In traditional Markdown, that label can then be _defined_ like so:
 
@@ -21070,6 +21071,8 @@ See the example [of rarities](The Red Mercury) for more on Austria.
 because although this would work fine for sighted users, displaying "See the example of rarities for more on Austria" but with the words "of rarities" linked, screen-readers display such links in a confusing way.
 
 ## Images in documentation
+
+^^{figures: in extension documentation} ^^{extensions: documenting: figures}
 
 Extension documentation should not use externally hosted images, i.e., images on some server which requires an Internet access to fetch. Instead, they should use only their own private images.
 
@@ -21187,6 +21190,8 @@ As a default, Locksmith describes what passkeys unlock only after printing their
 
 ## Testing
 
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
+
 Like any software, extensions need to be tested. They should ideally be exercised on a variety of plausible use-cases, with each feature being tried out. The examples are often ideal for doing that. So, for example, any bug fix made in `Philately by Peter Drake` can be checked out for safety by making sure that its four existing examples run as they should.
 
 Of course, this can be done by hand: by pasting in the example sources, running them in the Inform app, typing ``TEST ME``, and then looking over the resulting transcript of play to make sure it's all as it should be.
@@ -21220,6 +21225,8 @@ Philately-v1.i7xd
 Two new files have appeared: ```Unhinged--I.txt``` and ```PleaseDoNotPerforate--I.txt```. These are the ideal transcripts of play from those examples.
 
 ## Test cases which are not examples
+
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
 
 Inform also allows test cases which are not examples from the documentation. Authors who are very much into "unit testing" will probably want to take advantage. For example, if `Philately` provides a high complicated phrase:
 
@@ -21324,6 +21331,8 @@ The full list of legal options is given below, though users will rarely if ever 
 11) ```GenerateDiagnostics: Yes``` or ```GenerateDiagnostics: No``` (the default is ```No```). Used only by one Inform compiler test case, and only to output certain files which show diagrams of internal data structures for use in the technical documentation on the website. Extension tests will not need this.
 
 ## Providing an index
+
+^^{extensions: documenting: index for documentation}
 
 ### Basics of indexing
 
