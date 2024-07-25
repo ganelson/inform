@@ -5,7 +5,7 @@ Index: Disambiguation question worded in a new way entirely
 Description: Responding to ``EXAMINE WALL`` with "In which direction?", and to ``EXAMINE NOSE`` with "Whose nose do you mean, Frederica's, Betty's, Wilma's or your own?"
 For: Z-Machine
 
-^^{Disambiguation question worded in a new way entirely}
+^^{which: asking which do you mean+activity+} ^^{disambiguation: of player commands: printing disambiguation request}
 
 Suppose we want our game to respond to ``EXAMINE WALL`` with ``In which direction?``, and to ``EXAMINE NOSE`` with ``Whose nose do you mean, Frederica's, Betty's, Wilma's or your own?``
 

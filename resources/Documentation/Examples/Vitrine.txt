@@ -5,7 +5,7 @@ Index: Smart window
 Description: An electrochromic window that becomes transparent or opaque depending on whether it is currently turned on.
 For: Z-Machine
 
-^^{Smart window}
+^^{+to+now (a condition): changing either/or properties} ^^{properties: either/or properties: changing} ^^{either/or properties: changing}
 
 	{*}"Vitrine"
 	
