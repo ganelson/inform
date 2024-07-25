@@ -91,6 +91,10 @@ Use dictionary resolution of at least 6 translates as the configuration value
 	DICT_RESOLUTION in BasicInformKit.
 Use no automatic plural synonyms translates as the configuration flag
 	NO_AUTO_PLURAL_NAMES in BasicInformKit.
+Use no status window translates as the configuration flag NO_STATUS_WINDOW
+	in BasicInformKit.
+Use manual line input echoing translates as the configuration flag
+	MANUAL_INPUT_ECHOING in BasicInformKit.
 
 Use dynamic memory allocation of at least 8192 translates as the configuration
 	value STACK_FRAME_CAPACITY in BasicInformKit.
@@ -171,16 +175,25 @@ Section - Startup C (for Glulx only)
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 
+The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
+
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
 The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
 
-The open built-in windows rule is listed in the for starting the virtual machine rules.
-The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+The open built in windows rule is listed in the for starting the virtual machine rules.
+The open built in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
 
 The display captured startup text rule is listed in the for starting the virtual machine rules.
 The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
 
 Chapter - Printing activities
+
+Constructing the status line (documented at act_csl) is an activity.
+The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
+
+The standard redraw the status window from a table rule is listed in the for constructing the status line rules.
+The standard redraw the status window from a table rule is defined by Inter as "REDRAW_STATUS_WINDOW_R".
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
@@ -401,25 +414,7 @@ To say first time -- beginning say_first_time (documented at phs_firsttime):
 To say only -- ending say_first_time (documented at phs_firsttime):
 	(- {-close-brace} -).
 
-Section 7 - Saying Fonts and Visual Effects
-
-To say bold type -- running on
-	(documented at phs_bold):
-	(- style bold; -).
-To say italic type -- running on
-	(documented at phs_italic):
-	(- style underline; -).
-To say roman type -- running on
-	(documented at phs_roman):
-	(- style roman; -).
-To say fixed letter spacing -- running on
-	(documented at phs_fixedspacing):
-	(- font off; -).
-To say variable letter spacing -- running on
-	(documented at phs_varspacing):
-	(- font on; -).
-
-Section 8 - Saying Lists of Values
+Section 7 - Saying Lists of Values
 
 To say (L - a list of values) in brace notation
 	(documented at phs_listbraced):
@@ -1476,7 +1471,181 @@ To decide which rulebook outcome is the outcome of the rulebook
 	(documented at ph_rulebookoutcome):
 	(- (ResultOfRule()) -).
 
-Chapter 9 - External Files (not for Z-machine)
+Chapter 9 - Basic Input/Output
+
+Section 1 - Saying Fonts and Visual Effects
+
+To say bold type -- running on
+	(documented at phs_bold):
+	(- style bold; -).
+To say italic type -- running on
+	(documented at phs_italic):
+	(- style underline; -).
+To say roman type -- running on
+	(documented at phs_roman):
+	(- style roman; -).
+To say fixed letter spacing -- running on
+	(documented at phs_fixedspacing):
+	(- font off; -).
+To say variable letter spacing -- running on
+	(documented at phs_varspacing):
+	(- font on; -).
+
+To say reverse mode -- running on:
+	(- VM_SetReverseMode(1); -).
+To say reverse mode off -- running on:
+	(- VM_SetReverseMode(0); -).
+
+Section 2 - Basic Colours
+
+To set the foreground/-- colour/color/-- to (C - basic colour):
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - basic colour) letters:
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To set the background colour/color/-- to (C - basic colour):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+To reset the screen/window colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+To say default colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+Section 3 - RGB Colours (for Glulx only)
+
+RGB colour is a kind of value.
+#<red level><green level><blue level> specifies a RGB colour with parts
+	red level (2 hexadecimal digits),
+	green level (2 hexadecimal digits) and
+	blue level (2 hexadecimal digits).
+
+To set the foreground/-- colour/color/-- to (C - RGB colour):
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - RGB colour) letters:
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To set the background colour/color/-- to (C - RGB colour):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+Section 4 - Basic Window Effects
+
+To clear the/-- screen:
+	(- VM_ClearScreen(0); -).
+
+To clear only/-- the/-- main screen:
+	(- VM_ClearScreen(2); -).
+
+To clear only/-- the/-- status line:
+	(- VM_ClearScreen(1); -).
+
+To decide what number is the/-- screen height:
+	(- VM_ScreenHeight() -).
+
+To decide what number is the/-- screen width:
+	(- VM_ScreenWidth() -).
+
+Section 5 - Pausing the game
+
+[ Exclude navigation keys ]
+To wait for any key:
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- the down key:
+				next;
+			-- the page down key:
+				next;
+			-- the page up key:
+				next;
+			-- the up key:
+				next;
+			-- unicode U+003F [?, which might be used for an unknown character]:
+				next;
+			-- otherwise:
+				break;
+
+[ Technically the space or return key ]
+To wait for the/-- SPACE key/bar:
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- unicode U+0020 [space]:
+				break;
+			-- the return key:
+				break;
+
+To pause the game/story:
+	say "[paragraph break]Please press SPACE to continue.";
+	wait for the space key;
+	clear the screen;
+
+To stop the game/story abruptly:
+	(- quit; -).
+
+To show the/-- current quotation:
+	(- ClearBoxedText(); -).
+
+Section 6 - Keyboard Input
+
+To decide what unicode character is the code of the next pressed key:
+	(- VM_KeyChar() -).
+
+To prompt the player to enter a line of text:
+	(- VM_ReadKeyboard(buffer2); -).
+
+To say the/-- player's text input:
+	(- VM_PrintBuffer(buffer2); -).
+
+
+
+The delete key is always unicode U+0008. [Both the Z-Machine and Glulx standards call it the delete key, even though backspace is perhaps more accurate.]
+The down key is always unicode U+2193.
+The end key is always unicode U+21F2.
+The escape key is always unicode U+001B.
+The f1 key is always unicode U+EF01.
+The f2 key is always unicode U+EF02.
+The f3 key is always unicode U+EF03.
+The f4 key is always unicode U+EF04.
+The f5 key is always unicode U+EF05.
+The f6 key is always unicode U+EF06.
+The f7 key is always unicode U+EF07.
+The f8 key is always unicode U+EF08.
+The f9 key is always unicode U+EF09.
+The f10 key is always unicode U+EF0A.
+The f11 key is always unicode U+EF0B.
+The f12 key is always unicode U+EF0C.
+The home key is always unicode U+21F1.
+The left key is always unicode U+2190.
+The page down key is always unicode U+21DF.
+The page up key is always unicode U+21DE.
+The return key is always unicode U+000A.
+The right key is always unicode U+2192.
+The tab key is always unicode U+0009.
+The unknown key is always unicode U+FFFD.
+The up key is always unicode U+2191.
+
+Section 7 - The Status Window
+
+To redraw the/-- status bar/line/window:
+	(- DrawStatusLine(); -).
+
+The status window table is a table-name that varies.
+The status window table variable translates into Inter as "status_window_table".
+
+To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
+	let old status window table be the status window table;
+	now the status window table is new status table;
+	redraw the status window;
+	if once only:
+		now the status window table is the old status window table;
+
+To move the status bar/line/window cursor to row (row - number) column (col - number):
+	(- VM_MoveCursorInStatusLine({row}, {col}); -).
+
+Chapter 10 - External Files (not for Z-machine)
 
 Section 1 - Files of Text
 
@@ -1514,14 +1683,191 @@ To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
 
-Chapter 10 - Use Options
+Chapter 11 - Use Options
 
 Section 1 - Numerical Value
 
 To decide what number is the numerical value of (U - a use option):
 	(- USE_OPTION_VALUES-->({U}) -).
 
-Part Four - Adjectival Definitions
+Part Four - Glulx and Glk (for Glulx only)
+
+Chapter - Glk and Glulx feature testing
+
+To decide whether (F - glk feature) is/are supported:
+	(- Cached_Glk_Gestalts-->({F}) -).
+
+To decide what number is the glk version number/--:
+	(- Cached_Glk_Gestalts-->gestalt_Version -).
+
+To decide whether buffer window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, wintype_TextBuffer) -).
+
+To decide whether graphics window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, wintype_Graphics) -).
+
+To decide whether buffer window hyperlinks are/is supported:
+	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextBuffer) -).
+
+To decide whether grid window hyperlinks are/is supported:
+	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextGrid) -).
+
+To decide whether graphics window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, wintype_Graphics) -).
+
+To decide whether grid window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, wintype_TextGrid) -).
+
+To decide whether (F - glulx feature) is/are supported:
+	(- Cached_Glulx_Gestalts-->({F}) -).
+
+To decide what number is the glulx version number/--:
+	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion -).
+
+To decide what number is the interpreter version number/--:
+	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_TerpVersion -).
+
+Chapter - Glk windows
+
+A glk window is a kind of abstract object.
+The glk window kind is accessible to Inter as "K_Glk_Window".
+The specification of a glk window is "Models the Glk window system."
+
+A glk window has a glk window type called the type.
+The type property translates into Inter as "glk_window_type".
+
+A glk window has a number called the rock number.
+The rock number property translates into Inter as "glk_rock".
+
+A glk window has a number called the reference number.
+The reference number property translates into Inter as "glk_ref".
+
+The main window is a glk window.
+The main window object is accessible to Inter as "Main_Window".
+The type of the main window is text buffer.
+
+The status window is a glk window.
+The status window object is accessible to Inter as "Status_Window".
+The type of the status window is text grid.
+
+The quote window is a glk window.
+The quote window object is accessible to Inter as "Quote_Window".
+The type of the quote window is text buffer.
+
+The unknown window is a glk window.
+The unknown window object is accessible to Inter as "Unknown_Glk_Window".
+
+Section - Glk windows
+
+To clear (win - a glk window):
+	(- glk_window_clear({win}.glk_ref); -).
+
+To focus (win - a glk window):
+	(- glk_set_window({win}.glk_ref); -).
+
+To decide what number is the height of (win - a glk window):
+	(- GetWindowSize({win}, 1) -).
+
+To decide what number is the width of (win - a glk window):
+	(- GetWindowSize({win}, 0) -).
+
+To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
+	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
+
+Chapter - Glk events
+
+The glk event handling rules is a glk event based rulebook.
+The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
+
+The glk event type is a glk event variable.
+The glk event type variable translates into Inter as "Glk_Event_Struct_type".
+The glk event window is a glk window variable.
+The glk event window variable translates into Inter as "Glk_Event_Struct_win".
+The glk event value 1 is a number variable.
+The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
+The glk event value 2 is a number variable.
+The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
+
+Definition: a glk event is dependent on the player rather than independent of the player if
+	it is character event or
+	it is line event or
+	it is mouse event or
+	it is hyperlink event.
+
+To set the/-- glk event type to (t - glk event):
+	(- SetGlkEventType({t}); -).
+
+To decide what text is the current line input of (w - glk window):
+	(- CopyWindowBufferToText({w}, {-new:text}) -).
+
+To set the current line input of (w - glk window) to (t - text):
+	(- CopyTextToWindowBuffer({w}, {-by-reference:t}); -).
+
+First glk event handling rule (this is the update text input status rule):
+	if the glk event type is character event or the glk event type is line event:
+		now the text input status of the glk event window is inactive text input;
+	if the glk event type is hyperlink event:
+		now the glk event window is not requesting hyperlink input;
+	if the glk event type is mouse event:
+		now the glk event window is not requesting mouse input;
+
+Chapter - Suspending and resuming input
+
+A glk window has a text input status.
+The text input status property translates into Inter as "text_input_status".
+A glk window can be requesting hyperlink input.
+The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
+A glk window can be requesting mouse input.
+The requesting mouse input property translates into Inter as "requesting_mouse".
+
+To suspend text input in (win - a glk window), without input echoing:
+	(- SuspendTextInput({win}, {phrase options}); -).
+
+To resume text input in (win - a glk window):
+	(- ResumeTextInput({win}); -).
+
+Chapter - Glk object recovery
+
+The current glk object rock number is a number that varies.
+The current glk object rock number variable translates into Inter as "current_glk_object_rock".
+The current glk object reference number is a number that varies.
+The current glk object reference number variable translates into Inter as "current_glk_object_reference".
+
+The reset glk references rules is a rulebook.
+The reset glk references rules is accessible to Inter as "RESET_GLK_REFERENCES_RB".
+The identify glk windows rules is a rulebook.
+The identify glk windows rules is accessible to Inter as "IDENTIFY_WINDOWS_RB".
+The identify glk streams rules is a rulebook.
+The identify glk streams rules is accessible to Inter as "IDENTIFY_STREAMS_RB".
+The identify glk filerefs rules is a rulebook.
+The identify glk filerefs rules is accessible to Inter as "IDENTIFY_FILEREFS_RB".
+The identify glk sound channels rules is a rulebook.
+The identify glk sound channels rules is accessible to Inter as "IDENTIFY_SCHANNELS_RB".
+The glk object updating rules is a rulebook.
+The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB".
+
+The reset glk references for built in objects rule is listed first in the reset glk references rules.
+The reset glk references for built in objects rule translates into Inter as "RESET_GLK_REFERENCES_R".
+
+The cache gestalts rule is listed in the reset glk references rules.
+The cache gestalts rule translates into Inter as "CACHE_GESTALTS_R".
+
+The identify built in windows rule is listed first in the identify glk windows rules.
+The identify built in windows rule translates into Inter as "IDENTIFY_WINDOWS_R".
+
+The identify built in streams rule is listed first in the identify glk streams rules.
+The identify built in streams rule translates into Inter as "IDENTIFY_STREAMS_R".
+
+The identify built in filerefs rule is listed first in the identify glk filerefs rules.
+The identify built in filerefs rule translates into Inter as "IDENTIFY_FILEREFS_R".
+
+The identify built in sound channels rule is listed first in the identify glk sound channels rules.
+The identify built in sound channels rule translates into Inter as "IDENTIFY_SCHANNELS_R".
+
+The stop built in sound channels rule is listed in the glk object updating rules.
+The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".
+
+Part Five - Adjectival Definitions
 
 Section 1 - Miscellaneous Useful Adjectives
 

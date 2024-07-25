@@ -309,7 +309,7 @@ static void sf_put(int c)
 
 /* Recursive procedure to generate the Glulx compression table. */
 
-static void output_compression(int entnum, int32 *size, int *count)
+static void output_compression(int entnum, uint32 *size, int *count)
 {
   huffentity_t *ent = &(huff_entities[entnum]);
   int32 val;
@@ -374,8 +374,9 @@ static void output_compression(int entnum, int32 *size, int *count)
 
 static void output_file_z(void)
 {   char new_name[PATHLEN];
-    int32 length, blanks=0, size, i, j, offset;
-    uint32 code_length, size_before_code, next_cons_check;
+    int32 length, blanks=0, i;
+    uint32 j, offset;
+    uint32 size, code_length, size_before_code, next_cons_check;
     int use_function;
 
     ASSERT_ZCODE();
@@ -386,6 +387,9 @@ static void output_file_z(void)
 
     length=((int32) Write_Strings_At) + static_strings_extent;
 
+    /*  Pad to a multiple of the scale factor (2, 4, or 8 bytes). This
+        avoids worry about an interpreter doing something strange when
+        accessing the highest possible packed address.                       */
     while ((length%length_scale_factor)!=0) { length++; blanks++; }
     length=length/length_scale_factor;
     zmachine_paged_memory[26]=(length & 0xff00)/0x100;
@@ -395,7 +399,9 @@ static void output_file_z(void)
         writes files which are padded with zeros to the next multiple of
         0.5K.  This calculates the number of bytes of padding needed:        */
 
-    while (((length_scale_factor*length)+blanks-1)%512 != 511) blanks++;
+    if (ZCODE_FILE_END_PADDING) {
+        while (((length_scale_factor*length)+blanks-1)%512 != 511) blanks++;
+    }
 
     translate_out_filename(new_name, Code_Name);
 
@@ -440,7 +446,7 @@ static void output_file_z(void)
            we're in a live function or a dead one.
            (This logic is simplified by the assumption that a backpatch
            marker will never straddle a function break.) */
-        if (zmachine_pc != df_total_size_before_stripping)
+        if ((uint32)zmachine_pc != df_total_size_before_stripping)
             compiler_error("Code size does not match (zmachine_pc and df_total_size).");
         code_length = df_total_size_after_stripping;
         use_function = TRUE;
@@ -541,7 +547,7 @@ static void output_file_z(void)
     /*  (3)  Output any null bytes (required to reach a packed address)
              before the strings area.                                        */
 
-    while (size<Write_Strings_At) { sf_put(0); size++; }
+    while (size<(uint32)Write_Strings_At) { sf_put(0); size++; }
 
     /*  (4)  Output the static strings area.                                 */
 
@@ -552,7 +558,7 @@ static void output_file_z(void)
 
     /*  (5)  When modules existed, we output link data here.                 */
 
-    /*  (6)  Output null bytes to reach a multiple of 0.5K.                  */
+    /*  (6)  Output null bytes at the end.                                   */
 
     while (blanks>0) { sf_put(0); blanks--; }
 
@@ -605,8 +611,9 @@ static void output_file_z(void)
 
 static void output_file_g(void)
 {   char new_name[PATHLEN];
-    int32 size, i, j, offset;
-    uint32 code_length, size_before_code, next_cons_check;
+    int32 i;
+    uint32 j, offset;
+    uint32 size, code_length, size_before_code, next_cons_check;
     int use_function;
     int first_byte_of_triple, second_byte_of_triple, third_byte_of_triple;
 
@@ -762,7 +769,7 @@ static void output_file_g(void)
            we're in a live function or a dead one.
            (This logic is simplified by the assumption that a backpatch
            marker will never straddle a function break.) */
-        if (zmachine_pc != df_total_size_before_stripping)
+        if ((uint32)zmachine_pc != df_total_size_before_stripping)
             compiler_error("Code size does not match (zmachine_pc and df_total_size).");
         code_length = df_total_size_after_stripping;
         use_function = TRUE;
@@ -931,7 +938,7 @@ static void output_file_g(void)
           compiler_error("Compression table count mismatch.");
       }
 
-      if (size - origsize != compression_table_size)
+      if ((int32)size - origsize != compression_table_size)
         compiler_error("Compression table size mismatch.");
 
       origsize = size;
@@ -1038,7 +1045,7 @@ static void output_file_g(void)
         }
       }
       
-      if (size - origsize != compression_string_size)
+      if ((int32)size - origsize != compression_string_size)
         compiler_error("Compression string size mismatch.");
 
     }
@@ -1047,7 +1054,8 @@ static void output_file_g(void)
     {
         /* We have to backpatch entries mentioned in staticarray_backpatch_table. */
         int32 size_before_arrays = size;
-        int32 val, ix, jx;
+        int32 val, ix;
+        uint32 jx;
         for (ix=0, jx=0; ix<staticarray_backpatch_size; ix += 5) {
             backpatch_error_flag = FALSE;
             backpatch_marker = staticarray_backpatch_table[ix];
@@ -1084,7 +1092,7 @@ static void output_file_g(void)
             jx++;
         }
 
-        if (size_before_arrays + static_array_area_size != size)
+        if (size_before_arrays + static_array_area_size != (int32)size)
             compiler_error("Static array output length did not match");
     }
 

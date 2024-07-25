@@ -76,9 +76,8 @@ The Standard Rules (for interactive fiction) create a wealth of rulebooks
 and activities in order to model a fictional world. Here we are much more
 sparing: a Basic Inform project begins with a very minimal number of rules.
 
-The startup and shutdown rulebooks, and the "starting the virtual machine"
-activity, are not normally used in Basic Inform, but need to be defined here
-for technical reasons.
+The startup and shutdown rulebooks and the "starting the virtual machine"
+activity perform essential work before a Basic Inform project can begin.
 
 Be wary modifying these: rulebooks and activities must be defined in exactly
 the right order, matching definitions both in the Inform 7 compiler and in the
@@ -112,7 +111,7 @@ way to make deterministic tests of programs which use random values).
 (e) The "recover Glk objects rule" runs the object recovery process in order to
 identify and pre-existing Glk objects after a restart.
 
-(f) The "open built-in windows rule" opens the Glk windows; only after this
+(f) The "open built in windows rule" opens the Glk windows; only after this
 point is it safe to print anything.
 
 =
@@ -156,20 +155,30 @@ The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 @ These rules now set up the built in sound channels and windows.
 
 =
+The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
+
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
 The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
 
-The open built-in windows rule is listed in the for starting the virtual machine rules.
-The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+The open built in windows rule is listed in the for starting the virtual machine rules.
+The open built in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
 
 The display captured startup text rule is listed in the for starting the virtual machine rules.
 The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
 
-@ However, the two activities for printing names of objects are indeed
+@h Activities.
+However, there are a small number of printing related activities which are also
 functional in Basic Inform.
 
 =
 Chapter - Printing activities
+
+Constructing the status line (documented at act_csl) is an activity.
+The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
+
+The standard redraw the status window from a table rule is listed in the for constructing the status line rules.
+The standard redraw the status window from a table rule is defined by Inter as "REDRAW_STATUS_WINDOW_R".
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".

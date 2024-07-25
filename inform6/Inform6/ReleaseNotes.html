@@ -40,11 +40,40 @@ listings, this is shown as "tr" when the flag is set.
 Without this option, bit 6 of the dictionary word flag is set for all verbs (which is the old behavior, redundant with bit 1).
 If the compiler truncates only the <tt>//p</tt> flag (as in <tt>$LONG_DICT_FLAG_BUG</tt>), that does not count as truncating
 the dictionary word: the only relevant test is whether or not characters were dropped.
+<li><p>A new setting <tt>$GRAMMAR_VERSION</tt> has been added. Setting this has the same effect as the existing <tt>Grammar__Version</tt>
+constant, but provides a more standard way to set the grammar table version number.
+<li><p>An experimental new grammar version 3 can be enabled with the <tt>$GRAMMAR_VERSION</tt> setting (or the <tt>Grammar__Version</tt>
+constant). This is a variation on grammar version 2 with a more compact data structure, and is only available for Z-code.
+Note that using this grammar version will require library changes that are not currently in the Inform 6 library.
+<li><p>A new setting <tt>$GRAMMAR_META_FLAG</tt> has been added. If set to 1, there is a new way to declare meta actions.
+Previously, meta actions were defined by writing lines like
+<pre>
+  Verb 'score' * -> Score meta;
+</pre>
+This associates the <tt>meta</tt> flag with the dictionary word "score". This is not ideal as we could have verbs which are
+meta in some phrasings but not others. If <tt>$GRAMMAR_META_FLAG</tt> is set the old syntax is still supported, but there is
+also a new syntax:
+<pre>
+  Verb 'load'
+    * noun -> Push
+    * 'game' -> Restore meta;
+</pre>
+In this new approach, actions are sorted, with meta actions coming first. Game or library code can detect a meta action by
+comparing the action number with the new system constant <tt>#highest_meta_action_number</tt>, which is the highest meta action
+number after sorting all the actions.
+<li><p>It is now legal to have multiple <tt>Verb</tt> declarations for the same verb. This is now treated as if the subsequent
+declarations had been made with <tt>Extend</tt>, and a warning is produced to this effect.
+<li><p>The output of the <tt>--trace-verbs</tt> option now shows all verb synonyms, rather than just the first one.
+<li><p>It is now an error to declare two verbs that refer to the same dictionary word. Previously this was accepted, but generated
+an incorrect story file.
+<li><p>A new setting <tt>$ZCODE_FILE_END_PADDING</tt> has been added. By default it is set to 1, but if it is set to 0, then
+when outputting a Z-code game file Inform 6 will no longer pad the file to be a multiple of 512 bytes.
 </ul>
 
 <h3>Bugs fixed</h3>
 <ul>
 <li><p>Dictionary flags were being set incorrectly when <tt>$DICT_WORD_SIZE</tt> was set sufficiently large.
+<li><p>In <tt>--trace asm</tt> output, when a Z-string has abbreviation marks, <tt>&lt;ABBR&gt;</tt> is printed, rather than Ctrl-A characters.
 </ul>
 
 <h2>Inform 6.42</h2>

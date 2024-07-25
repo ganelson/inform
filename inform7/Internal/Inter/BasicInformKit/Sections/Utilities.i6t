@@ -29,11 +29,6 @@ Global property_to_be_totalled; ! used to implement "total P of..."
 Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
 Global suppress_scope_loops;
 Global temporary_value; ! can be used anywhere side-effects can't occur
-Global clr_fg = 1; ! foreground colour
-Global clr_bg = 1; ! background colour
-Global clr_fgstatus = 1; ! foreground colour of statusline
-Global clr_bgstatus = 1; ! background colour of statusline
-Global clr_on; ! has colour been enabled by the player?
 Global statuswin_current; ! if writing to top window
 Global suppress_text_substitution = false;
 Global deadflag = 0;
@@ -149,6 +144,95 @@ allows us to divide the paragraph or not accordingly.
 [ SayPhraseName closure;
 	if (closure == 0) print "nothing";
 	else print (string) closure-->2;
+];
+
+@h Redrawing the Status Window.
+
+These functions handle the default behaviour of redrawing the status window.
+
+Status line printing happens on the upper screen window, and outside of the
+paragraph control system.
+
+=
+[ DrawStatusLine width posb;
+	#ifdef TARGET_GLULX;
+		if (gg_statuswin == 0) return;
+	#endif;
+	@push say__p; @push say__pc;
+	VM_MoveCursorInStatusLine(1, 1);
+	CarryOutActivity(CONSTRUCTING_STATUS_LINE_ACT);
+	VM_MainWindow();
+	ClearParagraphing(18);
+	@pull say__pc; @pull say__p;
+];
+
+Global status_window_table;
+
+! A little helper text for getting the length of a value
+Array status_window_table_temp_text --> [ CONSTANT_PACKED_TEXT_STORAGE; Print_Status_Window_Entry; ];
+Global status_window_table_kov;
+Global status_window_table_value;
+[ Print_Status_Window_Entry;
+	SayKindValuePair(status_window_table_kov, status_window_table_value);
+];
+
+[ REDRAW_STATUS_WINDOW_R  chars col_kov_left col_kov_middle col_kov_right col_num_left col_num_middle col_num_right rows row width;
+	if (status_window_table == 0) {
+		rfalse;
+	}
+	rows = TableRows(status_window_table);
+	VM_StatusLineHeight(rows);
+	VM_ClearScreen(1);
+	! Cache the column details in case we have a lot of rows
+	switch (status_window_table-->0) {
+		1:
+			col_num_middle = 1;
+			col_kov_middle = TC_KOV(((status_window_table-->1)-->1) & TB_COLUMN_NUMBER);
+		2:
+			col_num_left = 1;
+			col_kov_left = TC_KOV(((status_window_table-->1)-->1) & TB_COLUMN_NUMBER);
+			col_num_right = 2;
+			col_kov_right = TC_KOV(((status_window_table-->2)-->1) & TB_COLUMN_NUMBER);
+		3:
+			col_num_left = 1;
+			col_kov_left = TC_KOV(((status_window_table-->1)-->1) & TB_COLUMN_NUMBER);
+			col_num_middle = 2;
+			col_kov_middle = TC_KOV(((status_window_table-->2)-->1) & TB_COLUMN_NUMBER);
+			col_num_right = 3;
+			col_kov_right = TC_KOV(((status_window_table-->3)-->1) & TB_COLUMN_NUMBER);
+	}
+	width = VM_ScreenWidth();
+	for (row = 1: row <= rows: row++) {
+		if (TableRowIsBlank(status_window_table, row)) {
+			continue;
+		}
+		if (col_num_left) {
+			status_window_table_value = (status_window_table-->col_num_left)-->(row + COL_HSIZE);
+			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(status_window_table, col_num_left, row))) {
+				VM_MoveCursorInStatusLine(row, 2);
+				SayKindValuePair(col_kov_left, status_window_table_value);
+			}
+		}
+		if (col_num_right) {
+			status_window_table_value = (status_window_table-->col_num_right)-->(row + COL_HSIZE);
+			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(status_window_table, col_num_right, row))) {
+				status_window_table_kov = col_kov_right;
+				chars = TEXT_TY_BlobAccess(status_window_table_temp_text, CHR_BLOB);
+				VM_MoveCursorInStatusLine(row, width - chars);
+				SayKindValuePair(col_kov_right, status_window_table_value);
+			}
+		}
+		if (col_num_middle) {
+			status_window_table_value = (status_window_table-->col_num_middle)-->(row + COL_HSIZE);
+			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(status_window_table, col_num_middle, row))) {
+				status_window_table_kov = col_kov_middle;
+				chars = TEXT_TY_BlobAccess(status_window_table_temp_text, CHR_BLOB);
+				VM_MoveCursorInStatusLine(row, ((width - chars) / 2) + 1);
+				SayKindValuePair(col_kov_middle, status_window_table_value);
+			}
+		}
+	}
+	rtrue;
 ];
 
 @h GenerateRandomNumber.

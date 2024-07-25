@@ -1,7 +1,7 @@
 1. Mp
 
 
-<!--WORLD WRITE MAP BEGINS-->
+<!-- WORLD WRITE MAP BEGINS -->
 <p>
 
     <table border="0" cellspacing="0" cellpadding="0">
@@ -77,7 +77,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Spirit Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_18 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_22 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -237,7 +237,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Fish Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack"><b>FR</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_21 style="text-decoration: none"><span class="indexblack"><b>FR</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -292,7 +292,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="After Powder Magazine">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_19 style="text-decoration: none"><span class="indexblack">AP</span></a></span>
+                                                <span class="indexblack"><a href=#wo_23 style="text-decoration: none"><span class="indexblack">AP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -452,7 +452,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Bread Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_20 style="text-decoration: none"><span class="indexblack">BR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_24 style="text-decoration: none"><span class="indexblack">BR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -535,10 +535,10 @@
 
 <p><i>mapping starboard as east</i>; <i>mapping port as west</i>; <i>mapping fore as north</i>; <i>mapping aft as south</i></p>
 </p>
-<!--WORLD WRITE MAP ENDS-->
+<!-- WORLD WRITE MAP ENDS -->
 <a name=MDETAILS></a>
 
-<p><a name=fi17></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi21></a><a name=wo_21><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -680,7 +680,7 @@
 <hr>
 
 
-<p><a name=fi18></a><a name=wo_18><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi22></a><a name=wo_22><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -806,7 +806,7 @@
 <hr>
 
 
-<p><a name=fi19></a><a name=wo_19><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi23></a><a name=wo_23><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -933,7 +933,7 @@
 <hr>
 
 
-<p><a name=fi20></a><a name=wo_20><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi24></a><a name=wo_24><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1056,4 +1056,57 @@
     </tr>
 </table>
 </p>
+<hr>
+<b>Nowhere (that is, initially not in any room):</b><br>
+<a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;main window - <i>glk window</i><div id="extra5" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>main window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra6', 'plus6'); return false;"><img border=0 id="plus6" src=inform:/doc_images/extra.png></a>&nbsp;status window - <i>glk window</i><div id="extra6" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>status window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text grid</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra7', 'plus7'); return false;"><img border=0 id="plus7" src=inform:/doc_images/extra.png></a>&nbsp;quote window - <i>glk window</i><div id="extra7" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>quote window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"quote window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra8', 'plus8'); return false;"><img border=0 id="plus8" src=inform:/doc_images/extra.png></a>&nbsp;unknown window - <i>glk window</i><div id="extra8" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>unknown window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"unknown window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
 

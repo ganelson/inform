@@ -60,15 +60,15 @@ static int select_glulx_version(char *str)
   char *cx = str;
   int major=0, minor=0, patch=0;
 
-  while (isdigit(*cx))
+  while (isdigit((uchar)*cx))
     major = major*10 + ((*cx++)-'0');
   if (*cx == '.') {
     cx++;
-    while (isdigit(*cx))
+    while (isdigit((uchar)*cx))
       minor = minor*10 + ((*cx++)-'0');
     if (*cx == '.') {
       cx++;
-      while (isdigit(*cx))
+      while (isdigit((uchar)*cx))
         patch = patch*10 + ((*cx++)-'0');
     }
   }
@@ -519,7 +519,7 @@ or ICL_Path variables. Other paths are for output only.\n", FN_ALT);
             }
             if ((path != Debugging_Name) && (path != Transcript_Name)
                  && (path != Language_Name) && (path != Charset_Map)
-                 && (i>0) && (isalnum(path[i-1]))) path[i++] = FN_SEP;
+                 && (i>0) && (isalnum((uchar)path[i-1]))) path[i++] = FN_SEP;
             path[i++] = value[j++];
             if (value[j-1] == 0) return;
         }
@@ -561,7 +561,7 @@ or ICL_Path variables. Other paths are for output only.\n");
         if ((value[j] == FN_ALT) || (value[j] == 0))
         {   if ((path != Debugging_Name) && (path != Transcript_Name)
                  && (path != Language_Name) && (path != Charset_Map)
-                 && (i>0) && (isalnum(new_path[i-1]))) new_path[i++] = FN_SEP;
+                 && (i>0) && (isalnum((uchar)new_path[i-1]))) new_path[i++] = FN_SEP;
             new_path[i++] = value[j++];
             if (value[j-1] == 0) {
                 newlen = i-1;
@@ -1022,6 +1022,8 @@ static void run_pass(void)
     if (hash_switch && hash_printed_since_newline) printf("\n");
 
     sort_dictionary();
+    if (GRAMMAR_META_FLAG)
+        sort_actions();
     if (track_unused_routines)
         locate_dead_functions();
     locate_dead_grammar_lines();
@@ -1341,7 +1343,7 @@ extern void switches(char *p, int cmode)
         case 'h': switch(p[i+1])
                   {   case '1': cli_print_help(1); s=2; break;
                       case '2': cli_print_help(2); s=2; break;
-                      case '0': s=2;
+                      case '0': s=2; /* Fall through */
                       default:  cli_print_help(0); break;
                   }
                   break;
@@ -1355,7 +1357,8 @@ extern void switches(char *p, int cmode)
         case 'r': if (cmode == 0)
                       error("The switch '-r' can't be set with 'Switches'");
                   else
-                      transcript_switch = state; break;
+                      transcript_switch = state;
+                  break;
         case 's': statistics_switch = state; break;
         case 'u': if (cmode == 0) {
                       error("The switch '-u' can't be set with 'Switches'");

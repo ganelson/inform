@@ -692,7 +692,8 @@ advance as part of 'Zcharacter table':", unicode);
 
                     default:   write_zscii(j); break;
                 }
-                while (isdigit(text_in[i])) i++; i--;
+                while (isdigit(text_in[i])) i++;
+                i--;
             }
             else if (text_in[i+1]=='(')
             {
@@ -894,7 +895,8 @@ string.");
             }
           }
           write_z_char_g(j);
-          while (isdigit(text_in[i])) i++; i--;
+          while (isdigit(text_in[i])) i++;
+          i--;
         }
         else if (text_in[i+1]=='(') {
             int len = 0, digits = 0;
@@ -2160,7 +2162,7 @@ Define DICT_CHAR_SIZE=4 for a Unicode-compatible dictionary.");
       k = '?';
     }
     
-    if (k >= (unsigned)'A' && k <= (unsigned)'Z')
+    if (k >= 'A' && k <= 'Z')
       k += ('a' - 'A');
 
     ensure_memory_list_available(&prepared_sort_memlist, DICT_WORD_BYTES);
@@ -2289,21 +2291,21 @@ extern void sort_dictionary(void)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   If "dword" is in the dictionary, return its accession number plus 1;    */
-/*   If not, return 0.                                                       */
+/*   If "dword" is in the dictionary, return its accession number;           */
+/*   If not, return -1.                                                      */
 /* ------------------------------------------------------------------------- */
 
-static int dictionary_find(char *dword)
+extern int dictionary_find(char *dword)
 {   int at = root, n;
 
     dictionary_prepare(dword, NULL);
 
     while (at != VACANT)
     {   n = compare_sorts(prepared_sort, dict_sort_codes+at*DICT_WORD_BYTES);
-        if (n==0) return at + 1;
+        if (n==0) return at;
         if (n>0) at = dtree[at].branch[1]; else at = dtree[at].branch[0];
     }
-    return 0;
+    return -1;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -2495,24 +2497,26 @@ extern int dictionary_add(char *dword, int flag1, int flag2, int flag3)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   Used in "tables.c" for "Extend ... only", to renumber a verb-word to a  */
-/*   new verb syntax of its own.  (Otherwise existing verb-words never       */
-/*   change their verb-numbers.)                                             */
+/*   Used for "Verb" and "Extend ... only", to initially set or renumber a   */
+/*   verb-word to a new Inform verb index.                                   */
+/*   The verb number is inverted (we count down from $FF/$FFFF) and stored   */
+/*   in #dict_par2.                                                          */
 /* ------------------------------------------------------------------------- */
 
-extern void dictionary_set_verb_number(char *dword, int to)
-{   int i; uchar *p;
-    int res=((version_number==3)?4:6);
-    i=dictionary_find(dword);
-    if (i!=0)
-    {   
+extern void dictionary_set_verb_number(int dictword, int infverb)
+{
+    int flag2 = ((glulx_mode)?(0xffff-infverb):(0xff-infverb));
+    if (dictword >= 0 && dictword < dict_entries)
+    {
+        uchar *p;
         if (!glulx_mode) {
-            p=dictionary+7+(i-1)*DICT_ENTRY_BYTE_LENGTH+res; 
-            p[1]=to;
+            int res = ((version_number==3)?4:6);
+            p=dictionary+7+dictword*DICT_ENTRY_BYTE_LENGTH+res; 
+            p[1]=flag2;
         }
         else {
-            p=dictionary+4 + (i-1)*DICT_ENTRY_BYTE_LENGTH + DICT_ENTRY_FLAG_POS; 
-            p[2]=to/256; p[3]=to%256;
+            p=dictionary+4 + dictword*DICT_ENTRY_BYTE_LENGTH + DICT_ENTRY_FLAG_POS; 
+            p[2]=flag2/256; p[3]=flag2%256;
         }
     }
 }

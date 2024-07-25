@@ -1143,7 +1143,7 @@ extern int32 text_to_unicode(char *text)
         }
     }
 
-    if ((isdigit(text[1])) || (text[1] == '@'))
+    if ((isdigit((uchar)text[1])) || (text[1] == '@'))
     {   ebf_error("'@' plus an accent code or '@{...}'", text);
         textual_form_length = 1;
         return '?';
@@ -1246,13 +1246,13 @@ extern void change_character_set(void)
 extern void make_lower_case(char *str)
 {   int i;
     for (i=0; str[i]!=0; i++)
-        if ((((uchar)str[i])<128) && (isupper(str[i]))) str[i]=tolower(str[i]);
+        if ((((uchar)str[i])<128) && (isupper((uchar)str[i]))) str[i]=tolower((uchar)str[i]);
 }
 
 extern void make_upper_case(char *str)
 {   int i;
     for (i=0; str[i]!=0; i++)
-        if ((((uchar)str[i])<128) && (islower(str[i]))) str[i]=toupper(str[i]);
+        if ((((uchar)str[i])<128) && (islower((uchar)str[i]))) str[i]=toupper((uchar)str[i]);
 }
 
 /* ========================================================================= */

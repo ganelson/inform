@@ -740,6 +740,7 @@ static void compile_conditional_z(int oc,
                 error("'has'/'hasnt' applied to illegal attribute number");
                         break;
                     }
+                    /* Fall through */
                 case VARIABLE_OT:
                 {   int pa_label = next_label++, fa_label = next_label++;
                     assembly_operand en_ao, zero_ao, max_ao;

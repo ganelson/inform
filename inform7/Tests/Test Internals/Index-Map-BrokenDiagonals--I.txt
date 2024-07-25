@@ -1,7 +1,7 @@
 1. Mp
 
 
-<!--WORLD WRITE MAP BEGINS-->
+<!-- WORLD WRITE MAP BEGINS -->
 <p>
 
     <table border="0" cellspacing="0" cellpadding="0">
@@ -202,7 +202,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse A">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_13 style="text-decoration: none"><span class="indexblack"><b>BA</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack"><b>BA</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -257,7 +257,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse D">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_16 style="text-decoration: none"><span class="indexblack">BD</span></a></span>
+                                                <span class="indexblack"><a href=#wo_20 style="text-decoration: none"><span class="indexblack">BD</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -359,7 +359,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse E">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack">BE</span></a></span>
+                                                <span class="indexblack"><a href=#wo_21 style="text-decoration: none"><span class="indexblack">BE</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -508,7 +508,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse H">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_20 style="text-decoration: none"><span class="indexblack">BH</span></a></span>
+                                                <span class="indexblack"><a href=#wo_24 style="text-decoration: none"><span class="indexblack">BH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -777,7 +777,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse B">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_14 style="text-decoration: none"><span class="indexblack">BB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_18 style="text-decoration: none"><span class="indexblack">BB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -926,7 +926,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse C">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_15 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_19 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1028,7 +1028,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse F">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_18 style="text-decoration: none"><span class="indexblack">BF</span></a></span>
+                                                <span class="indexblack"><a href=#wo_22 style="text-decoration: none"><span class="indexblack">BF</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1083,7 +1083,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Blockhouse G">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_19 style="text-decoration: none"><span class="indexblack">BG</span></a></span>
+                                                <span class="indexblack"><a href=#wo_23 style="text-decoration: none"><span class="indexblack">BG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1290,10 +1290,10 @@
         </table>
 
 </p>
-<!--WORLD WRITE MAP ENDS-->
+<!-- WORLD WRITE MAP ENDS -->
 <a name=MDETAILS></a>
 
-<p><a name=fi13></a><a name=wo_13><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi17></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1435,7 +1435,7 @@
 <hr>
 
 
-<p><a name=fi14></a><a name=wo_14><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi18></a><a name=wo_18><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1562,7 +1562,7 @@
 <hr>
 
 
-<p><a name=fi15></a><a name=wo_15><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi19></a><a name=wo_19><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1689,7 +1689,7 @@
 <hr>
 
 
-<p><a name=fi16></a><a name=wo_16><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi20></a><a name=wo_20><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1816,7 +1816,7 @@
 <hr>
 
 
-<p><a name=fi17></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi21></a><a name=wo_21><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1943,7 +1943,7 @@
 <hr>
 
 
-<p><a name=fi18></a><a name=wo_18><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi22></a><a name=wo_22><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2070,7 +2070,7 @@
 <hr>
 
 
-<p><a name=fi19></a><a name=wo_19><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi23></a><a name=wo_23><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2197,7 +2197,7 @@
 <hr>
 
 
-<p><a name=fi20></a><a name=wo_20><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi24></a><a name=wo_24><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2321,4 +2321,57 @@
     </tr>
 </table>
 </p>
+<hr>
+<b>Nowhere (that is, initially not in any room):</b><br>
+<a href="#" onclick="showExtra('extra9', 'plus9'); return false;"><img border=0 id="plus9" src=inform:/doc_images/extra.png></a>&nbsp;main window - <i>glk window</i><div id="extra9" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>main window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra10', 'plus10'); return false;"><img border=0 id="plus10" src=inform:/doc_images/extra.png></a>&nbsp;status window - <i>glk window</i><div id="extra10" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>status window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text grid</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra11', 'plus11'); return false;"><img border=0 id="plus11" src=inform:/doc_images/extra.png></a>&nbsp;quote window - <i>glk window</i><div id="extra11" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>quote window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"quote window"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+<a href="#" onclick="showExtra('extra12', 'plus12'); return false;"><img border=0 id="plus12" src=inform:/doc_images/extra.png></a>&nbsp;unknown window - <i>glk window</i><div id="extra12" style="display: none;">
+    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
+        <tr>
+            <td>
+                <p class="tightin1">abstract object &gt; glk window &gt; <b>unknown window</b></p>
+                <p class="hangingin1">printed name: <span class="indexdullblue">"unknown window"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
 

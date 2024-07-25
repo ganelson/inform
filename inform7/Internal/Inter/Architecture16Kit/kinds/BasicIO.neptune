@@ -1,0 +1,16 @@
+new base BASIC_COLOUR_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: basic colour
+	plural: basic colours
+
+	specification-text: A basic text colour.
+
+	instance: basic black   = BASIC_COLOUR_BLACK   = 2
+	instance: basic red     = BASIC_COLOUR_RED     = 3
+	instance: basic green   = BASIC_COLOUR_GREEN   = 4
+	instance: basic yellow  = BASIC_COLOUR_YELLOW  = 5
+	instance: basic blue    = BASIC_COLOUR_BLUE    = 6
+	instance: basic magenta = BASIC_COLOUR_MAGENTA = 7
+	instance: basic cyan    = BASIC_COLOUR_CYAN    = 8
+	instance: basic white   = BASIC_COLOUR_WHITE   = 9
+}

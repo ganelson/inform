@@ -1213,6 +1213,8 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_window_open(proc, a[0], a[1], a[2], a[3], a[4]); break;
 		case i7_glk_set_window:
 			rv = i7_miniglk_set_window(proc, a[0]); break;
+		case i7_glk_window_get_rock:
+			rv = i7_mg_get_window_rock(proc, a[0]); break;
 		case i7_glk_window_get_size:
 			rv = i7_miniglk_window_get_size(proc, a[0], a[1], a[2]); break;
 		/* And we ignore: */

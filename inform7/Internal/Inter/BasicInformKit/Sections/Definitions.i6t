@@ -78,24 +78,21 @@ Constant NOTE_VMSTY       = 6;
 Constant BLOCKQUOTE_VMSTY = 7;
 Constant INPUT_VMSTY      = 8;
 
-@h Colour Numbers.
-These are traditional colour names: quite who it was who thought that azure
-was the same colour as cyan is now unclear. Colour is, again, not easy to
-arrange on Glulx, but there is some workaround code.
+@h Colour Codes.
+While most colour numbers are defined through the basic colour kind in the
+Architecture16/32Kits, these two colour codes are defined here instead.
 
 =
-Constant CLR_DEFAULT = 1;
-Constant CLR_BLACK   = 2;
-Constant CLR_RED     = 3;
-Constant CLR_GREEN   = 4;
-Constant CLR_YELLOW  = 5;
-Constant CLR_BLUE    = 6;
-Constant CLR_MAGENTA = 7; Constant CLR_PURPLE  = 7;
-Constant CLR_CYAN    = 8; Constant CLR_AZURE   = 8;
-Constant CLR_WHITE   = 9;
+#Ifdef TARGET_GLULX;
+	Constant BASIC_COLOUR_CURRENT = -2;
+	Constant BASIC_COLOUR_DEFAULT = -1;
+#Ifnot;
+	Constant BASIC_COLOUR_CURRENT = 0;
+	Constant BASIC_COLOUR_DEFAULT = 1;
+#Endif;
 
 @h Window Numbers.
-Although Glulx can support elaborate tessalations of windows on screen (if
+Although Glulx can support elaborate tessellations of windows on screen (if
 the complexity of handling this can be mastered), the Z-machine has much
 more limited resources in general, so the template layer assumes a simple
 screen model: there are just two screen areas, the scrolling main window
@@ -106,6 +103,37 @@ line bar at the top of the screen.
 Constant WIN_ALL     = 0; ! Both windows at once
 Constant WIN_STATUS  = 1;
 Constant WIN_MAIN    = 2;
+
+@h Function key codes.
+So that users of |VM_KeyChar()| don't need to be aware of platform differences,
+function key codes are mapped to these common codes.
+
+=
+Constant KEY_DELETE = $0008;
+Constant KEY_DOWN = $2193;
+Constant KEY_END = $21F2;
+Constant KEY_ESCAPE = $001B;
+Constant KEY_F1 = $EF01;
+Constant KEY_F2 = $EF02;
+Constant KEY_F3 = $EF03;
+Constant KEY_F4 = $EF04;
+Constant KEY_F5 = $EF05;
+Constant KEY_F6 = $EF06;
+Constant KEY_F7 = $EF07;
+Constant KEY_F8 = $EF08;
+Constant KEY_F9 = $EF09;
+Constant KEY_F10 = $EF0A;
+Constant KEY_F11 = $EF0B;
+Constant KEY_F12 = $EF0C;
+Constant KEY_HOME = $21F1;
+Constant KEY_LEFT = $2190;
+Constant KEY_PAGE_DOWN = $21DF;
+Constant KEY_PAGE_UP = $21DE;
+Constant KEY_RETURN = $000A;
+Constant KEY_RIGHT = $2192;
+Constant KEY_TAB = $0009;
+Constant KEY_UNKNOWN = $FFFD;
+Constant KEY_UP = $2191;
 
 @h Paragraphing Flags.
 I am not sure many dictionaries would countenance "to paragraph" as a
