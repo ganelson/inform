@@ -19329,7 +19329,7 @@ The Extensions tab in the Inform app displays details of all of the extensions i
 
 ## Title and authorship
 
-^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension}
+^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension} ^^{extensions: writing: title+biblio+} ^^{title+biblio+: of an extension} ^^{bibliographic data: in extensions}
 
 In this chapter, we'll take on the role of Peter Drake, an Inform author who wants to package up the following minimal piece of design as an extension:
 
@@ -19448,6 +19448,8 @@ And that's it: a fully-functioning extension has been made.
 
 ## JSON metadata
 
+^^{extensions: writing: metadata in JSON} ^^{bibliographic data: in extensions}
+
 Having got the `Ducking Action` extension working, in a minimal sort of way, we might now look again at the files being stored under the surface.
 
 ``` code
@@ -19513,6 +19515,8 @@ So the upshot of this technical little section is... that we can basically forge
 
 ## Begins here and ends here {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
 
+^^{(extension) begins here+assert+ --> begins here} ^^{(extension) ends here+assert+ --> ends here}
+
 Here is where we've got to, then, with the extension source text:
 
 	Version 1 of Ducking Action by Peter Drake begins here.
@@ -19532,7 +19536,7 @@ Note that the extension has to begin and end with special sentences. These act r
 
 2) There must of course be exactly one `begins here` line, and exactly one `ends here` line.
 
-3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation].
+3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation and testing].
 
 4) Other than this old style of documentation, which is now deprecated, no content is permitted below the `ends here` line. So it really should be at the end of the file.
 
@@ -19675,6 +19679,8 @@ But this pair is not:
 because all versions compatible with 9.5 have major version number 9, and all versions compatible with 10.3 have major version number 10. So it is not possible to satisfy both, and Inform will produce a problem message.
 
 ## Extension rubrics
+
+^^{extensions: writing: rubric+biblio+} ^^{rubric, of an extension+biblio+} ^^{>VERSION}
 
 It's very helpful for an extension to be accompanied by a brief description of what it does, so that a user browsing through lists of extensions can see more than just the title. This is called a _rubric_.
 
@@ -19995,6 +20001,8 @@ This is intended so that technical apparatus used only inside the extensions can
 
 ## Images and other resources
 
+^^{extensions: writing: figures} ^^{extensions: writing: sounds} ^^{extensions: writing: files (data files)} ^^{figures: in extensions} ^^{sounds: in extensions} ^^{files (data files): in extensions} ^^{materials folder: for an extension}
+
 An extension directory can, optionally, contain a subdirectory called ```Materials```. If it does, this can then contain a wide variety of useful things, laid out almost exactly like the materials folder for a project. Because it's included in the extension, anybody downloading the extension gets all of these extras along with it.
 
 So, then:
@@ -20124,6 +20132,8 @@ In case helpful, here's a little diagnostic command called ``OPTIONS``:
 		say "Inactive: [list of inactive use options].";
 
 ## Run-time problems
+
+^^{error messages: defined in extensions} ^^{problem messages: defined in extensions}
 
 Run-time problems are the ones thrown by stories which hit some impossible demand while playing: perhaps they find that they need to divide a number by zero, or they try to make a physical person wear a concept, or put a room on top of a shelf, or something else which simply can't be done. All experienced Inform authors will have seen RTPs before, but in case not, running this will certainly do it:
 
