@@ -9149,6 +9149,8 @@ Now we can ask if Poirot `can approach` Hotchkiss, and so on.
 
 ## Verbs which mean properties
 
+^^{properties: defining sentence verbs for properties} ^^{defining: sentence verbs for properties} ^^{the verb (V) means (property)+assert+} ^^{(means), defining sentence verbs+sourcepart+: the verb (V) means (property)+assert+} ^^{sentence verbs: defining for properties}
+
 So far `The verb ... means ...` has always had a relation as its meaning. But here is an alternative:
 
 	A person has a number called age.
