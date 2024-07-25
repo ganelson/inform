@@ -22390,6 +22390,8 @@ In particular:
 
 ## About kits
 
+^^{kits (I6 code)} ^^{I6: in kits}
+
 A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: ```BasicInformKit```, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
 Kits sit inside extensions, and provide them with support services. An extension can contain multiple kits, but of course does not need to contain any. Kits increase the power of extensions in a number of ways. They can access memory directly, and are not constrained by the kind-safety rules which would apply to higher-level code. For example, all the code to build, sort and dismantle lists is done by functions in ```BasicInformKit```. Kits can also create new fundamental kinds of value for Inform.
