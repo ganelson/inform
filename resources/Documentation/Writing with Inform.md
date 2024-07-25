@@ -22149,7 +22149,7 @@ The escape `*1` is expanded to the value on which the adjective is being tested.
 
 ## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
 
-^^{accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
+^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
  
 What if an I6-written definition needs to access something defined in the source text? For suppose, if the source text says:
 
@@ -22672,7 +22672,7 @@ While it is possible to write similar array declarations to simulate constant li
 
 ### Variables
 
-^^{defined by Inter as...+assert+: variables} ^^{variables: defining in I6}
+^^{defined by Inter as...+assert+: variables} ^^{Inter code: defined by Inter as...+assert+} ^^{variables: defining in I6}
 
 We can create a valid Inform variable by providing an I6 global variable to store the contents. (Not all Inform variables are stored this way: some are stored in array entries, or on a stack. Those other ways, we cannot imitate.)
 
