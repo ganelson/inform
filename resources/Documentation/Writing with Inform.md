@@ -19196,7 +19196,7 @@ One of the most accessible is [itch.io](https://itch.io). While it's a lot of wo
 
 A game on itch.io will still need promotion and other attention if the author hopes to make any significant amount of money, but the barriers to listing something for sale are much lower than they once were. And itch.io can be a viable way to share a game that isn't intended to charge money at all.
 
-At the time of this writing, the itch.io platform lists 15,988 games tagged "interactive fiction."
+At the time of this writing, the itch.io platform lists 28,413 games tagged "interactive fiction."
 
 ## The IF Archive
 
