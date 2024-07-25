@@ -19184,7 +19184,7 @@ Play-testers can often be recruited by placing an ad on [intfiction.org](https:/
 
 ## A Page of Its Own
 
-^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io}
+^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io+web+}
 
 One option for sharing your work with the world is to set up a web page and a copy of the story file on a private web host. That host should ideally be as stable as possible, so that the URL is likely to remain fixed for what might be a long period. Freeware stories have a long period of viability relative to commercial games, which means that players may still be hearing about and checking out a story years after its initial release. A stable address helps everyone with links, and makes it easier for search engines to direct people.
 
@@ -19248,7 +19248,7 @@ Some awards for interactive fiction, such as the annual XYZZY Awards, require a 
 
 ## Competitions, Exhibitions, and Jams
 
-^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io} ^^{ProcJam}
+^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io+web+} ^^{ProcJam}
 
 One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organiser usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The [IFWiki](https://ifwiki.org) usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on its front page.
 
