@@ -21589,7 +21589,7 @@ This is only likely to be helpful for the main Inform documentation, not for ext
 
 ## The architecture of Inform
 
-^^{architecture of Inform} ^^{Inter code} ^^{I6 syntax} ^^{Inform 6} ^^{extensions: Inform 6 code in extensions}
+^^{architecture of Inform} ^^{Inter code} ^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6} ^^{extensions: Inform 6 code in extensions}
 
 Inside the Inform applications is a _compiler_, which turns source text which describes a story into a computer program which runs that story — or else, of course, refuses and issues Problem messages.
 
@@ -21651,7 +21651,7 @@ This is the first of two chapters about how to use I6 within Inform. In this cha
 
 ## Defining To phrases with I6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
-^^{I6 syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
+^^{I6: syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
 
 The phrases described in this book all have definitions given in the extensions automatically included with all projects — `Basic Inform`, the `Standard Rules` or, in a few cases, `English Language`. Those phrases are mostly, though not universally, defined using I6 notation, using the feature described below.
 
@@ -21722,7 +21722,7 @@ for (i=3 : i>0 : i-- )
 
 ## Defining To decide phrases with I6
 
-^^{I6 syntax: phrases to decide whether/if} ^^{I6 syntax: phrases to decide a value} ^^{phrases: defining in I6}
+^^{I6: syntax: phrases to decide whether/if} ^^{I6: syntax: phrases to decide a value} ^^{phrases: defining in I6}
 
 The previous section showed how to define so-called _void phrases_ with I6: that is, those which do something, but produce no value or opinion as a result.
 
@@ -22121,7 +22121,7 @@ Lastly: the weasel words about "slightly simplified form" above are because the 
 
 ## Defining adjectives with I6
 
-^^{I6 inclusions: adjectives} ^^{adjectives: defining: with I6}
+^^{I6: inclusions: adjectives} ^^{adjectives: defining: with I6}
 
 There are three ways to specify that an adjective is defined at the I6 level. For example:
 
@@ -22315,7 +22315,7 @@ This can be used by, say:
 
 ## Inclusions of I6 code {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
-^^{I6 inclusions: long sections of code}
+^^{I6: inclusions: long sections of code}
 
 With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
