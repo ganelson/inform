@@ -7144,7 +7144,7 @@ If we need more variation than that, we should make more than one definition.
 
 We've already seen the ``SHOWME`` command, which can be typed into the Story panel to look at the state of something, usually a thing or room. ``SHOWME`` is a testing command which has no effect once the work is released; eventual players can't use it.
 
-Inform also has a phrase called ``SHOWME``, which works in much the same way:
+Inform also has a phrase called `showme`, which works in much the same way:
 
 > phrase: {ph_showme} showme (value)
 >
@@ -7166,7 +7166,7 @@ Inform also has a phrase called ``SHOWME``, which works in much the same way:
 >
 > Inform uses the quotation marks and equals sign to show that it had to do some work to find the answer. `score` wasn't a constant value – it was a variable, and Inform had to look up the current value.
 
-``SHOWME`` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
+`Showme` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
 
 	The matching key of the blue door is the brass Yale key.
 
@@ -7179,17 +7179,17 @@ we get, when the story starts up,
 
 	"matching key of the blue door" = object: brass Yale key
 
-Why is this an `object`, when we know that the key is actually a `thing`? After all, if we ``SHOWME KEY`` instead, we get:
+Why is this an `object`, when we know that the key is actually a `thing`? After all, if we `showme key` instead, we get:
 
 	thing: brass Yale key
 
-The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try ``SHOWME MATCHING KEY``, we get something like this:
+The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try `showme matching key`, we get something like this:
 
 	objects valued property: property 23
 
-which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: ``SHOWME`` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
+which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: `showme` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
 
-All the same, ``SHOWME`` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
+All the same, `showme` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
 
 ## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
 
