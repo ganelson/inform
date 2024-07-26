@@ -5,7 +5,7 @@ Index: SHOOT command, and ray gun disintegrating objects
 Description: A ray gun which destroys objects, leaving their component parts behind.
 For: Z-Machine
 
-^^{SHOOT command, and ray gun disintegrating objects}
+^^{breakable things (implementing)} ^^{things+kind+: removing from play} ^^{deleting things from the world} ^^{non-existence: removing things from play} ^^{out of play} ^^{|nowhere: placing things}
 
 	{*}"Technological Terror"
 	

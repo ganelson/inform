@@ -4263,7 +4263,7 @@ A change of player can sometimes cause confusing things to happen, if it takes p
 
 ## Removing things from play
 
-^^{things+kind+: removing from play} ^^{deleting things from the world} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
+^^{things+kind+: removing from play} ^^{deleting things from the world <-- destroying things} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
 
 Some things will occasionally be in a limbo state called being `off-stage`: like actors or props not needed in Act II, but perhaps to be brought back on-stage later, they wait on the sidelines. Anything created with no apparent location will start the story off-stage, as in the case of the lamp here:
 
@@ -4594,7 +4594,7 @@ Alternatively, it's possible the "fix" the RNG by clicking the "Make random outc
 
 ## Random choices of things {PM_RandomImpossible}
 
-^^{randomness: random things}
+^^{randomness: random things} ^^{descriptions (references to things): randomly described thing}
 
 Writing `a random number` is not allowed, because the possible range is too large, but that was the only reason why not.
 
