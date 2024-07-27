@@ -478,7 +478,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: nameless room descriptions} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |nameless room descriptions} ^^{nameless room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -5381,6 +5381,12 @@ Since scenes are, in the end, only a convenient way to organise rules, and do no
 
 ## If again this apparition come...
 
+^^{dialogue: sections <-- (section)+ofsource+}
+^^{dialogue beats <-- beats (dialogue) <-- dialogue: sections: beats}
+^^{dialogue lines <-- lines (dialogue) <-- dialogue: sections: lines}
+^^{dialogue choices <-- choices (dialogue) <-- dialogue: sections: choices}
+^^{dialogue beats: starting beat} ^^{starting beat}
+
 Some stories are all about exploration: lone travellers going places and discovering things. But other stories are more intimate, and conversational. They involve characters talking to each other about what is happening. And sometimes the talking _is_ what's happening: the story might be a romance, or a political intrigue, or a detective mystery. "Dialogue" is what we'll call the sort of to-and-fro when characters get into a conversation — not necessarily a long talk, but where the story will only work for the player if the speakers seem to be making sense, and not repeating themselves endlessly, or making oblique comments out of nowhere.
 
 That means writing something closer to a script than to a rulebook. But that script can still be richly interactive and flexible. In Inform, this is set out in special _dialogue sections_ of the source text. Instead of being set out in sentences and paragraphs like a novel, or a non-fiction book, dialogue sections look like the script for a play or movie: what printers call "playtext". Regular sections cannot contain playtext, while dialogue sections cannot contain anything else.
@@ -5536,6 +5542,14 @@ These variations are only a small taste of what Inform's dialogue system can han
 If this section has a moral (other than the inadvisability of killing a king in his own castle), it's this: Dialogue sections in Inform may look a little different from other Inform material, but the system they are built on is still Inform. There are still rooms, and things, and people, and actions, and a whole simulated world to help guide the performance, and to be changed by it.
 
 ## Dialogue sections
+
+^^{dialogue: sections: formatting of} ^^{line breaks: in formatting dialogue} ^^{tabs, for indentation+ofsource+} ^^{indentation+ofsource+} ^^{source text: different in dialogue sections}
+^^{dialogue beats}
+^^{dialogue beats: starting beat} ^^{starting beat}
+^^{dialogue lines: speaker of} ^^{speaker (of dialogue lines)}
+^^{dialogue lines: narration} ^^{narration (dialogue lines)}
+^^{dialogue choices}
+^^{(--), for dialogue choices+sourcepart+}
 
 To recap, then, all dialogue material must appear in special _dialogue sections_ in the source text. A section is a dialogue section if its titling line ends with `(dialogue)`. For example:
 
