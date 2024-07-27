@@ -722,6 +722,10 @@ A simple framework for handling hyperlinks in an interoperable manner.
 We combine a hyperlink tag with a payload in one 32-bit value. The tag is stored
 in the lowest bits, and the payload above it.
 
+|CALCULATE_HYPERLINK_TAG_WIDTH_R| is a |before starting the virtual machine| rule,
+which gets the number of options in the hyperlink tag enum and sets the tag/payload
+masks and widths accordingly.
+
 =
 Global hyperlink_payload_mask;
 Global hyperlink_tag_mask;
@@ -746,8 +750,30 @@ Global hyperlink_value;
 	rfalse;
 ];
 
-[ MakeTaggedHyperlink tag val;
+@ |MakeTaggedHyperlink| combines the tag and value into one 32 bit hyperlink ID,
+checking that the value is not a pointer to ephemeral data (on the stack).
+
+|HANDLE_HYPERLINK_R| then extracts tag and value from an ID, expanding the value
+back to 32 bits.
+
+=
+
+[ MakeTaggedHyperlink tag val kind;
 	if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) {
+		#Ifdef DEBUG;
+			if (val >= blockv_stack && val < (blockv_stack + BLOCKV_STACK_SIZE * WORDSIZE)) {
+				if (kind) {
+					if (KindConformsTo_POINTER_VALUE_TY(kind)) {
+						! Break up the message so that Inform doesn't think it's an Inter invocation
+						print "Error: cannot make hyperlink from ephemeral value; try creating with {", "-by-reference:V}^";
+						return;
+					}
+				}
+				else {
+					print "Warning: hyperlink value might be ephemeral; try creating with explicit kind^";
+				}
+			}
+		#Endif; ! DEBUG
 		if (val > 0) {
 			@shiftl val hyperlink_tag_width val;
 		}

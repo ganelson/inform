@@ -191,17 +191,23 @@ Chapter - Hyperlinks
 
 A hyperlink tag is a kind of value.
 
-The hyperlink value is a number variable.
-The hyperlink value variable is defined by Inter as "hyperlink_value".
-
 The hyperlink handling rules is a hyperlink tag based rulebook.
 The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
 
 The handle hyperlinks rule is listed in the glk event handling rules.
 The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
 
+To say link (T - hyperlink tag):
+	(- MakeTaggedHyperlink({T}); -).
+
+To say link (T - hyperlink tag) of (V - value of kind K):
+	(- MakeTaggedHyperlink({T}, {-by-reference:V}, {-strong-kind:K}); -).
+
 To say end link:
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+To decide what K is hyperlink value as a/an (name of kind of value K):
+	(- (hyperlink_value) -).
 
 @ And some built-in hyperlink tags:
 
@@ -213,26 +219,18 @@ To say end link:
 Rule hyperlink is a hyperlink tag.
 
 To say link (R - rule):
-	(- MakeTaggedHyperlink((+ rule hyperlink +), {R}); -).
+	(- MakeTaggedHyperlink((+ rule hyperlink +), {-by-reference:R}, RULE_TY); -).
 
 Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
-	run rule at address hyperlink value;
+	follow hyperlink value as a rule;
 
 Keypress hyperlink is a hyperlink tag.
 
 To say link (C - unicode character):
-	(- MakeTaggedHyperlink((+ keypress hyperlink +), {C}); -).
+	(- MakeTaggedHyperlink((+ keypress hyperlink +), {-by-reference:C}, UNICODE_CHARACTER_TY); -).
 
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
-	process a character event for (hyperlink value of the current glk event as a unicode character) in (window of the current glk event);
-
-Section - unindexed
-
-To run rule at address (R - number):
-	(- ({R})(); -).
-
-To decide what unicode character is (N - number) as a unicode character:
-	(- ({N}) -).
+	process a character event for (hyperlink value as a unicode character) in (window of the current glk event);
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
