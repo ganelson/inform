@@ -4,6 +4,11 @@ RecipeLocation: The Flow of Conversation
 Index: Dialogue inviting the player on a quest
 Description: A sequence of dialogue scenes that introduces the player's life and invites them on a quest.
 
+^^{dialogue: scripted conversations}
+^^{dialogue: structure of conversation}
+^^{story structure: managing complex conversations}
+^^{concepts+kind+: in dialogue} ^^{dialogue: conversational subjects: concepts}
+
 Sometimes we want a scene with a controlled flow of conversation in which the player has to answer questions in a precise order. At other times, we might want on that keeps moving at a steady pace to cover all the key story requirements of that scene, but where the player does have opportunities to stop and look around, change the subject, or even affect which characters are present in the room.
 
 This example shows both of those possibilities. In the first scene, the Sidekick takes the player through a constrained series of questions that we could, in theory, use for character creation. In the second, a Mentor character appears to tell the player about a dangerous quest, but the player has time to choose their own interactions. The third scene consists entirely of the player deciding whether to accept or reject that quest.

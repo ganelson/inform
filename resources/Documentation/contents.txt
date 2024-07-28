@@ -149,6 +149,8 @@ index notation: ^{headword+descactivity+} = descactivity (under {descriptions (d
 # index listing.)
 index notation: ^{headword+token+} = token ("grammar token") (bracketed) (prefix "[") (suffix "]")
 
+index notation: ^{headword+cue+} = cue ("dialogue cue") (bracketed)
+
 index notation: definition = phrase ("phrase") (bracketed)
 index notation: if-definition = ifphrase ("if phrase") (bracketed)
 index notation: say-definition = sayphrase ("say phrase") (bracketed)

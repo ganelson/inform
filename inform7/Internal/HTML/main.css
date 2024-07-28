@@ -1851,6 +1851,18 @@ div.generalindex span.indextokenbracketed {
 	font-style: italic;
 }
 
+div.generalindex span.indexcue {
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexcuebracketed {
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
+	font-style: italic;
+}
+
 div.generalindex span.indexcommand {
 	color: var(--documentation-index-c-colour);
 	font-family: var(--informcommand-fontfamily);

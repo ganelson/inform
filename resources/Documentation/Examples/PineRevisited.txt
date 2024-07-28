@@ -4,6 +4,10 @@ RecipeLocation: Characters Following a Script
 Index: Dialogue, with certain topics that need to be covered in a scene
 Description: The Pine 2 example rewritten using the dialogue system, allowing for a scene that ends when critical information has been communicated, regardless of how the conversation flows to that point.
 
+^^{scenes: based on dialogue state}
+^^{dialogue: conversational subjects: tracking used subjects}
+^^{concepts+kind+: in dialogue} ^^{dialogue: conversational subjects: concepts}
+
 A very common scenario in dialogue-heavy games is that we have scenes in which we want the player and other characters to discuss a certain set of topics, regardless of how that happens.
 
 The older "Pine 2" example gives a somewhat laborious implementation of that idea, but it becomes easier to express if we use the dialogue system to let characters move freely between different conversation topics and just set our scene to end when the critical information has been transmitted – however that happens.

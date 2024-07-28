@@ -4,6 +4,9 @@ RecipeLocation: The Flow of Conversation
 Index: Foosball game
 Description: A foosball game where the other character not only plays against us but reacts to the state of gameplay and riffs on previously-mentioned topics.
 
+^^{dialogue: characters commenting on the action}
+^^{concepts+kind+: in dialogue} ^^{dialogue: conversational subjects: concepts}
+
 In some stories, the player is mostly talking to another character, and their interactions with the environment are largely incidental. In others, the environmental interaction is the main thing – or at least an important priority – but we want the other character to keep up a bit of small talk that feels responsive to world state.
 
 This example explores the latter situation. As in "Text Foosball", we have a fairly randomised foosball game we can play against our opponent Joey; in this case, however, he can use the dialogue system to react to his own mistakes, comment on the state of play generally, riff on prior discussion, or (inevitably) hit up the player for a loan.

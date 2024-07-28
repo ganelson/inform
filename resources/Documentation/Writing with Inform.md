@@ -1523,8 +1523,8 @@ These are the two ways in which writers size up the world, so Inform provides bo
 
 ## Abstract objects and concepts
 
-^^{kinds: catalogue: abstract object} ^^{abstract object+kind+ <-- kinds: catalogue: abstract object}
-^^{kinds: catalogue: concept} ^^{concept+kind+ <-- kinds: catalogue: concept}
+^^{kinds: catalogue: abstract object} ^^{abstract objects+kind+ <-- kinds: catalogue: abstract object}
+^^{kinds: catalogue: concept} ^^{concepts+kind+ <-- kinds: catalogue: concept}
 
 The objects seen so far have almost all been physical, in one way or another, and have all belonged to the kinds `thing`, `room`, `region` or `direction`.
 
@@ -5385,7 +5385,7 @@ Since scenes are, in the end, only a convenient way to organise rules, and do no
 ^^{dialogue beats <-- beats (dialogue) <-- dialogue: sections: beats}
 ^^{dialogue lines <-- lines (dialogue) <-- dialogue: sections: lines}
 ^^{dialogue choices <-- choices (dialogue) <-- dialogue: sections: choices}
-^^{dialogue beats: starting beat} ^^{starting beat}
+^^{dialogue beats: |starting beat} ^^{|starting beat}
 
 Some stories are all about exploration: lone travellers going places and discovering things. But other stories are more intimate, and conversational. They involve characters talking to each other about what is happening. And sometimes the talking _is_ what's happening: the story might be a romance, or a political intrigue, or a detective mystery. "Dialogue" is what we'll call the sort of to-and-fro when characters get into a conversation — not necessarily a long talk, but where the story will only work for the player if the speakers seem to be making sense, and not repeating themselves endlessly, or making oblique comments out of nowhere.
 
@@ -5545,7 +5545,7 @@ If this section has a moral (other than the inadvisability of killing a king in 
 
 ^^{dialogue: sections: formatting of} ^^{line breaks: in formatting dialogue} ^^{tabs, for indentation+ofsource+} ^^{indentation+ofsource+} ^^{source text: different in dialogue sections}
 ^^{dialogue beats}
-^^{dialogue beats: starting beat} ^^{starting beat}
+^^{dialogue beats: |starting beat} ^^{|starting beat}
 ^^{dialogue lines: speaker of} ^^{speaker (of dialogue lines)}
 ^^{dialogue lines: narration} ^^{narration (dialogue lines)}
 ^^{dialogue choices}
@@ -5633,6 +5633,26 @@ Indentation can go down as well as up, and this allows branches to converge back
 Here we have two lines of dialogue, and then a divide according to which option the player chooses. Note that the `Narration:` line is at the same indentation level as the two choices where the dialogue branches: so this is where the branches come together again. The practical effect is that every performance of the beat ends with the tolling of the bell.
 
 ## Dialogue beats and their cues
+
+^^{dialogue: cues <-- dialogue beats: cues for <-- cues (dialogue)}
+^^{dialogue beats: as values} ^^{values: dialogue beats as values}
+^^{dialogue beats: as scenes} ^^{scenes: defined by dialogue beats}
+^^{dialogue beats: conditions} ^^{conditions: for dialogue beats}
+^^{dialogue: conversational subjects <-- conversational subject}
+^^{dialogue: structure of conversation}
+^^{dialogue: cues: named} ^^{this is the (name) beat+cue+}
+^^{dialogue: cues: as scenes} ^^{this is the (name) scene+cue+}
+^^{dialogue: cues: about a subject} ^^{about (subject)+cue+}
+^^{dialogue: cues: conditions} ^^{if (a condition)+cue+} ^^{unless (a condition)+cue+}
+^^{dialogue: cues: before another beat} ^^{before (a beat)+cue+}
+^^{dialogue: cues: after another beat} ^^{after (a beat)+cue+} ^^{immediately after (a beat)+cue+} ^^{later+cue+} ^^{next+cue+}
+^^{dialogue: cues: required speakers} ^^{requiring (subject)+cue+}
+^^{recurring+cue+} ^^{fully recurring+cue+} ^^{spontaneous+cue+}
+^^{dialogue beats: properties} ^^{properties: of dialogue beats}
+^^{performed / unperformed (dialogue beat)+prop+} ^^{unperformed / performed (dialogue beat)+prop+} ^^{performed (dialogue beat)+propcat+} ^^{unperformed (dialogue beat)+propcat+}
+^^{recurring / non-recurring (dialogue beat)+prop+} ^^{non-recurring / recurring (dialogue beat)+prop+} ^^{recurring (dialogue beat)+propcat+} ^^{non-recurring (dialogue beat)+propcat+}
+^^{voluntary / involuntary (dialogue beat)+prop+} ^^{involuntary / voluntary (dialogue beat)+prop+} ^^{voluntary (dialogue beat)+propcat+} ^^{involuntary (dialogue beat)+propcat+}
+^^{spontaneous / unspontaneous (dialogue beat)+prop+} ^^{unspontaneous / spontaneous (dialogue beat)+prop+} ^^{spontaneous (dialogue beat)+propcat+} ^^{unspontaneous (dialogue beat)+propcat+}
 
 Each beat begins with a cue paragraph, which must be placed in round brackets. These usually contain a single sentence, but can have more, so long as it all remains a single paragraph. Such sentences must end with full stops, placed inside the brackets. So this is correct:
 
@@ -5827,6 +5847,11 @@ As a special case, a beat can also be described as `fully recurring`. This makes
 
 ## When the director is passive
 
+^^{dialogue: director <-- director (dialogue)}
+^^{dialogue: director: passive mode}
+^^{DIALOGUE+testcmd+} ^^{testing commands: >DIALOGUE}
+^^{concepts+kind+}
+
 Dialogue is managed during play by a component of Inform called the _director_, which we think of as being like the director of a play. It sometimes has to manage quite a complex situation, so the testing command ``DIALOGUE`` causes the director to explain itself as it goes along; and ``DIALOGUE ALL`` even more so.
 
 At any given time the director is either _passive_ or _active_. Passive means that the director performs dialogue as it's asked to do so, but not otherwise. The director is always passive at the start of play and becomes active only if we explicitly ask it to: see [When the director is active].
@@ -5857,6 +5882,10 @@ beat to be performed with a flow marker. (See [Flow Markers] for more.)
   Note that `talking about` is just one way to nudge the dialogue director into action. A rule like `Instead of talking about romance` would block attempts to do this which arose from the `talking about` action, but would not block such dialogue arising from some other cause.
 
 ## When the director is active
+
+^^{dialogue: director}
+^^{dialogue: director: active mode}
+^^{dialogue: conversational subjects}
 
 The director remains in passive mode until and unless we say so, using:
 
