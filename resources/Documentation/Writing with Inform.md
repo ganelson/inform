@@ -5642,7 +5642,7 @@ Here we have two lines of dialogue, and then a divide according to which option 
 ^^{dialogue: structure of conversation}
 ^^{dialogue: cues: named} ^^{this is the (name) beat+cue+}
 ^^{dialogue: cues: as scenes} ^^{this is the (name) scene+cue+}
-^^{dialogue: cues: about a subject} ^^{about (subject)+cue+}
+^^{dialogue: cues: about a subject} ^^{dialogue beats: about a subject <-- subjects (of dialogue)} ^^{about (subject)+cue+}
 ^^{dialogue: cues: conditions} ^^{if (a condition)+cue+} ^^{unless (a condition)+cue+}
 ^^{dialogue: cues: before another beat} ^^{before (a beat)+cue+}
 ^^{dialogue: cues: after another beat} ^^{after (a beat)+cue+} ^^{immediately after (a beat)+cue+} ^^{later+cue+} ^^{next+cue+}
@@ -5849,6 +5849,7 @@ As a special case, a beat can also be described as `fully recurring`. This makes
 
 ^^{dialogue: director <-- director (dialogue)}
 ^^{dialogue: director: passive mode}
+^^{talking about+action+}
 ^^{DIALOGUE+testcmd+} ^^{testing commands: >DIALOGUE}
 ^^{concepts+kind+}
 
@@ -5947,6 +5948,11 @@ Something to bear in mind is that the director tracks this list all of the time,
 
 ## Entrances and exits
 
+^^{dialogue lines: stage directions in}
+^^{use options: catalogue: |nameless room descriptions} ^^{nameless room descriptions+useopt+}
+^^{(Stage), implicit room+sourcepart+}
+^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+}
+
 It's possible to write an entire story made of nothing but dialogue, beginning with a starting beat being performed, and then more beats flowing from that until the story ends. In a story like that, there's no need even to create any rooms. For example:
 
 	"Not much to say"
@@ -6020,6 +6026,18 @@ And if we have joined multiple rooms together into a map, we can even have the a
 	Raphael (before going northwest): "'I'm expected in Città di Castello,' Raff says, turning on his heel and striding away."
 
 ## Managing dialogue beats
+
+^^{dialogue beats}
+^^{dialogue: director: invoking within a specific action}
+^^{performed / unperformed (dialogue beat)+prop+} ^^{unperformed / performed (dialogue beat)+prop+} ^^{performed (dialogue beat)+propcat+} ^^{unperformed (dialogue beat)+propcat+}
+^^{recurring / non-recurring (dialogue beat)+prop+} ^^{non-recurring / recurring (dialogue beat)+prop+} ^^{recurring (dialogue beat)+propcat+} ^^{non-recurring (dialogue beat)+propcat+}
+^^{voluntary / involuntary (dialogue beat)+prop+} ^^{involuntary / voluntary (dialogue beat)+prop+} ^^{voluntary (dialogue beat)+propcat+} ^^{involuntary (dialogue beat)+propcat+}
+^^{spontaneous / unspontaneous (dialogue beat)+prop+} ^^{unspontaneous / spontaneous (dialogue beat)+prop+} ^^{spontaneous (dialogue beat)+propcat+} ^^{unspontaneous (dialogue beat)+propcat+}
+^^{available / unavailable (dialogue beat)+adj+} ^^{unavailable / available (dialogue beat)+adj+}
+^^{relevant / irrelevant (dialogue beat)+adj+} ^^{irrelevant / relevant (dialogue beat)+adj+}
+^^{being performed (dialogue beat)+adj+}
+^^{testing phrases: showme the beat structure of (dialogue beat)+phr+}
+^^{dialogue: conversational subjects: making live / dead}
 
 There are many ways to manage dialogue. At one extreme we can put the dialogue director into active mode, and let the automatics do everything, so that conversation happens whenever appropriate in the course of play. Or we can keep it passive, but then run the entire story as one big script of dialogue.
 
@@ -6231,6 +6249,12 @@ One way to watch how the list is managed in practice is to add a rule like so, j
 
 ## About about
 
+^^{dialogue: cues: about a subject} ^^{dialogue beats: about a subject} ^^{about (subject)+cue+}
+^^{dialogue lines: mentioning a subject}
+^^{concepts+kind+: in dialogue}
+^^{dialogue: conversational subjects: beats about}
+^^{dialogue: conversational subjects: lines mentioning}
+
 The whole idea of making the dialogue director "active" is that it enables conversation to develop naturally, in a way which dovetails with everything else that happens in the story. This works best if dialogue beats are marked up with what they are `about`, and if good use is made of marking lines as `mentioning` things.
 
 A beat can be `about` any object, but it's mostly sensible to have beats about things — interesting items in the story, or people — or else objects of the `concept` kind, which are used for more abstract ideas. We can freely create those, like so:
@@ -6306,6 +6330,21 @@ If a beat is bringing up unexpected new information, which should not be matched
 	Snow White (mentioning diamonds): "He's a varmint like all the rest, but the diamonds are in these crazy low tunnels, and I can't afford to muss my hair. I'm still super-active on the pageanting circuit, you know."
 
 ## Dialogue lines
+
+^^{dialogue lines}
+^^{dialogue lines: speaker of} ^^{speaker (of dialogue lines)}
+^^{dialogue lines: narration} ^^{narration (dialogue lines)}
+^^{dialogue lines: as values} ^^{values: dialogue lines as values}
+^^{dialogue lines: matching potential speakers}
+^^{interlocutor (of dialogue lines)}
+^^{dialogue lines: mentioning a subject}
+^^{dialogue: conversational subjects: lines mentioning}
+^^{dialogue lines: conditional}
+^^{dialogue lines: properties}
+^^{narrated / unnarrated (dialogue line)+prop+} ^^{unnarrated / narrated (dialogue line)+prop+} ^^{narrated (dialogue line)+propcat+} ^^{unnarrated (dialogue line)+propcat+}
+^^{performed / unperformed (dialogue line)+prop+} ^^{unperformed / performed (dialogue line)+prop+} ^^{performed (dialogue line)+propcat+} ^^{unperformed (dialogue line)+propcat+}
+^^{recurring / non-recurring (dialogue line)+prop+} ^^{non-recurring / recurring (dialogue line)+prop+} ^^{recurring (dialogue line)+propcat+} ^^{non-recurring (dialogue line)+propcat+}
+^^{elaborated / unelaborated (dialogue line)+prop+} ^^{unelaborated / elaborated (dialogue line)+prop+} ^^{elaborated (dialogue line)+propcat+} ^^{unelaborated (dialogue line)+propcat+}
 
 By this point many lines of dialogue have already appeared, some of them with cryptic notes in brackets. It's time now to look at the full range of possibilities.
 
@@ -6455,7 +6494,7 @@ But if we have created a performance style called `spoken with asperity`, then:
 
 	Marcellus (with asperity): "I've had it with these goddam ghosts."
 
-...would perform it that way. See [Performance styles] for more.
+...would perform it that way. See [Managing dialogue lines] for more.
 
 ### Properties of lines
 

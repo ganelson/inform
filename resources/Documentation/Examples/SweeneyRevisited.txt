@@ -5,6 +5,7 @@ Index: Conversation topics that evolve over time
 Description: An innocent conversation about the meat products on sale in Bell Yard, London, in 1847.
 
 ^^{dialogue: >TALK ABOUT}
+^^{talking about+action+}
 ^^{concepts+kind+: in dialogue} ^^{dialogue: conversational subjects: concepts}
 
 Dialogue beats about things are performed in response to the player typing ``TALK ABOUT`` commands, and this short if not sweet example demonstrates that even a very small amount of dialogue can add bustle and character to a location.

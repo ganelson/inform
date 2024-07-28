@@ -4,6 +4,8 @@ RecipeLocation: Reactive Characters
 Index: Character commenting on actions
 Description: The judges of Masterchef comment on the player's attempt to cook John Dory.
 
+^^{dialogue: characters commenting on the action}
+
 	{*}"Skills Test" by Previous Me
 	
 	Section 1 - The Environs

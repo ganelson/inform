@@ -4,6 +4,12 @@ RecipeLocation: Saying Complicated Things
 Description: Modifying the ``TALK ABOUT`` command so that it offers a choice of conversational gambits.
 For: Z-Machine
 
+^^{dialogue: >TALK ABOUT}
+^^{talking about+action+}
+^^{leading beats (- list of dialogue beats)+actvar+} ^^{dialogue beats: |leading beats}
+^^{other beats (- list of dialogue beats)+actvar+} ^^{dialogue beats: |other beats}
+^^{numbers: asking the player for}
+
 This example involves rewriting the `talking about` action, which powers the ``TALK ABOUT`` and ``ASK ABOUT`` commands, to give the player more choice over what is said. To do that, we'll first need to understand how the action normally works. It's an action which first sets up two private-to-it variables:
 
 - `leading beats` is a list of dialogue beats which could in principle be performed and for which the actor is the first speaker;
@@ -65,7 +71,7 @@ This rule only falls through into the existing `first-declared beat rule` if the
 
 - This won't work well if there are beats whose opening line is spoken by the player but `to` an unknown interlocutor who is then mentioned in the course of a text substitution in the line. That's quite unlikely, but still.
 
-- `chosen dialogue number up to X` uses a phrase which we've borrowed from the ordinary dialogue system. It just requires the player to type a number from 1 to `X` inclusive.
+- `a number chosen by the player from 1 to X` uses a phrase which we've borrowed from the ordinary dialogue system. It just requires the player to type a number from 1 to `X` inclusive.
 
 For the sake of testing this:
 
