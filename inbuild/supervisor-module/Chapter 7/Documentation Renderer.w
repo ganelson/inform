@@ -693,20 +693,14 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 		InformFlavouredMarkdown::render_example_heading(OUT, E, NULL);
 		HTML::comment(OUT, I"CONTENT BEGINS");
-		TEMPORARY_TEXT(eg_comment)
-		WRITE_TO(eg_comment, "START EXAMPLE \"%S: %S\" \"eganchor%S\"",
-			egc->insignia, egc->name, egc->insignia);
 		@<Place example searchability comments@>;
-		HTML::comment(OUT, eg_comment);
-		DISCARD_TEXT(eg_comment)
-		HTML_OPEN_WITH("a", "id=\"eganchor%S\"", egc->insignia);
-		HTML_CLOSE("a");
+		@<Place example start comments@>;
 		markdown_item *passage_node = alt_EN->down;
 		while (passage_node) {
 			DocumentationRenderer::render_extended(OUT, cd, passage_node);
 			passage_node = passage_node->next;
 		}
-		HTML::comment(OUT, I"END EXAMPLE");
+		@<Place example end comment@>;
 		HTML::comment(OUT, I"CONTENT ENDS");
 		HTML_CLOSE("div");
 		@<Enter the small print@>;
@@ -721,6 +715,27 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		@<Exit the small print@>;
 	}
 }
+
+@ In the days of |indoc|, comments like these were used to show where inlined
+examples (i.e., examples rendered inside the body of sections of documentation
+rather than in their own individual HTML files) began. They're no longer
+needed because examples are no longer inlined.
+
+@<Place example start comments@> =
+	if (FALSE) {
+		TEMPORARY_TEXT(eg_comment)
+		WRITE_TO(eg_comment, "START EXAMPLE \"%S: %S\" \"eganchor%S\"",
+			egc->insignia, egc->name, egc->insignia);
+		HTML::comment(OUT, eg_comment);
+		DISCARD_TEXT(eg_comment)
+		HTML_OPEN_WITH("a", "id=\"eganchor%S\"", egc->insignia);
+		HTML_CLOSE("a");
+	}
+
+@<Place example end comment@> =
+	if (FALSE) {
+		HTML::comment(OUT, I"END EXAMPLE");
+	}
 
 @<Place example searchability comments@> =
 	int en = 0;
