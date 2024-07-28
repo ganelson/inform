@@ -4,6 +4,9 @@ RecipeLocation: Combat and Death
 Index: Branching choices
 Description: Using the dialogue system to write a combat scene where the player's success depends on their stats.
 
+^^{flow markers} ^^{dialogue beats: flow markers}
+^^{combat: using dialogue beats} ^^{characters (people): combat}
+
 The dialogue system can be used to quickly mock up all sorts of behaviour flows, even ones that don't really have anything to do with conversation.
 
 For instance, if we wanted to mock up some very simple combat, we could express that within a single dialogue beat, which we then re-enter again and again until the combat is concluded. This is marked `fully recurring` to ensure that its options remain available no matter how many times they are encountered.

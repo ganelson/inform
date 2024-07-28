@@ -190,7 +190,7 @@ Every one of the built-in phrases has a definition somewhere in this book. The f
 
 ## Punctuation {PM_UnendingQuote} {PM_UnendingComment} {PM_TooMuchQuotedText} {PM_WordTooLong} {PM_EnigmaticPronoun} {PM_EnigmaticThey}
 
-^^{punctuation} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks}^^^{punctuation: full stop <-- full stop <-- period}^^^{punctuation: full stop <-- punctuation: period}^^^{punctuation: square brackets <-- square brackets} ^^{punctuation: square brackets: comments} ^^{|[ ]: comments} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: question mark, ending sentences <-- question mark} ^^{(?), ending sentences+sourcepart+} ^^{punctuation: exclamation mark, ending sentences <-- exclamation mark} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: apostrophe, meaning quotation mark <-- apostrophe} ^^{('), meaning (")+sourcepart+}^^^{punctuation: quotation marks <-- quotation marks} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{comments: in source text} ^^{line breaks: produced by sentence-ending punctuation}
+^^{punctuation} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks}^^^{punctuation: full stop <-- full stop <-- period}^^^{punctuation: full stop <-- punctuation: period}^^^{punctuation: square brackets <-- square brackets} ^^{punctuation: square brackets: comments} ^^{|[ ]: comments} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: question mark, ending sentences <-- question mark} ^^{(?), ending sentences+sourcepart+} ^^{punctuation: exclamation mark, ending sentences <-- exclamation mark} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: apostrophe: meaning quotation mark <-- apostrophe} ^^{|': meaning (")+sourcepart+}^^^{punctuation: quotation marks <-- quotation marks} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{comments: in source text} ^^{line breaks: produced by sentence-ending punctuation}
 
 The first thing we all learn about punctuation is that full stops finish a sentence. So this is read as two sentences, not one:
 
@@ -2111,7 +2111,7 @@ And this is because `[river sound]` was substituted with the value of the `river
 
 ## How Inform reads quoted text
 
-^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe, meaning quotation mark} ^^{('), meaning (")+sourcepart+} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation} ^^{+to+say "[']"} ^^{+tosay+"[']"}
+^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation} ^^{+to+say "[']"} ^^{+tosay+"[']"}
 
 Text is so fundamental to Inform that the basics had to be covered back in the [The Source Text] chapter, so let's begin this new chapter with a recap.
 
@@ -5546,10 +5546,10 @@ If this section has a moral (other than the inadvisability of killing a king in 
 ^^{dialogue: sections: formatting of} ^^{line breaks: in formatting dialogue} ^^{tabs, for indentation+ofsource+} ^^{indentation+ofsource+} ^^{source text: different in dialogue sections}
 ^^{dialogue beats}
 ^^{dialogue beats: |starting beat} ^^{|starting beat}
-^^{dialogue lines: speaker of} ^^{speaker (of dialogue lines)}
+^^{dialogue lines: speaker of} ^^{speaker (- thing)+actvar+}
 ^^{dialogue lines: narration} ^^{narration (dialogue lines)}
 ^^{dialogue choices}
-^^{(--), for dialogue choices+sourcepart+}
+^^{|--: for dialogue choices+sourcepart+}
 
 To recap, then, all dialogue material must appear in special _dialogue sections_ in the source text. A section is a dialogue section if its titling line ends with `(dialogue)`. For example:
 
@@ -6029,6 +6029,7 @@ And if we have joined multiple rooms together into a map, we can even have the a
 
 ^^{dialogue beats}
 ^^{dialogue: director: invoking within a specific action}
+^^{dialogue beats: as part of an action}
 ^^{performed / unperformed (dialogue beat)+prop+} ^^{unperformed / performed (dialogue beat)+prop+} ^^{performed (dialogue beat)+propcat+} ^^{unperformed (dialogue beat)+propcat+}
 ^^{recurring / non-recurring (dialogue beat)+prop+} ^^{non-recurring / recurring (dialogue beat)+prop+} ^^{recurring (dialogue beat)+propcat+} ^^{non-recurring (dialogue beat)+propcat+}
 ^^{voluntary / involuntary (dialogue beat)+prop+} ^^{involuntary / voluntary (dialogue beat)+prop+} ^^{voluntary (dialogue beat)+propcat+} ^^{involuntary (dialogue beat)+propcat+}
@@ -6332,19 +6333,31 @@ If a beat is bringing up unexpected new information, which should not be matched
 ## Dialogue lines
 
 ^^{dialogue lines}
-^^{dialogue lines: speaker of} ^^{speaker (of dialogue lines)}
+^^{dialogue lines: speaker of} ^^{speaker (- thing)+actvar+}
 ^^{dialogue lines: narration} ^^{narration (dialogue lines)}
 ^^{dialogue lines: as values} ^^{values: dialogue lines as values}
 ^^{dialogue lines: matching potential speakers}
-^^{interlocutor (of dialogue lines)}
+^^{interlocutor (- thing)+actvar+}
 ^^{dialogue lines: mentioning a subject}
 ^^{dialogue: conversational subjects: lines mentioning}
 ^^{dialogue lines: conditional}
 ^^{dialogue lines: properties}
+^^{dialogue: director: speaker selection rules}
 ^^{narrated / unnarrated (dialogue line)+prop+} ^^{unnarrated / narrated (dialogue line)+prop+} ^^{narrated (dialogue line)+propcat+} ^^{unnarrated (dialogue line)+propcat+}
 ^^{performed / unperformed (dialogue line)+prop+} ^^{unperformed / performed (dialogue line)+prop+} ^^{performed (dialogue line)+propcat+} ^^{unperformed (dialogue line)+propcat+}
 ^^{recurring / non-recurring (dialogue line)+prop+} ^^{non-recurring / recurring (dialogue line)+prop+} ^^{recurring (dialogue line)+propcat+} ^^{non-recurring (dialogue line)+propcat+}
 ^^{elaborated / unelaborated (dialogue line)+prop+} ^^{unelaborated / elaborated (dialogue line)+prop+} ^^{elaborated (dialogue line)+propcat+} ^^{unelaborated (dialogue line)+propcat+}
+^^{performance notes: named} ^^{this is the (name) line+perfnote+}
+^^{performance notes: to an interlocutor} ^^{to (person)+perfnote+}
+^^{performance notes: mentioning a subject} ^^{mentioning (subject)+perfnote+}
+^^{performance notes: conditions} ^^{if (a condition)+perfnote+} ^^{unless (a condition)+perfnote+}
+^^{performance notes: before an action} ^^{before (an action)+perfnote+}
+^^{performance notes: after an action} ^^{after (an action)+perfnote+}
+^^{performance notes: setting a condition} ^^{now (a condition)+perfnote+}
+^^{performance notes: without speaking} ^^{without speaking+perfnote+}
+^^{performance notes: performance styles} ^^{performance styles}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
+^^{|': in elaborated dialogue lines+sourcepart+} ^^{punctuation: apostrophe: in elaborated dialogue lines}
 
 By this point many lines of dialogue have already appeared, some of them with cryptic notes in brackets. It's time now to look at the full range of possibilities.
 
@@ -6566,6 +6579,21 @@ Henry self-importantly declared: "The greatest TV show of all time is 24."
 
 ## Managing dialogue lines
 
+^^{dialogue lines} ^^{dialogue lines: properties}
+^^{dialogue lines: textual content of}
+^^{performance styles}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
+^^{narrated / unnarrated (dialogue line)+prop+} ^^{unnarrated / narrated (dialogue line)+prop+} ^^{narrated (dialogue line)+propcat+} ^^{unnarrated (dialogue line)+propcat+}
+^^{performed / unperformed (dialogue line)+prop+} ^^{unperformed / performed (dialogue line)+prop+} ^^{performed (dialogue line)+propcat+} ^^{unperformed (dialogue line)+propcat+}
+^^{recurring / non-recurring (dialogue line)+prop+} ^^{non-recurring / recurring (dialogue line)+prop+} ^^{recurring (dialogue line)+propcat+} ^^{non-recurring (dialogue line)+propcat+}
+^^{elaborated / unelaborated (dialogue line)+prop+} ^^{unelaborated / elaborated (dialogue line)+prop+} ^^{elaborated (dialogue line)+propcat+} ^^{unelaborated (dialogue line)+propcat+}
+^^{available / unavailable (dialogue line)+adj+} ^^{unavailable / available (dialogue line)+adj+}
+^^{verbal / non-verbal (dialogue line)+adj+} ^^{non-verbal / verbal (dialogue line)+adj+}
+^^{performance notes: without speaking} ^^{without speaking+perfnote+}
+^^{interlocutor (- thing)+actvar+}
+^^{speaker (- thing)+actvar+}
+^^{style (- performance style)+actvar+}
+
 This is where we meet two more kinds: `dialogue line` and `performance style`. Each different line of dialogue in the source text is a different `dialogue line` value. That's true even if the texts are the same, as in the famous dialogue between Laurence Olivier (Szell) and Dustin Hoffman (Babe) in _Marathon Man_ (1976):
 
 	Szell: "Is it safe?"
@@ -6652,6 +6680,21 @@ Until the actual moment of performing this, we can't know who exactly will speak
 > This produces the text of the speech made, but it's only really safe to use this phrase in a rule belonging to the `performing something` activity, because the text may make reference to the current `speaker` and `interlocutor` — which are variables existing only inside that activity.
 
 ## Decision points
+
+^^{dialogue beats: branches}
+^^{dialogue beats: player choices}
+^^{|--: for dialogue choices+sourcepart+}
+^^{dialogue choices}
+^^{dialogue choices: based on actions}
+^^{dialogue choices: automatic}
+^^{asking the player: for a dialogue choice} ^^{querying the player: for a dialogue choice}
+^^{(before), in dialogue choices+sourcepart+}
+^^{(after), in dialogue choices+sourcepart+}
+^^{(instead of), in dialogue choices+sourcepart+}
+^^{(otherwise), in dialogue choices+sourcepart+}
+^^{flow markers} ^^{dialogue beats: flow markers <-- dialogue: sections: flow markers}
+^^{(<-), flow marker+sourcepart+}
+^^{(step through), automatic dialogue choice+sourcepart+} ^^{(step through and stop), automatic dialogue choice+sourcepart+} ^^{(cycle through), automatic dialogue choice+sourcepart+} ^^{(shuffle through), automatic dialogue choice+sourcepart+} ^^{(choose randomly), automatic dialogue choice+sourcepart+}
 
 A _decision point_ is reached when the director is performing a beat and comes to a run of _choices_. The idea is that the player selects one of these choices, and then dialogue continues down whichever branch is called for.
 
@@ -6820,6 +6863,14 @@ permutation when that completes, and so on
 
 ## Dialogue choices
 
+^^{|--: for dialogue choices+sourcepart+}
+^^{dialogue choices}
+^^{dialogue choices: as values} ^^{values: dialogue choices as values}
+^^{dialogue choices: conditional}
+^^{dialogue choices: properties}
+^^{performed / unperformed (dialogue choice)+prop+} ^^{unperformed / performed (dialogue choice)+prop+} ^^{performed (dialogue choice)+propcat+} ^^{unperformed (dialogue choice)+propcat+}
+^^{recurring / non-recurring (dialogue lichoicene)+prop+} ^^{non-recurring / recurring (dialogue choice)+prop+} ^^{recurring (dialogue choice)+propcat+} ^^{non-recurring (dialogue choice)+propcat+}
+
 As we've seen, then, a dialogue choice is written as a paragraph beginning with `--`. Much like dialogue lines, dialogue choices can have optional annotations given to them between round brackets. But if we forget about those, the possible ways to write a choice are:
 
 Syntax                      | What it's for
@@ -6888,6 +6939,15 @@ Exactly as for beats and lines, a `dialogue choice` can have these either-or pro
 than once in the same play-through?
 
 ## Flow markers
+
+^^{flow markers} ^^{dialogue beats: flow markers}
+^^{(<-), flow marker+sourcepart+} ^^{(->), flow marker+sourcepart+}
+^^{dialogue beats: stopping}
+^^{(-> stop), flow marker+sourcepart+ --> stop}
+^^{(-> end the story), flow marker+sourcepart+ --> end the story}
+^^{(-> perform) beat, flow marker+sourcepart+ --> perform}
+^^{(-> another choice), flow marker+sourcepart+ --> another choice}
+^^{story structure: ending: in a dialogue beat} ^^{end of story: in a dialogue beat}
 
 Flow markers are written `<-` or `->`, and cause the dialogue director to interrupt its normal performance of a beat. `<-` generally makes a backwards jump in the same beat, while `->` leads out to another beat.
 
@@ -7036,6 +7096,14 @@ Finally, and only seldom needed, `-> another choice` can be used to clarify that
 The reason for the `-> another choice` flow marker is simply that we want two sets of two options, not one set of four. If any dialogue had appeared in between the two decisions, there would have been no need for the `-> another choice`, but since it didn't, we need some marker to hold the decisions apart from each other. `-> another choice` has to be unconditional, and doesn't get a name or properties: it isn't really present in the story at all.
 
 ## Managing dialogue choices
+
+^^{flow markers: as a sort of dialogue choice} ^^{dialogue beats: flow markers: as a sort of dialogue choice}
+^^{dialogue choices: flow markers as choices}
+^^{performed / unperformed (dialogue choice)+prop+} ^^{unperformed / performed (dialogue choice)+prop+} ^^{performed (dialogue choice)+propcat+} ^^{unperformed (dialogue choice)+propcat+}
+^^{recurring / non-recurring (dialogue lichoicene)+prop+} ^^{non-recurring / recurring (dialogue choice)+prop+} ^^{recurring (dialogue choice)+propcat+} ^^{non-recurring (dialogue choice)+propcat+}
+^^{flowing / offered (dialogue choice)+adj+} ^^{offered / flowing (dialogue choice)+adj+}
+^^{story-ending (dialogue choice)+adj+ --> story ending}
+^^{offering something+descactivity+} ^^{offering+activity+} ^^{dialogue choices: offering+activity+}
 
 As has been mentioned already, each different choice in the source text is a different `dialogue choice` value, and in fact so is each different flow marker: under the surface, a flow marker is really just a special sort of choice.
 
@@ -7407,7 +7475,7 @@ While this syntax is still allowed for the time being, to keep old source text w
 
 ## Otherwise {PM_NonCaseInIf} {PM_MisalignedOtherwise} {PM_MisalignedCase} {PM_MisarrangedOtherwise} {PM_DoubleOtherwise} {PM_OtherwiseIfAfterOtherwise} {PM_CaseValueNonConstant} {PM_CaseValueMismatch} {PM_OtherwiseWithoutIf} {PM_OtherwiseInNonIf}
 
-^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{(--), separating cases+sourcepart+} ^^{abbreviations: chains of equality tests}
+^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{|--: separating cases+sourcepart+} ^^{abbreviations: chains of equality tests}
 
 We often need code which does one thing in one circumstance, and another the rest of the time. We could do this like so:
 
@@ -11927,7 +11995,7 @@ These definitions mentioned blankness several times, and that's the topic to cov
 
 ## Blank entries
 
-^^{tables: blank entries <-- blank entries in tables} ^^{(--), as a blank table entry+sourcepart+}
+^^{tables: blank entries <-- blank entries in tables} ^^{|--: as a blank table entry+sourcepart+}
 
 We are allowed to leave certain entries blank (perhaps to be filled in later, perhaps not) by writing `--` instead of the relevant value:
 
@@ -14276,7 +14344,7 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Printing a locale paragraph about {act_plp}
 
-^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
+^^{printing a locale paragraph about something+descactivity+} ^^{printing a locale paragraph about+activity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
 
 **1. When it happens.** See `printing the locale description`. By this point, the locale description process has identified a number of items as candidates to be described, and worked out a priority order. This activity is then called for each candidate in turn, starting with the highest priority items and working downwards. It can either print some text or not, and can either mark the item as `mentioned` or not: if it does, then the item won't appear subsequently in the locale description. If the activity does nothing, the item becomes "nondescript" and falls through into the final ``You can also see...`` paragraph, unless another rule mentions it in the mean time.
 
@@ -14313,7 +14381,11 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Performing something {act_performing}
 
-^^{performing something+descactivity+} ^^{dialogue lines: performing something+activity+}
+^^{performing something+descactivity+} ^^{performing+activity+} ^^{dialogue lines: performing something+activity+}
+^^{interlocutor (- thing)+actvar+}
+^^{speaker (- thing)+actvar+}
+^^{style (- performance style)+actvar+}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
 
 **1. When it happens.** Whenever the dialogue director has definitely decided to perform a line of dialogue. The activity shouldn't be used to undo that decision (i.e., by not printing anything): to suppress dialogue, put conditions on it. The activity has three private variables:
 
@@ -14360,7 +14432,7 @@ See [Managing dialogue lines] for more.
 
 ## Offering something {act_offering}
 
-^^{offering something+descactivity+} ^^{dialogue choices: offering something+activity+}
+^^{offering something+descactivity+} ^^{offering+activity+} ^^{dialogue choices: offering+activity+}
 
 **1. When it happens.** Whenever the dialogue director has one or more textual choices to ask the player to select between. This activity applies to a list of dialogue choices, which will never be empty.
 
@@ -18430,7 +18502,7 @@ But that is only the first step. What do we do with the material when we have it
 
 ## Bibliographic data {PM_BadEpisode}
 
-^^{bibliographic data <-- metadata <-- publication data} ^^{title+biblio+} ^^{author+biblio+} ^^{headline+biblio+} ^^{release number+biblio+} ^^{genre+biblio+} ^^{story description+biblio+ <-- blurb+biblio+} ^^{punctuation: apostrophe, meaning quotation mark} ^^{('), meaning (")+sourcepart+}^^^{+tosay+"[(unicode character)]" --> unicode character}
+^^{bibliographic data <-- metadata <-- publication data} ^^{title+biblio+} ^^{author+biblio+} ^^{headline+biblio+} ^^{release number+biblio+} ^^{genre+biblio+} ^^{story description+biblio+ <-- blurb+biblio+} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+}^^^{+tosay+"[(unicode character)]" --> unicode character}
 
 Almost all printed books have a title page and a so-called "imprint" page, often its verso, which make up a description of the contents. The title page gives the name of the book and of the author, while an imprint page contains a variety of details about the edition, the printing, and so on. An ISBN number is allocated so that, from the number alone, any book seller or cataloguer can identify exactly this work. Sometimes other cataloguing information is added, such as the Library of Congress classification. This set of information is called "bibliographic data", and without it libraries and booksellers would be at a total loss.
 

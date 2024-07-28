@@ -5,6 +5,8 @@ Index: Otherwise if demonstrated
 Description: A simple exercise in printing the names of random numbers, comparing the use of "otherwise if...", a switch statement, or a table-based alternative.
 For: Z-Machine
 
+^^{otherwise (a phrase)+phr+}
+
 	{*}"Numberless"
 	
 	The Rambling Warren is a room.
