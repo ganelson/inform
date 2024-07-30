@@ -1,0 +1,43 @@
+Example: ** Too Much Status
+Location: Basic IO
+RecipeLocation: Basic IO
+Index: Custom status window columns
+Description: Use custom status window column definitions.
+
+^^{Custom status window columns}
+
+With tables we can adjust how the status window is displayed. In this example we'll keep track of not only the location, the score, and the time, but also the player's inventory and how many times they've jumped.
+
+	{*}"Too Much Status"
+	
+	The Status Room is a room. "In this room nothing escapes our notice."
+	
+	Use scoring.
+	
+	The player carries a cat, a book, and a mobile phone.
+	
+	Times jumped is a number variable.
+	
+	Carry out jumping:
+		increase times jumped by 1;
+	
+	Table of Too Much Status Column Definitions
+	left	middle	right
+	"[location]"	--	"Score: [the score]"
+	"Inventory: [list of things carried by the player]"	--	"Time: [time of day]"
+	--	"Times jumped: [times jumped]"
+	
+	When play begins:
+		redraw the status window with Table of Too Much Status Column Definitions;
+
+We can also use redraw the status window with a table only temporarily, after which it will return to the previous set of column definitions:
+
+	{**}Table of Sleep
+	middle
+	"Zzzzzz."
+	
+	Instead of waiting:
+		say "You have a quick nap...";
+		redraw the status window with Table of Sleep, once only;
+		wait for any key;
+		increase score by one;

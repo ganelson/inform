@@ -1,0 +1,33 @@
+Example: ** Disaster
+Location: Glk
+RecipeLocation: Glk
+Index: Suspend and resume text input
+Description: Suspend and resume text input.
+For: Glulx
+
+^^{Suspend and resume text input}
+
+Sometimes you may want to say something while waiting for the player's input, such as in a timer event. But if you say something while text input is active, the interpreter will raise a error. Before doing so you must suspend text input in the window, and then resume again afterwards.
+
+	{*}"Disaster"
+	
+	The Control Room is a room. "Alarms are blaring everywhere!"
+	
+	Glk event handling rule for a timer event:
+		suspend text input in the main window;
+		say "[line break]
+			[one of]That high pitched bell goes off again!
+			[or]You hear a deep rumble underground.
+			[or]All the lights on the console briefly flash at once, before the screens turn off.
+			
+			After a brief moment they return. Concerning.
+			[at random]
+			
+			>";
+		resume text input in the main window;
+	
+	To request timer events every (N - number) milliseconds:
+		(- glk_request_timer_events({N}); -).
+	
+	When play begins:
+		request timer events every 5000 milliseconds;

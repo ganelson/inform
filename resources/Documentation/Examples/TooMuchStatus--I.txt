@@ -1,0 +1,12 @@
+
+
+
+
+Too Much Status
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Status Room
+In this room nothing escapes our notice.
+
+>Are you sure you want to quit? 

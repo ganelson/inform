@@ -17968,6 +17968,64 @@ The opening character is an asterisk if the file is currently ready, a hyphen if
 * //4122DDA8-A153-46BC-8F57-42220F9D8795// ice
 ```
 
+# Screen and Keyboard
+
+## Glk
+
+An interactive story as released by Inform is, in the end, a computer program. Sometimes that is a stand-alone _story file_, which can be played by an app called an _interpreter_, and sometimes it is a website with an interpreter built in, but a website is also a sort of computer program.
+
+Once built, the program may run on quite a range of different hardware. A stand-alone story file could be played on a so-called dumb terminal, not much more capable than an 1970s teletype machine, or in a windowed app controlled by a mouse, or on a touch-screen. A website might be browsed on a phone, a tablet, a desktop computer, or a Braille display. The range of potential environments is huge, and the current one is sometimes called the _platform_.
+
+The inner life of the program is the same whatever the platform. Perhaps it's working out how the characters move around in a murder mystery, or sorting lists of numbers and then turning the result into text: all of that computation would be the same inside of a phone's web browser as in a command-line interpreter for a Unix workstation. But that computation is no use unless instructions can be taken in from the outside world, and results sent back out. This two-way communication is called _input/output_, or _IO_, and it works very differently on different platforms.
+
+Of course, Inform stories throughout this book have been using IO right from the start. For example:
+
+	> EXAMINE LAMP
+	It's a typical Linux-Apache-MySQL-Perl server dating from the late 1990s.
+
+The typed command was input, and the reply back was output. But these are the absolute basics of IO, which work on more or less every platform. This chapter is about less standard user interactions, which don't at all work on every platform. They mostly involve screen or keyboard effects, hence the chapter title, but a few other exotica also come in.
+
+Unless otherwise stated, *everything in this chapter assumes that a project is using the Glulx setting*. (This is the default, of course.) The older Z-machine has almost no ability to support IO. Glulx, by contrast, can liaise with a sort of intermediary called _glk_ which performs advanced IO for it.
+
+The first thing glk can do for us is to tell us what our current platform will and won't be able to do:
+
+> phrase: {ph_glksupported} if (F - glk feature) is/are supported:
+>
+> Whether the platform supports feature `F` or not. This test is very rapid, so there need not be any performance concerns over performing it frequently: in particular there is nothing gained by storing the result in a variable to avoid having to test a second time, and indeed that might not be a good idea, because the abilities of glk might change during play.
+
+> phrase: {ph_glkversion} glk version number ... number
+>
+> The version of the glk interface which the story can currently see. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another. Versions of glk are normally written in the form ```0.7.5``` on specification documents online, but ```X.Y.Z``` is normally converted to a number as 65536 times ```X``` plus 256 times ```Y``` plus ```Z```: thus, version ```0.7.5``` produces the number 1797. Later glk versions always have higher version numbers than earlier ones.
+
+Here `glk feature` is a kind of value. So, for example,
+
+	repeat with F running through glk features:
+		say "[F]: [whether or not F is supported].";
+
+might produce:
+
+	timers: true.
+	glk graphics: true.
+	basic sounds: true.
+	sound volume: true.
+	sound notifications: true.
+	hyperlinks: true.
+	MOD sounds: true.
+	PNG transparency: true.
+	glk unicode: true.
+	unicode normalization: true.
+	line input echo suppression: true.
+	line input terminators: false.
+	system clock: true.
+	extended sounds: true.
+	resource streams: false.
+	graphics window character input: true.
+	text formatting: false.
+
+## Basic IO
+
+This is placeholder text only.
+
 # Testing and Debugging
 
 ## A recap on TEST and showme

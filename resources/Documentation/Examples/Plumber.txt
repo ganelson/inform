@@ -1,0 +1,36 @@
+Example: ** Plumber
+Location: Basic IO
+RecipeLocation: Basic IO
+Index: Colour text
+Description: Use coloured text to display some pixel art.
+For: Glulx
+
+^^{Colour text}
+
+With a combination fixed letter spacing, reverse mode (which makes the foreground colour be shown as the background), and a few colours, we can display some pixel art. We also use the "basic white" colour, for the background.
+
+	{*}"Plumber"
+	
+	Hat is always #EF3D23.
+	Hair is always #AE812E.
+	Skin is always #F9A344.
+	Pixel is always "  ".
+	
+	When play begins:
+		say "[fixed letter spacing][reverse mode][basic white letters][line break]
+		[pixel][pixel][pixel][hat letters][pixel][pixel][pixel][pixel][pixel][pixel][basic white letters][pixel][pixel][pixel][pixel][line break]
+		[pixel][pixel][hat letters][pixel][pixel][pixel][pixel][pixel][pixel][pixel][pixel][pixel][pixel][basic white letters][pixel][line break]
+		[pixel][pixel][hair letters][pixel][pixel][pixel][pixel][skin letters][pixel][pixel][hair letters][pixel][skin letters][pixel][basic white letters][pixel][pixel][pixel][line break]
+		[pixel][hair letters][pixel][pixel][skin letters][pixel][hair letters][pixel][skin letters][pixel][pixel][pixel][hair letters][pixel][skin letters][pixel][pixel][pixel][basic white letters][pixel][line break]
+		[pixel][hair letters][pixel][pixel][skin letters][pixel][hair letters][pixel][pixel][skin letters][pixel][pixel][pixel][hair letters][pixel][skin letters][pixel][pixel][pixel][basic white letters][line break]
+		[pixel][hair letters][pixel][pixel][pixel][skin letters][pixel][pixel][pixel][pixel][hair letters][pixel][pixel][pixel][pixel][basic white letters][pixel][line break]
+		[pixel][pixel][pixel][skin letters][pixel][pixel][pixel][pixel][pixel][pixel][pixel][pixel][basic white letters][pixel][pixel][pixel][pixel][line break]
+		[pixel][pixel][hair letters][pixel][pixel][pixel][hat letters][pixel][hair letters][pixel][pixel][pixel][basic white letters][pixel][pixel][pixel][pixel][line break]
+		[pixel][hair letters][pixel][pixel][pixel][pixel][hat letters][pixel][hair letters][pixel][pixel][hat letters][pixel][hair letters][pixel][pixel][pixel][basic white letters][pixel][line break]
+		[hair letters][pixel][pixel][pixel][pixel][pixel][hat letters][pixel][pixel][pixel][pixel][hair letters][pixel][pixel][pixel][pixel][basic white letters][line break]
+		[skin letters][pixel][pixel][pixel][hair letters][pixel][hat letters][pixel][skin letters][pixel][hat letters][pixel][pixel][skin letters][pixel][hat letters][pixel][hair letters][pixel][skin letters][pixel][pixel][basic white letters][line break]
+		[skin letters][pixel][pixel][pixel][pixel][hat letters][pixel][pixel][pixel][pixel][pixel][pixel][skin letters][pixel][pixel][pixel][basic white letters][line break]
+		[skin letters][pixel][pixel][pixel][hat letters][pixel][pixel][pixel][pixel][pixel][pixel][pixel][pixel][skin letters][pixel][pixel][basic white letters][line break]
+		[pixel][pixel][hat letters][pixel][pixel][pixel][pixel][basic white letters][pixel][hat letters][pixel][pixel][pixel][pixel][basic white letters][pixel][pixel][line break]
+		[pixel][hair letters][pixel][pixel][pixel][pixel][basic white letters][pixel][pixel][pixel][hair letters][pixel][pixel][pixel][pixel][basic white letters][pixel][basic white letters][line break]
+		[hair letters][pixel][pixel][pixel][pixel][pixel][basic white letters][pixel][pixel][pixel][hair letters][pixel][pixel][pixel][pixel][pixel][default colours][reverse mode off][variable letter spacing][paragraph break]";

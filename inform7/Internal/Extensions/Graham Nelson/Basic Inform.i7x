@@ -1694,10 +1694,12 @@ Part Four - Glulx and Glk (for Glulx only)
 
 Chapter - Glk and Glulx feature testing
 
-To decide whether (F - glk feature) is/are supported:
+To decide whether (F - glk feature) is/are supported
+	(documented at ph_glksupported):
 	(- Cached_Glk_Gestalts-->({F}) -).
 
-To decide what number is the glk version number/--:
+To decide what number is the glk version number/--
+	(documented at ph_glkversion):
 	(- Cached_Glk_Gestalts-->gestalt_Version -).
 
 To decide whether buffer window graphics are/is supported:

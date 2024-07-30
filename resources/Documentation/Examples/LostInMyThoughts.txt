@@ -1,0 +1,31 @@
+Example: ** Lost In My Thoughts
+Location: Glk
+RecipeLocation: Glk
+Index: Handle Glk timer events
+Description: Create and handle timer events.
+For: Glulx
+
+^^{Handle Glk timer events}
+
+While Inform does track the time of day, it doesn't, by default, show the time in the status line. So we'll first set that up.
+
+	{*}"Lost In My Thoughts"
+	
+	Lost in my thoughts is a room. "All day long I sit here, lost in my thoughts."
+	
+	When play begins:
+		now the right hand status line is "Time: [time of day]".
+
+Inform doesn't come with support for making timer events out of the box, but it's easy to add a phrase calling the function:
+
+	{**}To request timer events every (N - number) milliseconds:
+		(- glk_request_timer_events({N}); -).
+
+Now all we need to do is create an event handler, and then start the timer:
+
+	{**}Glk event handling rule for a timer event:
+		increase the time of day by 1 minute;
+		redraw the status line;
+	
+	When play begins:
+		request timer events every 500 milliseconds;
