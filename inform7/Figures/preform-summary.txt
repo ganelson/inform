@@ -17,6 +17,8 @@
         conceptual, like ideas, or are needed for internal book-keeping.') constraint (none) extremes [1, 1]
         <s-literal-real-number>=1 
           (hits 11/10645) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+        <s-literal-version-number>=1 
+          (hits 0/10634) constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
           (hits 100/485) (matched: 'false') constraint CS = {13} extremes [1, 1]
         <s-literal-list>=1 

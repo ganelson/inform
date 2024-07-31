@@ -107,6 +107,7 @@ kind *K_truth_state = NULL;
 kind *K_unicode_character = NULL;
 kind *K_use_option = NULL;
 kind *K_verb = NULL;
+kind *K_version_number = NULL;
 
 @ And here are two more standard kinds, but which most Inform users don't
 realise are there, because they are omitted from the Kinds index:
@@ -199,6 +200,7 @@ kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("USE_OPTION_TY", &K_use_option);
 	IDENTIFIERS_CORRESPOND("VALUE_TY", &K_value);
 	IDENTIFIERS_CORRESPOND("VERB_TY", &K_verb);
+	IDENTIFIERS_CORRESPOND("VERSION_NUMBER_TY", &K_version_number);
 	IDENTIFIERS_CORRESPOND("NIL_TY", &K_nil);
 	IDENTIFIERS_CORRESPOND("VOID_TY", &K_void);
 	return NULL;

@@ -924,6 +924,7 @@ void CoreSyntax::grant_code_permissions(void) {
 @e constant_text_ANNOT /* |text_stream|: for constant values */
 @e constant_use_option_ANNOT /* |use_option|: for constant values */
 @e constant_verb_form_ANNOT /* |verb_form|: for constant values */
+@e constant_version_number_ANNOT /* |semantic_version_number_holder|: for constant values */
 @e converted_SN_ANNOT /* |int|: marking descriptions */
 @e explicit_iname_ANNOT /* |inter_name|: is this value explicitly an iname? */
 @e explicit_literal_ANNOT /* |int|: my value is an explicit integer or text */
@@ -957,6 +958,7 @@ DECLARE_ANNOTATION_FUNCTIONS(constant_table, table)
 DECLARE_ANNOTATION_FUNCTIONS(constant_text, text_stream)
 DECLARE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
 DECLARE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
+DECLARE_ANNOTATION_FUNCTIONS(constant_version_number, semantic_version_number_holder)
 
 DECLARE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 DECLARE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
@@ -984,6 +986,7 @@ MAKE_ANNOTATION_FUNCTIONS(constant_table, table)
 MAKE_ANNOTATION_FUNCTIONS(constant_text, text_stream)
 MAKE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
 MAKE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
+MAKE_ANNOTATION_FUNCTIONS(constant_version_number, semantic_version_number_holder)
 
 MAKE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 MAKE_ANNOTATION_FUNCTIONS(kind_of_value, kind)
@@ -1026,6 +1029,8 @@ void CoreSyntax::declare_spec_annotations(void) {
 		constant_use_option_ANNOT, CoreSyntax::write_constant_use_option_ANNOT);
 	Annotations::declare_type(
 		constant_verb_form_ANNOT, CoreSyntax::write_constant_verb_form_ANNOT);
+	Annotations::declare_type(
+		constant_version_number_ANNOT, CoreSyntax::write_constant_version_number_ANNOT);
 	Annotations::declare_type(
 		condition_tense_ANNOT, CoreSyntax::write_condition_tense_ANNOT);
 	Annotations::declare_type(
@@ -1155,6 +1160,12 @@ void CoreSyntax::write_constant_verb_form_ANNOT(text_stream *OUT, parse_node *p)
 		WRITE("}");
 	}
 }
+void CoreSyntax::write_constant_version_number_ANNOT(text_stream *OUT, parse_node *p) {
+	semantic_version_number_holder *H = Node::get_constant_version_number(p);
+	if (H) {
+		WRITE(" {version: %v}", &(H->version));
+	}
+}
 void CoreSyntax::write_condition_tense_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_condition_tense(p)) {
 		WRITE(" {condition tense: ");
@@ -1256,6 +1267,7 @@ void CoreSyntax::grant_spec_permissions(void) {
 	Annotations::allow(CONSTANT_NT, constant_text_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_use_option_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_verb_form_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_version_number_ANNOT);
 	Annotations::allow(CONSTANT_NT, explicit_literal_ANNOT);
 	Annotations::allow(CONSTANT_NT, kind_of_value_ANNOT);
 	Annotations::allow(CONSTANT_NT, nothing_object_ANNOT);

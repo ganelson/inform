@@ -1,12 +1,12 @@
 adjective: 146 items
 article: 2 items
-noun: 2574 items
+noun: 2575 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3531
+total in all categories: 3532
 
 adjective: 'dependent on the player'
 adjective: 'independent of the player'
@@ -196,6 +196,7 @@ noun: common: 'glulx feature'
 noun: common: 'glk event'
 noun: common: 'glk window type'
 noun: common: 'text input status'
+noun: common: 'version number'
 noun: common: 'described action'
 noun: common: 'action'
 noun: common: 'action name'

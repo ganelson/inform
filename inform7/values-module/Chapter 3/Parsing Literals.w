@@ -20,6 +20,7 @@ Note also that ordinal numbers are not valid as literals: "2nd" is not a noun.
 	<quoted-text> ( <response-letter> ) |  ==> { -, Rvalues::from_wording(W) }
 	<quoted-text> |                        ==> { -, Rvalues::from_wording(W) }
 	<s-literal-real-number> |              ==> { pass 1 }
+	<s-literal-version-number> |           ==> { pass 1 }
 	<s-literal-truth-state> |              ==> { pass 1 }
 	<s-literal-list> |                     ==> { pass 1 }
 	unicode ( <s-unicode-character> ) |    ==> { pass 1 }

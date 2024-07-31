@@ -1,0 +1,72 @@
+Version Numbers Template.
+
+Support for the version number kind.
+
+@ See "Writing with Inform" for details.
+
+=
+Constant VERSION_NUMBER_MAJOR_F = 0;
+Constant VERSION_NUMBER_MINOR_F = 1;
+Constant VERSION_NUMBER_PATCH_F = 2;
+
+[ VERSION_NUMBER_TY_Say vn;
+	print "v", PVField(vn, VERSION_NUMBER_MAJOR_F), ".";
+	print PVField(vn, VERSION_NUMBER_MINOR_F), ".";
+	print PVField(vn, VERSION_NUMBER_PATCH_F);
+];
+
+[ VERSION_NUMBER_TY_Compare vn1 vn2 i d;
+	for (i=VERSION_NUMBER_MAJOR_F: i<=VERSION_NUMBER_PATCH_F: i++) {
+		d = PVField(vn1, i) - PVField(vn2, i);
+		if (d ~= 0) return d;
+	}
+	return 0;
+];
+
+[ VERSION_NUMBER_TY_Hash vn rv;
+	rv = PVField(vn, VERSION_NUMBER_MAJOR_F);
+	rv = rv * 33 + PVField(vn, VERSION_NUMBER_MINOR_F);
+	rv = rv * 33 + PVField(vn, VERSION_NUMBER_PATCH_F);
+	return rv;
+];
+
+[ VERSION_NUMBER_TY_Create kind_id sb_address
+	short_block long_block;
+
+	long_block = CreatePVLongBlock(kind_id);
+	InitialisePVLongBlockField(long_block, VERSION_NUMBER_MAJOR_F, 0);
+	InitialisePVLongBlockField(long_block, VERSION_NUMBER_MINOR_F, 0);
+	InitialisePVLongBlockField(long_block, VERSION_NUMBER_PATCH_F, 0);
+	
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->0 = long_block;
+
+	return short_block;
+];
+
+[ VERSION_NUMBER_TY_Destroy vn;
+];
+
+[ VERSION_NUMBER_TY_New major minor patch vn;
+	vn = CreatePV(VERSION_NUMBER_TY);
+	WritePVField(vn, VERSION_NUMBER_MAJOR_F, major);
+	WritePVField(vn, VERSION_NUMBER_MINOR_F, minor);
+	WritePVField(vn, VERSION_NUMBER_PATCH_F, patch);
+	return vn;
+];
+
+[ VERSION_NUMBER_TY_NewFromPacked glk_packed vn;
+	return VERSION_NUMBER_TY_New(
+		glk_packed / $10000,
+		(glk_packed % $10000) / $100,
+		glk_packed % $100);
+];
+
+[ VERSION_NUMBER_TY_Extract vn segment;
+	if ((segment < 0) || (segment > 2)) return 0;
+	return PVField(vn, segment);
+];
+
+[ VERSION_NUMBER_TY_Copy vnto vnfrom kind recycling;
+	CopyPVRawData(vnto, vnfrom, kind, recycling);
+];
