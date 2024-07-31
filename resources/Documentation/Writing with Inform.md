@@ -4263,7 +4263,7 @@ A change of player can sometimes cause confusing things to happen, if it takes p
 
 ## Removing things from play
 
-^^{things+kind+: removing from play} ^^{deleting things from the world} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
+^^{things+kind+: removing from play} ^^{deleting things from the world <-- destroying things} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
 
 Some things will occasionally be in a limbo state called being `off-stage`: like actors or props not needed in Act II, but perhaps to be brought back on-stage later, they wait on the sidelines. Anything created with no apparent location will start the story off-stage, as in the case of the lamp here:
 
@@ -4594,7 +4594,7 @@ Alternatively, it's possible the "fix" the RNG by clicking the "Make random outc
 
 ## Random choices of things {PM_RandomImpossible}
 
-^^{randomness: random things}
+^^{randomness: random things} ^^{descriptions (references to things): randomly described thing}
 
 Writing `a random number` is not allowed, because the possible range is too large, but that was the only reason why not.
 
@@ -7142,9 +7142,11 @@ If we need more variation than that, we should make more than one definition.
 
 ## The showme phrase
 
+^^{testing phrases: showme (value)+phr+}
+
 We've already seen the ``SHOWME`` command, which can be typed into the Story panel to look at the state of something, usually a thing or room. ``SHOWME`` is a testing command which has no effect once the work is released; eventual players can't use it.
 
-Inform also has a phrase called ``SHOWME``, which works in much the same way:
+Inform also has a phrase called `showme`, which works in much the same way:
 
 > phrase: {ph_showme} showme (value)
 >
@@ -7166,7 +7168,7 @@ Inform also has a phrase called ``SHOWME``, which works in much the same way:
 >
 > Inform uses the quotation marks and equals sign to show that it had to do some work to find the answer. `score` wasn't a constant value – it was a variable, and Inform had to look up the current value.
 
-``SHOWME`` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
+`Showme` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
 
 	The matching key of the blue door is the brass Yale key.
 
@@ -7179,17 +7181,17 @@ we get, when the story starts up,
 
 	"matching key of the blue door" = object: brass Yale key
 
-Why is this an `object`, when we know that the key is actually a `thing`? After all, if we ``SHOWME KEY`` instead, we get:
+Why is this an `object`, when we know that the key is actually a `thing`? After all, if we `showme key` instead, we get:
 
 	thing: brass Yale key
 
-The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try ``SHOWME MATCHING KEY``, we get something like this:
+The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try `showme matching key`, we get something like this:
 
 	objects valued property: property 23
 
-which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: ``SHOWME`` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
+which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: `showme` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
 
-All the same, ``SHOWME`` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
+All the same, `showme` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
 
 ## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
 
@@ -8745,7 +8747,7 @@ Since many of these examples have involved people, it might be worth mentioning 
 
 ## Relations in groups
 
-^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS}
+^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS} ^^{testing phrases: show relation (relation of values to values)+phr+}
 
 Finally, there is a kind of relation which binds even more strongly.
 
@@ -9146,6 +9148,8 @@ We can also define verbs as auxiliaries, like so:
 Now we can ask if Poirot `can approach` Hotchkiss, and so on.
 
 ## Verbs which mean properties
+
+^^{properties: defining sentence verbs for properties} ^^{defining: sentence verbs for properties} ^^{the verb (V) means (property)+assert+} ^^{(means), defining sentence verbs+sourcepart+: the verb (V) means (property)+assert+} ^^{sentence verbs: defining for properties}
 
 So far `The verb ... means ...` has always had a relation as its meaning. But here is an alternative:
 
@@ -11669,7 +11673,7 @@ The condition `if there is...` can be used with any reference to a table entry: 
 
 ## Changing entries
 
-^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables}
+^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables} ^^{testing phrases: showme the contents of (table name)+phr+}
 
 Here is another rather definitive, immutable-looking table:
 
@@ -19238,7 +19242,7 @@ Play-testers can often be recruited by placing an ad on [intfiction.org](https:/
 
 ## A Page of Its Own
 
-^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io}
+^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io+web+}
 
 One option for sharing your work with the world is to set up a web page and a copy of the story file on a private web host. That host should ideally be as stable as possible, so that the URL is likely to remain fixed for what might be a long period. Freeware stories have a long period of viability relative to commercial games, which means that players may still be hearing about and checking out a story years after its initial release. A stable address helps everyone with links, and makes it easier for search engines to direct people.
 
@@ -19250,7 +19254,7 @@ One of the most accessible is [itch.io](https://itch.io). While it's a lot of wo
 
 A game on itch.io will still need promotion and other attention if the author hopes to make any significant amount of money, but the barriers to listing something for sale are much lower than they once were. And itch.io can be a viable way to share a game that isn't intended to charge money at all.
 
-At the time of this writing, the itch.io platform lists 15,988 games tagged "interactive fiction."
+At the time of this writing, the itch.io platform lists 28,413 games tagged "interactive fiction."
 
 ## The IF Archive
 
@@ -19302,7 +19306,7 @@ Some awards for interactive fiction, such as the annual XYZZY Awards, require a 
 
 ## Competitions, Exhibitions, and Jams
 
-^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io} ^^{ProcJam}
+^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io+web+} ^^{ProcJam}
 
 One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organiser usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The [IFWiki](https://ifwiki.org) usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on its front page.
 
@@ -19383,7 +19387,7 @@ The Extensions tab in the Inform app displays details of all of the extensions i
 
 ## Title and authorship
 
-^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension}
+^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension} ^^{extensions: writing: title+biblio+} ^^{title+biblio+: of an extension} ^^{bibliographic data: in extensions}
 
 In this chapter, we'll take on the role of Peter Drake, an Inform author who wants to package up the following minimal piece of design as an extension:
 
@@ -19502,6 +19506,8 @@ And that's it: a fully-functioning extension has been made.
 
 ## JSON metadata
 
+^^{extensions: writing: metadata in JSON} ^^{bibliographic data: in extensions}
+
 Having got the `Ducking Action` extension working, in a minimal sort of way, we might now look again at the files being stored under the surface.
 
 ``` code
@@ -19567,6 +19573,8 @@ So the upshot of this technical little section is... that we can basically forge
 
 ## Begins here and ends here {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
 
+^^{(extension) begins here+assert+ --> begins here} ^^{(extension) ends here+assert+ --> ends here}
+
 Here is where we've got to, then, with the extension source text:
 
 	Version 1 of Ducking Action by Peter Drake begins here.
@@ -19586,7 +19594,7 @@ Note that the extension has to begin and end with special sentences. These act r
 
 2) There must of course be exactly one `begins here` line, and exactly one `ends here` line.
 
-3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation].
+3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation and testing].
 
 4) Other than this old style of documentation, which is now deprecated, no content is permitted below the `ends here` line. So it really should be at the end of the file.
 
@@ -19729,6 +19737,8 @@ But this pair is not:
 because all versions compatible with 9.5 have major version number 9, and all versions compatible with 10.3 have major version number 10. So it is not possible to satisfy both, and Inform will produce a problem message.
 
 ## Extension rubrics
+
+^^{extensions: writing: rubric+biblio+} ^^{rubric, of an extension+biblio+} ^^{>VERSION}
 
 It's very helpful for an extension to be accompanied by a brief description of what it does, so that a user browsing through lists of extensions can see more than just the title. This is called a _rubric_.
 
@@ -20049,6 +20059,8 @@ This is intended so that technical apparatus used only inside the extensions can
 
 ## Images and other resources
 
+^^{extensions: writing: figures} ^^{extensions: writing: sounds} ^^{extensions: writing: files (data files)} ^^{figures: in extensions} ^^{sounds: in extensions} ^^{files (data files): in extensions} ^^{materials folder: for an extension}
+
 An extension directory can, optionally, contain a subdirectory called ```Materials```. If it does, this can then contain a wide variety of useful things, laid out almost exactly like the materials folder for a project. Because it's included in the extension, anybody downloading the extension gets all of these extras along with it.
 
 So, then:
@@ -20178,6 +20190,8 @@ In case helpful, here's a little diagnostic command called ``OPTIONS``:
 		say "Inactive: [list of inactive use options].";
 
 ## Run-time problems
+
+^^{error messages: defined in extensions} ^^{problem messages: defined in extensions}
 
 Run-time problems are the ones thrown by stories which hit some impossible demand while playing: perhaps they find that they need to divide a number by zero, or they try to make a physical person wear a concept, or put a room on top of a shelf, or something else which simply can't be done. All experienced Inform authors will have seen RTPs before, but in case not, running this will certainly do it:
 
@@ -20569,7 +20583,7 @@ In releases of Inform before 2024, extension documentation was tacked on to the 
 
 ## Headings and organisation
 
-^^{headings: in extension documentation} 
+^^{headings: in extension documentation} ^^{extensions: documenting: headings}
 
 The Markdown notation for headings looks like so:
 
@@ -20628,6 +20642,7 @@ A small technical caveat: Inform-flavoured Markdown does not allow level 1 (Chap
 
 ## Textual effects and short code samples
 
+^^{extensions: documenting: formatting}
 ^^{italics: in extension documentation} 
 ^^{bold: in extension documentation} 
 ^^{strikethrough: in extension documentation} 
@@ -20696,7 +20711,7 @@ As a general piece of guidance, then, pieces of source text should be never be q
 
 ### Backslash escapes
 
-^^{backslash escapes: in extension documentation} 
+^^{backslash escapes: in extension documentation} ^^{extensions: documenting: formatting}
 
 Markdown also supports so-called HTML entities, which provide a way to type certain unusual characters by name rather than literally. For example, ```&HilbertSpace;``` produces &HilbertSpace;, a mathematical symbol. Nowadays it's usually better just to type the character directly: ```ℋ``` also produces ℋ. But it does raise the question: how do we write \&HilbertSpace; without it coming out as &HilbertSpace;?
 
@@ -20706,8 +20721,8 @@ Note that none of this applies inside code examples, where a backslash is just a
 
 ## Longer code samples
 
-^^{code examples: in extension documentation} 
-^^{syntax colouring: in extension documentation} 
+^^{code examples: in extension documentation} ^^{extensions: documenting: code examples}
+^^{syntax colouring: in extension documentation} ^^{extensions: documenting: syntax colouring}
 
 Inform documentation tends to be broken up with examples of source text, and this can be done very simply, by indenting the material one tab stop from the margin. (Or, equivalently, by four spaces.)
 
@@ -20813,7 +20828,7 @@ Here the ```{**}``` notation means that the sample continues the previous one, a
 
 ## Block quotations and phrase boxes
 
-^^{quotations: in extension documentation} 
+^^{quotations: in extension documentation} ^^{extensions: documenting: formatting}
 
 "Block quotations" are suitable for quoting a piece of human writing, rather than code, and are introduced by ```>``` characters on the left margin:
 
@@ -20880,7 +20895,7 @@ One of the main uses of block quotations in Inform documentation is to provide t
 
 ## Tables
 
-^^{tables: in extension documentation} 
+^^{tables: in extension documentation} ^^{extensions: documenting: tables}
 
 A simple table looks like so, with pipe characters ```|``` dividing the columns; it will only become a table if there is a ruler line under the column headings.
 
@@ -20948,8 +20963,8 @@ producing:
 
 ## Lists and to-do items
 
-^^{lists: in extension documentation} 
-^^{to-do items: in extension documentation} 
+^^{lists: in extension documentation} ^^{extensions: documenting: lists}
+^^{to-do items: in extension documentation} ^^{extensions: documenting: to-do items}
 
 We have three sorts of list. Bulleted lists:
 
@@ -21071,7 +21086,7 @@ For Inform documentation, we prefer loose lists, which are easier to read on scr
 
 ## Links and cross-references
 
-^^{links: in extension documentation} 
+^^{links: in extension documentation} ^^{extensions: documenting: links}
 
 The standard Markdown syntax ```[Label]``` or ```[this is a link][Label]``` makes a link where the destination is referred to by a label, rather than given explicitly. In traditional Markdown, that label can then be _defined_ like so:
 
@@ -21114,6 +21129,8 @@ See the example [of rarities](The Red Mercury) for more on Austria.
 because although this would work fine for sighted users, displaying "See the example of rarities for more on Austria" but with the words "of rarities" linked, screen-readers display such links in a confusing way.
 
 ## Images in documentation
+
+^^{figures: in extension documentation} ^^{extensions: documenting: figures}
 
 Extension documentation should not use externally hosted images, i.e., images on some server which requires an Internet access to fetch. Instead, they should use only their own private images.
 
@@ -21231,6 +21248,8 @@ As a default, Locksmith describes what passkeys unlock only after printing their
 
 ## Testing
 
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
+
 Like any software, extensions need to be tested. They should ideally be exercised on a variety of plausible use-cases, with each feature being tried out. The examples are often ideal for doing that. So, for example, any bug fix made in `Philately by Peter Drake` can be checked out for safety by making sure that its four existing examples run as they should.
 
 Of course, this can be done by hand: by pasting in the example sources, running them in the Inform app, typing ``TEST ME``, and then looking over the resulting transcript of play to make sure it's all as it should be.
@@ -21264,6 +21283,8 @@ Philately-v1.i7xd
 Two new files have appeared: ```Unhinged--I.txt``` and ```PleaseDoNotPerforate--I.txt```. These are the ideal transcripts of play from those examples.
 
 ## Test cases which are not examples
+
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
 
 Inform also allows test cases which are not examples from the documentation. Authors who are very much into "unit testing" will probably want to take advantage. For example, if `Philately` provides a high complicated phrase:
 
@@ -21368,6 +21389,8 @@ The full list of legal options is given below, though users will rarely if ever 
 11) ```GenerateDiagnostics: Yes``` or ```GenerateDiagnostics: No``` (the default is ```No```). Used only by one Inform compiler test case, and only to output certain files which show diagrams of internal data structures for use in the technical documentation on the website. Extension tests will not need this.
 
 ## Providing an index
+
+^^{extensions: documenting: index for documentation}
 
 ### Basics of indexing
 
@@ -21624,7 +21647,7 @@ This is only likely to be helpful for the main Inform documentation, not for ext
 
 ## The architecture of Inform
 
-^^{architecture of Inform} ^^{Inter code} ^^{I6 syntax} ^^{Inform 6} ^^{extensions: Inform 6 code in extensions}
+^^{architecture of Inform} ^^{Inter code} ^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6} ^^{extensions: Inform 6 code in extensions}
 
 Inside the Inform applications is a _compiler_, which turns source text which describes a story into a computer program which runs that story — or else, of course, refuses and issues Problem messages.
 
@@ -21686,7 +21709,7 @@ This is the first of two chapters about how to use I6 within Inform. In this cha
 
 ## Defining To phrases with I6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
-^^{I6 syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
+^^{I6: syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
 
 The phrases described in this book all have definitions given in the extensions automatically included with all projects — `Basic Inform`, the `Standard Rules` or, in a few cases, `English Language`. Those phrases are mostly, though not universally, defined using I6 notation, using the feature described below.
 
@@ -21757,7 +21780,7 @@ for (i=3 : i>0 : i-- )
 
 ## Defining To decide phrases with I6
 
-^^{I6 syntax: phrases to decide whether/if} ^^{I6 syntax: phrases to decide a value} ^^{phrases: defining in I6}
+^^{I6: syntax: phrases to decide whether/if} ^^{I6: syntax: phrases to decide a value} ^^{phrases: defining in I6}
 
 The previous section showed how to define so-called _void phrases_ with I6: that is, those which do something, but produce no value or opinion as a result.
 
@@ -22156,7 +22179,7 @@ Lastly: the weasel words about "slightly simplified form" above are because the 
 
 ## Defining adjectives with I6
 
-^^{I6 inclusions: adjectives} ^^{adjectives: defining: with I6}
+^^{I6: inclusions: adjectives} ^^{adjectives: defining: with I6}
 
 There are three ways to specify that an adjective is defined at the I6 level. For example:
 
@@ -22184,7 +22207,7 @@ The escape `*1` is expanded to the value on which the adjective is being tested.
 
 ## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
 
-^^{accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
+^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
  
 What if an I6-written definition needs to access something defined in the source text? For suppose, if the source text says:
 
@@ -22350,7 +22373,7 @@ This can be used by, say:
 
 ## Inclusions of I6 code {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
-^^{I6 inclusions: long sections of code}
+^^{I6: inclusions: long sections of code}
 
 With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
@@ -22397,6 +22420,8 @@ The `instead of` option now cannot work at all, and throws a problem message. Th
 
 ## How I6 differs from Inform 6
 
+^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6}
+
 To recap: I6 is the notation we are using when writing low-level code inside `(-` and `-)` markers. It looks very like the programming language Inform 6, but there are a handful of differences.
 
 In particular:
@@ -22422,6 +22447,8 @@ In particular:
 # Kits
 
 ## About kits
+
+^^{kits (I6 code)} ^^{I6: in kits}
 
 A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: ```BasicInformKit```, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
@@ -22705,7 +22732,7 @@ While it is possible to write similar array declarations to simulate constant li
 
 ### Variables
 
-^^{defined by Inter as...+assert+: variables} ^^{variables: defining in I6}
+^^{defined by Inter as...+assert+: variables} ^^{Inter code: defined by Inter as...+assert+} ^^{variables: defining in I6}
 
 We can create a valid Inform variable by providing an I6 global variable to store the contents. (Not all Inform variables are stored this way: some are stored in array entries, or on a stack. Those other ways, we cannot imitate.)
 
