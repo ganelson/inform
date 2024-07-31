@@ -1028,7 +1028,7 @@ Finally, we may want to look at multiple things at once. [The Left Hand of Autum
 
 ## Looking Under and Hiding
 
-^^{hiding things under other things <-- concealment+rel+: under other things}^^{searching+action+}
+^^{hiding things: under other things <-- concealment+rel+: under other things}^^{searching+action+}
 Finding hidden objects is a classic puzzle in IF. [Beachfront] provides the most basic example, an object that becomes visible only when we have searched the papers on a cluttered desk. [Beneath the Surface] takes this further, giving all large furnishings the ability to conceal items, and allowing the player to put things underneath other things, as well as find them. [Flashlight] adds an extra twist to the puzzle by requiring that the player have a flashlight to shine under a bulky object in order to find what lies underneath.
 
 Looking inside an object is generally handled by the `searching` action, and we could extend that to allow the player to search multiple or complex objects. [Matreshka] turns the puzzle on its head by allowing the player to search a whole room systematically with only a single command.

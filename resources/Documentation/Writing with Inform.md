@@ -804,7 +804,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things: from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -1251,7 +1251,7 @@ maps turnwise directions as if they were east, that is, pointing rightwards on t
 
 ## Concealment
 
-^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
+^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things: carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
 
 The final sections of this chapter can safely be skipped on a first reading.
 
@@ -2831,7 +2831,7 @@ This is no longer the case: no such inclusion need now be made, and indeed, thos
 
 ## Displaying quotations
 
-^^{quotations, displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
+^^{quotations: displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
 
 A feature of Inform now best avoided is that, in a limited way and only on a narrow set of platforms now rarely used, it can display a message in a sort of floating window over the main text. This is called a _boxed quotation_ for historical reasons, and Inform allows one to be produced. But time has moved on from the simple terminal emulators which enabled crude text effects like this, and now boxed quotations will either be missing altogether or will look ugly on almost any modern platform.
 
@@ -7193,7 +7193,7 @@ All the same, ``SHOWME`` can be very useful in tinkering with rules to make them
 
 ## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
 
-^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player yes/no} ^^{asking the player yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
+^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player: yes/no} ^^{asking the player: yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
 
 A variety of "conditions" have already appeared in this documentation. A condition is a phrase which describes a situation which might be true, or might be false, and examples might include:
 
@@ -10136,6 +10136,8 @@ That kind of definition, and the consequences, will be the subject of this chapt
 
 ## Numbers, ranges, overflows, and number bases {kind_number} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
 
+^^{numbers} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{numbers: hexadecimal and other bases <-- binary numbers <-- hexadecimal numbers <-- octal numbers} ^^{numbers: asking the player for} ^^{querying the player: for a number} ^^{asking the player: for a number}
+
 What Inform calls a `number` is a whole number, positive, negative or zero. Numbers from `zero` to `twelve` may also be written out in words, but all others must be written as numerals. So `twelve` or `12`, but `13` only.
 
 For efficiency reasons, only a limited range of whole numbers close to 0 can be stored as a `number`, but in practice that range is large enough for all everyday purposes:
@@ -11081,7 +11083,7 @@ And this establishes that, for example,
 ## Notations with multiple parts {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
 
 ^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
-^^{units of measure: understanding} ^^{understanding: numbers with units}
+^^{units of measure: understanding} ^^{understanding: numbers with units} ^^{numbers: hexadecimal and other bases: in units of measure}
 
 The chapter on [Quantities and Equations] featured many variations on specifications like this one:
 
@@ -11148,7 +11150,7 @@ So Inform reads the notation `#FF_FF_FF` as having three number parts.
 
 ## The parts of a notation {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
 
-^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(preamble optional), when defining units+sourcepart+} ^^{(without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+}
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{units of measure: defining: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
 
 If a value has been constructed out of multiple parts, we will sometimes want to extract those parts. For instance, suppose we want to know the dollars part of `$1.99`? We can do this provided the parts have names:
 
@@ -11217,6 +11219,8 @@ is equivalent to:
 
 ## Optional notation parts
 
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining: with optional parts} ^^{defining: units of measure with parts: with multiple numeric components} ^^{defining: units of measure with parts: with optional parts} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+}
+
 If a part of a notation is specified as `optional` then it can be missed out, and the result will be as if 0 had been given. For example, if we want the pre-Euro currency of France:
 
 	French monetary value is a kind of value.
@@ -11231,6 +11235,8 @@ This allows both `12F50` and `14F` to be valid; `14F` is exactly like typing `14
 This declares not only that the `cents` part is optional – it will be 0 if not specified – but also that if it is omitted, the `.` should be left out as well. Thus `$3` is now valid and equivalent to `$3.00`: indeed, it will be the preferred form when Inform prints out a monetary value which is an exact number of dollars.
 
 ## Range and number base of notation parts
+
+^^{units of measure: defining: with other bases} ^^{defining: units of measure with parts: with other bases} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+}
 
 The _range_ of a part is the set of values it can hold. For example:
 
@@ -11256,7 +11262,7 @@ An alternative way to give the range is to write `D digits` or `up to D digits`.
 
 If a part uses both ways to give a range, e.g., `0 to 39, 2 digits`, then the explicit range, in this case 0 to 39, wins out. An impossible combination such as `0 to 199, 2 digits` is rejected with a problem message.
 
-The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations including more than one number] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
+The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations with multiple parts] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
 
 And we can combine the range and number base settings with the options `D BASE digit/digits` and `up to D BASE digit/digits`.
 
@@ -11271,6 +11277,8 @@ is equivalent to:
 and means that, for example, `_01101_` is a valid `DIP switch setting`.
 
 ## Angle-bracketed part names
+
+^^{units of measure: defining: with named parts} ^^{defining: units of measure with parts: with named parts} ^^{(< >), for defining parts of units of measure+sourcepart+} ^^{punctuation: angle brackets, for defining parts of units of measure} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
 
 In all the notations so far, the "parts" have been written in something resembling numerical form. For example:
 
@@ -11318,6 +11326,8 @@ in the tail of the sentence, and in the same order: Inform will throw a problem 
 
 ## Unusual digits
 
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{characters (letters): accented and exotic letters and symbols}
+
 The parts option `digits "TEXT"` tells Inform to use the supplied digit characters in place of the regular ones.
 
 The text must contain exactly the number of characters which equals the number base (2 for binary, 8 for octal, and so on), must have no repeats, and must not use spaces or square brackets.
@@ -11351,6 +11361,8 @@ Throwing in emoji or other symbols can make some intriguing textual effects:
 prints all 256 possible wall carvings using a row of 4 shapes, each of which can be of 4 types.
 
 ## Parts which do not look like numbers
+
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts}
 
 So far, all the parts of a specification have been basically numerical, if possibly with unusual digits. But we can break away from that completely with two more options supplied for parts.
 
@@ -11443,6 +11455,8 @@ The trouble with this is that the square which White calls KB2 is the square Bla
 
 ## Parts corresponding to kinds
 
+^^{units of measure: defining: with parts of a kind of value} ^^{defining: units of measure with parts: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
+
 One last option available for parts of a specification is `corresponding to KIND`, which says that the part contains a value of the given `KIND`, which must be either numerical or an enumeration, rather than a `number`.
 
 Let's return to chess notation. The best specification so far looks like this:
@@ -11505,6 +11519,8 @@ trail position: Kilometer 230
 Note that `67.51km` was rounded here to the nearest `number` value, 68. 
 
 ## Counting and repeating through specified values
+
+^^{units of measure: repeating through}
 
 The final version of `chessboard square` which we reached was this:
 
@@ -11618,7 +11634,7 @@ Note that the first row in a table is row number 1, and that the last can be fou
 
 ## Corresponding entries
 
-^^{tables: looking up by cross-reference} ^^{(corresponding to), in tables+sourcepart+}
+^^{tables: looking up by cross-reference} ^^{|corresponding to: in tables}
 
 Continuing our example of the elements:
 
@@ -13694,7 +13710,7 @@ The rest of this chapter covers every activity built in to Inform, with one sect
 
 ## Deciding the concealed possessions of something {act_con} {var_particular}
 
-^^{hiding things carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
+^^{hiding things: carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
 
 **1. When it happens.** Frequently – whenever Inform needs to check whether something is visible or not. Nothing should be printed, and the activity needs to run quickly, so it should not (for instance) calculate best routes through complicated maps before getting an answer.
 
