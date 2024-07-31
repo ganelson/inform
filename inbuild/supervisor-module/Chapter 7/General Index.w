@@ -18,10 +18,47 @@ void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *c
 	int just_examples) {
 	int NL = 0;
 	index_lemma **lemma_list = IndexingData::sort(cd, &NL);
+	@<Condense single-line categories@>
 	HTML_OPEN_WITH("div", "class=\"generalindex\"");
 	@<Render the index in sorted order@>;
 	HTML_CLOSE("div");
 }
+
+@ At this point we rely on two facts: the lemma list is sorted, and we've
+created the ancestors of every term. So "X" (or "X: I") cannot be followed
+by "Y: J" without a "Y" in between.
+Given that, we can find condensable lines by looking for peaks: a lemma
+whose term-length is longer than both the one before and the one after.
+In that case, the preceding lemma can be skipped *if* it has no references
+of its own to display.
+
+@<Condense single-line categories@> =
+	for (int i=0; i<NL; i++) {
+		index_lemma *il = lemma_list[i];
+		if (il->lemma_source != BODY_LEMMASOURCE) continue;
+		int depth = IndexTerms::subterms(il->term);
+		int nextdepth = 0;
+		if (i+1<NL) nextdepth = IndexTerms::subterms(lemma_list[i+1]->term);
+		if (nextdepth >= depth) {
+			continue; /* next line is in the same category */
+		}
+		int excount = 1;
+		while (i-excount >= 0) {
+			index_lemma *previl = lemma_list[i-excount];
+			if (previl->lemma_source != BODY_LEMMASOURCE) break;
+			/* don't squash a category line with references */
+			if (IndexLemmas::has_references(previl)) break;
+			int prevdepth = IndexTerms::subterms(previl->term);
+			/* don't squash a line that isn't a category ancestor of this one */
+			if (prevdepth != depth-excount) break;
+			/* don't squash a category line if the upcoming line is in the same category */
+			if (prevdepth < nextdepth) break;
+			/* okay, squash it, and increase the show count of the current line */
+			excount++;
+			previl->categories_to_show = 0;
+			il->categories_to_show = excount;
+		}
+	}
 
 @<Render the index in sorted order@> =
 	Indexes::alphabet_row(OUT, cd, 1);
@@ -70,16 +107,24 @@ void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *c
 	DISCARD_TEXT(anc)
 
 @<Render an index entry@> =
-	indexing_category *ic = IndexTerms::final_category(cd, il->term);
-	if (ic == NULL) internal_error("no indexing category");
+	if (il->categories_to_show == 0) continue;
+	int depth = IndexTerms::subterms(il->term);
+	if (depth == 0) internal_error("no indexing categories");
 	IFM_example *EG = NULL;
 	@<Find example relevant to this entry@>;
-	TEMPORARY_TEXT(lemma_wording)
-	@<Resolve backslash escapes in plain text@>;
-	if (ic->cat_bracketed) @<Deal with unescaped brackets if the category makes them significant@>;
-	@<Restore any escaped round brackets@>;
-	@<Actually render the entry@>;
-	DISCARD_TEXT(lemma_wording)
+	int indent = 4*(depth - il->categories_to_show); /* measured in em-spaces */
+	HTML_OPEN_WITH("p", "class=\"indexentry\" style=\"margin-left: %dem;\"", indent);
+	int ccount = 0;
+	for (int catnum = depth - il->categories_to_show; catnum < depth; catnum++) {
+		if (ccount) WRITE(", ");
+		@<Render one category@>;
+		ccount++;
+	}
+	WRITE("&nbsp;&nbsp;");
+	int lc = 0;
+	@<Render the references@>;
+	@<Render the cross-references@>;
+	HTML_CLOSE("p");
 
 @<Find example relevant to this entry@> =
 	if (il->lemma_source != BODY_LEMMASOURCE) {
@@ -89,6 +134,19 @@ void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *c
 				EG = ref->posn.example;
 	}
 
+@<Render one category@> =
+	indexing_category *ic = il->term.categories[catnum];
+	if (ic == NULL) internal_error("no indexing category");
+	text_stream *itext = il->term.texts[catnum];
+	if (itext == NULL) internal_error("no indexing text");
+	TEMPORARY_TEXT(lemma_wording)
+	@<Resolve backslash escapes in plain text@>;
+	if (ic->cat_bracketed) @<Deal with unescaped brackets if the category makes them significant@>;
+	@<Restore any escaped round brackets@>;
+	@<Render the lemma text@>;
+	@<Render the category gloss@>;
+	DISCARD_TEXT(lemma_wording)
+
 @ Backslash before a character makes it literal. In particular we reassign
 escaped open and close brackets to make them impossible to confuse with
 unescaped ones:
@@ -97,7 +155,7 @@ unescaped ones:
 @d SAVED_CLOSE_BRACKET 0x0087 /* Unicode "end of selected area" */
 
 @<Resolve backslash escapes in plain text@> =
-	text_stream *plain_text = IndexTerms::final_text(cd, il->term);
+	text_stream *plain_text = itext;
 	for (int i=0, L = Str::len(plain_text); i<L; i++) {
 		inchar32_t c = Str::get_at(plain_text, i);
 		if (c == '\\') {
@@ -143,17 +201,6 @@ unescaped ones:
 		if (d == SAVED_OPEN_BRACKET) Str::put(pos, '(');
 		if (d == SAVED_CLOSE_BRACKET) Str::put(pos, ')');
 	}
-
-@<Actually render the entry@> =
-	int indent = 4*(il->term.no_subterms - 1); /* measured in em-spaces */
-	HTML_OPEN_WITH("p", "class=\"indexentry\" style=\"margin-left: %dem;\"", indent);
-	@<Render the lemma text@>;
-	@<Render the category gloss@>;
-	WRITE("&nbsp;&nbsp;");
-	int lc = 0;
-	@<Render the references@>;
-	@<Render the cross-references@>;
-	HTML_CLOSE("p");
 
 @<Render the lemma text@> =
 	if (il->lemma_source == EG_NAME_LEMMASOURCE) {
