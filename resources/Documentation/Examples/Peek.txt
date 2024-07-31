@@ -5,6 +5,8 @@ Index: Examining the contents of memory
 Description: A debugging command for examining the contents of memory.
 For: Z-Machine
 
+^^{units of measure: defining: with other bases} ^^{numbers: hexadecimal and other bases: in units of measure}
+
 ```PEEK``` was an endearingly-named keyword in microcomputer implementations of the BASIC programming language, which let users access memory directly — provided they knew what location to look at. Positions in memory were labelled by _addresses_, from 0 to, usually, something like 65535, although they were often written in hexadecimal instead, and thus ran ```0000``` to ```FFFF```.
 
 We want to distinguish addresses from numbers of bytes — i.e., the position of an area of memory and the size of an area of memory are different concepts, and we want two different kinds for them:

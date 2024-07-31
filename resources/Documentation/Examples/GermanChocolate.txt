@@ -4,6 +4,10 @@ RecipeLocation: Goal-Seeking Characters
 Index: Goal-seeking dialogue
 Description: Allowing a character to doggedly pursue a particular subject of conversation.
 
+^^{dialogue: conversational subjects: characters who search through}
+^^{dialogue: structure of conversation}
+^^{concepts+kind+: in dialogue} ^^{dialogue: conversational subjects: concepts}
+
 Sometimes instead of free-flowing dialogue we may want a character who is able to persistently go after a particular question. Here, we allow goal-seeking so that even if the player changes the topic, the character will keep looking for segues to the important point.
 
 	{*}"German Chocolate"

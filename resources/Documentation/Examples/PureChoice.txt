@@ -4,6 +4,8 @@ RecipeLocation: Alternatives To Standard Parsing
 Index: Branching choices
 Description: Using the dialogue system to write a branching text with no world model to speak of.
 
+^^{dialogue choices: purely choice-based game}
+
 It's quite possible to implement a choice-based story entirely within the dialogue system, so that no commands are ever typed in.
 
 And it's then almost possible to have the source text consist only of a great big dialogue section, but not quite. We still need a room for the player to be in, which we'll call `Stage Set` here. And if there were other actors who spoke in the story, they'd also need to be created as `people` and put in this same room.

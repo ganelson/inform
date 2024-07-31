@@ -4,6 +4,10 @@ RecipeLocation: Alternatives To Standard Parsing
 Index: Branching choices
 Description: Modifying the offering activity so that it follows a test script rather than stopping to ask for player input.
 
+^^{dialogue choices: purely choice-based game}
+^^{offering something+descactivity+} ^^{offering+activity+} ^^{dialogue choices: offering+activity+}
+^^{TEST+testcmd+: for pure choice games} ^^{testing commands: >TEST: for pure choice games}
+
 Most Inform examples contain a `Test me with "..."` sentence, giving a sequence of commands which can be automatically typed in for testing purposes.
 
 And that works fine for dialogue-heavy stories too, _provided_ there is a first turn on which the player can type ``TEST ME``. In a story where dialogue takes over the entire narrative, and no regular commands are ever accepted, that's impossible.

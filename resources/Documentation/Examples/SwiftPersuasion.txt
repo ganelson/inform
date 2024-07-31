@@ -4,6 +4,9 @@ RecipeLocation: Obedient Characters
 Index: Dialogue that persuades characters to do things.
 Description: We combine persuasion rules with the dialogue system so that the character who is asked to do a task can require something of the player in turn.
 
+^^{dialogue: director: invoking within a specific action}
+^^{dialogue beats: as part of an action}
+
 Sometimes characters are easily persuaded to do things and sometimes they aren't. But we might want sometimes to place conditions on their cooperation.
 
 In this example, we give the player a menu option choice that they have to resolve — and which in turn will determine whether the other character does as they're asked.

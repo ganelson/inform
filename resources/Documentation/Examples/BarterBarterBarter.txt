@@ -4,6 +4,9 @@ RecipeLocation: The Flow of Conversation
 Index: Dialogue, sequences expanding on an existing verb
 Description: Using the dialogue system to create reusable dialogue sequences in which the player can negotiate a complex trade.
 
+^^{characters (people): trading items with}
+^^{flow markers} ^^{dialogue beats: flow markers}
+
 In this expansion of Barter Barter, we use the dialogue system to provide the player with a menu-based way to trade objects with characters, including bargains that depend on characters' particular preferences and the relative value of the items offered.
 
 	{*}"Barter Barter Barter"

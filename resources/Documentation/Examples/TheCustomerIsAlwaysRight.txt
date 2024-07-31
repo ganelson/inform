@@ -4,6 +4,8 @@ RecipeLocation: Character emotion
 Index: Dialogue, with responses depending on emotional state
 Description: A character who changes her responses to dialogue gambits depending on her emotional state.
 
+^^{flow markers} ^^{dialogue beats: flow markers}
+
 When it's performing beats, the dialogue system will play the first line of dialogue it can, and it will continue performing lines until it reaches the end of the beat, a decision to take, or a flow marker using `->` or `<-`.
 
 That means that, if we like, we can pack in quite a bit of conditional logic about how a character responds to our input.

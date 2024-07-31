@@ -4,6 +4,8 @@ RecipeLocation: Character Emotion
 Index: Speaking in a raised voice
 Description: Adding a ``YELL AT`` verb that selects only yelled dialogue beats.
 
+^^{dialogue beats: which must be yelled}
+
 Some stories may want to offer dialogue interactions beyond the standard ``TALK TO`` or ``TALK ABOUT`` options. Perhaps we want to let the player express emotions or tone of voice; perhaps we want them to use alternate communication styles such as gestures; or perhaps we want to implement higher-level concepts such as ``COMPLIMENT`` or ``INSULT``.
 
 One way to keep our implementation consistent is to apply a property to the relevant dialogue beats so that we can then use an action system to select exclusively for those that match the player's intent. 
