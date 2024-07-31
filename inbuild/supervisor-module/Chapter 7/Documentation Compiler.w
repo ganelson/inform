@@ -716,7 +716,9 @@ int DocumentationCompiler::detect_satellites(compiled_documentation *cd) {
 			Filenames::write_unextended_leafname(short_name, F);
 			if ((Str::get_at(short_name, Str::len(short_name)-2) == '-') &&
 				((Str::get_at(short_name, Str::len(short_name)-1) == 'I')
-					|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')))
+					|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')
+					|| (Str::get_at(short_name, Str::len(short_name)-1) == 'S')
+					|| (Str::get_at(short_name, Str::len(short_name)-1) == 's')))
 				continue;
 			satellite_test_case *stc =
 				DocumentationCompiler::new_satellite(cd, egs, short_name, F);
