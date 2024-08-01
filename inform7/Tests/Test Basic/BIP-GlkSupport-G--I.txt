@@ -1,0 +1,18 @@
+"glk version number" = number: 1797
+timers: false.
+glk graphics: false.
+basic sounds: false.
+sound volume: false.
+sound notifications: false.
+hyperlinks: false.
+MOD sounds: false.
+PNG transparency: false.
+glk unicode: true.
+unicode normalization: true.
+line input echo suppression: false.
+line input terminators: false.
+system clock: true.
+extended sounds: false.
+resource streams: true.
+graphics window character input: false.
+text formatting: false.

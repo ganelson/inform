@@ -5,7 +5,7 @@ Index: Light levels variable depending on the number of candles the player has l
 Description: Light levels vary depending on the number of candles the player has lit, and this determines whether or not they are able to examine detailed objects successfully.
 For: Z-Machine
 
-^^{Light levels variable depending on the number of candles the player has lit}
+^^{darkness: printing a refusal to act in the dark+activity+} ^^{refusal to act: printing a refusal to act in the dark+activity+} ^^{visibility+rb+} ^^{rules: for visibility} ^^{+toout+there is sufficient / insufficient light (visibility rules)} ^^{+toout+sufficient / insufficient light, there is sufficient / insufficient light (visibility rules)} ^^{+toout+insufficient / sufficient light, there is insufficient / sufficient light (visibility rules)}
 
 	{*}"Zorn of Zorna"
 	

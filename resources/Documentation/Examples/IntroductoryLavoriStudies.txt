@@ -4,6 +4,10 @@ RecipeLocation: Helping and Hinting
 Index: Dialogue implementation of a tutorial; magical connection of related objects.
 Description: Teaching the player multiple new commands via an instructor character who comments on the player's progress and reacts to actions taken out of order.
 
+^^{dialogue: teaching the player a tutorial}
+^^{dialogue: structure of conversation}
+^^{scenes: based on dialogue state}
+
 Many games need to teach the player some new verbs that aren't common to other games. In this example, we borrow from the source text of Damnatio Memoriae, a game involving magical links between related objects, and we create an instructor NPC whose job is to teach the player how to use these links.
 
 To do this, we rely heavily on the dialogue system in combination with scenes. Each brief scene asks the player to demonstrate solving a particular task. It moves on when the player has shown the necessary skill, and the instructor also reacts if the player moves too quickly or attempts things that haven't yet been requested. In a real game, we might often want ways for the player to fast-forward through tutorialisation of skills they already understand.

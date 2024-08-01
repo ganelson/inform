@@ -6,6 +6,7 @@ Description: Allowing characters other than the player to give objects to one an
 For: Z-Machine
 
 ^^{giving it to+action+: for other characters}
+^^{characters (people): trading items with}
 
 By default, if we make no modifications, telling one player to give something to another will fail, even if persuasion succeeds. This is because the default behaviour of the ``GIVE`` command is interrupted by the `block giving rule` – since in many cases we do not want people to exchange objects freely.
 

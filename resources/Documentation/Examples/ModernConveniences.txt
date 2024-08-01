@@ -1,5 +1,5 @@
 Example: ** Modern Conveniences
-Location: A simple example extension
+Location: Creating a new extension
 RecipeLocation: Kitchen and Bathroom
 Index: Extension design advice
 Description: Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.

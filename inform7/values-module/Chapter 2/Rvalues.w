@@ -255,6 +255,26 @@ int Rvalues::to_Unicode_point(parse_node *spec) {
 	return 0;
 }
 
+@ Version numbers require three integers.
+
+=
+parse_node *Rvalues::from_version(semantic_version_number V, wording W) {
+	semantic_version_number_holder *H = CREATE(semantic_version_number_holder);
+	H->version = V;
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_constant_version_number(spec, H);
+	Node::set_kind_of_value(spec, K_version_number);
+	return spec;
+}
+
+semantic_version_number Rvalues::to_version(parse_node *spec) {
+	if (Rvalues::is_CONSTANT_of_kind(spec, K_version_number)) {
+		semantic_version_number_holder *H = Node::get_constant_version_number(spec);
+		return H->version;
+	}
+	return VersionNumbers::null();
+}
+
 @ In the traditional Inform world model, time is measured in minutes,
 reduced modulo 1440, the number of minutes in a day.
 

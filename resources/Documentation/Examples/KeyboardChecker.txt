@@ -1,0 +1,18 @@
+Example: ** Keyboard checker
+Location: Basic IO
+RecipeLocation: Basic IO
+Index: Key presses
+Description: Receive single key presses.
+
+^^{Key presses}
+
+The "code of the next pressed key" phrase returns a unicode character of the player's next keypress. Function keys are mapped to appropriate unicode values, so that the differences between the Z-Machine and Glulx can be ignored by the player. Note that the F1-F12 keys return a unicode value that may not be printable in all interpreters, and could cause an error. In an actual game you would need to check what the value is.
+
+	{*}"Keyboard checker"
+	
+	The Computer Store is a room. "Rows upon rows of new computers. You step up to one, and try the keyboard..."
+	
+	Last startup rule:
+		while 1 is 1:
+			let code be the code of the next pressed key;
+			say "You pressed: [code][line break]";

@@ -182,6 +182,8 @@ stored action does not. Stored actions, again, cannot be modified at runtime.
 @<Base kinds stored as block values@> =
 	if (Kinds::eq(K, K_stored_action))
 		return Emit::to_value_pair(StoredActionLiterals::default());
+	if (Kinds::eq(K, K_version_number))
+		return Emit::to_value_pair(VersionNumberLiterals::default());
 	if (Kinds::eq(K, K_text))
 		return Emit::to_value_pair(TextLiterals::default_text());
 

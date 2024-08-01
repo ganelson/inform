@@ -44,6 +44,7 @@ Chapter 4: Enclosed Resources
 	Box Quotations
 	Relation Literals
 	Stored Action Literals
+	Version Number Literals
 	Group Together
 	Looping Over Scope
 

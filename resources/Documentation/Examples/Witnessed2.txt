@@ -5,7 +5,7 @@ Index: Witnessed 2. EMF Meter
 Description: A piece of ghost-hunting equipment that responds depending on whether or not the meter is on and a ghost is visible or touchable from the current location.
 For: Z-Machine
 
-^^{Witnessed 2. EMF Meter}
+^^{phrases: deciding a value} ^^{to decide what/which (value)+assert+}
 
 	{*}"Witnessed"
 	

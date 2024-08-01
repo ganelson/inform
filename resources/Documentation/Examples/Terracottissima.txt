@@ -5,7 +5,7 @@ Index: Broken and unbroken flowerpots
 Description: The flowerpots once again, but this time arranged so that after the first breakage all undamaged pots are said to be `unbroken`, to distinguish them from the others.
 For: Z-Machine
 
-^^{Broken and unbroken flowerpots}
+^^{understanding: properties as describing things} ^^{understanding: things: by properties} ^^{properties: understanding things by properties} ^^{understand (property) as describing/referring to (thing)+assert+} ^^{printing the name of something+descactivity+}
 
 This easiest way to do this uses the `printing the name of` activity, which will come up in the following chapter:
 

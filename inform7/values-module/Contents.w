@@ -24,6 +24,7 @@ Chapter 3: Literals
 	Parsing Literals
 	Literal Patterns
 	Literal Real Numbers
+	Literal Version Numbers
 	Times of Day
 	Unicode Literals
 	Transcoding Text

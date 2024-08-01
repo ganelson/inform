@@ -1,0 +1,15 @@
+
+
+
+
+Keyboard checker
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Computer Store
+Rows upon rows of new computers. You step up to one, and try the keyboard...
+
+You pressed: q
+You pressed: y
+
+<end of input>

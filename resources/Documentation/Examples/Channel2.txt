@@ -5,7 +5,7 @@ Index: Channel 2. Television with more advanced parsing
 Description: Understanding channels (a number) in the names of televisions, with more sophisticated parsing of the change channel action.
 For: Z-Machine
 
-^^{Channel 2. Television with more advanced parsing}
+^^{understanding: properties as describing things} ^^{understanding: things: by properties} ^^{properties: understanding things by properties} ^^{televisions (implementing)} ^^{grammar tokens}
 
 Our previous implementation of televisions ([Channel 1]) doesn't accept ``TUNE FIFTIES TELEVISION TO CHANNEL 4``; neither does it deal with player input like ``TUNE TO CHANNEL 4 ON FIFTIES TELEVISION``, nor ``TUNE TO CHANNEL 4`` where no television is specified.
 

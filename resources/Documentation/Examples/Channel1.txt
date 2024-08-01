@@ -5,7 +5,7 @@ Index: Channel 1. Television that can be referred to by channel
 Description: Understanding channels (a number) in the names of televisions.
 For: Z-Machine
 
-^^{Channel 1. Television that can be referred to by channel}
+^^{understanding: properties as describing things} ^^{understanding: things: by properties} ^^{properties: understanding things by properties} ^^{televisions (implementing)}
 
 We might want to allow every television to be tuned to a channel (a number property) which the player could refer to, so that
 

@@ -190,7 +190,7 @@ Every one of the built-in phrases has a definition somewhere in this book. The f
 
 ## Punctuation {PM_UnendingQuote} {PM_UnendingComment} {PM_TooMuchQuotedText} {PM_WordTooLong} {PM_EnigmaticPronoun} {PM_EnigmaticThey}
 
-^^{punctuation} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks}^^^{punctuation: full stop <-- full stop <-- period}^^^{punctuation: full stop <-- punctuation: period}^^^{punctuation: square brackets <-- square brackets} ^^{punctuation: square brackets: comments} ^^{|[ ]: comments} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: question mark, ending sentences <-- question mark} ^^{(?), ending sentences+sourcepart+} ^^{punctuation: exclamation mark, ending sentences <-- exclamation mark} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: apostrophe, meaning quotation mark <-- apostrophe} ^^{('), meaning (")+sourcepart+}^^^{punctuation: quotation marks <-- quotation marks} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{comments: in source text} ^^{line breaks: produced by sentence-ending punctuation}
+^^{punctuation} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks}^^^{punctuation: full stop <-- full stop <-- period}^^^{punctuation: full stop <-- punctuation: period}^^^{punctuation: square brackets <-- square brackets} ^^{punctuation: square brackets: comments} ^^{|[ ]: comments} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: question mark, ending sentences <-- question mark} ^^{(?), ending sentences+sourcepart+} ^^{punctuation: exclamation mark, ending sentences <-- exclamation mark} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: apostrophe: meaning quotation mark <-- apostrophe} ^^{|': meaning (")+sourcepart+}^^^{punctuation: quotation marks <-- quotation marks} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{comments: in source text} ^^{line breaks: produced by sentence-ending punctuation}
 
 The first thing we all learn about punctuation is that full stops finish a sentence. So this is read as two sentences, not one:
 
@@ -478,7 +478,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: nameless room descriptions} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |nameless room descriptions} ^^{nameless room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -804,7 +804,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things: from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -1251,7 +1251,7 @@ maps turnwise directions as if they were east, that is, pointing rightwards on t
 
 ## Concealment
 
-^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
+^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{hiding things: carried by other characters} ^^{concealed possessions} ^^{deciding the concealed possessions of something+activity+} ^^{deciding the concealed possessions of something+activitycat+} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+} ^^{described / undescribed (thing)+prop+} ^^{undescribed / described (thing)+prop+} ^^{described (thing)+propcat+} ^^{undescribed (thing)+propcat+} ^^{yourself (- person)+const+}
 
 The final sections of this chapter can safely be skipped on a first reading.
 
@@ -1523,8 +1523,8 @@ These are the two ways in which writers size up the world, so Inform provides bo
 
 ## Abstract objects and concepts
 
-^^{kinds: catalogue: abstract object} ^^{abstract object+kind+ <-- kinds: catalogue: abstract object}
-^^{kinds: catalogue: concept} ^^{concept+kind+ <-- kinds: catalogue: concept}
+^^{kinds: catalogue: abstract object} ^^{abstract objects+kind+ <-- kinds: catalogue: abstract object}
+^^{kinds: catalogue: concept} ^^{concepts+kind+ <-- kinds: catalogue: concept}
 
 The objects seen so far have almost all been physical, in one way or another, and have all belonged to the kinds `thing`, `room`, `region` or `direction`.
 
@@ -2111,7 +2111,7 @@ And this is because `[river sound]` was substituted with the value of the `river
 
 ## How Inform reads quoted text
 
-^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe, meaning quotation mark} ^^{('), meaning (")+sourcepart+} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation} ^^{+to+say "[']"} ^^{+tosay+"[']"}
+^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation} ^^{+to+say "[']"} ^^{+tosay+"[']"}
 
 Text is so fundamental to Inform that the basics had to be covered back in the [The Source Text] chapter, so let's begin this new chapter with a recap.
 
@@ -2831,7 +2831,7 @@ This is no longer the case: no such inclusion need now be made, and indeed, thos
 
 ## Displaying quotations
 
-^^{quotations, displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
+^^{quotations: displaying in boxes} ^^{boxed quotations} ^^{Inform 6 equivalent: |box}
 
 A feature of Inform now best avoided is that, in a limited way and only on a narrow set of platforms now rarely used, it can display a message in a sort of floating window over the main text. This is called a _boxed quotation_ for historical reasons, and Inform allows one to be produced. But time has moved on from the simple terminal emulators which enabled crude text effects like this, and now boxed quotations will either be missing altogether or will look ugly on almost any modern platform.
 
@@ -4263,7 +4263,7 @@ A change of player can sometimes cause confusing things to happen, if it takes p
 
 ## Removing things from play
 
-^^{things+kind+: removing from play} ^^{deleting things from the world} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
+^^{things+kind+: removing from play} ^^{deleting things from the world <-- destroying things} ^^{non-existence: removing things from play} ^^{non-existence: starting things out of play} ^^{things+kind+: starting out of play} ^^{out of play} ^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+} ^^{+to+now (a condition): changing the locations of things} ^^{|nowhere: placing things}
 
 Some things will occasionally be in a limbo state called being `off-stage`: like actors or props not needed in Act II, but perhaps to be brought back on-stage later, they wait on the sidelines. Anything created with no apparent location will start the story off-stage, as in the case of the lamp here:
 
@@ -4594,7 +4594,7 @@ Alternatively, it's possible the "fix" the RNG by clicking the "Make random outc
 
 ## Random choices of things {PM_RandomImpossible}
 
-^^{randomness: random things}
+^^{randomness: random things} ^^{descriptions (references to things): randomly described thing}
 
 Writing `a random number` is not allowed, because the possible range is too large, but that was the only reason why not.
 
@@ -5381,6 +5381,12 @@ Since scenes are, in the end, only a convenient way to organise rules, and do no
 
 ## If again this apparition come...
 
+^^{dialogue: sections <-- (section)+ofsource+}
+^^{dialogue beats <-- beats (dialogue) <-- dialogue: sections: beats}
+^^{dialogue lines <-- lines (dialogue) <-- dialogue: sections: lines}
+^^{dialogue choices <-- choices (dialogue) <-- dialogue: sections: choices}
+^^{dialogue beats: |starting beat} ^^{|starting beat}
+
 Some stories are all about exploration: lone travellers going places and discovering things. But other stories are more intimate, and conversational. They involve characters talking to each other about what is happening. And sometimes the talking _is_ what's happening: the story might be a romance, or a political intrigue, or a detective mystery. "Dialogue" is what we'll call the sort of to-and-fro when characters get into a conversation — not necessarily a long talk, but where the story will only work for the player if the speakers seem to be making sense, and not repeating themselves endlessly, or making oblique comments out of nowhere.
 
 That means writing something closer to a script than to a rulebook. But that script can still be richly interactive and flexible. In Inform, this is set out in special _dialogue sections_ of the source text. Instead of being set out in sentences and paragraphs like a novel, or a non-fiction book, dialogue sections look like the script for a play or movie: what printers call "playtext". Regular sections cannot contain playtext, while dialogue sections cannot contain anything else.
@@ -5537,6 +5543,14 @@ If this section has a moral (other than the inadvisability of killing a king in 
 
 ## Dialogue sections
 
+^^{dialogue: sections: formatting of} ^^{line breaks: in formatting dialogue} ^^{tabs, for indentation+ofsource+} ^^{indentation+ofsource+} ^^{source text: different in dialogue sections}
+^^{dialogue beats}
+^^{dialogue beats: |starting beat} ^^{|starting beat}
+^^{dialogue lines: speaker of} ^^{speaker (- thing)+actvar+}
+^^{dialogue lines: narration} ^^{narration (dialogue lines)}
+^^{dialogue choices}
+^^{|--: for dialogue choices+sourcepart+}
+
 To recap, then, all dialogue material must appear in special _dialogue sections_ in the source text. A section is a dialogue section if its titling line ends with `(dialogue)`. For example:
 
 	Section 2 - On the Battlements (dialogue)
@@ -5619,6 +5633,26 @@ Indentation can go down as well as up, and this allows branches to converge back
 Here we have two lines of dialogue, and then a divide according to which option the player chooses. Note that the `Narration:` line is at the same indentation level as the two choices where the dialogue branches: so this is where the branches come together again. The practical effect is that every performance of the beat ends with the tolling of the bell.
 
 ## Dialogue beats and their cues
+
+^^{dialogue: cues <-- dialogue beats: cues for <-- cues (dialogue)}
+^^{dialogue beats: as values} ^^{values: dialogue beats as values}
+^^{dialogue beats: as scenes} ^^{scenes: defined by dialogue beats}
+^^{dialogue beats: conditions} ^^{conditions: for dialogue beats}
+^^{dialogue: conversational subjects <-- conversational subject}
+^^{dialogue: structure of conversation}
+^^{dialogue: cues: named} ^^{this is the (name) beat+cue+}
+^^{dialogue: cues: as scenes} ^^{this is the (name) scene+cue+}
+^^{dialogue: cues: about a subject} ^^{dialogue beats: about a subject <-- subjects (of dialogue)} ^^{about (subject)+cue+}
+^^{dialogue: cues: conditions} ^^{if (a condition)+cue+} ^^{unless (a condition)+cue+}
+^^{dialogue: cues: before another beat} ^^{before (a beat)+cue+}
+^^{dialogue: cues: after another beat} ^^{after (a beat)+cue+} ^^{immediately after (a beat)+cue+} ^^{later+cue+} ^^{next+cue+}
+^^{dialogue: cues: required speakers} ^^{requiring (subject)+cue+}
+^^{recurring+cue+} ^^{fully recurring+cue+} ^^{spontaneous+cue+}
+^^{dialogue beats: properties} ^^{properties: of dialogue beats}
+^^{performed / unperformed (dialogue beat)+prop+} ^^{unperformed / performed (dialogue beat)+prop+} ^^{performed (dialogue beat)+propcat+} ^^{unperformed (dialogue beat)+propcat+}
+^^{recurring / non-recurring (dialogue beat)+prop+} ^^{non-recurring / recurring (dialogue beat)+prop+} ^^{recurring (dialogue beat)+propcat+} ^^{non-recurring (dialogue beat)+propcat+}
+^^{voluntary / involuntary (dialogue beat)+prop+} ^^{involuntary / voluntary (dialogue beat)+prop+} ^^{voluntary (dialogue beat)+propcat+} ^^{involuntary (dialogue beat)+propcat+}
+^^{spontaneous / unspontaneous (dialogue beat)+prop+} ^^{unspontaneous / spontaneous (dialogue beat)+prop+} ^^{spontaneous (dialogue beat)+propcat+} ^^{unspontaneous (dialogue beat)+propcat+}
 
 Each beat begins with a cue paragraph, which must be placed in round brackets. These usually contain a single sentence, but can have more, so long as it all remains a single paragraph. Such sentences must end with full stops, placed inside the brackets. So this is correct:
 
@@ -5813,6 +5847,12 @@ As a special case, a beat can also be described as `fully recurring`. This makes
 
 ## When the director is passive
 
+^^{dialogue: director <-- director (dialogue)}
+^^{dialogue: director: passive mode}
+^^{talking about+action+}
+^^{DIALOGUE+testcmd+} ^^{testing commands: >DIALOGUE}
+^^{concepts+kind+}
+
 Dialogue is managed during play by a component of Inform called the _director_, which we think of as being like the director of a play. It sometimes has to manage quite a complex situation, so the testing command ``DIALOGUE`` causes the director to explain itself as it goes along; and ``DIALOGUE ALL`` even more so.
 
 At any given time the director is either _passive_ or _active_. Passive means that the director performs dialogue as it's asked to do so, but not otherwise. The director is always passive at the start of play and becomes active only if we explicitly ask it to: see [When the director is active].
@@ -5843,6 +5883,10 @@ beat to be performed with a flow marker. (See [Flow Markers] for more.)
   Note that `talking about` is just one way to nudge the dialogue director into action. A rule like `Instead of talking about romance` would block attempts to do this which arose from the `talking about` action, but would not block such dialogue arising from some other cause.
 
 ## When the director is active
+
+^^{dialogue: director}
+^^{dialogue: director: active mode}
+^^{dialogue: conversational subjects}
 
 The director remains in passive mode until and unless we say so, using:
 
@@ -5903,6 +5947,11 @@ The list of live conversational subjects is best thought of as pretty ephemeral,
 Something to bear in mind is that the director tracks this list all of the time, even though it only uses it in active mode. So if it is switched into active mode having been passive up to now, it may be starting with some subjects already live.
 
 ## Entrances and exits
+
+^^{dialogue lines: stage directions in}
+^^{use options: catalogue: |nameless room descriptions} ^^{nameless room descriptions+useopt+}
+^^{(Stage), implicit room+sourcepart+}
+^^{on-stage / off-stage (thing)+adj+} ^^{off-stage / on-stage (thing)+adj+}
 
 It's possible to write an entire story made of nothing but dialogue, beginning with a starting beat being performed, and then more beats flowing from that until the story ends. In a story like that, there's no need even to create any rooms. For example:
 
@@ -5977,6 +6026,19 @@ And if we have joined multiple rooms together into a map, we can even have the a
 	Raphael (before going northwest): "'I'm expected in Città di Castello,' Raff says, turning on his heel and striding away."
 
 ## Managing dialogue beats
+
+^^{dialogue beats}
+^^{dialogue: director: invoking within a specific action}
+^^{dialogue beats: as part of an action}
+^^{performed / unperformed (dialogue beat)+prop+} ^^{unperformed / performed (dialogue beat)+prop+} ^^{performed (dialogue beat)+propcat+} ^^{unperformed (dialogue beat)+propcat+}
+^^{recurring / non-recurring (dialogue beat)+prop+} ^^{non-recurring / recurring (dialogue beat)+prop+} ^^{recurring (dialogue beat)+propcat+} ^^{non-recurring (dialogue beat)+propcat+}
+^^{voluntary / involuntary (dialogue beat)+prop+} ^^{involuntary / voluntary (dialogue beat)+prop+} ^^{voluntary (dialogue beat)+propcat+} ^^{involuntary (dialogue beat)+propcat+}
+^^{spontaneous / unspontaneous (dialogue beat)+prop+} ^^{unspontaneous / spontaneous (dialogue beat)+prop+} ^^{spontaneous (dialogue beat)+propcat+} ^^{unspontaneous (dialogue beat)+propcat+}
+^^{available / unavailable (dialogue beat)+adj+} ^^{unavailable / available (dialogue beat)+adj+}
+^^{relevant / irrelevant (dialogue beat)+adj+} ^^{irrelevant / relevant (dialogue beat)+adj+}
+^^{being performed (dialogue beat)+adj+}
+^^{testing phrases: showme the beat structure of (dialogue beat)+phr+}
+^^{dialogue: conversational subjects: making live / dead}
 
 There are many ways to manage dialogue. At one extreme we can put the dialogue director into active mode, and let the automatics do everything, so that conversation happens whenever appropriate in the course of play. Or we can keep it passive, but then run the entire story as one big script of dialogue.
 
@@ -6188,6 +6250,12 @@ One way to watch how the list is managed in practice is to add a rule like so, j
 
 ## About about
 
+^^{dialogue: cues: about a subject} ^^{dialogue beats: about a subject} ^^{about (subject)+cue+}
+^^{dialogue lines: mentioning a subject}
+^^{concepts+kind+: in dialogue}
+^^{dialogue: conversational subjects: beats about}
+^^{dialogue: conversational subjects: lines mentioning}
+
 The whole idea of making the dialogue director "active" is that it enables conversation to develop naturally, in a way which dovetails with everything else that happens in the story. This works best if dialogue beats are marked up with what they are `about`, and if good use is made of marking lines as `mentioning` things.
 
 A beat can be `about` any object, but it's mostly sensible to have beats about things — interesting items in the story, or people — or else objects of the `concept` kind, which are used for more abstract ideas. We can freely create those, like so:
@@ -6263,6 +6331,33 @@ If a beat is bringing up unexpected new information, which should not be matched
 	Snow White (mentioning diamonds): "He's a varmint like all the rest, but the diamonds are in these crazy low tunnels, and I can't afford to muss my hair. I'm still super-active on the pageanting circuit, you know."
 
 ## Dialogue lines
+
+^^{dialogue lines}
+^^{dialogue lines: speaker of} ^^{speaker (- thing)+actvar+}
+^^{dialogue lines: narration} ^^{narration (dialogue lines)}
+^^{dialogue lines: as values} ^^{values: dialogue lines as values}
+^^{dialogue lines: matching potential speakers}
+^^{interlocutor (- thing)+actvar+}
+^^{dialogue lines: mentioning a subject}
+^^{dialogue: conversational subjects: lines mentioning}
+^^{dialogue lines: conditional}
+^^{dialogue lines: properties}
+^^{dialogue: director: speaker selection rules}
+^^{narrated / unnarrated (dialogue line)+prop+} ^^{unnarrated / narrated (dialogue line)+prop+} ^^{narrated (dialogue line)+propcat+} ^^{unnarrated (dialogue line)+propcat+}
+^^{performed / unperformed (dialogue line)+prop+} ^^{unperformed / performed (dialogue line)+prop+} ^^{performed (dialogue line)+propcat+} ^^{unperformed (dialogue line)+propcat+}
+^^{recurring / non-recurring (dialogue line)+prop+} ^^{non-recurring / recurring (dialogue line)+prop+} ^^{recurring (dialogue line)+propcat+} ^^{non-recurring (dialogue line)+propcat+}
+^^{elaborated / unelaborated (dialogue line)+prop+} ^^{unelaborated / elaborated (dialogue line)+prop+} ^^{elaborated (dialogue line)+propcat+} ^^{unelaborated (dialogue line)+propcat+}
+^^{performance notes: named} ^^{this is the (name) line+perfnote+}
+^^{performance notes: to an interlocutor} ^^{to (person)+perfnote+}
+^^{performance notes: mentioning a subject} ^^{mentioning (subject)+perfnote+}
+^^{performance notes: conditions} ^^{if (a condition)+perfnote+} ^^{unless (a condition)+perfnote+}
+^^{performance notes: before an action} ^^{before (an action)+perfnote+}
+^^{performance notes: after an action} ^^{after (an action)+perfnote+}
+^^{performance notes: setting a condition} ^^{now (a condition)+perfnote+}
+^^{performance notes: without speaking} ^^{without speaking+perfnote+}
+^^{performance notes: performance styles} ^^{performance styles}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
+^^{|': in elaborated dialogue lines+sourcepart+} ^^{punctuation: apostrophe: in elaborated dialogue lines}
 
 By this point many lines of dialogue have already appeared, some of them with cryptic notes in brackets. It's time now to look at the full range of possibilities.
 
@@ -6412,7 +6507,7 @@ But if we have created a performance style called `spoken with asperity`, then:
 
 	Marcellus (with asperity): "I've had it with these goddam ghosts."
 
-...would perform it that way. See [Performance styles] for more.
+...would perform it that way. See [Managing dialogue lines] for more.
 
 ### Properties of lines
 
@@ -6483,6 +6578,21 @@ Henry self-importantly declared: "The greatest TV show of all time is 24."
 ```
 
 ## Managing dialogue lines
+
+^^{dialogue lines} ^^{dialogue lines: properties}
+^^{dialogue lines: textual content of}
+^^{performance styles}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
+^^{narrated / unnarrated (dialogue line)+prop+} ^^{unnarrated / narrated (dialogue line)+prop+} ^^{narrated (dialogue line)+propcat+} ^^{unnarrated (dialogue line)+propcat+}
+^^{performed / unperformed (dialogue line)+prop+} ^^{unperformed / performed (dialogue line)+prop+} ^^{performed (dialogue line)+propcat+} ^^{unperformed (dialogue line)+propcat+}
+^^{recurring / non-recurring (dialogue line)+prop+} ^^{non-recurring / recurring (dialogue line)+prop+} ^^{recurring (dialogue line)+propcat+} ^^{non-recurring (dialogue line)+propcat+}
+^^{elaborated / unelaborated (dialogue line)+prop+} ^^{unelaborated / elaborated (dialogue line)+prop+} ^^{elaborated (dialogue line)+propcat+} ^^{unelaborated (dialogue line)+propcat+}
+^^{available / unavailable (dialogue line)+adj+} ^^{unavailable / available (dialogue line)+adj+}
+^^{verbal / non-verbal (dialogue line)+adj+} ^^{non-verbal / verbal (dialogue line)+adj+}
+^^{performance notes: without speaking} ^^{without speaking+perfnote+}
+^^{interlocutor (- thing)+actvar+}
+^^{speaker (- thing)+actvar+}
+^^{style (- performance style)+actvar+}
 
 This is where we meet two more kinds: `dialogue line` and `performance style`. Each different line of dialogue in the source text is a different `dialogue line` value. That's true even if the texts are the same, as in the famous dialogue between Laurence Olivier (Szell) and Dustin Hoffman (Babe) in _Marathon Man_ (1976):
 
@@ -6570,6 +6680,21 @@ Until the actual moment of performing this, we can't know who exactly will speak
 > This produces the text of the speech made, but it's only really safe to use this phrase in a rule belonging to the `performing something` activity, because the text may make reference to the current `speaker` and `interlocutor` — which are variables existing only inside that activity.
 
 ## Decision points
+
+^^{dialogue beats: branches}
+^^{dialogue beats: player choices}
+^^{|--: for dialogue choices+sourcepart+}
+^^{dialogue choices}
+^^{dialogue choices: based on actions}
+^^{dialogue choices: automatic}
+^^{asking the player: for a dialogue choice} ^^{querying the player: for a dialogue choice}
+^^{(before), in dialogue choices+sourcepart+}
+^^{(after), in dialogue choices+sourcepart+}
+^^{(instead of), in dialogue choices+sourcepart+}
+^^{(otherwise), in dialogue choices+sourcepart+}
+^^{flow markers} ^^{dialogue beats: flow markers <-- dialogue: sections: flow markers}
+^^{(<-), flow marker+sourcepart+}
+^^{(step through), automatic dialogue choice+sourcepart+} ^^{(step through and stop), automatic dialogue choice+sourcepart+} ^^{(cycle through), automatic dialogue choice+sourcepart+} ^^{(shuffle through), automatic dialogue choice+sourcepart+} ^^{(choose randomly), automatic dialogue choice+sourcepart+}
 
 A _decision point_ is reached when the director is performing a beat and comes to a run of _choices_. The idea is that the player selects one of these choices, and then dialogue continues down whichever branch is called for.
 
@@ -6738,6 +6863,14 @@ permutation when that completes, and so on
 
 ## Dialogue choices
 
+^^{|--: for dialogue choices+sourcepart+}
+^^{dialogue choices}
+^^{dialogue choices: as values} ^^{values: dialogue choices as values}
+^^{dialogue choices: conditional}
+^^{dialogue choices: properties}
+^^{performed / unperformed (dialogue choice)+prop+} ^^{unperformed / performed (dialogue choice)+prop+} ^^{performed (dialogue choice)+propcat+} ^^{unperformed (dialogue choice)+propcat+}
+^^{recurring / non-recurring (dialogue lichoicene)+prop+} ^^{non-recurring / recurring (dialogue choice)+prop+} ^^{recurring (dialogue choice)+propcat+} ^^{non-recurring (dialogue choice)+propcat+}
+
 As we've seen, then, a dialogue choice is written as a paragraph beginning with `--`. Much like dialogue lines, dialogue choices can have optional annotations given to them between round brackets. But if we forget about those, the possible ways to write a choice are:
 
 Syntax                      | What it's for
@@ -6806,6 +6939,15 @@ Exactly as for beats and lines, a `dialogue choice` can have these either-or pro
 than once in the same play-through?
 
 ## Flow markers
+
+^^{flow markers} ^^{dialogue beats: flow markers}
+^^{(<-), flow marker+sourcepart+} ^^{(->), flow marker+sourcepart+}
+^^{dialogue beats: stopping}
+^^{(-> stop), flow marker+sourcepart+ --> stop}
+^^{(-> end the story), flow marker+sourcepart+ --> end the story}
+^^{(-> perform) beat, flow marker+sourcepart+ --> perform}
+^^{(-> another choice), flow marker+sourcepart+ --> another choice}
+^^{story structure: ending: in a dialogue beat} ^^{end of story: in a dialogue beat}
 
 Flow markers are written `<-` or `->`, and cause the dialogue director to interrupt its normal performance of a beat. `<-` generally makes a backwards jump in the same beat, while `->` leads out to another beat.
 
@@ -6954,6 +7096,14 @@ Finally, and only seldom needed, `-> another choice` can be used to clarify that
 The reason for the `-> another choice` flow marker is simply that we want two sets of two options, not one set of four. If any dialogue had appeared in between the two decisions, there would have been no need for the `-> another choice`, but since it didn't, we need some marker to hold the decisions apart from each other. `-> another choice` has to be unconditional, and doesn't get a name or properties: it isn't really present in the story at all.
 
 ## Managing dialogue choices
+
+^^{flow markers: as a sort of dialogue choice} ^^{dialogue beats: flow markers: as a sort of dialogue choice}
+^^{dialogue choices: flow markers as choices}
+^^{performed / unperformed (dialogue choice)+prop+} ^^{unperformed / performed (dialogue choice)+prop+} ^^{performed (dialogue choice)+propcat+} ^^{unperformed (dialogue choice)+propcat+}
+^^{recurring / non-recurring (dialogue lichoicene)+prop+} ^^{non-recurring / recurring (dialogue choice)+prop+} ^^{recurring (dialogue choice)+propcat+} ^^{non-recurring (dialogue choice)+propcat+}
+^^{flowing / offered (dialogue choice)+adj+} ^^{offered / flowing (dialogue choice)+adj+}
+^^{story-ending (dialogue choice)+adj+ --> story ending}
+^^{offering something+descactivity+} ^^{offering+activity+} ^^{dialogue choices: offering+activity+}
 
 As has been mentioned already, each different choice in the source text is a different `dialogue choice` value, and in fact so is each different flow marker: under the surface, a flow marker is really just a special sort of choice.
 
@@ -7142,9 +7292,11 @@ If we need more variation than that, we should make more than one definition.
 
 ## The showme phrase
 
+^^{testing phrases: showme (value)+phr+}
+
 We've already seen the ``SHOWME`` command, which can be typed into the Story panel to look at the state of something, usually a thing or room. ``SHOWME`` is a testing command which has no effect once the work is released; eventual players can't use it.
 
-Inform also has a phrase called ``SHOWME``, which works in much the same way:
+Inform also has a phrase called `showme`, which works in much the same way:
 
 > phrase: {ph_showme} showme (value)
 >
@@ -7166,7 +7318,7 @@ Inform also has a phrase called ``SHOWME``, which works in much the same way:
 >
 > Inform uses the quotation marks and equals sign to show that it had to do some work to find the answer. `score` wasn't a constant value – it was a variable, and Inform had to look up the current value.
 
-``SHOWME`` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
+`Showme` is a convenient way to see what's going on inside a phrase which isn't behaving as expected, or to find out the kind of a value. Here are some trickier examples. Suppose our design includes:
 
 	The matching key of the blue door is the brass Yale key.
 
@@ -7179,21 +7331,21 @@ we get, when the story starts up,
 
 	"matching key of the blue door" = object: brass Yale key
 
-Why is this an `object`, when we know that the key is actually a `thing`? After all, if we ``SHOWME KEY`` instead, we get:
+Why is this an `object`, when we know that the key is actually a `thing`? After all, if we `showme key` instead, we get:
 
 	thing: brass Yale key
 
-The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try ``SHOWME MATCHING KEY``, we get something like this:
+The answer is a little technical: it's because Inform guarantees that the matching key is always an object, but not that it's always a thing – it just happens to be a thing at the moment. There's not really a contradiction, because a `thing` is a kind of `object`, so in fact the key is both. If we try `showme matching key`, we get something like this:
 
 	objects valued property: property 23
 
-which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: ``SHOWME`` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
+which is even more technical – people never need to print the names of abstract property names during play, so Inform doesn't provide any good way of doing it. It is reduced to printing out an internal ID number (`property 23`) instead of the name (`matching key`). This can't be helped: `showme` is a way to lift the lid and see what's going on inside Inform's machinery, and some of the corners are dark.
 
-All the same, ``SHOWME`` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
+All the same, `showme` can be very useful in tinkering with rules to make them work properly. It prints nothing at all in a Release version of a project, so it's impossible for these private notes to be shown accidentally to our eventual readers.
 
 ## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
 
-^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player yes/no} ^^{asking the player yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
+^^{phrases: deciding a condition} ^^{conditions: defined by phrases} ^^{|truth state} ^^{values: truth state values} ^^{|true / false} ^^{|false / true} ^^{darkness: testing whether in darkness} ^^{querying the player: yes/no} ^^{asking the player: yes/no} ^^{(YES), querying yes/no+commandpart+} ^^{(NO), querying yes/no+commandpart+} ^^{consents: if player consents+phr+}
 
 A variety of "conditions" have already appeared in this documentation. A condition is a phrase which describes a situation which might be true, or might be false, and examples might include:
 
@@ -7323,7 +7475,7 @@ While this syntax is still allowed for the time being, to keep old source text w
 
 ## Otherwise {PM_NonCaseInIf} {PM_MisalignedOtherwise} {PM_MisalignedCase} {PM_MisarrangedOtherwise} {PM_DoubleOtherwise} {PM_OtherwiseIfAfterOtherwise} {PM_CaseValueNonConstant} {PM_CaseValueMismatch} {PM_OtherwiseWithoutIf} {PM_OtherwiseInNonIf}
 
-^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{(--), separating cases+sourcepart+} ^^{abbreviations: chains of equality tests}
+^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{|--: separating cases+sourcepart+} ^^{abbreviations: chains of equality tests}
 
 We often need code which does one thing in one circumstance, and another the rest of the time. We could do this like so:
 
@@ -8745,7 +8897,7 @@ Since many of these examples have involved people, it might be worth mentioning 
 
 ## Relations in groups
 
-^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS}
+^^{relations: group relations} ^^{(in groups), in defining relations+sourcepart+} ^^{group relations} ^^{(each other), in defining relations+sourcepart+} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS} ^^{testing phrases: show relation (relation of values to values)+phr+}
 
 Finally, there is a kind of relation which binds even more strongly.
 
@@ -9146,6 +9298,8 @@ We can also define verbs as auxiliaries, like so:
 Now we can ask if Poirot `can approach` Hotchkiss, and so on.
 
 ## Verbs which mean properties
+
+^^{properties: defining sentence verbs for properties} ^^{defining: sentence verbs for properties} ^^{the verb (V) means (property)+assert+} ^^{(means), defining sentence verbs+sourcepart+: the verb (V) means (property)+assert+} ^^{sentence verbs: defining for properties}
 
 So far `The verb ... means ...` has always had a relation as its meaning. But here is an alternative:
 
@@ -10136,6 +10290,8 @@ That kind of definition, and the consequences, will be the subject of this chapt
 
 ## Numbers, ranges, overflows, and number bases {kind_number} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
 
+^^{numbers} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{numbers: hexadecimal and other bases <-- binary numbers <-- hexadecimal numbers <-- octal numbers} ^^{numbers: asking the player for} ^^{querying the player: for a number} ^^{asking the player: for a number}
+
 What Inform calls a `number` is a whole number, positive, negative or zero. Numbers from `zero` to `twelve` may also be written out in words, but all others must be written as numerals. So `twelve` or `12`, but `13` only.
 
 For efficiency reasons, only a limited range of whole numbers close to 0 can be stored as a `number`, but in practice that range is large enough for all everyday purposes:
@@ -11081,7 +11237,7 @@ And this establishes that, for example,
 ## Notations with multiple parts {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
 
 ^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
-^^{units of measure: understanding} ^^{understanding: numbers with units}
+^^{units of measure: understanding} ^^{understanding: numbers with units} ^^{numbers: hexadecimal and other bases: in units of measure}
 
 The chapter on [Quantities and Equations] featured many variations on specifications like this one:
 
@@ -11148,7 +11304,7 @@ So Inform reads the notation `#FF_FF_FF` as having three number parts.
 
 ## The parts of a notation {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
 
-^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(preamble optional), when defining units+sourcepart+} ^^{(without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+}
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{units of measure: defining: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
 
 If a value has been constructed out of multiple parts, we will sometimes want to extract those parts. For instance, suppose we want to know the dollars part of `$1.99`? We can do this provided the parts have names:
 
@@ -11217,6 +11373,8 @@ is equivalent to:
 
 ## Optional notation parts
 
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining: with optional parts} ^^{defining: units of measure with parts: with multiple numeric components} ^^{defining: units of measure with parts: with optional parts} ^^{(optional), when defining units+sourcepart+} ^^{(preamble optional), when defining units+sourcepart+}
+
 If a part of a notation is specified as `optional` then it can be missed out, and the result will be as if 0 had been given. For example, if we want the pre-Euro currency of France:
 
 	French monetary value is a kind of value.
@@ -11231,6 +11389,8 @@ This allows both `12F50` and `14F` to be valid; `14F` is exactly like typing `14
 This declares not only that the `cents` part is optional – it will be 0 if not specified – but also that if it is omitted, the `.` should be left out as well. Thus `$3` is now valid and equivalent to `$3.00`: indeed, it will be the preferred form when Inform prints out a monetary value which is an exact number of dollars.
 
 ## Range and number base of notation parts
+
+^^{units of measure: defining: with other bases} ^^{defining: units of measure with parts: with other bases} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{(with / without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+}
 
 The _range_ of a part is the set of values it can hold. For example:
 
@@ -11256,7 +11416,7 @@ An alternative way to give the range is to write `D digits` or `up to D digits`.
 
 If a part uses both ways to give a range, e.g., `0 to 39, 2 digits`, then the explicit range, in this case 0 to 39, wins out. An impossible combination such as `0 to 199, 2 digits` is rejected with a problem message.
 
-The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations including more than one number] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
+The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations with multiple parts] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
 
 And we can combine the range and number base settings with the options `D BASE digit/digits` and `up to D BASE digit/digits`.
 
@@ -11271,6 +11431,8 @@ is equivalent to:
 and means that, for example, `_01101_` is a valid `DIP switch setting`.
 
 ## Angle-bracketed part names
+
+^^{units of measure: defining: with named parts} ^^{defining: units of measure with parts: with named parts} ^^{(< >), for defining parts of units of measure+sourcepart+} ^^{punctuation: angle brackets, for defining parts of units of measure} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
 
 In all the notations so far, the "parts" have been written in something resembling numerical form. For example:
 
@@ -11318,6 +11480,8 @@ in the tail of the sentence, and in the same order: Inform will throw a problem 
 
 ## Unusual digits
 
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts} ^^{numbers: hexadecimal and other bases: in units of measure} ^^{characters (letters): accented and exotic letters and symbols}
+
 The parts option `digits "TEXT"` tells Inform to use the supplied digit characters in place of the regular ones.
 
 The text must contain exactly the number of characters which equals the number base (2 for binary, 8 for octal, and so on), must have no repeats, and must not use spaces or square brackets.
@@ -11351,6 +11515,8 @@ Throwing in emoji or other symbols can make some intriguing textual effects:
 prints all 256 possible wall carvings using a row of 4 shapes, each of which can be of 4 types.
 
 ## Parts which do not look like numbers
+
+^^{units of measure: defining: with non-numeric parts} ^^{defining: units of measure with parts: with non-numeric parts}
 
 So far, all the parts of a specification have been basically numerical, if possibly with unusual digits. But we can break away from that completely with two more options supplied for parts.
 
@@ -11443,6 +11609,8 @@ The trouble with this is that the square which White calls KB2 is the square Bla
 
 ## Parts corresponding to kinds
 
+^^{units of measure: defining: with parts of a kind of value} ^^{defining: units of measure with parts: with parts of a kind of value} ^^{|corresponding to: in defining units of measure} ^^{kinds: of value: in defining units of measure}
+
 One last option available for parts of a specification is `corresponding to KIND`, which says that the part contains a value of the given `KIND`, which must be either numerical or an enumeration, rather than a `number`.
 
 Let's return to chess notation. The best specification so far looks like this:
@@ -11505,6 +11673,8 @@ trail position: Kilometer 230
 Note that `67.51km` was rounded here to the nearest `number` value, 68. 
 
 ## Counting and repeating through specified values
+
+^^{units of measure: repeating through}
 
 The final version of `chessboard square` which we reached was this:
 
@@ -11618,7 +11788,7 @@ Note that the first row in a table is row number 1, and that the last can be fou
 
 ## Corresponding entries
 
-^^{tables: looking up by cross-reference} ^^{(corresponding to), in tables+sourcepart+}
+^^{tables: looking up by cross-reference} ^^{|corresponding to: in tables}
 
 Continuing our example of the elements:
 
@@ -11653,7 +11823,7 @@ The condition `if there is...` can be used with any reference to a table entry: 
 
 ## Changing entries
 
-^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables}
+^^{tables: changing entries} ^^{+to+now (a condition): changing table entries} ^^{type-checking: in tables} ^^{testing phrases: showme the contents of (table name)+phr+}
 
 Here is another rather definitive, immutable-looking table:
 
@@ -11825,7 +11995,7 @@ These definitions mentioned blankness several times, and that's the topic to cov
 
 ## Blank entries
 
-^^{tables: blank entries <-- blank entries in tables} ^^{(--), as a blank table entry+sourcepart+}
+^^{tables: blank entries <-- blank entries in tables} ^^{|--: as a blank table entry+sourcepart+}
 
 We are allowed to leave certain entries blank (perhaps to be filled in later, perhaps not) by writing `--` instead of the relevant value:
 
@@ -13694,7 +13864,7 @@ The rest of this chapter covers every activity built in to Inform, with one sect
 
 ## Deciding the concealed possessions of something {act_con} {var_particular}
 
-^^{hiding things carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
+^^{hiding things: carried by other characters} ^^{concealment+rel+} ^^{concealment+relcat+} ^^{concealed (thing)+adj+} ^^{concealed possessions} ^^{possessions: deciding the concealed possessions of something+activity+} ^^{particular possession (- thing)+glob+}
 
 **1. When it happens.** Frequently – whenever Inform needs to check whether something is visible or not. Nothing should be printed, and the activity needs to run quickly, so it should not (for instance) calculate best routes through complicated maps before getting an answer.
 
@@ -14174,7 +14344,7 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Printing a locale paragraph about {act_plp}
 
-^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
+^^{printing a locale paragraph about something+descactivity+} ^^{printing a locale paragraph about+activity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
 
 **1. When it happens.** See `printing the locale description`. By this point, the locale description process has identified a number of items as candidates to be described, and worked out a priority order. This activity is then called for each candidate in turn, starting with the highest priority items and working downwards. It can either print some text or not, and can either mark the item as `mentioned` or not: if it does, then the item won't appear subsequently in the locale description. If the activity does nothing, the item becomes "nondescript" and falls through into the final ``You can also see...`` paragraph, unless another rule mentions it in the mean time.
 
@@ -14211,7 +14381,11 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Performing something {act_performing}
 
-^^{performing something+descactivity+} ^^{dialogue lines: performing something+activity+}
+^^{performing something+descactivity+} ^^{performing+activity+} ^^{dialogue lines: performing something+activity+}
+^^{interlocutor (- thing)+actvar+}
+^^{speaker (- thing)+actvar+}
+^^{style (- performance style)+actvar+}
+^^{|spoken normally} ^^{performance styles: |spoken normally}
 
 **1. When it happens.** Whenever the dialogue director has definitely decided to perform a line of dialogue. The activity shouldn't be used to undo that decision (i.e., by not printing anything): to suppress dialogue, put conditions on it. The activity has three private variables:
 
@@ -14258,7 +14432,7 @@ See [Managing dialogue lines] for more.
 
 ## Offering something {act_offering}
 
-^^{offering something+descactivity+} ^^{dialogue choices: offering something+activity+}
+^^{offering something+descactivity+} ^^{offering+activity+} ^^{dialogue choices: offering+activity+}
 
 **1. When it happens.** Whenever the dialogue director has one or more textual choices to ask the player to select between. This activity applies to a list of dialogue choices, which will never be empty.
 
@@ -17968,6 +18142,64 @@ The opening character is an asterisk if the file is currently ready, a hyphen if
 * //4122DDA8-A153-46BC-8F57-42220F9D8795// ice
 ```
 
+# Screen and Keyboard
+
+## Glk
+
+An interactive story as released by Inform is, in the end, a computer program. Sometimes that is a stand-alone _story file_, which can be played by an app called an _interpreter_, and sometimes it is a website with an interpreter built in, but a website is also a sort of computer program.
+
+Once built, the program may run on quite a range of different hardware. A stand-alone story file could be played on a so-called dumb terminal, not much more capable than an 1970s teletype machine, or in a windowed app controlled by a mouse, or on a touch-screen. A website might be browsed on a phone, a tablet, a desktop computer, or a Braille display. The range of potential environments is huge, and the current one is sometimes called the _platform_.
+
+The inner life of the program is the same whatever the platform. Perhaps it's working out how the characters move around in a murder mystery, or sorting lists of numbers and then turning the result into text: all of that computation would be the same inside of a phone's web browser as in a command-line interpreter for a Unix workstation. But that computation is no use unless instructions can be taken in from the outside world, and results sent back out. This two-way communication is called _input/output_, or _IO_, and it works very differently on different platforms.
+
+Of course, Inform stories throughout this book have been using IO right from the start. For example:
+
+	> EXAMINE LAMP
+	It's a typical Linux-Apache-MySQL-Perl server dating from the late 1990s.
+
+The typed command was input, and the reply back was output. But these are the absolute basics of IO, which work on more or less every platform. This chapter is about less standard user interactions, which don't at all work on every platform. They mostly involve screen or keyboard effects, hence the chapter title, but a few other exotica also come in.
+
+Unless otherwise stated, *everything in this chapter assumes that a project is using the Glulx setting*. (This is the default, of course.) The older Z-machine has almost no ability to support IO. Glulx, by contrast, can liaise with a sort of intermediary called _glk_ which performs advanced IO for it.
+
+The first thing glk can do for us is to tell us what our current platform will and won't be able to do:
+
+> phrase: {ph_glksupported} if (F - glk feature) is/are supported:
+>
+> Whether the platform supports feature `F` or not. This test is very rapid, so there need not be any performance concerns over performing it frequently: in particular there is nothing gained by storing the result in a variable to avoid having to test a second time, and indeed that might not be a good idea, because the abilities of glk might change during play.
+
+> phrase: {ph_glkversion} glk version number ... number
+>
+> The version of the glk interface which the story can currently see. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another. Versions of glk are normally written in the form ```0.7.5``` on specification documents online, but ```X.Y.Z``` is normally converted to a number as 65536 times ```X``` plus 256 times ```Y``` plus ```Z```: thus, version ```0.7.5``` produces the number 1797. Later glk versions always have higher version numbers than earlier ones.
+
+Here `glk feature` is a kind of value. So, for example,
+
+	repeat with F running through glk features:
+		say "[F]: [whether or not F is supported].";
+
+might produce:
+
+	timers: true.
+	glk graphics: true.
+	basic sounds: true.
+	sound volume: true.
+	sound notifications: true.
+	hyperlinks: true.
+	MOD sounds: true.
+	PNG transparency: true.
+	glk unicode: true.
+	unicode normalization: true.
+	line input echo suppression: true.
+	line input terminators: false.
+	system clock: true.
+	extended sounds: true.
+	resource streams: false.
+	graphics window character input: true.
+	text formatting: false.
+
+## Basic IO
+
+This is placeholder text only.
+
 # Testing and Debugging
 
 ## A recap on TEST and showme
@@ -18328,7 +18560,7 @@ But that is only the first step. What do we do with the material when we have it
 
 ## Bibliographic data {PM_BadEpisode}
 
-^^{bibliographic data <-- metadata <-- publication data} ^^{title+biblio+} ^^{author+biblio+} ^^{headline+biblio+} ^^{release number+biblio+} ^^{genre+biblio+} ^^{story description+biblio+ <-- blurb+biblio+} ^^{punctuation: apostrophe, meaning quotation mark} ^^{('), meaning (")+sourcepart+}^^^{+tosay+"[(unicode character)]" --> unicode character}
+^^{bibliographic data <-- metadata <-- publication data} ^^{title+biblio+} ^^{author+biblio+} ^^{headline+biblio+} ^^{release number+biblio+} ^^{genre+biblio+} ^^{story description+biblio+ <-- blurb+biblio+} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+}^^^{+tosay+"[(unicode character)]" --> unicode character}
 
 Almost all printed books have a title page and a so-called "imprint" page, often its verso, which make up a description of the contents. The title page gives the name of the book and of the author, while an imprint page contains a variety of details about the edition, the printing, and so on. An ISBN number is allocated so that, from the number alone, any book seller or cataloguer can identify exactly this work. Sometimes other cataloguing information is added, such as the Library of Congress classification. This set of information is called "bibliographic data", and without it libraries and booksellers would be at a total loss.
 
@@ -19164,7 +19396,7 @@ Play-testers can often be recruited by placing an ad on [intfiction.org](https:/
 
 ## A Page of Its Own
 
-^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io}
+^^{materials folder: web pages for the story} ^^{release along with...+assert+: |a website} ^^{materials folder: web-playable story} ^^{release along with...+assert+: |an interpreter} ^^{itch.io+web+}
 
 One option for sharing your work with the world is to set up a web page and a copy of the story file on a private web host. That host should ideally be as stable as possible, so that the URL is likely to remain fixed for what might be a long period. Freeware stories have a long period of viability relative to commercial games, which means that players may still be hearing about and checking out a story years after its initial release. A stable address helps everyone with links, and makes it easier for search engines to direct people.
 
@@ -19176,7 +19408,7 @@ One of the most accessible is [itch.io](https://itch.io). While it's a lot of wo
 
 A game on itch.io will still need promotion and other attention if the author hopes to make any significant amount of money, but the barriers to listing something for sale are much lower than they once were. And itch.io can be a viable way to share a game that isn't intended to charge money at all.
 
-At the time of this writing, the itch.io platform lists 15,988 games tagged "interactive fiction."
+At the time of this writing, the itch.io platform lists 28,413 games tagged "interactive fiction."
 
 ## The IF Archive
 
@@ -19228,7 +19460,7 @@ Some awards for interactive fiction, such as the annual XYZZY Awards, require a 
 
 ## Competitions, Exhibitions, and Jams
 
-^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io} ^^{ProcJam}
+^^{ifwiki+web+} ^^{XYZZY} ^^{itch.io+web+} ^^{ProcJam}
 
 One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organiser usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The [IFWiki](https://ifwiki.org) usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on its front page.
 
@@ -19309,7 +19541,7 @@ The Extensions tab in the Inform app displays details of all of the extensions i
 
 ## Title and authorship
 
-^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension}
+^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension} ^^{extensions: writing: title+biblio+} ^^{title+biblio+: of an extension} ^^{bibliographic data: in extensions}
 
 In this chapter, we'll take on the role of Peter Drake, an Inform author who wants to package up the following minimal piece of design as an extension:
 
@@ -19428,6 +19660,8 @@ And that's it: a fully-functioning extension has been made.
 
 ## JSON metadata
 
+^^{extensions: writing: metadata in JSON} ^^{bibliographic data: in extensions}
+
 Having got the `Ducking Action` extension working, in a minimal sort of way, we might now look again at the files being stored under the surface.
 
 ``` code
@@ -19493,6 +19727,8 @@ So the upshot of this technical little section is... that we can basically forge
 
 ## Begins here and ends here {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
 
+^^{(extension) begins here+assert+ --> begins here} ^^{(extension) ends here+assert+ --> ends here}
+
 Here is where we've got to, then, with the extension source text:
 
 	Version 1 of Ducking Action by Peter Drake begins here.
@@ -19512,7 +19748,7 @@ Note that the extension has to begin and end with special sentences. These act r
 
 2) There must of course be exactly one `begins here` line, and exactly one `ends here` line.
 
-3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation].
+3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation and testing].
 
 4) Other than this old style of documentation, which is now deprecated, no content is permitted below the `ends here` line. So it really should be at the end of the file.
 
@@ -19655,6 +19891,8 @@ But this pair is not:
 because all versions compatible with 9.5 have major version number 9, and all versions compatible with 10.3 have major version number 10. So it is not possible to satisfy both, and Inform will produce a problem message.
 
 ## Extension rubrics
+
+^^{extensions: writing: rubric+biblio+} ^^{rubric, of an extension+biblio+} ^^{>VERSION}
 
 It's very helpful for an extension to be accompanied by a brief description of what it does, so that a user browsing through lists of extensions can see more than just the title. This is called a _rubric_.
 
@@ -19975,6 +20213,8 @@ This is intended so that technical apparatus used only inside the extensions can
 
 ## Images and other resources
 
+^^{extensions: writing: figures} ^^{extensions: writing: sounds} ^^{extensions: writing: files (data files)} ^^{figures: in extensions} ^^{sounds: in extensions} ^^{files (data files): in extensions} ^^{materials folder: for an extension}
+
 An extension directory can, optionally, contain a subdirectory called ```Materials```. If it does, this can then contain a wide variety of useful things, laid out almost exactly like the materials folder for a project. Because it's included in the extension, anybody downloading the extension gets all of these extras along with it.
 
 So, then:
@@ -20104,6 +20344,8 @@ In case helpful, here's a little diagnostic command called ``OPTIONS``:
 		say "Inactive: [list of inactive use options].";
 
 ## Run-time problems
+
+^^{error messages: defined in extensions} ^^{problem messages: defined in extensions}
 
 Run-time problems are the ones thrown by stories which hit some impossible demand while playing: perhaps they find that they need to divide a number by zero, or they try to make a physical person wear a concept, or put a room on top of a shelf, or something else which simply can't be done. All experienced Inform authors will have seen RTPs before, but in case not, running this will certainly do it:
 
@@ -20495,7 +20737,7 @@ In releases of Inform before 2024, extension documentation was tacked on to the 
 
 ## Headings and organisation
 
-^^{headings: in extension documentation} 
+^^{headings: in extension documentation} ^^{extensions: documenting: headings}
 
 The Markdown notation for headings looks like so:
 
@@ -20554,6 +20796,7 @@ A small technical caveat: Inform-flavoured Markdown does not allow level 1 (Chap
 
 ## Textual effects and short code samples
 
+^^{extensions: documenting: formatting}
 ^^{italics: in extension documentation} 
 ^^{bold: in extension documentation} 
 ^^{strikethrough: in extension documentation} 
@@ -20622,7 +20865,7 @@ As a general piece of guidance, then, pieces of source text should be never be q
 
 ### Backslash escapes
 
-^^{backslash escapes: in extension documentation} 
+^^{backslash escapes: in extension documentation} ^^{extensions: documenting: formatting}
 
 Markdown also supports so-called HTML entities, which provide a way to type certain unusual characters by name rather than literally. For example, ```&HilbertSpace;``` produces &HilbertSpace;, a mathematical symbol. Nowadays it's usually better just to type the character directly: ```ℋ``` also produces ℋ. But it does raise the question: how do we write \&HilbertSpace; without it coming out as &HilbertSpace;?
 
@@ -20632,8 +20875,8 @@ Note that none of this applies inside code examples, where a backslash is just a
 
 ## Longer code samples
 
-^^{code examples: in extension documentation} 
-^^{syntax colouring: in extension documentation} 
+^^{code examples: in extension documentation} ^^{extensions: documenting: code examples}
+^^{syntax colouring: in extension documentation} ^^{extensions: documenting: syntax colouring}
 
 Inform documentation tends to be broken up with examples of source text, and this can be done very simply, by indenting the material one tab stop from the margin. (Or, equivalently, by four spaces.)
 
@@ -20739,7 +20982,7 @@ Here the ```{**}``` notation means that the sample continues the previous one, a
 
 ## Block quotations and phrase boxes
 
-^^{quotations: in extension documentation} 
+^^{quotations: in extension documentation} ^^{extensions: documenting: formatting}
 
 "Block quotations" are suitable for quoting a piece of human writing, rather than code, and are introduced by ```>``` characters on the left margin:
 
@@ -20806,7 +21049,7 @@ One of the main uses of block quotations in Inform documentation is to provide t
 
 ## Tables
 
-^^{tables: in extension documentation} 
+^^{tables: in extension documentation} ^^{extensions: documenting: tables}
 
 A simple table looks like so, with pipe characters ```|``` dividing the columns; it will only become a table if there is a ruler line under the column headings.
 
@@ -20874,8 +21117,8 @@ producing:
 
 ## Lists and to-do items
 
-^^{lists: in extension documentation} 
-^^{to-do items: in extension documentation} 
+^^{lists: in extension documentation} ^^{extensions: documenting: lists}
+^^{to-do items: in extension documentation} ^^{extensions: documenting: to-do items}
 
 We have three sorts of list. Bulleted lists:
 
@@ -20997,7 +21240,7 @@ For Inform documentation, we prefer loose lists, which are easier to read on scr
 
 ## Links and cross-references
 
-^^{links: in extension documentation} 
+^^{links: in extension documentation} ^^{extensions: documenting: links}
 
 The standard Markdown syntax ```[Label]``` or ```[this is a link][Label]``` makes a link where the destination is referred to by a label, rather than given explicitly. In traditional Markdown, that label can then be _defined_ like so:
 
@@ -21040,6 +21283,8 @@ See the example [of rarities](The Red Mercury) for more on Austria.
 because although this would work fine for sighted users, displaying "See the example of rarities for more on Austria" but with the words "of rarities" linked, screen-readers display such links in a confusing way.
 
 ## Images in documentation
+
+^^{figures: in extension documentation} ^^{extensions: documenting: figures}
 
 Extension documentation should not use externally hosted images, i.e., images on some server which requires an Internet access to fetch. Instead, they should use only their own private images.
 
@@ -21157,6 +21402,8 @@ As a default, Locksmith describes what passkeys unlock only after printing their
 
 ## Testing
 
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
+
 Like any software, extensions need to be tested. They should ideally be exercised on a variety of plausible use-cases, with each feature being tried out. The examples are often ideal for doing that. So, for example, any bug fix made in `Philately by Peter Drake` can be checked out for safety by making sure that its four existing examples run as they should.
 
 Of course, this can be done by hand: by pasting in the example sources, running them in the Inform app, typing ``TEST ME``, and then looking over the resulting transcript of play to make sure it's all as it should be.
@@ -21190,6 +21437,8 @@ Philately-v1.i7xd
 Two new files have appeared: ```Unhinged--I.txt``` and ```PleaseDoNotPerforate--I.txt```. These are the ideal transcripts of play from those examples.
 
 ## Test cases which are not examples
+
+^^{extensions: writing: testing} ^^{testing commands: >TEST: testing extensions}
 
 Inform also allows test cases which are not examples from the documentation. Authors who are very much into "unit testing" will probably want to take advantage. For example, if `Philately` provides a high complicated phrase:
 
@@ -21294,6 +21543,8 @@ The full list of legal options is given below, though users will rarely if ever 
 11) ```GenerateDiagnostics: Yes``` or ```GenerateDiagnostics: No``` (the default is ```No```). Used only by one Inform compiler test case, and only to output certain files which show diagrams of internal data structures for use in the technical documentation on the website. Extension tests will not need this.
 
 ## Providing an index
+
+^^{extensions: documenting: index for documentation}
 
 ### Basics of indexing
 
@@ -21550,7 +21801,7 @@ This is only likely to be helpful for the main Inform documentation, not for ext
 
 ## The architecture of Inform
 
-^^{architecture of Inform} ^^{Inter code} ^^{I6 syntax} ^^{Inform 6} ^^{extensions: Inform 6 code in extensions}
+^^{architecture of Inform} ^^{Inter code} ^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6} ^^{extensions: Inform 6 code in extensions}
 
 Inside the Inform applications is a _compiler_, which turns source text which describes a story into a computer program which runs that story — or else, of course, refuses and issues Problem messages.
 
@@ -21612,7 +21863,7 @@ This is the first of two chapters about how to use I6 within Inform. In this cha
 
 ## Defining To phrases with I6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
-^^{I6 syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
+^^{I6: syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
 
 The phrases described in this book all have definitions given in the extensions automatically included with all projects — `Basic Inform`, the `Standard Rules` or, in a few cases, `English Language`. Those phrases are mostly, though not universally, defined using I6 notation, using the feature described below.
 
@@ -21683,7 +21934,7 @@ for (i=3 : i>0 : i-- )
 
 ## Defining To decide phrases with I6
 
-^^{I6 syntax: phrases to decide whether/if} ^^{I6 syntax: phrases to decide a value} ^^{phrases: defining in I6}
+^^{I6: syntax: phrases to decide whether/if} ^^{I6: syntax: phrases to decide a value} ^^{phrases: defining in I6}
 
 The previous section showed how to define so-called _void phrases_ with I6: that is, those which do something, but produce no value or opinion as a result.
 
@@ -22082,7 +22333,7 @@ Lastly: the weasel words about "slightly simplified form" above are because the 
 
 ## Defining adjectives with I6
 
-^^{I6 inclusions: adjectives} ^^{adjectives: defining: with I6}
+^^{I6: inclusions: adjectives} ^^{adjectives: defining: with I6}
 
 There are three ways to specify that an adjective is defined at the I6 level. For example:
 
@@ -22110,7 +22361,7 @@ The escape `*1` is expanded to the value on which the adjective is being tested.
 
 ## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
 
-^^{accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
+^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
  
 What if an I6-written definition needs to access something defined in the source text? For suppose, if the source text says:
 
@@ -22276,7 +22527,7 @@ This can be used by, say:
 
 ## Inclusions of I6 code {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
-^^{I6 inclusions: long sections of code}
+^^{I6: inclusions: long sections of code}
 
 With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
@@ -22323,6 +22574,8 @@ The `instead of` option now cannot work at all, and throws a problem message. Th
 
 ## How I6 differs from Inform 6
 
+^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6}
+
 To recap: I6 is the notation we are using when writing low-level code inside `(-` and `-)` markers. It looks very like the programming language Inform 6, but there are a handful of differences.
 
 In particular:
@@ -22348,6 +22601,8 @@ In particular:
 # Kits
 
 ## About kits
+
+^^{kits (I6 code)} ^^{I6: in kits}
 
 A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: ```BasicInformKit```, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
@@ -22631,7 +22886,7 @@ While it is possible to write similar array declarations to simulate constant li
 
 ### Variables
 
-^^{defined by Inter as...+assert+: variables} ^^{variables: defining in I6}
+^^{defined by Inter as...+assert+: variables} ^^{Inter code: defined by Inter as...+assert+} ^^{variables: defining in I6}
 
 We can create a valid Inform variable by providing an I6 global variable to store the contents. (Not all Inform variables are stored this way: some are stored in array entries, or on a stack. Those other ways, we cannot imitate.)
 

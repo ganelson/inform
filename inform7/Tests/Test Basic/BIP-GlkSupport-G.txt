@@ -1,0 +1,8 @@
+Test: BIP-GlkSupport-G
+Language: Basic
+For: Glulx
+
+To begin:
+	showme the glk version number;
+	repeat with F running through glk features:
+		say "[F]: [whether or not F is supported].";

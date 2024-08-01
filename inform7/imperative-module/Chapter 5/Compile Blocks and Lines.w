@@ -326,8 +326,6 @@ one is the "non-pointery" case.
 	int pointery = FALSE;
 	if (Kinds::Behaviour::uses_block_values(switch_kind)) pointery = TRUE;
 
-	LOG("Switch val is $T for kind %u pointery %d\n", switch_val, switch_kind, pointery);
-
 	if (pointery) @<Begin a pointery switch@>
 	else @<Begin a non-pointery switch@>;
 

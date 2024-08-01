@@ -1,0 +1,21 @@
+builtin base VERSION_NUMBER_TY {
+	conforms-to: POINTER_VALUE_TY
+	singular: version number
+	plural: version numbers
+	
+	long-block-size: 3
+
+	can-exchange: yes
+	constant-compilation-method: special
+	
+	say-function: VERSION_NUMBER_TY_Say
+	compare-function: VERSION_NUMBER_TY_Compare
+	create-function: VERSION_NUMBER_TY_Create
+	copy-function: VERSION_NUMBER_TY_Copy
+	destroy-function: VERSION_NUMBER_TY_Destroy
+	hash-function: VERSION_NUMBER_TY_Hash
+
+	index-priority: 2
+	index-default-value: v0.0.0
+	specification-text: A three-part version number, such as v3.0.15, where the major, minor and patch versions are divided by full stops.
+}

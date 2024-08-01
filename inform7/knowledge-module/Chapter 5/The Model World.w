@@ -74,8 +74,6 @@ void World::stages_II_and_III(void) {
 			kind *K = <<rp>>;
 			additional_property *ap;
 			LOOP_OVER_LINKED_LIST(ap, additional_property, set->properties) {
-				LOG("I should give kind %u the prop %S = %S\n",
-					K, ap->property_name, ap->value_text);
 				property *P;
 				if (ap->attr) P = EitherOrProperties::new_nameless(ap->property_name);
 				else P = ValueProperties::new_nameless(ap->property_name, K_value);

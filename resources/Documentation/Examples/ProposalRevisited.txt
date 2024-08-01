@@ -4,6 +4,10 @@ RecipeLocation: Saying Simple Things
 Index: A proposal of marriage using dialogue system
 Description: Mr Spruce proposes again, this time using the dialogue system.
 
+^^{asking the player: for a dialogue choice} ^^{querying the player: for a dialogue choice}
+^^{dialogue choices: based on actions}
+
+
 	{*}"Proposal Revisited"
 	
 	Section 1 - The Environs

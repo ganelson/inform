@@ -1692,13 +1692,24 @@ To decide what number is the numerical value of (U - a use option):
 
 Part Four - Glulx and Glk (for Glulx only)
 
+Chapter - Version numbers
+
+To decide which number is the major version of (V - version number):
+	(- (VERSION_NUMBER_TY_Extract({V}, 0)) -).
+To decide which number is the minor version of (V - version number):
+	(- (VERSION_NUMBER_TY_Extract({V}, 1)) -).
+To decide which number is the patch version of (V - version number):
+	(- (VERSION_NUMBER_TY_Extract({V}, 2)) -).
+
 Chapter - Glk and Glulx feature testing
 
-To decide whether (F - glk feature) is/are supported:
+To decide whether (F - glk feature) is/are supported
+	(documented at ph_glksupported):
 	(- Cached_Glk_Gestalts-->({F}) -).
 
-To decide what number is the glk version number/--:
-	(- Cached_Glk_Gestalts-->gestalt_Version -).
+To decide what version number is the glk version number/--
+	(documented at ph_glkversion):
+	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glk_Gestalts-->gestalt_Version) -).
 
 To decide whether buffer window graphics are/is supported:
 	(- glk_gestalt(gestalt_DrawImage, wintype_TextBuffer) -).
@@ -1721,11 +1732,11 @@ To decide whether grid window mouse input is supported:
 To decide whether (F - glulx feature) is/are supported:
 	(- Cached_Glulx_Gestalts-->({F}) -).
 
-To decide what number is the glulx version number/--:
-	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion -).
+To decide what version number is the glulx version number/--:
+	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion) -).
 
-To decide what number is the interpreter version number/--:
-	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_TerpVersion -).
+To decide what version number is the interpreter version number/--:
+	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glulx_Gestalts-->GLULX_GESTALT_TerpVersion) -).
 
 Chapter - Glk windows
 

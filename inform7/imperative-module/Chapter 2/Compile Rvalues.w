@@ -271,6 +271,11 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 		}
 		return TRUE;
 	}
+	if (Kinds::eq(K, K_version_number)) {
+		semantic_version_number V = Rvalues::to_version(value);
+		Emit::holster_iname(VH, VersionNumberLiterals::small_block(V));
+		return TRUE;
+	}
 	return FALSE;
 }
 
