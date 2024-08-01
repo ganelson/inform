@@ -40,6 +40,7 @@ typedef struct index_lemma {
 	struct linked_list *cross_references; /* of |index_cross_reference| */
 	struct text_stream *sorting_key; /* final reading order is alphabetic on this */
 	int lemma_source; /* one of the |*_LEMMASOURCE| constants */
+	int categories_to_show; /* display the last N categories of the term (normally 1; 0 means skip this lemma entirely) */
 	CLASS_DEFINITION
 } index_lemma;
 
@@ -85,6 +86,7 @@ index_lemma *IndexLemmas::ensure(compiled_documentation *cd, categorised_term P,
 			il->cross_references = NEW_LINKED_LIST(index_cross_reference);
 			il->sorting_key = Str::new();
 			il->lemma_source = lemma_source;
+			il->categories_to_show = 1;
 			IndexingData::store_lemma(cd, il);
 		}
 	}
@@ -339,4 +341,13 @@ int IndexLemmas::cmp(const void *ent1, const void *ent2) {
 	const index_lemma *L1 = *((const index_lemma **) ent1);
 	const index_lemma *L2 = *((const index_lemma **) ent2);
 	return Str::cmp(L1->sorting_key, L2->sorting_key);
+}
+
+@
+
+=
+int IndexLemmas::has_references(index_lemma *il) {
+	if (LinkedLists::len(il->references)) return TRUE;
+	if (LinkedLists::len(il->cross_references)) return TRUE;
+	return FALSE;
 }
