@@ -21807,6 +21807,7 @@ This is only likely to be helpful for the main Inform documentation, not for ext
 ^^{architecture of Inform} ^^{Inter code}
 ^^{I6: syntax} ^^{I6: not quite the same as Inform 6} ^^{Inform 6: not quite the same as I6} ^^{inform-fiction.org+web+}
 ^^{extensions: Inform 6 code in extensions}
+^^{I6 <-- Inform 6} ^^^{Inform 6 <-- I6}
 
 Inside the Inform applications is a _compiler_, which turns source text which describes a story into a computer program which runs that story — or else, of course, refuses and issues Problem messages.
 
