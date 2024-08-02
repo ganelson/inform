@@ -526,6 +526,7 @@ brings about both of these changes.
 ## Limits and the Settings panel {PM_BadICLIdentifier} {STORYFILES}
 
 ^^{limits: of Inform 6 compiler} ^^{limits: of story file} ^^{memory limits} ^^{memory economy+useopt+} ^^{Inform 6} ^^{Z-machine} ^^{Glulx} ^^{virtual machine} ^^{Z-machine: memory limits} ^^{Glulx: memory limits} ^^{virtual machine: memory limits} ^^{use options: catalogue: |memory economy} ^^{use options: catalogue: Inform 6 memory limits}
+^^{PunyInform} ^^{Inform 6: PunyInform}
 
 No computer has unlimited capacity, and a large, complex project may eventually bump its head against the ceiling.
 
