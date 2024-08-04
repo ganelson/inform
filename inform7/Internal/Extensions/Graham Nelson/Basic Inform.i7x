@@ -156,26 +156,29 @@ First startup rule (this is the virtual machine startup rule):
 
 Section - Startup A (for Glulx only)
 
-The start capturing startup text rule is listed in the before starting the virtual machine rules.
-The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
+The recover Glk objects rule is listed first in the before starting the virtual machine rules. [6th]
+The recover Glk objects rule translates into Inter as "GGRecoverObjects".
+
+The calculate hyperlink tag width rule is listed first in the before starting the virtual machine rules. [5th]
+The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
 
 Section - Startup B
 
-The platform specific startup rule is listed in the before starting the virtual machine rules.
-The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
+The seed random number generator rule is listed first in the before starting the virtual machine rules. [4th]
+The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
 
-The initialise memory rule is listed in the before starting the virtual machine rules.
+The initialise memory rule is listed first in the before starting the virtual machine rules. [3rd]
 The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
 
-The seed random number generator rule is listed in the before starting the virtual machine rules.
-The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
+The platform specific startup rule is listed first in the before starting the virtual machine rules. [2nd]
+The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
 
 Section - Startup C (for Glulx only)
 
-The recover Glk objects rule is listed in the before starting the virtual machine rules.
-The recover Glk objects rule translates into Inter as "GGRecoverObjects".
+The start capturing startup text rule is listed first in the before starting the virtual machine rules. [1st]
+The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule is listed in the before starting the virtual machine rules. [7th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
