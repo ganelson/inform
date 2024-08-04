@@ -1,6 +1,6 @@
-Total memory consumption was 148591K = 145 MB
+Total memory consumption was 148592K = 145 MB
 
- ---- was used for 2252375 objects, in 396788 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2252380 objects, in 396793 frames in 0 x 800K = 0K = 0 MB:
 
     29.3%  inter_tree_node_array                    62 x 8192 = 507904 objects, 44697536 bytes
     20.1%  text_stream_array                        5453 x 100 = 545300 objects, 30711296 bytes
@@ -52,8 +52,8 @@ Total memory consumption was 148591K = 145 MB
      ----  markdown_item_array                      1 x 1000 objects, 136032 bytes
      ----  inference                                1778 objects, 128016 bytes
      ----  pcalc_term_array                         3 x 1000 = 3000 objects, 120096 bytes
+     ----  documentation_ref                        1315 objects, 115720 bytes
      ----  inter_schema                             1603 objects, 115416 bytes
-     ----  documentation_ref                        1310 objects, 115280 bytes
      ----  imperative_defn                          1478 objects, 106416 bytes
      ----  noun_usage                               2610 objects, 104400 bytes
      ----  inter_tree                               7 objects, 96656 bytes
@@ -202,10 +202,10 @@ Total memory consumption was 148591K = 145 MB
      ----  relation_guard                           5 objects, 640 bytes
      ----  implication                              13 objects, 624 bytes
      ----  chapter_md                               7 objects, 616 bytes
+     ----  index_lemma                              4 objects, 608 bytes
      ----  code_generation                          1 object, 600 bytes
-     ----  index_lemma                              4 objects, 576 bytes
-     ----  module                                   7 objects, 560 bytes
      ----  inter_annotation_form                    14 objects, 560 bytes
+     ----  module                                   7 objects, 560 bytes
      ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  generated_segment                        14 objects, 560 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
@@ -271,7 +271,7 @@ Total memory consumption was 148591K = 145 MB
 
 100.0% was used for memory not allocated for objects:
 
-    63.4%  text stream storage                      96547600 bytes in 566625 claims
+    63.4%  text stream storage                      96548388 bytes in 566630 claims
      4.0%  dictionary storage                       6148032 bytes in 8214 claims
      ----  sorting                                  6648 bytes in 1611 claims
      4.7%  source text                              7200000 bytes in 3 claims
@@ -289,5 +289,5 @@ Total memory consumption was 148591K = 145 MB
      ----  code generation workspace for objects    3600 bytes in 19 claims
      0.1%  emitter array storage                    294176 bytes in 2104 claims
 
--139.-8% was overhead - -212755800 bytes = -207769K = -202 MB
+-139.-8% was overhead - -212756272 bytes = -207769K = -202 MB
 

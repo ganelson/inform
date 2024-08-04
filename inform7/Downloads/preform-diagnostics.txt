@@ -33,17 +33,17 @@
         {......} _or {......} 
           (hits 0/9) constraint DS = {16} extremes [3, infinity)
 
-<documentation-symbol-tail> hits 489/3742 nti 18 constraint DS = {17, 18} extremes [6, infinity)
+<documentation-symbol-tail> hits 493/3742 nti 18 constraint DS = {17, 18} extremes [6, infinity)
     English:
         {...} ( <documentation-symbol> ) 
-          (hits 454/1058) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
+          (hits 458/1058) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
         {...} -- <documentation-symbol> -- 
-          (hits 35/604) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
+          (hits 35/600) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
 
-<documentation-symbol> hits 522/1292 nti 17 constraint DS = {17} extremes [3, 3]
+<documentation-symbol> hits 526/1300 nti 17 constraint DS = {17} extremes [3, 3]
     English:
         documented at {###} 
-          (hits 522/631) (matched: 'documented at ph_say') constraint DS = {17} extremes [3, 3]
+          (hits 526/635) (matched: 'documented at ph_say') constraint DS = {17} extremes [3, 3]
 
 <comparative-construction> nti 19 constraint DS = {19} extremes [2, infinity)
     English:
@@ -6924,7 +6924,7 @@
         to {...} ( called {...} ) 
           (hits 0/894) constraint DS = {13} extremes [6, infinity)
         {to ...} ( this is the {### function} inverse to {###} ) 
-          (hits 16/739) (matched long text) constraint DS = {13} extremes [12, infinity)
+          (hits 16/741) (matched long text) constraint DS = {13} extremes [12, infinity)
         {to ...} ( this is the {### function} ) 
           (hits 4/795) (matched long text) constraint DS = {13} extremes [9, infinity)
         {to ...} ( this is {...} ) 

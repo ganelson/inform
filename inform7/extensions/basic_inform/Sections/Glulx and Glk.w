@@ -105,16 +105,20 @@ require extensions.
 =
 Section - Glk windows
 
-To clear (win - a glk window):
+To clear (win - a glk window)
+	(documented at ph_glkwindowclear):
 	(- glk_window_clear({win}.glk_ref); -).
 
-To focus (win - a glk window):
+To focus (win - a glk window)
+	(documented at ph_glkwindowfocus):
 	(- glk_set_window({win}.glk_ref); -).
 
-To decide what number is the height of (win - a glk window):
+To decide what number is the height of (win - a glk window)
+	(documented at ph_glkwindowheight):
 	(- GetWindowSize({win}, 1) -).
 
-To decide what number is the width of (win - a glk window):
+To decide what number is the width of (win - a glk window)
+	(documented at ph_glkwindowwidth):
 	(- GetWindowSize({win}, 0) -).
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):

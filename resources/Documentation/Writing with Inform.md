@@ -18196,6 +18196,97 @@ might produce:
 	graphics window character input: true.
 	text formatting: false.
 
+## Dividing the screen into windows
+
+For historical reasons, Inform uses the words "screen" and "window" in a slightly unusual way. The _screen_ is the rectangular area in which an Inform story can display text or pictures. That rectangle is unlikely to be the whole physical screen which the user can see: maybe it's the Story panel in the Inform app, or a portion of a browser tab, or the play area in an IF app like Spatterlight, or even a tab in a Unix terminal app, partying like it's 1979. An Inform story has no access to the rest of the user's physical screen, and can't even tell whether its own screen is visible at any given time.
+
+In short, the _screen_ is a rectangular space we can use. We control its size, and must live within what we're given. That size might even change at any time during play, for example if the user drags the corner of a browser window to resize it.
+
+What we can control is how the screen is divided up into panels which can either display text, or accept typed text from the keyboard, or both. Those panels are called _windows_, but they aren't like the windows which Mac or Windows users are accustomed to. If two windows have positions which overlap, one has to be entirely inside the other. Windows also have no backgrounds: a window in which no text or image has been placed is invisible.
+
+The kind `glk window` holds all of the windows used by a story. Windows must all be declared explicitly in the source text, except that four are declared for us already in Basic Inform. Many stories never need more than those four. By default,
+
+	the list of glk windows
+
+produces
+
+	{main window, status window, quote window, unknown window}
+
+Every glk window has a property called its `type`, which is a `glk window type` value. If we run:
+
+	repeat with W running through glk windows:
+		say "[W]: [type of W].";
+
+then we get, assuming we haven't created any extra windows or types,
+
+``` transcript
+main window: text buffer.
+status window: text grid.
+quote window: text buffer.
+unknown window: text buffer.
+```
+
+So, what goes on here?
+
+- The `main window` is where the bulk of textual input and output goes on. This is where room descriptions are printed, where commands are typed, and so on. Having the type `text buffer` means that characters (letters, digits and such) do not have to appear on grid positions. Glk is free to write this text in a pleasantly legible font in which a "w", for example, is wider than an "i".
+
+- The `status window` is traditionally a bar across the top line or two of the screen, which is a sort of summary of the situation. In an IF story it might show the current room name, and/or the score, number of turns played, or time of day. The type this time is `text grid`, which means that text appears on it at regularly-spaced grid positions, rather like typewritten letters. Here a "w" will be the same width as an "i", or a space, or anything else.
+
+- The `quote window` is now seldom used. It can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
+
+- And the `unknown window` is never used at all. It's a sort of "no such window" value, and though its type is `text buffer`, no text should ever be written to it or read from it.
+
+There's also a third glk window type, `graphics`, but in the default setup stories are pure textual and no window exists with this type. (That doesn't mean that the main window can't display pictures, or emoji.)
+
+> phrase: {ph_glkwindowheight} height of (glk window) ... number
+>
+> The current height of the window. For a `text grid` window this is measured in characters, and for others in pixels.
+
+> phrase: {ph_glkwindowwidth} width of (glk window) ... number
+>
+> The current width of the window. For a `text grid` window this is measured in characters, and for others in pixels.
+
+The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant and complex mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
+
+But two phrases are included even in an unextended Inform:
+
+> phrase: {ph_glkwindowclear} clear (glk window)
+>
+> Exactly what this does depends on the window type. A text grid is erased to a grid of spaces. A graphics window is filled with its background colour. Exactly what happens to a text buffer depends on the platform. In most modern situations that too will be erased, but a story playing in a so-called dumb terminal may do something more primitive, such as throwing many blank lines of output.
+
+> phrase: {ph_glkwindowfocus} focus (glk window)
+>
+> When the player types something, where do the keypresses go? The answer is that they are sent to whichever window currently has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch.
+
+Glk windows have two `number` properties, `rock number` and `reference number`: see the Glk reference documentation for what they mean. `reference number` is what the Glk spec calls the window ID, and it therefore exists only for open windows. 
+
+## Glk events
+
+An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event` identifies them. Here is the complete list:
+
+Value                      | Meaning
+-------------------------- | ---------------------
+`null event`               | Nothing happening.
+`character event`          | A key has been typed.
+`line event`               | A line of text ending with a RETURN or ENTER has been typed.
+`hyperlink event`          | A web-style link has been selected.
+`mouse event`              | A mouse has been clicked, or a touch-screen touched.
+`arrange event`            | The screen has been resized.
+`redraw event`             | A graphic window needs redrawing from scratch.
+`timer event`              | A timer has run out.
+`sound notification event` | A sound effect has finished playing.
+`volume event`             | A change in sound volume has completed.
+
+Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`. Inform defines an event as `independent of the player` if it occurred because of some earlier decision by the story, and `dependent on the player` if it occurred because of spontaneous input such as pressing a key or clicking a mouse.
+
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event based rulebook`.
+
+## Keyboard input
+
+As has already been hinted (see [Dividing the screen into windows]), windows channel text input as well as text output. In particular, one window at a time has the _focus_, and thus receives any keys typed. By default, that's always the `main window`.
+
+There are times when individual key-presses matter — for example, if the user presses a cursor key to navigate a menu, and we have to react immediately — and then there are times when we don't care what is being typed until an entire command has been entered. That's why there are two different keyboard events: `character event` and `line event`. If the user types ``EAT CAKE`` and presses enter, a stream of 8 character events will be generated, followed by a single line event. In a standard work of command-parser IF, Inform will ignore all the character events, and react to the line event by getting the command are parsing it, turning it into an action, and so on.
+
 ## Basic IO
 
 This is placeholder text only.
