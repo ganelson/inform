@@ -5,23 +5,29 @@ new base GLK_FEATURE_TY {
 
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
-	instance: timers                          = gestalt_Timer_                = 5
-	instance: glk graphics                    = gestalt_Graphics_             = 6
-	instance: basic sounds                    = gestalt_Sound_                = 8
-	instance: sound volume                    = gestalt_SoundVolume_          = 9
-	instance: sound notifications             = gestalt_SoundNotify_          = 10
-	instance: hyperlinks                      = gestalt_Hyperlinks_           = 11
-	instance: MOD sounds                      = gestalt_SoundMusic_           = 13
-	instance: PNG transparency                = gestalt_GraphicsTransparency_ = 14
-	instance: glk unicode                     = gestalt_Unicode_              = 15
-	instance: unicode normalization           = gestalt_UnicodeNorm_          = 16
-	instance: line input echo suppression     = gestalt_LineInputEcho_        = 17
-	instance: line input terminators          = gestalt_LineTerminators_      = 18
-	instance: system clock                    = gestalt_DateTime_             = 20
-	instance: extended sounds                 = gestalt_Sound2_               = 21
-	instance: resource streams                = gestalt_ResourceStream_       = 22
-	instance: graphics window character input = gestalt_GraphicsCharInput_    = 23
-	instance: text formatting                 = gestalt_GarglkText_FAKE       = 24
+	instance: timers feature                          = gestalt_Timer_                = 5
+	instance: glk graphics feature                    = gestalt_Graphics_             = 6
+	instance: basic sounds feature                    = gestalt_Sound_                = 8
+	instance: sound volume feature                    = gestalt_SoundVolume_          = 9
+	instance: sound notifications feature             = gestalt_SoundNotify_          = 10
+	instance: hyperlinks feature                      = gestalt_Hyperlinks_           = 11
+	instance: MOD sounds feature                      = gestalt_SoundMusic_           = 13
+	instance: PNG transparency feature                = gestalt_GraphicsTransparency_ = 14
+	instance: glk unicode feature                     = gestalt_Unicode_              = 15
+	instance: unicode normalization feature           = gestalt_UnicodeNorm_          = 16
+	instance: line input echo suppression feature     = gestalt_LineInputEcho_        = 17
+	instance: line input terminators feature          = gestalt_LineTerminators_      = 18
+	instance: system clock feature                    = gestalt_DateTime_             = 20
+	instance: extended sounds feature                 = gestalt_Sound2_               = 21
+	instance: resource streams feature                = gestalt_ResourceStream_       = 22
+	instance: graphics window character input feature = gestalt_GraphicsCharInput_    = 23
+	instance: text formatting feature                 = gestalt_GarglkText_FAKE       = 24
+	instance: buffer window graphics feature          = gestalt_DrawImage_BUFFER      = 25
+	instance: graphics window graphics feature        = gestalt_DrawImage_GRAPHICS    = 26
+	instance: buffer window hyperlinks feature        = gestalt_HyperlinkInput_BUFFER = 27
+	instance: grid window hyperlinks feature          = gestalt_HyperlinkInput_GRID   = 28
+	instance: graphics window mouse input feature     = gestalt_MouseInput_GRAPHICS   = 29
+	instance: grid window mouse input feature         = gestalt_MouseInput_GRID       = 30
 }
 
 new base GLULX_FEATURE_TY {
@@ -31,15 +37,15 @@ new base GLULX_FEATURE_TY {
 
 	specification-text: Glulx features which may or may not be supported by the interpreter.
 
-	instance: memory resizing               = GLULX_GESTALT_ResizeMem    = 2
-	instance: undo                          = GLULX_GESTALT_Undo         = 3
-	instance: glulx unicode                 = GLULX_GESTALT_Unicode      = 5
-	instance: memory copying                = GLULX_GESTALT_MemCopy      = 6
-	instance: memory allocations            = GLULX_GESTALT_MAlloc       = 7
-	instance: glulx acceleration            = GLULX_GESTALT_Acceleration = 9
-	instance: real numbers                  = GLULX_GESTALT_Float        = 11
-	instance: extended undo                 = GLULX_GESTALT_ExtUndo      = 12
-	instance: double precision real numbers = GLULX_GESTALT_Double       = 13
+	instance: memory resizing feature               = GLULX_GESTALT_ResizeMem    = 2
+	instance: undo feature                          = GLULX_GESTALT_Undo         = 3
+	instance: glulx unicode feature                 = GLULX_GESTALT_Unicode      = 5
+	instance: memory copying feature                = GLULX_GESTALT_MemCopy      = 6
+	instance: memory allocations feature            = GLULX_GESTALT_MAlloc       = 7
+	instance: glulx acceleration feature            = GLULX_GESTALT_Acceleration = 9
+	instance: real numbers feature                  = GLULX_GESTALT_Float        = 11
+	instance: extended undo feature                 = GLULX_GESTALT_ExtUndo      = 12
+	instance: double precision real numbers feature = GLULX_GESTALT_Double       = 13
 }
 
 new base GLK_EVENT_TY {

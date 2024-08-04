@@ -156,11 +156,8 @@ First startup rule (this is the virtual machine startup rule):
 
 Section - Startup A (for Glulx only)
 
-The recover Glk objects rule is listed first in the before starting the virtual machine rules. [6th]
+The recover Glk objects rule is listed first in the before starting the virtual machine rules. [5th]
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
-
-The calculate hyperlink tag width rule is listed first in the before starting the virtual machine rules. [5th]
-The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
 
 Section - Startup B
 
@@ -1706,34 +1703,15 @@ To decide which number is the patch version of (V - version number):
 
 Chapter - Glk and Glulx feature testing
 
-To decide whether (F - glk feature) is/are supported
-	(documented at ph_glksupported):
-	(- Cached_Glk_Gestalts-->({F}) -).
+Definition: a glk feature is supported rather than unsupported if I6 routine
+	"GlkFeatureTest" says so (it is supported by the interpreter).
 
 To decide what version number is the glk version number/--
 	(documented at ph_glkversion):
 	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glk_Gestalts-->gestalt_Version) -).
 
-To decide whether buffer window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, wintype_TextBuffer) -).
-
-To decide whether graphics window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, wintype_Graphics) -).
-
-To decide whether buffer window hyperlinks are/is supported:
-	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextBuffer) -).
-
-To decide whether grid window hyperlinks are/is supported:
-	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextGrid) -).
-
-To decide whether graphics window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, wintype_Graphics) -).
-
-To decide whether grid window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, wintype_TextGrid) -).
-
-To decide whether (F - glulx feature) is/are supported:
-	(- Cached_Glulx_Gestalts-->({F}) -).
+Definition: a glulx feature is supported rather than unsupported if I6 routine
+	"GlulxFeatureTest" says so (it is supported by the interpreter).
 
 To decide what version number is the glulx version number/--:
 	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion) -).

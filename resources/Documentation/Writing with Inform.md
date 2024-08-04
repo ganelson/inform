@@ -18178,23 +18178,23 @@ Here `glk feature` is a kind of value. So, for example,
 
 might produce:
 
-	timers: true.
-	glk graphics: true.
-	basic sounds: true.
-	sound volume: true.
-	sound notifications: true.
-	hyperlinks: true.
-	MOD sounds: true.
-	PNG transparency: true.
-	glk unicode: true.
-	unicode normalization: true.
-	line input echo suppression: true.
-	line input terminators: false.
-	system clock: true.
-	extended sounds: true.
-	resource streams: false.
-	graphics window character input: true.
-	text formatting: false.
+	timers feature: true.
+	glk graphics feature: true.
+	basic sounds feature: true.
+	sound volume feature: true.
+	sound notifications feature: true.
+	hyperlinks feature: true.
+	MOD sounds feature: true.
+	PNG transparency feature: true.
+	glk unicode feature: true.
+	unicode normalization feature: true.
+	line input echo suppression feature: true.
+	line input terminators feature: false.
+	system clock feature: true.
+	extended sounds feature: true.
+	resource streams feature: false.
+	graphics window character input feature: true.
+	text formatting feature: false.
 
 ## Dividing the screen into windows
 
