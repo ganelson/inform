@@ -149,6 +149,9 @@ The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMB
 
 Section - Startup C (for Glulx only)
 
+The calculate hyperlink tag width rule is listed in the before starting the virtual machine rules.
+The calculate hyperlink tag width rule translates into Inter as "CALCULATE_HYPERLINK_TAG_WIDTH_R".
+
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 
