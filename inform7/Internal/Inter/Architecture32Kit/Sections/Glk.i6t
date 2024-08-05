@@ -178,8 +178,49 @@ Global current_glk_object_reference = 0;
 Functions for minimal Glk windows support.
 
 =
-[ CopyTextToWindowBuffer win txt
+[ FindGlkWindowFromRefNum ref win;
+	if (ref ~= 0) {
+		for (win = K_Glk_Window_First: win: win = win.K_Glk_Window_Next) {
+			if (win.glk_ref == ref) {
+				return win;
+			}
+		}
+	}
+	return nothing;
+];
+
+[ WindowBufferCopyToText win txt buf_type;
+	if (win && win.line_input_buffer_addr) {
+		if (win.line_input_buffer_uni) {
+			buf_type = 4;
+			! I don't remember why I was setting 0 here
+			!win.line_input_buffer_addr-->(win.line_input_buffer_curlen) = 0;
+		}
+		else {
+			buf_type = 1;
+			!win.line_input_buffer_addr->(win.line_input_buffer_curlen) = 0;
+		}
+		BlkValueMassCopyFromArray(txt, win.line_input_buffer_addr, buf_type, win.line_input_buffer_curlen);
+	}
+	return txt;
+];
+
+[ WindowBufferPrint win;
+	if (win && win.line_input_buffer_addr) {
+		glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
+	}
+];
+
+[ WindowBufferSet win txt
 		buf ch cp i len p uni;
+	if (~~win) {
+		IssueRTP("NoWindow", "WindowCopyTextToBuffer: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+		return;
+	}
+	if (win.line_input_buffer_addr == 0) {
+		IssueRTP("WindowHasNoBuffer", "Cannot set current line input of a window which has never requested line input.", Architecture32KitRTPs);
+		return;
+	}
 	buf = win.line_input_buffer_addr;
 	uni = win.line_input_buffer_uni;
 	cp = txt-->0;
@@ -205,40 +246,57 @@ Functions for minimal Glk windows support.
 	win.line_input_buffer_curlen = i;
 ];
 
-[ CopyWindowBufferToText win txt buf_type;
-	if (win.line_input_buffer_uni) {
-		buf_type = 4;
-		! I don't remember why I was setting 0 here
-		!win.line_input_buffer_addr-->(win.line_input_buffer_curlen) = 0;
+[ WindowClear win;
+	if (win && win.glk_ref) {
+		glk_window_clear(win.glk_ref);
 	}
-	else {
-		buf_type = 1;
-		!win.line_input_buffer_addr->(win.line_input_buffer_curlen) = 0;
-	}
-	BlkValueMassCopyFromArray(txt, win.line_input_buffer_addr, buf_type, win.line_input_buffer_curlen);
-	return txt;
 ];
 
-[ FindGlkWindowFromRefNum ref win;
-	if (ref ~= 0) {
-		for (win = K_Glk_Window_First: win: win = win.K_Glk_Window_Next) {
-			if (win.glk_ref == ref) {
-				return win;
-			}
-		}
-	}
-	return nothing;
-];
-
-[ FillInWindowDetails win ref;
+[ WindowFillInDetails win ref;
 	win.glk_ref = ref;
 	win.glk_rock = glk_window_get_rock(ref);
 	win.glk_window_type = glk_window_get_type(ref);
 ];
 
-[ GetWindowSize win index;
-	glk_window_get_size(win.glk_ref, gg_arguments, gg_arguments + WORDSIZE);
-	return gg_arguments-->index;
+[ WindowFocus win;
+	if (win) {
+		if (win.glk_ref) {
+			glk_set_window(win.glk_ref);
+		}
+		else {
+			IssueRTP("ClosedWindow", "WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+		}
+	}
+	else {
+		IssueRTP("NoWindow", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+	}
+];
+
+[ WindowGetSize win index;
+	if (win && win.glk_ref) {
+		glk_window_get_size(win.glk_ref, gg_arguments, gg_arguments + WORDSIZE);
+		return gg_arguments-->index;
+	}
+	return 0;
+];
+
+[ WindowMoveCursor win col row;
+	if (win) {
+		if (win.glk_ref) {
+			if (win.glk_window_type == wintype_TextGrid) {
+				glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+			}
+			else {
+				IssueRTP("WrongWindowType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
+			}
+		}
+		else {
+			IssueRTP("ClosedWindow", "WindowMoveCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+		}
+	}
+	else {
+		IssueRTP("NoWindow", "WindowMoveCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+	}
 ];
 
 @h Glk events.
@@ -272,7 +330,7 @@ Global glk_event_type_changed;
 		! If no window was found, then use the unknown window
 		if (Glk_Event_Struct_win == nothing) {
 			Glk_Event_Struct_win = Unknown_Glk_Window;
-			FillInWindowDetails(Unknown_Glk_Window, event_struct-->1);
+			WindowFillInDetails(Unknown_Glk_Window, event_struct-->1);
 		}
 
 		! If the current event type is line input, copy the buffer length
@@ -320,7 +378,7 @@ input requests are pending, which means the new event could be ignored.
 
 =
 [ SetGlkEventType type;
-	if (type ~= Glk_Event_Struct_type) {
+	if (type == Glk_Event_Struct_type) {
 		return;
 	}
 	if (type == evtype_CharInput or evtype_LineInput) {
@@ -334,7 +392,7 @@ input requests are pending, which means the new event could be ignored.
 			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
 		}
 		else {
-			! TODO: RTP - can't change to text input event when no window
+			IssueRTP("SetTextEventWithoutWindow", "You can't set the glk event type to a text input event when there is no glk event window.", Architecture32KitRTPs);
 		}
 	}
 	Glk_Event_Struct_type = type;
@@ -470,31 +528,35 @@ input requests.
 
 =
 [ SuspendTextInput win no_input_echoing;
-	if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
-		glk_cancel_char_event(win.glk_ref);
-	}
-	else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
-		glk_cancel_line_event(win.glk_ref);
-		! Manually echo the command if required
-		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho && no_input_echoing == 0) {
-			glk_set_style(style_Input);
-			glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
-			glk_set_style(style_Normal);
-			glk_put_char(10); ! newline
+	if (win && win.glk_ref) {
+		if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+			glk_cancel_char_event(win.glk_ref);
+		}
+		else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+			glk_cancel_line_event(win.glk_ref);
+			! Manually echo the command if required
+			if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho && no_input_echoing == 0) {
+				glk_set_style(style_Input);
+				glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
+				glk_set_style(style_Normal);
+				glk_put_char(10); ! newline
+			}
 		}
 	}
 ];
 
 [ ResumeTextInput win;
-	switch (win.text_input_status) {
-		INPUT_STATUS_SUSPENDED_CHAR:
-			glk_request_char_event(win.glk_ref);
-		INPUT_STATUS_SUSPENDED_CHAR_UNI:
-			glk_request_char_event_uni(win.glk_ref);
-		INPUT_STATUS_SUSPENDED_LINE:
-			glk_request_line_event(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, win.line_input_buffer_curlen);
-		INPUT_STATUS_SUSPENDED_LINE_UNI:
-			glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, win.line_input_buffer_curlen);
+	if (win && win.glk_ref) {
+		switch (win.text_input_status) {
+			INPUT_STATUS_SUSPENDED_CHAR:
+				glk_request_char_event(win.glk_ref);
+			INPUT_STATUS_SUSPENDED_CHAR_UNI:
+				glk_request_char_event_uni(win.glk_ref);
+			INPUT_STATUS_SUSPENDED_LINE:
+				glk_request_line_event(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, win.line_input_buffer_curlen);
+			INPUT_STATUS_SUSPENDED_LINE_UNI:
+				glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, win.line_input_buffer_curlen);
+		}
 	}
 ];
 

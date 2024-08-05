@@ -1757,22 +1757,22 @@ Section - Glk windows
 
 To clear (win - a glk window)
 	(documented at ph_glkwindowclear):
-	(- glk_window_clear({win}.glk_ref); -).
+	(- WindowClear({win}); -).
 
 To focus (win - a glk window)
 	(documented at ph_glkwindowfocus):
-	(- glk_set_window({win}.glk_ref); -).
+	(- WindowFocus({win}); -).
 
 To decide what number is the height of (win - a glk window)
 	(documented at ph_glkwindowheight):
-	(- GetWindowSize({win}, 1) -).
+	(- WindowGetSize({win}, 1) -).
 
 To decide what number is the width of (win - a glk window)
 	(documented at ph_glkwindowwidth):
-	(- GetWindowSize({win}, 0) -).
+	(- WindowGetSize({win}, 0) -).
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
-	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
+	(- WindowMoveCursor({win}, {col}, {row}); -).
 
 Chapter - Glk events
 
@@ -1795,11 +1795,14 @@ Definition: a glk event is dependent on the player rather than independent of th
 To set the/-- glk event type to (t - glk event):
 	(- SetGlkEventType({t}); -).
 
+To say current line input of (w - glk window):
+	(- WindowBufferPrint({w}); -).
+
 To decide what text is the current line input of (w - glk window):
-	(- CopyWindowBufferToText({w}, {-new:text}) -).
+	(- WindowBufferCopyToText({w}, {-new:text}) -).
 
 To set the current line input of (w - glk window) to (t - text):
-	(- CopyTextToWindowBuffer({w}, {-by-reference:t}); -).
+	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
 First glk event handling rule for a glk event (called the event) (this is the update input requests rule):
 	[ It was too risky to set the text input status here, in case the author also sets a first glk event handling rule, so that property is reset within glk_select. ]

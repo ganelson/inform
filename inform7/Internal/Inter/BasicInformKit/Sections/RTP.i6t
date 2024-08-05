@@ -70,6 +70,10 @@ Array LatestRTPData -->
 	par3 = LatestRTPData-->3;
 	LatestRTPData-->0 = -2;
 
+#Ifdef TARGET_GLULX;
+	SuspendTextInput(Main_Window);
+#Endif;
+
 	print "^*** Run-time problem ", (string) name;
 	#ifdef DEBUG;
 	if (LatestRTPData-->5) { print ": ", (string) LatestRTPData-->5; }
@@ -82,6 +86,10 @@ Array LatestRTPData -->
 		if (desc ofclass String) print (string) desc, "^";
 		else if (desc ofclass Routine) desc(par1, par2, par3);
 	}
+
+#Ifdef TARGET_GLULX;
+	ResumeTextInput(Main_Window);
+#Endif;
 ];
 
 @h The VeneerError RTP.

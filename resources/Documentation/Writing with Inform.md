@@ -20450,7 +20450,7 @@ Extensions can trigger RTPs of their own, too. For example, suppose `Ducking` de
 	issue the run-time problem "OverDucked";
 	say "*** ", (the) ducker, " seems to be putting their head below their feet.";
 
-The RTP name, here `OverDucked`, must correspind exactly to the name of a Markdown file stored in an ```RTPs``` subdirectory of the extension:
+The RTP name, here `OverDucked`, must correspond exactly to the name of a Markdown file stored in an ```RTPs``` subdirectory of the extension:
 
 ``` code
 Philately-v1.i7xd
