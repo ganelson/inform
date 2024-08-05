@@ -911,7 +911,7 @@ If that's not enough, we can get a comprehensive view of everything that happens
 
 ## Modifying Existing Commands
 
-^^{actions: processing sequence}^^{actions: rules for actions found in rulebooks}^^{rules: for actions found in rulebooks}^^{rulebooks: for actions}^^{before (action)+rb+: in action processing sequence} ^^{rules: before rules}^^{instead of (action)+rb+: in action processing sequence} ^^{rules: instead rules}^^{after (action)+rb+: in action processing sequence} ^^{rules: after rules}^^{check (action)+rb+}^^{carry out (action)+rb+}^^{report (action)+rb+}^^{(instead), to stop the action+sourcepart+}^^{rules: removing}^^{rules: replacing}^^{extensions: Inform 6 template layer}^^{Inform 6 inclusions: Inform 6 template layer}^^{templates, Inform 6 template layer}
+^^{actions: processing sequence}^^{actions: rules for actions found in rulebooks}^^{rules: for actions found in rulebooks}^^{rulebooks: for actions}^^{before (action)+rb+: in action processing sequence} ^^{rules: before rules}^^{instead of (action)+rb+: in action processing sequence} ^^{rules: instead rules}^^{after (action)+rb+: in action processing sequence} ^^{rules: after rules}^^{check (action)+rb+}^^{carry out (action)+rb+}^^{report (action)+rb+}^^{(instead), to stop the action+sourcepart+}^^{rules: removing}^^{rules: replacing}^^{extensions: Inform 6 template layer}^^{Inform 6 inclusions: Inform 6 template layer}^^{templates: Inform 6 template layer}
 Much of the rest of this chapter discusses the behaviour of specific commands in Inform's command library, and how we might change and build on these. This section is instead an overview of the general principles: where and how can one intervene?
 
 Whenever we are dealing with actions, the Actions Index is likely to be useful: it lists all the actions currently implemented, whether in our own source or in extensions or the Standard Rules, and lists the rules pertaining to each.
@@ -2346,7 +2346,9 @@ Old-school adventures expected their adventurers to die early and die often. [La
 
 ## Typography
 
-^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman <-- italics}^^{characters (letters): Unicode (arbitrary symbols)}^^{+to+say "[bold type]"} ^^{+tosay+"[bold type]"}^^{+to+say "[italic type]"} ^^{+tosay+"[italic type]"}^^{+to+say "[roman type]"} ^^{+tosay+"[roman type]"}^^{+to+say "[fixed letter spacing]"} ^^{+tosay+"[fixed letter spacing]"}^^{+to+say "[variable letter spacing]"} ^^{+tosay+"[variable letter spacing]"}
+^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman}^^{characters (letters): Unicode (arbitrary symbols)}
+^^{+tosay+"[bold type]" --> bold} ^^{+tosay+"[italic type]" --> italic} ^^{+tosay+"[roman type]" --> roman} ^^{+tosay+"[fixed letter spacing]" --> fixed} ^^{+tosay+"[variable letter spacing]" --> variable}
+
 Story files produced by Inform tend not to contain elaborate typographical effects. They would only distract. Like a novel, a classic work of IF is best presented in an elegant but unobtrusive font. Inform does, however, provide for italic and bold-face, and also for a typewriter-style fixed pitch of lettering:
 
 	"This is an [italic type]italicised[roman type] word."

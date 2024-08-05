@@ -2114,7 +2114,13 @@ And this is because `[river sound]` was substituted with the value of the `river
 
 ## How Inform reads quoted text
 
-^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+} ^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation} ^^{+to+say "[']"} ^^{+tosay+"[']"}
+^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions}
+^^{punctuation: quotation marks: defining texts} ^^{|": defining texts} ^^{punctuation: apostrophe: meaning quotation mark} ^^{|': meaning (")+sourcepart+}
+^^{punctuation: full stop: ending sentences with line breaks} ^^{|.: ending sentences with line breaks} ^^{punctuation: exclamation mark, ending sentences} ^^{(!), ending sentences+sourcepart+} ^^{punctuation: question mark, ending sentences} ^^{(?), ending sentences+sourcepart+} ^^{line breaks: produced by sentence-ending punctuation}
+^^{+to+say "[']"} ^^{+tosay+"[']" --> '}
+^^{source text: quoted text}
+^^{comparisons: of text} ^^{text: comparing}
+^^{empty / non-empty+adj+: for texts} ^^{non-empty / empty+adj+: for texts} ^^{text: empty / non-empty+adj+}
 
 Text is so fundamental to Inform that the basics had to be covered back in the [The Source Text] chapter, so let's begin this new chapter with a recap.
 
@@ -2694,7 +2700,8 @@ Finally, there are two special sorts of paragraph break for special circumstance
 
 ## Text with type styles
 
-^^{proportional-spaced text} ^^{monospaced text} ^^{fonts: fixed-width / variable-width} ^^{fonts: italic / bold / roman}
+^^{proportional-spaced text} ^^{monospaced text} ^^{fonts: fixed-width / variable-width <-- variable-width <-- fixed-width}
+^^{fonts: italic / bold / roman <-- italics <-- bold <-- roman}
 
 Inform does not go in for the use of fonts: a work of IF will be rendered with different fonts on different machines anyway, from tiny personal organisers up to huge workstations. However, it does allow for a modest amount of styling.
 
@@ -2923,7 +2930,7 @@ It is because descriptions are so widely useful that they deserve a chapter of t
 
 ## Adjectives and nouns
 
-^^{descriptions (references to things): syntax} ^^{nouns, in descriptions} ^^{adjectives: in descriptions} ^^{quantifiers: existential} ^^{existence: descriptions of any such thing} ^^{pronouns: |something, anything...} ^^{|someone: in descriptions} ^^{|something: in descriptions} ^^{(somewhere), in descriptions+sourcepart+} ^^{(anyone), in descriptions+sourcepart+} ^^{(anything), in descriptions+sourcepart+} ^^{(anywhere), in descriptions+sourcepart+} ^^{(somebody), in descriptions+sourcepart+} ^^{(anybody), in descriptions+sourcepart+}
+^^{descriptions (references to things): syntax} ^^{nouns: in descriptions} ^^{adjectives: in descriptions} ^^{quantifiers: existential} ^^{existence: descriptions of any such thing} ^^{pronouns: |something, anything...} ^^{|someone: in descriptions} ^^{|something: in descriptions} ^^{(somewhere), in descriptions+sourcepart+} ^^{(anyone), in descriptions+sourcepart+} ^^{(anything), in descriptions+sourcepart+} ^^{(anywhere), in descriptions+sourcepart+} ^^{(somebody), in descriptions+sourcepart+} ^^{(anybody), in descriptions+sourcepart+}
 
 Descriptions can contain a noun, but need not, and can contain any number of adjectives. There can also be so-called determiners, but those tend to say which things matching the description are meant, rather than what it means to match. For example:
 
@@ -6696,7 +6703,7 @@ Until the actual moment of performing this, we can't know who exactly will speak
 ^^{(instead of), in dialogue choices+sourcepart+}
 ^^{(otherwise), in dialogue choices+sourcepart+}
 ^^{flow markers} ^^{dialogue beats: flow markers <-- dialogue: sections: flow markers}
-^^{(<-), flow marker+sourcepart+}
+^^{|<-: flow marker}
 ^^{(step through), automatic dialogue choice+sourcepart+} ^^{(step through and stop), automatic dialogue choice+sourcepart+} ^^{(cycle through), automatic dialogue choice+sourcepart+} ^^{(shuffle through), automatic dialogue choice+sourcepart+} ^^{(choose randomly), automatic dialogue choice+sourcepart+}
 
 A _decision point_ is reached when the director is performing a beat and comes to a run of _choices_. The idea is that the player selects one of these choices, and then dialogue continues down whichever branch is called for.
@@ -6944,7 +6951,7 @@ than once in the same play-through?
 ## Flow markers
 
 ^^{flow markers} ^^{dialogue beats: flow markers}
-^^{(<-), flow marker+sourcepart+} ^^{(->), flow marker+sourcepart+}
+^^{|<-: flow marker} ^^{|->: flow marker}
 ^^{dialogue beats: stopping}
 ^^{(-> stop), flow marker+sourcepart+ --> stop}
 ^^{(-> end the story), flow marker+sourcepart+ --> end the story}
@@ -12639,7 +12646,7 @@ The first is actually allowed by Inform, even though it supplies no things at al
 
 ## New commands for old grammar {PM_ThreeValuedLine} {PM_TooManyAliases} {PM_TooManyGrammarLines} {PM_GrammarIllFounded}
 
-^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns, reversed, in understanding actions} ^^{grammar tokens: for kinds of thing} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
+^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{understand the command (verb) as (verb)+assert+} ^^{understanding: adding synonyms for verbs} ^^{something+token+} ^^{|with nouns reversed} ^^{reversed nouns, in understanding actions} ^^{nouns: reversed, in understanding actions} ^^{grammar tokens: for kinds of thing} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
 
 In the photography example, we are providing entirely new grammar for an action  not ordinarily built in to Inform. But we often want simply to provide alternative grammar for existing actions, or even to put new interpretations on commands that Inform already recognises. For instance:
 
@@ -15291,7 +15298,8 @@ A rulebook can have any number of variables like this. They behave much like `le
 
 ## Success and failure {PM_DefaultOutcomeTwice} {PM_BadDefaultOutcome}
 
-^^{rules: success of rules} ^^{rules: failure of rules} ^^{rulebooks: outcomes} ^^{rulebooks: stopping execution} ^^{success: for rules} ^^{failure: for rules} ^^{+to+stop the action} ^^{+to+continue the action} ^^{(instead), to stop the action+sourcepart+} ^^{default outcome of a rulebook}
+^^{rules: success of rules} ^^{rules: failure of rules} ^^{rulebooks: outcomes} ^^{rulebooks: stopping execution} ^^{success: for rules} ^^{failure: for rules} ^^{|no outcome}
+^^{+to+stop the action} ^^{+to+continue the action} ^^{(instead), to stop the action+sourcepart+} ^^{default outcome of a rulebook}
 
 Though we have blurred over this point so far, each rule must ordinarily end with one of three outcomes: success, failure and neither ("no outcome").
 
@@ -15369,7 +15377,7 @@ We can test the latest outcome like so:
 
 ## Named outcomes {PM_MisplacedRulebookOutcome} {PM_WrongEndToPhrase} {PM_BadOutcomeClarification} {PM_DefaultNamedOutcomeTwice} {PM_DefaultOutcomeAlready} {PM_DuplicateOutcome} {PM_NonOutcomeProperty}
 
-^^{rulebooks: outcomes} ^^{default outcome of a rulebook}
+^^{rulebooks: outcomes} ^^{default outcome of a rulebook} ^^{|no outcome}
 
 We have seen that the terms "success" and "failure" can be misleading – after all, it might be a good thing for a particular rulebook to "fail". At any rate, these are vague terms, and we don't want to have to remember the conventions used by every rulebook. This is why certain rulebooks have explicitly named outcomes instead. For instance, the `visibility` rules are allowed to have the outcomes:
 
@@ -15406,7 +15414,8 @@ Each named outcome is a value if followed by the word `outcome`, which is how `a
 
 ## Rulebooks producing values
 
-^^{rulebooks: outcomes} ^^{values: produced by rulebooks} ^^{rules: success of rules} ^^{success: for rules}^^^{+to+(name of kind) produced by (rule producing values) --> produced by}^^^{+to+(name of kind) produced by (values based rule producing values) for (value) --> produced by}
+^^{rulebooks: outcomes} ^^{values: produced by rulebooks} ^^{rules: success of rules} ^^{success: for rules} ^^{|no outcome}
+^^^{+to+(name of kind) produced by (rule producing values) --> produced by}^^^{+to+(name of kind) produced by (values based rule producing values) for (value) --> produced by}
 
 We have now seen two ways to write the outcome of a rule: as simple success or failure, with more or less explicit phrases like:
 
@@ -17421,7 +17430,8 @@ Finally, it's sometimes useful in an abstract situation to test
 
 ## Phrases as values
 
-^^{values: phrases as values} ^^{phrases: as values} ^^{kinds: of phrase} ^^{(->), in phrase kinds+sourcepart+} ^^{phrases: named phrases} ^^{names: of phrases} ^^{(this is), in naming phrases+sourcepart+}^^^{+to+(phrase nothing -> value) applied --> applied}^^^{+to+(phrase value -> value) applied to (value) --> applied to}^^^{+to+(phrase (value, value) -> value) applied to (value) and (value) --> applied to}^^^{+to+(phrase (value, value) -> value) reduction of (list of values) --> applied to}^^^{+to+(phrase (value, value, value) -> value) applied to (value) and (value) and (value) --> applied to}
+^^{values: phrases as values} ^^{phrases: as values} ^^{kinds: of phrase} ^^{|->: in phrase kinds} ^^{phrases: named phrases} ^^{names: of phrases} ^^{(this is), in naming phrases+sourcepart+}
+^^^{+to+(phrase nothing -> value) applied --> applied}^^^{+to+(phrase value -> value) applied to (value) --> applied to}^^^{+to+(phrase (value, value) -> value) applied to (value) and (value) --> applied to}^^^{+to+(phrase (value, value) -> value) reduction of (list of values) --> applied to}^^^{+to+(phrase (value, value, value) -> value) applied to (value) and (value) and (value) --> applied to}
 
 Given any two kinds `K` and `L`, the kind `phrase K -> L` is now a kind. (This is meant to look like a mathematical function arrow.) For example, the phrase defined by
 
@@ -18951,7 +18961,7 @@ Vorple has seen rapid development. In its early days it was included as part of 
 
 ## Website templates
 
-^^{materials folder: web pages for the story: templates} ^^{templates, for web pages for the story}
+^^{materials folder: web pages for the story: templates} ^^{templates: for web pages for the story}
 
 Web pages are very idiosyncratic things and Inform will almost certainly not produce exactly what we want. What it actually does is to take an existing "template" web page, and paste in the relevant information to make the final product. So by starting with a different template, we can end up with an entirely different-looking web page: like this one, for instance –
 
@@ -19001,7 +19011,7 @@ This is not the place to describe how CSS works. CSS is a more or less universal
 
 ## Advanced website templates
 
-^^{materials folder: web pages for the story: templates} ^^{templates, for web pages for the story}
+^^{materials folder: web pages for the story: templates} ^^{templates: for web pages for the story}
 
 The following describes how Inform uses the extras file and the two HTML pages in a template, and will only be needed if a new template has to make changes so radical that altering the CSS alone won't be enough.
 
@@ -20914,6 +20924,7 @@ A small technical caveat: Inform-flavoured Markdown does not allow level 1 (Chap
 ^^{bold: in extension documentation} 
 ^^{strikethrough: in extension documentation} 
 ^^{backticks: in extension documentation} 
+^^{fonts: in extension documentation}
 
 Three textual effects are available:
 
@@ -21979,7 +21990,8 @@ This is the first of two chapters about how to use I6 within Inform. In this cha
 
 ## Defining To phrases with I6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
-^^{I6: syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
+^^{I6: syntax: phrases} ^^{phrases: defining in I6}
+^^{((- -)), for writing I6 in source text+sourcepart+ --> (} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
 
 The phrases described in this book all have definitions given in the extensions automatically included with all projects — `Basic Inform`, the `Standard Rules` or, in a few cases, `English Language`. Those phrases are mostly, though not universally, defined using I6 notation, using the feature described below.
 
@@ -22477,7 +22489,8 @@ The escape `*1` is expanded to the value on which the adjective is being tested.
 
 ## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
 
-^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
+^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}
+^^{((+ +)), for including Inform 7 code in I6+sourcepart+ --> (}
  
 What if an I6-written definition needs to access something defined in the source text? For suppose, if the source text says:
 
