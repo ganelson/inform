@@ -1725,26 +1725,30 @@ A glk window is a kind of abstract object.
 The glk window kind is accessible to Inter as "K_Glk_Window".
 The specification of a glk window is "Models the Glk window system."
 
-A glk window has a glk window type called the type.
-The type property translates into Inter as "glk_window_type".
+A glk window has a glk window type called the window type.
+The window type property translates into Inter as "glk_window_type".
 
 A glk window has a number called the rock number.
 The rock number property translates into Inter as "glk_rock".
 
-A glk window has a number called the reference number.
-The reference number property translates into Inter as "glk_ref".
+A glk window has a number called the glk window handle.
+The glk window handle property translates into Inter as "glk_ref".
 
-The main window is a glk window.
+A graphics window is a kind of glk window.
+The window type of a graphics window is graphics window type.
+A text buffer window is a kind of glk window.
+The window type of a text buffer window is text buffer window type.
+A text grid window is a kind of glk window.
+The window type of a text grid window is text grid window type.
+
+The main window is a text buffer window.
 The main window object is accessible to Inter as "Main_Window".
-The type of the main window is text buffer.
 
-The status window is a glk window.
+The status window is a text grid window.
 The status window object is accessible to Inter as "Status_Window".
-The type of the status window is text grid.
 
-The quote window is a glk window.
+The quote window is a text buffer window.
 The quote window object is accessible to Inter as "Quote_Window".
-The type of the quote window is text buffer.
 
 The unknown window is a glk window.
 The unknown window object is accessible to Inter as "Unknown_Glk_Window".

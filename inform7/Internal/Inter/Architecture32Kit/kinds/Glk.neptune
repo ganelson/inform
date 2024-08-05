@@ -74,9 +74,9 @@ new base GLK_WINDOW_TYPE_TY {
 
 	specification-text: Type of a Glk window.
 
-	instance: text buffer = wintype_TextBuffer_ = 3
-	instance: text grid   = wintype_TextGrid_   = 4
-	instance: graphics    = wintype_Graphics_   = 5
+	instance: text buffer window type = wintype_TextBuffer_ = 3
+	instance: text grid window type   = wintype_TextGrid_   = 4
+	instance: graphics window type    = wintype_Graphics_   = 5
 }
 
 new base TEXT_INPUT_STATUS_TY {

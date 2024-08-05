@@ -18212,18 +18212,18 @@ produces
 
 	{main window, status window, quote window, unknown window}
 
-Every glk window has a property called its `type`, which is a `glk window type` value. If we run:
+Every glk window has a property called its `window type`, which is a `glk window type` value. If we run:
 
 	repeat with W running through glk windows:
-		say "[W]: [type of W].";
+		say "[W]: [window type of W].";
 
 then we get, assuming we haven't created any extra windows or types,
 
 ``` transcript
-main window: text buffer.
-status window: text grid.
-quote window: text buffer.
-unknown window: text buffer.
+main window: text buffer window type.
+status window: text grid window type.
+quote window: text buffer window type.
+unknown window: text buffer window type.
 ```
 
 So, what goes on here?
@@ -18258,7 +18258,7 @@ But two phrases are included even in an unextended Inform:
 >
 > When the player types something, where do the keypresses go? The answer is that they are sent to whichever window currently has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch.
 
-Glk windows have two `number` properties, `rock number` and `reference number`: see the Glk reference documentation for what they mean. `reference number` is what the Glk spec calls the window ID, and it therefore exists only for open windows. 
+Glk windows have two `number` properties, `rock number` and `glk reference handle`: see the Glk reference documentation for what they mean. `glk reference handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows.
 
 ## Glk events
 

@@ -350,6 +350,7 @@ Constant UnicodeWhitespaceLen = 8;
     if (gg_quotewin) {
         glk_window_close(gg_quotewin, 0);
         gg_quotewin = 0;
+		Quote_Window.glk_ref = 0;
     }
 ];
 
@@ -731,6 +732,7 @@ make little sense there.
         if (gg_quotewin) {
             glk_window_close(gg_quotewin, 0);
             gg_quotewin = 0;
+			Quote_Window.glk_ref = 0;
         }
     }
     if (gg_statuswin && window == WIN_ALL or WIN_STATUS) glk_window_clear(gg_statuswin);
