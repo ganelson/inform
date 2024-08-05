@@ -1979,6 +1979,9 @@ To fill/redraw the/-- status bar/line/window with (new status table - a table-na
 To move the status bar/line/window cursor to row (row - number) column (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
+To set the status bar/line/window to (rows - number) row/rows:
+	(- VM_StatusLineHeight({rows}); -).
+
 @h External Files.
 Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.

@@ -175,7 +175,7 @@ Section - Startup C (for Glulx only)
 The start capturing startup text rule is listed first in the before starting the virtual machine rules. [1st]
 The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The set default stylehints rule is listed in the before starting the virtual machine rules. [7th]
+The set default stylehints rule is listed in the before starting the virtual machine rules. [6th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
@@ -1644,6 +1644,9 @@ To fill/redraw the/-- status bar/line/window with (new status table - a table-na
 
 To move the status bar/line/window cursor to row (row - number) column (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
+
+To set the status bar/line/window to (rows - number) row/rows:
+	(- VM_StatusLineHeight({rows}); -).
 
 Chapter 10 - External Files (not for Z-machine)
 

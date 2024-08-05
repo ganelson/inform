@@ -157,7 +157,7 @@ The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_
 @ These rules now set up the built in sound channels and windows.
 
 =
-The set default stylehints rule is listed in the before starting the virtual machine rules. [7th]
+The set default stylehints rule is listed in the before starting the virtual machine rules. [6th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
