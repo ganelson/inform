@@ -18178,23 +18178,23 @@ Here `glk feature` is a kind of value. So, for example,
 
 might produce:
 
-	timers: true.
-	glk graphics: true.
-	basic sounds: true.
-	sound volume: true.
-	sound notifications: true.
-	hyperlinks: true.
-	MOD sounds: true.
-	PNG transparency: true.
-	glk unicode: true.
-	unicode normalization: true.
-	line input echo suppression: true.
-	line input terminators: false.
-	system clock: true.
-	extended sounds: true.
-	resource streams: false.
-	graphics window character input: true.
-	text formatting: false.
+	timers feature: true.
+	glk graphics feature: true.
+	basic sounds feature: true.
+	sound volume feature: true.
+	sound notifications feature: true.
+	hyperlinks feature: true.
+	MOD sounds feature: true.
+	PNG transparency feature: true.
+	glk unicode feature: true.
+	unicode normalization feature: true.
+	line input echo suppression feature: true.
+	line input terminators feature: false.
+	system clock feature: true.
+	extended sounds feature: true.
+	resource streams feature: false.
+	graphics window character input feature: true.
+	text formatting feature: false.
 
 ## Dividing the screen into windows
 
@@ -18212,18 +18212,18 @@ produces
 
 	{main window, status window, quote window, unknown window}
 
-Every glk window has a property called its `type`, which is a `glk window type` value. If we run:
+Every glk window has a property called its `window type`, which is a `glk window type` value. If we run:
 
 	repeat with W running through glk windows:
-		say "[W]: [type of W].";
+		say "[W]: [window type of W].";
 
 then we get, assuming we haven't created any extra windows or types,
 
 ``` transcript
-main window: text buffer.
-status window: text grid.
-quote window: text buffer.
-unknown window: text buffer.
+main window: text buffer window type.
+status window: text grid window type.
+quote window: text buffer window type.
+unknown window: text buffer window type.
 ```
 
 So, what goes on here?
@@ -18258,24 +18258,24 @@ But two phrases are included even in an unextended Inform:
 >
 > When the player types something, where do the keypresses go? The answer is that they are sent to whichever window currently has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch.
 
-Glk windows have two `number` properties, `rock number` and `reference number`: see the Glk reference documentation for what they mean. `reference number` is what the Glk spec calls the window ID, and it therefore exists only for open windows. 
+Glk windows have two `number` properties, `rock number` and `glk reference handle`: see the Glk reference documentation for what they mean. `glk reference handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows.
 
 ## Glk events
 
 An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event` identifies them. Here is the complete list:
 
-Value                      | Meaning
--------------------------- | ---------------------
-`null event`               | Nothing happening.
-`character event`          | A key has been typed.
-`line event`               | A line of text ending with a RETURN or ENTER has been typed.
-`hyperlink event`          | A web-style link has been selected.
-`mouse event`              | A mouse has been clicked, or a touch-screen touched.
-`arrange event`            | The screen has been resized.
-`redraw event`             | A graphic window needs redrawing from scratch.
-`timer event`              | A timer has run out.
-`sound notification event` | A sound effect has finished playing.
-`volume event`             | A change in sound volume has completed.
+Value                        | Meaning
+---------------------------- | ---------------------
+`null event`                 | Nothing happening.
+`character event`            | A key has been typed.
+`line event`                 | A line of text ending with a RETURN or ENTER has been typed.
+`hyperlink event`            | A web-style link has been selected.
+`mouse event`                | A mouse has been clicked, or a touch-screen touched.
+`screen resize event`        | The screen has been resized.
+`graphics window lost event` | A graphic window needs redrawing from scratch.
+`timer event`                | A timer has run out.
+`sound notification event`   | A sound effect has finished playing.
+`volume event`               | A change in sound volume has completed.
 
 Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`. Inform defines an event as `independent of the player` if it occurred because of some earlier decision by the story, and `dependent on the player` if it occurred because of spontaneous input such as pressing a key or clicking a mouse.
 
@@ -20450,7 +20450,7 @@ Extensions can trigger RTPs of their own, too. For example, suppose `Ducking` de
 	issue the run-time problem "OverDucked";
 	say "*** ", (the) ducker, " seems to be putting their head below their feet.";
 
-The RTP name, here `OverDucked`, must correspind exactly to the name of a Markdown file stored in an ```RTPs``` subdirectory of the extension:
+The RTP name, here `OverDucked`, must correspond exactly to the name of a Markdown file stored in an ```RTPs``` subdirectory of the extension:
 
 ``` code
 Philately-v1.i7xd

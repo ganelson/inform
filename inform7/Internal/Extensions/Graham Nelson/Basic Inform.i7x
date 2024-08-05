@@ -156,26 +156,26 @@ First startup rule (this is the virtual machine startup rule):
 
 Section - Startup A (for Glulx only)
 
-The start capturing startup text rule is listed in the before starting the virtual machine rules.
-The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
+The recover Glk objects rule is listed first in the before starting the virtual machine rules. [5th]
+The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 
 Section - Startup B
 
-The platform specific startup rule is listed in the before starting the virtual machine rules.
-The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
+The seed random number generator rule is listed first in the before starting the virtual machine rules. [4th]
+The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
 
-The initialise memory rule is listed in the before starting the virtual machine rules.
+The initialise memory rule is listed first in the before starting the virtual machine rules. [3rd]
 The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
 
-The seed random number generator rule is listed in the before starting the virtual machine rules.
-The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
+The platform specific startup rule is listed first in the before starting the virtual machine rules. [2nd]
+The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
 
 Section - Startup C (for Glulx only)
 
-The recover Glk objects rule is listed in the before starting the virtual machine rules.
-The recover Glk objects rule translates into Inter as "GGRecoverObjects".
+The start capturing startup text rule is listed first in the before starting the virtual machine rules. [1st]
+The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule is listed in the before starting the virtual machine rules. [6th]
 The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
 
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
@@ -1645,6 +1645,9 @@ To fill/redraw the/-- status bar/line/window with (new status table - a table-na
 To move the status bar/line/window cursor to row (row - number) column (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
+To set the status bar/line/window to (rows - number) row/rows:
+	(- VM_StatusLineHeight({rows}); -).
+
 Chapter 10 - External Files (not for Z-machine)
 
 Section 1 - Files of Text
@@ -1703,34 +1706,15 @@ To decide which number is the patch version of (V - version number):
 
 Chapter - Glk and Glulx feature testing
 
-To decide whether (F - glk feature) is/are supported
-	(documented at ph_glksupported):
-	(- Cached_Glk_Gestalts-->({F}) -).
+Definition: a glk feature is supported rather than unsupported if I6 routine
+	"GlkFeatureTest" says so (it is supported by the interpreter).
 
 To decide what version number is the glk version number/--
 	(documented at ph_glkversion):
 	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glk_Gestalts-->gestalt_Version) -).
 
-To decide whether buffer window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, wintype_TextBuffer) -).
-
-To decide whether graphics window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, wintype_Graphics) -).
-
-To decide whether buffer window hyperlinks are/is supported:
-	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextBuffer) -).
-
-To decide whether grid window hyperlinks are/is supported:
-	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextGrid) -).
-
-To decide whether graphics window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, wintype_Graphics) -).
-
-To decide whether grid window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, wintype_TextGrid) -).
-
-To decide whether (F - glulx feature) is/are supported:
-	(- Cached_Glulx_Gestalts-->({F}) -).
+Definition: a glulx feature is supported rather than unsupported if I6 routine
+	"GlulxFeatureTest" says so (it is supported by the interpreter).
 
 To decide what version number is the glulx version number/--:
 	(- VERSION_NUMBER_TY_NewFromPacked(Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion) -).
@@ -1744,26 +1728,30 @@ A glk window is a kind of abstract object.
 The glk window kind is accessible to Inter as "K_Glk_Window".
 The specification of a glk window is "Models the Glk window system."
 
-A glk window has a glk window type called the type.
-The type property translates into Inter as "glk_window_type".
+A glk window has a glk window type called the window type.
+The window type property translates into Inter as "glk_window_type".
 
 A glk window has a number called the rock number.
 The rock number property translates into Inter as "glk_rock".
 
-A glk window has a number called the reference number.
-The reference number property translates into Inter as "glk_ref".
+A glk window has a number called the glk window handle.
+The glk window handle property translates into Inter as "glk_ref".
 
-The main window is a glk window.
+A graphics window is a kind of glk window.
+The window type of a graphics window is graphics window type.
+A text buffer window is a kind of glk window.
+The window type of a text buffer window is text buffer window type.
+A text grid window is a kind of glk window.
+The window type of a text grid window is text grid window type.
+
+The main window is a text buffer window.
 The main window object is accessible to Inter as "Main_Window".
-The type of the main window is text buffer.
 
-The status window is a glk window.
+The status window is a text grid window.
 The status window object is accessible to Inter as "Status_Window".
-The type of the status window is text grid.
 
-The quote window is a glk window.
+The quote window is a text buffer window.
 The quote window object is accessible to Inter as "Quote_Window".
-The type of the quote window is text buffer.
 
 The unknown window is a glk window.
 The unknown window object is accessible to Inter as "Unknown_Glk_Window".
@@ -1772,30 +1760,28 @@ Section - Glk windows
 
 To clear (win - a glk window)
 	(documented at ph_glkwindowclear):
-	(- glk_window_clear({win}.glk_ref); -).
+	(- WindowClear({win}); -).
 
 To focus (win - a glk window)
 	(documented at ph_glkwindowfocus):
-	(- glk_set_window({win}.glk_ref); -).
+	(- WindowFocus({win}); -).
 
 To decide what number is the height of (win - a glk window)
 	(documented at ph_glkwindowheight):
-	(- GetWindowSize({win}, 1) -).
+	(- WindowGetSize({win}, 1) -).
 
 To decide what number is the width of (win - a glk window)
 	(documented at ph_glkwindowwidth):
-	(- GetWindowSize({win}, 0) -).
+	(- WindowGetSize({win}, 0) -).
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
-	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
+	(- WindowMoveCursor({win}, {col}, {row}); -).
 
 Chapter - Glk events
 
 The glk event handling rules is a glk event based rulebook.
 The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 
-The glk event type is a glk event variable.
-The glk event type variable translates into Inter as "Glk_Event_Struct_type".
 The glk event window is a glk window variable.
 The glk event window variable translates into Inter as "Glk_Event_Struct_win".
 The glk event value 1 is a number variable.
@@ -1812,18 +1798,20 @@ Definition: a glk event is dependent on the player rather than independent of th
 To set the/-- glk event type to (t - glk event):
 	(- SetGlkEventType({t}); -).
 
+To say current line input of (w - glk window):
+	(- WindowBufferPrint({w}); -).
+
 To decide what text is the current line input of (w - glk window):
-	(- CopyWindowBufferToText({w}, {-new:text}) -).
+	(- WindowBufferCopyToText({w}, {-new:text}) -).
 
 To set the current line input of (w - glk window) to (t - text):
-	(- CopyTextToWindowBuffer({w}, {-by-reference:t}); -).
+	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
-First glk event handling rule (this is the update text input status rule):
-	if the glk event type is character event or the glk event type is line event:
-		now the text input status of the glk event window is inactive text input;
-	if the glk event type is hyperlink event:
+First glk event handling rule for a glk event (called the event) (this is the update input requests rule):
+	[ It was too risky to set the text input status here, in case the author also sets a first glk event handling rule, so that property is reset within glk_select. ]
+	if the event is hyperlink event:
 		now the glk event window is not requesting hyperlink input;
-	if the glk event type is mouse event:
+	if the event is mouse event:
 		now the glk event window is not requesting mouse input;
 
 Chapter - Suspending and resuming input
