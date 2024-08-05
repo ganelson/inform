@@ -121,8 +121,6 @@ Chapter - Glk events
 The glk event handling rules is a glk event based rulebook.
 The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 
-The glk event type is a glk event variable.
-The glk event type variable translates into Inter as "Glk_Event_Struct_type".
 The glk event window is a glk window variable.
 The glk event window variable translates into Inter as "Glk_Event_Struct_win".
 The glk event value 1 is a number variable.
@@ -145,12 +143,11 @@ To decide what text is the current line input of (w - glk window):
 To set the current line input of (w - glk window) to (t - text):
 	(- CopyTextToWindowBuffer({w}, {-by-reference:t}); -).
 
-First glk event handling rule (this is the update text input status rule):
-	if the glk event type is character event or the glk event type is line event:
-		now the text input status of the glk event window is inactive text input;
-	if the glk event type is hyperlink event:
+First glk event handling rule for a glk event (called the event) (this is the update input requests rule):
+	[ It was too risky to set the text input status here, in case the author also sets a first glk event handling rule, so that property is reset within glk_select. ]
+	if the event is hyperlink event:
 		now the glk event window is not requesting hyperlink input;
-	if the glk event type is mouse event:
+	if the event is mouse event:
 		now the glk event window is not requesting mouse input;
 
 @h Suspending input.

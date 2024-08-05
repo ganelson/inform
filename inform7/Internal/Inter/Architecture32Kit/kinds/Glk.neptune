@@ -55,16 +55,16 @@ new base GLK_EVENT_TY {
 
 	specification-text: A Glk event sent from the interpreter.
 
-	instance: null event               = evtype_None_         = 0
-	instance: timer event              = evtype_Timer_        = 1
-	instance: character event          = evtype_CharInput_    = 2
-	instance: line event               = evtype_LineInput_    = 3
-	instance: mouse event              = evtype_MouseInput_   = 4
-	instance: arrange event            = evtype_Arrange_      = 5
-	instance: redraw event             = evtype_Redraw_       = 6
-	instance: sound notification event = evtype_SoundNotify_  = 7
-	instance: hyperlink event          = evtype_Hyperlink_    = 8
-	instance: volume event             = evtype_VolumeNotify_ = 9
+	instance: null event                 = evtype_None_         = 0
+	instance: timer event                = evtype_Timer_        = 1
+	instance: character event            = evtype_CharInput_    = 2
+	instance: line event                 = evtype_LineInput_    = 3
+	instance: mouse event                = evtype_MouseInput_   = 4
+	instance: screen resize event        = evtype_Arrange_      = 5
+	instance: graphics window lost event = evtype_Redraw_       = 6
+	instance: sound notification event   = evtype_SoundNotify_  = 7
+	instance: hyperlink event            = evtype_Hyperlink_    = 8
+	instance: volume event               = evtype_VolumeNotify_ = 9
 }
 
 new base GLK_WINDOW_TYPE_TY {

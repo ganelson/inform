@@ -250,6 +250,7 @@ Global Glk_Event_Struct_type;
 Global Glk_Event_Struct_win;
 Global Glk_Event_Struct_val1;
 Global Glk_Event_Struct_val2;
+Global glk_event_type_changed;
 
 [ glk_select event_struct;
 	! Call the real glk_select
@@ -277,13 +278,21 @@ Global Glk_Event_Struct_val2;
 		! If the current event type is line input, copy the buffer length
 		if (Glk_Event_Struct_type == evtype_LineInput) {
 			Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
+			! And update the text input status here because it's too risky to leave for a glk event handling rule
+			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+		}
+		else if (Glk_Event_Struct_type == evtype_CharInput) {
+			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
 		}
 	}
 
 	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
 	@push debug_rules; @push say__p; @push say__pc;
 	debug_rules = false; ClearParagraphing(1);
-	FollowRulebook(GLK_EVENT_HANDLING_RB, Glk_Event_Struct_type, true);
+	do {
+		glk_event_type_changed = 0;
+		FollowRulebook(GLK_EVENT_HANDLING_RB, Glk_Event_Struct_type, true);
+	} until (glk_event_type_changed == 0);
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
 	! If the current event type is line input, update the current buffer length
@@ -311,16 +320,26 @@ input requests are pending, which means the new event could be ignored.
 
 =
 [ SetGlkEventType type;
+	if (type ~= Glk_Event_Struct_type) {
+		return;
+	}
 	if (type == evtype_CharInput or evtype_LineInput) {
-		if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
-			glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
+		if (Glk_Event_Struct_win) {
+			if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+				glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
+			}
+			else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+				glk_cancel_line_event(Glk_Event_Struct_win.glk_ref);
+			}
+			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
 		}
-		else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
-			glk_cancel_line_event(Glk_Event_Struct_win.glk_ref);
+		else {
+			! TODO: RTP - can't change to text input event when no window
 		}
-		Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
 	}
 	Glk_Event_Struct_type = type;
+	glk_event_type_changed = 1;
+	RulebookSucceeds();
 ];
 
 @h Tracking input requests.
