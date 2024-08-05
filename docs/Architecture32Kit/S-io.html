@@ -418,6 +418,7 @@ to document all of that.
 <span class="character-syntax">    if (gg_quotewin) {</span>
 <span class="character-syntax">        glk_window_close(gg_quotewin, 0);</span>
 <span class="character-syntax">        gg_quotewin = 0;</span>
+<span class="character-syntax">        Quote_Window.glk_ref = 0;</span>
 <span class="character-syntax">    }</span>
 <span class="character-syntax">];</span>
 </pre>
@@ -812,6 +813,7 @@ make little sense there.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gg_quotewin</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">glk_window_close</span><span class="plain-syntax">(</span><span class="identifier-syntax">gg_quotewin</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_quotewin</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Quote_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gg_statuswin</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">window</span><span class="plain-syntax"> == </span><span class="identifier-syntax">WIN_ALL</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_STATUS</span><span class="plain-syntax">) </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">gg_statuswin</span><span class="plain-syntax">);</span>

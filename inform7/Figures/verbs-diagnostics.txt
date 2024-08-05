@@ -1405,9 +1405,9 @@ the same indefinite appearance text as
 the same printed name as
 the same printed plural name as
 the same indefinite article as
-the same type as
+the same window type as
 the same rock number as
-the same reference number as
+the same glk window handle as
 the same adaptive text viewpoint as
 the same description as
 the same map region as

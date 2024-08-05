@@ -1774,7 +1774,8 @@ To decide what number is the width of (win - a glk window)
 	(documented at ph_glkwindowwidth):
 	(- WindowGetSize({win}, 0) -).
 
-To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
+To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number)
+	(documented at ph_glksetcursor):
 	(- WindowMoveCursor({win}, {col}, {row}); -).
 
 Chapter - Glk events
