@@ -1,13 +1,15 @@
-adjective: 146 items
+adjective: 148 items
 article: 2 items
-noun: 2575 items
+noun: 2583 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3532
+total in all categories: 3542
 
+adjective: 'supported'
+adjective: 'unsupported'
 adjective: 'dependent on the player'
 adjective: 'independent of the player'
 adjective: 'even'
@@ -239,45 +241,51 @@ noun: proper: 'basic blue'
 noun: proper: 'basic magenta'
 noun: proper: 'basic cyan'
 noun: proper: 'basic white'
-noun: proper: 'timers'
-noun: proper: 'glk graphics'
-noun: proper: 'basic sounds'
-noun: proper: 'sound volume'
-noun: proper: 'sound notifications'
-noun: proper: 'hyperlinks'
-noun: proper: 'mod sounds'
-noun: proper: 'png transparency'
-noun: proper: 'glk unicode'
-noun: proper: 'unicode normalization'
-noun: proper: 'line input echo suppression'
-noun: proper: 'line input terminators'
-noun: proper: 'system clock'
-noun: proper: 'extended sounds'
-noun: proper: 'resource streams'
-noun: proper: 'graphics window character input'
-noun: proper: 'text formatting'
-noun: proper: 'memory resizing'
-noun: proper: 'undo'
-noun: proper: 'glulx unicode'
-noun: proper: 'memory copying'
-noun: proper: 'memory allocations'
-noun: proper: 'glulx acceleration'
-noun: proper: 'real numbers'
-noun: proper: 'extended undo'
-noun: proper: 'double precision real numbers'
+noun: proper: 'timers feature'
+noun: proper: 'glk graphics feature'
+noun: proper: 'basic sounds feature'
+noun: proper: 'sound volume feature'
+noun: proper: 'sound notifications feature'
+noun: proper: 'hyperlinks feature'
+noun: proper: 'mod sounds feature'
+noun: proper: 'png transparency feature'
+noun: proper: 'glk unicode feature'
+noun: proper: 'unicode normalization feature'
+noun: proper: 'line input echo suppression feature'
+noun: proper: 'line input terminators feature'
+noun: proper: 'system clock feature'
+noun: proper: 'extended sounds feature'
+noun: proper: 'resource streams feature'
+noun: proper: 'graphics window character input feature'
+noun: proper: 'text formatting feature'
+noun: proper: 'buffer window graphics feature'
+noun: proper: 'graphics window graphics feature'
+noun: proper: 'buffer window hyperlinks feature'
+noun: proper: 'grid window hyperlinks feature'
+noun: proper: 'graphics window mouse input feature'
+noun: proper: 'grid window mouse input feature'
+noun: proper: 'memory resizing feature'
+noun: proper: 'undo feature'
+noun: proper: 'glulx unicode feature'
+noun: proper: 'memory copying feature'
+noun: proper: 'memory allocations feature'
+noun: proper: 'glulx acceleration feature'
+noun: proper: 'real numbers feature'
+noun: proper: 'extended undo feature'
+noun: proper: 'double precision real numbers feature'
 noun: proper: 'null event'
 noun: proper: 'timer event'
 noun: proper: 'character event'
 noun: proper: 'line event'
 noun: proper: 'mouse event'
-noun: proper: 'arrange event'
-noun: proper: 'redraw event'
+noun: proper: 'screen resize event'
+noun: proper: 'graphics window lost event'
 noun: proper: 'sound notification event'
 noun: proper: 'hyperlink event'
 noun: proper: 'volume event'
-noun: proper: 'text buffer'
-noun: proper: 'text grid'
-noun: proper: 'graphics'
+noun: proper: 'text buffer window type'
+noun: proper: 'text grid window type'
+noun: proper: 'graphics window type'
 noun: proper: 'inactive text input'
 noun: proper: 'active line input'
 noun: proper: 'active unicode line input'
@@ -320,13 +328,13 @@ noun: proper: 'tanh function'
 noun: proper: 'arcsinh function'
 noun: proper: 'arccosh function'
 noun: proper: 'arctanh function'
-noun: proper: 'type'
-noun: proper: 'property type'
+noun: proper: 'window type'
+noun: proper: 'property window type'
 noun: proper: 'rock number'
 noun: proper: 'property rock number'
-noun: proper: 'reference number'
-noun: proper: 'property reference number'
-noun: proper: 'update text input status rule'
+noun: proper: 'glk window handle'
+noun: proper: 'property glk window handle'
+noun: proper: 'update input requests rule'
 noun: proper: 'adaptive text viewpoint'
 noun: proper: 'property adaptive text viewpoint'
 noun: proper: 'description'
@@ -778,11 +786,11 @@ noun: proper: 'for starting the virtual machine rulebook'
 noun: proper: 'after starting the virtual machine'
 noun: proper: 'after starting the virtual machine rules'
 noun: proper: 'after starting the virtual machine rulebook'
-noun: proper: 'start capturing startup text rule'
-noun: proper: 'platform specific startup rule'
-noun: proper: 'initialise memory rule'
-noun: proper: 'seed random number generator rule'
 noun: proper: 'recover glk objects rule'
+noun: proper: 'seed random number generator rule'
+noun: proper: 'initialise memory rule'
+noun: proper: 'platform specific startup rule'
+noun: proper: 'start capturing startup text rule'
 noun: proper: 'set default stylehints rule'
 noun: proper: 'sound channel initialisation rule'
 noun: proper: 'open built in windows rule'
@@ -851,6 +859,9 @@ noun: proper: 'unknown key'
 noun: proper: 'up key'
 noun: proper: 'status window table'
 noun: common: 'glk window'
+noun: common: 'graphics window'
+noun: common: 'text buffer window'
+noun: common: 'text grid window'
 noun: proper: 'main window'
 noun: proper: 'status window'
 noun: proper: 'quote window'
@@ -858,7 +869,6 @@ noun: proper: 'unknown window'
 noun: proper: 'glk event handling'
 noun: proper: 'glk event handling rules'
 noun: proper: 'glk event handling rulebook'
-noun: proper: 'glk event type'
 noun: proper: 'glk event window'
 noun: proper: 'glk event value 1'
 noun: proper: 'glk event value 2'
@@ -2713,9 +2723,9 @@ noun: proper: 'same-indefinite-appearance-text-as relation'
 noun: proper: 'same-printed-name-as relation'
 noun: proper: 'same-printed-plural-name-as relation'
 noun: proper: 'same-indefinite-article-as relation'
-noun: proper: 'same-type-as relation'
+noun: proper: 'same-window-type-as relation'
 noun: proper: 'same-rock-number-as relation'
-noun: proper: 'same-reference-number-as relation'
+noun: proper: 'same-glk-window-handle-as relation'
 noun: proper: 'same-adaptive-text-viewpoint-as relation'
 noun: proper: 'same-description-as relation'
 noun: proper: 'same-map-region-as relation'
@@ -3001,9 +3011,9 @@ preposition: the same indefinite appearance text as
 preposition: the same printed name as
 preposition: the same printed plural name as
 preposition: the same indefinite article as
-preposition: the same type as
+preposition: the same window type as
 preposition: the same rock number as
-preposition: the same reference number as
+preposition: the same glk window handle as
 preposition: the same adaptive text viewpoint as
 preposition: the same description as
 preposition: the same map region as
@@ -3527,9 +3537,9 @@ verb_form: be(0) + the same indefinite appearance text as + ___ SVO
 verb_form: be(0) + the same printed name as + ___ SVO
 verb_form: be(0) + the same printed plural name as + ___ SVO
 verb_form: be(0) + the same indefinite article as + ___ SVO
-verb_form: be(0) + the same type as + ___ SVO
+verb_form: be(0) + the same window type as + ___ SVO
 verb_form: be(0) + the same rock number as + ___ SVO
-verb_form: be(0) + the same reference number as + ___ SVO
+verb_form: be(0) + the same glk window handle as + ___ SVO
 verb_form: be(0) + the same adaptive text viewpoint as + ___ SVO
 verb_form: be(0) + the same description as + ___ SVO
 verb_form: be(0) + the same map region as + ___ SVO
