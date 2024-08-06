@@ -5559,7 +5559,7 @@ If this section has a moral (other than the inadvisability of killing a king in 
 ^^{dialogue lines: speaker of} ^^{speaker (- thing)+actvar+}
 ^^{dialogue lines: narration} ^^{narration (dialogue lines)}
 ^^{dialogue choices}
-^^{|--: for dialogue choices+sourcepart+}
+^^{|--: for dialogue choices} ^^{punctuation: double-dash: for dialogue choices}
 
 To recap, then, all dialogue material must appear in special _dialogue sections_ in the source text. A section is a dialogue section if its titling line ends with `(dialogue)`. For example:
 
@@ -6693,7 +6693,7 @@ Until the actual moment of performing this, we can't know who exactly will speak
 
 ^^{dialogue beats: branches}
 ^^{dialogue beats: player choices}
-^^{|--: for dialogue choices+sourcepart+}
+^^{|--: for dialogue choices} ^^{punctuation: double-dash: for dialogue choices}
 ^^{dialogue choices}
 ^^{dialogue choices: based on actions}
 ^^{dialogue choices: automatic}
@@ -6873,7 +6873,7 @@ permutation when that completes, and so on
 
 ## Dialogue choices
 
-^^{|--: for dialogue choices+sourcepart+}
+^^{|--: for dialogue choices} ^^{punctuation: double-dash: for dialogue choices}
 ^^{dialogue choices}
 ^^{dialogue choices: as values} ^^{values: dialogue choices as values}
 ^^{dialogue choices: conditional}
@@ -7215,7 +7215,9 @@ In the next section we'll see how to give more complicated definitions which, li
 
 ## Pattern matching {PM_TokenWithoutOpenBracket} {PM_TokenWithoutCloseBracket} {PM_TokenWithEmptyBrackets} {PM_TokenWithNestedBrackets} {PM_BadTypeIndication} {PM_TokenMisunderstood} {PM_PhraseTooLong} {PM_AdjacentTokens}  {PM_SaySlashed}
 
-^^{phrases: phrase parameters} ^^{parameters: of phrases}^^^{parameters <-- arguments} ^^{Inform 6 equivalent: functions with parameters} ^^{pattern matching: phrase definitions} ^^{type-checking: in phrase definitions} ^^{kinds: in phrase parameters} ^^{punctuation: slash: separating synonymous words in phrase definitions} ^^{|/: separating synonymous words in phrase definitions}^^^{punctuation: slash <-- slash} ^^{punctuation: double-dash: optional words in phrase definitions} ^^{|--: optional words in phrase definitions}^^^{punctuation: double-dash <-- double-dash} ^^{punctuation: brackets: for phrase parameters} ^^{|( ): for phrase parameters}
+^^{phrases: phrase parameters} ^^{parameters: of phrases}^^^{parameters <-- arguments} ^^{Inform 6 equivalent: functions with parameters} ^^{pattern matching: phrase definitions} ^^{type-checking: in phrase definitions} ^^{kinds: in phrase parameters} ^^{punctuation: slash: separating synonymous words in phrase definitions} ^^{|/: separating synonymous words in phrase definitions}^^^{punctuation: slash <-- slash}
+^^{punctuation: double-dash: optional words in phrase definitions} ^^{|--: optional words in phrase definitions}^^^{punctuation: double-dash <-- double-dash}
+^^{punctuation: brackets: for phrase parameters} ^^{|( ): for phrase parameters}
 
 In this section, let's make the following new phrase:
 
@@ -7485,7 +7487,7 @@ While this syntax is still allowed for the time being, to keep old source text w
 
 ## Otherwise {PM_NonCaseInIf} {PM_MisalignedOtherwise} {PM_MisalignedCase} {PM_MisarrangedOtherwise} {PM_DoubleOtherwise} {PM_OtherwiseIfAfterOtherwise} {PM_CaseValueNonConstant} {PM_CaseValueMismatch} {PM_OtherwiseWithoutIf} {PM_OtherwiseInNonIf}
 
-^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{|--: separating cases+sourcepart+} ^^{abbreviations: chains of equality tests}
+^^{conditions: with (otherwise/else)+sourcepart+} ^^{+to+if (a condition): with (otherwise/else)+sourcepart+} ^^{Inform 6 equivalent: |switch/case} ^^{|--: separating cases} ^^{punctuation: double-dash: separating cases} ^^{abbreviations: chains of equality tests}
 
 We often need code which does one thing in one circumstance, and another the rest of the time. We could do this like so:
 
@@ -12005,7 +12007,7 @@ These definitions mentioned blankness several times, and that's the topic to cov
 
 ## Blank entries
 
-^^{tables: blank entries <-- blank entries in tables} ^^{|--: as a blank table entry+sourcepart+}
+^^{tables: blank entries <-- blank entries in tables} ^^{|--: as a blank table entry} ^^{punctuation: double-dash: as a blank table entry}
 
 We are allowed to leave certain entries blank (perhaps to be filled in later, perhaps not) by writing `--` instead of the relevant value:
 
