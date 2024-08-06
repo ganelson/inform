@@ -5,7 +5,8 @@ Index: On/off button for devices
 Description: An "on/off button" which controls whatever device it is part of.
 For: Z-Machine
 
-^^{On/off button for devices}
+^^{assemblies} ^^{things+kind+: parts of} ^^{names: for things created in assemblies}
+^^{devices+kind+: with on/off buttons}
 
 Suppose we're particularly mechanically-minded and would like a game in which all of our mechanical devices have buttons to turn them on and off.
 

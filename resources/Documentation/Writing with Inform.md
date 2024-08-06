@@ -1965,6 +1965,7 @@ Now we're telling Inform that every time a `colour` is made, a new `person` is a
 ## Names made in assembly
 
 ^^{|called: in creating assemblies} ^^{|every: creating assemblies} ^^{defining: things: using relations} ^^{things+kind+: creating: using relations} ^^{relations: creating things in relation to}
+^^{names: for things created in assemblies} ^^{assemblies: names in}
 
 Something skated over in the previous section is the question of how Inform gives names to objects (or other values) it creates in an assembly. The standard thing naming combines the names of what's being assembled. For example:
 

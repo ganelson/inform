@@ -5,7 +5,7 @@ Index: Pocket added to every jacket
 Description: A kind for jackets, which always includes a container called a pocket.
 For: Z-Machine
 
-^^{Pocket added to every jacket}
+^^{assemblies} ^^{things+kind+: parts of} ^^{names: for things created in assemblies}
 
 	{*}"Being Prepared"
 	
