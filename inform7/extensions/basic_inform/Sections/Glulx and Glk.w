@@ -70,8 +70,7 @@ The window type of a text buffer window is text buffer window type.
 A text grid window is a kind of glk window.
 The window type of a text grid window is text grid window type.
 
-@ Create objects for each of the built in windows, as well as the "unknown window",
-which is used when there's a Glk event on a window that can't be identified.
+@ Create objects for each of the built in windows.
 
 =
 The main window is a text buffer window.
@@ -82,9 +81,6 @@ The status window object is accessible to Inter as "Status_Window".
 
 The quote window is a text buffer window.
 The quote window object is accessible to Inter as "Quote_Window".
-
-The unknown window is a glk window.
-The unknown window object is accessible to Inter as "Unknown_Glk_Window".
 
 @h Basic window functions.
 Some basic Glk window functions will be supported out of the box, but others will

@@ -1753,9 +1753,6 @@ The status window object is accessible to Inter as "Status_Window".
 The quote window is a text buffer window.
 The quote window object is accessible to Inter as "Quote_Window".
 
-The unknown window is a glk window.
-The unknown window object is accessible to Inter as "Unknown_Glk_Window".
-
 Section - Glk windows
 
 To clear (win - a glk window)
