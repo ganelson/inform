@@ -1737,6 +1737,8 @@ The rock number property translates into Inter as "glk_rock".
 A glk window has a number called the glk window handle.
 The glk window handle property translates into Inter as "glk_ref".
 
+Definition: a glk window is on-screen rather than off-screen if the glk window handle of it is not 0.
+
 A graphics window is a kind of glk window.
 The window type of a graphics window is graphics window type.
 A text buffer window is a kind of glk window.
@@ -1787,17 +1789,8 @@ The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
 The glk event value 2 is a number variable.
 The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
 
-Definition: a glk event is dependent on the player rather than independent of the player if
-	it is character event or
-	it is line event or
-	it is mouse event or
-	it is hyperlink event.
-
 To set the/-- glk event type to (t - glk event):
 	(- SetGlkEventType({t}); -).
-
-To say current line input of (w - glk window):
-	(- WindowBufferPrint({w}); -).
 
 To decide what text is the current line input of (w - glk window):
 	(- WindowBufferCopyToText({w}, {-new:text}) -).
