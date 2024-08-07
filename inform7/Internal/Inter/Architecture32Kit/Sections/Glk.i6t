@@ -205,12 +205,6 @@ Functions for minimal Glk windows support.
 	return txt;
 ];
 
-[ WindowBufferPrint win;
-	if (win && win.line_input_buffer_addr) {
-		glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
-	}
-];
-
 [ WindowBufferSet win txt
 		buf ch cp i len p uni;
 	if (~~win) {
@@ -278,7 +272,12 @@ Functions for minimal Glk windows support.
 	if (win) {
 		if (win.glk_ref) {
 			if (win.glk_window_type == wintype_TextGrid) {
-				glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+				if (win > 0 && row > 0) {
+					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+				}
+				else {
+					IssueRTP("BadGridWindowCursor", "WindowMoveCursor: Grid window cursor column and row both must be >= 1.", Architecture32KitRTPs);
+				}
 			}
 			else {
 				IssueRTP("WrongWindowType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
