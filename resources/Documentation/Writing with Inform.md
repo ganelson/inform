@@ -11337,7 +11337,7 @@ Naming the parts is also very useful when we want to apply _options_ to them, wh
 
 	An American map reference is a kind of value. 50° N 100° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
 
-Here, the two parts are called `latitude` and `longitude`. The option `7 to 85` applied to `latitude` constrains it to lie in that range: so `6° N 100° W` would not be a valid `American map reference`, because 6 is not in the range 7 to 85 inclusive.
+Here, the two parts are called `latitude` and `longitude`. The option `7 to 85` applied to `latitude` constrains it to lie in that range: so `6° N 100° W` would not be a valid `American map reference`, because 6 is not in the range 7 to 85 inclusive. (For more on this, see [Range and number base of notation parts].)
 
 A part can have multiple options, in which case they are listed with commas in between, or none. There's quite a range of these, and some will take a little explaining.
 
@@ -11439,7 +11439,7 @@ In all the notations so far, the "parts" have been written in something resembli
 	An American map reference is a kind of value.
 	50° N 100° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
 
-But this could also be written like so:
+(Let's not argue about Semisopochnoi Island and other outliers.) But this could also be written like so:
 
 	An American map reference is a kind of value.
 	<latitude>° N <longitude>° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
@@ -11455,15 +11455,27 @@ allows constants like `007` and `0011` to be used and printed back, with
 the double-0 prefix having no numerical meaning but signalling that this is
 an agent, not a number.
 
-This makes it impossible to have a literal `"` character in a specification, but those are impossible for Inform to read anyway because they would be mistaken for text, so this is no loss. But literal angle brackets can be written, so that:
+This makes it impossible to have a literal `"` character in a specification, but those are impossible for Inform to read anyway because they would be mistaken for text, so this is no loss. How about literal angle brackets, though? Suppose we want values to look like `<1101>`, `<1102>`, ...; we cannot write
 
-	<"<">99<">">
+	A hotel room number is a kind of value.
+	<1109> specifies a hotel room number.
 
-allows `<99>` to be a value. Similarly:
+...because the `<` and `>` signs on either side of the `1109` lead Inform to think that what's between them will be the name of a part. Inform then complains, reasonably enough from its point of view, that `1109` _isn't_ the name of a part. Instead:
+
+	A hotel room number is a kind of value.
+	<"<">1109<">"> specifies a hotel room number.
+
+This works nicely, because `<"<">` means "match a literal `<`". And then, say, `showme <1109>` replies:
+
+	hotel room number: <1109>
+
+In other words, that cumbersome escaping needed to be done only when specifying the notation, not when using it.
+
+Similarly:
 
 	A monetary value is a kind of value. $<dollars><"."><cents> specifies a monetary value with parts dollars and cents (optional, preamble optional).
 
-Note that putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun.
+Putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun.
 
 We can also use the angle-bracket syntax to have two parts of a specification jammed directly next to each other, with nothing in between:
 
@@ -18253,11 +18265,15 @@ There's also a third glk window type, `graphics`, but in the default setup stori
 
 > phrase: {ph_glkwindowheight} height of (glk window) ... number
 >
-> The current height of the window. For a `text grid` window this is measured in characters, and for others in pixels. If the window is closed, this returns 0.
+> The current height of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size. (Also, a known bug in the MacOS Inform app's Story panel version of glk means that it reports `text buffer window` heights in pixels.)
+>
+> If the window is closed, this returns 0 whatever the type.
 
 > phrase: {ph_glkwindowwidth} width of (glk window) ... number
 >
-> The current width of the window. For a `text grid` window this is measured in characters, and for others in pixels. If the window is closed, this returns 0.
+> The current width of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size. (Also, a known bug in the MacOS Inform app's Story panel version of glk means that it reports `text buffer window` widths in pixels.)
+>
+> If the window is closed, this returns 0 whatever the type.
 
 The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant and complex mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
 
@@ -18270,10 +18286,16 @@ But even an unextended Inform allows the following:
 > phrase: {ph_glkwindowfocus} focus (glk window)
 >
 > When a `say` text is printed, which window is it printed into? The answer is whichever window has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch. (For example, this is used when updating the status window.) The window must be open, or a run-time problem will be thrown.
+>
+> While it is technically legal to focus a `graphics window`, any text sent to it will be humanely destroyed, so in practice this phrase should be used only with `text grid windows` or `text buffer windows`.
 
 > phrase: {ph_glksetcursor} set (glk window) cursor to row (number) and column (number)
 >
-> The window must be open and must be a text grid, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
+> The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
+>
+> Both coordinates must be positive numbers: the top left position in a grid is row 1, column 1. If the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 80, and the bottom right is row 3, column 80. Setting to row 1, column 81 is equivalent to row 2, column 1 — in other words, column positions "wrap around" much as text does, continuing from the left on the next row. Setting to row 1, column 240 therefore puts the cursor in the bottom right.
+>
+> It is legal to set either row or column to be so high that the combined effect places the cursor in a position outside (i.e. below) the grid entirely. But any text printed there will go undisplayed.
 
 Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
 
@@ -20290,11 +20312,11 @@ Some extensions provide hardly any phrases, or none at all, but others provide m
 
 However, if the phrases are defined under different headings, then those headings will be used in the index, too.
 
-	Section of phrases - Head motion
+	Section - Head motion
 	
 	[Some "To ..." phrases here]
 	
-	Section of phrases - Door clearance
+	Section with some more phrases - Door clearance
 	
 	[Some more "To ..." phrases here]
 
@@ -20387,7 +20409,7 @@ is that `duck sway` has a default value of 6 (i.e., will be that if
 the source text never specifies anything), whereas `duck depth` has
 a default value of 0.
 
-If the user tries it, a problem message will reject this as a contradiction:
+If the user gives two use instructions which clearly can't both be satisfied, a problem message will reject this as a contradiction. For example:
 
 	Use duck depth of 17.
 	Use duck depth of 22.
@@ -20416,7 +20438,7 @@ That can be done like so:
 	Use bobbing ducks translates as the configuration value DUCK_MOTION_TYPE = 1.
 	Use swivelling ducks translates as the configuration value DUCK_MOTION_TYPE = 2.
 
-As this suggests, under the hood a value called ```DUCK_MOTION_TYPE``` is being set. Attempting to set both options will now cause Inform to throw a problem message for a contradiction, as will a sentence like `Use bobbing ducks of 3`. (We know that these settings are numerical; the user does not.)
+As this suggests, under the hood a value called ```DUCK_MOTION_TYPE``` is being set. Attempting to set both options will now cause Inform to throw a problem message for a contradiction, as will a sentence like `Use bobbing ducks of 3`. (We know that these settings are numerical; the user does not.) The so-called "identifier" for the configuration value, in this case ```DUCK_MOTION_TYPE```, isn't a typical Inform name written out in words: it has to be a single word made up of capital letters, digits and underscores. See [Use options from I6] for why this is.
 
 So much for how we define these configuration flags or values, and how the user sets them: now for how to read back the settings which the user has made.
 
@@ -20522,9 +20544,9 @@ For example, `Rideable Vehicles` is preferable to `Better Vehicles`, because it 
 
 For more on good titling practice, see [Title and authorship].
 
-### Give your extension a semantic version.
+### Give your extension a version number.
 
-Be strict about this. You can give an extension a version number on its opening line:
+While it is still legal Inform to write an extension with no declared version number, this is very unwise for anything which might be used by anyone other than the author. A good extension should always begin by giving its current version number in the opening words, like so:
 
 	Version 9 of Locksmith by Emily Short begins here.
 
@@ -21658,9 +21680,9 @@ The full list of legal options is given below, though users will rarely if ever 
 
 ### Basics of indexing
 
-The documentation for an extension can have an index much like the alphabetical index to _Writing with Inform_.
+The documentation for an extension can have an index much like the alphabetical index to _Writing with Inform_. This will really only be needed if the extension is a large one with a great deal of documentation to cover, of course. But by using the special marking-up features below, an extension's author can make Inform automatically generate an index page as part of its documentation set.
 
-This is done with an extension to Markdown provides for traditional TeX-style indexing markers: indexing in the sense of drawing up an index for a book. For example:
+Standard Markdown notation does not provide indexing features, so the conventions below are an extension to regular Markdown. (They are actually borrowed from notations originally devised by Donald Knuth for indexing TeX's manual, _The TeXBook_.) For example:
 
 ``` code
 The ^{catalogue} of ^{@Roger S. Brody} lists three variants.^^{misprints}
@@ -21856,7 +21878,7 @@ would mean that ```^{!James VI}``` would lead the headword "James VI (of Scotlan
 
 If given, ```sitemap.txt``` is a list of commands, each on its own line. Blank lines are ignored, as are lines beginning with the comment character ```#```. The following commands are legal:
 
-```contents: STYLE to "PATH"```. The default is ```contents: standard to "index.html"```. There are only two possible styles: ```standard``` and ```duplex```, which is a special case forcing all the documentation into the customised look of the manuals inside the Inform app, where there are two volumes presented side by side on a special contents page. (An extension will never want to use ```duplex```.)
+```contents: STYLE to "PATH"```. This refers to the contents page for a set of documentation. The default is ```contents: standard to "index.html"```, that is, making an ordinary-looking contents page and storing as ```index.html```. The alternative style is ```duplex```, which makes sense only when there are two volumes of documentation, and then presents their contents pages side by side. (This is how the contents page for the main Inform app documentation is made, but no extension is ever likely to need it.)
 
 ```volume contents: VOLUME to "PATH"```. This is only needed to give individual volumes their own contents pages. ```VOLUME``` should be the quoted title or label of the volume in question, which must be one of those created by the ```contents.txt``` file. For example:
 
