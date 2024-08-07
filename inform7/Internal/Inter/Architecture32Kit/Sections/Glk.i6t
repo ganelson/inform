@@ -252,12 +252,6 @@ Functions for minimal Glk windows support.
 	}
 ];
 
-[ WindowFillInDetails win ref;
-	win.glk_ref = ref;
-	win.glk_rock = glk_window_get_rock(ref);
-	win.glk_window_type = glk_window_get_type(ref);
-];
-
 [ WindowFocus win;
 	if (win) {
 		if (win.glk_ref) {
@@ -315,9 +309,6 @@ Global glk_event_type_changed;
 	@push event_struct;
 	@glk 192 1 0;
 
-	! Clear the unknown window's ref so that we don't immediately match it
-	Unknown_Glk_Window.glk_ref = 0;
-
 	! Copy values to our variables
 	Glk_Event_Struct_type = event_struct-->0;
 	Glk_Event_Struct_win = event_struct-->1;
@@ -327,20 +318,16 @@ Global glk_event_type_changed;
 	! Turn a window reference ID into a window object
 	if (Glk_Event_Struct_win > 0) {
 		Glk_Event_Struct_win = FindGlkWindowFromRefNum(Glk_Event_Struct_win);
-		! If no window was found, then use the unknown window
-		if (Glk_Event_Struct_win == nothing) {
-			Glk_Event_Struct_win = Unknown_Glk_Window;
-			WindowFillInDetails(Unknown_Glk_Window, event_struct-->1);
-		}
-
-		! If the current event type is line input, copy the buffer length
-		if (Glk_Event_Struct_type == evtype_LineInput) {
-			Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
-			! And update the text input status here because it's too risky to leave for a glk event handling rule
-			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-		}
-		else if (Glk_Event_Struct_type == evtype_CharInput) {
-			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+		if (Glk_Event_Struct_win) {
+			! If the current event type is line input, copy the buffer length
+			if (Glk_Event_Struct_type == evtype_LineInput) {
+				Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
+				! And update the text input status here because it's too risky to leave for a glk event handling rule
+				Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+			}
+			else if (Glk_Event_Struct_type == evtype_CharInput) {
+				Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+			}
 		}
 	}
 
