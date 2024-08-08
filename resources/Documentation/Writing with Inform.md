@@ -21701,7 +21701,7 @@ The full list of legal options is given below, though users will rarely if ever 
 
 The documentation for an extension can have an index much like the alphabetical index to _Writing with Inform_. This will really only be needed if the extension is a large one with a great deal of documentation to cover, of course. But by using the special marking-up features below, an extension's author can make Inform automatically generate an index page as part of its documentation set.
 
-Standard Markdown notation does not provide indexing features, so the conventions below are an extension to regular Markdown. (They are actually borrowed from notations originally devised by Donald Knuth for indexing TeX's manual, _The TeXBook_.) For example:
+Standard Markdown notation does not provide indexing features, so the conventions below are an extension to regular Markdown. (They are actually borrowed from notations originally devised by ^{@Donald Knuth} for indexing TeX's manual, _The TeXBook_.) For example:
 
 ``` code
 The ^{catalogue} of ^{@Roger S. Brody} lists three variants.^^{misprints}
