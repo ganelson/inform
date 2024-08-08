@@ -20399,7 +20399,9 @@ Note that this is in a subdirectory of ```Figures```, with the same name as that
 
 ## Use options for extensions
 
-^^{use options: defining in extensions} ^^{use options: active / inactive+adj+} ^^{active / inactive (use option)+adj+} ^^{inactive / active (use option)+adj+} 
+^^{use options: defining in extensions}
+^^{use options: active / inactive+adj+} ^^{active / inactive (use option)+adj+} ^^{inactive / active (use option)+adj+}
+^^{numerical value of (U - use option) ... number+phr+}
 
 Extensions should ideally cater for a range of possible uses, and one way to do that is to provide use options. We have seen many of these already, such as:
 
