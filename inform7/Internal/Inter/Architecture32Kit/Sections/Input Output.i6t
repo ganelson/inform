@@ -177,16 +177,7 @@ There are elaborations to do with mouse clicks, but this isn't the place
 to document all of that.
 
 =
-Array FunctionKeyCodes --> $ffffffe4 $ffffffe5 $ffffffe6 $ffffffe7 $ffffffe8
-	$ffffffe9 $ffffffea $ffffffeb $ffffffec $ffffffed $ffffffee $ffffffef
-	$fffffff3 $fffffff4 $fffffff5 $fffffff6 $fffffff7 $fffffff8 $fffffff9
-	$fffffffa $fffffffb $fffffffc $fffffffd $fffffffe $ffffffff;
-Constant FunctionKeyCodesCount = 25;
-Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
-	$EF05 $EF04 $EF03 $EF02 $EF01 $21F2 $21F1 $21DF $21DE $0009 $001B $0008
-	$000A $2193 $2191 $2192 $2190 $FFFD;
-
-[ VM_KeyChar win nostat done res ix jx ch;
+[ VM_KeyChar win done res ix jx ch;
     jx = ch; ! squash compiler warnings
     if (win == 0) win = gg_mainwin;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
@@ -224,14 +215,6 @@ Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          evtype_Arrange:
-            if (nostat) {
-                glk_cancel_char_event(win);
-                res = $80000000;
-                done = true;
-                break;
-            }
-            DrawStatusLine();
           evtype_CharInput:
             if (gg_event-->1 == win) {
                 res = gg_event-->2;
@@ -261,13 +244,7 @@ Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KCPContinue;
-	if (res < 0) {
-		@binarysearch res WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
-		if (ix ~= -1) {
-			res = MappedFunctionKeyCodes-->ix;
-		}
-	}
-    return res;
+	return MapGlkKeyCodeToUnicode(res);
 ];
 
 [ VM_KeyDelay tenths  key done;
@@ -312,8 +289,6 @@ Constant UnicodeWhitespaceLen = 8;
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          evtype_Arrange:
-            DrawStatusLine();
           evtype_LineInput:
             if (gg_event-->1 == gg_mainwin) {
                 a_buffer-->0 = gg_event-->2;
