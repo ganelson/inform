@@ -120,12 +120,20 @@ Chapter - Glk events
 The glk event handling rules is a glk event based rulebook.
 The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 
-The glk event window is a glk window variable.
-The glk event window variable translates into Inter as "Glk_Event_Struct_win".
-The glk event value 1 is a number variable.
-The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
-The glk event value 2 is a number variable.
-The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
+To decide what glk window is the glk event window:
+	(- Glk_Event_Struct_win -).
+
+To decide what unicode character is the character event value:
+	(- (CheckEventType(evtype_CharInput), MapGlkKeyCodeToUnicode(Glk_Event_Struct_val1)) -).
+
+To decide what number is the mouse event x coordinate:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val1 + 1) -).
+
+To decide what number is the mouse event y coordinate:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val2 + 1) -).
+
+To decide what number is the hyperlink event value:
+	(- (CheckEventType(evtype_Hyperlink), Glk_Event_Struct_val1) -).
 
 To set the/-- glk event type to (t - glk event):
 	(- SetGlkEventType({t}); -).
@@ -142,6 +150,9 @@ First glk event handling rule for a glk event (called the event) (this is the up
 		now the glk event window is not requesting hyperlink input;
 	if the event is mouse event:
 		now the glk event window is not requesting mouse input;
+
+Glk event handling rule for a screen resize event (this is the redraw the status line rule):
+	redraw the status window;
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.

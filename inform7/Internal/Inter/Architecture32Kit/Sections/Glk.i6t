@@ -272,11 +272,14 @@ Functions for minimal Glk windows support.
 	if (win) {
 		if (win.glk_ref) {
 			if (win.glk_window_type == wintype_TextGrid) {
-				if (win > 0 && row > 0) {
+				if (col < 1) {
+					col = 1;
+				}
+				if (row > 0) {
 					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
 				}
 				else {
-					IssueRTP("BadGridWindowCursor", "WindowMoveCursor: Grid window cursor column and row both must be >= 1.", Architecture32KitRTPs);
+					IssueRTP("BadGridWindowCursor", "WindowMoveCursor: Grid window cursor row be >= 1.", Architecture32KitRTPs);
 				}
 			}
 			else {
@@ -310,23 +313,20 @@ Global glk_event_type_changed;
 
 	! Copy values to our variables
 	Glk_Event_Struct_type = event_struct-->0;
-	Glk_Event_Struct_win = event_struct-->1;
+	! Turn a window reference ID into a window object
+	Glk_Event_Struct_win = FindGlkWindowFromRefNum(event_struct-->1);
 	Glk_Event_Struct_val1 = event_struct-->2;
 	Glk_Event_Struct_val2 = event_struct-->3;
 
-	! Turn a window reference ID into a window object
-	if (Glk_Event_Struct_win > 0) {
-		Glk_Event_Struct_win = FindGlkWindowFromRefNum(Glk_Event_Struct_win);
-		if (Glk_Event_Struct_win) {
-			! If the current event type is line input, copy the buffer length
-			if (Glk_Event_Struct_type == evtype_LineInput) {
-				Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
-				! And update the text input status here because it's too risky to leave for a glk event handling rule
-				Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-			}
-			else if (Glk_Event_Struct_type == evtype_CharInput) {
-				Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-			}
+	if (Glk_Event_Struct_win) {
+		! If the current event type is line input, copy the buffer length
+		if (Glk_Event_Struct_type == evtype_LineInput) {
+			Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
+			! And update the text input status here because it's too risky to leave for a glk event handling rule
+			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+		}
+		else if (Glk_Event_Struct_type == evtype_CharInput) {
+			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
 		}
 	}
 
@@ -347,7 +347,7 @@ Global glk_event_type_changed;
 	! Copy back to the original event structure
 	event_struct-->0 = Glk_Event_Struct_type;
 	if (Glk_Event_Struct_win) {
-		event_struct-->1 = GProperty(OBJECT_TY, Glk_Event_Struct_win, glk_ref);
+		event_struct-->1 = Glk_Event_Struct_win.glk_ref;
 	}
 	else {
 		event_struct-->1 = 0;
@@ -355,6 +355,16 @@ Global glk_event_type_changed;
 	event_struct-->2 = Glk_Event_Struct_val1;
 	event_struct-->3 = Glk_Event_Struct_val2;
 	rfalse;
+];
+
+@ |CheckEventType| checks the current event type and raises a RTP if it doesn't
+match.
+
+=
+[ CheckEventType type;
+	if (type ~= Glk_Event_Struct_type) {
+		IssueRTP("WrongEventType", "Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	}
 ];
 
 @ |SetGlkEventType| helps us change the current event type, by ensuring that
@@ -384,6 +394,28 @@ input requests are pending, which means the new event could be ignored.
 	Glk_Event_Struct_type = type;
 	glk_event_type_changed = 1;
 	RulebookSucceeds();
+];
+
+@ These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.
+
+=
+Constant FunctionKeyCodesCount = 25;
+Array FunctionKeyCodes --> $ffffffe4 $ffffffe5 $ffffffe6 $ffffffe7 $ffffffe8
+	$ffffffe9 $ffffffea $ffffffeb $ffffffec $ffffffed $ffffffee $ffffffef
+	$fffffff3 $fffffff4 $fffffff5 $fffffff6 $fffffff7 $fffffff8 $fffffff9
+	$fffffffa $fffffffb $fffffffc $fffffffd $fffffffe $ffffffff;
+Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
+	$EF05 $EF04 $EF03 $EF02 $EF01 $21F2 $21F1 $21DF $21DE $0009 $001B $0008
+	$000A $2193 $2191 $2192 $2190 $FFFD;
+
+[ MapGlkKeyCodeToUnicode code ix;
+	if (code < 0) {
+		@binarysearch code WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
+		if (ix ~= -1) {
+			code = MappedFunctionKeyCodes-->ix;
+		}
+	}
+	return code;
 ];
 
 @h Tracking input requests.
@@ -517,6 +549,7 @@ input requests.
 	if (win && win.glk_ref) {
 		if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
 			glk_cancel_char_event(win.glk_ref);
+			rtrue;
 		}
 		else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
 			glk_cancel_line_event(win.glk_ref);
@@ -527,8 +560,10 @@ input requests.
 				glk_set_style(style_Normal);
 				glk_put_char(10); ! newline
 			}
+			rtrue;
 		}
 	}
+	rfalse;
 ];
 
 [ ResumeTextInput win;
