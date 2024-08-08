@@ -6,7 +6,7 @@ new base GLK_FEATURE_TY {
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
 	instance: timers feature                          = gestalt_Timer_                = 5
-	instance: glk graphics feature                    = gestalt_Graphics_             = 6
+	instance: graphics feature                        = gestalt_Graphics_             = 6
 	instance: basic sounds feature                    = gestalt_Sound_                = 8
 	instance: sound volume feature                    = gestalt_SoundVolume_          = 9
 	instance: sound notifications feature             = gestalt_SoundNotify_          = 10
