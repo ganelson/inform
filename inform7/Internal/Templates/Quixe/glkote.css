@@ -69,6 +69,18 @@
   white-space: pre-wrap; /* required for spaces to work right */
 }
 
+.BlankLineSpan {
+  /* Work around an annoying corner case: if the BlankLineSpan is
+     followed by an input line, we don't need or want the placeholder
+     space. Suppress it. */
+  display: none;
+}
+
+.BlankLineSpan:only-child {
+  /* No input line, so no suppress. */
+  display: inline;
+}
+
 .GridWindow {
   background: #D0D0C0;
   overflow: hidden;
@@ -82,8 +94,8 @@
 }
 
 .InvisibleCursor {
-  /* This is a relic. It used to provide the padding below the last line
-     of text, but now it has no effect. It will go away at some point. */
+  /* We need this wrapper to perform the measurement on the ZWJ in
+     the InvisibleCursor. */
   position: relative;
 }
 
@@ -103,11 +115,17 @@
   display: none;
 }
 
+.HasNoInputField .BufferLine:last-child .InvisiblePos {
+  /* We also have to suppress the measurement ZWJ in the InvisibleCursor. */
+  display: none;
+}
+
 .MorePrompt {
   /* This describes the "More" prompt that flashes in the bottom right corner
      of a window when it needs paging. */
   font-weight: bold;
   position: absolute;
+  pointer-events: none;
   background: #603010;
   color: #FFFFCC;
   opacity: 0.5;
@@ -147,6 +165,11 @@
 .GridWindow .Input {
   font-family: monaco, andale mono, lucidatypewriter, courier, courier new, monospace; /* necessary! */
   font-size: 14px;
+}
+
+.Input:focus::placeholder {
+  /* Hide "Tap here to type" placeholder when the input is focused */
+  color: transparent;
 }
 
 /* The following are used for image alignment (in buffer windows). */
