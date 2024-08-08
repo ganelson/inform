@@ -5,7 +5,7 @@ Index: Attitude rules
 Description: A set of rules determining the attitude a character will take when asked about certain topics.
 For: Z-Machine
 
-^^{Attitude rules}
+^^{rulebooks: outcomes} ^^{default outcome of a rulebook} ^^{|no outcome}
 
 Let's say that we're implementing a particularly irrational and volatile character. Some of the time she remains composed; some of the time she reacts with unexpected vehemence for reasons only partly related to what was said.
 

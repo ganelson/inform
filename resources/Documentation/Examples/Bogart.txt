@@ -6,6 +6,7 @@ Description: Clothing for the player that layers, so that items cannot be taken 
 For: Z-Machine
 
 ^^{clothing: layering and regions of the body}
+^^{relations: for clothing}
 
 We have two things to keep track of with our layering clothing: what currently is covering something else; and what *can* cover something else. This implementation goes for a fairly simple treatment, assuming that each item of clothing will completely conceal those beneath it, and that we are not implementing entire sets of shirts, jackets, etc. But it will do for a demonstration.
 

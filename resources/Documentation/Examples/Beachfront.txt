@@ -5,7 +5,7 @@ Index: SEARCHing for an item which moves into play
 Description: An item that the player can't interact with until they have found it by searching the scenery.
 For: Z-Machine
 
-^^{SEARCHing for an item which moves into play}
+^^{searching+action+} ^^{hiding things: until searched for}
 
 Suppose we have our player, a detective, searching for evidence; we don't want them to be able to use this evidence until they have performed the action that reveals it, but after that it should be visible in the room when they look.
 
