@@ -1642,7 +1642,7 @@ To fill/redraw the/-- status bar/line/window with (new status table - a table-na
 	if once only:
 		now the status window table is the old status window table;
 
-To move the status bar/line/window cursor to row (row - number) column (col - number):
+To move the status bar/line/window cursor to row (row - number) and/-- column (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
 To set the status bar/line/window to (rows - number) row/rows:
@@ -1737,6 +1737,8 @@ The rock number property translates into Inter as "glk_rock".
 A glk window has a number called the glk window handle.
 The glk window handle property translates into Inter as "glk_ref".
 
+Definition: a glk window is on-screen rather than off-screen if the glk window handle of it is not 0.
+
 A graphics window is a kind of glk window.
 The window type of a graphics window is graphics window type.
 A text buffer window is a kind of glk window.
@@ -1752,9 +1754,6 @@ The status window object is accessible to Inter as "Status_Window".
 
 The quote window is a text buffer window.
 The quote window object is accessible to Inter as "Quote_Window".
-
-The unknown window is a glk window.
-The unknown window object is accessible to Inter as "Unknown_Glk_Window".
 
 Section - Glk windows
 
@@ -1783,30 +1782,62 @@ Chapter - Glk events
 The glk event handling rules is a glk event based rulebook.
 The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 
-The glk event window is a glk window variable.
-The glk event window variable translates into Inter as "Glk_Event_Struct_win".
-The glk event value 1 is a number variable.
-The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
-The glk event value 2 is a number variable.
-The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
-
-Definition: a glk event is dependent on the player rather than independent of the player if
-	it is character event or
-	it is line event or
-	it is mouse event or
-	it is hyperlink event.
-
-To set the/-- glk event type to (t - glk event):
-	(- SetGlkEventType({t}); -).
-
-To say current line input of (w - glk window):
-	(- WindowBufferPrint({w}); -).
+To decide what glk window is the glk event window:
+	(- Glk_Event_Struct_win -).
 
 To decide what text is the current line input of (w - glk window):
 	(- WindowBufferCopyToText({w}, {-new:text}) -).
-
 To set the current line input of (w - glk window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
+
+To decide what unicode character is the character event value:
+	(- (CheckEventType(evtype_CharInput), MapGlkKeyCodeToUnicode(Glk_Event_Struct_val1)) -).
+
+To decide what number is the mouse event x coordinate:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val1 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
+To decide what number is the mouse event y coordinate:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val2 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
+
+To decide what number is the hyperlink event value:
+	(- (CheckEventType(evtype_Hyperlink), Glk_Event_Struct_val1) -).
+
+To process a null event:
+	(- ProcessGlkEvent(evtype_None); rtrue; -).
+
+To process a timer event:
+	(- ProcessGlkEvent(evtype_Timer); rtrue; -).
+
+To process a character event for/of/with (C - unicode character):
+	(- ProcessGlkEvent(evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})); rtrue; -).
+To process a character event for/of/with (C - unicode character) in (win - glk window):
+	(- ProcessGlkEvent(evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})); rtrue; -).
+
+To process a line event:
+	(- ProcessGlkEvent(evtype_LineInput); rtrue; -).
+To process a line event in (win - glk window):
+	(- ProcessGlkEvent(evtype_LineInput, {win}); rtrue; -).
+
+To process a mouse event for row (row - number) and/-- column (col - a number):
+	(- ProcessGlkEvent(evtype_MouseInput, 0, {col}, {row}); rtrue; -).
+To process a mouse event for row (row - number) and/-- column (col - a number) in (win - glk window):
+	(- ProcessGlkEvent(evtype_MouseInput, {win}, {col}, {row}); rtrue; -).
+
+To process a hyperlink event for/of/with (val - number):
+	(- ProcessGlkEvent(evtype_Hyperlink, 0, {val}); rtrue; -).
+To process a hyperlink event for/of/with (val - number) in (win - glk window):
+	(- ProcessGlkEvent(evtype_Hyperlink, {win}, {val}); rtrue; -).
+
+To process a screen resize event:
+	(- ProcessGlkEvent(evtype_Arrange); rtrue; -).
+
+To process a graphics window lost event:
+	(- ProcessGlkEvent(evtype_Redraw); rtrue; -).
+
+To process a sound notification event:
+	(- ProcessGlkEvent(evtype_SoundNotify); rtrue; -).
+
+To process a volume event:
+	(- ProcessGlkEvent(evtype_VolumeNotify); rtrue; -).
 
 First glk event handling rule for a glk event (called the event) (this is the update input requests rule):
 	[ It was too risky to set the text input status here, in case the author also sets a first glk event handling rule, so that property is reset within glk_select. ]
@@ -1814,6 +1845,9 @@ First glk event handling rule for a glk event (called the event) (this is the up
 		now the glk event window is not requesting hyperlink input;
 	if the event is mouse event:
 		now the glk event window is not requesting mouse input;
+
+Glk event handling rule for a screen resize event (this is the redraw the status line rule):
+	redraw the status window;
 
 Chapter - Suspending and resuming input
 

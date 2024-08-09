@@ -60,7 +60,7 @@ Array LatestRTPData -->
 [ ResumeRTP;
 	LatestRTPData-->6 = false;
 ];
-[ ShowRTP   name par1 par2 par3 desc;
+[ ShowRTP   name par1 par2 par3 desc suspended;
 	if (LatestRTPData-->0 == -1 or -2) return;
 	if (LatestRTPData-->6) return;
 
@@ -71,7 +71,7 @@ Array LatestRTPData -->
 	LatestRTPData-->0 = -2;
 
 #Ifdef TARGET_GLULX;
-	SuspendTextInput(Main_Window);
+	suspended = SuspendTextInput(Main_Window);
 #Endif;
 
 	print "^*** Run-time problem ", (string) name;
@@ -88,7 +88,9 @@ Array LatestRTPData -->
 	}
 
 #Ifdef TARGET_GLULX;
-	ResumeTextInput(Main_Window);
+	if (suspended) {
+		ResumeTextInput(Main_Window);
+	}
 #Endif;
 ];
 

@@ -205,12 +205,6 @@ Functions for minimal Glk windows support.
 	return txt;
 ];
 
-[ WindowBufferPrint win;
-	if (win && win.line_input_buffer_addr) {
-		glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
-	}
-];
-
 [ WindowBufferSet win txt
 		buf ch cp i len p uni;
 	if (~~win) {
@@ -244,18 +238,16 @@ Functions for minimal Glk windows support.
 	}
 	TEXT_TY_Untransmute(txt, p, cp);
 	win.line_input_buffer_curlen = i;
+	! If the current event is a line input event in this window, update event val 1
+	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win == win) {
+		Glk_Event_Struct_val1 = i;
+	}
 ];
 
 [ WindowClear win;
 	if (win && win.glk_ref) {
 		glk_window_clear(win.glk_ref);
 	}
-];
-
-[ WindowFillInDetails win ref;
-	win.glk_ref = ref;
-	win.glk_rock = glk_window_get_rock(ref);
-	win.glk_window_type = glk_window_get_type(ref);
 ];
 
 [ WindowFocus win;
@@ -284,7 +276,15 @@ Functions for minimal Glk windows support.
 	if (win) {
 		if (win.glk_ref) {
 			if (win.glk_window_type == wintype_TextGrid) {
-				glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+				if (col < 1) {
+					col = 1;
+				}
+				if (row > 0) {
+					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+				}
+				else {
+					IssueRTP("BadGridWindowCursor", "WindowMoveCursor: Grid window cursor row must be >= 1.", Architecture32KitRTPs);
+				}
 			}
 			else {
 				IssueRTP("WrongWindowType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
@@ -315,24 +315,14 @@ Global glk_event_type_changed;
 	@push event_struct;
 	@glk 192 1 0;
 
-	! Clear the unknown window's ref so that we don't immediately match it
-	Unknown_Glk_Window.glk_ref = 0;
-
 	! Copy values to our variables
 	Glk_Event_Struct_type = event_struct-->0;
-	Glk_Event_Struct_win = event_struct-->1;
+	! Turn a window reference ID into a window object
+	Glk_Event_Struct_win = FindGlkWindowFromRefNum(event_struct-->1);
 	Glk_Event_Struct_val1 = event_struct-->2;
 	Glk_Event_Struct_val2 = event_struct-->3;
 
-	! Turn a window reference ID into a window object
-	if (Glk_Event_Struct_win > 0) {
-		Glk_Event_Struct_win = FindGlkWindowFromRefNum(Glk_Event_Struct_win);
-		! If no window was found, then use the unknown window
-		if (Glk_Event_Struct_win == nothing) {
-			Glk_Event_Struct_win = Unknown_Glk_Window;
-			WindowFillInDetails(Unknown_Glk_Window, event_struct-->1);
-		}
-
+	if (Glk_Event_Struct_win) {
 		! If the current event type is line input, copy the buffer length
 		if (Glk_Event_Struct_type == evtype_LineInput) {
 			Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
@@ -353,15 +343,10 @@ Global glk_event_type_changed;
 	} until (glk_event_type_changed == 0);
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
-	! If the current event type is line input, update the current buffer length
-	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win) {
-		Glk_Event_Struct_val1 = Glk_Event_Struct_win.line_input_buffer_curlen;
-	}
-
 	! Copy back to the original event structure
 	event_struct-->0 = Glk_Event_Struct_type;
 	if (Glk_Event_Struct_win) {
-		event_struct-->1 = GProperty(OBJECT_TY, Glk_Event_Struct_win, glk_ref);
+		event_struct-->1 = Glk_Event_Struct_win.glk_ref;
 	}
 	else {
 		event_struct-->1 = 0;
@@ -371,33 +356,95 @@ Global glk_event_type_changed;
 	rfalse;
 ];
 
-@ |SetGlkEventType| helps us change the current event type, by ensuring that
-if there are any pending keyboard input requests they will be cancelled if the
-new event is a keyboard event. It does not however do anything if no keyboard
-input requests are pending, which means the new event could be ignored.
+@ |CheckEventType| checks the current event type and raises a RTP if it doesn't
+match.
 
 =
-[ SetGlkEventType type;
-	if (type == Glk_Event_Struct_type) {
+[ CheckEventType type;
+	if (type ~= Glk_Event_Struct_type) {
+		IssueRTP("WrongEventType", "Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	}
+];
+
+@ |ProcessGlkEvent| replaces the current glk event with a new one, and tells
+glk_select to re-run the glk event handling rules. It also ensures that if
+there are any pending keyboard input requests they will be cancelled if the
+new event is a keyboard event.
+
+=
+[ ProcessGlkEvent type win val1 val2;
+	RulebookSucceeds();
+	Glk_Event_Struct_type = type;
+	if (win) {
+		Glk_Event_Struct_win = win;
+	}
+	else if (Glk_Event_Struct_win == GLK_NULL && (type == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink)) {
+		IssueRTP("ProcessWindowEventWithoutWindow", "Can't process a window-based event when there is no event window.", Architecture32KitRTPs);
 		return;
 	}
+	! Fix the coordinates of grid window mouse events
+	if (type == evtype_MouseInput && Glk_Event_Struct_win.glk_window_type == wintype_TextGrid) {
+		val1 = val1 - 1;
+		val2 = val2 - 1;
+	}
+	! If the new event is text input, cancel a pending request
 	if (type == evtype_CharInput or evtype_LineInput) {
-		if (Glk_Event_Struct_win) {
-			if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
-				glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
-			}
-			else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
-				glk_cancel_line_event(Glk_Event_Struct_win.glk_ref);
-			}
-			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+		if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+			glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
 		}
-		else {
-			IssueRTP("SetTextEventWithoutWindow", "You can't set the glk event type to a text input event when there is no glk event window.", Architecture32KitRTPs);
+		else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+			glk_cancel_line_event(Glk_Event_Struct_win.glk_ref);
+		}
+		Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+	}
+	! If the current event type is line input, update the current buffer length
+	if (type == evtype_LineInput) {
+		Glk_Event_Struct_val1 = Glk_Event_Struct_win.line_input_buffer_curlen;
+	}
+	else {
+		Glk_Event_Struct_val1 = val1;
+	}
+	Glk_Event_Struct_val2 = val2;
+	glk_event_type_changed = 1;
+];
+
+@ These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.
+
+=
+Constant FunctionKeyCodesCount = 25;
+Array FunctionKeyCodes --> $ffffffe4 $ffffffe5 $ffffffe6 $ffffffe7 $ffffffe8
+	$ffffffe9 $ffffffea $ffffffeb $ffffffec $ffffffed $ffffffee $ffffffef
+	$fffffff3 $fffffff4 $fffffff5 $fffffff6 $fffffff7 $fffffff8 $fffffff9
+	$fffffffa $fffffffb $fffffffc $fffffffd $fffffffe $ffffffff;
+Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
+	$EF05 $EF04 $EF03 $EF02 $EF01 $21F2 $21F1 $21DF $21DE $0009 $001B $0008
+	$000A $2193 $2191 $2192 $2190 $FFFD;
+
+[ MapGlkKeyCodeToUnicode code ix;
+	if (code < 0) {
+		@binarysearch code WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
+		if (ix ~= -1) {
+			code = MappedFunctionKeyCodes-->ix;
 		}
 	}
-	Glk_Event_Struct_type = type;
-	glk_event_type_changed = 1;
-	RulebookSucceeds();
+	return code;
+];
+
+! In order to binary search, we need to sort them according to their mapped values, instead of their original Glk keycodes.
+Array MappedFunctionKeyCodes_unmapping --> $0008 $0009 $000A $001B $2190 $2191
+	$2192 $2193 $21DE $21DF $21F1 $21F2 $EF01 $EF02 $EF03 $EF04 $EF05 $EF06
+	$EF07 $EF08 $EF09 $EF0A $EF0B $EF0C $FFFD;
+Array FunctionKeyCodes_unmapping --> $fffffff9 $fffffff7 $fffffffa $fffffff8
+	$fffffffe $fffffffc $fffffffd $fffffffb $fffffff6 $fffffff5 $fffffff4
+	$fffffff3 $ffffffef $ffffffee $ffffffed $ffffffec $ffffffeb $ffffffea
+	$ffffffe9 $ffffffe8 $ffffffe7 $ffffffe6 $ffffffe5 $ffffffe4 $ffffffff;
+
+[ MapUnicodeToGlkKeyCode code ix;
+	@binarysearch code WORDSIZE MappedFunctionKeyCodes_unmapping WORDSIZE FunctionKeyCodesCount 0 4 ix;
+	if (ix ~= -1) {
+		code = FunctionKeyCodes_unmapping-->ix;
+	}
+	return code;
 ];
 
 @h Tracking input requests.
@@ -531,6 +578,7 @@ input requests.
 	if (win && win.glk_ref) {
 		if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
 			glk_cancel_char_event(win.glk_ref);
+			rtrue;
 		}
 		else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
 			glk_cancel_line_event(win.glk_ref);
@@ -541,8 +589,10 @@ input requests.
 				glk_set_style(style_Normal);
 				glk_put_char(10); ! newline
 			}
+			rtrue;
 		}
 	}
+	rfalse;
 ];
 
 [ ResumeTextInput win;
