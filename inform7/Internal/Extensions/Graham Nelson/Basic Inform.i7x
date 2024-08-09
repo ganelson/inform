@@ -1785,11 +1785,6 @@ The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 To decide what glk window is the glk event window:
 	(- Glk_Event_Struct_win -).
 
-To decide what text is the current line input of (w - glk window):
-	(- WindowBufferCopyToText({w}, {-new:text}) -).
-To set the current line input of (w - glk window) to (t - text):
-	(- WindowBufferSet({w}, {-by-reference:t}); -).
-
 To decide what unicode character is the character event value:
 	(- (CheckEventType(evtype_CharInput), MapGlkKeyCodeToUnicode(Glk_Event_Struct_val1)) -).
 
@@ -1797,6 +1792,10 @@ To decide what number is the mouse event x coordinate:
 	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val1 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
 To decide what number is the mouse event y coordinate:
 	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val2 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
+To decide what number is the mouse event row:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val2 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
+To decide what number is the mouse event column:
+	(- (CheckEventType(evtype_MouseInput), Glk_Event_Struct_val1 + (Glk_Event_Struct_win.glk_window_type == wintype_TextGrid)) -).
 
 To decide what number is the hyperlink event value:
 	(- (CheckEventType(evtype_Hyperlink), Glk_Event_Struct_val1) -).
@@ -1817,10 +1816,14 @@ To process a line event:
 To process a line event in (win - glk window):
 	(- ProcessGlkEvent(evtype_LineInput, {win}); rtrue; -).
 
-To process a mouse event for row (row - number) and/-- column (col - a number):
-	(- ProcessGlkEvent(evtype_MouseInput, 0, {col}, {row}); rtrue; -).
-To process a mouse event for row (row - number) and/-- column (col - a number) in (win - glk window):
-	(- ProcessGlkEvent(evtype_MouseInput, {win}, {col}, {row}); rtrue; -).
+To process a mouse event for x (x - number) and/-- y (y - a number) coordinates:
+	(- ProcessGlkEvent(evtype_MouseInput, 0, {x}, {y}); rtrue; -).
+To process a mouse event for x (x - number) and/-- y (y - a number) coordinates in (win - glk window):
+	(- ProcessGlkEvent(evtype_MouseInput, {win}, {x}, {y}); rtrue; -).
+To process a mouse event for row (y - number) and/-- column (x - a number):
+	(- ProcessGlkEvent(evtype_MouseInput, 0, {x}, {y}); rtrue; -).
+To process a mouse event for row (y - number) and/-- column (x - a number) in (win - glk window):
+	(- ProcessGlkEvent(evtype_MouseInput, {win}, {x}, {y}); rtrue; -).
 
 To process a hyperlink event for/of/with (val - number):
 	(- ProcessGlkEvent(evtype_Hyperlink, 0, {val}); rtrue; -).
@@ -1863,6 +1866,12 @@ To suspend text input in (win - a glk window), without input echoing:
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).
+
+To decide what text is the current line input of (w - glk window):
+	(- WindowBufferCopyToText({w}, {-new:text}) -).
+
+To set the current line input of (w - glk window) to (t - text):
+	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
 Chapter - Glk object recovery
 

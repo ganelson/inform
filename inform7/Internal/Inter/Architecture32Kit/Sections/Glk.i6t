@@ -189,61 +189,6 @@ Functions for minimal Glk windows support.
 	return nothing;
 ];
 
-[ WindowBufferCopyToText win txt buf_type;
-	if (win && win.line_input_buffer_addr) {
-		if (win.line_input_buffer_uni) {
-			buf_type = 4;
-			! I don't remember why I was setting 0 here
-			!win.line_input_buffer_addr-->(win.line_input_buffer_curlen) = 0;
-		}
-		else {
-			buf_type = 1;
-			!win.line_input_buffer_addr->(win.line_input_buffer_curlen) = 0;
-		}
-		BlkValueMassCopyFromArray(txt, win.line_input_buffer_addr, buf_type, win.line_input_buffer_curlen);
-	}
-	return txt;
-];
-
-[ WindowBufferSet win txt
-		buf ch cp i len p uni;
-	if (~~win) {
-		IssueRTP("NoWindow", "WindowCopyTextToBuffer: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
-		return;
-	}
-	if (win.line_input_buffer_addr == 0) {
-		IssueRTP("WindowHasNoBuffer", "Cannot set current line input of a window which has never requested line input.", Architecture32KitRTPs);
-		return;
-	}
-	buf = win.line_input_buffer_addr;
-	uni = win.line_input_buffer_uni;
-	cp = txt-->0;
-	p = TEXT_TY_Temporarily_Transmute(txt);
-	len = BlkValueLBCapacity(txt);
-	if (len > win.line_input_buffer_maxlen) {
-		len = win.line_input_buffer_maxlen;
-	}
-	for (i = 0: i < len: i++) {
-		ch = BlkValueRead(txt, i);
-		if (ch == 0) break;
-		if (uni) {
-			buf-->i = ch;
-		}
-		else if (ch <= $FF) {
-			buf->i = ch;
-		}
-		else {
-			buf->i = '?';
-		}
-	}
-	TEXT_TY_Untransmute(txt, p, cp);
-	win.line_input_buffer_curlen = i;
-	! If the current event is a line input event in this window, update event val 1
-	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win == win) {
-		Glk_Event_Struct_val1 = i;
-	}
-];
-
 [ WindowClear win;
 	if (win && win.glk_ref) {
 		glk_window_clear(win.glk_ref);
@@ -256,11 +201,11 @@ Functions for minimal Glk windows support.
 			glk_set_window(win.glk_ref);
 		}
 		else {
-			IssueRTP("ClosedWindow", "WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+			IssueRTP("WindowIsClosed", "WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
 		}
 	}
 	else {
-		IssueRTP("NoWindow", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+		IssueRTP("WindowIsNothing", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
 	}
 ];
 
@@ -283,19 +228,19 @@ Functions for minimal Glk windows support.
 					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
 				}
 				else {
-					IssueRTP("BadGridWindowCursor", "WindowMoveCursor: Grid window cursor row must be >= 1.", Architecture32KitRTPs);
+					IssueRTP("WindowBadGridCursor", "WindowMoveCursor: Grid window cursor row must be >= 1.", Architecture32KitRTPs);
 				}
 			}
 			else {
-				IssueRTP("WrongWindowType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
+				IssueRTP("WindowIsWrongType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
 			}
 		}
 		else {
-			IssueRTP("ClosedWindow", "WindowMoveCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+			IssueRTP("WindowIsClosed", "WindowMoveCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
 		}
 	}
 	else {
-		IssueRTP("NoWindow", "WindowMoveCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+		IssueRTP("WindowIsNothing", "WindowMoveCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
 	}
 ];
 
@@ -607,6 +552,69 @@ input requests.
 			INPUT_STATUS_SUSPENDED_LINE_UNI:
 				glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, win.line_input_buffer_curlen);
 		}
+	}
+];
+
+@ These two phrases allow you to get and set the current line input of a window,
+converting between Inform 7's texts, and the I6 buffers of the Glk API.
+
+=
+[ WindowBufferCopyToText win txt buf_type;
+	if (win && win.line_input_buffer_addr) {
+		if (win.line_input_buffer_uni) {
+			buf_type = 4;
+			! I don't remember why I was setting 0 here
+			!win.line_input_buffer_addr-->(win.line_input_buffer_curlen) = 0;
+		}
+		else {
+			buf_type = 1;
+			!win.line_input_buffer_addr->(win.line_input_buffer_curlen) = 0;
+		}
+		BlkValueMassCopyFromArray(txt, win.line_input_buffer_addr, buf_type, win.line_input_buffer_curlen);
+	}
+	return txt;
+];
+
+[ WindowBufferSet win txt
+		buf ch cp i len p uni;
+	if (~~win) {
+		IssueRTP("WindowIsNothing", "WindowCopyTextToBuffer: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+		return;
+	}
+	if (win.line_input_buffer_addr == 0) {
+		IssueRTP("WindowHasNoBuffer", "Cannot set current line input of a window which has never requested line input.", Architecture32KitRTPs);
+		return;
+	}
+	if (win.text_input_status == INPUT_STATUS_SUSPENDED_LINE or INPUT_STATUS_SUSPENDED_LINE_UNI) {
+		IssueRTP("WindowHasPendingLineInput", "Cannot set current line input of a window with pending line input.", Architecture32KitRTPs);
+		return;
+	}
+	buf = win.line_input_buffer_addr;
+	uni = win.line_input_buffer_uni;
+	cp = txt-->0;
+	p = TEXT_TY_Temporarily_Transmute(txt);
+	len = BlkValueLBCapacity(txt);
+	if (len > win.line_input_buffer_maxlen) {
+		len = win.line_input_buffer_maxlen;
+	}
+	for (i = 0: i < len: i++) {
+		ch = BlkValueRead(txt, i);
+		if (ch == 0) break;
+		if (uni) {
+			buf-->i = ch;
+		}
+		else if (ch <= $FF) {
+			buf->i = ch;
+		}
+		else {
+			buf->i = '?';
+		}
+	}
+	TEXT_TY_Untransmute(txt, p, cp);
+	win.line_input_buffer_curlen = i;
+	! If the current event is a line input event in this window, update event val 1
+	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win == win) {
+		Glk_Event_Struct_val1 = i;
 	}
 ];
 
