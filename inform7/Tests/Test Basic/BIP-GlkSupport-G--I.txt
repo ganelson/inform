@@ -1,18 +1,24 @@
-"glk version number" = number: 1797
-timers: false.
-glk graphics: false.
-basic sounds: false.
-sound volume: false.
-sound notifications: false.
-hyperlinks: false.
-MOD sounds: false.
-PNG transparency: false.
-glk unicode: true.
-unicode normalization: true.
-line input echo suppression: false.
-line input terminators: false.
-system clock: true.
-extended sounds: false.
-resource streams: true.
-graphics window character input: false.
-text formatting: false.
+"glk version number" = version number: v0.7.5
+timers feature: false.
+glk graphics feature: false.
+basic sounds feature: false.
+sound volume feature: false.
+sound notifications feature: false.
+hyperlinks feature: false.
+MOD sounds feature: false.
+PNG transparency feature: false.
+glk unicode feature: true.
+unicode normalization feature: true.
+line input echo suppression feature: false.
+line input terminators feature: false.
+system clock feature: true.
+extended sounds feature: false.
+resource streams feature: true.
+graphics window character input feature: false.
+text formatting feature: false.
+buffer window graphics feature: false.
+graphics window graphics feature: false.
+buffer window hyperlinks feature: false.
+grid window hyperlinks feature: false.
+graphics window mouse input feature: false.
+grid window mouse input feature: false.

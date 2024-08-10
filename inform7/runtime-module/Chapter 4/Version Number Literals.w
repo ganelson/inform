@@ -10,7 +10,7 @@ Literal version numbers arise from source text such as:
 This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.
 
-Stored actions are stored in small blocks, always of size 3. There are no
+Version numbers are stored in small blocks, always of size 3. There are no
 long blocks.
 = (text)
 	                    small block:

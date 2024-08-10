@@ -1,12 +1,12 @@
 adjective: 148 items
 article: 2 items
-noun: 2583 items
+noun: 2584 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3542
+total in all categories: 3543
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -198,6 +198,7 @@ noun: common: 'glulx feature'
 noun: common: 'glk event'
 noun: common: 'glk window type'
 noun: common: 'text input status'
+noun: common: 'full glk event'
 noun: common: 'version number'
 noun: common: 'described action'
 noun: common: 'action'

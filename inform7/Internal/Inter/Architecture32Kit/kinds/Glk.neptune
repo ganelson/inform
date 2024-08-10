@@ -48,7 +48,7 @@ new base GLULX_FEATURE_TY {
 	instance: double precision real numbers feature = GLULX_GESTALT_Double       = 13
 }
 
-new base GLK_EVENT_TY {
+new base GLK_EVENT_TYPE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
 	singular: glk event
 	plural: glk events

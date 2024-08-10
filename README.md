@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6X75 'Krypton' (5 August 2024)
+[Version](notes/versioning.md): 10.2.0-beta+6X76 'Krypton' (10 August 2024)
 
 ## About Inform
 
@@ -146,7 +146,7 @@ These are Javascript interpreters used to release such websites in a form which 
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 * inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2024.2)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.1)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
+* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.4)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 ### Documentation shipped with Inform
 

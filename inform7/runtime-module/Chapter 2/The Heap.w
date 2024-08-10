@@ -137,3 +137,16 @@ void TheHeap::emit_block_value_header(kind *K, int individual, int size) {
 
 	EmitArrays::iname_entry(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 }
+
+@ And this is a simpler version used for short block constants where no
+long block exists at all.
+
+@d BLK_BVBITMAP_CONSTANT 0x40
+@d BLK_BVBITMAP_SBONLY   0x80
+
+=
+void TheHeap::emit_short_block_only_value_header(kind *K) {
+	inter_ti flags = BLK_BVBITMAP_CONSTANT + BLK_BVBITMAP_SBONLY;
+	EmitArrays::numeric_entry(flags);
+	EmitArrays::iname_entry(RTKindIDs::weak_iname(K));
+}

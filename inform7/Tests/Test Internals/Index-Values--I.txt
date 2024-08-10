@@ -35,7 +35,6 @@ up key - <i>unicode character</i><br>
 status window table - <i>table name</i><br>
 </p>
 <p><b>Glk events</b><br>
-glk event type - <i>glk event</i><br>
 glk event window - <i>glk window</i><br>
 glk event value 1 - <i>number</i><br>
 glk event value 2 - <i>number</i><br>

@@ -81,7 +81,6 @@ int LicenceDeclaration::licence_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 void LicenceDeclaration::set(int extension, int detail, text_stream *val, int wn) {
-	LOG("Ext = %d, detail = %d, val = <%S>\n", extension, detail, val);
 	switch (detail) {
 		case LICENCE_LICENCEDETAIL: {
 			open_source_licence *osl = NULL;

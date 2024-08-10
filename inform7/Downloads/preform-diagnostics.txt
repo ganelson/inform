@@ -8602,7 +8602,7 @@
         property {...} 
           (hits 36/109) (matched: 'property initial appearance') constraint DS = {24} extremes [2, infinity)
 
-<property-name> internal hits 77/482 nti 21 constraint (none) extremes [1, infinity)
+<property-name> internal hits 77/484 nti 21 constraint (none) extremes [1, infinity)
 
 <either-or-property-name> internal hits 0/52 nti 22 constraint (none) extremes [1, infinity)
 
@@ -8883,7 +8883,7 @@
         library card 
           constraint CS = {30} extremes [2, 2]
 
-<notable-spatial-kinds> hits 12/256 nti 7 constraint CS = {7} extremes [1, 2]
+<notable-spatial-kinds> hits 12/258 nti 7 constraint CS = {7} extremes [1, 2]
     English:
         room 
           (hits 2/10) (matched: 'room') constraint CS = {7} extremes [1, 1]
@@ -8961,12 +8961,12 @@
         initially carried 
           constraint CS = {14} extremes [2, 2]
 
-<notable-device-kinds> hits 1/168 nti 15 constraint CS = {15} extremes [1, 1]
+<notable-device-kinds> hits 1/170 nti 15 constraint CS = {15} extremes [1, 1]
     English:
         device 
           (hits 1/1) (matched: 'device') constraint CS = {15} extremes [1, 1]
 
-<notable-backdrops-kinds> hits 1/170 nti 16 constraint CS = {16} extremes [1, 1]
+<notable-backdrops-kinds> hits 1/172 nti 16 constraint CS = {16} extremes [1, 1]
     English:
         backdrop 
           (hits 1/1) (matched: 'backdrop') constraint CS = {16} extremes [1, 1]
@@ -8981,7 +8981,7 @@
         everywhere 
           constraint CS = {18} extremes [1, 1]
 
-<notable-regions-kinds> hits 2/236 nti 19 constraint CS = {19} extremes [1, 1]
+<notable-regions-kinds> hits 2/238 nti 19 constraint CS = {19} extremes [1, 1]
     English:
         region 
           (hits 2/2) (matched: 'region') constraint CS = {19} extremes [1, 1]
@@ -8991,7 +8991,7 @@
         map region 
           (hits 1/1) (matched: 'map region') constraint CS = {20} extremes [2, 2]
 
-<notable-map-kinds> hits 19/2532 nti 21 constraint CS = {21} extremes [1, 1]
+<notable-map-kinds> hits 19/2534 nti 21 constraint CS = {21} extremes [1, 1]
     English:
         direction 
           (hits 13/21) (matched: 'direction') constraint CS = {21} extremes [1, 1]

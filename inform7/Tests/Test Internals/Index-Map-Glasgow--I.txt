@@ -5628,39 +5628,36 @@
 </p>
 <hr>
 <b>Nowhere (that is, initially not in any room):</b><br>
-<a href="#" onclick="showExtra('extra16', 'plus16'); return false;"><img border=0 id="plus16" src=inform:/doc_images/extra.png></a>&nbsp;main window - <i>glk window</i><div id="extra16" style="display: none;">
+<a href="#" onclick="showExtra('extra16', 'plus16'); return false;"><img border=0 id="plus16" src=inform:/doc_images/extra.png></a>&nbsp;main window - <i>text buffer window</i><div id="extra16" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; <b>main window</b></p>
+                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>main window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
 
             </td>
         </tr>
     </table>
     </p>
 </div>
-<a href="#" onclick="showExtra('extra17', 'plus17'); return false;"><img border=0 id="plus17" src=inform:/doc_images/extra.png></a>&nbsp;status window - <i>glk window</i><div id="extra17" style="display: none;">
+<a href="#" onclick="showExtra('extra17', 'plus17'); return false;"><img border=0 id="plus17" src=inform:/doc_images/extra.png></a>&nbsp;status window - <i>text grid window</i><div id="extra17" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; <b>status window</b></p>
+                <p class="tightin1">abstract object &gt; glk window &gt; text grid window &gt; <b>status window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                <p class="hangingin1">type: <span class="indexdullblue">text grid</span></p>
 
             </td>
         </tr>
     </table>
     </p>
 </div>
-<a href="#" onclick="showExtra('extra18', 'plus18'); return false;"><img border=0 id="plus18" src=inform:/doc_images/extra.png></a>&nbsp;quote window - <i>glk window</i><div id="extra18" style="display: none;">
+<a href="#" onclick="showExtra('extra18', 'plus18'); return false;"><img border=0 id="plus18" src=inform:/doc_images/extra.png></a>&nbsp;quote window - <i>text buffer window</i><div id="extra18" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; <b>quote window</b></p>
+                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>quote window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"quote window"</span>&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                <p class="hangingin1">type: <span class="indexdullblue">text buffer</span></p>
 
             </td>
         </tr>

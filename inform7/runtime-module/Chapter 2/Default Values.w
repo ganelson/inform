@@ -254,7 +254,11 @@ all zeros", and otherwise we look for a comma-separated list to fill it.
 		inter_name *small_block = Enclosures::new_small_block_for_constant();
 		packaging_state save = EmitArrays::begin_unchecked(small_block);
 		int extent = Kinds::Behaviour::get_short_block_size(K);
-		TheHeap::emit_block_value_header(K, FALSE, extent);
+		int long_extent = Kinds::Behaviour::get_long_block_size(K);
+		if (long_extent == 0)
+			TheHeap::emit_short_block_only_value_header(K);
+		else
+			TheHeap::emit_block_value_header(K, FALSE, extent);
 		if (Str::len(textual_description) == 0) {
 			for (int i=0; i<extent; i++)
 				EmitArrays::numeric_entry(0);

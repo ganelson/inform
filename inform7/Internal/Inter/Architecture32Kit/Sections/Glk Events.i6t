@@ -1,0 +1,96 @@
+Glk Events Template.
+
+Support for the glk event kind.
+
+@ See "Writing with Inform" for details.
+
+=
+Constant GLK_EVENT_TYPE_SF = 2;
+Constant GLK_EVENT_VALUE1_SF = 3;
+Constant GLK_EVENT_VALUE2_SF = 4;
+Constant GLK_EVENT_WINDOW_SF = 5;
+Constant GLK_EVENT_TEXT_SF = 6;
+
+[ GLK_EVENT_TY_Say ev;
+	SayKindValuePair(GLK_EVENT_TYPE_TY, ev-->GLK_EVENT_TYPE_SF);
+	if (ev-->GLK_EVENT_TYPE_SF ~= evtype_None_) {
+		print " (";
+		print ev-->GLK_EVENT_VALUE1_SF, ", ";
+		print ev-->GLK_EVENT_VALUE2_SF, ")";
+		if (ev-->GLK_EVENT_WINDOW_SF) {
+			print " on ", (the) ev-->GLK_EVENT_WINDOW_SF;
+		}
+		if (ev-->GLK_EVENT_TEXT_SF) {
+			print " with text ~"; TEXT_TY_Say(ev-->GLK_EVENT_TEXT_SF); print "~";
+		}
+	}
+];
+
+[ GLK_EVENT_TY_Compare ev1 ev2 i d;
+	for (i=GLK_EVENT_TYPE_SF: i<=GLK_EVENT_WINDOW_SF: i++) {
+		d = PVField(ev1, i) - PVField(ev2, i);
+		if (d ~= 0) return d;
+	}
+	return TEXT_TY_Compare(ev1-->GLK_EVENT_TEXT_SF, ev2-->GLK_EVENT_TEXT_SF);
+];
+
+[ GLK_EVENT_TY_Create kind_id sb_address
+	short_block;
+
+    short_block = CreatePVShortBlock(sb_address, kind_id);
+    short_block-->GLK_EVENT_TYPE_SF = evtype_None_;
+    short_block-->GLK_EVENT_VALUE1_SF = 0;
+    short_block-->GLK_EVENT_VALUE2_SF = 0;
+    short_block-->GLK_EVENT_WINDOW_SF = 0;
+    short_block-->GLK_EVENT_TEXT_SF = 0;
+
+	return short_block;
+];
+
+[ GLK_EVENT_TY_Destroy ev txt;
+	txt = ev-->GLK_EVENT_TEXT_SF;
+	if (txt) DestroyPV(txt);
+];
+
+[ GLK_EVENT_TY_New ev t v1 v2 w txt ev;
+	ev-->GLK_EVENT_TYPE_SF = t;
+	ev-->GLK_EVENT_VALUE1_SF = v1;
+	ev-->GLK_EVENT_VALUE2_SF = v2;
+	ev-->GLK_EVENT_WINDOW_SF = w;
+	ev-->GLK_EVENT_TEXT_SF = txt;
+	return ev;
+];
+
+[ GLK_EVENT_TY_Type ev;
+	return ev-->GLK_EVENT_TYPE_SF;
+];
+
+[ GLK_EVENT_TY_Value ev v;
+	switch (v) {
+		1: return ev-->GLK_EVENT_VALUE1_SF;
+		2: return ev-->GLK_EVENT_VALUE2_SF;
+	}
+	return 0;
+];
+
+[ GLK_EVENT_TY_Window ev;
+	return ev-->GLK_EVENT_WINDOW_SF;
+];
+
+[ GLK_EVENT_TY_Text ev;
+	return ev-->GLK_EVENT_TEXT_SF;
+];
+
+[ GLK_EVENT_TY_Copy evto evfrom kind recycling
+	txtfrom txtto;
+	evto-->GLK_EVENT_TYPE_SF = evfrom-->GLK_EVENT_TYPE_SF;
+	evto-->GLK_EVENT_VALUE1_SF = evfrom-->GLK_EVENT_VALUE1_SF;
+	evto-->GLK_EVENT_VALUE2_SF = evfrom-->GLK_EVENT_VALUE2_SF;
+	evto-->GLK_EVENT_WINDOW_SF = evfrom-->GLK_EVENT_WINDOW_SF;
+	evto-->GLK_EVENT_TEXT_SF = evfrom-->GLK_EVENT_TEXT_SF;
+
+	if (evfrom-->GLK_EVENT_TEXT_SF) {
+		evto-->GLK_EVENT_TEXT_SF = CreatePV(TEXT_TY);
+		CopyPV(evto-->GLK_EVENT_TEXT_SF, evfrom-->GLK_EVENT_TEXT_SF);
+	}
+];

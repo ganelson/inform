@@ -1,4 +1,4 @@
-Glk version: 705
+Glk version: v0.7.5
 Graphics window mouse input: false
 Grid window mouse input: false
 Timers: false
@@ -22,8 +22,8 @@ Extended sounds: false
 Resource streams: true
 Graphics window character input: false
 Text formatting: false
-Glulx version: 30103
-Interpreter version: 601
+Glulx version: v3.1.3
+Interpreter version: v0.6.1
 Memory resizing: true
 Undo: true
 Glulx unicode: true
