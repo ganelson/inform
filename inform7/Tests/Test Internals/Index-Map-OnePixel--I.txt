@@ -223,7 +223,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Astrological Observatory">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_23 style="text-decoration: none"><span class="indexblack">AO</span></a></span>
+                                                <span class="indexblack"><a href=#wo_22 style="text-decoration: none"><span class="indexblack">AO</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -512,7 +512,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Isle">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_20 style="text-decoration: none"><span class="indexblack">Is</span></a></span>
+                                                <span class="indexblack"><a href=#wo_19 style="text-decoration: none"><span class="indexblack">Is</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -776,7 +776,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Deutsche Universitat Bucherei">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_18 style="text-decoration: none"><span class="indexblack">DU</span></a></span>
+                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack">DU</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -831,7 +831,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Chateau Bibliotheque">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack"><b>CB</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_16 style="text-decoration: none"><span class="indexblack"><b>CB</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -886,7 +886,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Alphabet Soup">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_21 style="text-decoration: none"><span class="indexblack">AS</span></a></span>
+                                                <span class="indexblack"><a href=#wo_20 style="text-decoration: none"><span class="indexblack">AS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1150,7 +1150,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Miscellany Manana">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_19 style="text-decoration: none"><span class="indexblack">MM</span></a></span>
+                                                <span class="indexblack"><a href=#wo_18 style="text-decoration: none"><span class="indexblack">MM</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1205,7 +1205,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gaming Lounge">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_22 style="text-decoration: none"><span class="indexblack">GL</span></a></span>
+                                                <span class="indexblack"><a href=#wo_21 style="text-decoration: none"><span class="indexblack">GL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1541,7 +1541,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Danger Zone">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span class="indexblack"><a href=#wo_24 style="text-decoration: none"><span class="indexblack">DZ</span></a></span>
+                                                <span class="indexblack"><a href=#wo_23 style="text-decoration: none"><span class="indexblack">DZ</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1678,7 +1678,7 @@
 <!-- WORLD WRITE MAP ENDS -->
 <a name=MDETAILS></a>
 
-<p><a name=fi17></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi16></a><a name=wo_16><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1822,7 +1822,7 @@
 <hr>
 
 
-<p><a name=fi18></a><a name=wo_18><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi17></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1948,7 +1948,7 @@
 <hr>
 
 
-<p><a name=fi19></a><a name=wo_19><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi18></a><a name=wo_18><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2074,7 +2074,7 @@
 <hr>
 
 
-<p><a name=fi20></a><a name=wo_20><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi19></a><a name=wo_19><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2200,7 +2200,7 @@
 <hr>
 
 
-<p><a name=fi21></a><a name=wo_21><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi20></a><a name=wo_20><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2329,7 +2329,7 @@
 <hr>
 
 
-<p><a name=fi22></a><a name=wo_22><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi21></a><a name=wo_21><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2455,7 +2455,7 @@
 <hr>
 
 
-<p><a name=fi23></a><a name=wo_23><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi22></a><a name=wo_22><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2581,7 +2581,7 @@
 <hr>
 
 
-<p><a name=fi24></a><a name=wo_24><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi23></a><a name=wo_23><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -2710,7 +2710,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>main window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>main window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -2722,7 +2722,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text grid window &gt; <b>status window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text grid window &gt; <b>status window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -2734,20 +2734,8 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>quote window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>quote window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"quote window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-
-            </td>
-        </tr>
-    </table>
-    </p>
-</div>
-<a href="#" onclick="showExtra('extra12', 'plus12'); return false;"><img border=0 id="plus12" src=inform:/doc_images/extra.png></a>&nbsp;unknown window - <i>glk window</i><div id="extra12" style="display: none;">
-    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
-        <tr>
-            <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; <b>unknown window</b></p>
-                <p class="hangingin1">printed name: <span class="indexdullblue">"unknown window"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
         </tr>

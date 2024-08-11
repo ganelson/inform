@@ -76,7 +76,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            object [19]&nbsp;<a href=#A30><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            object [18]&nbsp;<a href=#A30><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             main window&nbsp;
@@ -93,7 +93,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            abstract object [4]&nbsp;<a href=#K101_abstract_object><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            abstract object [3]&nbsp;<a href=#K101_abstract_object><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             main window&nbsp;
@@ -110,7 +110,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            glk window [4]&nbsp;<a href=#K102_glk_window><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            glk window [3]&nbsp;<a href=#K102_glk_window><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             main window&nbsp;
@@ -523,10 +523,10 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            full glk event&nbsp;<a href=#A52><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            glk event&nbsp;<a href=#A49><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            v0.0.0&nbsp;
+            null event&nbsp;
         </td>
         <td align="center" valign="top">
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>&nbsp;
@@ -710,7 +710,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            glk event [10]&nbsp;<a href=#A49><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            glk event type [10]&nbsp;<a href=#A50><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             null event&nbsp;
@@ -727,7 +727,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            glk window type [3]&nbsp;<a href=#A50><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            glk window type [3]&nbsp;<a href=#A51><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             text buffer window type&nbsp;
@@ -744,7 +744,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            text input status [9]&nbsp;<a href=#A51><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            text input status [9]&nbsp;<a href=#A52><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             inactive text input&nbsp;
@@ -1226,7 +1226,7 @@ conceptual, like ideas, or are needed for internal book-keeping.<br>
 <i>Usually not</i> requesting hyperlink input, requesting mouse input.<br>
 <i>Can have</i> window type (<i>glk window type</i>), rock number (<i>number</i>), glk window handle (<i>number</i>), text input status (<i>text input status</i>).<br>
 </p>
-<p class="tightin3"><span class="indexgrey">unknown window</span></p>
+<p class="tightin3"></p>
 <p class="halftightin4"><a name=K103_graphics_window></a><b>graphics window</b> (<i>plural</i> graphics windows)</p>
 <p class="tightin4"></p>
 <p class="tightin4"></p>
@@ -1397,7 +1397,7 @@ Whole number in the range -32768, -32767, ..., -2, -1, 0, 1, 2, 3, ..., 32767: s
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value, real arithmetic value<br>
 A real, or 'floating-point' number: the difference between this and ordinary "number" is that real numbers can hold values like 3.141, which aren't whole numbers, and can also hold very large or very small quantities in an approximate way. (Use of real numbers is only allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)<br>
 </p>
-<p class="halftightin1"><a name=A52></a><b>full glk event</b> (<i>plural</i> full glk events)</p>
+<p class="halftightin1"><a name=A49></a><b>glk event</b> (<i>plural</i> glk events)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 An input/output event created by or for the Glk interface. For example, a key having been pressed, a click or a tap, or a timer running out can all lead to Glk events.<br>
 </p>
@@ -1442,7 +1442,7 @@ Glk features which may or may not be supported by the interpreter.<br>
     <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <span class="indexgrey">timers feature</span>, <span class="indexgrey">glk graphics feature</span>, <span class="indexgrey">basic sounds feature</span>, <span class="indexgrey">sound volume feature</span>, <span class="indexgrey">sound notifications feature</span>, <span class="indexgrey">hyperlinks feature</span>, <span class="indexgrey">MOD sounds feature</span>, <span class="indexgrey">PNG transparency feature</span>, <span class="indexgrey">glk unicode feature</span>, <span class="indexgrey">unicode normalization feature</span>, <span class="indexgrey">line input echo suppression feature</span>, <span class="indexgrey">line input terminators feature</span>, <span class="indexgrey">system clock feature</span>, <span class="indexgrey">extended sounds feature</span>, <span class="indexgrey">resource streams feature</span>, <span class="indexgrey">graphics window character input feature</span>, <span class="indexgrey">text formatting feature</span>, <span class="indexgrey">buffer window graphics feature</span>, <span class="indexgrey">graphics window graphics feature</span>, <span class="indexgrey">buffer window hyperlinks feature</span>, <span class="indexgrey">grid window hyperlinks feature</span>, <span class="indexgrey">graphics window mouse input feature</span>, <span class="indexgrey">grid window mouse input feature</span>
+                <span class="indexgrey">timers feature</span>, <span class="indexgrey">graphics feature</span>, <span class="indexgrey">basic sounds feature</span>, <span class="indexgrey">sound volume feature</span>, <span class="indexgrey">sound notifications feature</span>, <span class="indexgrey">hyperlinks feature</span>, <span class="indexgrey">MOD sounds feature</span>, <span class="indexgrey">PNG transparency feature</span>, <span class="indexgrey">glk unicode feature</span>, <span class="indexgrey">unicode normalization feature</span>, <span class="indexgrey">line input echo suppression feature</span>, <span class="indexgrey">line input terminators feature</span>, <span class="indexgrey">system clock feature</span>, <span class="indexgrey">extended sounds feature</span>, <span class="indexgrey">resource streams feature</span>, <span class="indexgrey">graphics window character input feature</span>, <span class="indexgrey">text formatting feature</span>, <span class="indexgrey">buffer window graphics feature</span>, <span class="indexgrey">graphics window graphics feature</span>, <span class="indexgrey">buffer window hyperlinks feature</span>, <span class="indexgrey">grid window hyperlinks feature</span>, <span class="indexgrey">graphics window mouse input feature</span>, <span class="indexgrey">grid window mouse input feature</span>
             </td>
         </tr>
     </table>
@@ -1454,10 +1454,10 @@ Glk features which may or may not be supported by the interpreter.<br>
 Glulx features which may or may not be supported by the interpreter.<br>
 <p class="tightin1"><span class="indexgrey">memory resizing feature</span>, <span class="indexgrey">undo feature</span>, <span class="indexgrey">glulx unicode feature</span>, <span class="indexgrey">memory copying feature</span>, <span class="indexgrey">memory allocations feature</span>, <span class="indexgrey">glulx acceleration feature</span>, <span class="indexgrey">real numbers feature</span>, <span class="indexgrey">extended undo feature</span>, <span class="indexgrey">double precision real numbers feature</span></p>
 </p>
-<p class="halftightin1"><a name=A49></a><b>glk event</b> (<i>plural</i> glk events)</p>
+<p class="halftightin1"><a name=A50></a><b>glk event type</b> (<i>plural</i> glk event types)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
-A Glk event sent from the interpreter.<br>
-<p class="tightin1"><a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">10 glk events</span></p>
+Type of a Glk event.<br>
+<p class="tightin1"><a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">10 glk event types</span></p>
 <div id="extra2" style="display: none;">
     <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
@@ -1469,12 +1469,12 @@ A Glk event sent from the interpreter.<br>
     </p>
 </div>
 </p>
-<p class="halftightin1"><a name=A50></a><b>glk window type</b> (<i>plural</i> glk window types)</p>
+<p class="halftightin1"><a name=A51></a><b>glk window type</b> (<i>plural</i> glk window types)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 Type of a Glk window.<br>
 <p class="tightin1"><span class="indexgrey">text buffer window type</span>, <span class="indexgrey">text grid window type</span>, <span class="indexgrey">graphics window type</span></p>
 </p>
-<p class="halftightin1"><a name=A51></a><b>text input status</b> (<i>plural</i> text input statuses)</p>
+<p class="halftightin1"><a name=A52></a><b>text input status</b> (<i>plural</i> text input statuses)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 The current text input status of a Glk window.<br>
 <p class="tightin1"><span class="indexgrey">inactive text input</span>, <span class="indexgrey">active line input</span>, <span class="indexgrey">active unicode line input</span>, <span class="indexgrey">active character input</span>, <span class="indexgrey">active unicode character input</span>, <span class="indexgrey">suspended line input</span>, <span class="indexgrey">suspended unicode line input</span>, <span class="indexgrey">suspended character input</span>, <span class="indexgrey">suspended unicode character input</span></p>

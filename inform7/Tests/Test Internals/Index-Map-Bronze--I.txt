@@ -168,7 +168,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Records Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_56 style="text-decoration: none"><span class="indexblack">RR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_55 style="text-decoration: none"><span class="indexblack">RR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -223,7 +223,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Upper Bulb">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#20B2AA">
-                                                <span class="indexblack"><a href=#wo_53 style="text-decoration: none"><span class="indexblack">UB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_52 style="text-decoration: none"><span class="indexblack">UB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -278,7 +278,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gallery of Still Life">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_83 style="text-decoration: none"><span class="indexblack">GS</span></a></span>
+                                                <span class="indexblack"><a href=#wo_82 style="text-decoration: none"><span class="indexblack">GS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -333,7 +333,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="White Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span class="indexblack"><a href=#wo_84 style="text-decoration: none"><span class="indexblack">WG</span></a></span>
+                                                <span class="indexblack"><a href=#wo_83 style="text-decoration: none"><span class="indexblack">WG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -388,7 +388,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Bellroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span class="indexblack"><a href=#wo_91 style="text-decoration: none"><span class="indexblack">Bl</span></a></span>
+                                                <span class="indexblack"><a href=#wo_90 style="text-decoration: none"><span class="indexblack">Bl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -443,7 +443,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Apothecary">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span class="indexblack"><a href=#wo_92 style="text-decoration: none"><span class="indexblack">Ap</span></a></span>
+                                                <span class="indexblack"><a href=#wo_91 style="text-decoration: none"><span class="indexblack">Ap</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -738,7 +738,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Smoke-Damaged Chamber">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_54 style="text-decoration: none"><span class="indexblack">SC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_53 style="text-decoration: none"><span class="indexblack">SC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -793,7 +793,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Lie Library">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_62 style="text-decoration: none"><span class="indexblack">LL</span></a></span>
+                                                <span class="indexblack"><a href=#wo_61 style="text-decoration: none"><span class="indexblack">LL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -895,7 +895,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Upstairs Helical Staircase">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_49 style="text-decoration: none"><span class="indexblack">UH</span></a></span>
+                                                <span class="indexblack"><a href=#wo_48 style="text-decoration: none"><span class="indexblack">UH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -950,7 +950,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Private Parlor">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_85 style="text-decoration: none"><span class="indexblack">PP</span></a></span>
+                                                <span class="indexblack"><a href=#wo_84 style="text-decoration: none"><span class="indexblack">PP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1005,7 +1005,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Guest Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_87 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_86 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1300,7 +1300,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Burnt Frame">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_55 style="text-decoration: none"><span class="indexblack">BF</span></a></span>
+                                                <span class="indexblack"><a href=#wo_54 style="text-decoration: none"><span class="indexblack">BF</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1355,7 +1355,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Black Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_60 style="text-decoration: none"><span class="indexblack">BG</span></a></span>
+                                                <span class="indexblack"><a href=#wo_59 style="text-decoration: none"><span class="indexblack">BG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1457,7 +1457,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Green Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_86 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_85 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1512,7 +1512,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Crystal Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_89 style="text-decoration: none"><span class="indexblack">CB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_88 style="text-decoration: none"><span class="indexblack">CB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1567,7 +1567,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Empty Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_88 style="text-decoration: none"><span class="indexblack">EB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_87 style="text-decoration: none"><span class="indexblack">EB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1909,7 +1909,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Armory">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_61 style="text-decoration: none"><span class="indexblack">Ar</span></a></span>
+                                                <span class="indexblack"><a href=#wo_60 style="text-decoration: none"><span class="indexblack">Ar</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2058,7 +2058,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gilded Balcony">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span class="indexblack"><a href=#wo_90 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_89 style="text-decoration: none"><span class="indexblack">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2613,7 +2613,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Rose Garden">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span class="indexblack"><a href=#wo_65 style="text-decoration: none"><span class="indexblack">RG</span></a></span>
+                                                <span class="indexblack"><a href=#wo_64 style="text-decoration: none"><span class="indexblack">RG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2955,7 +2955,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Translation Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_59 style="text-decoration: none"><span class="indexblack">TR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_58 style="text-decoration: none"><span class="indexblack">TR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3010,7 +3010,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Lower Bulb">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#20B2AA">
-                                                <span class="indexblack"><a href=#wo_52 style="text-decoration: none"><span class="indexblack">LB</span></a></span>
+                                                <span class="indexblack"><a href=#wo_51 style="text-decoration: none"><span class="indexblack">LB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3065,7 +3065,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="State Rotunda">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_50 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_49 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3120,7 +3120,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Parliamentary Chambers">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_57 style="text-decoration: none"><span class="indexblack">PC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_56 style="text-decoration: none"><span class="indexblack">PC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3175,7 +3175,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Cloister Walk">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span class="indexblack"><a href=#wo_63 style="text-decoration: none"><span class="indexblack">CW</span></a></span>
+                                                <span class="indexblack"><a href=#wo_62 style="text-decoration: none"><span class="indexblack">CW</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3230,7 +3230,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Walk's End">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span class="indexblack"><a href=#wo_64 style="text-decoration: none"><span class="indexblack">WE</span></a></span>
+                                                <span class="indexblack"><a href=#wo_63 style="text-decoration: none"><span class="indexblack">WE</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3525,7 +3525,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Servant Quarters">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_81 style="text-decoration: none"><span class="indexblack">SQ</span></a></span>
+                                                <span class="indexblack"><a href=#wo_80 style="text-decoration: none"><span class="indexblack">SQ</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3580,7 +3580,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Law Library">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span class="indexblack"><a href=#wo_51 style="text-decoration: none"><span class="indexblack">LL</span></a></span>
+                                                <span class="indexblack"><a href=#wo_50 style="text-decoration: none"><span class="indexblack">LL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3635,7 +3635,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Central Courtyard">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_47 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_46 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3690,7 +3690,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Ground Floor Helical Staircase">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_48 style="text-decoration: none"><span class="indexblack">GF</span></a></span>
+                                                <span class="indexblack"><a href=#wo_47 style="text-decoration: none"><span class="indexblack">GF</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3745,7 +3745,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Treasure Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span class="indexblack"><a href=#wo_43 style="text-decoration: none"><span class="indexblack">TR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_42 style="text-decoration: none"><span class="indexblack">TR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3800,7 +3800,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Scrying Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span class="indexblack"><a href=#wo_66 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_65 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4095,7 +4095,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Enormous Kitchen">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_80 style="text-decoration: none"><span class="indexblack">EK</span></a></span>
+                                                <span class="indexblack"><a href=#wo_79 style="text-decoration: none"><span class="indexblack">EK</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4150,7 +4150,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Great Dining Hall">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_58 style="text-decoration: none"><span class="indexblack">GD</span></a></span>
+                                                <span class="indexblack"><a href=#wo_57 style="text-decoration: none"><span class="indexblack">GD</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4205,7 +4205,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Entrance Hall">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_39 style="text-decoration: none"><span class="indexblack">EH</span></a></span>
+                                                <span class="indexblack"><a href=#wo_38 style="text-decoration: none"><span class="indexblack">EH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4260,7 +4260,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Scarlet Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span class="indexblack"><a href=#wo_40 style="text-decoration: none"><span class="indexblack">SG</span></a></span>
+                                                <span class="indexblack"><a href=#wo_39 style="text-decoration: none"><span class="indexblack">SG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4315,7 +4315,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gallery of Historical Paintings">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span class="indexblack"><a href=#wo_42 style="text-decoration: none"><span class="indexblack">GH</span></a></span>
+                                                <span class="indexblack"><a href=#wo_41 style="text-decoration: none"><span class="indexblack">GH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4370,7 +4370,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Maze Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span class="indexblack"><a href=#wo_44 style="text-decoration: none"><span class="indexblack">MR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_43 style="text-decoration: none"><span class="indexblack">MR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4712,7 +4712,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Guard Tower">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span class="indexblack"><a href=#wo_82 style="text-decoration: none"><span class="indexblack">GT</span></a></span>
+                                                <span class="indexblack"><a href=#wo_81 style="text-decoration: none"><span class="indexblack">GT</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4767,7 +4767,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Drawbridge">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#98FB98">
-                                                <span class="indexblack"><a href=#wo_38 style="text-decoration: none"><span class="indexblack"><b>Dr</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_37 style="text-decoration: none"><span class="indexblack"><b>Dr</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4869,7 +4869,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Scarlet Tower">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span class="indexblack"><a href=#wo_41 style="text-decoration: none"><span class="indexblack">ST</span></a></span>
+                                                <span class="indexblack"><a href=#wo_40 style="text-decoration: none"><span class="indexblack">ST</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5424,7 +5424,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Rooted Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_77 style="text-decoration: none"><span class="indexblack">RR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_76 style="text-decoration: none"><span class="indexblack">RR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5813,7 +5813,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Virgin's End">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_68 style="text-decoration: none"><span class="indexblack">VE</span></a></span>
+                                                <span class="indexblack"><a href=#wo_67 style="text-decoration: none"><span class="indexblack">VE</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5868,7 +5868,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Lucrezia's Study">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_76 style="text-decoration: none"><span class="indexblack">LS</span></a></span>
+                                                <span class="indexblack"><a href=#wo_75 style="text-decoration: none"><span class="indexblack">LS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5923,7 +5923,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Tight Passage">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_75 style="text-decoration: none"><span class="indexblack">TP</span></a></span>
+                                                <span class="indexblack"><a href=#wo_74 style="text-decoration: none"><span class="indexblack">TP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5978,7 +5978,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Bell Castings">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_78 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_77 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6033,7 +6033,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Wax Supply">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_79 style="text-decoration: none"><span class="indexblack">WS</span></a></span>
+                                                <span class="indexblack"><a href=#wo_78 style="text-decoration: none"><span class="indexblack">WS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6328,7 +6328,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Apprentice's Workshop">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_71 style="text-decoration: none"><span class="indexblack">AW</span></a></span>
+                                                <span class="indexblack"><a href=#wo_70 style="text-decoration: none"><span class="indexblack">AW</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6383,7 +6383,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Central Crypt">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_67 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_66 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6438,7 +6438,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Father's Regret">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_69 style="text-decoration: none"><span class="indexblack">FR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_68 style="text-decoration: none"><span class="indexblack">FR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6540,7 +6540,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Zoo">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_46 style="text-decoration: none"><span class="indexblack">Zo</span></a></span>
+                                                <span class="indexblack"><a href=#wo_45 style="text-decoration: none"><span class="indexblack">Zo</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6929,7 +6929,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Debtor's Paradise">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_70 style="text-decoration: none"><span class="indexblack">DP</span></a></span>
+                                                <span class="indexblack"><a href=#wo_69 style="text-decoration: none"><span class="indexblack">DP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7031,7 +7031,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Rocky Chamber">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_72 style="text-decoration: none"><span class="indexblack">RC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_71 style="text-decoration: none"><span class="indexblack">RC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7133,7 +7133,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Bear Corridor">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span class="indexblack"><a href=#wo_45 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
+                                                <span class="indexblack"><a href=#wo_44 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7500,7 +7500,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Press Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_74 style="text-decoration: none"><span class="indexblack">PR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_73 style="text-decoration: none"><span class="indexblack">PR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -8030,7 +8030,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Dank Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span class="indexblack"><a href=#wo_73 style="text-decoration: none"><span class="indexblack">DR</span></a></span>
+                                                <span class="indexblack"><a href=#wo_72 style="text-decoration: none"><span class="indexblack">DR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -8399,7 +8399,7 @@
             <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Drawbridge">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#98FB98">
-                        <span class="indexblack"><a href=#wo_38 style="text-decoration: none"><span class="indexblack"><b>Dr</b></span></a></span>
+                        <span class="indexblack"><a href=#wo_37 style="text-decoration: none"><span class="indexblack"><b>Dr</b></span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8420,7 +8420,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Bear Corridor">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#ADD8E6">
-                        <span class="indexblack"><a href=#wo_45 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
+                        <span class="indexblack"><a href=#wo_44 style="text-decoration: none"><span class="indexblack">BC</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8441,7 +8441,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Central Crypt">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#DDA0DD">
-                        <span class="indexblack"><a href=#wo_67 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
+                        <span class="indexblack"><a href=#wo_66 style="text-decoration: none"><span class="indexblack">CC</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8462,7 +8462,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Lower Bulb">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#20B2AA">
-                        <span class="indexblack"><a href=#wo_52 style="text-decoration: none"><span class="indexblack">LB</span></a></span>
+                        <span class="indexblack"><a href=#wo_51 style="text-decoration: none"><span class="indexblack">LB</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8483,7 +8483,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="State Rotunda">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#8470FF">
-                        <span class="indexblack"><a href=#wo_50 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
+                        <span class="indexblack"><a href=#wo_49 style="text-decoration: none"><span class="indexblack">SR</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8504,7 +8504,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Upstairs Helical Staircase">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#FFDEAD">
-                        <span class="indexblack"><a href=#wo_49 style="text-decoration: none"><span class="indexblack">UH</span></a></span>
+                        <span class="indexblack"><a href=#wo_48 style="text-decoration: none"><span class="indexblack">UH</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8525,7 +8525,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="White Gallery">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#D02090">
-                        <span class="indexblack"><a href=#wo_84 style="text-decoration: none"><span class="indexblack">WG</span></a></span>
+                        <span class="indexblack"><a href=#wo_83 style="text-decoration: none"><span class="indexblack">WG</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8546,7 +8546,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Scarlet Gallery">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#E0FFFF">
-                        <span class="indexblack"><a href=#wo_40 style="text-decoration: none"><span class="indexblack">SG</span></a></span>
+                        <span class="indexblack"><a href=#wo_39 style="text-decoration: none"><span class="indexblack">SG</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8567,7 +8567,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Cloister Walk">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#F08080">
-                        <span class="indexblack"><a href=#wo_63 style="text-decoration: none"><span class="indexblack">CW</span></a></span>
+                        <span class="indexblack"><a href=#wo_62 style="text-decoration: none"><span class="indexblack">CW</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8588,7 +8588,7 @@
             <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Entrance Hall">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#FFB6C1">
-                        <span class="indexblack"><a href=#wo_39 style="text-decoration: none"><span class="indexblack">EH</span></a></span>
+                        <span class="indexblack"><a href=#wo_38 style="text-decoration: none"><span class="indexblack">EH</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8605,7 +8605,7 @@
 <hr>
 <a name=MDETAILS></a><b>The <i>Great Outdoors</i> region</b><p>
 
-<p><a name=fi38></a><a name=wo_38><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi37></a><a name=wo_37><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -8769,7 +8769,7 @@
 <hr>
 <b>The <i>Basement</i> region</b><p>
 
-<p><a name=fi45></a><a name=wo_45><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi44></a><a name=wo_44><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -8904,7 +8904,7 @@
 </p>
 
 
-<p><a name=fi46></a><a name=wo_46><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi45></a><a name=wo_45><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9040,7 +9040,7 @@
 </p>
 
 
-<p><a name=fi72></a><a name=wo_72><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi71></a><a name=wo_71><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9175,7 +9175,7 @@
 </p>
 
 
-<p><a name=fi75></a><a name=wo_75><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi74></a><a name=wo_74><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9325,7 +9325,7 @@
 </p>
 
 
-<p><a name=fi76></a><a name=wo_76><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi75></a><a name=wo_75><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9473,7 +9473,7 @@
 </p>
 
 
-<p><a name=fi77></a><a name=wo_77><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi76></a><a name=wo_76><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9609,7 +9609,7 @@
 </p>
 
 
-<p><a name=fi78></a><a name=wo_78><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi77></a><a name=wo_77><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9744,7 +9744,7 @@
 </p>
 
 
-<p><a name=fi79></a><a name=wo_79><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi78></a><a name=wo_78><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9880,7 +9880,7 @@
 <hr>
 <b>The <i>Haunted Area</i> region</b><p>
 
-<p><a name=fi67></a><a name=wo_67><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi66></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10032,7 +10032,7 @@
 </p>
 
 
-<p><a name=fi68></a><a name=wo_68><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi67></a><a name=wo_67><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10168,7 +10168,7 @@
 </p>
 
 
-<p><a name=fi69></a><a name=wo_69><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi68></a><a name=wo_68><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10306,7 +10306,7 @@
 </p>
 
 
-<p><a name=fi70></a><a name=wo_70><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi69></a><a name=wo_69><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10457,7 +10457,7 @@
 </p>
 
 
-<p><a name=fi71></a><a name=wo_71><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi70></a><a name=wo_70><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10608,7 +10608,7 @@
 </p>
 
 
-<p><a name=fi73></a><a name=wo_73><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi72></a><a name=wo_72><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10757,7 +10757,7 @@
 </p>
 
 
-<p><a name=fi74></a><a name=wo_74><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi73></a><a name=wo_73><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10892,7 +10892,7 @@
 <hr>
 <b>The <i>Hourglass</i> region</b><p>
 
-<p><a name=fi52></a><a name=wo_52><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi51></a><a name=wo_51><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11043,7 +11043,7 @@
 </p>
 
 
-<p><a name=fi53></a><a name=wo_53><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi52></a><a name=wo_52><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11209,7 +11209,7 @@
 <hr>
 <b>The <i>State Rooms</i> region</b><p>
 
-<p><a name=fi50></a><a name=wo_50><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi49></a><a name=wo_49><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11346,7 +11346,7 @@
 </p>
 
 
-<p><a name=fi51></a><a name=wo_51><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi50></a><a name=wo_50><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11497,7 +11497,7 @@
 </p>
 
 
-<p><a name=fi54></a><a name=wo_54><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi53></a><a name=wo_53><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11647,7 +11647,7 @@
 </p>
 
 
-<p><a name=fi55></a><a name=wo_55><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi54></a><a name=wo_54><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11782,7 +11782,7 @@
 </p>
 
 
-<p><a name=fi56></a><a name=wo_56><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi55></a><a name=wo_55><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11916,7 +11916,7 @@
 </p>
 
 
-<p><a name=fi57></a><a name=wo_57><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi56></a><a name=wo_56><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12051,7 +12051,7 @@
 </p>
 
 
-<p><a name=fi59></a><a name=wo_59><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi58></a><a name=wo_58><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12185,7 +12185,7 @@
 </p>
 
 
-<p><a name=fi60></a><a name=wo_60><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi59></a><a name=wo_59><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12321,7 +12321,7 @@
 </p>
 
 
-<p><a name=fi61></a><a name=wo_61><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi60></a><a name=wo_60><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12455,7 +12455,7 @@
 </p>
 
 
-<p><a name=fi62></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi61></a><a name=wo_61><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12590,7 +12590,7 @@
 </p>
 
 
-<p><a name=fi83></a><a name=wo_83><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi82></a><a name=wo_82><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12740,7 +12740,7 @@
 <hr>
 <b>The <i>Apartments</i> region</b><p>
 
-<p><a name=fi49></a><a name=wo_49><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi48></a><a name=wo_48><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12889,7 +12889,7 @@
 </p>
 
 
-<p><a name=fi85></a><a name=wo_85><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi84></a><a name=wo_84><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13042,7 +13042,7 @@
 </p>
 
 
-<p><a name=fi86></a><a name=wo_86><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi85></a><a name=wo_85><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13176,7 +13176,7 @@
 </p>
 
 
-<p><a name=fi87></a><a name=wo_87><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi86></a><a name=wo_86><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13310,7 +13310,7 @@
 </p>
 
 
-<p><a name=fi88></a><a name=wo_88><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi87></a><a name=wo_87><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13444,7 +13444,7 @@
 </p>
 
 
-<p><a name=fi89></a><a name=wo_89><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi88></a><a name=wo_88><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13579,7 +13579,7 @@
 </p>
 
 
-<p><a name=fi90></a><a name=wo_90><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi89></a><a name=wo_89><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13714,7 +13714,7 @@
 <hr>
 <b>The <i>Stinky</i> region</b><p>
 
-<p><a name=fi84></a><a name=wo_84><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi83></a><a name=wo_83><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13863,7 +13863,7 @@
 </p>
 
 
-<p><a name=fi91></a><a name=wo_91><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi90></a><a name=wo_90><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14013,7 +14013,7 @@
 </p>
 
 
-<p><a name=fi92></a><a name=wo_92><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi91></a><a name=wo_91><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14148,7 +14148,7 @@
 <hr>
 <b>The <i>Old Castle</i> region</b><p>
 
-<p><a name=fi40></a><a name=wo_40><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi39></a><a name=wo_39><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14285,7 +14285,7 @@
 </p>
 
 
-<p><a name=fi41></a><a name=wo_41><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi40></a><a name=wo_40><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14419,7 +14419,7 @@
 </p>
 
 
-<p><a name=fi42></a><a name=wo_42><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi41></a><a name=wo_41><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14554,7 +14554,7 @@
 </p>
 
 
-<p><a name=fi43></a><a name=wo_43><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi42></a><a name=wo_42><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14703,7 +14703,7 @@
 </p>
 
 
-<p><a name=fi44></a><a name=wo_44><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi43></a><a name=wo_43><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14839,7 +14839,7 @@
 <hr>
 <b>The <i>Enclosed</i> region</b><p>
 
-<p><a name=fi63></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi62></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14975,7 +14975,7 @@
 </p>
 
 
-<p><a name=fi64></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi63></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15111,7 +15111,7 @@
 </p>
 
 
-<p><a name=fi65></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi64></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15247,7 +15247,7 @@
 </p>
 
 
-<p><a name=fi66></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi65></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15397,7 +15397,7 @@
 <hr>
 <b>The <i>Main Castle</i> region</b><p>
 
-<p><a name=fi39></a><a name=wo_39><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi38></a><a name=wo_38><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15549,7 +15549,7 @@
 </p>
 
 
-<p><a name=fi47></a><a name=wo_47><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi46></a><a name=wo_46><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15685,7 +15685,7 @@
 </p>
 
 
-<p><a name=fi48></a><a name=wo_48><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi47></a><a name=wo_47><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15834,7 +15834,7 @@
 </p>
 
 
-<p><a name=fi58></a><a name=wo_58><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi57></a><a name=wo_57><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15970,7 +15970,7 @@
 </p>
 
 
-<p><a name=fi80></a><a name=wo_80><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi79></a><a name=wo_79><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16105,7 +16105,7 @@
 </p>
 
 
-<p><a name=fi81></a><a name=wo_81><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi80></a><a name=wo_80><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16254,7 +16254,7 @@
 </p>
 
 
-<p><a name=fi82></a><a name=wo_82><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=fi81></a><a name=wo_81><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16392,7 +16392,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>main window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>main window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -16404,7 +16404,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text grid window &gt; <b>status window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text grid window &gt; <b>status window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -16416,20 +16416,8 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; text buffer window &gt; <b>quote window</b></p>
+                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>quote window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"quote window"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-
-            </td>
-        </tr>
-    </table>
-    </p>
-</div>
-<a href="#" onclick="showExtra('extra81', 'plus81'); return false;"><img border=0 id="plus81" src=inform:/doc_images/extra.png></a>&nbsp;unknown window - <i>glk window</i><div id="extra81" style="display: none;">
-    <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
-        <tr>
-            <td>
-                <p class="tightin1">abstract object &gt; glk window &gt; <b>unknown window</b></p>
-                <p class="hangingin1">printed name: <span class="indexdullblue">"unknown window"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
         </tr>

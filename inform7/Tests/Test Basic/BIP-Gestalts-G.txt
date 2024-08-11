@@ -7,7 +7,7 @@ To begin:
 	say "Graphics window mouse input: [whether or not graphics window mouse input feature is supported][line break]";
 	say "Grid window mouse input: [whether or not grid window mouse input feature is supported][line break]";
 	say "Timers: [whether or not timers feature is supported][line break]";
-	say "Glk graphics: [whether or not glk graphics feature is supported][line break]";
+	say "Glk graphics: [whether or not graphics feature is supported][line break]";
 	say "Buffer window images: [whether or not buffer window graphics feature is supported][line break]";
 	say "Graphics window images: [whether or not graphics window graphics feature is supported][line break]";
 	say "Basic sounds: [whether or not basic sounds feature is supported][line break]";

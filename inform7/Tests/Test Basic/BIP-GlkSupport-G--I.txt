@@ -1,6 +1,6 @@
 "glk version number" = version number: v0.7.5
 timers feature: false.
-glk graphics feature: false.
+graphics feature: false.
 basic sounds feature: false.
 sound volume feature: false.
 sound notifications feature: false.
