@@ -8,6 +8,6 @@
     "kit-details": {
         "has-priority": 1,
         "defines-Main": false,
-        "provides-kinds": [ "BasicIO.neptune", "Glk.neptune", "GlkEvents.neptune", "VersionNumbers.neptune" ]
+        "provides-kinds": [ "BasicIO.neptune", "Glk.neptune", "VersionNumbers.neptune" ]
     }
 }

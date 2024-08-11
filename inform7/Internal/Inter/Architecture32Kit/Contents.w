@@ -9,7 +9,6 @@ Sections
 	Capabilities
 	InfGlk
 	Glk
-	Glk Events
 	Startup
 	State
 	Mathematics

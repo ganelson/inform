@@ -245,115 +245,318 @@ Functions for minimal Glk windows support.
 ];
 
 @h Glk events.
-To handle events we intercept the |glk_select| function. This allows us to handle
+Glk events use a BV to represent the event struct, with an extra slot for a
+line input text. For an original line event, the text slot actually remains
+set to 0, which is understood as meaning that the underling window's buffer
+is used instead.
+
+=
+Constant GLK_EVENT_TYPE_SF = 2;
+Constant GLK_EVENT_WINDOW_SF = 3;
+Constant GLK_EVENT_VALUE1_SF = 4;
+Constant GLK_EVENT_VALUE2_SF = 5;
+Constant GLK_EVENT_TEXT_SF = 6;
+
+[ GLK_EVENT_TY_Compare ev1 ev2 i d text_left text_right;
+	for (i = GLK_EVENT_TYPE_SF: i <= GLK_EVENT_VALUE2_SF: i++) {
+		d = PVField(ev1, i) - PVField(ev2, i);
+		if (d ~= 0) {
+			return d;
+		}
+	}
+	text_left = ev1-->GLK_EVENT_TEXT_SF;
+	text_right = ev2-->GLK_EVENT_TEXT_SF;
+	if (text_left && text_right) {
+		return TEXT_TY_Compare(text_left, text_right);
+	}
+	return text_left - text_right;
+];
+
+[ GLK_EVENT_TY_Copy evto evfrom kind recycling
+	txtfrom txtto;
+	evto-->GLK_EVENT_TYPE_SF = evfrom-->GLK_EVENT_TYPE_SF;
+	evto-->GLK_EVENT_WINDOW_SF = evfrom-->GLK_EVENT_WINDOW_SF;
+	evto-->GLK_EVENT_VALUE1_SF = evfrom-->GLK_EVENT_VALUE1_SF;
+	evto-->GLK_EVENT_VALUE2_SF = evfrom-->GLK_EVENT_VALUE2_SF;
+	evto-->GLK_EVENT_TEXT_SF = evfrom-->GLK_EVENT_TEXT_SF;
+
+	if (evfrom-->GLK_EVENT_TEXT_SF) {
+		evto-->GLK_EVENT_TEXT_SF = CreatePV(TEXT_TY);
+		CopyPV(evto-->GLK_EVENT_TEXT_SF, evfrom-->GLK_EVENT_TEXT_SF);
+	}
+];
+
+[ GLK_EVENT_TY_Create kind_id sb_address
+	short_block;
+
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->GLK_EVENT_TYPE_SF = evtype_None;
+	short_block-->GLK_EVENT_WINDOW_SF = 0;
+	short_block-->GLK_EVENT_VALUE1_SF = 0;
+	short_block-->GLK_EVENT_VALUE2_SF = 0;
+	short_block-->GLK_EVENT_TEXT_SF = 0;
+
+	return short_block;
+];
+
+[ GLK_EVENT_TY_Destroy ev txt;
+	txt = ev-->GLK_EVENT_TEXT_SF;
+	if (txt) {
+		DestroyPV(txt);
+	}
+	ev-->GLK_EVENT_TEXT_SF = 0;
+];
+
+[ GLK_EVENT_TY_Say ev
+		evtype win_obj;
+	evtype = ev-->GLK_EVENT_TYPE_SF;
+	SayKindValuePair(GLK_EVENT_TYPE_TY, evtype);
+	if (evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
+		win_obj = ev-->GLK_EVENT_WINDOW_SF;
+		print " (";
+		switch (evtype) {
+			evtype_CharInput:
+				glk_put_char_uni(MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF));
+			evtype_LineInput:
+				print "~";
+				if (ev-->GLK_EVENT_TEXT_SF) {
+					TEXT_TY_Say(ev-->GLK_EVENT_TEXT_SF);
+				}
+				else {
+					if (win_obj.line_input_buffer_uni) {
+						glk_put_buffer_uni(win_obj.line_input_buffer_addr, win_obj.line_input_buffer_curlen);
+					}
+					else {
+						glk_put_buffer(win_obj.line_input_buffer_addr, win_obj.line_input_buffer_curlen);
+					}
+				}
+				print "~";
+			evtype_MouseInput:
+				if (win_obj.glk_window_type == wintype_TextGrid) {
+					print (ev-->GLK_EVENT_VALUE1_SF + 1), ", ", (ev-->GLK_EVENT_VALUE2_SF + 1);
+				}
+				else {
+					print ev-->GLK_EVENT_VALUE1_SF, ", ", ev-->GLK_EVENT_VALUE2_SF;
+				}
+			evtype_Hyperlink:
+				print ev-->GLK_EVENT_VALUE1_SF;
+		}
+		print ") in ", (the) win_obj;
+	}
+];
+
+@ These functions then support the Inform 7 API for creating and using Glk
+event BVs.
+
+=
+[ GLK_EVENT_TY_New ev evtype win_obj val1 val2 text;
+	if (win_obj == 0 && evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
+		win_obj = FindGlkWindowFromRefNum(gg_mainwin);
+	}
+	! Event type specific processing
+	switch (evtype) {
+		evtype_LineInput, evtype_Hyperlink:
+			if (~~(win_obj.glk_window_type == wintype_TextBuffer or wintype_TextGrid)) {
+				IssueRTP("EventWrongWindowType", "GLK_EVENT_TY_New: Glk event created for window of wrong type.", Architecture32KitRTPs);
+				return ev;
+			}
+		evtype_MouseInput:
+			if (~~(win_obj.glk_window_type == wintype_Graphics or wintype_TextGrid)) {
+				IssueRTP("EventWrongWindowType", "GLK_EVENT_TY_New: Glk event created for window of wrong type.", Architecture32KitRTPs);
+				return ev;
+			}
+			! Fix the coordinates of grid window mouse events
+			if (win_obj.glk_window_type == wintype_TextGrid) {
+				val1 = val1--;
+				val2 = val2--;
+			}
+	}
+	ev-->GLK_EVENT_TYPE_SF = evtype;
+	ev-->GLK_EVENT_WINDOW_SF = win_obj;
+	ev-->GLK_EVENT_VALUE1_SF = val1;
+	ev-->GLK_EVENT_VALUE2_SF = val2;
+	if (text) {
+		ev-->GLK_EVENT_TEXT_SF = CreatePV(TEXT_TY);
+		CopyPV(ev-->GLK_EVENT_TEXT_SF, text);
+	}
+	return ev;
+];
+
+[ GLK_EVENT_TY_Type ev;
+	return ev-->GLK_EVENT_TYPE_SF;
+];
+
+[ GLK_EVENT_TY_Window ev;
+	if (ev-->GLK_EVENT_TYPE_SF == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
+		return ev-->GLK_EVENT_WINDOW_SF;
+	}
+	IssueRTP("EventWrongType", "GLK_EVENT_TY_Window: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	return nothing;
+];
+
+[ GLK_EVENT_TY_Value1 ev;
+	switch (ev-->GLK_EVENT_TYPE_SF) {
+		evtype_CharInput:
+			return MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF);
+		evtype_MouseInput:
+			if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
+				return ev-->GLK_EVENT_VALUE1_SF + 1;
+			}
+			return ev-->GLK_EVENT_VALUE1_SF;
+		evtype_Hyperlink:
+			return ev-->GLK_EVENT_VALUE1_SF;
+	}
+	IssueRTP("EventWrongType", "GLK_EVENT_TY_Value1: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	return 0;
+];
+
+[ GLK_EVENT_TY_Value2 ev;
+	if (ev-->GLK_EVENT_TYPE_SF == evtype_MouseInput) {
+		if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
+			return ev-->GLK_EVENT_VALUE1_SF + 1;
+		}
+		return ev-->GLK_EVENT_VALUE1_SF;
+	}
+	IssueRTP("EventWrongType", "GLK_EVENT_TY_Value2: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	return 0;
+];
+
+[ GLK_EVENT_TY_Text ev text;
+	if (ev-->GLK_EVENT_TYPE_SF == evtype_LineInput) {
+		if (ev-->GLK_EVENT_TEXT_SF) {
+			CopyPV(text, ev-->GLK_EVENT_TEXT_SF);
+			return text;
+		}
+		return WindowBufferCopyToText(ev-->GLK_EVENT_WINDOW_SF, text);
+	}
+	IssueRTP("EventWrongType", "GLK_EVENT_TY_Text: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
+	return text;
+];
+
+@ |GLK_EVENT_TY_From_Struct| takes a Glk event struct and conforms a Glk event
+BV to it. This does not have to be a new Glk event - this function will usually
+be used by |glk_select|. It also handles a few event maintenance tasks.
+
+=
+[ GLK_EVENT_TY_From_Struct ev event_struct
+		evtype win_obj;
+	! Erase this event
+	GLK_EVENT_TY_Destroy(ev);
+
+	! Check we have a known window
+	evtype = event_struct-->0;
+	win_obj = FindGlkWindowFromRefNum(event_struct-->1);
+	if (win_obj == nothing && evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
+		IssueRTP("EventUnknownWindow", "Event is on unknown Glk window.", Architecture32KitRTPs);
+		return ev;
+	}
+
+	! Fill in the event
+	ev-->GLK_EVENT_TYPE_SF = evtype;
+	ev-->GLK_EVENT_WINDOW_SF = win_obj;
+	ev-->GLK_EVENT_VALUE1_SF = event_struct-->2;
+	ev-->GLK_EVENT_VALUE2_SF = event_struct-->3;
+
+	! Event maintenance
+	switch (evtype) {
+		evtype_CharInput:
+			win_obj.text_input_status = INPUT_STATUS_NONE;
+		evtype_LineInput:
+			win_obj.line_input_buffer_curlen = ev-->GLK_EVENT_VALUE1_SF;
+			win_obj.text_input_status = INPUT_STATUS_NONE;
+		evtype_MouseInput:
+			win_obj.requesting_mouse = false;
+		evtype_Hyperlink:
+			win_obj.requesting_hyperlink = false;
+	}
+	return ev;
+];
+
+@ |GLK_EVENT_TY_To_Struct| then does the reverse, applying a Glk event BV back onto
+the event struct.
+
+=
+[ GLK_EVENT_TY_To_Struct ev event_struct;
+	event_struct-->0 = ev-->GLK_EVENT_TYPE_SF;
+	if (ev-->GLK_EVENT_WINDOW_SF) {
+		event_struct-->1 = (ev-->GLK_EVENT_WINDOW_SF).glk_ref;
+	}
+	else {
+		event_struct-->1 = 0;
+	}
+	event_struct-->2 = ev-->GLK_EVENT_VALUE1_SF;
+	event_struct-->3 = ev-->GLK_EVENT_VALUE2_SF;
+];
+
+@ |GLK_EVENT_TY_Process| applies a glk event onto the current glk event, and
+tells glk_select to re-run the glk event handling rules. It also ensures that
+if there are any pending keyboard input requests they will be cancelled if the
+new event is a keyboard event.
+
+=
+Array current_glk_event --> [ BLK_BVBITMAP_SBONLY; GLK_EVENT_TY; 0; 0; 0; 0; 0; 0; 0; ];
+Global glk_event_replaced;
+
+[ GLK_EVENT_TY_Process ev evtype win_obj;
+	evtype = ev-->GLK_EVENT_TYPE_SF;
+	win_obj = ev-->GLK_EVENT_WINDOW_SF;
+
+	! If the new event is text input, cancel a pending request
+	if (evtype == evtype_CharInput or evtype_LineInput) {
+		if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+			glk_cancel_char_event(win_obj.glk_ref);
+		}
+		else if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+			glk_cancel_line_event(win_obj.glk_ref);
+		}
+		win_obj.text_input_status = INPUT_STATUS_NONE;
+	}
+
+	! Update the current glk event
+	current_glk_event-->GLK_EVENT_TYPE_SF = evtype;
+	current_glk_event-->GLK_EVENT_WINDOW_SF = win_obj;
+	! If the current event type is line input, update the buffer
+	if (evtype == evtype_LineInput) {
+		if (ev-->GLK_EVENT_TEXT_SF) {
+			WindowBufferSet(win_obj, ev-->GLK_EVENT_TEXT_SF);
+		}
+		current_glk_event-->GLK_EVENT_VALUE1_SF = win_obj.line_input_buffer_curlen;
+	}
+	else {
+		current_glk_event-->GLK_EVENT_VALUE1_SF = ev-->GLK_EVENT_VALUE1_SF;
+	}
+	current_glk_event-->GLK_EVENT_VALUE2_SF = ev-->GLK_EVENT_VALUE2_SF;
+
+	RulebookSucceeds();
+	glk_event_replaced = 1;
+];
+
+@ To handle events we intercept the |glk_select| function. This allows us to handle
 events early and consistently.
 
 =
-Global Glk_Event_Struct_type;
-Global Glk_Event_Struct_win;
-Global Glk_Event_Struct_val1;
-Global Glk_Event_Struct_val2;
-Global glk_event_type_changed;
-
 [ glk_select event_struct;
 	! Call the real glk_select
 	@push event_struct;
 	@glk 192 1 0;
 
-	! Copy values to our variables
-	Glk_Event_Struct_type = event_struct-->0;
-	! Turn a window reference ID into a window object
-	Glk_Event_Struct_win = FindGlkWindowFromRefNum(event_struct-->1);
-	Glk_Event_Struct_val1 = event_struct-->2;
-	Glk_Event_Struct_val2 = event_struct-->3;
-
-	if (Glk_Event_Struct_win) {
-		! If the current event type is line input, copy the buffer length
-		if (Glk_Event_Struct_type == evtype_LineInput) {
-			Glk_Event_Struct_win.line_input_buffer_curlen = Glk_Event_Struct_val1;
-			! And update the text input status here because it's too risky to leave for a glk event handling rule
-			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-		}
-		else if (Glk_Event_Struct_type == evtype_CharInput) {
-			Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-		}
-	}
+	GLK_EVENT_TY_From_Struct(current_glk_event, event_struct);
 
 	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
 	@push debug_rules; @push say__p; @push say__pc;
 	debug_rules = false; ClearParagraphing(1);
 	do {
-		glk_event_type_changed = 0;
-		FollowRulebook(GLK_EVENT_HANDLING_RB, Glk_Event_Struct_type, true);
-	} until (glk_event_type_changed == 0);
+		glk_event_replaced = 0;
+		FollowRulebook(GLK_EVENT_HANDLING_RB, current_glk_event-->GLK_EVENT_TYPE_SF, true);
+	} until (glk_event_replaced == 0);
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
-	! Copy back to the original event structure
-	event_struct-->0 = Glk_Event_Struct_type;
-	if (Glk_Event_Struct_win) {
-		event_struct-->1 = Glk_Event_Struct_win.glk_ref;
-	}
-	else {
-		event_struct-->1 = 0;
-	}
-	event_struct-->2 = Glk_Event_Struct_val1;
-	event_struct-->3 = Glk_Event_Struct_val2;
+	GLK_EVENT_TY_To_Struct(current_glk_event, event_struct);
 	rfalse;
 ];
 
-@ |CheckEventType| checks the current event type and raises a RTP if it doesn't
-match.
-
-=
-[ CheckEventType type;
-	if (type ~= Glk_Event_Struct_type) {
-		IssueRTP("WrongEventType", "Glk event phrase called for wrong event type.", Architecture32KitRTPs);
-	}
-];
-
-@ |ProcessGlkEvent| replaces the current glk event with a new one, and tells
-glk_select to re-run the glk event handling rules. It also ensures that if
-there are any pending keyboard input requests they will be cancelled if the
-new event is a keyboard event.
-
-=
-[ ProcessGlkEvent type win val1 val2;
-	RulebookSucceeds();
-	Glk_Event_Struct_type = type;
-	if (win) {
-		Glk_Event_Struct_win = win;
-	}
-	else if (Glk_Event_Struct_win == GLK_NULL && (type == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink)) {
-		IssueRTP("ProcessWindowEventWithoutWindow", "Can't process a window-based event when there is no event window.", Architecture32KitRTPs);
-		return;
-	}
-	! Fix the coordinates of grid window mouse events
-	if (type == evtype_MouseInput && Glk_Event_Struct_win.glk_window_type == wintype_TextGrid) {
-		val1 = val1 - 1;
-		val2 = val2 - 1;
-	}
-	! If the new event is text input, cancel a pending request
-	if (type == evtype_CharInput or evtype_LineInput) {
-		if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
-			glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
-		}
-		else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
-			glk_cancel_line_event(Glk_Event_Struct_win.glk_ref);
-		}
-		Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
-	}
-	! If the current event type is line input, update the current buffer length
-	if (type == evtype_LineInput) {
-		Glk_Event_Struct_val1 = Glk_Event_Struct_win.line_input_buffer_curlen;
-	}
-	else {
-		Glk_Event_Struct_val1 = val1;
-	}
-	Glk_Event_Struct_val2 = val2;
-	glk_event_type_changed = 1;
-];
-
-@ These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.
+@h Glk character event function keycodes.
+These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.
 
 =
 Constant FunctionKeyCodesCount = 25;
@@ -585,8 +788,8 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 		IssueRTP("WindowHasNoBuffer", "Cannot set current line input of a window which has never requested line input.", Architecture32KitRTPs);
 		return;
 	}
-	if (win.text_input_status == INPUT_STATUS_SUSPENDED_LINE or INPUT_STATUS_SUSPENDED_LINE_UNI) {
-		IssueRTP("WindowHasPendingLineInput", "Cannot set current line input of a window with pending line input.", Architecture32KitRTPs);
+	if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+		IssueRTP("WindowHasActiveLineInput", "Cannot set current line input of a window with active line input.", Architecture32KitRTPs);
 		return;
 	}
 	buf = win.line_input_buffer_addr;
@@ -613,8 +816,8 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 	TEXT_TY_Untransmute(txt, p, cp);
 	win.line_input_buffer_curlen = i;
 	! If the current event is a line input event in this window, update event val 1
-	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win == win) {
-		Glk_Event_Struct_val1 = i;
+	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_LineInput && current_glk_event-->GLK_EVENT_WINDOW_SF == win) {
+		current_glk_event-->GLK_EVENT_VALUE1_SF = i;
 	}
 ];
 

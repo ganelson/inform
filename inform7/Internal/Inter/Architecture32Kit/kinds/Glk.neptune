@@ -1,7 +1,7 @@
 new base GLK_FEATURE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
-	singular: glk feature
-	plural: glk features
+	singular: Glk feature
+	plural: Glk features
 
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
@@ -32,8 +32,8 @@ new base GLK_FEATURE_TY {
 
 new base GLULX_FEATURE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
-	singular: glulx feature
-	plural: glulx features
+	singular: Glulx feature
+	plural: Glulx features
 
 	specification-text: Glulx features which may or may not be supported by the interpreter.
 
@@ -48,12 +48,34 @@ new base GLULX_FEATURE_TY {
 	instance: double precision real numbers feature = GLULX_GESTALT_Double       = 13
 }
 
+new base GLK_EVENT_TY {
+	conforms-to: POINTER_VALUE_TY
+	singular: Glk event
+	plural: Glk events
+	
+	short-block-size: 5
+	long-block-size: 0
+
+	can-exchange: no
+	constant-compilation-method: none
+	
+	compare-function: GLK_EVENT_TY_Compare
+	copy-function: GLK_EVENT_TY_Copy
+	create-function: GLK_EVENT_TY_Create
+	destroy-function: GLK_EVENT_TY_Destroy
+	say-function: GLK_EVENT_TY_Say
+
+	index-priority: 2
+	index-default-value: null event
+	specification-text: An input/output event created by or for the Glk interface. For example, a key having been pressed, a click or a tap, or a timer running out can all lead to Glk events.
+}
+
 new base GLK_EVENT_TYPE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
-	singular: glk event
-	plural: glk events
+	singular: Glk event type
+	plural: Glk event types
 
-	specification-text: A Glk event sent from the interpreter.
+	specification-text: Type of a Glk event.
 
 	instance: null event                 = evtype_None_         = 0
 	instance: timer event                = evtype_Timer_        = 1
@@ -69,8 +91,8 @@ new base GLK_EVENT_TYPE_TY {
 
 new base GLK_WINDOW_TYPE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
-	singular: glk window type
-	plural: glk window types
+	singular: Glk window type
+	plural: Glk window types
 
 	specification-text: Type of a Glk window.
 

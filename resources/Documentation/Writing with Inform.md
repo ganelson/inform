@@ -18314,7 +18314,7 @@ Glk windows have two `number` properties, `rock number` and `glk window handle`:
 
 ## Glk events
 
-An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event` identifies them. Here is the complete list:
+An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event type` identifies them. Here is the complete list:
 
 Value                        | Meaning
 ---------------------------- | ---------------------
@@ -18329,9 +18329,9 @@ Value                        | Meaning
 `sound notification event`   | A sound effect has finished playing.
 `volume event`               | A change in sound volume has completed.
 
-Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`. Inform defines an event as `independent of the player` if it occurred because of some earlier decision by the story, and `dependent on the player` if it occurred because of spontaneous input such as pressing a key or clicking a mouse.
+Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
 
-The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event based rulebook`.
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`.
 
 ## Keyboard input
 
