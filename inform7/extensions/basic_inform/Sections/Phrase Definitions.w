@@ -1976,7 +1976,7 @@ To fill/redraw the/-- status bar/line/window with (new status table - a table-na
 	if once only:
 		now the status window table is the old status window table;
 
-To move the status bar/line/window cursor to row (row - number) column (col - number):
+To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
 To set the status bar/line/window to (rows - number) row/rows:

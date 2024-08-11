@@ -18238,13 +18238,13 @@ In short, the _screen_ is a rectangular space we can use. We cannot control its 
 
 What we can control is how the screen is divided up into panels which can either display text, or accept typed text from the keyboard, or both. Those panels are called _windows_, but they aren't like the windows which Mac or Windows users are accustomed to. If two windows have positions which overlap, one has to be entirely inside the other. Windows also have no backgrounds: a window in which no text or image has been placed is invisible.
 
-The kind `glk window` holds all of the windows used by a story. Windows must all be declared explicitly in the source text, except that four are declared for us already in Basic Inform. Many stories never need more than those four. By default,
+The kind `glk window` holds all of the windows used by a story. Windows must all be declared explicitly in the source text, except that three are declared for us already in Basic Inform. Many stories never need more than those three. By default,
 
 	the list of glk windows
 
 produces
 
-	{main window, status window, quote window, unknown window}
+	{main window, status window, quote window}
 
 In fact, Inform provides three different kinds of window:
 
@@ -18264,7 +18264,6 @@ then we get, assuming we haven't created any extra windows or types,
 main window: text buffer window type.
 status window: text grid window type.
 quote window: text buffer window type.
-unknown window: text buffer window type.
 ```
 
 So, what goes on here?
@@ -18274,8 +18273,6 @@ So, what goes on here?
 - The `status window` is a `text grid window`. This is traditionally a bar across the top line or two of the screen, which is a sort of summary of the situation. In an IF story it might show the current room name, and/or the score, number of turns played, or time of day. The type this time is `text grid`, which means that text appears on it at regularly-spaced grid positions, rather like typewritten letters. Here a "w" will be the same width as an "i", or a space, or anything else.
 
 - The `quote window` is a `text buffer window`. This can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
-
-- And the `unknown window` is never used at all. It's a sort of "no such window" value, and no text should ever be written to it or read from it.
 
 There's also a third glk window type, `graphics`, but in the default setup stories are pure textual and no window exists with this type. That doesn't mean that the main window can't display pictures, or emoji: but only a `graphics` window can plot arbitrary shapes or designs. Inform doesn't provide phrases for doing that in its basic installation, but extensions do.
 
@@ -18317,7 +18314,7 @@ Glk windows have two `number` properties, `rock number` and `glk window handle`:
 
 ## Glk events
 
-An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event` identifies them. Here is the complete list:
+An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event type` identifies them. Here is the complete list:
 
 Value                        | Meaning
 ---------------------------- | ---------------------
@@ -18332,9 +18329,9 @@ Value                        | Meaning
 `sound notification event`   | A sound effect has finished playing.
 `volume event`               | A change in sound volume has completed.
 
-Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`. Inform defines an event as `independent of the player` if it occurred because of some earlier decision by the story, and `dependent on the player` if it occurred because of spontaneous input such as pressing a key or clicking a mouse.
+Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
 
-The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event based rulebook`.
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`.
 
 ## Keyboard input
 
