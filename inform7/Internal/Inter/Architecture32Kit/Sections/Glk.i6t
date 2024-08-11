@@ -467,7 +467,7 @@ be used by |glk_select|. It also handles a few event maintenance tasks.
 		evtype_MouseInput:
 			win_obj.requesting_mouse = false;
 		evtype_Hyperlink:
-			win_obj.requesting_hyperlink = false;
+			glk_request_hyperlink_event(win_obj.glk_ref);
 	}
 	return ev;
 ];
@@ -610,16 +610,6 @@ requested.
 	return 0;
 ];
 
-[ glk_cancel_hyperlink_event win win_obj;
-	@push win;
-	@glk 259 1 0;
-	win_obj = FindGlkWindowFromRefNum(win);
-	if (win_obj) {
-		win_obj.requesting_hyperlink = false;
-	}
-	return 0;
-];
-
 [ glk_cancel_line_event win event_struct win_obj;
 	if (event_struct == 0) {
 		event_struct = gg_arguments;
@@ -661,16 +651,6 @@ requested.
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
 		win_obj.text_input_status = INPUT_STATUS_ACTIVE_CHAR_UNI;
-	}
-	return 0;
-];
-
-[ glk_request_hyperlink_event win win_obj;
-	@push win;
-	@glk 258 1 0;
-	win_obj = FindGlkWindowFromRefNum(win);
-	if (win_obj) {
-		win_obj.requesting_hyperlink = true;
 	}
 	return 0;
 ];
@@ -787,7 +767,6 @@ back to 32 bits.
 [ HANDLE_HYPERLINK_R val;
 	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_Hyperlink) {
 		val = current_glk_event-->GLK_EVENT_VALUE1_SF;
-		glk_request_hyperlink_event((current_glk_event-->GLK_EVENT_WINDOW_SF).glk_ref);
 		hyperlink_value = val & hyperlink_payload_mask;
 		if (hyperlink_value < 0) {
 			hyperlink_value = hyperlink_value | hyperlink_tag_mask;

@@ -200,7 +200,7 @@ The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
 To say link (T - hyperlink tag):
 	(- MakeTaggedHyperlink({T}); -).
 
-To say link (T - hyperlink tag) of (V - value of kind K):
+To say link (T - hyperlink tag) for/of/with (V - value of kind K):
 	(- MakeTaggedHyperlink({T}, {-by-reference:V}, {-strong-kind:K}); -).
 
 To say end link:
@@ -240,8 +240,6 @@ Chapter - Suspending and resuming input
 
 A glk window has a text input status.
 The text input status property translates into Inter as "text_input_status".
-A glk window can be requesting hyperlink input.
-The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
