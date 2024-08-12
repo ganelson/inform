@@ -5,6 +5,7 @@ Index: BUY command and money, complete with denominations
 Description: A more intricate system of money, this time keeping track of the individual denominations of coins and bills, specifying what gets spent at each transaction, and calculating appropriate change.
 For: Z-Machine
 
+^^{money (implementing): with denominations}
 ^^{buying+action+: money, complete with denominations}
 
 Typically games which keep track of the player's wealth need only do so as an abstract number, but occasionally it becomes useful to represent money as physical coins and bills. Here is an example that does exactly that:

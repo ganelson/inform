@@ -5,6 +5,7 @@ Index: BUY command and a system of money
 Description: A treatment of money which keeps track of how much the player has on them, and a ``BUY`` command which lets them go shopping.
 For: Z-Machine
 
+^^{money (implementing)}
 ^^{buying+action+: a system of money}
 
 In our brave new world, everything will have a price, so we had better spell this out.

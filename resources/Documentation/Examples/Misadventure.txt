@@ -5,7 +5,7 @@ Index: GO TO ROOM command
 Description: A going by name command which does respect movement rules, and accepts names of rooms as commands.
 For: Z-Machine
 
-^^{>GO: GO TO ROOM command}
+^^{>GO: (GO TO ROOM) command+commandpart+}
 
 The original Adventure allowed the player to type the names of rooms in order to move to them, and it is now not too difficult for us to do the same. Adventure restricted this option to adjacent rooms, but we might want to be a bit more flexible, so we will accept any room:
 

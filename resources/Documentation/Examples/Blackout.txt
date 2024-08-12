@@ -5,7 +5,9 @@ Index: Filtering text output in room names
 Description: Filtering the names of rooms printed while in darkness.
 For: Z-Machine
 
-^^{Filtering text output in room names}
+^^{text: replacing parts of a text}
+^^{characters (letters): replacing in text} ^^{regular expressions} ^^{text: regular expressions}
+^^{darkness: printing the name of a dark room+activity+} ^^{names: printing the name of a dark room+activity+} ^^{rooms+kind+: name of a dark room}
 
 In this example, we want the names of rooms to be asterisked out if the player wanders around without the benefit of a candle. We can do this by treating the room names as text, then replacing every letter:
 

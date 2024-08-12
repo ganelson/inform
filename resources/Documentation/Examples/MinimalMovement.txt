@@ -5,7 +5,7 @@ Index: GO equivalent to GO OUT
 Description: Supplying a default direction for ``GO``, so that ``LEAVE``, ``GO``, etc., are always interpreted as ``OUT``.
 For: Z-Machine
 
-^^{>GO: equivalent to GO OUT}
+^^{>GO: equivalent to (GO OUT)+commandpart+}
 
 Sometimes it would be nice to respond a little more sensitively to a vague command such as ``LEAVE`` – converting it, perhaps, to a ``GO OUT`` command.
 

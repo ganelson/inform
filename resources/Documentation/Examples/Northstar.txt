@@ -5,7 +5,9 @@ Index: ASK person TO do something, understood
 Description: Making Inform understand ``ASK JOSH TO TAKE INVENTORY`` as ``JOSH, TAKE INVENTORY``. This requires us to use a regular expression on the player's command, replacing some of the content.
 For: Z-Machine
 
-^^{asking (actor) to try+action+: understanding ASK ACTOR TO}
+^^{regular expressions: in the player's command} ^^{text: regular expressions}
+^^{reading a command+activity+: to modify the player's command} ^^{understanding: modifying the player's command}
+^^{asking (actor) to try+action+: understanding (ASK ACTOR TO)+commandpart+}
 
 Most of the time, Inform understands commands to other characters when they take the form ``JOSH, TAKE INVENTORY`` or ``JOAN, WEAR THE ARMOR``. But novice players might also try commands of the form ``ASK JOSH TO TAKE INVENTORY`` or ``ORDER JOAN TO WEAR THE ARMOR``.
 

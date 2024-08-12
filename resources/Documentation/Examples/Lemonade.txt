@@ -6,6 +6,8 @@ Description: Containers for liquid which keep track of how much liquid they are 
 For: Z-Machine
 
 ^^{liquids (implementing): containers with measured contents}
+^^{containers+kind+: liquids in containers}
+^^{units of measure: arithmetic} ^^{calculation: arithmetic with units}
 
 Liquids, and all substances that can be mixed or broken off in partial amounts, pose a challenge to model in interactive fiction. The following example is a simple one, but adequate for many scenarios.
 
