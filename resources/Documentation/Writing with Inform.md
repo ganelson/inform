@@ -18207,7 +18207,7 @@ Here `glk feature` is a kind of value. So, for example,
 might produce:
 
 	timers feature: true.
-	glk graphics feature: true.
+	graphics feature: true.
 	basic sounds feature: true.
 	sound volume feature: true.
 	sound notifications feature: true.
@@ -18288,7 +18288,7 @@ There's also a third glk window type, `graphics`, but in the default setup stori
 >
 > If the window is closed, this returns 0 whatever the type.
 
-The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant and complex mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
+The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
 
 But even an unextended Inform allows the following:
 
@@ -18306,9 +18306,9 @@ But even an unextended Inform allows the following:
 >
 > The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
 >
-> Both coordinates must be positive numbers: the top left position in a grid is row 1, column 1. If the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 80, and the bottom right is row 3, column 80. Setting to row 1, column 81 is equivalent to row 2, column 1 — in other words, column positions "wrap around" much as text does, continuing from the left on the next row. Setting to row 1, column 240 therefore puts the cursor in the bottom right.
+> The top left position in a grid is row 0, column 0. If the grid is, say, 80 characters wide by 3 characters high then the top right is row 0, column 79, and the bottom right is row 2, column 79. This phrase intentionally tries to deal with out-of-range column values in a forgiving way: if the column is a negative value, it's rounded up to 0, and if it exceeds the width of the grid, the position is column 0 on the _next_ row. If the row is negative, that throws a run-time problem, but if the row exceeds the possible height, all that happens is that any text printed there is invisible.
 >
-> It is legal to set either row or column to be so high that the combined effect places the cursor in a position outside (i.e. below) the grid entirely. But any text printed there will go undisplayed.
+> So the net effect is that the cursor column is always in range after this call, but that the row might perhaps be off the bottom, in which case any text printed will be thrown away and not displayed.
 
 Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
 
@@ -18330,6 +18330,8 @@ Value                        | Meaning
 `volume event`               | A change in sound volume has completed.
 
 Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
+
+A full `glk event` value 
 
 The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`.
 
