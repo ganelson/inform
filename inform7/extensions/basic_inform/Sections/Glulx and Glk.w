@@ -144,10 +144,12 @@ To decide what glk event is a/-- hyperlink event for/of/with (val - number):
 To decide what glk event is a/-- hyperlink event for/of/with (val - number) in (win - glk window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).
 
-To decide what glk event type is type of (ev - glk event):
+To decide what glk event type is type of (ev - glk event)
+	(documented at ph_glkeventtype):
 	(- GLK_EVENT_TY_Type({ev}) -).
 
-To decide what glk window is window of (ev - glk event):
+To decide what glk window is window of (ev - glk event)
+	(documented at ph_glkeventwindow):
 	(- GLK_EVENT_TY_Window({ev}) -).
 
 To decide what unicode character is the character value of (ev - glk event):

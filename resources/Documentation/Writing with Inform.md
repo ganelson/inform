@@ -18306,9 +18306,12 @@ But even an unextended Inform allows the following:
 >
 > The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
 >
-> The top left position in a grid is row 0, column 0. If the grid is, say, 80 characters wide by 3 characters high then the top right is row 0, column 79, and the bottom right is row 2, column 79. This phrase intentionally tries to deal with out-of-range column values in a forgiving way: if the column is a negative value, it's rounded up to 0, and if it exceeds the width of the grid, the position is column 0 on the _next_ row. If the row is negative, that throws a run-time problem, but if the row exceeds the possible height, all that happens is that any text printed there is invisible.
+> The top left position in a grid is row 1, column 1. For example, if the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 1, and the bottom right is row 3, column 80. If the row and column supplied lie within the rectangle, that's where the cursor moves to. If not:
 >
-> So the net effect is that the cursor column is always in range after this call, but that the row might perhaps be off the bottom, in which case any text printed will be thrown away and not displayed.
+> - if the column is a negative value or zero, it's rounded up to 1, the leftmost position;
+> - if the column exceeds the width of the grid, the cursor moves to column 1 on the _next_ row;
+> - if the row is a negative value or zero, a run-time problem is thrown;
+> - if the row exceeds the height of the grid, the cursor is allowed to occupy this off-the-bottom position, but any text printed there is thrown away without being displayed.
 
 Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
 
@@ -18331,9 +18334,53 @@ Value                        | Meaning
 
 Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
 
-A full `glk event` value 
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`. This rulebook has a variable called `event`, which contains the full details within it, and has the kind `glk event`.
 
-The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`.
+The story can react to Glk events as they arise by providing rules for this rulebook. For example, this logs each event as it comes in:
+
+	A glk event handling rule:
+		say "Newsflash: [event]."
+
+Exactly what events come in may depend on which Glk interpreter is running the story, and what capabilities it has. For example, on the MacOS Inform app the first event logged when the story starts up is:
+
+``` transcript
+	Newsflash: screen resize event.
+```
+
+But on the Parchment website interpreter, we find:
+
+``` transcript
+	Newsflash: graphics window lost event.
+	Newsflash: screen resize event.
+	Newsflash: graphics window lost event.
+```
+
+So it may be advisable to remember that no two implementations of Glk are exactly the same, and no two environments for the story have exactly the same capacities. Typed commands do produce the same event on all platforms, though:
+
+``` transcript
+> WAIT
+Newsflash: line event ("wait") in the main window.
+Time passes.
+> LOOK
+Newsflash: line event ("look") in the main window.
+```
+
+The Newsflash rule ran twice there, once after each typed command, with two different values of `event`. But though they were different values of the `glk event` kind, they both had the same type, `line event`. (Glk events are a little like actions in that respect: `taking the book` and `taking the candle` are two different actions but have the same `action name`, i.e., `the taking action`.)
+
+Event types are useful because most of the time we want to write a rule applying to all events of a given type. This is why the rulebook is based on `glk event type` and not `glk event`. So, for instance:
+
+	A glk event handling rule for a timer event:
+		say "Time out! [event]."
+
+The different event types, and how to handle them, will be covered in subsequent sections. But these general phrases are worth knowing:
+
+> phrase: {ph_glkeventtype} type of (glk event) ... glk event type
+>
+> Fairly self-explanatory: every `glk event` falls into one of (currently) 10 types, which are the possible values of `glk event type`.
+
+> phrase: {ph_glkeventwindow} window of (glk event) ... glk window
+>
+> Some events take place in or on a given window: for example, commands are typed into windows, so line events have a window, and a mouse event indicates a click or tap on a window. For those events, this returns the window in question; for events not tied to any specific window, such as a screen resize event (affecting every window) or a timer event (nothing to do with the screen), this returns `nothing`.
 
 ## Keyboard input
 

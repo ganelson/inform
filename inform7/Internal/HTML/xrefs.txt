@@ -258,6 +258,7 @@ ph_writetext ph_appendtext ph_saytext _ WI_25_14 "25.14" "25.14. Writing, readin
 ph_fileready ph_markfileready ph_markfilenotready _ WI_25_15 "25.15" "25.15. Exchanging files with other programs"
 ph_glksupported ph_glkversion _ WI_26_1 "26.1" "26.1. Glk"
 ph_glkwindowheight ph_glkwindowwidth ph_glkwindowclear ph_glkwindowfocus ph_glksetcursor _ WI_26_2 "26.2" "26.2. Dividing the screen into windows"
+ph_glkeventtype ph_glkeventwindow _ WI_26_3 "26.3" "26.3. Glk events"
 PM_BadEpisode _ WI_28_2 "28.2" "28.2. Bibliographic data"
 LCARDS _ WI_28_4 "28.4" "28.4. The Library Card"
 IFIDS _ WI_28_5 "28.5" "28.5. The Treaty of Babel and the IFID"
