@@ -120,14 +120,16 @@ Chapter - Glk events
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
 
-To decide what glk event is a/-- character event for/of/with (C - unicode character):
+To decide what glk event is a/-- character event with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event for/of/with (C - unicode character) in (win - glk window):
+To decide what glk event is a/-- character event with (C - unicode character) in (win - glk window)
+	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
-To decide what glk event is a/-- line event for/of/with (T - text):
+To decide what glk event is a/-- line event with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event for/of/with (T - text) in (win - glk window):
+To decide what glk event is a/-- line event with (T - text) in (win - glk window)
+	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
 To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/--:
@@ -152,7 +154,8 @@ To decide what glk window is window of (ev - glk event)
 	(documented at ph_glkeventwindow):
 	(- GLK_EVENT_TY_Window({ev}) -).
 
-To decide what unicode character is the character value of (ev - glk event):
+To decide what unicode character is the character value of (ev - glk event)
+	(documented at ph_glkeventcharactervalue):
 	(- GLK_EVENT_TY_Value1({ev}) -).
 
 To decide what number is the x coordinate of (ev - glk event):
@@ -167,7 +170,8 @@ To decide what number is the column of (ev - glk event):
 To decide what number is the hyperlink value of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}) -).
 
-To decide what text is the text of (ev - glk event):
+To decide what text is the text of (ev - glk event)
+	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
 
 @ And now the glk event handling rules themselves.
