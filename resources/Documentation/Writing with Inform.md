@@ -22392,6 +22392,7 @@ In practice, this is a very rickety way to define bizarre control structures, bu
 ## Defining segmented text substitutions with I6
 
 ^^{Inform 6 inclusions: phrase elements}
+^^{text substitutions: defining: segmented} ^^{defining: text substitutions: segmented}
 
 A "segmented" text substitution is a syntax where text is placed between two or more different text substitutions. For example:
 
