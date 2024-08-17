@@ -18207,7 +18207,7 @@ Here `glk feature` is a kind of value. So, for example,
 might produce:
 
 	timers feature: true.
-	glk graphics feature: true.
+	graphics feature: true.
 	basic sounds feature: true.
 	sound volume feature: true.
 	sound notifications feature: true.
@@ -18288,7 +18288,7 @@ There's also a third glk window type, `graphics`, but in the default setup stori
 >
 > If the window is closed, this returns 0 whatever the type.
 
-The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant and complex mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
+The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
 
 But even an unextended Inform allows the following:
 
@@ -18306,9 +18306,12 @@ But even an unextended Inform allows the following:
 >
 > The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
 >
-> Both coordinates must be positive numbers: the top left position in a grid is row 1, column 1. If the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 80, and the bottom right is row 3, column 80. Setting to row 1, column 81 is equivalent to row 2, column 1 — in other words, column positions "wrap around" much as text does, continuing from the left on the next row. Setting to row 1, column 240 therefore puts the cursor in the bottom right.
+> The top left position in a grid is row 1, column 1. For example, if the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 1, and the bottom right is row 3, column 80. If the row and column supplied lie within the rectangle, that's where the cursor moves to. If not:
 >
-> It is legal to set either row or column to be so high that the combined effect places the cursor in a position outside (i.e. below) the grid entirely. But any text printed there will go undisplayed.
+> - if the column is a negative value or zero, it's rounded up to 1, the leftmost position;
+> - if the column exceeds the width of the grid, the cursor moves to column 1 on the _next_ row;
+> - if the row is a negative value or zero, a run-time problem is thrown;
+> - if the row exceeds the height of the grid, the cursor is allowed to occupy this off-the-bottom position, but any text printed there is thrown away without being displayed.
 
 Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
 
@@ -18331,15 +18334,101 @@ Value                        | Meaning
 
 Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
 
-The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`.
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`. This rulebook has a variable called `event`, which contains the full details within it, and has the kind `glk event`.
 
-## Keyboard input
+The story can react to Glk events as they arise by providing rules for this rulebook. For example, this logs each event as it comes in:
 
-As has already been hinted (see [Dividing the screen into windows]), windows channel text input as well as text output.
+	A glk event handling rule:
+		say "Newsflash: [event]."
 
-There are times when individual key-presses matter — for example, if the user presses a cursor key to navigate a menu, and we have to react immediately — and then there are times when we don't care what is being typed until an entire command has been entered. That's why there are two different keyboard events: `character event` and `line event`.
+Exactly what events come in may depend on which Glk interpreter is running the story, and what capabilities it has. For example, on the MacOS Inform app the first event logged when the story starts up is:
 
-Which ones are sent to the story depends on what the story has asked to receive. In a standard command-parser story, for example, we don't care about the individual keypresses. If the player is typing ``EAT CAKE``, we don't want to receive a stream of character events (E, A, Y, delete, T, space, ...): we just want a line event to say that a complete command has now been typed.
+``` transcript
+	Newsflash: screen resize event.
+```
+
+But on the Parchment website interpreter, we find:
+
+``` transcript
+	Newsflash: graphics window lost event.
+	Newsflash: screen resize event.
+	Newsflash: graphics window lost event.
+```
+
+So it may be advisable to remember that no two implementations of Glk are exactly the same, and no two environments for the story have exactly the same capacities. Typed commands do produce the same event on all platforms, though:
+
+``` transcript
+> WAIT
+Newsflash: line event ("wait") in the main window.
+Time passes.
+> LOOK
+Newsflash: line event ("look") in the main window.
+```
+
+The Newsflash rule ran twice there, once after each typed command, with two different values of `event`. But though they were different values of the `glk event` kind, they both had the same type, `line event`. (Glk events are a little like actions in that respect: `taking the book` and `taking the candle` are two different actions but have the same `action name`, i.e., `the taking action`.)
+
+Event types are useful because most of the time we want to write a rule applying to all events of a given type. This is why the rulebook is based on `glk event type` and not `glk event`. So, for instance:
+
+	A glk event handling rule for a timer event:
+		say "Time out! [event]."
+
+The different event types, and how to handle them, will be covered in subsequent sections. But these general phrases are worth knowing:
+
+> phrase: {ph_glkeventtype} type of (glk event) ... glk event type
+>
+> Fairly self-explanatory: every `glk event` falls into one of (currently) 10 types, which are the possible values of `glk event type`.
+
+> phrase: {ph_glkeventwindow} window of (glk event) ... glk window
+>
+> Some events take place in or on a given window: for example, commands are typed into windows, so line events have a window, and a mouse event indicates a click or tap on a window. For those events, this returns the window in question; for events not tied to any specific window, such as a timer event, this returns `nothing`.
+
+## Character and line events
+
+As has already been hinted (see [Dividing the screen into windows]), windows channel text input as well as text output. There are times when individual key-presses matter — for example, if the user presses a cursor key to navigate a menu, and we have to react immediately — and then there are times when we don't care what is being typed until an entire command has been entered. That's why there are two different keyboard events: `character event` and `line event`.
+
+* A `character event` is the pressing of a key, or strictly speaking, the input of a character from the keyboard. If the user presses and releases the shift key, for example, that won't generate a character event. Typing the 7 key will do, however, as will typing shift-7, which on most keyboards will lead to a character event with the ``&`` symbol.
+
+* A `line event` marks when a complete line has been fully typed in, and the user has indicated that it's finished by pressing the RETURN or ENTER key. (That end-marker does not become part of the text of the command.)
+
+### How to request these events
+
+Glk sends us events only if we have requested them. By default, an Inform story never requests character events. Traditionally turn-by-turn command parser stories only care about entire commands, not individual keypresses. If the player is typing ``EAT CAKE``, we don't want to receive a stream of character events (E, A, Y, delete, T, space, ...).
+
+An Inform story requests a line event only when it has, in effect, halted waiting for a command to be typed in. But since Inform stories usually print quickly and spend most of the time waiting for player input, this means they are almost always requesting line events.
+
+### Details for these events
+
+Both character and line events are tied to windows, so `window of (glk event)` can be used to find which.
+
+> phrase: {ph_glkeventcharactervalue} character value of (glk event) ... unicode character
+>
+> For a character event, this returns the character in question: for any other event, it returns `U+003F`, that is, the Unicode value for a question mark.
+
+> phrase: {ph_glkeventtextvalue} text value of (glk event) ... text
+>
+> For a line event, this returns the text of the line. For any other event, it throws a run-time problem.
+
+### Fictitious character and line events
+
+Some types of event can be created even though they haven't happened yet, and the two keyboard types are a case in point. It may seem peculiar to create fictitious Glk events, but it turns out be very useful in order to, say, treat mouse clicks as if they were keypresses or commands, as we shall see. Here are the phrases to create such events:
+
+> phrase: {ph_glkcharacterevent} character event with (unicode character) in (glk window) ... glk event
+>
+> This produces an event value exactly like that which would have been generated by glk if a key with the given character had been typed in the given window.
+> 
+> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
+
+> phrase: {ph_glklineevent} line event with (text) in (glk window) ... glk event
+>
+> This produces an event value exactly like that which would have been generated by glk if the given whole command had been typed in the given window. There's no necessity for the text to be in upper case, or for that matter in lower case. These all produce different events:
+>
+>     line event with "GATHER YE ROSEBUDS" in main window
+>     line event with "GATHER   YE   ROSEBUDS" in main window
+>     line event with "gather ye rosebuds" in main window
+>
+> Though the Inform command parser would treat all three commands just the same, that all happens much higher up than in this input-output layer. The texts are different, so the events are different.
+> 
+> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
 
 ## Basic IO
 

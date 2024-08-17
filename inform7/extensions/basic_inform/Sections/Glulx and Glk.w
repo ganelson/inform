@@ -120,14 +120,16 @@ Chapter - Glk events
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
 
-To decide what glk event is a/-- character event for/of/with (C - unicode character):
+To decide what glk event is a/-- character event with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event for/of/with (C - unicode character) in (win - glk window):
+To decide what glk event is a/-- character event with (C - unicode character) in (win - glk window)
+	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
-To decide what glk event is a/-- line event for/of/with (T - text):
+To decide what glk event is a/-- line event with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event for/of/with (T - text) in (win - glk window):
+To decide what glk event is a/-- line event with (T - text) in (win - glk window)
+	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
 To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/--:
@@ -144,13 +146,16 @@ To decide what glk event is a/-- hyperlink event for/of/with (val - number):
 To decide what glk event is a/-- hyperlink event for/of/with (val - number) in (win - glk window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).
 
-To decide what glk event type is type of (ev - glk event):
+To decide what glk event type is type of (ev - glk event)
+	(documented at ph_glkeventtype):
 	(- GLK_EVENT_TY_Type({ev}) -).
 
-To decide what glk window is window of (ev - glk event):
+To decide what glk window is window of (ev - glk event)
+	(documented at ph_glkeventwindow):
 	(- GLK_EVENT_TY_Window({ev}) -).
 
-To decide what unicode character is the character value of (ev - glk event):
+To decide what unicode character is the character value of (ev - glk event)
+	(documented at ph_glkeventcharactervalue):
 	(- GLK_EVENT_TY_Value1({ev}) -).
 
 To decide what number is the x coordinate of (ev - glk event):
@@ -165,7 +170,8 @@ To decide what number is the column of (ev - glk event):
 To decide what number is the hyperlink value of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}) -).
 
-To decide what text is the text of (ev - glk event):
+To decide what text is the text of (ev - glk event)
+	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
 
 @ And now the glk event handling rules themselves.
@@ -174,8 +180,14 @@ To decide what text is the text of (ev - glk event):
 The glk event handling rules is a glk event type based rulebook.
 The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
 
-The current glk event is a glk event variable.
-The current glk event variable is defined by Inter as "current_glk_event".
+The glk event handling rulebook has a glk event called the event.
+
+The current glk event initialiser is a glk event variable.
+The current glk event initialiser variable is defined by Inter as "current_glk_event".
+
+First glk event handling rule for a glk event type
+	(this is the set glk event processing variables rule):
+	now the event is the current glk event initialiser.
 
 To process (ev - glk event):
 	(- GLK_EVENT_TY_Process({ev}); rtrue; -).

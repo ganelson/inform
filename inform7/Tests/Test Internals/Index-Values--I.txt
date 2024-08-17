@@ -35,7 +35,7 @@ up key - <i>unicode character</i><br>
 status window table - <i>table name</i><br>
 </p>
 <p><b>Glk events</b><br>
-current glk event - <i>glk event</i><br>
+current glk event initialiser - <i>glk event</i><br>
 </p>
 <p><b>Glk object recovery</b><br>
 current glk object rock number - <i>number</i><br>
