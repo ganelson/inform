@@ -5,7 +5,9 @@ Index: Status line with centered text, the hard way
 Description: A status line which has only the name of the location, centered.
 For: Z-Machine
 
-^^{Status line with centered text, the hard way}
+^^{kits (I6 code): including sections of I6}
+^^{I6: inclusions: long sections of code}
+^^{status line}
 
 Making major changes to display features, such as the construction of the status line, sometimes requires that we rely on Inform 6 in bulk; here is how we might produce the Trinity-style status line, with the location centered at the top center of the screen.
 

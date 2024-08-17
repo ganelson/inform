@@ -5,7 +5,7 @@ Index: Creating our own text variations rules
 Description: Making a `by atmosphere` token, allowing us to design our own text variations such as `"[one of]normal[or]gloomy[or]scary[by atmosphere]"`.
 For: Z-Machine
 
-^^{Inform 6 inclusions: phrase elements}
+^^{I6: inclusions: phrase elements}
 ^^{text substitutions: defining: segmented} ^^{defining: text substitutions: segmented}
 
 Suppose we are writing a game in which the mood of the piece changes, and we would like to have lots of descriptions that vary according to its current state. We might in that case want to create our own `"[by atmosphere]"` token, to control text variations, like this:
