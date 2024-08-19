@@ -5,7 +5,7 @@ Index: Pig Latin for the player's commands
 Description: A pig Latin filter for the player's commands.
 For: Z-Machine
 
-^^{Pig Latin for the player's commands}
+^^{text: replacing parts of a text} ^^{characters (letters): replacing in text} ^^{regular expressions: in the player's command} ^^{text: regular expressions}
 
 For the sake of argument, suppose we want to parrot back all the player's commands in pig Latin:
 

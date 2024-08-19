@@ -5,7 +5,8 @@ Index: Banner printing at appropriate times
 Description: Delaying the banner for later.
 For: Z-Machine
 
-^^{banner text}
+^^{banner text} ^^{when play begins+rb+: printing the banner text+activity+}
+^^{initial state of the world: delaying the banner text}
 
 	{*}"Bikini Atoll" by Edward Teller
 	

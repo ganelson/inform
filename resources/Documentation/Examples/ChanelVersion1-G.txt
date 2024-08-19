@@ -5,7 +5,7 @@ Index: HTML-style italic and boldface tags
 Description: Making paired italic and boldface tags like those used by HTML for web pages.
 For: Glulx
 
-^^{HTML-style italic and boldface tags}
+^^{fonts: italic / bold / roman}
 
 HTML uses angled brackets to achieve effects, and places italicised text between <i> and </i> tags; and similarly boldface between <b> and </b>. We can mimic this very easily by setting each up as a segmented substitution:
 

@@ -5,7 +5,8 @@ Index: Creating our own text variations rules, part two
 Description: Making a "by viewpoint" token, allowing us to design our own text variations such as "[show to yourself]quaint[to Lolita]thrilling[to everyone else]squalid[end show]" depending on the identity of the player at the moment.
 For: Z-Machine
 
-^^{Creating our own text variations rules, part two}
+^^{I6: inclusions: phrase elements}
+^^{text substitutions: defining: segmented} ^^{defining: text substitutions: segmented}
 
 A slightly more challenging case than the "by atmosphere" example is one in which we want to create text variations depending on the identity of our player character.
 

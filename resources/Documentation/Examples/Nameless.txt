@@ -5,7 +5,7 @@ Index: ASK someone ABOUT an object the same as SHOW
 Description: ASKing someone about an object rather than about a topic.
 For: Z-Machine
 
-^^{asking (actor) about+action+: an object the same as SHOW}
+^^{asking (actor) about+action+: an object the same as (SHOW)+commandpart+}
 
 By default, ``ASK SOMEONE ABOUT ...`` applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ``ASK PERSON ABOUT THING`` command that is mostly synonymous with ``SHOW``, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
 

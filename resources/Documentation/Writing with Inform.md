@@ -22480,7 +22480,8 @@ In practice, this is a very rickety way to define bizarre control structures, bu
 
 ## Defining segmented text substitutions with I6
 
-^^{Inform 6 inclusions: phrase elements}
+^^{I6: inclusions: phrase elements}
+^^{text substitutions: defining: segmented} ^^{defining: text substitutions: segmented}
 
 A "segmented" text substitution is a syntax where text is placed between two or more different text substitutions. For example:
 
@@ -22740,7 +22741,7 @@ Note that `DRIFTING_LILYPADS`, `SKIN_TYPE`, `FROG_COUNT` and `JUMP_HEIGHT` are a
 
 ## Phrase options from I6
 
-^^{Inform 6 inclusions: phrase options} ^^{phrases: defining in Inform 6}
+^^{I6: inclusions: phrase options} ^^{phrases: defining in Inform 6}
 
 The Standard Rules use the Inform list-writer with the following definition, which shows how a much more complicated I6 routine can be given a natural-language expression.
 
@@ -22770,6 +22771,8 @@ This can be used by, say:
 ## Inclusions of I6 code {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
 ^^{I6: inclusions: long sections of code}
+^^{kits (I6 code): replacing use of templates}
+^^{kits (I6 code): including sections of I6}
 
 With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
@@ -22844,7 +22847,7 @@ In particular:
 
 ## About kits
 
-^^{kits (I6 code)} ^^{I6: in kits}
+^^{kits (I6 code) <-- templates: I6 template layer} ^^{I6: in kits}
 
 A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: ```BasicInformKit```, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
