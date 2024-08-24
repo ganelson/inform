@@ -131,6 +131,8 @@ I6 routine "ObviouslyOccupied" says so (it contains at least one obvious thing).
 Definition: a supporter is obviously-occupied rather than possibly-unoccupied if
 I6 routine "ObviouslyOccupied" says so (it supports at least one obvious thing).
 
+Definition: a container is seemingly-empty if (it is open or it is transparent) and it is not obviously-occupied.
+
 Definition: a container (called c) is falsely-unoccupied:
   if the first thing held by it is nothing, no;
   if it is closed and it is opaque and it does not enclose the player, no;

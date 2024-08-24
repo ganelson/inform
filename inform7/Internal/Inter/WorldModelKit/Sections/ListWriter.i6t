@@ -173,7 +173,7 @@ Global MarkedObjectLength = 0;
 		MarkedObjectArray = RequisitionStack(length);
 		MarkedObjectLength = length;
 		if (MarkedObjectArray == 0)
-			return IssueRTP("ListWriterRanOutOfMemory",	
+			return IssueRTP("ListWriterRanOutOfMemory",
     			"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 		if (common_parent) {
@@ -318,10 +318,10 @@ very rapid anyway (because the player can only read very slowly).
     	START_ITF: return MarkedObjectArray-->0;
     	COALESCE_ITF: return MarkedListCoalesce();
     	SEEK_ITF, ADVANCE_ITF:
-			for (i=0: i<MarkedObjectLength: i++)
+			for (i=0: i<MarkedObjectLength: i++ )
 				if (MarkedObjectArray-->i == obj) {
 					if (function == ADVANCE_ITF) i++;
-					for (:i<MarkedObjectLength: i++) {
+					for (:i<MarkedObjectLength: i++ ) {
 						obj = MarkedObjectArray-->i;
 						if ((LT_Compare(required_lt, EMPTY_TEXT_VALUE) ~= 0) &&
 							(LT_Compare(obj.list_together, required_lt) ~= 0)) continue;
@@ -360,10 +360,10 @@ anyway.
 =
 [ ObviouslyOccupied o x;
   if (~~((o ofclass K5_container) || (o ofclass K6_supporter))) rfalse;
-  if (o has container && o hasnt open && o hasnt transparent) rfalse; ! opaque closed container's status can never be obvious
+  if ((o has container) && (o hasnt open) && (o hasnt transparent)) rfalse; ! opaque closed container's status can never be obvious
   x = child(o);
   while (x) {
-    if ((x hasnt concealed) && (~~TestConcealment(o, x))) rtrue;
+    if ((x hasnt concealed) && (~~(TestConcealment(o, x)))) rtrue;
     x = sibling(x);
   }
   rfalse;
@@ -374,20 +374,20 @@ The return value is the new first entry in the raw list.
 
 =
 [ MarkedListCoalesce o i lt l swap m;
-	for (i=0: i<MarkedObjectLength: i++) {
+	for (i=0: i<MarkedObjectLength: i++ ) {
 		lt = (MarkedObjectArray-->i).list_together;
 		if (LT_Compare(lt, EMPTY_TEXT_VALUE) ~= 0) {
 			! Find first object in list after contiguous run with this list_together value:
 			for (i++: (i<MarkedObjectLength) &&
-				(LT_Compare((MarkedObjectArray-->i).list_together, lt) == 0): i++) ;
+				(LT_Compare((MarkedObjectArray-->i).list_together, lt) == 0): i++ ) ;
 			! If the contiguous run extends to end of list, the list is now perfect:
 			if (i == MarkedObjectLength) return MarkedObjectArray-->0;
 			! And otherwise we look to see if any future entries belong in the earlier run:
-			for (l=i+1: l<MarkedObjectLength: l++)
+			for (l=i+1: l<MarkedObjectLength: l++ )
 				if (LT_Compare((MarkedObjectArray-->l).list_together, lt) == 0) {
 					! Yes, they do: so we perform a rotation to insert it before element i:
 					swap = MarkedObjectArray-->l;
-					for (m=l: m>i: m--) MarkedObjectArray-->m = MarkedObjectArray-->(m-1);
+					for (m=l: m>i: m-- ) MarkedObjectArray-->m = MarkedObjectArray-->(m-1);
 					MarkedObjectArray-->i = swap;
 					! And now the run is longer:
 					i++;
@@ -562,7 +562,7 @@ Global DBLW_no_classes; Global DBLW_no_objs;
 [ DebugPartition partition_class_sizes partition_classes first depth i k o;
 	print "[Length of list is ", DBLW_no_objs, " with ", k, " plural.]^";
 	print "[Partitioned into ", DBLW_no_classes, " equivalence classes.]^";
-    for (i=1: i<=DBLW_no_classes : i++) {
+    for (i=1: i<=DBLW_no_classes : i++ ) {
     	print "Class ", i, " has size ", partition_class_sizes->i, "^";
 	}
 	for (k=0, o=first: k<DBLW_no_objs : k++, o = c_iterator(o, depth, lt_value, ADVANCE_ITF)) {
@@ -579,14 +579,14 @@ accordingly. We return $n$, the number of classes.
 =
 [ PartitionList first no_objs depth partition_classes partition_class_sizes
 	i k l n m;
-    for (i=0: i<no_objs: i++) partition_classes->i = 0;
+    for (i=0: i<no_objs: i++ ) partition_classes->i = 0;
     n = 1;
-    for (i=first, k=0: k<no_objs: i=c_iterator(i, depth, lt_value, ADVANCE_ITF), k++)
+    for (i=first, k=0: k<no_objs: i=c_iterator(i, depth, lt_value, ADVANCE_ITF), k++ )
         if (partition_classes->k == 0) {
             partition_classes->k = n; partition_class_sizes->n = 1;
             for (l=c_iterator(i, depth, lt_value, ADVANCE_ITF), m=k+1:
             	(l~=0) && (m<no_objs):
-            	l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++) {
+                l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++ ) {
                 if ((partition_classes->m == 0) && (ListEqual(i, l))) {
                     if (partition_class_sizes->n < 255) (partition_class_sizes->n)++;
                     partition_classes->m = n;
@@ -609,24 +609,37 @@ is implemented, which in turn hangs on the |parse_noun| properties compiled
 by Inform. But this seems to be sound.
 
 =
-[ ListEqual o1 o2;
-  if (o1.KD_Count ~= o2.KD_Count) rfalse;
-  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
-  if (ObviouslyOccupied(o1) && WillRecurs(o1)) rfalse;
-  if (ObviouslyOccupied(o2) && WillRecurs(o2)) rfalse;
-  if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
-    if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
-    if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
-    if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open)) rfalse;
-  }
-  return Identical(o1, o2);
+
+Array NBUF1 --> TEXT_TY_BufferSize;
+Array NBUF2 --> TEXT_TY_BufferSize;
+
+[ StringEqualObjectNames o1 o2 i;
+  VM_PrintToBuffer(NBUF1, TEXT_TY_BufferSize, PSN__, o1);
+  VM_PrintToBuffer(NBUF2, TEXT_TY_BufferSize, PSN__, o2);
+#ifdef TARGET_GLULX;
+  for ( i = 0 : i <= NBUF1-->0 : i++ ) if (NBUF1-->i ~= NBUF2-->i) rfalse;
+#ifnot;
+  if (NBUF1-->0 ~= NBUF2-->0) rfalse;
+  for (i = WORDSIZE : i < ((NBUF1-->0) + WORDSIZE) : i++ ) if (NBUF1->i ~= NBUF2->i) rfalse;
+#endif;
+  rtrue;
 ];
 
-[ WillRecurs o;
-    if (c_style & ALWAYS_BIT ~= 0) rtrue;
-    if (c_style & RECURSE_BIT == 0) rfalse;
-    if ((o has supporter) || ((o has container) && (o has open or transparent))) rtrue;
-    rfalse;
+[ ListEqual o1 o2 v1 v2;
+  if (o1.KD_Count ~= o2.KD_Count) rfalse;
+  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
+  ! only containers get labeled empty, so DetailFlags only calls ObviouslyOccupied for containers
+  ! so for supporter case we have to test here
+  if (o1 ofclass K6_supporter) {
+    v1 = ObviouslyOccupied(o1);
+    if (v1 && ((c_style & ALWAYS_BIT) || (~~(c_style & RECURSE_BIT)))) rfalse;
+    v2 = ObviouslyOccupied(o1);
+    if (v2 && ((c_style & ALWAYS_BIT) || (~~(c_style & RECURSE_BIT)))) rfalse;
+    if (v1 ~= v2) rfalse;
+  }
+  if ((c_style & FULLINV_BIT) && (DetailFlags(o1,1,1) ~= DetailFlags(o2,1,1))) rfalse;
+  else if ((c_style & PARTINV_BIT) && (DetailFlags(o1,0,1) ~= DetailFlags(o2,0,1))) rfalse;
+  return StringEqualObjectNames(o1, o2);
 ];
 
 @h Grouping.
@@ -680,7 +693,7 @@ in the above sense.
 	current_lt = EMPTY_TEXT_VALUE;
 	lt = EMPTY_TEXT_VALUE;
 	no_groups = no_classes;
-    for (cl=1, memb=o, k=0: cl<=no_classes: cl++) {
+    for (cl=1, memb=o, k=0: cl<=no_classes: cl++ ) {
     	! Advance to first member of class number cl
         while (partition_classes->k ~= cl) {
             k++; memb = c_iterator(memb, depth, lt_value, ADVANCE_ITF);
@@ -720,6 +733,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 [ WriteListR o depth from_start
 	partition_classes partition_class_sizes
 	cl memb index k2 l m no_classes q groups_to_do current_lt;
+
     if (o == nothing) return; ! An empty list: no output
 
     if (from_start) {
@@ -742,7 +756,7 @@ The big one: |WriteListR| is the heart of the list-writer.
     partition_classes = RequisitionStack(index/WORDSIZE + 2);
     partition_class_sizes = RequisitionStack(index/WORDSIZE + 2);
     if ((partition_classes == 0) || (partition_class_sizes == 0))
-		return IssueRTP("ListWriterRanOutOfMemory",	
+		return IssueRTP("ListWriterRanOutOfMemory",
     		"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 	no_classes =
@@ -751,7 +765,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 	groups_to_do =
 		NumberOfGroupsInList(o, no_classes, depth, partition_classes, partition_class_sizes);
 
-    for (cl=1, memb=o, index=0, current_lt=EMPTY_TEXT_VALUE: groups_to_do>0: cl++) {
+    for (cl=1, memb=o, index=0, current_lt=EMPTY_TEXT_VALUE: groups_to_do>0: cl++ ) {
 		! Set memb to first object of partition class cl
         while (partition_classes->index ~= cl) {
         	index++; memb=c_iterator(memb, depth, lt_value, ADVANCE_ITF);
@@ -846,7 +860,7 @@ below, and {\it that} is where they are printed.
 		} else if (pv) {
 			! Set k2 to the number of objects covered by the group
 			k2 = 0;
-			for (l=0 : l<listing_size : l++) k2 = k2 + partition_class_sizes->(l+cl);
+			for (l=0 : l<listing_size : l++ ) k2 = k2 + partition_class_sizes->(l+cl);
 			EnglishNumber(k2); print " ";
 			print (TEXT_TY_Say) pv;
 			if (c_style & ENGLISH_BIT ~= 0) print " (";
@@ -932,68 +946,91 @@ achieved by calling |WriteListR|, using the |ObjectTreeIterator| (whatever
 the iterator used at the top level) and increasing the depth by 1.
 
 =
-[ WriteAfterEntry o depth
-    p recurse_flag parenth_flag eldest_child child_count combo;
+Constant LW_LIT    = $$01000000; ! 'D'
+Constant LW_WORN   = $$00100000; ! 'L'
+Constant LW_CLOSED = $$00010000; ! 'E'
+Constant LW_LOCKED = $$00001000; ! 'O'
+Constant LW_OPEN   = $$00000100; ! 'M'
+Constant LW_EMPTY  = $$00000010; ! 'F'
+Constant LW_OPEN_BUT_EMPTY = $$00000001; ! 'N'
 
+Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
+
+[ DetailFlags o invdesc empty_truth flags;
+   if (o has light && (invdesc || (location hasnt light))) flags = flags | LW_LIT; ! this is overly simplistic... it shouldn't be whether the location has light but whether the player would be in darkness without some lit object in the location that the player doesn't carry
+   if (o has worn) flags = flags | LW_WORN;
+   if (o has container) {
+     ! we can't know it's empty unless it's at least one of open or transparent
+     if ((((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) ) flags = flags | LW_EMPTY;
+     if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
+     if (o has openable) {
+       if (o has open) flags = flags | LW_OPEN;
+       else flags = flags | LW_CLOSED;
+     }
+   }
+  return flags;
+];
+
+[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma x;
+  flags = DetailFlags(o, invdesc);
+  if (flags) {
+   if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
+     flags = flags & (~(LW_OPEN + LW_EMPTY));
+     flags = flags | LW_OPEN_BUT_EMPTY;
+   }
+    current = LW_LIT; ! largest
+    #ifdef TARGET_ZCODE;
+    x = -1;
+    #endif;
+    while (current) { ! count bits by shifting right till we're at 0
+      if (flags & current) terms++;
+      #ifdef TARGET_ZCODE;
+      @log_shift current x -> current;
+      #ifnot;
+      @ushiftr current 1 current;
+      #endif;
+    }
+   last_index = terms - 1; ! where "and" goes if terms > 1
+   current = LW_LIT; ! largest
+   if ((terms > 2) && BasicInformKit`SERIAL_COMMA_CFGF) last_comma = last_index;
+   else last_comma = last_index - 1;
+   LW_Response('A'); ! " ("
+   while (current) {
+     if (flags & current) {
+       if (print_count) {
+         if (print_count <= last_comma) {
+           print ",";
+           if ((print_count ~= last_index) || (~~(BasicInformKit`SERIAL_COMMA_CFGF))) print " ";
+         }
+         if (print_count == last_index) LW_Response('Z', o); ! " and "
+       }
+       LW_Response(LW_Bit_To_Response->counter);
+       print_count++;
+     }
+     counter++;
+      #ifdef TARGET_ZCODE;
+      @log_shift current x -> current;
+      #ifnot;
+      @ushiftr current 1 current;
+      #endif;
+   }
+   LW_Response('B'); ! close bracket ")";
+ }
+];
+
+[ WriteAfterEntry o depth
+    p recurse_flag parenth_flag eldest_child child_count print_count flags terms empty bit_counter;
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
-        BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
-        if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-			combo = 0;
-			if (o has light && location hasnt light) combo=combo+1;
-			if (o has container && o hasnt open)     combo=combo+2;
-			if ((o has container && (o has open || o has transparent))
-				&& (child(o)==0))                    combo=combo+4;
-			if (combo) LW_Response('A'); ! space and open bracket
-			switch (combo) {
-				1: LW_Response('D', o);
-				2: LW_Response('E', o);
-				3: LW_Response('H', o);
-				4: LW_Response('F', o);
-				5: LW_Response('I', o);
-				6: LW_Response('G', o);
-				7: LW_Response('J', o);
-			}
-			if (combo) LW_Response('B'); ! close bracket
-		}
-        EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
+      BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
+      if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) WriteAfterEntryTerms(o);
+      EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
 
     if (c_style & FULLINV_BIT) {
-        BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
-        if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
-			if (o has light && o has worn) { LW_Response('A'); LW_Response('K', o);  parenth_flag = true; }
-			else {
-				if (o has light)           { LW_Response('A'); LW_Response('D', o);  parenth_flag = true; }
-				if (o has worn)            { LW_Response('A'); LW_Response('L', o); parenth_flag = true; }
-			}
-
-			if (o has container) {
-				if (o has openable) {
-					if (parenth_flag) {
-						if (BasicInformKit`SERIAL_COMMA_CFGF)
-							print ",";
-						LW_Response('C');
-					} else            LW_Response('A', o);
-					if (o has open) {
-						if (child(o)) LW_Response('M', o);
-						else          LW_Response('N', o);
-					} else {
-						if (o has lockable && o has locked) LW_Response('P', o);
-						else                                LW_Response('O', o);
-					}
-					parenth_flag = true;
-				}
-				else {
-					if (child(o)==0 && o has transparent) {
-						if (parenth_flag) { LW_Response('C'); LW_Response('F'); }
-						else              { LW_Response('A'); LW_Response('F'); LW_Response('B'); }
-					}
-				}
-			}
-			if (parenth_flag) LW_Response('B');
-		}
-        EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
+      BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
+      if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) WriteAfterEntryTerms(o, 1);
+      EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
     }   ! end of FULLINV_BIT processing
 
 	child_count = 0;

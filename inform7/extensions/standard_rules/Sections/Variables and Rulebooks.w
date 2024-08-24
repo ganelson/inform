@@ -1161,20 +1161,20 @@ The list writer internal rule is defined by Inter as
 	"LIST_WRITER_INTERNAL_R" with
 	" (" (A),
 	")" (B),
-	" and " (C),
+	" and " (C), [ as used by WriteListR ]
 	"providing light" (D),
 	"closed" (E),
 	"empty" (F),
-	"closed and empty" (G),
-	"closed and providing light" (H),
-	"empty and providing light" (I),
-    "closed, empty[if serial comma option is active],[end if] and providing light" (J),
-	"providing light and being worn" (K),
+	"closed and empty" (G), [ no longer used ]
+	"closed and providing light" (H), [ no longer used ]
+	"empty and providing light" (I), [ no longer used ]
+	"closed, empty[if serial comma option is active],[end if] and providing light" (J), [ no longer used ]
+	"providing light and being worn" (K), [ no longer used ]
 	"being worn" (L),
 	"open" (M),
 	"open but empty" (N),
-	"closed" (O),
-	"closed and locked" (P),
+	"locked" (O), [ was "closed", i.e., redundant with (E), prior to 11.0 ]
+	"closed and locked" (P), [ no longer used ]
 	"containing" (Q),
 	"on [if the noun is a person]whom[otherwise]which[end if] " (R),
 	", on top of [if the noun is a person]whom[otherwise]which[end if] " (S),
@@ -1183,7 +1183,8 @@ The list writer internal rule is defined by Inter as
 	"[regarding list writer internals][are]" (V),
 	"[regarding list writer internals][are] nothing" (W),
 	"Nothing" (X),
-	"nothing" (Y).
+	"nothing" (Y),
+	" and " (Z).
 
 The action processing internal rule is defined by Inter as
 	"ACTION_PROCESSING_INTERNAL_R" with
