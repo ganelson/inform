@@ -690,17 +690,17 @@ Constant wintype_TextGrid = 4;
   return 0;
 ];
 
-![ glk_request_hyperlink_event _vararg_count;
-!  ! glk_request_hyperlink_event(window)
-!  @glk 258 _vararg_count 0;
-!  return 0;
-!];
+[ glk_request_hyperlink_event _vararg_count;
+  ! glk_request_hyperlink_event(window)
+  @glk 258 _vararg_count 0;
+  return 0;
+];
 
-![ glk_cancel_hyperlink_event _vararg_count;
-!  ! glk_cancel_hyperlink_event(window)
-!  @glk 259 _vararg_count 0;
-!  return 0;
-!];
+[ glk_cancel_hyperlink_event _vararg_count;
+  ! glk_cancel_hyperlink_event(window)
+  @glk 259 _vararg_count 0;
+  return 0;
+];
 
 [ glk_buffer_to_lower_case_uni _vararg_count ret;
   ! glk_buffer_to_lower_case_uni(uintarray, arraylen, uint) => uint

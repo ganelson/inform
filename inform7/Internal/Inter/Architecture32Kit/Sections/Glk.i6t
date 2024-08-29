@@ -467,7 +467,7 @@ be used by |glk_select|. It also handles a few event maintenance tasks.
 		evtype_MouseInput:
 			win_obj.requesting_mouse = false;
 		evtype_Hyperlink:
-			win_obj.requesting_hyperlink = false;
+			glk_request_hyperlink_event(win_obj.glk_ref);
 	}
 	return ev;
 ];
@@ -610,16 +610,6 @@ requested.
 	return 0;
 ];
 
-[ glk_cancel_hyperlink_event win win_obj;
-	@push win;
-	@glk 259 1 0;
-	win_obj = FindGlkWindowFromRefNum(win);
-	if (win_obj) {
-		win_obj.requesting_hyperlink = false;
-	}
-	return 0;
-];
-
 [ glk_cancel_line_event win event_struct win_obj;
 	if (event_struct == 0) {
 		event_struct = gg_arguments;
@@ -665,16 +655,6 @@ requested.
 	return 0;
 ];
 
-[ glk_request_hyperlink_event win win_obj;
-	@push win;
-	@glk 258 1 0;
-	win_obj = FindGlkWindowFromRefNum(win);
-	if (win_obj) {
-		win_obj.requesting_hyperlink = true;
-	}
-	return 0;
-];
-
 [ glk_request_line_event win buf maxlen initlen win_obj;
 	@push initlen;
 	@push maxlen;
@@ -715,6 +695,88 @@ requested.
 		win_obj.requesting_mouse = true;
 	}
 	return 0;
+];
+
+@h Hyperlinks.
+A simple framework for handling hyperlinks in an interoperable manner.
+We combine a hyperlink tag with a payload in one 32-bit value. The tag is stored
+in the lowest bits, and the payload above it.
+
+|CALCULATE_HYPERLINK_TAG_WIDTH_R| is a |before starting the virtual machine| rule,
+which gets the number of options in the hyperlink tag enum and sets the tag/payload
+masks and widths accordingly.
+
+=
+Global hyperlink_payload_mask;
+Global hyperlink_tag_mask;
+Global hyperlink_tag_width;
+Global hyperlink_value;
+
+[ CALCULATE_HYPERLINK_TAG_WIDTH_R;
+	if (ICOUNT_HYPERLINK_TAG < 8) {
+		hyperlink_tag_mask = $07;
+		hyperlink_tag_width = 3;
+	}
+	else if (ICOUNT_HYPERLINK_TAG < 16) {
+		hyperlink_tag_mask = $0F;
+		hyperlink_tag_width = 4;
+	}
+	else {
+		! Enough for 31 tags, which better be enough!
+		hyperlink_tag_mask = $1F;
+		hyperlink_tag_width = 5;
+	}
+	hyperlink_payload_mask = ~hyperlink_tag_mask;
+	rfalse;
+];
+
+@ |MakeTaggedHyperlink| combines the tag and value into one 32 bit hyperlink ID,
+checking that the value is not a pointer to ephemeral data (on the stack).
+
+|HANDLE_HYPERLINK_R| then extracts tag and value from an ID, expanding the value
+back to 32 bits.
+
+=
+
+[ MakeTaggedHyperlink tag val kind;
+	if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) {
+		#Ifdef DEBUG;
+			if (val >= blockv_stack && val < (blockv_stack + BLOCKV_STACK_SIZE * WORDSIZE)) {
+				if (kind) {
+					if (KindConformsTo_POINTER_VALUE_TY(kind)) {
+						! Break up the message so that Inform doesn't think it's an Inter invocation
+						print "Error: cannot make hyperlink from ephemeral value; try creating with {", "-by-reference:V}^";
+						return;
+					}
+				}
+				else {
+					print "Warning: hyperlink value might be ephemeral; try creating with explicit kind^";
+				}
+			}
+		#Endif; ! DEBUG
+		if (val > 0) {
+			@shiftl val hyperlink_tag_width val;
+		}
+		else {
+			val = val & hyperlink_payload_mask;
+		}
+		glk_set_hyperlink(tag | val);
+	}
+];
+
+[ HANDLE_HYPERLINK_R val;
+	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_Hyperlink) {
+		val = current_glk_event-->GLK_EVENT_VALUE1_SF;
+		hyperlink_value = val & hyperlink_payload_mask;
+		if (hyperlink_value < 0) {
+			hyperlink_value = hyperlink_value | hyperlink_tag_mask;
+		}
+		else {
+			@ushiftr hyperlink_value hyperlink_tag_width hyperlink_value;
+		}
+		FollowRulebook(HYPERLINK_HANDLING_RB, val & hyperlink_tag_mask, true);
+	}
+	rfalse;
 ];
 
 @h Suspending and resuming text input.

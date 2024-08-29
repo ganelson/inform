@@ -195,6 +195,55 @@ To process (ev - glk event):
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;
 
+@h Hyperlinks.
+A simple framework for handling hyperlinks in an interoperable manner.
+
+=
+Chapter - Hyperlinks
+
+A hyperlink tag is a kind of value.
+
+The hyperlink handling rules is a hyperlink tag based rulebook.
+The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
+
+The handle hyperlinks rule is listed in the glk event handling rules.
+The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
+
+To say link (T - hyperlink tag):
+	(- MakeTaggedHyperlink({T}); -).
+
+To say link (T - hyperlink tag) for/of/with (V - value of kind K):
+	(- MakeTaggedHyperlink({T}, {-by-reference:V}, {-strong-kind:K}); -).
+
+To say end link:
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+To decide what K is hyperlink value as a/an (name of kind of value K):
+	(- (hyperlink_value) -).
+
+@ And some built-in hyperlink tags:
+
+- A rule hyperlink runs a rule when clicked; that in turn allows you to run any other code you like.
+- A keypress hyperlink converts a hyperlink event into a character event, for the specified unicode character.
+
+=
+
+Rule hyperlink is a hyperlink tag.
+
+To say link (R - rule):
+	(- MakeTaggedHyperlink((+ rule hyperlink +), {-by-reference:R}, RULE_TY); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	follow hyperlink value as a rule;
+
+Keypress hyperlink is a hyperlink tag.
+
+To say link (C - unicode character):
+	(- MakeTaggedHyperlink((+ keypress hyperlink +), {-by-reference:C}, UNICODE_CHARACTER_TY); -).
+
+Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
+	process a character event for (hyperlink value as a unicode character) in (window of the current glk event);
+
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
 
@@ -203,8 +252,6 @@ Chapter - Suspending and resuming input
 
 A glk window has a text input status.
 The text input status property translates into Inter as "text_input_status".
-A glk window can be requesting hyperlink input.
-The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 

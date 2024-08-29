@@ -12,12 +12,9 @@ insert_final_newline = false
 [*.{i6t,i7,i7x,neptune,ni,txt,w}]
 indent_style = tab
 
+[*.{i6t,w}]
+insert_final_newline = true
+
 [*.json]
 indent_style = space
 indent_size = 4
-
-[inform7/Tests/Test Cases/*.txt]
-indent_style = tab
-
-[resources/Documentation/**.txt]
-indent_style = tab
