@@ -9,8 +9,8 @@ ROOT_NT
                 BEGINHERE_NT'version 10.2.0 of english language by graham nelson' {unit: 1}
                 ...
         INCLUSION_NT'include standard rules by graham nelson'
-            HEADING_NT'version 7 of the standard rules by graham nelson begins here' {heading 0} {under: H0'version 7 of the standard rules by graham nelson begins here'} {includes: Standard Rules by Graham Nelson v7 } {unit: 2}
-                BEGINHERE_NT'version 7 of the standard rules by graham nelson' {unit: 2}
+            HEADING_NT'version 10.2.0 of the standard rules by graham nelson begins' {heading 0} {under: H0'version 10.2.0 of the standard rules by graham nelson begins here'} {includes: Standard Rules v10.2.0 } {unit: 2}
+                BEGINHERE_NT'version 10.2.0 of the standard rules by graham nelson' {unit: 2}
                 ...
         INCLUSION_NT'include standard rules by graham nelson'
     HEADING_NT'use the serial comma and no scoring' {heading 0} {under: H0'use the serial comma and no scoring'} {unit: 3}
@@ -27,8 +27,8 @@ ROOT_NT
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
             UNPARSED_NOUN_NT'asking for information'
             UNPARSED_NOUN_NT'out of world'
-        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 892}
-        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 893}
+        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 912}
+        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 913}
         HEADING_NT'section 1 - errands' {heading 5} {under: H5'section 1 - errands'} {unit: 3}
             SENTENCE_NT'the current actor is a person which varies' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -38,8 +38,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}
                 COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 894}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 895}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 914}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 915}
             SENTENCE_NT'a person can be active or passive' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
@@ -49,40 +49,40 @@ ROOT_NT
                         UNPARSED_NOUN_NT'passive'
             SENTENCE_NT'the player is passive' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I95'yourself'} {enumeration: 0}} {turned already}
+                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I94'yourself'} {enumeration: 0}} {turned already}
                 ADJECTIVE_NT'passive' {refined} {predicate: passive} {creation: << passive(x) ^ passive(x) >>}
             SENTENCE_NT'the character movement rules are a rulebook' {unit: 3} {classified} {clears pronouns} {interpretation of subject: infs'yourself'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: character movement}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 896}
-            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 897}
-            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 898}
-            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 899}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 900}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 901}
+            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 916}
+            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 917}
+            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 918}
+            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 919}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 920}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 921}
             SENTENCE_NT'the shopowner rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopowner}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 902}
-            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 903}
-            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 904}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 905}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 922}
+            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 923}
+            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 924}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 925}
             SENTENCE_NT'filing is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 906}
-            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 907}
-            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 908}
+            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 926}
+            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 927}
+            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 928}
             SENTENCE_NT'the shopper rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopper}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 909}
-            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 910}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 911}
+            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 929}
+            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 930}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 931}
             DEFN_CONT_NT'a room is air-conditioned' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -140,8 +140,8 @@ ROOT_NT
                 COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {refined} {creation: << kind=artwork(x) >>} {refers: infs'artwork'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 912}
-            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 913}
+            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 932}
+            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 933}
             SENTENCE_NT'an artwork can be submitted or reserved' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'an artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
@@ -154,49 +154,49 @@ ROOT_NT
                 COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=book(x) >>} {refers: infs'book'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 914}
-            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 915}
-            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 916}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 917}
-            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 918}
+            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 934}
+            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 935}
+            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 936}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 937}
+            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 938}
             SENTENCE_NT'a stamped envelope is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'book'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=stamped envelope(x) >>} {refers: infs'stamped envelope'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 919}
-            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 920}
-            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 921}
-            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 922}
+            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 939}
+            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 940}
+            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 941}
+            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 942}
             SENTENCE_NT'a dvd is a kind of artwork' {unit: 3} {classified} {interpretation of subject: infs'stamped envelope'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=dvd(x) >>} {refers: infs'dvd'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 923}
-            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 924}
-            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 925}
-            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 926}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 927}
-            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 928}
+            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 943}
+            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 944}
+            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 945}
+            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 946}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 947}
+            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 948}
             SENTENCE_NT'approaching is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'approaching'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 929}
+            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 949}
             SENTENCE_NT'a coupon is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'dvd'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=coupon(x) >>} {refers: infs'coupon'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 930}
+            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 950}
             SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
                 UNPARSED_NOUN_NT'in any rulebook'
-            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 931}
-            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 932}
-            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 933}
+            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 951}
+            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 952}
+            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 953}
             SENTENCE_NT'infection color is a kind of value' {unit: 3} {classified} {interpretation of subject: infs'coupon'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'infection color' {refined} {creation: << kind=infection color(x) >>} {refers: infs'object'-k} {eval: TEST_VALUE_NT} {created here}
@@ -206,57 +206,57 @@ ROOT_NT
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'infection color'-k} {creation: << kind=infection color(x) >>} {eval: TEST_VALUE_NT}
                 AND_NT',' {refined}
-                    PROPER_NOUN_NT'french vanilla' {refined} {refers: infs'french vanilla'} {eval: CONSTANT_NT'french vanilla' {kind: infection color} {instance: I123'french vanilla'[infection color]} {enumeration: 1}} {created here}
+                    PROPER_NOUN_NT'french vanilla' {refined} {refers: infs'french vanilla'} {eval: CONSTANT_NT'french vanilla' {kind: infection color} {instance: I122'french vanilla'[infection color]} {enumeration: 1}} {created here}
                     AND_NT',' {refined}
-                        PROPER_NOUN_NT'whole-bean vanilla' {refined} {refers: infs'whole-bean vanilla'} {eval: CONSTANT_NT'whole-bean vanilla' {kind: infection color} {instance: I124'whole-bean vanilla'[infection color]} {enumeration: 2}} {created here}
+                        PROPER_NOUN_NT'whole-bean vanilla' {refined} {refers: infs'whole-bean vanilla'} {eval: CONSTANT_NT'whole-bean vanilla' {kind: infection color} {instance: I123'whole-bean vanilla'[infection color]} {enumeration: 2}} {created here}
                         AND_NT',' {refined}
-                            PROPER_NOUN_NT'mint' {refined} {refers: infs'mint'} {eval: CONSTANT_NT'mint' {kind: infection color} {instance: I125'mint'[infection color]} {enumeration: 3}} {created here}
+                            PROPER_NOUN_NT'mint' {refined} {refers: infs'mint'} {eval: CONSTANT_NT'mint' {kind: infection color} {instance: I124'mint'[infection color]} {enumeration: 3}} {created here}
                             AND_NT',' {refined}
-                                PROPER_NOUN_NT'chocolate' {refined} {refers: infs'chocolate'} {eval: CONSTANT_NT'chocolate' {kind: infection color} {instance: I126'chocolate'[infection color]} {enumeration: 4}} {created here}
+                                PROPER_NOUN_NT'chocolate' {refined} {refers: infs'chocolate'} {eval: CONSTANT_NT'chocolate' {kind: infection color} {instance: I125'chocolate'[infection color]} {enumeration: 4}} {created here}
                                 AND_NT',' {refined}
-                                    PROPER_NOUN_NT'dark chocolate' {refined} {refers: infs'dark chocolate'} {eval: CONSTANT_NT'dark chocolate' {kind: infection color} {instance: I127'dark chocolate'[infection color]} {enumeration: 5}} {created here}
+                                    PROPER_NOUN_NT'dark chocolate' {refined} {refers: infs'dark chocolate'} {eval: CONSTANT_NT'dark chocolate' {kind: infection color} {instance: I126'dark chocolate'[infection color]} {enumeration: 5}} {created here}
                                     AND_NT',' {refined}
-                                        PROPER_NOUN_NT'chocolate chip' {refined} {refers: infs'chocolate chip'} {eval: CONSTANT_NT'chocolate chip' {kind: infection color} {instance: I128'chocolate chip'[infection color]} {enumeration: 6}} {created here}
+                                        PROPER_NOUN_NT'chocolate chip' {refined} {refers: infs'chocolate chip'} {eval: CONSTANT_NT'chocolate chip' {kind: infection color} {instance: I127'chocolate chip'[infection color]} {enumeration: 6}} {created here}
                                         AND_NT',' {refined}
-                                            PROPER_NOUN_NT'chocolate fudge' {refined} {refers: infs'chocolate fudge'} {eval: CONSTANT_NT'chocolate fudge' {kind: infection color} {instance: I129'chocolate fudge'[infection color]} {enumeration: 7}} {created here}
+                                            PROPER_NOUN_NT'chocolate fudge' {refined} {refers: infs'chocolate fudge'} {eval: CONSTANT_NT'chocolate fudge' {kind: infection color} {instance: I128'chocolate fudge'[infection color]} {enumeration: 7}} {created here}
                                             AND_NT',' {refined}
-                                                PROPER_NOUN_NT'mint chocolate chip' {refined} {refers: infs'mint chocolate chip'} {eval: CONSTANT_NT'mint chocolate chip' {kind: infection color} {instance: I130'mint chocolate chip'[infection color]} {enumeration: 8}} {created here}
+                                                PROPER_NOUN_NT'mint chocolate chip' {refined} {refers: infs'mint chocolate chip'} {eval: CONSTANT_NT'mint chocolate chip' {kind: infection color} {instance: I129'mint chocolate chip'[infection color]} {enumeration: 8}} {created here}
                                                 AND_NT',' {refined}
-                                                    PROPER_NOUN_NT'chocolate chocolate chip' {refined} {refers: infs'chocolate chocolate chip'} {eval: CONSTANT_NT'chocolate chocolate chip' {kind: infection color} {instance: I131'chocolate chocolate chip'[infection color]} {enumeration: 9}} {created here}
+                                                    PROPER_NOUN_NT'chocolate chocolate chip' {refined} {refers: infs'chocolate chocolate chip'} {eval: CONSTANT_NT'chocolate chocolate chip' {kind: infection color} {instance: I130'chocolate chocolate chip'[infection color]} {enumeration: 9}} {created here}
                                                     AND_NT',' {refined}
-                                                        PROPER_NOUN_NT'triple chocolate' {refined} {refers: infs'triple chocolate'} {eval: CONSTANT_NT'triple chocolate' {kind: infection color} {instance: I132'triple chocolate'[infection color]} {enumeration: 10}} {created here}
+                                                        PROPER_NOUN_NT'triple chocolate' {refined} {refers: infs'triple chocolate'} {eval: CONSTANT_NT'triple chocolate' {kind: infection color} {instance: I131'triple chocolate'[infection color]} {enumeration: 10}} {created here}
                                                         AND_NT',' {refined}
-                                                            PROPER_NOUN_NT'white chocolate' {refined} {refers: infs'white chocolate'} {eval: CONSTANT_NT'white chocolate' {kind: infection color} {instance: I133'white chocolate'[infection color]} {enumeration: 11}} {created here}
+                                                            PROPER_NOUN_NT'white chocolate' {refined} {refers: infs'white chocolate'} {eval: CONSTANT_NT'white chocolate' {kind: infection color} {instance: I132'white chocolate'[infection color]} {enumeration: 11}} {created here}
                                                             AND_NT',' {refined}
-                                                                PROPER_NOUN_NT'white chocolate chip' {refined} {refers: infs'white chocolate chip'} {eval: CONSTANT_NT'white chocolate chip' {kind: infection color} {instance: I134'white chocolate chip'[infection color]} {enumeration: 12}} {created here}
+                                                                PROPER_NOUN_NT'white chocolate chip' {refined} {refers: infs'white chocolate chip'} {eval: CONSTANT_NT'white chocolate chip' {kind: infection color} {instance: I133'white chocolate chip'[infection color]} {enumeration: 12}} {created here}
                                                                 AND_NT',' {refined}
-                                                                    PROPER_NOUN_NT'aztec cocoa-chili' {refined} {refers: infs'aztec cocoa-chili'} {eval: CONSTANT_NT'aztec cocoa-chili' {kind: infection color} {instance: I135'aztec cocoa-chili'[infection color]} {enumeration: 13}} {created here}
+                                                                    PROPER_NOUN_NT'aztec cocoa-chili' {refined} {refers: infs'aztec cocoa-chili'} {eval: CONSTANT_NT'aztec cocoa-chili' {kind: infection color} {instance: I134'aztec cocoa-chili'[infection color]} {enumeration: 13}} {created here}
                                                                     AND_NT',' {refined}
-                                                                        PROPER_NOUN_NT'raspberry ripple' {refined} {refers: infs'raspberry ripple'} {eval: CONSTANT_NT'raspberry ripple' {kind: infection color} {instance: I136'raspberry ripple'[infection color]} {enumeration: 14}} {created here}
+                                                                        PROPER_NOUN_NT'raspberry ripple' {refined} {refers: infs'raspberry ripple'} {eval: CONSTANT_NT'raspberry ripple' {kind: infection color} {instance: I135'raspberry ripple'[infection color]} {enumeration: 14}} {created here}
                                                                         AND_NT',' {refined}
-                                                                            PROPER_NOUN_NT'neapolitan' {refined} {refers: infs'neapolitan'} {eval: CONSTANT_NT'neapolitan' {kind: infection color} {instance: I137'neapolitan'[infection color]} {enumeration: 15}} {created here}
+                                                                            PROPER_NOUN_NT'neapolitan' {refined} {refers: infs'neapolitan'} {eval: CONSTANT_NT'neapolitan' {kind: infection color} {instance: I136'neapolitan'[infection color]} {enumeration: 15}} {created here}
                                                                             AND_NT',' {refined}
-                                                                                PROPER_NOUN_NT'rum raisin' {refined} {refers: infs'rum raisin'} {eval: CONSTANT_NT'rum raisin' {kind: infection color} {instance: I138'rum raisin'[infection color]} {enumeration: 16}} {created here}
+                                                                                PROPER_NOUN_NT'rum raisin' {refined} {refers: infs'rum raisin'} {eval: CONSTANT_NT'rum raisin' {kind: infection color} {instance: I137'rum raisin'[infection color]} {enumeration: 16}} {created here}
                                                                                 AND_NT',' {refined}
-                                                                                    PROPER_NOUN_NT'dulce de leche' {refined} {refers: infs'dulce de leche'} {eval: CONSTANT_NT'dulce de leche' {kind: infection color} {instance: I139'dulce de leche'[infection color]} {enumeration: 17}} {created here}
+                                                                                    PROPER_NOUN_NT'dulce de leche' {refined} {refers: infs'dulce de leche'} {eval: CONSTANT_NT'dulce de leche' {kind: infection color} {instance: I138'dulce de leche'[infection color]} {enumeration: 17}} {created here}
                                                                                     AND_NT',' {refined}
-                                                                                        PROPER_NOUN_NT'strawberry chunk' {refined} {refers: infs'strawberry chunk'} {eval: CONSTANT_NT'strawberry chunk' {kind: infection color} {instance: I140'strawberry chunk'[infection color]} {enumeration: 18}} {created here}
+                                                                                        PROPER_NOUN_NT'strawberry chunk' {refined} {refers: infs'strawberry chunk'} {eval: CONSTANT_NT'strawberry chunk' {kind: infection color} {instance: I139'strawberry chunk'[infection color]} {enumeration: 18}} {created here}
                                                                                         AND_NT',' {refined}
-                                                                                            PROPER_NOUN_NT'rocky road' {refined} {refers: infs'rocky road'} {eval: CONSTANT_NT'rocky road' {kind: infection color} {instance: I141'rocky road'[infection color]} {enumeration: 19}} {created here}
+                                                                                            PROPER_NOUN_NT'rocky road' {refined} {refers: infs'rocky road'} {eval: CONSTANT_NT'rocky road' {kind: infection color} {instance: I140'rocky road'[infection color]} {enumeration: 19}} {created here}
                                                                                             AND_NT',' {refined}
-                                                                                                PROPER_NOUN_NT'blackberry sorbet' {refined} {refers: infs'blackberry sorbet'} {eval: CONSTANT_NT'blackberry sorbet' {kind: infection color} {instance: I142'blackberry sorbet'[infection color]} {enumeration: 20}} {created here}
+                                                                                                PROPER_NOUN_NT'blackberry sorbet' {refined} {refers: infs'blackberry sorbet'} {eval: CONSTANT_NT'blackberry sorbet' {kind: infection color} {instance: I141'blackberry sorbet'[infection color]} {enumeration: 20}} {created here}
                                                                                                 AND_NT',' {refined}
-                                                                                                    PROPER_NOUN_NT'lemon sherbet' {refined} {refers: infs'lemon sherbet'} {eval: CONSTANT_NT'lemon sherbet' {kind: infection color} {instance: I143'lemon sherbet'[infection color]} {enumeration: 21}} {created here}
+                                                                                                    PROPER_NOUN_NT'lemon sherbet' {refined} {refers: infs'lemon sherbet'} {eval: CONSTANT_NT'lemon sherbet' {kind: infection color} {instance: I142'lemon sherbet'[infection color]} {enumeration: 21}} {created here}
                                                                                                     AND_NT',' {refined}
-                                                                                                        PROPER_NOUN_NT'lime ice' {refined} {refers: infs'lime ice'} {eval: CONSTANT_NT'lime ice' {kind: infection color} {instance: I144'lime ice'[infection color]} {enumeration: 22}} {created here}
+                                                                                                        PROPER_NOUN_NT'lime ice' {refined} {refers: infs'lime ice'} {eval: CONSTANT_NT'lime ice' {kind: infection color} {instance: I143'lime ice'[infection color]} {enumeration: 22}} {created here}
                                                                                                         AND_NT',' {refined}
-                                                                                                            PROPER_NOUN_NT'caramel swirl' {refined} {refers: infs'caramel swirl'} {eval: CONSTANT_NT'caramel swirl' {kind: infection color} {instance: I145'caramel swirl'[infection color]} {enumeration: 23}} {created here}
+                                                                                                            PROPER_NOUN_NT'caramel swirl' {refined} {refers: infs'caramel swirl'} {eval: CONSTANT_NT'caramel swirl' {kind: infection color} {instance: I144'caramel swirl'[infection color]} {enumeration: 23}} {created here}
                                                                                                             AND_NT',' {refined}
-                                                                                                                PROPER_NOUN_NT'mango' {refined} {refers: infs'mango'} {eval: CONSTANT_NT'mango' {kind: infection color} {instance: I146'mango'[infection color]} {enumeration: 24}} {created here}
+                                                                                                                PROPER_NOUN_NT'mango' {refined} {refers: infs'mango'} {eval: CONSTANT_NT'mango' {kind: infection color} {instance: I145'mango'[infection color]} {enumeration: 24}} {created here}
                                                                                                                 AND_NT',' {refined}
-                                                                                                                    PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I147'saffron silk'[infection color]} {enumeration: 25}} {created here}
-                                                                                                                    PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I148'cookie dough cream'[infection color]} {enumeration: 26}} {created here}
-            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 934}
+                                                                                                                    PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I146'saffron silk'[infection color]} {enumeration: 25}} {created here}
+                                                                                                                    PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I147'cookie dough cream'[infection color]} {enumeration: 26}} {created here}
+            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 954}
             SENTENCE_NT'understand "ask vanessa for [flavored ice cream]" as buying ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ask vanessa for [flavored ice cream]"'
@@ -269,8 +269,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'buying the flavor'
                 UNPARSED_NOUN_NT'applying to one infection color'
-            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 935}
-            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 936}
+            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 955}
+            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 956}
             SENTENCE_NT'understand "ice cream" or "cream" or "ice" or "sherbet" or "' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ice cream" or "cream" or "ice" or "sherbet" or "sorbet"'
@@ -304,12 +304,12 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the infection color property'
                 UNPARSED_NOUN_NT'referring to an ice cream cone'
-            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 937}
-            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 938}
-            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 939}
-            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 940}
+            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 957}
+            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 958}
+            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 959}
+            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 960}
         HEADING_NT'section 2 - infection rules' {heading 5} {under: H5'section 2 - infection rules'} {unit: 3}
-            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 941}
+            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 961}
             SENTENCE_NT'a person can be infected or clean' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
@@ -322,11 +322,11 @@ ROOT_NT
                 COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has' {refined}
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s} {refined}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 942}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 943}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 944}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 945}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 946}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 962}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 963}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 964}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 965}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 966}
             SENTENCE_NT'understand "sneeze on [something]" as sneezing on' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"sneeze on [something]"'
@@ -335,11 +335,11 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'sneezing on'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 947}
-            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 948}
-            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 949}
-            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 950}
-            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 951}
+            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 967}
+            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 968}
+            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 969}
+            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 970}
+            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 971}
             SENTENCE_NT'understand "inject [someone] with [something]" as injecting ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"inject [someone] with [something]"'
@@ -360,10 +360,10 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'injecting it with'
                 UNPARSED_NOUN_NT'applying to two things'
-            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 952}
-            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 953}
-            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 954}
-            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 955}
+            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 972}
+            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 973}
+            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 974}
+            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 975}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 3}
             INCLUSION_NT'include locksmith by emily short' {unit: 3}
                 HEADING_NT'version 14 of locksmith by emily short begins here' {heading 0} {under: H0'version 14 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v14 } {unit: 3}
@@ -388,9 +388,9 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'going toward'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 993}
-            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 994}
-            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 995}
+            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 1013}
+            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 1014}
+            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 1015}
             SENTENCE_NT'understand "stop" or "cease" as stopping' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"stop" or "cease"'
@@ -399,68 +399,68 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'stopping'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 996}
-            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 997}
-            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 998}
-            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 999}
-            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 1000}
+            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 1016}
+            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 1017}
+            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 1018}
+            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 1019}
+            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 1020}
             SENTENCE_NT'the alfred cralle pool hall is a room' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I149'alfred cralle pool hall'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I148'alfred cralle pool hall'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'room'} {creation: << kind=room(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'"The town's most popular gathering-place, the pool hall is d' {unit: 3} {classified}
             SENTENCE_NT'the air conditioner is a device in the pool hall' {unit: 3} {classified} {interpretation of subject: infs'alfred cralle pool hall'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'air conditioner'} {eval: CONSTANT_NT'air conditioner' {kind: object} {instance: I150'air conditioner'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'air conditioner'} {eval: CONSTANT_NT'air conditioner' {kind: object} {instance: I149'air conditioner'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'device'} {creation: << kind=device(x) ^ ('the pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'device in the pool hall' {term: x} {converted SN}}
             SENTENCE_NT'"[if switched off]An air conditioner sits in the corner, unh' {unit: 3} {classified}
             SENTENCE_NT'the felt door is west of the pool hall' {unit: 3} {classified} {interpretation of subject: infs'air conditioner'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
-                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I151'felt door'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I150'felt door'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
-                    PROPER_NOUN_NT'pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I149'alfred cralle pool hall'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I90'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I148'alfred cralle pool hall'} {enumeration: 0}}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the felt door is a door' {unit: 3} {classified} {interpretation of subject: infs'felt door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I151'felt door'} {enumeration: 0}}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I150'felt door'} {enumeration: 0}}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the felt door is open' {unit: 3} {classified} {interpretation of subject: infs'felt door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I151'felt door'} {enumeration: 0}}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
                 ADJECTIVE_NT'open' {refined} {predicate: open} {creation: << open(x) ^ open(x) >>}
             SENTENCE_NT'the felt door is lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'felt door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I151'felt door'} {enumeration: 0}}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the felt door' {unit: 3} {classified} {interpretation of subject: infs'felt door'}
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r} {refined}
-                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I151'felt door'} {enumeration: 0}}
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
             SENTENCE_NT'the description of the felt door is "It has a prominent lock' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the felt door' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I151'felt door'} {enumeration: 0}}
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.' {refined} {eval: CONSTANT_NT'"It has a prominent lock, designed for an old-fashioned key.' {kind: text}}
-            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 1001}
+            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 1021}
             SENTENCE_NT'nancy johnson memorial square is west of the felt door' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
-                PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I153'nancy johnson memorial square'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
-                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I151'felt door'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I90'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the description of nancy johnson memorial square is "Waves o' {unit: 3} {classified} {interpretation of subject: infs'nancy johnson memorial square'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of nancy johnson memorial square' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I153'nancy johnson memorial square'} {enumeration: 0}}
+                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"Waves of August heat rise from the pavement: more than once' {refined} {eval: CONSTANT_NT'"Waves of August heat rise from the pavement: more than once' {kind: text}}
             SENTENCE_NT'the statue is scenery in memorial square' {unit: 3} {classified} {interpretation of subject: infs'nancy johnson memorial square'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I154'statue'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I153'statue'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'scenery in memorial square' {refined} {refers: infs'object'-k} {creation: << scenery(x) ^ ('memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in memorial square' {term: x} {converted SN}}
             SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
@@ -469,168 +469,168 @@ ROOT_NT
             SENTENCE_NT'the description of the statue is "Mrs. Johnson is pictured w' {unit: 3} {classified} {interpretation of subject: infs'statue'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the statue' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I154'statue'} {enumeration: 0}}
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I153'statue'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"Mrs. Johnson is pictured with a hand-cranked ice cream free' {refined} {eval: CONSTANT_NT'"Mrs. Johnson is pictured with a hand-cranked ice cream free' {kind: text}}
             SENTENCE_NT'a hand-cranked ice cream freezer is part of the statue' {unit: 3} {classified} {interpretation of subject: infs'statue'}
                 VERB_NT'is part of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: part of}
-                PROPER_NOUN_NT'hand-cranked ice cream freezer' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'hand-cranked ice cream freezer'} {eval: CONSTANT_NT'hand-cranked ice cream freezer' {kind: object} {instance: I155'hand-cranked ice cream freezer'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'hand-cranked ice cream freezer' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'hand-cranked ice cream freezer'} {eval: CONSTANT_NT'hand-cranked ice cream freezer' {kind: object} {instance: I154'hand-cranked ice cream freezer'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is part of' {meaning: incorporates} {refined}
-                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I154'statue'} {enumeration: 0}}
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I153'statue'} {enumeration: 0}}
             SENTENCE_NT'the description is "The hand-cranked ice cream freezer was M' {unit: 3} {classified} {interpretation of subject: infs'hand-cranked ice cream freezer'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'description' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"The hand-cranked ice cream freezer was Mrs. Johnson's inven' {refined} {eval: CONSTANT_NT'"The hand-cranked ice cream freezer was Mrs. Johnson's inven' {kind: text}}
             SENTENCE_NT'the scoop is part of the statue' {unit: 3} {classified} {interpretation of subject: infs'hand-cranked ice cream freezer'}
                 VERB_NT'is part of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: part of}
-                PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'scoop'} {eval: CONSTANT_NT'scoop' {kind: object} {instance: I156'scoop'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'scoop'} {eval: CONSTANT_NT'scoop' {kind: object} {instance: I155'scoop'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is part of' {meaning: incorporates} {refined}
-                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I154'statue'} {enumeration: 0}}
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'statue'} {eval: CONSTANT_NT'statue' {kind: object} {instance: I153'statue'} {enumeration: 0}}
             SENTENCE_NT'the description of the scoop is "An anachronism: Alfred Cral' {unit: 3} {classified} {interpretation of subject: infs'scoop'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the scoop' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'scoop'} {eval: CONSTANT_NT'scoop' {kind: object} {instance: I156'scoop'} {enumeration: 0}}
+                    PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'scoop'} {eval: CONSTANT_NT'scoop' {kind: object} {instance: I155'scoop'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"An anachronism: Alfred Cralle would not invent the tool unt' {refined} {eval: CONSTANT_NT'"An anachronism: Alfred Cralle would not invent the tool unt' {kind: text}}
             SENTENCE_NT'the post office is northwest of nancy johnson memorial squar' {unit: 3} {classified} {interpretation of subject: infs'scoop'}
                 VERB_NT'is northwest of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northwest of}
-                PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'post office'} {eval: CONSTANT_NT'post office' {kind: object} {instance: I157'post office'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'post office'} {eval: CONSTANT_NT'post office' {kind: object} {instance: I156'post office'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is northwest of' {meaning: northwest-map-r} {refined}
-                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I153'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northwest' {refers: infs'northwest'} {eval: CONSTANT_NT'northwest' {kind: direction} {instance: I85'northwest'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
+                    PROPER_NOUN_NT'northwest' {refers: infs'northwest'} {eval: CONSTANT_NT'northwest' {kind: direction} {instance: I84'northwest'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Service at the post office is on the slow side since everyt' {unit: 3} {classified}
             SENTENCE_NT'the slot is scenery in the post office' {unit: 3} {classified} {interpretation of subject: infs'post office'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I158'slot'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I157'slot'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'scenery in the post office' {refined} {refers: infs'object'-k} {creation: << scenery(x) ^ ('the post office' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the post office' {term: x} {converted SN}}
             SENTENCE_NT'the slot is a container' {unit: 3} {classified} {interpretation of subject: infs'slot'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I158'slot'} {enumeration: 0}}
+                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I157'slot'} {enumeration: 0}}
                 COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'container'} {creation: << kind=container(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 1002}
-            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 1003}
+            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 1022}
+            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 1023}
             SENTENCE_NT'hamwi street is northeast of an iron gate' {unit: 3} {classified} {interpretation of subject: infs'slot'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
-                PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I159'hamwi street'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
-                    PROPER_NOUN_NT'iron gate' {indefinite 'an' n/m/f nom/acc s} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I160'iron gate'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I84'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'iron gate' {indefinite 'an' n/m/f nom/acc s} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"A U-shaped street running from Main Street around to the Me' {unit: 3} {classified}
             SENTENCE_NT'the iron gate is northeast of nancy johnson memorial square' {unit: 3} {classified} {interpretation of subject: infs'hamwi street'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
-                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I160'iron gate'} {enumeration: 0}}
+                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
-                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I153'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I84'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the iron gate is a door' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I160'iron gate'} {enumeration: 0}}
+                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'it is lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'it' {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I160'iron gate'} {enumeration: 0}}
+                PROPER_NOUN_NT'it' {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I159'iron gate'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
-            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 1004}
+            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 1024}
             SENTENCE_NT'cold comfort ice cream is north of a metal door' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
-                PROPER_NOUN_NT'cold comfort ice cream' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I161'cold comfort ice cream'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'cold comfort ice cream' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I160'cold comfort ice cream'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is north of' {meaning: north-map-r} {refined}
-                    PROPER_NOUN_NT'metal door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I162'metal door'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I83'north'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'metal door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I161'metal door'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I82'north'} {enumeration: 0}} {refined}
             SENTENCE_NT'the metal door is north of hamwi street' {unit: 3} {classified} {interpretation of subject: infs'cold comfort ice cream'}
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
-                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I162'metal door'} {enumeration: 0}}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I161'metal door'} {enumeration: 0}}
                 RELATIONSHIP_NT'is north of' {meaning: north-map-r} {refined}
-                    PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I159'hamwi street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I83'north'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I82'north'} {enumeration: 0}} {refined}
             SENTENCE_NT'a poster is fixed in place in cold comfort' {unit: 3} {classified} {interpretation of subject: infs'metal door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'poster'} {eval: CONSTANT_NT'poster' {kind: object} {instance: I163'poster'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'poster'} {eval: CONSTANT_NT'poster' {kind: object} {instance: I162'poster'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'fixed in place in cold comfort' {refined} {refers: infs'object'-k} {creation: << fixed in place(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'fixed in place in cold comfort' {term: x} {converted SN}}
             SENTENCE_NT'"A poster fills one wall with the blazing promise of treats ' {unit: 3} {classified}
             SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea' {unit: 3} {classified} {interpretation of subject: infs'poster'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the poster' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'poster' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'poster'} {eval: CONSTANT_NT'poster' {kind: object} {instance: I163'poster'} {enumeration: 0}}
+                    PROPER_NOUN_NT'poster' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'poster'} {eval: CONSTANT_NT'poster' {kind: object} {instance: I162'poster'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"Coming soon! Thai ice creams! Durian, jackfruit, taro, and ' {refined} {eval: CONSTANT_NT'"Coming soon! Thai ice creams! Durian, jackfruit, taro, and ' {kind: text}}
             SENTENCE_NT'the metal door is a door' {unit: 3} {classified} {interpretation of subject: infs'poster'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I162'metal door'} {enumeration: 0}}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I161'metal door'} {enumeration: 0}}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'"A frosty metallic door separates [the location] from [the o' {unit: 3} {classified}
             SENTENCE_NT'the metal door is lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'metal door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I162'metal door'} {enumeration: 0}}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I161'metal door'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the metal door' {unit: 3} {classified} {interpretation of subject: infs'metal door'}
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                 RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r} {refined}
-                    PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I162'metal door'} {enumeration: 0}}
+                    PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I161'metal door'} {enumeration: 0}}
             SENTENCE_NT'marciony street is southeast of nancy johnson memorial squar' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: southeast of}
-                PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I164'marciony street'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
-                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I153'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I87'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"A semi-circular terrace, named somewhat fancifully after on' {unit: 3} {classified}
             SENTENCE_NT'the movie rental store is west of a glass door' {unit: 3} {classified} {interpretation of subject: infs'marciony street'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
-                PROPER_NOUN_NT'movie rental store' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I165'movie rental store'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'movie rental store' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I164'movie rental store'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
-                    PROPER_NOUN_NT'glass door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I166'glass door'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I90'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'glass door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I165'glass door'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the glass door is a door' {unit: 3} {classified} {interpretation of subject: infs'movie rental store'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I166'glass door'} {enumeration: 0}}
+                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I165'glass door'} {enumeration: 0}}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'it is west of marciony street' {unit: 3} {classified} {interpretation of subject: infs'glass door'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
-                PROPER_NOUN_NT'it' {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I166'glass door'} {enumeration: 0}}
+                PROPER_NOUN_NT'it' {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I165'glass door'} {enumeration: 0}}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
-                    PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I164'marciony street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I90'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the glass door is lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'glass door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I166'glass door'} {enumeration: 0}}
+                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I165'glass door'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the glass door' {unit: 3} {classified} {interpretation of subject: infs'glass door'}
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                 RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r} {refined}
-                    PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I166'glass door'} {enumeration: 0}}
+                    PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I165'glass door'} {enumeration: 0}}
             SENTENCE_NT'main street is southeast of hamwi street' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: southeast of}
-                PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I167'main street'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
-                    PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I159'hamwi street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I87'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'main street is northeast of some bronze gates' {unit: 3} {classified} {interpretation of subject: infs'main street'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
-                PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I167'main street'} {enumeration: 0}}
+                PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
-                    PROPER_NOUN_NT'bronze gates' {indefinite 'some' n/m/f nom/acc p} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I168'bronze gates'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I84'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'bronze gates' {indefinite 'some' n/m/f nom/acc p} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the emergency box is in main street' {unit: 3} {classified} {interpretation of subject: infs'main street'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
-                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I169'emergency box'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I168'emergency box'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is in' {meaning: contains} {refined}
-                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I167'main street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
             SENTENCE_NT'the emergency box is fixed in place' {unit: 3} {classified} {interpretation of subject: infs'emergency box'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I169'emergency box'} {enumeration: 0}}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I168'emergency box'} {enumeration: 0}}
                 ADJECTIVE_NT'fixed in place' {refined} {predicate: fixed in place} {creation: << fixed in place(x) ^ fixed in place(x) >>}
             SENTENCE_NT'"A fire-red box with a glass front faces the sidewalk, with ' {unit: 3} {classified}
             SENTENCE_NT'the emergency box is closed and transparent' {unit: 3} {classified} {interpretation of subject: infs'emergency box'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I169'emergency box'} {enumeration: 0}}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I168'emergency box'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'closed' {refined} {predicate: closed} {creation: << closed(x) ^ closed(x) >>}
                     ADJECTIVE_NT'transparent' {refined} {predicate: transparent} {creation: << transparent(x) ^ transparent(x) >>}
@@ -638,84 +638,84 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
                 UNPARSED_NOUN_NT'the box'
-            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 1005}
-            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 1006}
+            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 1025}
+            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 1026}
             SENTENCE_NT'the syringe is in the emergency box' {unit: 3} {classified} {interpretation of subject: infs'emergency box'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
-                PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I170'syringe'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I169'syringe'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is in' {meaning: contains} {refined}
-                    PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I169'emergency box'} {enumeration: 0}}
+                    PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I168'emergency box'} {enumeration: 0}}
             SENTENCE_NT'the description of the syringe is "It contains the cure for ' {unit: 3} {classified} {interpretation of subject: infs'syringe'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the syringe' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I170'syringe'} {enumeration: 0}}
+                    PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I169'syringe'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"It contains the cure for Gelato's Syndrome. You can inject ' {refined} {eval: CONSTANT_NT'"It contains the cure for Gelato's Syndrome. You can inject ' {kind: text}}
             SENTENCE_NT'the bronze gates are northeast of marciony street' {unit: 3} {classified} {interpretation of subject: infs'syringe'}
                 VERB_NT'are northeast of' {verb 'be' 3p p act IS_TENSE +ve} {prep1: northeast of}
-                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I168'bronze gates'} {enumeration: 0}}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}}
                 RELATIONSHIP_NT'are northeast of' {meaning: northeast-map-r} {refined}
-                    PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I164'marciony street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I84'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the bronze gates are a door' {unit: 3} {classified} {interpretation of subject: infs'bronze gates'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
-                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I168'bronze gates'} {enumeration: 0}}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the bronze gates are lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'bronze gates'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
-                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I168'bronze gates'} {enumeration: 0}}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I167'bronze gates'} {enumeration: 0}}
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the description of the bronze gates is "Erected during the m' {unit: 3} {classified} {interpretation of subject: infs'bronze gates'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I168'bronze gates'} {enumeration: 0}}
+                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I167'bronze gates'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"Erected during the milk-taint revolution of 1937, they were' {refined} {eval: CONSTANT_NT'"Erected during the milk-taint revolution of 1937, they were' {kind: text}}
             SENTENCE_NT'the public library is east of main street' {unit: 3} {classified} {interpretation of subject: infs'bronze gates'}
                 VERB_NT'is east of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: east of}
-                PROPER_NOUN_NT'public library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I171'public library'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'public library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I170'public library'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is east of' {meaning: east-map-r} {refined}
-                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I167'main street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'east' {refers: infs'east'} {eval: CONSTANT_NT'east' {kind: direction} {instance: I89'east'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'east' {refers: infs'east'} {eval: CONSTANT_NT'east' {kind: direction} {instance: I88'east'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Built in the 1920s during the height of the dairy boom, the' {unit: 3} {classified}
             SENTENCE_NT'the incongruous sign is scenery in the public library' {unit: 3} {classified} {interpretation of subject: infs'public library'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'incongruous sign'} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I172'incongruous sign'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'incongruous sign'} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I171'incongruous sign'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'scenery in the public library' {refined} {refers: infs'object'-k} {creation: << scenery(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the public library' {term: x} {converted SN}}
             SENTENCE_NT'the description of the incongruous sign is "Eating and drink' {unit: 3} {classified} {interpretation of subject: infs'incongruous sign'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the incongruous sign' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'incongruous sign'} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I172'incongruous sign'} {enumeration: 0}}
+                    PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'incongruous sign'} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I171'incongruous sign'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"Eating and drinking in the library is STRICTLY PROHIBITED."' {refined} {eval: CONSTANT_NT'"Eating and drinking in the library is STRICTLY PROHIBITED."' {kind: text}}
             SENTENCE_NT'town hall is southeast of main street' {unit: 3} {classified} {interpretation of subject: infs'incongruous sign'}
                 VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: southeast of}
-                PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I173'town hall'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I172'town hall'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
-                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I167'main street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I87'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Town Hall was built during the slow days of the ice-cream b' {unit: 3} {classified}
             SENTENCE_NT'the key to the city is in town hall' {unit: 3} {classified} {interpretation of subject: infs'town hall'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
-                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                 RELATIONSHIP_NT'is in' {meaning: contains} {refined}
-                    PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I173'town hall'} {enumeration: 0}}
+                    PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I172'town hall'} {enumeration: 0}}
             SENTENCE_NT'it unlocks the iron gate' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'it' {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                PROPER_NOUN_NT'it' {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                 RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r} {refined}
-                    PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I160'iron gate'} {enumeration: 0}}
+                    PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I159'iron gate'} {enumeration: 0}}
             SENTENCE_NT'it unlocks the bronze gates' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'it' {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                PROPER_NOUN_NT'it' {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                 RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r} {refined}
-                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I168'bronze gates'} {enumeration: 0}}
+                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I167'bronze gates'} {enumeration: 0}}
             SENTENCE_NT'the description of the key to the city is "A skeleton key."' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the key to the city' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I152'key to the city'} {enumeration: 0}}
+                    PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'key to the city'} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I151'key to the city'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"A skeleton key."' {refined} {eval: CONSTANT_NT'"A skeleton key."' {kind: text}}
             SENTENCE_NT'a room can be indoors or outdoors' {unit: 3} {classified}
@@ -728,22 +728,22 @@ ROOT_NT
             SENTENCE_NT'the post office , the alfred cralle pool hall , the store , ' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 AND_NT',' {refined}
-                    PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'post office'} {eval: CONSTANT_NT'post office' {kind: object} {instance: I157'post office'} {enumeration: 0}}
+                    PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'post office'} {eval: CONSTANT_NT'post office' {kind: object} {instance: I156'post office'} {enumeration: 0}}
                     AND_NT',' {refined}
-                        PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I149'alfred cralle pool hall'} {enumeration: 0}}
+                        PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I148'alfred cralle pool hall'} {enumeration: 0}}
                         AND_NT',' {refined}
-                            PROPER_NOUN_NT'store' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I165'movie rental store'} {enumeration: 0}}
+                            PROPER_NOUN_NT'store' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I164'movie rental store'} {enumeration: 0}}
                             AND_NT',' {refined}
-                                PROPER_NOUN_NT'cold comfort' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I161'cold comfort ice cream'} {enumeration: 0}}
+                                PROPER_NOUN_NT'cold comfort' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I160'cold comfort ice cream'} {enumeration: 0}}
                                 AND_NT',' {refined}
-                                    PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I173'town hall'} {enumeration: 0}}
-                                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I171'public library'} {enumeration: 0}}
+                                    PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I172'town hall'} {enumeration: 0}}
+                                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I170'public library'} {enumeration: 0}}
                 ADJECTIVE_NT'indoors' {refined} {predicate: indoors} {creation: << indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) >>}
             SENTENCE_NT'use full-length room descriptions' {unit: 3} {classified}
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
-            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 1007}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 1008}
+            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 1027}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 1028}
             DEFN_CONT_NT'a door is proximate' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -764,241 +764,241 @@ ROOT_NT
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
                     INVOCATION_LIST_NT'no' {unit: 3}
                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 1009}
+            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 1029}
             SENTENCE_NT'blank is a room' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: object} {instance: I174'blank'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: object} {instance: I173'blank'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'room'} {creation: << kind=room(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the destination of the player is blank' {unit: 3} {classified} {interpretation of subject: infs'blank'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'destination of the player' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I95'yourself'} {enumeration: 0}} {turned already}
+                    PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I94'yourself'} {enumeration: 0}} {turned already}
                     PROPER_NOUN_NT'destination' {refined} {eval: CONSTANT_NT {kind: rooms valued property} {property: 'destination'=room}}
-                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I174'blank'} {enumeration: 0}}
+                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I173'blank'} {enumeration: 0}}
             SENTENCE_NT'blank contains 15 ice cream cones' {unit: 3} {classified} {interpretation of subject: infs'blank'}
                 VERB_NT'contains' {verb 'contain' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I174'blank'} {enumeration: 0}}
+                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I173'blank'} {enumeration: 0}}
                 RELATIONSHIP_NT'contains' {meaning: is-in} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs537} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I175} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs534} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I174} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs538} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I176} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs535} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I175} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs539} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I177} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs536} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I176} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs540} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I178} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs537} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I177} {enumeration: 0}} {created here}
                                     AND_NT
-                                        PROPER_NOUN_NT {refers: infs541} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I179} {enumeration: 0}} {created here}
+                                        PROPER_NOUN_NT {refers: infs538} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I178} {enumeration: 0}} {created here}
                                         AND_NT
-                                            PROPER_NOUN_NT {refers: infs542} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I180} {enumeration: 0}} {created here}
+                                            PROPER_NOUN_NT {refers: infs539} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I179} {enumeration: 0}} {created here}
                                             AND_NT
-                                                PROPER_NOUN_NT {refers: infs543} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I181} {enumeration: 0}} {created here}
+                                                PROPER_NOUN_NT {refers: infs540} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I180} {enumeration: 0}} {created here}
                                                 AND_NT
-                                                    PROPER_NOUN_NT {refers: infs544} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I182} {enumeration: 0}} {created here}
+                                                    PROPER_NOUN_NT {refers: infs541} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I181} {enumeration: 0}} {created here}
                                                     AND_NT
-                                                        PROPER_NOUN_NT {refers: infs545} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I183} {enumeration: 0}} {created here}
+                                                        PROPER_NOUN_NT {refers: infs542} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I182} {enumeration: 0}} {created here}
                                                         AND_NT
-                                                            PROPER_NOUN_NT {refers: infs546} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I184} {enumeration: 0}} {created here}
+                                                            PROPER_NOUN_NT {refers: infs543} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I183} {enumeration: 0}} {created here}
                                                             AND_NT
-                                                                PROPER_NOUN_NT {refers: infs547} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I185} {enumeration: 0}} {created here}
+                                                                PROPER_NOUN_NT {refers: infs544} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I184} {enumeration: 0}} {created here}
                                                                 AND_NT
-                                                                    PROPER_NOUN_NT {refers: infs548} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I186} {enumeration: 0}} {created here}
+                                                                    PROPER_NOUN_NT {refers: infs545} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I185} {enumeration: 0}} {created here}
                                                                     AND_NT
-                                                                        PROPER_NOUN_NT {refers: infs549} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I187} {enumeration: 0}} {created here}
+                                                                        PROPER_NOUN_NT {refers: infs546} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I186} {enumeration: 0}} {created here}
                                                                         AND_NT
-                                                                            PROPER_NOUN_NT {refers: infs550} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I188} {enumeration: 0}} {created here}
-                                                                            PROPER_NOUN_NT {refers: infs551} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I189} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs547} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I187} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs548} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I188} {enumeration: 0}} {created here}
         HEADING_NT'section 4 - other players' {heading 5} {under: H5'section 4 - other players'} {unit: 3}
             SENTENCE_NT'vanessa is a woman in cold comfort' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: object} {instance: I190'vanessa'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: object} {instance: I189'vanessa'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'woman'} {creation: << kind=woman(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in cold comfort' {term: x} {converted SN}}
             SENTENCE_NT'vanessa owns cold comfort' {unit: 3} {classified} {interpretation of subject: infs'vanessa'}
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I190'vanessa'} {enumeration: 0}}
+                PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I189'vanessa'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
-                    PROPER_NOUN_NT'cold comfort' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I161'cold comfort ice cream'} {enumeration: 0}}
+                    PROPER_NOUN_NT'cold comfort' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I160'cold comfort ice cream'} {enumeration: 0}}
             SENTENCE_NT'francine is a woman in the public library' {unit: 3} {classified} {interpretation of subject: infs'vanessa'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: object} {instance: I191'francine'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: object} {instance: I190'francine'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'woman'} {creation: << kind=woman(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the public library' {term: x} {converted SN}}
             SENTENCE_NT'francine carries a book called phlox for phyllis' {unit: 3} {classified} {interpretation of subject: infs'francine'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I191'francine'} {enumeration: 0}}
+                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I190'francine'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'phlox for phyllis' {refined} {refers: infs'phlox for phyllis'} {eval: CONSTANT_NT'phlox for phyllis' {kind: object} {instance: I192'phlox for phyllis'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'phlox for phyllis' {refined} {refers: infs'phlox for phyllis'} {eval: CONSTANT_NT'phlox for phyllis' {kind: object} {instance: I191'phlox for phyllis'} {enumeration: 0}} {created here}
             SENTENCE_NT'francine carries a stamped envelope called a pink stamped en' {unit: 3} {classified} {interpretation of subject: infs'francine'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I191'francine'} {enumeration: 0}}
+                PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I190'francine'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'pink stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'pink stamped envelope'} {eval: CONSTANT_NT'pink stamped envelope' {kind: object} {instance: I193'pink stamped envelope'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'pink stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'pink stamped envelope'} {eval: CONSTANT_NT'pink stamped envelope' {kind: object} {instance: I192'pink stamped envelope'} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis is a man in the alfred cralle pool hall' {unit: 3} {classified} {interpretation of subject: infs'francine'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: object} {instance: I194'lewis'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: object} {instance: I193'lewis'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall' {term: x} {converted SN}}
             SENTENCE_NT'lewis carries 3 stamped envelopes' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I194'lewis'} {enumeration: 0}}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs557} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I195} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs554} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I194} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs558} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I196} {enumeration: 0}} {created here}
-                            PROPER_NOUN_NT {refers: infs559} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I197} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs555} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I195} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs556} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I196} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a book called idiot's guide to dating' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I194'lewis'} {enumeration: 0}}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'idiot's guide to dating' {refined} {refers: infs'idiot's guide to dating'} {eval: CONSTANT_NT'idiot's guide to dating' {kind: object} {instance: I198'idiot's guide to dating'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'idiot's guide to dating' {refined} {refers: infs'idiot's guide to dating'} {eval: CONSTANT_NT'idiot's guide to dating' {kind: object} {instance: I197'idiot's guide to dating'} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a book called how to meet women' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I194'lewis'} {enumeration: 0}}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'how to meet women' {refined} {refers: infs'how to meet women'} {eval: CONSTANT_NT'how to meet women' {kind: object} {instance: I199'how to meet women'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'how to meet women' {refined} {refers: infs'how to meet women'} {eval: CONSTANT_NT'how to meet women' {kind: object} {instance: I198'how to meet women'} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a book called seduction in three easy steps' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I194'lewis'} {enumeration: 0}}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'seduction in three easy steps' {refined} {refers: infs'seduction in three easy steps'} {eval: CONSTANT_NT'seduction in three easy steps' {kind: object} {instance: I200'seduction in three easy steps'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'seduction in three easy steps' {refined} {refers: infs'seduction in three easy steps'} {eval: CONSTANT_NT'seduction in three easy steps' {kind: object} {instance: I199'seduction in three easy steps'} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a dvd called sleepless in seattle' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I194'lewis'} {enumeration: 0}}
+                PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'sleepless in seattle' {refined} {refers: infs'sleepless in seattle'} {eval: CONSTANT_NT'sleepless in seattle' {kind: object} {instance: I201'sleepless in seattle'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'sleepless in seattle' {refined} {refers: infs'sleepless in seattle'} {eval: CONSTANT_NT'sleepless in seattle' {kind: object} {instance: I200'sleepless in seattle'} {enumeration: 0}} {created here}
             SENTENCE_NT'gene is a man in nancy johnson memorial square' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: object} {instance: I202'gene'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: object} {instance: I201'gene'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('nancy johnson memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in nancy johnson memorial square' {term: x} {converted SN}}
             SENTENCE_NT'gene carries a stamped envelope' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I202'gene'} {enumeration: 0}}
+                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs565} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I203} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs562} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I202} {enumeration: 0}} {created here}
             SENTENCE_NT'gene carries a dvd called casablanca' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I202'gene'} {enumeration: 0}}
+                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'casablanca' {refined} {refers: infs'casablanca'} {eval: CONSTANT_NT'casablanca' {kind: object} {instance: I204'casablanca'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'casablanca' {refined} {refers: infs'casablanca'} {eval: CONSTANT_NT'casablanca' {kind: object} {instance: I203'casablanca'} {enumeration: 0}} {created here}
             SENTENCE_NT'gene carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I202'gene'} {enumeration: 0}}
+                PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs567} {eval: CONSTANT_NT {kind: coupon} {instance: I205} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs564} {eval: CONSTANT_NT {kind: coupon} {instance: I204} {enumeration: 0}} {created here}
             SENTENCE_NT'rhoda is a woman in marciony street' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I206'rhoda'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I205'rhoda'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'woman'} {creation: << kind=woman(x) ^ ('marciony street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in marciony street' {term: x} {converted SN}}
             SENTENCE_NT'rhoda carries a book called the marciony street murders' {unit: 3} {classified} {interpretation of subject: infs'rhoda'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I206'rhoda'} {enumeration: 0}}
+                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I205'rhoda'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'the marciony street murders' {refined} {refers: infs'the marciony street murders'} {eval: CONSTANT_NT'the marciony street murders' {kind: object} {instance: I207'the marciony street murders'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'the marciony street murders' {refined} {refers: infs'the marciony street murders'} {eval: CONSTANT_NT'the marciony street murders' {kind: object} {instance: I206'the marciony street murders'} {enumeration: 0}} {created here}
             SENTENCE_NT'rhoda carries a dvd called unsolved serial killings xviii' {unit: 3} {classified} {interpretation of subject: infs'rhoda'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I206'rhoda'} {enumeration: 0}}
+                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I205'rhoda'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'unsolved serial killings xviii' {refined} {refers: infs'unsolved serial killings xviii'} {eval: CONSTANT_NT'unsolved serial killings xviii' {kind: object} {instance: I208'unsolved serial killings xviii'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'unsolved serial killings xviii' {refined} {refers: infs'unsolved serial killings xviii'} {eval: CONSTANT_NT'unsolved serial killings xviii' {kind: object} {instance: I207'unsolved serial killings xviii'} {enumeration: 0}} {created here}
             SENTENCE_NT'rhoda carries a stamped envelope called a squashy package' {unit: 3} {classified} {interpretation of subject: infs'rhoda'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I206'rhoda'} {enumeration: 0}}
+                PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I205'rhoda'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'squashy package' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'squashy package'} {eval: CONSTANT_NT'squashy package' {kind: object} {instance: I209'squashy package'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'squashy package' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'squashy package'} {eval: CONSTANT_NT'squashy package' {kind: object} {instance: I208'squashy package'} {enumeration: 0}} {created here}
             SENTENCE_NT'martin is a man in main street' {unit: 3} {classified} {interpretation of subject: infs'rhoda'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: object} {instance: I210'martin'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: object} {instance: I209'martin'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('main street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in main street' {term: x} {converted SN}}
             SENTENCE_NT'martin carries a dvd called the lifecycle of the south sea t' {unit: 3} {classified} {interpretation of subject: infs'martin'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I210'martin'} {enumeration: 0}}
+                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I209'martin'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'the lifecycle of the south sea tortoise' {refined} {refers: infs'the lifecycle of the south sea tortoise'} {eval: CONSTANT_NT'the lifecycle of the south sea tortoise' {kind: object} {instance: I211'the lifecycle of the south sea tortoise'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'the lifecycle of the south sea tortoise' {refined} {refers: infs'the lifecycle of the south sea tortoise'} {eval: CONSTANT_NT'the lifecycle of the south sea tortoise' {kind: object} {instance: I210'the lifecycle of the south sea tortoise'} {enumeration: 0}} {created here}
             SENTENCE_NT'martin carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'martin'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I210'martin'} {enumeration: 0}}
+                PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I209'martin'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs574} {eval: CONSTANT_NT {kind: coupon} {instance: I212} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs571} {eval: CONSTANT_NT {kind: coupon} {instance: I211} {enumeration: 0}} {created here}
             SENTENCE_NT'antony is a man in movie rental' {unit: 3} {classified} {interpretation of subject: infs'martin'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: object} {instance: I213'antony'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: object} {instance: I212'antony'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('movie rental' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in movie rental' {term: x} {converted SN}}
             SENTENCE_NT'antony carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'antony'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I213'antony'} {enumeration: 0}}
+                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I212'antony'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs576} {eval: CONSTANT_NT {kind: coupon} {instance: I214} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs573} {eval: CONSTANT_NT {kind: coupon} {instance: I213} {enumeration: 0}} {created here}
             SENTENCE_NT'antony carries a stamped envelope called a postcard' {unit: 3} {classified} {interpretation of subject: infs'antony'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I213'antony'} {enumeration: 0}}
+                PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I212'antony'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'postcard' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'postcard'} {eval: CONSTANT_NT'postcard' {kind: object} {instance: I215'postcard'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'postcard' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'postcard'} {eval: CONSTANT_NT'postcard' {kind: object} {instance: I214'postcard'} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby is a man in the town hall' {unit: 3} {classified} {interpretation of subject: infs'antony'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: object} {instance: I216'shelby'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: object} {instance: I215'shelby'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('the town hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the town hall' {term: x} {converted SN}}
             SENTENCE_NT'shelby carries a dvd called conducting an orderly meeting' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I216'shelby'} {enumeration: 0}}
+                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT'conducting an orderly meeting' {refined} {refers: infs'conducting an orderly meeting'} {eval: CONSTANT_NT'conducting an orderly meeting' {kind: object} {instance: I217'conducting an orderly meeting'} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT'conducting an orderly meeting' {refined} {refers: infs'conducting an orderly meeting'} {eval: CONSTANT_NT'conducting an orderly meeting' {kind: object} {instance: I216'conducting an orderly meeting'} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries 5 stamped envelopes' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I216'shelby'} {enumeration: 0}}
+                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs580} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I218} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs577} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I217} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs581} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I219} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs578} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I218} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs582} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I220} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs579} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I219} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs583} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I221} {enumeration: 0}} {created here}
-                                    PROPER_NOUN_NT {refers: infs584} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I222} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs580} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I220} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs581} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I221} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries an ice cream cone' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I216'shelby'} {enumeration: 0}}
+                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs585} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I223} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs582} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I222} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I216'shelby'} {enumeration: 0}}
+                PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs586} {eval: CONSTANT_NT {kind: coupon} {instance: I224} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs583} {eval: CONSTANT_NT {kind: coupon} {instance: I223} {enumeration: 0}} {created here}
             SENTENCE_NT'christopher is a man in the library' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: object} {instance: I225'christopher'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: object} {instance: I224'christopher'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('the library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the library' {term: x} {converted SN}}
             SENTENCE_NT'christopher owns the library' {unit: 3} {classified} {interpretation of subject: infs'christopher'}
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: man} {instance: I225'christopher'} {enumeration: 0}}
+                PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: man} {instance: I224'christopher'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
-                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I171'public library'} {enumeration: 0}}
+                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I170'public library'} {enumeration: 0}}
             SENTENCE_NT'linnea is a woman in the alfred cralle pool hall' {unit: 3} {classified} {interpretation of subject: infs'christopher'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'linnea' {refined} {refers: infs'linnea'} {eval: CONSTANT_NT'linnea' {kind: object} {instance: I226'linnea'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'linnea' {refined} {refers: infs'linnea'} {eval: CONSTANT_NT'linnea' {kind: object} {instance: I225'linnea'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'woman'} {creation: << kind=woman(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall' {term: x} {converted SN}}
             SENTENCE_NT'linnea owns the alfred cralle pool hall' {unit: 3} {classified} {interpretation of subject: infs'linnea'}
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'linnea' {refined} {refers: infs'linnea'} {eval: CONSTANT_NT'linnea' {kind: woman} {instance: I226'linnea'} {enumeration: 0}}
+                PROPER_NOUN_NT'linnea' {refined} {refers: infs'linnea'} {eval: CONSTANT_NT'linnea' {kind: woman} {instance: I225'linnea'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
-                    PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I149'alfred cralle pool hall'} {enumeration: 0}}
+                    PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I148'alfred cralle pool hall'} {enumeration: 0}}
             SENTENCE_NT'ned is a man in the movie rental store' {unit: 3} {classified} {interpretation of subject: infs'linnea'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: object} {instance: I227'ned'} {enumeration: 0}} {created here}
+                PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: object} {instance: I226'ned'} {enumeration: 0}} {created here}
                 COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'man'} {creation: << kind=man(x) ^ ('the movie rental store' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the movie rental store' {term: x} {converted SN}}
             SENTENCE_NT'ned owns the movie rental' {unit: 3} {classified} {interpretation of subject: infs'ned'}
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I227'ned'} {enumeration: 0}}
+                PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I226'ned'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
-                    PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I165'movie rental store'} {enumeration: 0}}
-            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 1010}
+                    PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I164'movie rental store'} {enumeration: 0}}
+            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 1030}
             SENTENCE_NT'the description of a person is usually "[The noun] [if the n' {unit: 3} {classified} {interpretation of subject: infs'ned'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
                     COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {refined} {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}
-            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 1011}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 1012}
+            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 1031}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 1032}
         HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'} {unit: 3}
             SENTENCE_NT'a person has a table name called conversation' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1007,8 +1007,8 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'conversation'
-            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 1013}
-            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 1014}
+            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 1033}
+            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 1034}
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'
@@ -1017,7 +1017,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'recalling conversations'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 1015}
+            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 1035}
             SENTENCE_NT'the conversation of a person is usually table of general chi' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
@@ -1028,11 +1028,11 @@ ROOT_NT
             SENTENCE_NT'the conversation of vanessa is the table of vanessa chatter' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of vanessa' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I190'vanessa'} {enumeration: 0}}
+                    PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I189'vanessa'} {enumeration: 0}}
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
                 PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data} {meaning: {table of vanessa chatter = TABLE_MC}}}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 3}
-            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 1016}
+            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 1036}
         HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'} {unit: 3}
             SENTENCE_NT'a person has some text called walk style' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1056,31 +1056,31 @@ ROOT_NT
             SENTENCE_NT'the walk style of gene is "[one of]wander[or]stroll[purely a' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of gene' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I202'gene'} {enumeration: 0}}
+                    PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                     PROPER_NOUN_NT'walk style' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'walk style'=text}}
                 PROPER_NOUN_NT'"[one of]wander[or]stroll[purely at random]"' {refined} {eval: CONSTANT_NT'"[one of]wander[or]stroll[purely at random]"' {kind: text}}
             SENTENCE_NT'the walk style of francine is "waddle"' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of francine' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I191'francine'} {enumeration: 0}}
+                    PROPER_NOUN_NT'francine' {refined} {refers: infs'francine'} {eval: CONSTANT_NT'francine' {kind: woman} {instance: I190'francine'} {enumeration: 0}}
                     PROPER_NOUN_NT'walk style' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'walk style'=text}}
                 PROPER_NOUN_NT'"waddle"' {refined} {eval: CONSTANT_NT'"waddle"' {kind: text}}
             SENTENCE_NT'the walk style of antony is "scamper"' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of antony' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I213'antony'} {enumeration: 0}}
+                    PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I212'antony'} {enumeration: 0}}
                     PROPER_NOUN_NT'walk style' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'walk style'=text}}
                 PROPER_NOUN_NT'"scamper"' {refined} {eval: CONSTANT_NT'"scamper"' {kind: text}}
             SENTENCE_NT'the walk style of rhoda is "sashay"' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of rhoda' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I206'rhoda'} {enumeration: 0}}
+                    PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I205'rhoda'} {enumeration: 0}}
                     PROPER_NOUN_NT'walk style' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'walk style'=text}}
                 PROPER_NOUN_NT'"sashay"' {refined} {eval: CONSTANT_NT'"sashay"' {kind: text}}
             TABLE_NT'table of visible exits character second third heading chosen' {unit: 3}
             TABLE_NT'table of visible entrances character second third heading ch' {unit: 3}
-            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 1017}
-            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 1018}
+            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 1037}
+            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 1038}
             SENTENCE_NT'a door has a person called last opener' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
@@ -1088,21 +1088,21 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'last opener'
-            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 1019}
-            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 1020}
+            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 1039}
+            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 1040}
             SENTENCE_NT'the last thing named is a thing that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}
                 COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=things variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 1021}
-            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 1022}
-            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 1023}
-            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 1024}
+            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 1041}
+            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 1042}
+            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 1043}
+            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 1044}
             SENTENCE_NT'the last person named is a person that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}
                 COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 1025}
+            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 1045}
             SENTENCE_NT'group size is a number that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}
@@ -1111,19 +1111,19 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number} {meaning: {group size = VARIABLE_MC}}}
                 PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}
-            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 1026}
-            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 1027}
-            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 1028}
-            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 1029}
-            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 1030}
-            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 1031}
+            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 1046}
+            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 1047}
+            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 1048}
+            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 1049}
+            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 1050}
+            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 1051}
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"' {unit: 3}
             SENTENCE_NT'a door is usually scenery' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                 ADJECTIVE_NT'scenery' {refined} {predicate: scenery} {creation: << scenery(x) ^ scenery(x) >>}
-            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 1032}
-            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 1033}
+            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 1052}
+            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 1053}
             SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness' {unit: 3} {classified}
                 VERB_NT'test' {verb 'test' 3p p act IS_TENSE +ve} {prep2: with} {special meaning: test-with}
                 UNPARSED_NOUN_NT'me'
@@ -1132,10 +1132,10 @@ ROOT_NT
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'fast route-finding'
     HEADING_NT'invented sentences' {under: H0'invented sentences'} {heading 0} {implied}
-        IMPERATIVE_NT'to decide which number is red level part of ( full - rgb col' {imperative definition: 1034}
-        IMPERATIVE_NT'to decide which number is green level part of ( full - rgb c' {imperative definition: 1035}
-        IMPERATIVE_NT'to decide which number is blue level part of ( full - rgb co' {imperative definition: 1036}
-        IMPERATIVE_NT'to decide which rgb colour is rgb colour with red level part' {imperative definition: 1037}
+        IMPERATIVE_NT'to decide which number is red level part of ( full - rgb col' {imperative definition: 1054}
+        IMPERATIVE_NT'to decide which number is green level part of ( full - rgb c' {imperative definition: 1055}
+        IMPERATIVE_NT'to decide which number is blue level part of ( full - rgb co' {imperative definition: 1056}
+        IMPERATIVE_NT'to decide which rgb colour is rgb colour with red level part' {imperative definition: 1057}
         SENTENCE_NT'number understood is a number which varies' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'number understood' {refined} {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}
@@ -1168,10 +1168,10 @@ ROOT_NT
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'glulx feature understood' {refined} {eval: NONLOCAL_VARIABLE_NT'glulx feature understood' {nonlocal: 'glulx feature understood'(var)glulx feature}} {created here}
             COMMON_NOUN_NT'glulx feature which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=glulx features variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-        SENTENCE_NT'glk event understood is a glk event which varies' {classified}
+        SENTENCE_NT'glk event type understood is a glk event type which varies' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-            PROPER_NOUN_NT'glk event understood' {refined} {eval: NONLOCAL_VARIABLE_NT'glk event understood' {nonlocal: 'glk event understood'(var)glk event}} {created here}
-            COMMON_NOUN_NT'glk event which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=glk events variable-pointer(x) >>} {eval: TEST_VALUE_NT}
+            PROPER_NOUN_NT'glk event type understood' {refined} {eval: NONLOCAL_VARIABLE_NT'glk event type understood' {nonlocal: 'glk event type understood'(var)glk event type}} {created here}
+            COMMON_NOUN_NT'glk event type which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=glk event types variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'glk window type understood is a glk window type which varies' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'glk window type understood' {refined} {eval: NONLOCAL_VARIABLE_NT'glk window type understood' {nonlocal: 'glk window type understood'(var)glk window type}} {created here}

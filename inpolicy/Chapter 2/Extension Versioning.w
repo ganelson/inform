@@ -41,10 +41,9 @@ void ExtensionVersioning::iterate(semantic_version_number set_to) {
 			Str::delete_last_character(entry);
 			pathname *X = Pathnames::down(P, entry);
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, entry, U"(%c+)-v(%d%c*).i7xd")) {
+			if (Regexp::match(&mr, entry, U"(%c+).i7xd")) {
 				text_stream *raw_name = mr.exp[0];
-				semantic_version_number claimed = VersionNumbers::from_text(mr.exp[1]);
-				ExtensionVersioning::show_version(X, raw_name, claimed, set_to);
+				ExtensionVersioning::show_version(X, raw_name, set_to);
 			}
 			Regexp::dispose_of(&mr);
 		}
@@ -52,8 +51,8 @@ void ExtensionVersioning::iterate(semantic_version_number set_to) {
 }
 
 void ExtensionVersioning::show_version(pathname *P, text_stream *name,
-	semantic_version_number claimed, semantic_version_number set_to) {
-	semantic_version_number V = ExtensionVersioning::read_version(P, name, claimed, set_to);
+	semantic_version_number set_to) {
+	semantic_version_number V = ExtensionVersioning::read_version(P, name, set_to);
 	PRINT("Extension %S has version %v\n", name, &V);
 }
 
@@ -67,7 +66,7 @@ is the same as the version it already has, there's no need to rewrite.)
 
 =
 semantic_version_number ExtensionVersioning::read_version(pathname *X, text_stream *name,
-	semantic_version_number claimed, semantic_version_number set_to) {
+	semantic_version_number set_to) {
 	filename *F = Filenames::in(X, I"extension_metadata.json");
 	TEMPORARY_TEXT(contents)
 	TextFiles::read(F, FALSE, "unable to read file of JSON metadata", TRUE,

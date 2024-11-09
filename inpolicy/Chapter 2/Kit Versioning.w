@@ -29,10 +29,7 @@ void KitVersioning::sync_versions(void) {
 =
 void KitVersioning::iterate(semantic_version_number set_to) {
 	pathname *P = Pathnames::from_text(I"inform7/Internal/Inter");
-	KitVersioning::show_version(P, I"WorldModelKit", set_to);
-	KitVersioning::show_version(P, I"CommandParserKit", set_to);
 	KitVersioning::show_version(P, I"BasicInformKit", set_to);
-	KitVersioning::show_version(P, I"DialogueKit", set_to);
 	KitVersioning::show_version(P, I"Architecture16Kit", set_to);
 	KitVersioning::show_version(P, I"Architecture32Kit", set_to);
 	pathname *X = Pathnames::from_text(I"inform7/Internal/Extensions/Graham Nelson");

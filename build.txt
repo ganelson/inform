@@ -1,3 +1,3 @@
 Prerelease: beta
-Build Date: 10 August 2024
-Build Number: 6X76
+Build Date: 9 November 2024
+Build Number: 6X77

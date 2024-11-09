@@ -1,0 +1,25 @@
+{
+    "is": {
+        "type": "extension",
+        "title": "Standard Rules",
+        "author": "Graham Nelson",
+        "version": "10.2.0"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "WorldModelKit"
+        }
+    }, {
+        "need": {
+            "type": "kit",
+            "title": "CommandParserKit"
+        }
+    } ],
+    "rights": {
+        "licence": "Artistic-2.0",
+        "rights-owner": "Graham Nelson",
+        "date": 2024,
+        "rights-history": "This extension is basic to Inform and requires no acknowledgement."
+    }
+}

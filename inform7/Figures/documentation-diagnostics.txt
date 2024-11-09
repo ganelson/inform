@@ -414,6 +414,12 @@ USAGE: ph_glkwindowwidth 0 0 0
 USAGE: ph_glkwindowclear 0 0 0
 USAGE: ph_glkwindowfocus 0 0 0
 USAGE: ph_glksetcursor 0 0 0
+USAGE: ph_glkeventtype 0 0 0
+USAGE: ph_glkeventwindow 0 0 0
+USAGE: ph_glkeventcharactervalue 0 0 0
+USAGE: ph_glkeventtextvalue 0 0 0
+USAGE: ph_glkcharacterevent 0 0 0
+USAGE: ph_glklineevent 0 0 0
 USAGE: phs_extcredits 0 0 0
 USAGE: phs_compextcredits 0 0 0
 USAGE: ph_issuertp 0 0 0

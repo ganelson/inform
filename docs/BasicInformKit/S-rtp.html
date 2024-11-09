@@ -112,7 +112,7 @@ passed to the <span class="extract"><span class="extract-syntax">desc</span></sp
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ResumeRTP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LatestRTPData</span><span class="plain-syntax">--&gt;6 = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
-<span class="plain-syntax">[ </span><span class="identifier-syntax">ShowRTP</span><span class="plain-syntax">   </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="identifier-syntax">par1</span><span class="plain-syntax"> </span><span class="identifier-syntax">par2</span><span class="plain-syntax"> </span><span class="identifier-syntax">par3</span><span class="plain-syntax"> </span><span class="identifier-syntax">desc</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">ShowRTP</span><span class="plain-syntax">   </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="identifier-syntax">par1</span><span class="plain-syntax"> </span><span class="identifier-syntax">par2</span><span class="plain-syntax"> </span><span class="identifier-syntax">par3</span><span class="plain-syntax"> </span><span class="identifier-syntax">desc</span><span class="plain-syntax"> </span><span class="identifier-syntax">suspended</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LatestRTPData</span><span class="plain-syntax">--&gt;0 == -1 </span><span class="reserved-syntax">or</span><span class="plain-syntax"> -2) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LatestRTPData</span><span class="plain-syntax">--&gt;6) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
@@ -123,7 +123,7 @@ passed to the <span class="extract"><span class="extract-syntax">desc</span></sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">LatestRTPData</span><span class="plain-syntax">--&gt;0 = -2;</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SuspendTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">suspended</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SuspendTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^*** Run-time problem "</span><span class="plain-syntax">, (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
@@ -140,7 +140,9 @@ passed to the <span class="extract"><span class="extract-syntax">desc</span></sp
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ResumeTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">suspended</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ResumeTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

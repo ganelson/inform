@@ -11,13 +11,13 @@
   
   >[1] e
   
-  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit/RTPs
   *** Tried to make the player part of something.
   *** Tried to make the player part of the jelly monster.
   
   >[2] w
   
-  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit/RTPs
   *** Tried to make the player part of something.
   *** Tried to make the player part of the parasitic cream blob.
   

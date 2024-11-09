@@ -143,7 +143,7 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 The following webs are the source for the two most important extensions shipped with Inform:
 
 {define: extension-web web: WEB author: AUTHOR title: TITLE}
-{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
+{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7xd}
 * [{TITLE} by {AUTHOR}](inform7/extensions/{WEB}) - __v{bibliographic datum: Version Number of: {PATH}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{WEB}/index.html)
 {end-define}
 

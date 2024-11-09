@@ -90,7 +90,7 @@ You are always self-possessed.
 >** take clark
 (Clark Gable)
 [taking Clark Gable]
-I don't suppose Clark Gable would care for that.
+You don't suppose Clark Gable would care for that.
 [taking Clark Gable - failed the can't take other people rule]
 
 >** clark, take
@@ -3635,7 +3635,7 @@ You can't wear that!
 [wearing Clark Gable]
 (first taking Clark Gable)
 [(1) taking Clark Gable - silently]
-I don't suppose Clark Gable would care for that.
+You don't suppose Clark Gable would care for that.
 [(1) taking Clark Gable - silently - failed the can't take other people rule]
 
 [wearing Clark Gable - failed the can't wear what's not held rule]

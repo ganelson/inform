@@ -895,17 +895,3 @@ To *** (T - text):
 
 =
 The Standard Rules end here.
-
-@ ...except that this is not quite true, because like most extensions they
-then quote some documentation for Inform to weave into index pages: though
-here it's more of a polite refusal than a manual, since the entire system
-documentation is really the description of what was defined in this
-extension.
-
-=
----- DOCUMENTATION ----
-
-Unlike other extensions, the Standard Rules are compulsorily included
-with every work of interactive fiction made with Inform. They are described
-throughout the documentation supplied with Inform, so no details will be
-given here.

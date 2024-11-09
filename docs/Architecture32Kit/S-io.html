@@ -245,16 +245,7 @@ to document all of that.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">FunctionKeyCodes</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">$ffffffe4</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffe5</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffe6</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffe7</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffe8</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$ffffffe9</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffea</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffeb</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffec</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffed</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffee</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffef</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$fffffff3</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff4</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff5</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff6</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff7</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff8</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffff9</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$fffffffa</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffffb</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffffc</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffffd</span><span class="plain-syntax"> </span><span class="constant-syntax">$fffffffe</span><span class="plain-syntax"> </span><span class="constant-syntax">$ffffffff</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FunctionKeyCodesCount</span><span class="plain-syntax"> = </span><span class="constant-syntax">25</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">MappedFunctionKeyCodes</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">$EF0C</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF0B</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF0A</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF09</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF08</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF07</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF06</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$EF05</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF04</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF03</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF02</span><span class="plain-syntax"> </span><span class="constant-syntax">$EF01</span><span class="plain-syntax"> </span><span class="constant-syntax">$21F2</span><span class="plain-syntax"> </span><span class="constant-syntax">$21F1</span><span class="plain-syntax"> </span><span class="constant-syntax">$21DF</span><span class="plain-syntax"> </span><span class="constant-syntax">$21DE</span><span class="plain-syntax"> </span><span class="constant-syntax">$0009</span><span class="plain-syntax"> </span><span class="constant-syntax">$001B</span><span class="plain-syntax"> </span><span class="constant-syntax">$0008</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$000A</span><span class="plain-syntax"> </span><span class="constant-syntax">$2193</span><span class="plain-syntax"> </span><span class="constant-syntax">$2191</span><span class="plain-syntax"> </span><span class="constant-syntax">$2192</span><span class="plain-syntax"> </span><span class="constant-syntax">$2190</span><span class="plain-syntax"> </span><span class="constant-syntax">$FFFD</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyChar</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">nostat</span><span class="plain-syntax"> </span><span class="identifier-syntax">done</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> </span><span class="identifier-syntax">jx</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyChar</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">done</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> </span><span class="identifier-syntax">jx</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">jx</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ch</span><span class="plain-syntax">; </span><span class="comment-syntax">squash compiler warnings</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gg_mainwin</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> ~= </span><span class="reserved-syntax">false</span><span class="plain-syntax">) {</span>
@@ -292,14 +283,6 @@ to document all of that.
 <span class="character-syntax">    while (~~done) {</span>
 <span class="character-syntax">        glk_select(gg_event);</span>
 <span class="character-syntax">        switch (gg_event--&gt;0) {</span>
-<span class="character-syntax">          evtype_Arrange:</span>
-<span class="character-syntax">            if (nostat) {</span>
-<span class="character-syntax">                glk_cancel_char_event(win);</span>
-<span class="character-syntax">                res = $80000000;</span>
-<span class="character-syntax">                done = true;</span>
-<span class="character-syntax">                break;</span>
-<span class="character-syntax">            }</span>
-<span class="character-syntax">            DrawStatusLine();</span>
 <span class="character-syntax">          evtype_CharInput:</span>
 <span class="character-syntax">            if (gg_event--&gt;1 == win) {</span>
 <span class="character-syntax">                res = gg_event--&gt;2;</span>
@@ -329,13 +312,7 @@ to document all of that.
 <span class="character-syntax">        glk_put_char_stream(gg_commandstr, 10); </span><span class="comment-syntax">newline</span>
 <span class="character-syntax">    }</span>
 <span class="character-syntax">  .KCPContinue;</span>
-<span class="character-syntax">    if (res &lt; 0) {</span>
-<span class="character-syntax">        @binarysearch res WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;</span>
-<span class="character-syntax">        if (ix ~= -1) {</span>
-<span class="character-syntax">            res = MappedFunctionKeyCodes--&gt;ix;</span>
-<span class="character-syntax">        }</span>
-<span class="character-syntax">    }</span>
-<span class="character-syntax">    return res;</span>
+<span class="character-syntax">    return MapGlkKeyCodeToUnicode(res);</span>
 <span class="character-syntax">];</span>
 
 <span class="character-syntax">[ VM_KeyDelay tenths  key done;</span>
@@ -380,8 +357,6 @@ to document all of that.
 <span class="character-syntax">    while (~~done) {</span>
 <span class="character-syntax">        glk_select(gg_event);</span>
 <span class="character-syntax">        switch (gg_event--&gt;0) {</span>
-<span class="character-syntax">          evtype_Arrange:</span>
-<span class="character-syntax">            DrawStatusLine();</span>
 <span class="character-syntax">          evtype_LineInput:</span>
 <span class="character-syntax">            if (gg_event--&gt;1 == gg_mainwin) {</span>
 <span class="character-syntax">                a_buffer--&gt;0 = gg_event--&gt;2;</span>
@@ -950,7 +925,7 @@ text just appears in the main window.
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-cs.html">&#10094;</a></li><li class="progresssection"><a href="S-cpb.html">cpb</a></li><li class="progresssection"><a href="S-inf.html">inf</a></li><li class="progresssection"><a href="S-glk.html">glk</a></li><li class="progresssection"><a href="S-ge.html">ge</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-stt.html">stt</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresscurrent">io</li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progresssection"><a href="S-vn.html">vn</a></li><li class="progressnext"><a href="S-fio.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-cs.html">&#10094;</a></li><li class="progresssection"><a href="S-cpb.html">cpb</a></li><li class="progresssection"><a href="S-inf.html">inf</a></li><li class="progresssection"><a href="S-glk.html">glk</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-stt.html">stt</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresscurrent">io</li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progresssection"><a href="S-vn.html">vn</a></li><li class="progressnext"><a href="S-fio.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

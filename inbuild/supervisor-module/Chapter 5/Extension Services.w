@@ -1040,6 +1040,18 @@ int Extensions::is_standard(inform_extension *E) {
 	return E->standard;
 }
 
+@ And this is only actually used to locate the standard extensions.
+
+=
+inform_extension *Extensions::find_by_name(text_stream *name, text_stream *author,
+	linked_list *nest_list, inbuild_requirement *req) {
+	if (req == NULL) req = Requirements::any_version_of(Works::new(extension_bundle_genre, name, author));
+	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
+	if (R == NULL) return NULL;
+	inbuild_copy *C = R->copy;
+	return ExtensionBundleManager::from_copy(C);
+}
+
 @h Version requirements.
 When it's known that an extension must satisfy a given version requirement --
 say, being version 7.2.1 or better -- the following is called. Note that

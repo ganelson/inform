@@ -172,7 +172,7 @@
   
   
   
-  *** Run-time problem NonBackdropMovedToMultipleRooms: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Run-time problem NonBackdropMovedToMultipleRooms: INTERNAL/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit/RTPs
   *** Only backdrops can be moved to multiple rooms or regions.
   *** The marble is not a backdrop.
   

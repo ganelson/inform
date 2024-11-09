@@ -289,6 +289,28 @@ void Projects::add_language_extension_nest(inform_project *proj) {
 	}
 }
 
+void Projects::add_standard_rules_nest(inform_project *proj) {
+	inform_extension *SR = Extensions::find_by_name(I"Standard Rules", I"Graham Nelson",
+		Projects::nest_list(proj), NULL);
+	if (SR) {
+		inbuild_nest *N = Extensions::materials_nest(SR);
+		if (N) ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+	} else {
+		LOG("Unable to locate Standard Rules\n");
+	}	
+}
+
+void Projects::add_basic_inform_nest(inform_project *proj) {
+	inform_extension *SR = Extensions::find_by_name(I"Basic Inform", I"Graham Nelson",
+		Projects::nest_list(proj), NULL);
+	if (SR) {
+		inbuild_nest *N = Extensions::materials_nest(SR);
+		if (N) ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+	} else {
+		LOG("Unable to locate Basic Inform\n");
+	}	
+}
+
 @ Since there are two ways projects can be stored:
 
 =
@@ -621,8 +643,10 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 			CopyErrors::new_T(LANGUAGE_UNAVAILABLE_CE, -1,
 				project->name_of_language_of_play));
 	}
-	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
+	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE)) {
+		Projects::add_standard_rules_nest(project);
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL, NULL);
+	}
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 
