@@ -99,7 +99,7 @@ Check an actor taking (this is the can't take yourself rule):
 
 Check an actor taking (this is the can't take other people rule):
 	if the noun is a person:
-		if the actor is the player, say "I don't suppose [the noun] [would care] for that." (A);
+		if the actor is the player, say "[We] [don't] suppose [the noun] [would care] for that." (A);
 		stop the action.
 
 Check an actor taking (this is the can't take component parts rule):
