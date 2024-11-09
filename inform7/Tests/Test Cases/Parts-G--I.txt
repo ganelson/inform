@@ -4,7 +4,7 @@
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Circus Backlot
 Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
@@ -360,8 +360,8 @@ You open the glass door.
 You can't, since the glass door leads nowhere.
 
 >** wear rug
-(first taking the Living Rug)
-I don't suppose the Living Rug would care for that.
+(first taking the costume)
+That seems to be a part of the Living Rug.
 
 >** turn on lion switch
 You switch the lion switch on.
@@ -640,7 +640,6 @@ You are carrying:
     a plastic daisy
 
 >** wear tights
-(first taking the pair of spangled tights)
 Can't you put your spangled tights on one leg at a time like any other man?
 
 >** wear left leg
@@ -653,11 +652,11 @@ That seems to be a part of the pair of spangled tights.
 
 >** i
 You are carrying:
-  a pair of spangled tights
   a tall hat (being worn)
   a busker's apron (being worn)
   a satchel (open)
     frightened-looking rabbit
+    a pair of spangled tights
     a silver key
     a leash
     an outsized green shoe

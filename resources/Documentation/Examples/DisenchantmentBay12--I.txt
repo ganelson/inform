@@ -1,7 +1,7 @@
    Cabin                                                                                                                                                                                                                  0/1
   Disenchantment Bay
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Cabin
   The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
@@ -33,7 +33,6 @@
   "Sure, you can -- well, get me a drink first, would you?"
   
   >[6] give beer to captain
-  (first taking the warm beer)
   "I don't drink on the job, thanks," he says. "You can help yourself if you want it, though."
   
   >[7] open bench
@@ -46,7 +45,6 @@
   Taken.
   
   >[10] get coke
-  (putting the warm beer into the backpack to make room)
   Taken.
   
   >[11] give coke to captain

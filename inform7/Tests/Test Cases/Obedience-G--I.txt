@@ -2286,7 +2286,7 @@ You can also see a stage door, a cage (in which are a lion and a seat), an autom
 >** clark, enter west
 [asking Clark Gable to try entering west]
 [(1) Clark Gable entering west]
-[(1) Clark Gable entering west - failed the basic accessibility rule]
+[(1) Clark Gable entering west - failed the basic tangibility rule]
 
 "I don't think that's in the script," says Clark dubiously.
 [asking Clark Gable to try entering west - succeeded]
@@ -2294,15 +2294,15 @@ You can also see a stage door, a cage (in which are a lion and a seat), an autom
 >** clark, enter east
 [asking Clark Gable to try entering east]
 [(1) Clark Gable entering east]
-[(1) Clark Gable entering east - failed the basic accessibility rule]
+[(1) Clark Gable entering east - failed the basic tangibility rule]
 
 "I don't think that's in the script," says Clark dubiously.
 [asking Clark Gable to try entering east - succeeded]
 
 >** enter west
 [entering west]
-You must name something more substantial.
-[entering west - failed the basic accessibility rule]
+You must name something more substantial than the west.
+[entering west - failed the basic tangibility rule]
 
 >** clark, west
 [asking Clark Gable to try going west]
@@ -2945,16 +2945,15 @@ What do you want Clark Gable to lock the stage door with?
 
 >** key
 [asking Clark Gable to try locking the stage door with the small key]
+[(1) Clark Gable locking the stage door with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable locking the stage door with the small key - failed the can't lock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try locking the stage door with the small key - succeeded]
 
 >** unlock door
 What do you want to unlock the stage door with?
@@ -2979,16 +2978,15 @@ First you would have to close the stage door.
 
 >** clark, lock the door with the key
 [asking Clark Gable to try locking the stage door with the small key]
+[(1) Clark Gable locking the stage door with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable locking the stage door with the small key - failed the can't lock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try locking the stage door with the small key - succeeded]
 
 >** close door
 [closing the stage door]
@@ -3070,7 +3068,7 @@ What do you want to unlock the cage with?
 That seems to belong to Clark Gable.
 [(1) taking the small key - silently - failed the can't take people's possessions rule]
 
-[unlocking the cage with the small key - failed the carrying requirements rule]
+[unlocking the cage with the small key - failed the can't unlock without holding the key rule]
 
 >** i
 [taking inventory]
@@ -3105,16 +3103,15 @@ That doesn't seem to be something you can unlock.
 
 >** clark, unlock cage with key
 [asking Clark Gable to try unlocking the cage with the small key]
+[(1) Clark Gable unlocking the cage with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable unlocking the cage with the small key - failed the can't unlock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try unlocking the cage with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try unlocking the cage with the small key - succeeded]
 
 >** unlock door with key
 [unlocking the stage door with the small key]
@@ -3128,16 +3125,15 @@ That's unlocked at the moment.
 
 >** clark, unlock door with key
 [asking Clark Gable to try unlocking the stage door with the small key]
+[(1) Clark Gable unlocking the stage door with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable unlocking the stage door with the small key - failed the can't unlock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try unlocking the stage door with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try unlocking the stage door with the small key - succeeded]
 
 >** lock door with key
 [locking the stage door with the small key]
@@ -3169,29 +3165,27 @@ You lock the stage door.
 
 >** clark, unlock door with key
 [asking Clark Gable to try unlocking the stage door with the small key]
+[(1) Clark Gable unlocking the stage door with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable unlocking the stage door with the small key - failed the can't unlock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try unlocking the stage door with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try unlocking the stage door with the small key - succeeded]
 
 >** clark, lock door with key
 [asking Clark Gable to try locking the stage door with the small key]
+[(1) Clark Gable locking the stage door with the small key]
 (Clark Gable first taking the small key)
-[(1) asking Clark Gable to try taking the small key - silently]
 [(2) Clark Gable taking the small key - silently]
 [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable locking the stage door with the small key - failed the can't lock without holding the key rule]
 
-[(1) asking Clark Gable to try taking the small key - silently - succeeded]
-
-[asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try locking the stage door with the small key - succeeded]
 
 >** open door
 [opening the stage door]
@@ -3644,7 +3638,7 @@ You can't wear that!
 I don't suppose Clark Gable would care for that.
 [(1) taking Clark Gable - silently - failed the can't take other people rule]
 
-[wearing Clark Gable - failed the carrying requirements rule]
+[wearing Clark Gable - failed the can't wear what's not held rule]
 
 >** i
 [taking inventory]
@@ -3677,7 +3671,7 @@ You can also see a stage door, an automobile (empty) and a dumpster (in which is
 That's fixed in place.
 [(1) taking the stage door - silently - failed the can't take what's fixed in place rule]
 
-[wearing the stage door - failed the carrying requirements rule]
+[wearing the stage door - failed the can't wear what's not held rule]
 
 >** clark, wear bone
 [asking Clark Gable to try wearing the bone]
@@ -3690,16 +3684,15 @@ That's fixed in place.
 
 >** clark, wear door
 [asking Clark Gable to try wearing the stage door]
+[(1) Clark Gable wearing the stage door]
 (Clark Gable first taking the stage door)
-[(1) asking Clark Gable to try taking the stage door - silently]
 [(2) Clark Gable taking the stage door - silently]
 [(2) Clark Gable taking the stage door - silently - failed the can't take what's fixed in place rule]
 
-"I'm not the stunt man, darling," he says with a wry twinkle.
+[(1) Clark Gable wearing the stage door - failed the can't wear what's not held rule]
 
-[(1) asking Clark Gable to try taking the stage door - silently - succeeded]
-
-[asking Clark Gable to try wearing the stage door - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try wearing the stage door - succeeded]
 
 >** clark, wear pants
 [asking Clark Gable to try wearing the pair of pants]
@@ -3731,16 +3724,15 @@ You aren't wearing the sparkly scarf.
 
 >** clark, wear fedora
 [asking Clark Gable to try wearing the fedora]
+[(1) Clark Gable wearing the fedora]
 (Clark Gable first taking the fedora)
-[(1) asking Clark Gable to try taking the fedora - silently]
 [(2) Clark Gable taking the fedora - silently]
 [(2) Clark Gable taking the fedora - silently - failed the can't take people's possessions rule]
 
-"I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+[(1) Clark Gable wearing the fedora - failed the can't wear what's not held rule]
 
-[(1) asking Clark Gable to try taking the fedora - silently - succeeded]
-
-[asking Clark Gable to try wearing the fedora - failed the carrying requirements rule]
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try wearing the fedora - succeeded]
 
 >** look
 [looking]
@@ -3823,7 +3815,7 @@ Clark Gable puts on the fedora.
 That seems to belong to Clark Gable.
 [(1) taking the sparkly scarf - silently - failed the can't take people's possessions rule]
 
-[wearing the sparkly scarf - failed the carrying requirements rule]
+[wearing the sparkly scarf - failed the can't wear what's not held rule]
 
 >** clark, eat fedora
 [asking Clark Gable to try eating the fedora]
@@ -4184,7 +4176,7 @@ There is no reply.
 That seems to belong to Clark Gable.
 [(1) taking the bone - silently - failed the can't take people's possessions rule]
 
-[giving the bone to Clark Gable - failed the carrying requirements rule]
+[giving the bone to Clark Gable - failed the can't give what you haven't got rule]
 
 >** clark, ask me for the bone
 [asking Clark Gable to try asking yourself for the bone]
@@ -4195,7 +4187,7 @@ That seems to belong to Clark Gable.
 That seems to belong to Clark Gable.
 [(3) taking the bone - silently - failed the can't take people's possessions rule]
 
-[(2) giving the bone to Clark Gable - failed the carrying requirements rule]
+[(2) giving the bone to Clark Gable - failed the can't give what you haven't got rule]
 
 [(1) Clark Gable asking yourself for the bone - failed the translate asking for to giving rule]
 
