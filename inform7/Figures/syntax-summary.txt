@@ -1,8 +1,8 @@
 ROOT_NT
     HEADING_NT'implied inclusions' {under: H0'implied inclusions'} {heading 0} {implied}
         INCLUSION_NT'include basic inform by graham nelson'
-            HEADING_NT'version 2 of basic inform by graham nelson begins here' {heading 0} {under: H0'version 2 of basic inform by graham nelson begins here'} {includes: Basic Inform by Graham Nelson v2 } {unit: 0}
-                BEGINHERE_NT'version 2 of basic inform by graham nelson' {unit: 0}
+            HEADING_NT'version 10.2.0 of basic inform by graham nelson begins here' {heading 0} {under: H0'version 10.2.0 of basic inform by graham nelson begins here'} {includes: Basic Inform v10.2.0 } {unit: 0}
+                BEGINHERE_NT'version 10.2.0 of basic inform by graham nelson' {unit: 0}
                 ...
         INCLUSION_NT'include english language by graham nelson'
             HEADING_NT'version 10.2.0 of english language by graham nelson begins h' {heading 0} {under: H0'version 10.2.0 of english language by graham nelson begins here'} {includes: English Language v10.2.0 } {unit: 1}

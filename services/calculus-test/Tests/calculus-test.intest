@@ -5,13 +5,13 @@
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 
-	set: $K1 = inform7/Internal/Inter/BasicInformKit/kinds/Macros.neptune
-	set: $K2 = inform7/Internal/Inter/BasicInformKit/kinds/Protocols.neptune
-	set: $K3 = inform7/Internal/Inter/BasicInformKit/kinds/Core.neptune
-	set: $K4 = inform7/Internal/Inter/BasicInformKit/kinds/Punctuation.neptune
+	set: $K1 = 'inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/kinds/Macros.neptune'
+	set: $K2 = 'inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/kinds/Protocols.neptune'
+	set: $K3 = 'inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/kinds/Core.neptune'
+	set: $K4 = 'inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/kinds/Punctuation.neptune'
 
 	mkdir: $PATH/_Results_Actual
-	step: services/calculus-test/Tangled/calculus-test -load $K1 -load $K2 -load $K3 -load $K4 -interpret $PATH/$CASE.txt >$A 2>&1
+	step: services/calculus-test/Tangled/calculus-test -load `$K1 -load `$K2 -load `$K3 -load `$K4 -interpret $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in calculus-test' $A
 
 	show: $A

@@ -3,7 +3,7 @@
   S is now {2, 4, 3, 8, 16, 32, 64}.
   S is now {2, 4, 3, 8, 16, 32, 64, 2}.
   
-  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Attempt to use list item which does not exist.
   *** Couldn't add at entry 0 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   *** Couldn't add at entry 10 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***

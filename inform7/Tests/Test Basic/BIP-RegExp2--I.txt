@@ -13,7 +13,7 @@
   test 12: matching a<-b> in A- case insensitive --> <0> A-
   test 13: matching a<b-> in A- case insensitive --> <0> A-
   test 14: compiling a<b-a> to error Invalid <> range "b-a" -->
-  *** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem RegularExpressionMalformed: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Syntax error in regular expression.
   *** Regular expression error: Invalid {} range ***
   test 15: compiling a<>b to error Unmatched < --> *** Regular expression error: Character range never ends ***

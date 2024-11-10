@@ -1,5 +1,5 @@
    Foo
-  *** Run-time problem UsedAbstractRelation: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem UsedAbstractRelation: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Tried to make use of an abstract relation.
   Welcome
   An Interactive Fiction

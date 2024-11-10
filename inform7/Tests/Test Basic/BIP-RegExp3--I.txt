@@ -7,7 +7,7 @@
   test 6: matching ()ef in def case sensitive --> <0> ef
   test 7: matching ()ef in def case sensitive --> <0> ef
   test 8: compiling *a to error Quantifier follows nothing -->
-  *** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem RegularExpressionMalformed: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Syntax error in regular expression.
   *** Regular expression error: quantifier misplaced ***
   test 9: compiling (*)b to error Quantifier follows nothing --> *** Regular expression error: quantifier misplaced ***

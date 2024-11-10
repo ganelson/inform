@@ -5631,7 +5631,7 @@
         version <extension-version> of <definite-article> <extension-unversioned> 
           (hits 1/3) (matched: 'version 10.2.0 of the standard rules') constraint DS = {27} extremes [5, infinity)
         version <extension-version> of <extension-unversioned> 
-          (hits 3/3) (matched: 'version 2 of basic inform') constraint DS = {27} extremes [4, infinity)
+          (hits 3/3) (matched: 'version 10.2.0 of basic inform') constraint DS = {27} extremes [4, infinity)
         <definite-article> <extension-unversioned> 
           (hits 0/4) constraint (none) extremes [2, infinity)
         <extension-unversioned> 

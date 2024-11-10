@@ -8,7 +8,7 @@ After changing entry 3 to 208, L is now {11, 7, 208, 5, -6, 0}.
 After changing the two end entries, L is now {1, 7, 208, 5, -6, 6}.
 These, however, should fail as being out of range.
 
-*** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
+*** Run-time problem AccessedNonExistentListItem: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
 *** Attempt to use list item which does not exist.
 *** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
 *** Couldn't write to list entry 7 of a list which has entries numbered from 1 to 6 ***

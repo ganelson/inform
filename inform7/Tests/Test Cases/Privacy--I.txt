@@ -1,5 +1,5 @@
   Hey, there's no problem here.
   "1 divided by 0" = number:
-  *** Run-time problem DividedByZero: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem DividedByZero: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** You can't divide by zero.
   0

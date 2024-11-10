@@ -70,6 +70,6 @@
 > >   Linda's Bunkhouse
   ** u
   
-  *** Run-time problem MemoryAllocationFailed: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem MemoryAllocationFailed: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Memory allocation proved impossible.
   *** Stack frame of 0 could not be created ***

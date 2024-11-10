@@ -123,21 +123,6 @@ following command-line tools:
 {tool-with-manual name: indoc    version-from: indoc    doc: M-iti}
 {tool-with-manual name: inpolicy version-from: inpolicy doc: M-ui}
 
-### Kits shipped with Inform
-
-The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
-
-{define: kit name: PROGRAM purpose: PURPOSE}
-* {PROGRAM} - {PURPOSE} - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html)
-{end-define}
-{kit name: BasicInformKit       purpose: Support for Inform as a programming language}
-{kit name: Architecture16Kit    purpose: Support for running on 16-bit platforms}
-{kit name: Architecture32Kit    purpose: Support for running on 32-bit platforms}
-{kit name: WorldModelKit        purpose: Support for modelling space, time and actions in interactive fiction}
-{kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
-{kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
-{kit name: DialogueKit          purpose: Additional support for dialogue (under construction)}
-
 ### Extensions shipped with Inform
 
 The following webs are the source for the two most important extensions shipped with Inform:
@@ -149,6 +134,21 @@ The following webs are the source for the two most important extensions shipped 
 
 {extension-web web: basic_inform   author: Graham Nelson title: Basic Inform}
 {extension-web web: standard_rules author: Graham Nelson title: Standard Rules}
+
+### Kits shipped with Inform
+
+The following webs are the source for kits of Inter code shipped with Inform (inside the Basic Inform and Standard Rules extensions). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
+
+{define: kit name: PROGRAM purpose: PURPOSE}
+* {PROGRAM} - {PURPOSE} - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html)
+{end-define}
+{kit name: BasicInformKit       purpose: Support for Inform as a programming language}
+{kit name: Architecture16Kit    purpose: Support for running on 16-bit platforms}
+{kit name: Architecture32Kit    purpose: Support for running on 32-bit platforms}
+{kit name: WorldModelKit        purpose: Support for modelling space, time and actions in interactive fiction}
+{kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
+{kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
+{kit name: DialogueKit          purpose: Additional support for dialogue (under construction)}
 
 ### Website templates and interpreters shipped with Inform
 

@@ -1,5 +1,5 @@
    Foo
-  *** Run-time problem ResizedListToNegativeSize: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem ResizedListToNegativeSize: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Attempt to resize list to negative size.
   Welcome
   An Interactive Fiction

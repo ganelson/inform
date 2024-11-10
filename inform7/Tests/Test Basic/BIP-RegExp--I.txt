@@ -77,7 +77,7 @@
   test 76: matching a<-b> in a- case sensitive --> <0> a-
   test 77: matching a<b-> in a- case sensitive --> <0> a-
   test 78: compiling a<b-a> to error Invalid <> range "b-a" -->
-  *** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem RegularExpressionMalformed: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Syntax error in regular expression.
   *** Regular expression error: Invalid {} range ***
   test 79: compiling a<>b to error Unmatched < --> *** Regular expression error: Character range never ends ***

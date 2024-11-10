@@ -1,6 +1,6 @@
    Home
   Today's prime is
-  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Attempt to use list item which does not exist.
   *** Couldn't read from entry -35 of a list which has entries numbered from 1 to 5 ***
   2.

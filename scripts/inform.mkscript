@@ -147,9 +147,9 @@ INFORM6WEB = inform6
 # Then there are webs which make programs other than C executables: kits of Inter
 # code and Inform 7 extensions.
 
-{component type: web symbol: BASICINFORMKIT       webname: BasicInformKit       path: inform7/Internal/Inter/BasicInformKit       set: kits}
-{component type: web symbol: ARCHITECTURE16KIT    webname: Architecture16Kit    path: inform7/Internal/Inter/Architecture16Kit    set: kits}
-{component type: web symbol: ARCHITECTURE32KIT    webname: Architecture32Kit    path: inform7/Internal/Inter/Architecture32Kit    set: kits}
+{component type: web symbol: BASICINFORMKIT       webname: BasicInformKit       path: inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit           set: kits}
+{component type: web symbol: ARCHITECTURE16KIT    webname: Architecture16Kit    path: inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/Architecture16Kit        set: kits}
+{component type: web symbol: ARCHITECTURE32KIT    webname: Architecture32Kit    path: inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/Architecture32Kit        set: kits}
 {component type: web symbol: WORLDMODELKIT        webname: WorldModelKit        path: inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit          set: kits}
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/CommandParserKit       set: kits}
 {component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit   set: kits}
@@ -161,7 +161,7 @@ INFORM6WEB = inform6
 # Those extensions, when tangled from these webs, will need to be placed here:
 
 STANDARDRULESTANGLED = $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Source/Standard\ Rules.i7x
-BASICINFORMTANGLED =   $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7x
+BASICINFORMTANGLED =   $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Source/Basic\ Inform.i7x
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"

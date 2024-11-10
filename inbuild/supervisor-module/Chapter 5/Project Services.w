@@ -612,6 +612,7 @@ void Projects::finalise_kit_dependencies(inform_project *project) {
 on //WorldModelKit//, through the if-this-then-that mechanism.
 
 @<Add dependencies for the standard kits@> =
+	Projects::add_basic_inform_nest(project);
 	int no_word_from_JSON = TRUE;
 	JSON_value *need;
 	LOOP_OVER_LINKED_LIST(need, JSON_value, project->kit_names_to_include) {

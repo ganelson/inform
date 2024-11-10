@@ -1,7 +1,7 @@
    Foo
   Clomp!
   
-  *** Run-time problem PhraseAppliedToIncompatibleValue: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem PhraseAppliedToIncompatibleValue: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Phrase applied to an incompatible kind of value.
   
   Welcome

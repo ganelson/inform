@@ -11,7 +11,7 @@
   
   >[1] put umbrella in pear
   
-  *** Run-time problem ChangedRelationOutsideDomain: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem ChangedRelationOutsideDomain: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Tried to change a relation for objects with the wrong kinds.
   *** The relation was set up as "Blorbing relates various devices to one thing", but you tried to relate (or unrelate) the umbrella to the pear.
   

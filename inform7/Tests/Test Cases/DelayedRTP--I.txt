@@ -10,14 +10,14 @@
   
   >[1] x banana
   Banana size A:
-  *** Run-time problem UnprovidedProperty: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem UnprovidedProperty: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Attempt to use a property without permission.
   *** Since the banana is not allowed the property "size", it can't be used.
   0.
   
   >[2] touch banana
   Banana size B:
-  *** Run-time problem UnprovidedProperty: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Run-time problem UnprovidedProperty: INTERNAL/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit/RTPs
   *** Attempt to use a property without permission.
   *** Since the banana is not allowed the property "size", it can't be used.
   0.

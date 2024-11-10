@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6X77 'Krypton' (9 November 2024)
+[Version](notes/versioning.md): 10.2.0-beta+6X78 'Krypton' (10 November 2024)
 
 ## About Inform
 
@@ -116,9 +116,16 @@ following command-line tools:
 * indoc - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/indoc/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
 * inpolicy - __version 1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inpolicy/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
 
+### Extensions shipped with Inform
+
+The following webs are the source for the two most important extensions shipped with Inform:
+
+* [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/basic_inform/index.html)
+* [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/standard_rules/index.html)
+
 ### Kits shipped with Inform
 
-The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
+The following webs are the source for kits of Inter code shipped with Inform (inside the Basic Inform and Standard Rules extensions). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
 
 * BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformKit/index.html)
 * Architecture16Kit - Support for running on 16-bit platforms - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/Architecture16Kit/index.html)
@@ -127,13 +134,6 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 * EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/EnglishLanguageKit/index.html)
 * CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/CommandParserKit/index.html)
 * DialogueKit - Additional support for dialogue (under construction) - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/DialogueKit/index.html)
-
-### Extensions shipped with Inform
-
-The following webs are the source for the two most important extensions shipped with Inform:
-
-* [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/basic_inform/index.html)
-* [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/standard_rules/index.html)
 
 ### Website templates and interpreters shipped with Inform
 
