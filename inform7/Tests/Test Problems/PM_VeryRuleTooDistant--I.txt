@@ -1,0 +1,15 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 41 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10686 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35530 words long.
+Problem__ PM_VeryRuleTooDistant
+  >--> You wrote 'Very first before rule' (source text, line 6): but the 'very
+    first' or 'very last' rule for a rulebook can only be created in the same
+    extension as the rulebook itself, or else in the main body of the source
+    text if that's where the rulebook is defined.
+Problem__ PM_VeryRuleTooDistant
+  >--> You wrote 'Very last after rule' (source text, line 10): again, the
+    'very first' or 'very last' rule for a rulebook can only be created in the
+    same extension as the rulebook itself.
+Inform 7 has finished.

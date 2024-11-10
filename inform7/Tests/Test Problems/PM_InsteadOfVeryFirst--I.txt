@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 83 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10686 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35530 words long.
+Problem__ PM_InsteadOfVeryFirst
+  >--> You wrote 'The bogus rule is listed instead of the exalted rule in the
+    grandiose rules' (source text, line 20): but 'very first' or 'very last'
+    rules cannot be replaced with 'instead', since this allows the creator of
+    the rulebook to be certain that they will always be in place.
+Inform 7 has finished.

@@ -1,0 +1,22 @@
+Problem: PM_InsteadOfVeryFirst
+
+Burrow is a room.
+
+The grandiose rules are a rulebook.
+
+First grandiose rule:
+	say "I am a first grandiose rule."
+
+First grandiose rule:
+	say "I am also a first grandiose rule."
+
+Very first grandiose rule (this is the exalted rule):
+	say "I am the very first grandiose rule."
+
+Very last grandiose rule:
+	say "I am the very last grandiose rule."
+
+This is the bogus rule:
+	say "I am bogus."
+
+The bogus rule is listed instead of the exalted rule in the grandiose rules.

@@ -957,6 +957,14 @@ inform_extension *Extensions::corresponding_to(source_file *sf) {
 	return Extensions::from_copy(C);
 }
 
+inform_extension *Extensions::containing(parse_node *sentence) {
+	wording W = Node::get_text(sentence);
+	source_file *from = NULL;
+	if (Wordings::nonempty(W)) from = Lexer::file_of_origin(Wordings::first_wn(W));
+	inform_extension *E = Extensions::corresponding_to(from);
+	return E;
+}
+
 @h Miscellaneous.
 
 =

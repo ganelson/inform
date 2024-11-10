@@ -15,8 +15,10 @@ non-overlapping sections: the first rules, the middle rules, the last rules.
 And each //booking// records which of these sections it belongs to.
 
 @e MIDDLE_PLACEMENT from 0 /* most bookings are in this middle section */
+@e VERY_FIRST_PLACEMENT
 @e FIRST_PLACEMENT
 @e LAST_PLACEMENT
+@e VERY_LAST_PLACEMENT
 
 =
 typedef struct booking {
@@ -38,8 +40,10 @@ void RuleBookings::log(booking *br) {
 	LOG("BR%d", br->allocation_id);
 	switch (br->placement) {
 		case MIDDLE_PLACEMENT: LOG("m"); break;
+		case VERY_FIRST_PLACEMENT: LOG("vf"); break;
 		case FIRST_PLACEMENT: LOG("f"); break;
 		case LAST_PLACEMENT: LOG("l"); break;
+		case VERY_LAST_PLACEMENT: LOG("vl"); break;
 		default: LOG("?"); break;
 	}
 	Rules::log(br->rule_being_booked);
@@ -170,15 +174,23 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 @<Calculate specificities when placements differ@> =
 	br->commentary.next_rule_specificity = 1;
 	switch(br->placement) {
+		case VERY_FIRST_PLACEMENT:
+			br->commentary.tooltip_text =
+				I"the rule above was listed as 'very first' so it precedes everything";
+			break;
 		case FIRST_PLACEMENT:
 			switch(br->next_booking->placement) {
 				case MIDDLE_PLACEMENT:
 					br->commentary.tooltip_text =
-					I"the rule above was listed as 'first' so precedes this one, which wasn't";
+						I"the rule above was listed as 'first' so precedes this one, which wasn't";
 					break;
 				case LAST_PLACEMENT:
 					br->commentary.tooltip_text =
-					I"the rule above was listed as 'first' so precedes this one, listed as 'last'";
+						I"the rule above was listed as 'first' so precedes this one, listed as 'last'";
+					break;
+				case VERY_LAST_PLACEMENT:
+					br->commentary.tooltip_text =
+						I"the rule below was listed as 'very last' so it comes after everything";
 					break;
 				default:
 					BookingLists::log(L);
@@ -191,6 +203,22 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 				case LAST_PLACEMENT:
 					br->commentary.tooltip_text =
 					I"the rule below was listed as 'last' so comes after this one, which wasn't";
+					break;
+				case VERY_LAST_PLACEMENT:
+					br->commentary.tooltip_text =
+						I"the rule below was listed as 'very last' so it comes after everything";
+					break;
+				default:
+					BookingLists::log(L);
+					internal_error("booking list invariant broken");
+					break;
+			}
+			break;
+		case LAST_PLACEMENT:
+			switch(br->next_booking->placement) {
+				case VERY_LAST_PLACEMENT:
+					br->commentary.tooltip_text =
+						I"the rule below was listed as 'very last' so it comes after everything";
 					break;
 				default:
 					BookingLists::log(L);
@@ -207,6 +235,10 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 @<Calculate specificities when placements are the same@> =
 	br->commentary.next_rule_specificity = 0;
 	switch(br->placement) {
+		case VERY_FIRST_PLACEMENT:
+			BookingLists::log(L);
+			internal_error("multiple very first rules for the same rulebook");
+			break;
 		case FIRST_PLACEMENT:
 			br->commentary.tooltip_text =
 			I"these rules were both listed as 'first', so they appear in reverse order of listing";
@@ -225,5 +257,9 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 		case LAST_PLACEMENT:
 			br->commentary.tooltip_text =
 			I"these rules were both listed as 'last', so they appear in order of listing";
+			break;
+		case VERY_LAST_PLACEMENT:
+			BookingLists::log(L);
+			internal_error("multiple very last rules for the same rulebook");
 			break;
 	}

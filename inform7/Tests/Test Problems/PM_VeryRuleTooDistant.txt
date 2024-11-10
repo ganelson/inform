@@ -1,0 +1,12 @@
+Problem: PM_VeryRuleTooDistant
+
+The grandiose rules are a rulebook.
+
+Very first grandiose rule (this is the exalted rule):
+	say "I am the very first grandiose rule."
+
+Very first before rule: say "Yah!"
+
+Very last grandiose rule: say "Yah!"
+
+Very last after rule: say "Yah!"

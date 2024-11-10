@@ -249,6 +249,8 @@ The subject noun phrase is an articled list, each entry of which must match:
 	in <destination-rulebook> |                  ==> { MIDDLE_PLACEMENT + 1000*IN_SIDE, RP[1] }
 	first in <destination-rulebook> |            ==> { FIRST_PLACEMENT  + 1000*IN_SIDE, RP[1] }
 	last in <destination-rulebook> |             ==> { LAST_PLACEMENT   + 1000*IN_SIDE, RP[1] }
+	very first in <destination-rulebook> |       ==> @<Issue PM_CannotPlaceVeryFirst problem@>
+	very last in <destination-rulebook> |        ==> @<Issue PM_CannotPlaceVeryFirst problem@>
 	instead of <rule-name> in <rulebook-name> |  ==> { MIDDLE_PLACEMENT + 1000*INSTEAD_SIDE, RP[2], <<rule:rel>> = RP[1] }
 	instead of <rule-name> in ... |              ==> @<Issue PM_NoSuchRulebookPlacement problem@>
 	instead of ... in ... |                      ==> @<Issue PM_NoSuchRuleExists problem@>
@@ -271,6 +273,17 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 @d ANY_RULE_PLACEMENT 1000001
 @d BAD_RULE_PLACEMENT 1000000
+
+@<Issue PM_CannotPlaceVeryFirst problem@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CannotPlaceVeryFirst));
+	Problems::issue_problem_segment(
+		"In %1, you asked to change or impose a 'very first' or 'very last' "
+		"rule for a rulebook. But those rules are restricted and can be written "
+		"only alongside the rulebook itself, and cannot afterwards be changed "
+		"with sentences like this one.");
+	Problems::issue_problem_end();
+	==> { BAD_RULE_PLACEMENT, - };
 
 @<Issue PM_UnspecifiedRulebookPlacement problem@> =
 	Problems::quote_source(1, current_sentence);

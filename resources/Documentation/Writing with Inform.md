@@ -15285,7 +15285,7 @@ And we might use the flotation rules in a circumstance like this:
 
 ## Rulebook variables {PM_RulebookVariableAnd} {PM_RulebookVariableTooSpecific} {PM_RulebookVariableBadKind} {PM_RulebookVariableVague}
 
-^^{rulebooks: variables for rulebooks} ^^{variables: for rulebooks} ^^{defining: rulebook variables} ^^{|called: in defining rulebook variables}
+^^{rulebooks: variables for rulebooks} ^^{variables: for rulebooks} ^^{defining: rulebook variables} ^^{|called: in defining rulebook variables} ^^{rules: very first and very last} ^^{very first rules} ^^{very last rules}
 
 We have already seen that actions can have named values which stay with them while the action is being processed, but do not exist at other times: the variable called `actor`, for example. And activities have a similar ability. See [Action variables] and [Activity variables], respectively.
 
@@ -15310,6 +15310,25 @@ And we had better do something with the result:
 	The last aptitude rule: say "Your aptitude rating is [aptitude mark]."
 
 A rulebook can have any number of variables like this. They behave much like `let` values except that they last for a whole rulebook, not an individual rule or To phrase definition. (Well, strictly speaking they are accessible not just to the rules which belong to the rulebook, but also to any rules which previously belonged to the rulebook but were kicked out by means of an explicit rule-listing sentence. This is good because otherwise they will suddenly cause problem messages when unlisted.)
+
+Some rulebooks need to set up initial values for their variables, and a special kind of rule is provided as a convenient way to do that. For example:
+
+	The very first aptitude rule:
+		now the aptitude mark is 100.
+
+This rule is only special in its placement — it is guaranteed to be the first rule in the rulebook, come what may — and is otherwise just like any other rule. Because it always goes first, no other rule can ever use the value of `aptitude mark` before it is set up to its initial value.
+
+There are a number of deliberate restrictions on `very first` rules:
+
+- A rulebook can only have one `very first` rule.
+- It has to be written in the same extension as the rulebook it belongs to, or
+else they both have to be in the main source text and not in an extension at all.
+- No other rule can be listed instead of a `very first` rule with a `listed instead of` sentence.
+- A `very first` rule cannot be unlisted from its rulebook with a `not listed` sentence.
+
+The point of this is that a `very first` rule belongs to the person who created the rulebook, and cannot be tampered with by users.
+
+Similarly, if less usefully, a rulebook can have a `very last` rule, which is subject to the same restrictions.
 
 ## Success and failure {PM_DefaultOutcomeTwice} {PM_BadDefaultOutcome}
 

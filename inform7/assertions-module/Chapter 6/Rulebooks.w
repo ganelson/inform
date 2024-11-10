@@ -502,6 +502,20 @@ void Rulebooks::attach_rule(rulebook *B, booking *br,
 		return;
 	}
 
+	if ((placing == VERY_FIRST_PLACEMENT) || (placing == VERY_LAST_PLACEMENT)) {
+		inform_extension *BX = Extensions::containing(B->compilation_data.where_declared);
+		inform_extension *RX = Extensions::containing(R->compilation_data.where_declared);
+		if (BX != RX) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_VeryRuleTooDistant),
+				"the 'very first' or 'very last' rule for a rulebook can only be "
+				"created in the same extension as the rulebook itself",
+				"or else in the main body of the source text if that's where the "
+				"rulebook is defined.");
+			return;
+		}
+	}
+
 	PluginCalls::rule_placement_notify(R, B, side, ref_rule);
 
 	Rules::put_variables_in_scope(R, Rulebooks::accessible_variables(B));
@@ -602,10 +616,14 @@ that <rulebook-stem-name> matches "printing the name of something".
 <rulebook-stem-inner-unarticled> ::=
 	rule for/about/on <rulebook-stem-name> | ==> { MIDDLE_PLACEMENT, - }
 	rule <rulebook-stem-name> |              ==> { MIDDLE_PLACEMENT, - }
+	very first rule <rulebook-stem-name> |   ==> { VERY_FIRST_PLACEMENT, - }
+	very first <rulebook-stem-name> |        ==> { VERY_FIRST_PLACEMENT, - }
 	first rule <rulebook-stem-name> |        ==> { FIRST_PLACEMENT, - }
 	first <rulebook-stem-name> |             ==> { FIRST_PLACEMENT, - }
 	last rule <rulebook-stem-name> |         ==> { LAST_PLACEMENT, - }
 	last <rulebook-stem-name> |              ==> { LAST_PLACEMENT, - }
+	very last rule <rulebook-stem-name> |    ==> { VERY_LAST_PLACEMENT, - }
+	very last <rulebook-stem-name> |         ==> { VERY_LAST_PLACEMENT, - }
 	<rulebook-stem-name>                     ==> { MIDDLE_PLACEMENT, - }
 
 <rulebook-stem-name> ::=

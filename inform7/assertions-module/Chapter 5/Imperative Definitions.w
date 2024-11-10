@@ -291,6 +291,11 @@ void ImperativeDefinitions::write_HTML_representation(OUTPUT_STREAM, id_body *id
 	IDTypeData::write_HTML_representation(OUT, &(idb->type_data), format, NULL);
 }
 
+parse_node *ImperativeDefinitions::header_at(imperative_defn *id) {
+	if (id == NULL) return NULL;
+	return id->at;
+}
+
 parse_node *ImperativeDefinitions::body_at(id_body *idb) {
 	return idb->head_of_defn->at;
 }

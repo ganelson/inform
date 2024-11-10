@@ -92,8 +92,10 @@ void BookingLists::add(booking_list *L, booking *new_br,
 	@<Make some sanity checks on the addition instructions@>;
 	@<Handle the case where the new rule is already in the list@>;
 	@<Handle all placements made with the INSTEAD side@>;
+	@<Handle any VERY FIRST placement@>;
 	@<Handle all placements made with the FIRST placement@>;
 	@<Handle all placements made with the LAST placement@>;
+	@<Handle any VERY LAST placement@>;
 	@<Handle what's left: MIDDLE placements on the IN, BEFORE or AFTER sides@>;
 }
 
@@ -108,8 +110,10 @@ void BookingLists::add(booking_list *L, booking *new_br,
 		internal_error("tried to add rule to null list");
 	switch(placing) {
 		case MIDDLE_PLACEMENT: break;
+		case VERY_FIRST_PLACEMENT: LOGIF(RULE_ATTACHMENTS, "Placed very first\n"); break;
 		case FIRST_PLACEMENT: LOGIF(RULE_ATTACHMENTS, "Placed first\n"); break;
 		case LAST_PLACEMENT: LOGIF(RULE_ATTACHMENTS, "Placed last\n"); break;
+		case VERY_LAST_PLACEMENT: LOGIF(RULE_ATTACHMENTS, "Placed very last\n"); break;
 		default: internal_error("invalid placing of rule");
 	}
 
@@ -141,34 +145,79 @@ though there were arguments on both sides.
 	if (side == INSTEAD_SIDE) {
 		LOOP_OVER_BOOKINGS_WITH_PREV(pos, prev, L)
 			if (Rules::eq(RuleBookings::get_rule(pos), ref_rule)) {
-				new_br->placement = pos->placement; /* replace with same placement */
-				new_br->next_booking = pos->next_booking;
-				prev->next_booking = new_br;
+				if ((pos->placement == VERY_FIRST_PLACEMENT) ||
+					(pos->placement == VERY_LAST_PLACEMENT)) {
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InsteadOfVeryFirst),
+						"'very first' or 'very last' rules cannot be replaced with 'instead'",
+						"since this allows the creator of the rulebook to be certain "
+						"that they will always be in place.");
+				} else {
+					new_br->placement = pos->placement; /* replace with same placement */
+					new_br->next_booking = pos->next_booking;
+					prev->next_booking = new_br;
+				}
 			}
 		return;
 	}
-	
-@ If we insert a rule as first-placed rule when there already is a first-placed
-rule, the new one displaces it to go first, but both continue to be labelled as
-having |FIRST_PLACEMENT|, so that subsequent rule insertions of middle-placed rules
-will still go after both of them. 
 
-@<Handle all placements made with the FIRST placement@> =
-	if (placing == FIRST_PLACEMENT) { /* first in valid interval (must be whole list) */
+@<Handle any VERY FIRST placement@> =
+	if (placing == VERY_FIRST_PLACEMENT) {
 		booking *previously_first = L->list_head->next_booking;
+		if ((previously_first) && (previously_first->placement == VERY_FIRST_PLACEMENT))
+			@<Throw PM_OnlyOneVeryFirst problem@>;
 		L->list_head->next_booking = new_br;
-		new_br->next_booking = previously_first; /* pushes any existing first rule forward */
+		new_br->next_booking = previously_first; /* pushes any existing rules forward */
 		new_br->placement = placing;
 		return;
 	}
 
+@<Throw PM_OnlyOneVeryFirst problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OnlyOneVeryFirst),
+		"only one 'very first' or 'very last' rule can exist in a rulebook",
+		"unlike the situation with mere 'first' or 'last' rules.");
+
+@ If we insert a rule as first-placed rule when there already is a first-placed
+rule, the new one displaces it to go first, but both continue to be labelled as
+having |FIRST_PLACEMENT|, so that subsequent rule insertions of middle-placed rules
+will still go after both of them. If there's a very first rule, there's just one,
+and it sits right at the front; mere first rules won't displace it.
+
+@<Handle all placements made with the FIRST placement@> =
+	if (placing == FIRST_PLACEMENT) { /* first in valid interval (must be whole list) */
+		booking *previously_first = L->list_head->next_booking;
+		if ((previously_first) && (previously_first->placement == VERY_FIRST_PLACEMENT)) {
+			new_br->next_booking = previously_first->next_booking; /* slot in after VF rule */
+			previously_first->next_booking = new_br;
+			new_br->placement = placing;
+		} else {
+			L->list_head->next_booking = new_br;
+			new_br->next_booking = previously_first; /* pushes any existing first rule forward */
+			new_br->placement = placing;
+		}
+		return;
+	}
+
 @ Symmetrically, a second last-placed rule is inserted after any existing one, but
-both are labelled as having |LAST_PLACEMENT|.
+both are labelled as having |LAST_PLACEMENT|. But we cannot go past the very
+last rule, if there is one.
 
 @<Handle all placements made with the LAST placement@> =
 	if (placing == LAST_PLACEMENT) { /* last in valid interval (must be whole list) */
 		booking *prev = L->list_head;
+		while ((prev->next_booking) && (prev->next_booking->placement != VERY_LAST_PLACEMENT))
+			prev = prev->next_booking;
+		new_br->next_booking = prev->next_booking;
+		prev->next_booking = new_br; /* pushes any existing last rule backward */
+		new_br->placement = placing;
+		return;
+	}
+
+@<Handle any VERY LAST placement@> =
+	if (placing == VERY_LAST_PLACEMENT) {
+		booking *prev = L->list_head;
 		while (prev->next_booking != NULL) prev = prev->next_booking;
+		if (prev->placement == VERY_LAST_PLACEMENT)
+			@<Throw PM_OnlyOneVeryFirst problem@>;
 		prev->next_booking = new_br; /* pushes any existing last rule backward */
 		new_br->next_booking = NULL;
 		new_br->placement = placing;
@@ -255,6 +304,13 @@ This is much simpler, since it doesn't disturb the ordering:
 void BookingLists::remove(booking_list *L, rule *R) {
 	LOOP_OVER_BOOKINGS_WITH_PREV(br, pr, L)
 		if (Rules::eq(RuleBookings::get_rule(br), R)) {
+			if ((br->placement == VERY_FIRST_PLACEMENT) ||
+				(br->placement == VERY_LAST_PLACEMENT)) {
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RemovedVeryFirst),
+					"'very first' or 'very last' rules cannot be removed by 'not listed in'",
+					"since this allows the creator of the rulebook to be certain "
+					"that they will always be in place.");
+			}				
 			pr->next_booking = br->next_booking;
 			return;
 		}

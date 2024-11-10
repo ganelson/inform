@@ -63,7 +63,7 @@ typedef struct compilation_settings {
 	int ranking_table_given;
 	int scoring_option_set;
 	int use_exact_parsing_option;
-        int no_auto_plural_names;
+	int no_auto_plural_names;
 	int dictionary_resolution;
 	int fast_route_finding;
 	int slow_route_finding;

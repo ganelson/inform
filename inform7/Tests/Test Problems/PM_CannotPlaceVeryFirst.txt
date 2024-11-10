@@ -1,0 +1,7 @@
+Problem: PM_CannotPlaceVeryFirst
+
+Burrow is a room.
+
+This is the Wombling rule: say "Remember you're a Womble."
+
+The Wombling rule is listed very first in the Before rulebook.

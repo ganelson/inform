@@ -482,9 +482,11 @@ void RTRulebooks::commentary(booking_list *L) {
 			if (br->placement != br->next_booking->placement) {
 				WRITE_TO(C, "--- now the ");
 				switch(br->next_booking->placement) {
+					case VERY_FIRST_PLACEMENT: WRITE_TO(C, "very first rule"); break;
 					case FIRST_PLACEMENT:  WRITE_TO(C, "first-placed rules"); break;
 					case MIDDLE_PLACEMENT: WRITE_TO(C, "mid-placed rules"); break;
 					case LAST_PLACEMENT:   WRITE_TO(C, "last-placed rules"); break;
+					case VERY_LAST_PLACEMENT: WRITE_TO(C, "very last rule"); break;
 				}
 				WRITE_TO(C, " ---");
 				EmitCode::comment(C);
