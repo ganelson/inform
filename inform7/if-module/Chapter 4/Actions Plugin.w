@@ -323,9 +323,12 @@ the initial text "applying to one thing" would be valid as it stands.
 @<Issue PM_ActionMisapplied problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
 		_p_(PM_ActionMisapplied),
-		"an action cannot apply to specific kinds of things, only to 'things'",
-		"for instance: 'photographing is an action applying to "
-		"one visible thing'.");
+		"an action cannot apply to specific kinds of object such as 'room' or 'vehicle'",
+		"and if it is going to apply to objects at all then it should talk about them "
+		"as 'things'. For example, 'Driving is an action applying to one touchable thing' "
+		"might be the way to set up an action for driving, even if it makes sense only "
+		"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "
+		"would then be a good idea.");
 	==> { REQUIRES_ACCESS, K_thing };
 
 @<Check action kind@> =
