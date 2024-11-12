@@ -49,3 +49,24 @@ new constructor VECTOR_OF_TY {
 	index-default-value: 0
 	specification-text: A vector with three coordinates having the kind K.
 }
+
+new base DRIVLOID {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: drivloid
+	plural: drivloids
+
+	specification-text: Glk styles are used to mark the purpose of text, and allow authors to customise their appearance.
+
+	instance: all-drivels                 = drivel_All           = -1
+	instance: normal-drivel               = drivel_Normal_       = 0
+	instance: italic-drivel               = drivel_Emphasized_   = 1
+	instance: fixed-letter-spacing-drivel = drivel_Preformatted_
+	instance: header-drivel               = drivel_Header_
+	instance: bold-drivel                 = drivel_Subheader_
+	instance: alert-drivel                = drivel_Alert_
+	instance: note-drivel                 = drivel_Note_
+	instance: blockquote-drivel           = drivel_BlockQuote_
+	instance: input-drivel                = drivel_Input_
+	instance: special-drivel-1            = drivel_User1_
+	instance: special-drivel-2            = drivel_User2_
+}

@@ -350,14 +350,14 @@ void Instances::make_instances_from_Neptune(void) {
 	LOOP_OVER(kc, kind_constructor) {
 		linked_list *L = KindConstructors::instances(kc);
 		kind_constructor_instance *kci;
-		inter_ti current_val = 0;
-		inter_ti highest_val = 0;
+		int current_val = 0;
+		int highest_val = 0, highest_set = FALSE;
 		// First loop to determine the highest specified value
 		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
 			if (kci->value_specified) {
-				current_val = (inter_ti) kci->value;
-				if (current_val > highest_val) {
-					highest_val = current_val;
+				current_val = kci->value;
+				if ((highest_set == FALSE) || (current_val > highest_val)) {
+					highest_val = current_val; highest_set = TRUE;
 				}
 			}
 		}
@@ -369,13 +369,12 @@ void Instances::make_instances_from_Neptune(void) {
 			Assert::true(prop, CERTAIN_CE);
 			instance *I = Instances::latest();
 			if (kci->value_specified) {
-				current_val = (inter_ti) kci->value;
-			}
-			else {
+				current_val = kci->value;
+			} else {
 				highest_val++;
 				current_val = highest_val;
 			}
-			RTKindConstructors::set_explicit_runtime_instance_value(K, I, current_val);
+			RTKindConstructors::set_explicit_runtime_instance_value(K, I, (inter_ti) current_val);
 			RTInstances::set_translation(I, kci->identifier);
 			// LOG("From kit: %W = %S = %d -> $O\n", W, kci->identifier, current_val, I);
 		}
