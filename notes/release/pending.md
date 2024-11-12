@@ -62,6 +62,9 @@ has been renamed:
 - Fix for Jira bug [I7-2440](https://inform7.atlassian.net/browse/I7-2440)
 	"Returning a list of text and then removing from it makes everything explode"
 	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
+- Fix for Jira bug [I7-2420](https://inform7.atlassian.net/browse/I7-2420)
+	"Extension author name casing can cause `for use with` in another extension's section header to go awry"
+	([commit bf011bc](https://github.com/ganelson/inform/commit/bf011bc8e69dcfd274718a46d329c7eb3ab02f96))
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
