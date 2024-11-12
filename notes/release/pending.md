@@ -159,6 +159,9 @@ has been renamed:
 - Fix for Jira bug [I7-2247](https://inform7.atlassian.net/browse/I7-2247)
 	"Internal error 'unowned' when using 'Understand'"
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
+- Fix for Jira bug [I7-2245](https://inform7.atlassian.net/browse/I7-2245)
+	"Internal error when changing a value in a table based on a correspondence"
+	([commit 32c4366](https://github.com/ganelson/inform/commit/32c43662084d0c7cbf5edc5f1d62c2fb20cf174e))
 - Fix for Jira bug [I7-2242](https://inform7.atlassian.net/browse/I7-2242)
 	"Creating kinds via tables fails"
 	([commit 0038a2e](https://github.com/ganelson/inform/commit/0038a2e46f91fa104f65c7c910ff7097f1c09198))
