@@ -1,0 +1,47 @@
+
+
+
+
+Nickel and Dimed
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Subway Station
+A turnstile is all that separates you from the subway platform stairs.
+
+A newspaper man in a knit cap and fingerless gloves is hopping up and down behind his stand. Cold weather, caffeine overdose, or mental illness? You may never know. Welcome to New York.
+
+On the stand are a copy of the New York Times ($1.25), a pack of gum ($0.40), a paperback novel ($7.99) and a packet of trading cards ($0.99).
+
+You can also see a ticket machine here.
+
+>(Testing.)
+
+>[1] buy novel
+You hand the newspaper man a hundred-dollar bill. "Whoa," says the newspaper man, handing the cash back to you. "I can't make change for that, man, sorry."
+
+>[2] n
+
+Bitterly Cold Street
+Even though there is no actual snow or ice, the street is about as cold as you can stand, for which reason walking the twenty blocks uptown is not an acceptable option.
+
+You can see a dollar bill here.
+
+>[3] get dollar
+Taken.
+
+>[4] s
+
+Subway Station
+A turnstile is all that separates you from the subway platform stairs.
+
+A newspaper man in a knit cap and fingerless gloves is hopping up and down behind his stand.
+
+On the stand are a copy of the New York Times ($1.25), a pack of gum ($0.40), a paperback novel ($7.99) and a packet of trading cards ($0.99).
+
+You can also see a ticket machine here.
+
+>[5] buy novel
+You hand the newspaper man three dollar bills and a five-dollar bill. The newspaper man makes change with a penny. "Here ya go," says the newspaper man, handing the paperback novel to you. Your transaction is now complete, leaving you with $100.08.
+
+>Are you sure you want to quit? 

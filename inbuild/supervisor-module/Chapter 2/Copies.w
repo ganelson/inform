@@ -97,13 +97,19 @@ for later reporting. These are stored in a list.
 
 =
 void Copies::attach_error(inbuild_copy *C, copy_error *CE) {
-	if (C == NULL) internal_error("no copy to attach to");
+	if (C == NULL) {
+		CopyErrors::write(STDERR, CE);
+		internal_error("no copy to attach this error to");
+	}
 	CopyErrors::supply_attached_copy(CE, C);
 	ADD_TO_LINKED_LIST(CE, copy_error, C->errors_reading_source_text);
 }
 
 void Copies::attach_warning(inbuild_copy *C, copy_error *CE) {
-	if (C == NULL) internal_error("no copy to attach to");
+	if (C == NULL) {
+		CopyErrors::write(STDERR, CE);
+		internal_error("no copy to attach this warning to");
+	}
 	CopyErrors::supply_attached_copy(CE, C);
 	ADD_TO_LINKED_LIST(CE, copy_error, C->warnings);
 }

@@ -5157,11 +5157,11 @@
         it with action {***} 
           (hits 0/4083) constraint DS = {25} extremes [3, infinity)
         {with/having} (/) {***} 
-          (hits 0/4316) constraint DS = {25} extremes [2, infinity)
+          (hits 0/4322) constraint DS = {25} extremes [2, infinity)
         {with/having} {...} ( <response-letter> ) 
           (hits 0/3590) constraint DS = {25} extremes [5, infinity)
         {with/having} <np-new-property-list> 
-          (hits 0/4316) constraint DS = {25} extremes [2, infinity)
+          (hits 0/4322) constraint DS = {25} extremes [2, infinity)
 
 <np-new-property-list> nti 8 constraint (none) extremes [1, infinity)
     English:
@@ -6260,6 +6260,10 @@
           (hits 18/52) (matched long text) constraint DS = {25} extremes [3, infinity)
         last in <destination-rulebook> 
           (hits 30/34) (matched long text) constraint DS = {25} extremes [3, infinity)
+        very first in <destination-rulebook> 
+          (hits 0/4) constraint DS = {25} extremes [4, infinity)
+        very last in <destination-rulebook> 
+          (hits 0/4) constraint DS = {25} extremes [4, infinity)
         instead of <rule-name> in <rulebook-name> 
           (hits 3/4) (matched long text) constraint DS = {25} extremes [5, infinity)
         instead of <rule-name> in {...} 
@@ -7364,6 +7368,10 @@
           (hits 13/342) (matched long text) constraint DS = {19} extremes [3, infinity)
         rule <rulebook-stem-name> 
           (hits 0/338) constraint DS = {19} extremes [2, infinity)
+        very first rule <rulebook-stem-name> 
+          (hits 0/311) constraint DS = {19} extremes [4, infinity)
+        very first <rulebook-stem-name> 
+          (hits 0/329) constraint DS = {19} extremes [3, infinity)
         first rule <rulebook-stem-name> 
           (hits 0/329) constraint DS = {19} extremes [3, infinity)
         first <rulebook-stem-name> 
@@ -7372,6 +7380,10 @@
           (hits 0/320) constraint DS = {19} extremes [3, infinity)
         last <rulebook-stem-name> 
           (hits 3/329) (matched: 'last turn sequence rule') constraint DS = {19} extremes [2, infinity)
+        very last rule <rulebook-stem-name> 
+          (hits 0/301) constraint DS = {19} extremes [4, infinity)
+        very last <rulebook-stem-name> 
+          (hits 0/317) constraint DS = {19} extremes [3, infinity)
         <rulebook-stem-name> 
           (hits 381/381) (matched long text) constraint (none) extremes [1, infinity)
 
