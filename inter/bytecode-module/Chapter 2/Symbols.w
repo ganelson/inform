@@ -142,6 +142,7 @@ that for some transient flags:
 @d ATTRIBUTE_MARK_ISYMF 	0x00000080
 @d USED_MARK_ISYMF          0x00000100
 @d SPECULATIVE_ISYMF        0x00000200
+@d ATTRIBUTE_PROPERTY_MARK_ISYMF 0x00000400
 
 =
 int InterSymbol::get_flag(inter_symbol *S, int f) {

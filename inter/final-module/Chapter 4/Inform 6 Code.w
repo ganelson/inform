@@ -403,7 +403,8 @@ for example, be a global variable, or a memory location.
 		storage_ref = InterTree::first_child(storage_ref);
 	if ((ReferenceInstruction::node_is_ref_to(gen->from, InterTree::first_child(P),
 		PROPERTYVALUE_BIP)) &&
-		(I6TargetCode::pval_case(storage_ref) != I6G_CAN_PROVE_IS_OBJ_PROPERTY)) {
+		(I6TargetCode::pval_case(storage_ref) != I6G_CAN_PROVE_IS_OBJ_PROPERTY) &&
+		(I6TargetCode::pval_case(storage_ref) != I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY)) {
 		@<Alter a property value@>;
 	} else {
 		@<Alter some other storage@>;
@@ -509,6 +510,8 @@ what is definitely a VM-object. This optimisation results in faster code.
 			case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
 				WRITE("("); VNODE_2C;
 				WRITE(" has %S", I6TargetCode::inner_name(gen, PP)); WRITE(")"); break;
+			case I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY:
+				I6TargetCode::eval_property_list(gen, KP, OP, PP, 0); break;
 			case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
 				WRITE("("); VNODE_2C;
 				WRITE(".%S", I6TargetCode::inner_name(gen, PP)); WRITE(")"); break;
@@ -565,6 +568,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 		case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
 			WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
 			WRITE(".%S", I6TargetCode::inner_name(gen, Y)); WRITE(")"); break;
+		case I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY:
 		case I6G_CANNOT_PROVE:
 			WRITE("_final_propertyvalue(");
 			Vanilla::node(gen, K);
@@ -820,8 +824,9 @@ and the property is stored in a VM-property;
 (*) Or |I6G_CANNOT_PROVE| if we don't know.
 
 @d I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE 1
-@d I6G_CAN_PROVE_IS_OBJ_PROPERTY 2
-@d I6G_CANNOT_PROVE 3
+@d I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY 2
+@d I6G_CAN_PROVE_IS_OBJ_PROPERTY 3
+@d I6G_CANNOT_PROVE 4
 
 =
 int I6TargetCode::pval_case(inter_tree_node *P) {
@@ -848,6 +853,8 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;
+	} else if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_PROPERTY_MARK_ISYMF))) {
+		return I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY;
 	} else if ((prop_symbol) && (Inode::is(prop_symbol->definition, PROPERTY_IST))) {
 		return I6G_CAN_PROVE_IS_OBJ_PROPERTY;
 	} else {

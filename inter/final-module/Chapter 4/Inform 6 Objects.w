@@ -113,6 +113,10 @@ that definition to be the true one.
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
 			InterSymbol::clear_flag(p, ATTRIBUTE_MARK_ISYMF);
+		if (VanillaObjects::is_either_or_property(prop_s)) {
+			LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
+				InterSymbol::set_flag(p, ATTRIBUTE_PROPERTY_MARK_ISYMF);
+		}			
 	} else {
 		internal_error("No decision was taken");
 	}

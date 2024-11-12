@@ -1,0 +1,27 @@
+Test: ReadingAttributesStoredAsProperties
+For: Z-Machine
+
+A person can be happy.
+A person can be lucky.
+A person can be tall.
+A person can be short.
+A person can be rich.
+A person can be poor.
+A person can be rude.
+A person can be polite.
+A person can be famous.
+A person can be obscure.
+A person can be morose.  [up to this point, these either-or properties are implemented as I6 Attributes, hereafter as I6 properties]
+A person can be dreamy.
+A person can be distracted.
+A person can be sad.
+A person can be unlucky.
+
+Netherfield Hall is a room.
+
+When play begins:
+	unless the Hall is happy:
+		say "Netherfield isn't happy.";
+	unless the Hall is sad:
+		say "Netherfield isn't sad.";
+	
