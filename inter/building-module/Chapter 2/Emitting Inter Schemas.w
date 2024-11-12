@@ -627,10 +627,12 @@ parsing the schema.)
 			if (t->constant_number >= 0) {
 				val = InterValuePairs::number((inter_ti) t->constant_number);
 			} else {
-				val = InterValuePairs::number_from_I6_notation(t->material);
+				int overflow = FALSE;
+				val = InterValuePairs::number_from_I6_notation(t->material, &overflow);
 				if (InterValuePairs::is_undef(val)) {
 					TEMPORARY_TEXT(msg)
-					WRITE_TO(msg, "malformed literal number '%S'", t->material);
+					if (overflow) WRITE_TO(msg, "literal number '%S' too large", t->material);
+					else WRITE_TO(msg, "malformed literal number '%S'", t->material);
 					I6Errors::issue_at_node(node, msg);
 					DISCARD_TEXT(msg)
 					return;

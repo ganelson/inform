@@ -1,10 +1,14 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 12 words long.
-I've also read Basic Inform by Graham Nelson, which is 7691 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 33071 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10686 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35525 words long.
 Problem__ PM_ActionMisapplied
   >--> You wrote 'Decreeing is an action applying to one icon' (source text, line 3):
-    but an action cannot apply to specific kinds of things, only to 'things',
-    for instance: 'photographing is an action applying to one visible thing'.
+    but an action cannot apply to specific kinds of object such as 'room' or
+    'vehicle', and if it is going to apply to objects at all then it should
+    talk about them as 'things'. For example, 'Driving is an action applying to
+    one touchable thing' might be the way to set up an action for driving, even
+    if it makes sense only for a 'vehicle'. A rule like 'Check driving: if the
+    noun is not a vehicle, ...' would then be a good idea.
 Inform 7 has finished.

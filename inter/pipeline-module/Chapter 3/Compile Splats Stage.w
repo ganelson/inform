@@ -1366,7 +1366,7 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 	if (t->constant_number >= 0) {
 		val = InterValuePairs::number((inter_ti) t->constant_number);
 	} else {
-		val = InterValuePairs::number_from_I6_notation(t->material);
+		val = InterValuePairs::number_from_I6_notation(t->material, NULL);
 		if (InterValuePairs::is_undef(val))
 			return NULL;
 	}

@@ -68,12 +68,13 @@ inter_pair InterValuePairs::signed_number(int N) {
 	return pair;
 }
 
-inter_pair InterValuePairs::number_from_I6_notation(text_stream *S) {
+inter_pair InterValuePairs::number_from_I6_notation(text_stream *S, int *overflow_flag) {
+	if (overflow_flag) *overflow_flag = FALSE;
 	int sign = 1, from = 0;
-	unsigned int base = 10;
-	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
-	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }
-	if (Str::prefix_eq(S, I"$$", 2)) { base = 2; from = 2; }
+	unsigned int base = 10; long long int overflow_point = 0x7fffffff;
+	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; overflow_point = 0x80000000; }
+	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; overflow_point = 0x100000000; }
+	if (Str::prefix_eq(S, I"$$", 2)) { base = 2; from = 2; overflow_point = 0x100000000; }
 	long long int N = 0;
 	LOOP_THROUGH_TEXT(pos, S) {
 		if (pos.index < from) continue;
@@ -84,7 +85,10 @@ inter_pair InterValuePairs::number_from_I6_notation(text_stream *S) {
 		else return InterValuePairs::undef();
 		if (d >= base) return InterValuePairs::undef();
 		N = base*N + (long long int) d;
-		if (pos.index > 34) return InterValuePairs::undef();
+		if ((N >= overflow_point) || (pos.index > 34)) {
+			if (overflow_flag) *overflow_flag = TRUE;
+			return InterValuePairs::undef();
+		}
 	}
 	return InterValuePairs::number((inter_ti) (sign*N));
 }

@@ -335,7 +335,7 @@ names, for example, are not.
 
 =
 inter_pair DefaultValues::from_Neptune_term(text_stream *textual_description, kind *K) {
-	inter_pair val = InterValuePairs::number_from_I6_notation(textual_description);
+	inter_pair val = InterValuePairs::number_from_I6_notation(textual_description, NULL);
 	if (InterValuePairs::is_undef(val) == FALSE) return val;
 
 	if (Str::eq(textual_description, I"true")) return InterValuePairs::number(1);

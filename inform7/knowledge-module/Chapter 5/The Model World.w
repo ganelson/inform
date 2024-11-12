@@ -77,7 +77,7 @@ void World::stages_II_and_III(void) {
 				property *P;
 				if (ap->attr) P = EitherOrProperties::new_nameless(ap->property_name);
 				else P = ValueProperties::new_nameless(ap->property_name, K_value);
-				inter_pair val = InterValuePairs::number_from_I6_notation(ap->value_text);
+				inter_pair val = InterValuePairs::number_from_I6_notation(ap->value_text, NULL);
 				if (InterValuePairs::is_undef(val)) {
 					Problems::quote_stream(1, O);
 					Problems::quote_stream(2, ap->property_name);
