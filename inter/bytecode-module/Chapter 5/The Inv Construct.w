@@ -160,6 +160,10 @@ number of arguments, then we change it to the version with the right arity.
 	if (PrimitiveInstruction::arity(prim_s) != arity_as_invoked) {
 		inter_ti BIP = Primitives::to_BIP(I, prim_s);
 		if (Primitives::is_BIP_for_indirect_call_returning_value(BIP)) {
+			if (Primitives::arity_too_great_for_indirection(arity_as_invoked-1)) {
+				*E = Inode::error(P, I"over-complex indirect call", NULL);
+				return;
+			}
 			prim_s = Primitives::from_BIP(I,
 				Primitives::BIP_for_indirect_call_returning_value(arity_as_invoked - 1));
 			InvInstruction::write_primitive(I, P, prim_s);

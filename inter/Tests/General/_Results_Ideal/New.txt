@@ -89,12 +89,14 @@ primitive !indirect2v val val val -> void
 primitive !indirect3v val val val val -> void
 primitive !indirect4v val val val val val -> void
 primitive !indirect5v val val val val val val -> void
+primitive !indirect6v val val val val val val val -> void
 primitive !indirect0 val -> val
 primitive !indirect1 val val -> val
 primitive !indirect2 val val val -> val
 primitive !indirect3 val val val val -> val
 primitive !indirect4 val val val val val -> val
 primitive !indirect5 val val val val val val -> val
+primitive !indirect6 val val val val val val val -> val
 primitive !message0 val val -> val
 primitive !message1 val val val -> val
 primitive !message2 val val val val -> val

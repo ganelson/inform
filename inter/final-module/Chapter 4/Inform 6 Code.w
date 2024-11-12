@@ -721,6 +721,9 @@ we can treat |INDIRECT0V_BIP| as the same as |INDIRECT0_BIP|, and so on.
 	case INDIRECT5_BIP: case INDIRECT5V_BIP:
 		WRITE("("); VNODE_1C; WRITE(")("); VNODE_2C; WRITE(","); VNODE_3C; WRITE(",");
 		VNODE_4C; WRITE(","); VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
+	case INDIRECT6_BIP: case INDIRECT6V_BIP:
+		WRITE("("); VNODE_1C; WRITE(")("); VNODE_2C; WRITE(","); VNODE_3C; WRITE(",");
+		VNODE_4C; WRITE(","); VNODE_5C; WRITE(","); VNODE_6C; WRITE(","); VNODE_7C; WRITE(")"); break;
 	case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
 
 @ Message calls are handled with functions (see below) in case the user is trying

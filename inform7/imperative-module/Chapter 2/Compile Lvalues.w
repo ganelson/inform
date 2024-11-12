@@ -68,7 +68,7 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
-	if (storage_mode == 2) {
+	if (storage_mode == COMPILE_LVALUE_AS_FUNCTION) {
 		EmitCode::val_iname(K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
 		if (storage_mode != 1) {
@@ -135,16 +135,16 @@ object as produced the original text containing the substitution.
 	if (spec_found->down == NULL) internal_error("LIST_OF with null arg 0");
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
-	if (storage_mode == 2) {
+	if (storage_mode == COMPILE_LVALUE_AS_FUNCTION) {
 		EmitCode::val_iname(K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
-		if (storage_mode != 1) {
+		if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 			EmitCode::call(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 			EmitCode::down();
 		}
 		CompileValues::to_code_val(spec_found->down);
 		CompileValues::to_code_val(spec_found->down->next);
-		if (storage_mode != 1) {
+		if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 			EmitCode::up();
 		}
 	}
@@ -168,12 +168,12 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 
 	switch(Node::no_children(spec_found)) {
 		case 1:
-			if (storage_mode == 2) {
+			if (storage_mode == COMPILE_LVALUE_AS_FUNCTION) {
 				EmitCode::val_iname(K_value, lookup);
 			} else {
 				LocalVariables::used_ct_locals();
 				LocalVariables::add_table_lookup();
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::call(lookup);
 					EmitCode::down();
 				}
@@ -187,7 +187,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 				if (blank_out) {
 					EmitCode::val_number(4);
 				}
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::up();
 				}
 			}
@@ -196,10 +196,10 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 			EmitCode::val_false();
 			break;
 		case 3:
-			if (storage_mode == 2) {
+			if (storage_mode == COMPILE_LVALUE_AS_FUNCTION) {
 				EmitCode::val_iname(K_value, lookup);
 			} else {
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::call(lookup);
 					EmitCode::down();
 				}
@@ -209,16 +209,16 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 				if (blank_out) {
 					EmitCode::val_number(4);
 				}
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::up();
 				}
 			}
 			break;
 		case 4:	
-			if (storage_mode == 2) {
+			if (storage_mode == COMPILE_LVALUE_AS_FUNCTION) {
 				EmitCode::val_iname(K_value, lookup_corr);
 			} else {
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::call(lookup_corr);
 					EmitCode::down();
 				}
@@ -229,7 +229,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 				if (blank_out) {
 					EmitCode::val_number(4);
 				}
-				if (storage_mode != 1) {
+				if (storage_mode != COMPILE_LVALUE_AS_LVALUE) {
 					EmitCode::up();
 				}
 			}

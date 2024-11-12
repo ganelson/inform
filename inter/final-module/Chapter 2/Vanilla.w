@@ -85,6 +85,7 @@ It is so often used recursively that the following abbreviation macros are helpf
 @d VNODE_4C    Vanilla::node(gen, InterTree::fourth_child(P))
 @d VNODE_5C    Vanilla::node(gen, InterTree::fifth_child(P))
 @d VNODE_6C    Vanilla::node(gen, InterTree::sixth_child(P))
+@d VNODE_7C    Vanilla::node(gen, InterTree::seventh_child(P))
 @d VNODE_ALLC  LOOP_THROUGH_INTER_CHILDREN(C, P) Vanilla::node(gen, C)
 
 =

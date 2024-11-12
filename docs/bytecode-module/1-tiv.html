@@ -131,12 +131,16 @@ record their provenance and so make better error reporting possible.
 <span class="extract"><span class="extract-syntax">ORIGIN_IST</span></span> instruction.
 </p>
 
+<p class="commentary">8.0.0 (12 November 2023) added further indirection primitives for functions of
+six arguments.
+</p>
+
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Anyway, the implementation, such as it is:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="function-syntax">InterVersion::current</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InterVersion::current</span></span>:<br/><a href="1-tiv.html#SP4">&#167;4</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_1">&#167;10.1.1</a><br/>The Version Construct - <a href="6-tvc.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VersionNumbers::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"7.0.0"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VersionNumbers::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"8.0.0"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">VersionNumbers::is_null</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"malformed version number"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

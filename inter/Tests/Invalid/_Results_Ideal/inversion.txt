@@ -1,2 +1,2 @@
-inter: inter/Tests/Invalid/inversion.intert, line 1: file holds Inter written for specification v0.1.2, but I expect v7.0.0
+inter: inter/Tests/Invalid/inversion.intert, line 1: file holds Inter written for specification v0.1.2, but I expect v8.0.0
 >--> version 0.1.2

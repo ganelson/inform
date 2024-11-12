@@ -541,6 +541,10 @@ int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_t
 			WRITE("i7_call_5(proc, "); VNODE_1C; WRITE(", ");
 			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
 			VNODE_5C; WRITE(", "); VNODE_6C; WRITE(")"); break;
+		case INDIRECT6_BIP: case INDIRECT6V_BIP:
+			WRITE("i7_call_6(proc, "); VNODE_1C; WRITE(", ");
+			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
+			VNODE_5C; WRITE(", "); VNODE_6C; WRITE(", "); VNODE_7C; WRITE(")"); break;
 		case MESSAGE0_BIP:
 			WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case MESSAGE1_BIP:

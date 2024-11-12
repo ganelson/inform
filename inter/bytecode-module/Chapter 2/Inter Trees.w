@@ -154,6 +154,23 @@ inter_tree_node *InterTree::sixth_child(inter_tree_node *P) {
 	return P->next_itn;
 }
 
+inter_tree_node *InterTree::seventh_child(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	P = P->first_child_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	return P->next_itn;
+}
+
 inter_tree_node *InterTree::last_child(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->last_child_itn;

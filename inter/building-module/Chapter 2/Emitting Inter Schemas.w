@@ -377,7 +377,7 @@ call to them must be compiled as a special case.
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
 			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL))
-				@<Work out what function or primitive to call or invoke@>;
+				@<Work out what function or primitive to call or invoke@>
 		}
 		@<Compile the invocation@>;
 		Produce::down(I);

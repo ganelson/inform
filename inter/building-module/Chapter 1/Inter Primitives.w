@@ -120,12 +120,14 @@ there would have to be string comparisons.
 @e INDIRECT3V_BIP
 @e INDIRECT4V_BIP
 @e INDIRECT5V_BIP
+@e INDIRECT6V_BIP
 @e INDIRECT0_BIP
 @e INDIRECT1_BIP
 @e INDIRECT2_BIP
 @e INDIRECT3_BIP
 @e INDIRECT4_BIP
 @e INDIRECT5_BIP
+@e INDIRECT6_BIP
 @e MESSAGE0_BIP
 @e MESSAGE1_BIP
 @e MESSAGE2_BIP
@@ -240,12 +242,14 @@ inform7_primitive standard_inform7_primitives[] = {
 	{ INDIRECT3V_BIP,        "!indirect3v",        "val val val val -> void",         SIP_RECORD_END },
 	{ INDIRECT4V_BIP,        "!indirect4v",        "val val val val val -> void",     SIP_RECORD_END },
 	{ INDIRECT5V_BIP,        "!indirect5v",        "val val val val val val -> void", SIP_RECORD_END },
+	{ INDIRECT6V_BIP,        "!indirect6v",        "val val val val val val val -> void", SIP_RECORD_END },
 	{ INDIRECT0_BIP,         "!indirect0",         "val -> val",                      SIP_RECORD_END },
 	{ INDIRECT1_BIP,         "!indirect1",         "val val -> val",                  SIP_RECORD_END },
 	{ INDIRECT2_BIP,         "!indirect2",         "val val val -> val",              SIP_RECORD_END },
 	{ INDIRECT3_BIP,         "!indirect3",         "val val val val -> val",          SIP_RECORD_END },
 	{ INDIRECT4_BIP,         "!indirect4",         "val val val val val -> val",      SIP_RECORD_END },
 	{ INDIRECT5_BIP,         "!indirect5",         "val val val val val val -> val",  SIP_RECORD_END },
+	{ INDIRECT6_BIP,         "!indirect6",         "val val val val val val val -> val",  SIP_RECORD_END },
 	{ MESSAGE0_BIP,          "!message0",          "val val -> val",                  SIP_RECORD_END },
 	{ MESSAGE1_BIP,          "!message1",          "val val val -> val",              SIP_RECORD_END },
 	{ MESSAGE2_BIP,          "!message2",          "val val val val -> val",          SIP_RECORD_END },
@@ -377,6 +381,11 @@ the function call has, and whether its return value is to be used or discarded.
 The following functions allow us to ask for the right primitive for the job:
 
 =
+int Primitives::arity_too_great_for_indirection(int arity) {
+	if (arity > 6) return TRUE;
+	return FALSE;
+}
+
 inter_ti Primitives::BIP_for_indirect_call_returning_value(int arity) {
 	switch (arity) {
 		case 0: return INDIRECT0_BIP;
@@ -385,6 +394,7 @@ inter_ti Primitives::BIP_for_indirect_call_returning_value(int arity) {
 		case 3: return INDIRECT3_BIP;
 		case 4: return INDIRECT4_BIP;
 		case 5: return INDIRECT5_BIP;
+		case 6: return INDIRECT6_BIP;
 		default: internal_error("indirect function call with too many arguments");
 	}
 	return 0;
@@ -398,6 +408,7 @@ inter_ti Primitives::BIP_for_void_indirect_call(int arity) {
 		case 3: return INDIRECT3V_BIP;
 		case 4: return INDIRECT4V_BIP;
 		case 5: return INDIRECT5V_BIP;
+		case 6: return INDIRECT6V_BIP;
 		default: internal_error("indirectv function call with too many arguments");
 	}
 	return 0;
@@ -424,6 +435,7 @@ int Primitives::is_BIP_for_indirect_call_returning_value(inter_ti s) {
 	if (s == INDIRECT3_BIP) return TRUE;
 	if (s == INDIRECT4_BIP) return TRUE;
 	if (s == INDIRECT5_BIP) return TRUE;
+	if (s == INDIRECT6_BIP) return TRUE;
 	return FALSE;
 }
 
@@ -434,6 +446,7 @@ int Primitives::is_BIP_for_void_indirect_call(inter_ti s) {
 	if (s == INDIRECT3V_BIP) return TRUE;
 	if (s == INDIRECT4V_BIP) return TRUE;
 	if (s == INDIRECT5V_BIP) return TRUE;
+	if (s == INDIRECT6V_BIP) return TRUE;
 	return FALSE;
 }
 
