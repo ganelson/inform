@@ -50,6 +50,9 @@ has been renamed:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2518](https://inform7.atlassian.net/browse/I7-2518)
+	"Doesn't correctly autoassign values for kit defined kinds"
+	([commit 5136eaa](https://github.com/ganelson/inform/commit/5136eaad3366efaf99e0f73da0916deee80bb216))
 - Fix for Jira bug [I7-2470](https://inform7.atlassian.net/browse/I7-2470)
 	"Removing an entry from a list of text in a deciding phrase corrupts the original list"
 	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
