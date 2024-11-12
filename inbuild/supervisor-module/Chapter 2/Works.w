@@ -73,10 +73,10 @@ the following constant minus 1.
 @<Compute the hash code@> =
 	unsigned int hc = 0;
 	LOOP_THROUGH_TEXT(pos, work->author_name)
-		hc = hc*30011 + (unsigned int) Str::get(pos);
+		hc = hc*30011 + (unsigned int) Characters::tolower(Str::get(pos));
 	hc = hc*30011 + (unsigned int) '/';
 	LOOP_THROUGH_TEXT(pos, work->title)
-		hc = hc*30011 + (unsigned int) Str::get(pos);
+		hc = hc*30011 + (unsigned int) Characters::tolower(Str::get(pos));
 	hc = hc % WORK_HASH_CODING_BASE;
 	work->inbuild_work_hash_code = (int) hc;
 
@@ -174,8 +174,7 @@ void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 @h Identification.
 Two works with different hash codes definitely identify different works;
 if the code is the same, we must use |Str::eq| on the actual title and author
-name. This is in effect case insensitive, since we normalised casing when
-the works were created.
+name.
 
 (Note that this is not a lexicographic function suitable for sorting
 works into alphabetical order: it cannot be, since the hash code is not
@@ -186,8 +185,8 @@ order-preserving. To emphasise this we return true or false rather than a
 int Works::match(inbuild_work *w1, inbuild_work *w2) {
 	if ((w1 == NULL) || (w2 == NULL)) internal_error("bad work match");
 	if (w1->inbuild_work_hash_code != w2->inbuild_work_hash_code) return FALSE;
-	if (Str::eq(w1->author_name, w2->author_name) == FALSE) return FALSE;
-	if (Str::eq(w1->title, w2->title) == FALSE) return FALSE;
+	if (Str::eq_insensitive(w1->author_name, w2->author_name) == FALSE) return FALSE;
+	if (Str::eq_insensitive(w1->title, w2->title) == FALSE) return FALSE;
 	return TRUE;
 }
 
@@ -197,8 +196,8 @@ int Works::match(inbuild_work *w1, inbuild_work *w2) {
 int Works::cmp(inbuild_work *w1, inbuild_work *w2) {
 	if ((w1 == NULL) || (w2 == NULL)) internal_error("bad work match");
 	int d = Genres::cmp(w1->genre, w2->genre);
-	if (d == 0) d = Str::cmp(w1->author_name, w2->author_name);
-	if (d == 0) d = Str::cmp(w1->title, w2->title);
+	if (d == 0) d = Str::cmp_insensitive(w1->author_name, w2->author_name);
+	if (d == 0) d = Str::cmp_insensitive(w1->title, w2->title);
 	return d;
 }
 

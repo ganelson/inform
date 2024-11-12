@@ -1,11 +1,11 @@
-Total memory consumption was 153407K = 150 MB
+Total memory consumption was 153399K = 150 MB
 
- ---- was used for 2279735 objects, in 402822 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2279563 objects, in 402749 frames in 0 x 800K = 0K = 0 MB:
 
     28.9%  inter_tree_node_array                    63 x 8192 = 516096 objects, 45418464 bytes
-    19.9%  text_stream_array                        5560 x 100 = 556000 objects, 31313920 bytes
+    19.9%  text_stream_array                        5559 x 100 = 555900 objects, 31308288 bytes
     18.2%  linked_list                              51083 objects, 28606480 bytes
-    10.3%  scan_directory                           3924 objects, 16198272 bytes
+    10.2%  scan_directory                           3900 objects, 16099200 bytes
      9.6%  inter_symbol_array                       142 x 1024 = 145408 objects, 15126976 bytes
      9.1%  inter_error_stash_array                  110 x 1024 = 112640 objects, 14421440 bytes
      6.9%  parse_node                               137422 objects, 10993760 bytes
@@ -48,7 +48,7 @@ Total memory consumption was 153407K = 150 MB
      0.1%  linguistic_stock_item                    3541 objects, 169968 bytes
      ----  rule_family_data                         408 objects, 150144 bytes
      ----  nascent_array                            2299 objects, 147136 bytes
-     ----  filename                                 3634 objects, 145360 bytes
+     ----  filename                                 3610 objects, 144400 bytes
      ----  nonterminal                              778 objects, 143152 bytes
      ----  markdown_item_array                      1 x 1000 objects, 136032 bytes
      ----  inference                                1779 objects, 128088 bytes
@@ -57,7 +57,7 @@ Total memory consumption was 153407K = 150 MB
      ----  inter_schema                             1615 objects, 116280 bytes
      ----  imperative_defn                          1494 objects, 107568 bytes
      ----  noun_usage                               2621 objects, 104840 bytes
-     ----  pathname                                 2511 objects, 100440 bytes
+     ----  pathname                                 2487 objects, 99480 bytes
      ----  inter_tree                               7 objects, 96656 bytes
      ----  kind_constructor                         94 objects, 96256 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
@@ -271,9 +271,9 @@ Total memory consumption was 153407K = 150 MB
 
 100.0% was used for memory not allocated for objects:
 
-    64.3%  text stream storage                      101132924 bytes in 580146 claims
+    64.3%  text stream storage                      101124284 bytes in 580070 claims
      3.9%  dictionary storage                       6186112 bytes in 8266 claims
-     ----  sorting                                  21112 bytes in 2660 claims
+     ----  sorting                                  20984 bytes in 2656 claims
      4.5%  source text                              7200000 bytes in 3 claims
      6.8%  source text details                      10800000 bytes in 2 claims
      0.1%  documentation fragments                  262144 bytes in 1 claim
@@ -289,5 +289,5 @@ Total memory consumption was 153407K = 150 MB
      ----  code generation workspace for objects    3616 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--140.-2% was overhead - -220362712 bytes = -215197K = -210 MB
+-140.-2% was overhead - -220256088 bytes = -215093K = -210 MB
 

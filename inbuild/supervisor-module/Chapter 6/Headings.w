@@ -681,10 +681,13 @@ void Headings::satisfy_individual_heading_dependency(inform_project *proj,
 	if (h->level < 1) return;
 	inbuild_work *work = h->for_use_with;
 	int loaded = FALSE;
-	inform_extension *E;
-	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
-		if ((h->for_use_with) && (Works::match(E->as_copy->edition->work, work)))
-			loaded = TRUE;
+	if (work) {
+		inform_extension *E;
+		LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
+			if (Works::match(E->as_copy->edition->work, work))
+				loaded = TRUE;
+		}
+	}
 	LOGIF(HEADINGS, "SIHD on $H: loaded %d: annotation %d: %W: %d\n", h, loaded,
 		Annotations::read_int(h->sentence_declaring,
 			suppress_heading_dependencies_ANNOT),
