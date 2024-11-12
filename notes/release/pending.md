@@ -93,6 +93,9 @@ has been renamed:
 	"You can `use dict_word_size of 12` and I7's ok with it, but then passes it
 	on to I6 in lower case"
 	([commit a011ec6](https://github.com/ganelson/inform/commit/a011ec67b900bf13d89ab73a46dc519b58c69906))
+- Fix for Jira bug [I7-2336](https://inform7.atlassian.net/browse/I7-2336)
+	"When an either-or property is implemented as an I6 property rather than an I6 attribute, reading the property throws a run-time error"
+	([commit 44a87dd](https://github.com/ganelson/inform/commit/44a87dd54d6465ae605a0e9974e50582c34524d3))
 - Fix for Jira bug [I7-2335](https://inform7.atlassian.net/browse/I7-2335)
 	"Several previously-legal forms of the Array directive no longer work in I6 inclusions in 10.1.2"
 	([commit 4d97b49](https://github.com/ganelson/inform/commit/4d97b499cfd3e15650d1bba1e6e8c70c24a01fb2))
