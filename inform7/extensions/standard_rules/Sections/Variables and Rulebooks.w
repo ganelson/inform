@@ -1235,7 +1235,7 @@ The parser nothing error internal rule is defined by Inter as
 	"PARSER_N_ERROR_INTERNAL_R" with
 	"Nothing to do!" (A),
 	"[There] [adapt the verb are from the third person plural] none at all available!" (B),
-	"[regarding the noun][Those] [seem] to belong to [the noun]." (C),
+	"[The noun] [have] nothing." (C),
 	"[regarding the noun][Those] [can't] contain things." (D),
 	"[The noun] [aren't] open." (E),
 	"[The noun] [are] empty." (F).

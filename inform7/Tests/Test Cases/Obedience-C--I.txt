@@ -765,7 +765,7 @@ There is no reply.
 [answering Clark Gable that "get all from clark" - succeeded]
 
 >** get all from me
-You seem to belong to yourself.
+You have nothing.
 
 >** get all from cage
 The cage isn't open.

@@ -1,15 +1,15 @@
 Size of lexicon: 3656 excerpt meanings
-  Stored among 939 words out of total vocabulary of 10999
+  Stored among 939 words out of total vocabulary of 10997
   802 words have a start list: longest belongs to report (with 296 meanings)
   23 words have an end list: longest belongs to digits (with 7 meanings)
   29 words have a middle list: longest belongs to matches (with 6 meanings)
   111 words have a subset list: longest belongs to street (with 4 meanings)
 
-Number of attempts to retrieve: 112725
-  of which unsuccessful: 94203
-  of which successful: 18522
+Number of attempts to retrieve: 112709
+  of which unsuccessful: 94192
+  of which successful: 18517
 
-Total attempts to match against excerpt meanings: 375407
-  of which, total with incorrect hash codes: 351950
-  of which, total with correct hash codes: 23457
-  of which, total which matched: 20300
+Total attempts to match against excerpt meanings: 375366
+  of which, total with incorrect hash codes: 351918
+  of which, total with correct hash codes: 23448
+  of which, total which matched: 20291
