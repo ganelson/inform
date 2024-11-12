@@ -54,9 +54,8 @@ void RTBackdropInstances::compile_extra(instance *I) {
 				EmitCode::rtrue();
 			EmitCode::up();
 		EmitCode::up();
-		EmitCode::rfalse();
-		break;
 	}
+	EmitCode::rfalse();
 	Functions::end(save);
 
 @<The object is found nowhere@> =
