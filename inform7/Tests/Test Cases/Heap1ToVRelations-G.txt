@@ -1,0 +1,18 @@
+Test: Heap1ToVRelations-G
+For: Glulx
+
+Lab is a room.
+
+R1 relates one text to various numbers.
+
+The verb to verb means R1 relation.
+"foo" verbs 7.
+
+when play begins:
+	showme whether or not "foo" verbs 7;
+	showme whether or not "foo" verbs 8;
+	showme whether or not "bar" verbs 7;
+	showme whether or not a text relates to 8 by the R1 relation;
+	showme whether or not "bar" relates to a number by the R1 relation;
+	showme whether or not a text relates to 7 by the R1 relation;
+	showme whether or not "foo" relates to a number by the R1 relation;

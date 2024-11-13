@@ -1,0 +1,18 @@
+
+
+
+
+"whether or not "foo" verbs 7" = truth state: true
+"whether or not "foo" verbs 8" = truth state: false
+"whether or not "bar" verbs 7" = truth state: false
+"whether or not a text relates to 8 by the R1 relation" = truth state: false
+"whether or not "bar" relates to a number by the R1 relation" = truth state: false
+"whether or not a text relates to 7 by the R1 relation" = truth state: true
+"whether or not "foo" relates to a number by the R1 relation" = truth state: true
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Lab
+
+>Are you sure you want to quit? 

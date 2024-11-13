@@ -708,6 +708,7 @@ are reversed. This implements one-to-various relations.
 
 =
 [ ReversedHashTableRelationHandler rel task X Y  kind_id kx ky swap;
+!	print "ReversedHashTableRelationHandler ", rel, " ", task, " X=", X, " Y=", Y, "^";
 	kind_id = PVField(rel, RRV_KIND);
 	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	switch (task) {
@@ -719,8 +720,8 @@ are reversed. This implements one-to-various relations.
 			switch (Y) {
 				RLANY_GET_X: Y = RLANY_GET_Y;
 				RLANY_GET_Y: Y = RLANY_GET_X;
-				RLANY_CAN_GET_X: Y = RLANY_CAN_GET_Y;
-				RLANY_CAN_GET_Y: Y = RLANY_CAN_GET_X;
+				RLANY_CAN_GET_X: Y = RLANY_CAN_GET_Y; swap=kx; kx=ky; ky=swap;
+				RLANY_CAN_GET_Y: Y = RLANY_CAN_GET_X; swap=kx; kx=ky; ky=swap;
 			}
 		RELS_LOOKUP_ALL_X:
 			task = RELS_LOOKUP_ALL_Y;
