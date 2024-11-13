@@ -223,6 +223,7 @@ at once, and we have to perform both an existential assertion and a coupling.
 			if (Node::get_type(py) == WITH_NT) {
 				px = py->down;
 				py = py->down->next;
+				Annotations::write_int(current_sentence->down, sentence_is_existential_ANNOT, FALSE);
 				Assertions::make_coupling(px, py);
 				Anaphora::change_discussion_from_coupling(px, py);
 			} else {

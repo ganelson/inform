@@ -1,0 +1,10 @@
+Test: ThereIsQualified
+For: Z-Machine
+
+Lab is a room.
+A thing can be larry, moe, or curly.
+There is a thing. There is a curly thing.
+
+When play begins:
+	repeat with T running through things:
+		say "[T]: [thing condition of T]."
