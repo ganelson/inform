@@ -137,6 +137,9 @@ has been renamed:
 - Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
 	"switch(): first branch can't start with negative number"
 	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
+- Fix for Jira bug [I7-2301](https://inform7.atlassian.net/browse/I7-2301)
+	"compiler error when creating an object with 'there is' and setting conditions or either/or properties"
+	([commit dc283f9](https://github.com/ganelson/inform/commit/dc283f9549b3eda25f1a24d09cbf9e5ae59e0b61))
 - Fix for Jira bug [I7-2298](https://inform7.atlassian.net/browse/I7-2298)
 	""to" in I6 switch statement is not recognized"
 	([commit 04e526f](https://github.com/ganelson/inform/commit/04e526f0a676b89fa032d6c886a146499d5e7ae5))
