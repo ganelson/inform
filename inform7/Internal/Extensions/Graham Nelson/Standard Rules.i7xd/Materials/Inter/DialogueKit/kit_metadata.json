@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "DialogueKit",
-        "version": "10.2.0-beta+6X79"
+        "version": "10.2.0-beta+6X80"
     },
     "activates": [ "dialogue" ],
     "kit-details": {

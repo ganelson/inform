@@ -71,8 +71,9 @@ inter_name *RTActions::base_iname(action_name *an) {
 					an->compilation_data.translated_name, RTActions::package(an));
 		else
 			an->compilation_data.an_base_iname =
-				Hierarchy::make_iname_with_shorter_memo(ACTION_BASE_NAME_HL,
-					RTActions::package(an), ActionNameNames::tensed(an, IS_TENSE));
+				Hierarchy::make_iname_with_shorter_memo_and_value(ACTION_BASE_NAME_HL,
+					RTActions::package(an), ActionNameNames::tensed(an, IS_TENSE),
+					an->allocation_id);
 	}
 	return an->compilation_data.an_base_iname;
 }

@@ -305,6 +305,12 @@ inter_name *HierarchyLocations::make_iname_with_memo_and_value(inter_tree *I,
 		DEFAULT_INAME_TRUNCATION);
 }
 
+inter_name *HierarchyLocations::make_iname_with_shorter_memo_and_value(inter_tree *I,
+	int id, package_request *P, wording W, int x) {
+	return HierarchyLocations::iip(I, id, P, W, NULL, x, NULL,
+		DEFAULT_INAME_TRUNCATION - 10);
+}
+
 @ Finally, it's often useful to "derive" a name: to say that a resource in a
 given package |P| should have a name based on the name of an existing iname.
 For example, the HL |POPULATION_HL| might have the rule that names are made
@@ -360,7 +366,6 @@ inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
 
 	@<Verify that the proposed package P meets requirements@>;
-	
 	inter_name *iname = NULL;
 	if (hl->trans.translate_to)  {
 		text_stream *T = hl->trans.translate_to;
@@ -375,6 +380,7 @@ inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 			              : InterNames::generated(hl->trans.name_generator, fix, W);
 		W = EMPTY_WORDING;
 		WRITE_TO(T, "%n", temp_iname);
+		Str::truncate(T, truncation + 5);
 		@<Make the actual iname@>;
 		DISCARD_TEXT(T)
 	} else {

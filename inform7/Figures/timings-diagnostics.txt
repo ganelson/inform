@@ -1,33 +1,32 @@
 100.0% in inform7 run
-     66.6% in compilation to Inter
-         44.2% in //Sequence::undertake_queued_tasks//
-          4.2% in //MajorNodes::pre_pass//
+     66.5% in compilation to Inter
+         43.8% in //Sequence::undertake_queued_tasks//
+          4.3% in //MajorNodes::pre_pass//
           3.6% in //MajorNodes::pass_1//
-          1.9% in //RTKindConstructors::compile//
+          2.0% in //RTKindConstructors::compile//
           1.6% in //ImperativeDefinitions::assess_all//
           1.6% in //RTPhrasebook::compile_entries//
-          0.9% in //Sequence::lint_inter//
+          1.0% in //Sequence::lint_inter//
           0.6% in //ImperativeDefinitions::compile_first_block//
           0.6% in //MajorNodes::pass_2//
           0.6% in //World::stage_V//
           0.3% in //CompletionModule::compile//
-          0.3% in //InferenceSubjects::emit_all//
           0.3% in //RTKindConstructors::compile_permissions//
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Task::make_built_in_kind_constructors//
           0.3% in //World::stages_II_and_III//
-          3.9% not specifically accounted for
+          4.3% not specifically accounted for
      26.4% in running Inter pipeline
-          8.9% in step 14/15: generate inform6 -> auto.inf
-          6.9% in step 5/15: load-binary-kits
-          5.2% in step 6/15: make-synoptic-module
-          1.9% in step 9/15: make-identifiers-unique
+          8.6% in step 14/15: generate inform6 -> auto.inf
+          7.0% in step 5/15: load-binary-kits
+          5.3% in step 6/15: make-synoptic-module
+          2.0% in step 9/15: make-identifiers-unique
           0.3% in step 11/15: eliminate-redundant-labels
           0.3% in step 12/15: eliminate-redundant-operations
           0.3% in step 4/15: compile-splats
           0.3% in step 7/15: shorten-wiring
           0.3% in step 8/15: detect-indirect-calls
           1.7% not specifically accounted for
-      6.2% in supervisor
-      0.7% not specifically accounted for
+      6.6% in supervisor
+      0.4% not specifically accounted for

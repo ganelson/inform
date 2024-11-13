@@ -1,6 +1,6 @@
-Total memory consumption was 153552K = 150 MB
+Total memory consumption was 153564K = 150 MB
 
- ---- was used for 2279516 objects, in 402702 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2279503 objects, in 402689 frames in 0 x 800K = 0K = 0 MB:
 
     28.8%  inter_tree_node_array                    63 x 8192 = 516096 objects, 45418464 bytes
     19.9%  text_stream_array                        5559 x 100 = 555900 objects, 31308288 bytes
@@ -17,7 +17,7 @@ Total memory consumption was 153552K = 150 MB
      1.4%  inter_schema_token                       14673 objects, 2230296 bytes
      1.4%  inter_name_generator_array               55 x 1000 = 55000 objects, 2201760 bytes
      1.2%  package_request                          22153 objects, 1949464 bytes
-     1.2%  vocabulary_entry_array                   168 x 100 = 16800 objects, 1886976 bytes
+     1.1%  vocabulary_entry_array                   168 x 100 = 16800 objects, 1886976 bytes
      1.1%  dict_entry_array                         564 x 100 = 56400 objects, 1822848 bytes
      0.9%  inter_symbols_table                      27947 objects, 1565032 bytes
      0.9%  i6_schema_array                          25 x 100 = 2500 objects, 1500800 bytes
@@ -118,8 +118,8 @@ Total memory consumption was 153552K = 150 MB
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  adjective_iname_holder                   337 objects, 13480 bytes
      ----  booking_list                             417 objects, 13344 bytes
-     ----  uniqueness_count                         546 objects, 13104 bytes
      ----  web_bibliographic_datum                  203 objects, 12992 bytes
+     ----  uniqueness_count                         533 objects, 12792 bytes
      ----  inter_construct                          32 objects, 11008 bytes
      ----  md_doc_state                             2 objects, 10480 bytes
      ----  heading_tree                             33 objects, 10296 bytes
@@ -271,7 +271,7 @@ Total memory consumption was 153552K = 150 MB
 
 100.0% was used for memory not allocated for objects:
 
-    64.4%  text stream storage                      101298008 bytes in 580160 claims
+    64.4%  text stream storage                      101310384 bytes in 580148 claims
      3.9%  dictionary storage                       6186112 bytes in 8266 claims
      ----  sorting                                  20984 bytes in 2656 claims
      4.5%  source text                              7200000 bytes in 3 claims
@@ -289,5 +289,5 @@ Total memory consumption was 153552K = 150 MB
      ----  code generation workspace for objects    3616 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--140.0% was overhead - -220252360 bytes = -215090K = -210 MB
+-140.0% was overhead - -220252048 bytes = -215089K = -210 MB
 

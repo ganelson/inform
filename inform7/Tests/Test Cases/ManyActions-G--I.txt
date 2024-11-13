@@ -31,7 +31,7 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [ "x20" x20 ]
 [Parsing for the verb 'x20' (1 lines)]
 
-[line 0 * -> A_action20ing]
+[line 0 * -> A97_action20ing]
  [line 0 token 1 word 2 : END]
 [Line successfully parsed]
 [Rule "declare everything initially unmentioned rule" applies.]
@@ -76,7 +76,7 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [ "x110" x110 ]
 [Parsing for the verb 'x110' (1 lines)]
 
-[line 0 * -> A_action110ing]
+[line 0 * -> A187_action110ing]
  [line 0 token 1 word 2 : END]
 [Line successfully parsed]
 [Rule "declare everything initially unmentioned rule" applies.]
@@ -121,7 +121,7 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [ "x220" x220 ]
 [Parsing for the verb 'x220' (1 lines)]
 
-[line 0 * -> A_action220ing]
+[line 0 * -> A297_action220ing]
  [line 0 token 1 word 2 : END]
 [Line successfully parsed]
 [Rule "declare everything initially unmentioned rule" applies.]
@@ -166,7 +166,7 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [ "x230" x230 ]
 [Parsing for the verb 'x230' (1 lines)]
 
-[line 0 * -> A_action230ing]
+[line 0 * -> A307_action230ing]
  [line 0 token 1 word 2 : END]
 [Line successfully parsed]
 [Rule "declare everything initially unmentioned rule" applies.]
@@ -211,7 +211,7 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [ "x240" x240 ]
 [Parsing for the verb 'x240' (1 lines)]
 
-[line 0 * -> A_action240ing]
+[line 0 * -> A317_action240ing]
  [line 0 token 1 word 2 : END]
 [Line successfully parsed]
 [Rule "declare everything initially unmentioned rule" applies.]

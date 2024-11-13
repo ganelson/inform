@@ -400,7 +400,7 @@ void Hierarchy::establish(void) {
 			H_C_U(ACTION_SPECIFICATION_MD_HL,    I"^specification")
 			H_C_U(ACTION_DESCRIPTION_MD_HL,      I"^description")
 			H_C_U(ACTION_ID_HL,                  I"action_id")
-			H_C_U(ACTION_BASE_NAME_HL,           I"A")
+			H_C_G(ACTION_BASE_NAME_HL,           I"A")
 			H_C_T(WAIT_HL,                       I"Wait")
 			H_C_I(TRANSLATED_BASE_NAME_HL)
 			H_C_P(DOUBLE_SHARP_NAME_HL,          I"##")
@@ -2192,6 +2192,13 @@ inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P
 	wording W, int x) {
 	inter_name *iname =
 		HierarchyLocations::make_iname_with_memo_and_value(Emit::tree(), id, P, W, x);
+	return iname;
+}
+
+inter_name *Hierarchy::make_iname_with_shorter_memo_and_value(int id, package_request *P,
+	wording W, int x) {
+	inter_name *iname =
+		HierarchyLocations::make_iname_with_shorter_memo_and_value(Emit::tree(), id, P, W, x);
 	return iname;
 }
 
