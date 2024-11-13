@@ -67,7 +67,7 @@ this phrase definition must similarly be here, not in Basic Inform.
 =
 Section 4 - Responses
 
-To say text of (R - response)
+To say the/-- text of (R - response)
 	(documented at phs_response):
 	carry out the issuing the response text activity with R.
 
