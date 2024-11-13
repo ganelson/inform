@@ -221,6 +221,9 @@ has been renamed:
 - Fix for Jira bug [I7-2129](https://inform7.atlassian.net/browse/I7-2129)
 	"Quiet supporters from The Eye of the Idol no longer work"
 	([PR#114](https://github.com/ganelson/inform/pull/114))
+- Fix for Jira bug [I7-2125](https://inform7.atlassian.net/browse/I7-2125)
+	"Inblorb copies Cover.png to Small Cover.png"
+	([commit 36a6eb0](https://github.com/ganelson/inweb/commit/36a6eb0bd9ff81425a75ff1435002053e09eb59e))
 - Fix for Jira bug [I7-2074](https://inform7.atlassian.net/browse/I7-2074)
 	"Documentation recommends scene code that causes soft lock" (about times
 	since scene ending sometimes being negative)
