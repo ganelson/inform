@@ -24,7 +24,9 @@ inchar32_t *RFC1113_table = U"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx
 
 =
 void Base64::encode(filename *in_filename, filename *out_filename, text_stream *top, text_stream *tail) {
+WRITE_TO(STDOUT, "Encode %f\n", in_filename);
 	FILE *IN = BinaryFiles::open_for_reading(in_filename);
+WRITE_TO(STDOUT, "Done Encode %f\n", in_filename);
 	text_stream TO_struct;
 	text_stream *TO = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(TO, out_filename, UTF8_ENC) == FALSE)

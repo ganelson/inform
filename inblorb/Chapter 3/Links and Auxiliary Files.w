@@ -139,7 +139,7 @@ will not work.
 void Links::expand_COVER_variable(OUTPUT_STREAM) {
 	if (cover_exists) {
 		char *format = "png"; if (cover_is_in_JPEG_format) format = "jpg";
-		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" border=\"1\"></a>",
+		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" border=\"1\" width=\"120px\"></a>",
 			format, format);
 	}
 }
