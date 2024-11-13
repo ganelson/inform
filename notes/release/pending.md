@@ -53,6 +53,9 @@ has been renamed:
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
 	"The parser nothing error internal rule response (C) is badly worded."
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
+- Fix for Jira bug [I7-2532](https://inform7.atlassian.net/browse/I7-2532)
+	"Can't refer to the the text of the announce items from multiple object lists rule response (A) in the normal way."
+	([commit d47d1bb](https://github.com/ganelson/inform/commit/d47d1bb801090ed6d4a60c27b8111e6cdcdabc7e))
 - Fix for Jira bug [I7-2518](https://inform7.atlassian.net/browse/I7-2518)
 	"Doesn't correctly autoassign values for kit defined kinds"
 	([commit 5136eaa](https://github.com/ganelson/inform/commit/5136eaad3366efaf99e0f73da0916deee80bb216))
