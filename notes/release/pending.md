@@ -77,6 +77,9 @@ has been renamed:
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
+- Fix for Jira bug [I7-2399](https://inform7.atlassian.net/browse/I7-2399)
+	"Bad error message with long action names sharing same beginning text"
+	(see [Inweb commit db36ef3](https://github.com/ganelson/inform/commit/db36ef30c9dfbcd956a7c7d44ef1094f710b4d6d))
 - Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
 	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
 	([PR#116](https://github.com/ganelson/inform/pull/116))
