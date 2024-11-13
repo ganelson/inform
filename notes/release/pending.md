@@ -51,10 +51,13 @@ has been renamed:
 ## Bug fixes
 
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
-	"The parser nothing error internal rule response (C) is badly worded."
+	"The parser nothing error internal rule response (C) is badly worded"
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
+- Fix for Jira bug [I7-2543](https://inform7.atlassian.net/browse/I7-2543)
+	"Out-of-bounds memory access with one text to various K relations"
+	([commit 693da60](https://github.com/ganelson/inform/commit/693da60d8f734d62b0c7e9c04c34d5e814f9f613))	
 - Fix for Jira bug [I7-2532](https://inform7.atlassian.net/browse/I7-2532)
-	"Can't refer to the the text of the announce items from multiple object lists rule response (A) in the normal way."
+	"Can't refer to the the text of the announce items from multiple object lists rule response (A) in the normal way"
 	([commit d47d1bb](https://github.com/ganelson/inform/commit/d47d1bb801090ed6d4a60c27b8111e6cdcdabc7e))
 - Fix for Jira bug [I7-2518](https://inform7.atlassian.net/browse/I7-2518)
 	"Doesn't correctly autoassign values for kit defined kinds"
