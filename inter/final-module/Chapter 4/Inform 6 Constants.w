@@ -332,7 +332,7 @@ void I6TargetConstants::compile_dictionary_word(code_generator *gtr, code_genera
 				default: PUT(c);
 			}
 		}
-		if (n++ > 32) break;
+		if ((TargetVMs::is_16_bit(gen->for_VM)) && (n++ > 32)) break;
 	}
 	if (pluralise) WRITE("//p");
 	else if (Str::len(S) == 1) WRITE("//");
