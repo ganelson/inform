@@ -223,6 +223,9 @@ has been renamed:
 - Fix for Jira bug [I7-2225](https://inform7.atlassian.net/browse/I7-2225)
 	"Translating kinds into I6 doesn't work"
 	(Inweb: [commit d608388](https://github.com/ganelson/inweb/commit/d608388d643a85d1aa3c88cfa1710b848bd5cb7e))
+- Fix for Jira bug [I7-2199](https://inform7.atlassian.net/browse/I7-2199)
+	"Property names whose identifiers begin with identical long strings -> Property given twice in the same declaration error"
+	([commit 2ac854e](https://github.com/ganelson/inform/commit/2ac854e163a779c0322ecf0736877916653fc40a))
 - Fix for Jira bug [I7-2142](https://inform7.atlassian.net/browse/I7-2142)
 	"With 'the foo rule substitutes for the bar rule when...', the bar rule is
 	suppressed but the foo rule isn't followed."
