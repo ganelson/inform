@@ -62,6 +62,9 @@ has been renamed:
 - Fix for Jira bug [I7-2518](https://inform7.atlassian.net/browse/I7-2518)
 	"Doesn't correctly autoassign values for kit defined kinds"
 	([commit 5136eaa](https://github.com/ganelson/inform/commit/5136eaad3366efaf99e0f73da0916deee80bb216))
+- Fix for Jira bug [I7-2510](https://inform7.atlassian.net/browse/I7-2510)
+	"Arguments leaking between phrases (?) depending on wording"
+	([commit 4e3c5f8](https://github.com/ganelson/inform/commit/4e3c5f8f0606201da56fd7f1f49e835c593c3a84))
 - Fix for Jira bug [I7-2492](https://inform7.atlassian.net/browse/I7-2492)
 	"Numbers in template code are truncated to 32 bits without warning"
 	([commit 26c0928](https://github.com/ganelson/inform/commit/26c0928ea24a4786f980b99f900d2fbbf9324a21))
