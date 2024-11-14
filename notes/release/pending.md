@@ -95,6 +95,9 @@ has been renamed:
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
+- Fix for Jira bug [I7-2407](https://inform7.atlassian.net/browse/I7-2407)
+	"Abject failure when trying to add an intermediate kind"
+	([commit 1a963d3](https://github.com/ganelson/inform/commit/1a963d32b39488eb0b7e1ff36ba74cd6ec1f9e68))
 - Fix for Jira bug [I7-2399](https://inform7.atlassian.net/browse/I7-2399)
 	"Bad error message with long action names sharing same beginning text"
 	(see [Inweb commit db36ef3](https://github.com/ganelson/inform/commit/db36ef30c9dfbcd956a7c7d44ef1094f710b4d6d))
