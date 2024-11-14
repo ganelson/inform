@@ -498,7 +498,7 @@ Listed-in predication
 << listed_in('4', 'the table of solid stuff') >>
 
 2. nothing is a statue listed in the Table of Stolid Stuff
-<< listed_in('nothing', 'the table of stolid stuff') >>
+<< statue('nothing') & listed_in('nothing', 'the table of stolid stuff') >>
 
 3. a crispiness listed in the Table of Salad Stuff is a density listed in the Table of Solid Stuff
 << Exists x : number(x) & listed_in(x, 'the table of salad stuff') & listed_in(x, 'the table of solid stuff') >>

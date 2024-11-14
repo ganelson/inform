@@ -1,0 +1,26 @@
+   Staging Area
+  yellow banana was est 1919 for race leader.
+  polkadot banana was est 1933 for King of the Mountains.
+  green banana was est 1953 for highest point scorer on sprints.
+  white banana was est 1975 for best cyclist aged 25 or less.
+  
+  red snowflake provides snowtext: This snowflake is red.
+  blue snowflake provides snowtext: This snowflake is blue.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Staging Area
+  You can see a yellow jersey, a polkadot jersey, a green jersey and a white jersey here.
+  
+> >   Staging Area
+  (Testing.)
+  
+  >[1] examine yellow jersey
+  Since 1919, the Tour de France has awarded this jersey to the race leader.
+  
+  >[2] examine green jersey
+  Since 1953, the Tour de France has awarded this jersey to the highest point scorer on sprints.
+  
+> >

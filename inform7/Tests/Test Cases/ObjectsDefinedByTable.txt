@@ -1,0 +1,40 @@
+Test: ObjectsDefinedByTable
+For: Z-Machine
+
+The Staging Area is a room. A jersey is a kind of thing. A jersey is wearable. Some jerseys in the Staging Area are defined by the Table of Honorary Jerseys. The description of a jersey is "Since [year established], the Tour de France has awarded this jersey to the [citation]."
+
+A banana is a kind of value. Some bananas are defined by the Table of Honorary Bananas.
+
+When play begins:
+	repeat with B running through bananas:
+		say "[B] was est [year banana established of B] for [banana citation of B]."
+
+Table of Honorary Jerseys
+jersey	year established	citation
+a yellow jersey	1919	"race leader"
+a polkadot jersey	1933	"King of the Mountains"
+a green jersey	1953	"highest point scorer on sprints"
+a white jersey	1975	"best cyclist aged 25 or less"
+
+Table of Honorary Bananas
+banana	year banana established	banana citation
+a yellow banana	1919	"race leader"
+a polkadot banana	1933	"King of the Mountains"
+a green banana	1953	"highest point scorer on sprints"
+a white banana	1975	"best cyclist aged 25 or less"
+
+Test me with "examine yellow jersey / examine green jersey".
+
+A snowflake is a kind of object. A snowflake has some text called the snowtext.
+
+Some snowflakes are defined by the Table of Test Snow.
+
+Table of Test Snow
+snowflake	snowtext
+red snowflake	"This snowflake is red"
+blue snowflake	"This snowflake is blue"
+
+When play begins:
+	repeat with S running through objects:
+		if S provides snowtext:
+			say "[S] provides snowtext: [snowtext of S]."
