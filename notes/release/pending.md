@@ -241,8 +241,11 @@ has been renamed:
 	"Multiple 'take all' in an empty room causes a 'Too many activities are going on at once.' error"
 	([PR#139](https://github.com/ganelson/inform/pull/139))
 - Fix for Jira bug [I7-1973](https://inform7.atlassian.net/browse/I7-1973) = Mantis 2009
-	"Standard 'deciding whether all include' rules don't apply to an actor."
+	"Standard 'deciding whether all include' rules don't apply to an actor"
 	([PR#113](https://github.com/ganelson/inform/pull/113))
+- Fix for Jira bug [I7-1929](https://inform7.atlassian.net/browse/I7-1929) = Mantis 1965
+	"When defining a kind-of-object via table, properties are misplaced"
+	([commit 70fa464](https://github.com/ganelson/inweb/commit/70fa464c677791501bd83efda9bf63802a77e558))
 
 - Cosmetic fixes not worth linking to (I7-2570, I7-2529, I7-2502, I7-2481, I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
 
