@@ -71,6 +71,9 @@ has been renamed:
 - Fix for Jira bug [I7-2490](https://inform7.atlassian.net/browse/I7-2490)
 	"Numbers in template code are truncated to 32 bits without warning"
 	([commit 752e0ea](https://github.com/ganelson/inform/commit/752e0eacf84476dd2f121980291414ac4839ca86))
+- Fix for Jira bug [I7-2484](https://inform7.atlassian.net/browse/I7-2484)
+	"The meaning of the verb 'are suspicious of' causes abject failure"
+	([commit 2dd4dcb](https://github.com/ganelson/inform/commit/2dd4dcb25ea57191b80fe8c590491f2bba7bfc18))	
 - Fix for Jira bug [I7-2470](https://inform7.atlassian.net/browse/I7-2470)
 	"Removing an entry from a list of text in a deciding phrase corrupts the original list"
 	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
