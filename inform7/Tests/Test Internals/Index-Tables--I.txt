@@ -2,38 +2,6 @@
 <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td style="padding-top: 3px;" align="left" valign="top">
-            <b>Table of Honorary Jerseys</b>&nbsp;<a href="source:story.ni#line31"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td style="padding-top: 3px;" align="left" valign="top">
-            <i><span class="smaller">4 definitions</span></i>
-        </td>
-    </tr>
-    <tr>
-        <td align="left" valign="top">
-            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Some jerseys in the Home&nbsp;<a href="source:story.ni#line29"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td align="left" valign="top">
-            <i>names</i>
-        </td>
-    </tr>
-    <tr>
-        <td align="left" valign="top">
-            &nbsp;&nbsp;col 2:&nbsp;&nbsp;<i>sets</i> citation&nbsp;<a class="actionlink" href="javascript:pasteCode('citation')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td align="left" valign="top">
-            texts property
-        </td>
-    </tr>
-    <tr>
-        <td align="left" valign="top">
-            &nbsp;&nbsp;col 3:&nbsp;&nbsp;<i>sets</i> jersey&nbsp;<a class="actionlink" href="javascript:pasteCode('jersey')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td align="left" valign="top">
-            objects property
-        </td>
-    </tr>
-    <tr>
-        <td style="padding-top: 3px;" align="left" valign="top">
             <b>Table 4 - Recent Monarchs</b>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td style="padding-top: 3px;" align="left" valign="top">
@@ -110,6 +78,38 @@
         </td>
         <td align="left" valign="top">
             of lists of numbers
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <b>Table of Honorary Jerseys</b>&nbsp;<a href="source:story.ni#line31"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <i><span class="smaller">4 definitions</span></i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Some jerseys in the Home&nbsp;<a href="source:story.ni#line29"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <i>names</i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;<i>sets</i> year established&nbsp;<a class="actionlink" href="javascript:pasteCode('year established')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            numbers property
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;<i>sets</i> citation&nbsp;<a class="actionlink" href="javascript:pasteCode('citation')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            texts property
         </td>
     </tr>
 </table>
