@@ -8273,7 +8273,7 @@ As a pedantic footnote here: It sometimes comes as a surprise to power users of 
 
 In fact this is not a contradiction. For reasons of efficiency, there is not one single `Check` rulebook with hundreds or thousands of rules in: there is one for each action, whose name consists of the word `Check` followed by the action name. So `Check photographing` is the rulebook holding the example rules above. Similarly for `Check scraping it with`.
 
-As it happens, it is _also_ legal to write `Check scraping something with`, or `Check scraping a door with something edible`, and similar. Moreover something like `Check asking somebody to try scraping something with something` will work where `Check asking somebody to try scraping it with:` will not. So there is no actual need to use `it` in the names of `Check` rules, and it's perhaps better style not to, but the fact that `Check scraping it with` works is not a bug.
+In any case, it is _also_ legal to write `Check scraping something with`, or `Check scraping a door with something edible`, and similar. So there is no actual need to use `it` in the names of `Check` rules, and it's perhaps better style not to, but the fact that `Check scraping it with` works is not a bug.
 
 ## Action variables {PM_ActionVarsPastTense} {PM_ActionVarAnd} {PM_ActionVarOverspecific} {PM_ActionVarUnknownKOV} {PM_ActionVarValue} {PM_BadMatchingSyntax}
 
