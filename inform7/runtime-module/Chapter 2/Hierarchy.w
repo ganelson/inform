@@ -1548,7 +1548,7 @@ void Hierarchy::establish(void) {
 			H_C_U(PROPERTY_NAME_MD_HL,        I"^name")
 			H_C_U(PROPERTY_ORDER_MD_HL,       I"^source_order")
 			H_C_U(PROPERTY_ID_HL,             I"property_id")
-			H_C_T(PROPERTY_HL,                I"P")
+			H_C_G(PROPERTY_HL,                I"P")
 		H_END
 	H_END
 
