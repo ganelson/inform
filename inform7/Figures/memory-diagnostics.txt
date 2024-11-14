@@ -271,7 +271,7 @@ Total memory consumption was 153705K = 150 MB
 
 99.9% was used for memory not allocated for objects:
 
-    64.4%  text stream storage                      101454688 bytes in 580184 claims
+    64.4%  text stream storage                      101454480 bytes in 580184 claims
      3.9%  dictionary storage                       6186112 bytes in 8266 claims
      ----  sorting                                  20984 bytes in 2656 claims
      4.5%  source text                              7200000 bytes in 3 claims

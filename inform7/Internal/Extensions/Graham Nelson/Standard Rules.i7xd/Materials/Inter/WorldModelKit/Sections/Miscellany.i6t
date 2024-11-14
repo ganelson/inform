@@ -156,7 +156,7 @@ Global untouchable_silence;
 Global touch_persona;
 
 Global special_word; ! dictionary address of first word in "[text]" token
-Global consult_from; ! word number of start of "[text]" token
+Global consult_from = 1; ! word number of start of "[text]" token
 Global consult_words; ! number of words in "[text]" token
 Global parsed_number; ! value from any token not an object
 Global special_number1; ! first value, if token not an object
