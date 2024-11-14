@@ -36,6 +36,7 @@ typedef struct kind_constructor_compilation_data {
 
 	int declaration_sequence_number;
 	int nonstandard_enumeration;
+	int permissions_emitted;
 } kind_constructor_compilation_data;
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
@@ -70,6 +71,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 
 	kccd.declaration_sequence_number = -1;
 	kccd.nonstandard_enumeration = FALSE;
+	kccd.permissions_emitted = FALSE;
 	return kccd;
 }
 
@@ -1720,16 +1722,29 @@ void RTKindConstructors::apply_multiplication_rule_metadata(void) {
 }
 
 @h Property permissions for kinds.
+Note that these need to be compiled in hierarchical order, or at any rate,
+so that the permissions for a superkind are always compiled before those of
+its subkinds. We need this in order to ensure that any default values set
+for the subkind are not rejected by Inter bytecode verification as being
+unpermitted for the kind in question. See Jira bug I7-2407.
 
 =
 void RTKindConstructors::compile_permissions(void) {
 	kind_constructor *kc;
 	LOOP_OVER(kc, kind_constructor) {
 		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
-		kind *K = Kinds::base_construction(kc);
-		if (RTKindDeclarations::base_represented_in_Inter(K)) {
-			RTPropertyPermissions::emit_kind_permissions(K);
-			RTPropertyValues::compile_values_for_kind(K);
-		}
+		RTKindConstructors::compile_permissions_r(kc);
+	}
+}
+
+void RTKindConstructors::compile_permissions_r(kind_constructor *kc) {
+	if (kc->compilation_data.permissions_emitted) return;
+	kc->compilation_data.permissions_emitted = TRUE;
+	kind *K = Kinds::base_construction(kc);
+	if (RTKindDeclarations::base_represented_in_Inter(K)) {
+		kind *S = Latticework::super(K);
+		if (S) RTKindConstructors::compile_permissions_r(Kinds::get_construct(S));
+		RTPropertyPermissions::emit_kind_permissions(K);
+		RTPropertyValues::compile_values_for_kind(K);
 	}
 }

@@ -58,8 +58,8 @@ Total memory consumption was 153750K = 150 MB
      ----  imperative_defn                          1494 objects, 107568 bytes
      ----  noun_usage                               2621 objects, 104840 bytes
      ----  pathname                                 2487 objects, 99480 bytes
+     ----  kind_constructor                         94 objects, 97008 bytes
      ----  inter_tree                               7 objects, 96656 bytes
-     ----  kind_constructor                         94 objects, 96256 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
      ----  label_namespace                          1470 objects, 94080 bytes
      ----  preposition                              278 objects, 88960 bytes
@@ -289,5 +289,5 @@ Total memory consumption was 153750K = 150 MB
      ----  code generation workspace for objects    3616 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--139.-9% was overhead - -220298280 bytes = -215135K = -210 MB
+-139.-9% was overhead - -220299032 bytes = -215135K = -210 MB
 

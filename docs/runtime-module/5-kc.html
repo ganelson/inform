@@ -95,6 +95,7 @@ function togglePopup(material_id) {
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">declaration_sequence_number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nonstandard_enumeration</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permissions_emitted</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">kind_constructor_compilation_data</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">kind_constructor_compilation_data</span><span class="plain-syntax"> </span><span class="function-syntax">RTKindConstructors::new_compilation_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc</span><span class="plain-syntax">) {</span>
@@ -129,6 +130,7 @@ function togglePopup(material_id) {
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">kccd</span><span class="plain-syntax">.</span><span class="element-syntax">declaration_sequence_number</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kccd</span><span class="plain-syntax">.</span><span class="element-syntax">nonstandard_enumeration</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kccd</span><span class="plain-syntax">.</span><span class="element-syntax">permissions_emitted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kccd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -2087,18 +2089,31 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. Property permissions for kinds. </b></p>
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. Property permissions for kinds. </b>Note that these need to be compiled in hierarchical order, or at any rate,
+so that the permissions for a superkind are always compiled before those of
+its subkinds. We need this in order to ensure that any default values set
+for the subkind are not rejected by Inter bytecode verification as being
+unpermitted for the kind in question. See Jira bug I7-2407.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTKindConstructors::compile_permissions</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">kc</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kc</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CON_KIND_VARIABLE</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">kc</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CON_INTERMEDIATE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Kinds::base_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">kc</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-kd.html#SP1" class="function-link"><span class="function-syntax">RTKindDeclarations::base_represented_in_Inter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><a href="6-pp.html#SP2" class="function-link"><span class="function-syntax">RTPropertyPermissions::emit_kind_permissions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="6-pv.html#SP1" class="function-link"><span class="function-syntax">RTPropertyValues::compile_values_for_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><a href="5-kc.html#SP35" class="function-link"><span class="function-syntax">RTKindConstructors::compile_permissions_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTKindConstructors::compile_permissions_r</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">permissions_emitted</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">permissions_emitted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Kinds::base_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">kc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-kd.html#SP1" class="function-link"><span class="function-syntax">RTKindDeclarations::base_represented_in_Inter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">) </span><a href="5-kc.html#SP35" class="function-link"><span class="function-syntax">RTKindConstructors::compile_permissions_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><a href="6-pp.html#SP2" class="function-link"><span class="function-syntax">RTPropertyPermissions::emit_kind_permissions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-pv.html#SP1" class="function-link"><span class="function-syntax">RTPropertyValues::compile_values_for_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
