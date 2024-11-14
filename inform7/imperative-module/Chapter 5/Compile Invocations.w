@@ -153,9 +153,17 @@ works in all cases, and is what we do.
 
 @<Compile the resolution@> =
 	int N = Invocations::get_no_tokens(first_inv); /* must be > 0, or we would be proven */
-	Frames::need_at_least_this_many_formals(N); /* forces the existence of a shell function */
+	nonlocal_variable *formal_vars[1000];
+	inter_name *formal_var_inames[1000];
+	for (int i=0; i<N; i++) {
+		formal_vars[i] = TemporaryVariables::formal_parameter(i);
+		formal_var_inames[i] = TemporaryVariables::iname_of_formal_parameter(i);
+	}
+	int total = TemporaryVariables::claim_formal_parameters(N);
+	Frames::need_at_least_this_many_formals(total); /* forces the existence of a shell function */
 	if (void_mode) @<Compile the resolution in void mode@>
 	else @<Compile the resolution in value mode@>;
+	TemporaryVariables::release_formal_parameters(N);
 
 @<Compile the resolution in void mode@> =
 	for (int i=0; i<N; i++)
@@ -221,7 +229,7 @@ a list divided by logical-and |&&| operators.
 a specific value, such as "10".
 
 @<Compile a check that this formal variable matches the token@> =
-	nonlocal_variable *nlv = TemporaryVariables::formal_parameter(i);
+	nonlocal_variable *nlv = formal_vars[i];
 	parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	if (Specifications::is_description(check_against)) {
 		CompilePropositions::to_test_if_variable_matches(spec, check_against);
@@ -238,11 +246,9 @@ a specific value, such as "10".
 at runtime; we assign 0 to it for the sake of tidiness.
 
 @<Set the ith formal parameter to the ith token value@> =
-	TemporaryVariables::formal_parameter(i);
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
-		EmitCode::ref_iname(K_value,
-			TemporaryVariables::iname_of_formal_parameter(i));
+		EmitCode::ref_iname(K_value, formal_var_inames[i]);
 		if (idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC) {
 			EmitCode::val_number(0);
 		} else {
@@ -256,7 +262,7 @@ at runtime; we assign 0 to it for the sake of tidiness.
 
 @<Substitute the formal parameters into the tokens packet@> =
 	for (int i=0; i<tokens.tokens_count; i++) {
-		nonlocal_variable *nlv = TemporaryVariables::formal_parameter(i);
+		nonlocal_variable *nlv = formal_vars[i];
 		NonlocalVariables::set_kind(nlv, tokens.token_kinds[i]);
 		tokens.token_vals[i] = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	}

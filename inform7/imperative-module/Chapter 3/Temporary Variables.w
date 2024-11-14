@@ -35,7 +35,18 @@ again for short periods of time:
 =
 int formal_par_vars_made = FALSE;
 nonlocal_variable *formal_par_VAR[8];
+int formal_par_base = 0;
+int TemporaryVariables::claim_formal_parameters(int how_many) {
+	formal_par_base += how_many;
+	if (formal_par_base + how_many > 8) internal_error("overflow on formal parameters");
+	return formal_par_base + how_many;
+}
+void TemporaryVariables::release_formal_parameters(int how_many) {
+	formal_par_base -= how_many;
+	if (formal_par_base < 0) internal_error("underflow on formal parameters");
+}
 nonlocal_variable *TemporaryVariables::formal_parameter(int i) {
+	i += formal_par_base;
 	if (i >= 8) internal_error("too many formal parameter variables");
 	if (formal_par_vars_made == FALSE) {
 		for (int j=0; j<8; j++) {
@@ -50,6 +61,7 @@ nonlocal_variable *TemporaryVariables::formal_parameter(int i) {
 }
 
 inter_name *TemporaryVariables::iname_of_formal_parameter(int n) {
+	n += formal_par_base;
 	return Hierarchy::find(TemporaryVariables::hl_of_formal_parameter(n));
 }
 
