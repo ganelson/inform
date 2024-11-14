@@ -25,6 +25,17 @@ is on the table". For now, though, we treat it as a noun.
 
 @<Compose verb ML@> =
 	verb_form *vf = (verb_form *) (RP[1]);
+	if (RTVerbs::verb_form_is_instance(vf) == FALSE) {
+		Problems::quote_wording(1, W);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonInstanceVerbForm));
+		Problems::issue_problem_segment(
+			"'%1' can't be used as a value of the kind 'verb'. In general, forms "
+			"such as 'to be' plus a preposition, or auxiliary verbs, are not allowed "
+			"in this context, because they aren't really different verbs in the way "
+			"that, say, 'the verb carry' or 'the verb enclose' are.");
+		Problems::issue_problem_end();
+		==> { fail };
+	}		
 	parse_node *spec = Rvalues::from_verb_form(vf);
 	Node::set_text(spec, W);
 	==> { -, spec };

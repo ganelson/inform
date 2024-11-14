@@ -88,6 +88,17 @@ is on the table". For now, though, we treat it as a noun.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">verb_form</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">RP</span><span class="plain-syntax">[1]);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">RTVerbs::verb_form_is_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonInstanceVerbForm</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"'%1' can't be used as a value of the kind 'verb'. In general, forms "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"such as 'to be' plus a preposition, or auxiliary verbs, are not allowed "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"in this context, because they aren't really different verbs in the way "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"that, say, 'the verb carry' or 'the verb enclose' are."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        ==&gt; { </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> };</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><a href="2-rvl.html#SP2" class="function-link"><span class="function-syntax">Rvalues::from_verb_form</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">vf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>

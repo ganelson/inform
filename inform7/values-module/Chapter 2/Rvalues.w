@@ -52,6 +52,8 @@ parse_node *Rvalues::from_table_column(table_column *val) {
 parse_node *Rvalues::from_use_option(use_option *val) { 
 		CONV_FROM(use_option, K_use_option) }
 parse_node *Rvalues::from_verb_form(verb_form *val) { 
+		if (RTVerbs::verb_form_is_instance(val) == FALSE)
+			internal_error("created rvalue for non-instance verb form");
 		CONV_FROM(verb_form, K_verb) }
 
 @ Contrariwise, here's how to get back again:

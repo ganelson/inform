@@ -1,0 +1,12 @@
+Problem: PM_NonInstanceVerbForm
+
+Lab is a room.
+
+Suspicion relates various people to one person.
+The verb to suspect means the suspicion relation.
+The verb to be suspicious of means the suspicion relation.
+
+When play begins:
+	showme the meaning of the verb are;
+	showme the meaning of the verb suspect;
+	showme the meaning of the verb are suspicious of;
