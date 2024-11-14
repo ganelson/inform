@@ -110,6 +110,9 @@ has been renamed:
 - Fix for Jira bug [I7-2353](https://inform7.atlassian.net/browse/I7-2353)
 	"Setting room description heading rule response (A) causes Array index out of bounds"
 	([commit 6778a15](https://github.com/ganelson/inform/commit/6778a15ff6004e4dc8760975851fb478b0eef419))
+- Fix for Jira bug [I7-2351](https://inform7.atlassian.net/browse/I7-2351)
+	"Properties not being set when creating objects by table"
+	([commit e6b21df](https://github.com/ganelson/inform/commit/e6b21df18f4c28e7d71a8526def8c8bddb54fd56))
 - Fix for Jira bug [I7-2349](https://inform7.atlassian.net/browse/I7-2349)
 	"example 399, "Solitude", has a bug"
 	([PR#115](https://github.com/ganelson/inform/pull/115))
