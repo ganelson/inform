@@ -59,6 +59,9 @@ has been renamed:
 - Fix for Jira bug [I7-2532](https://inform7.atlassian.net/browse/I7-2532)
 	"Can't refer to the the text of the announce items from multiple object lists rule response (A) in the normal way"
 	([commit d47d1bb](https://github.com/ganelson/inform/commit/d47d1bb801090ed6d4a60c27b8111e6cdcdabc7e))
+- Fix for Jira bug [I7-2530](https://inform7.atlassian.net/browse/I7-2530)
+	"Runtime error when consulting it about with missing topic (first time only)"
+	([commit d9547d7](https://github.com/ganelson/inform/commit/d9547d71329c4af07de7e000ad1e6a6a825d4ff0))
 - Fix for Jira bug [I7-2518](https://inform7.atlassian.net/browse/I7-2518)
 	"Doesn't correctly autoassign values for kit defined kinds"
 	([commit 5136eaa](https://github.com/ganelson/inform/commit/5136eaad3366efaf99e0f73da0916deee80bb216))
