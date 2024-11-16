@@ -12,8 +12,10 @@ Constant GG_STATUSWIN_ROCK      202;
 Constant GG_QUOTEWIN_ROCK       203;
 Constant GG_SAVESTR_ROCK        301;
 Constant GG_SCRIPTSTR_ROCK      302;
+#Ifdef COMMAND_STREAM;
 Constant GG_COMMANDWSTR_ROCK    303;
 Constant GG_COMMANDRSTR_ROCK    304;
+#Endif;
 Constant GG_SCRIPTFREF_ROCK     401;
 Constant GG_FOREGROUNDCHAN_ROCK 410;
 Constant GG_BACKGROUNDCHAN_ROCK 411;
@@ -137,8 +139,10 @@ Global gg_mainwin = 0;
 Global gg_statuswin = 0;
 Global gg_quotewin = 0;
 Global gg_savestr = 0;
+#Ifdef COMMAND_STREAM;
 Global gg_commandstr = 0;
 Global gg_command_reading = 0;      ! true if gg_commandstr is being replayed
+#Endif;
 Global gg_foregroundchan = 0;
 Global gg_backgroundchan = 0;
 
@@ -180,6 +184,7 @@ to document all of that.
 [ VM_KeyChar win done res ix jx ch;
     jx = ch; ! squash compiler warnings
     if (win == 0) win = gg_mainwin;
+#Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
         done = glk_get_line_stream(gg_commandstr, gg_arguments, 31);
         if (done == 0) {
@@ -210,6 +215,7 @@ to document all of that.
        		jump KCPContinue;
         }
     }
+#Endif;
     done = false;
     glk_request_char_event(win);
     while (~~done) {
@@ -222,6 +228,7 @@ to document all of that.
             }
         }
     }
+#Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         if (res < 32 || res >= 256 || (res == '\' or ' ')) {
             glk_put_char_stream(gg_commandstr, '\');
@@ -244,6 +251,7 @@ to document all of that.
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KCPContinue;
+#Endif;
 	return MapGlkKeyCodeToUnicode(res);
 ];
 
@@ -266,6 +274,7 @@ Array UnicodeWhitespace --> 133 160 5760 8232 8233 8239 8287 12288;
 Constant UnicodeWhitespaceLen = 8;
 
 [ VM_ReadKeyboard  a_buffer a_table done ix chr;
+#Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
         done = glk_get_line_stream_uni(gg_commandstr, a_buffer+WORDSIZE,
         	(INPUT_BUFFER_LEN-1)-1);
@@ -284,6 +293,7 @@ Constant UnicodeWhitespaceLen = 8;
             jump KPContinue;
         }
     }
+#Endif;
     done = false;
     glk_request_line_event_uni(gg_mainwin, a_buffer+WORDSIZE, INPUT_BUFFER_LEN-1, 0);
     while (~~done) {
@@ -303,11 +313,13 @@ Constant UnicodeWhitespaceLen = 8;
 		glk_set_style(style_Normal);
 		glk_put_char(10); ! newline
 	}
+#Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer-->0);
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KPContinue;
+#Endif;
 
     for ( ix = 1 : ix <= (a_buffer-->0) : ix++ ) {
       chr = a_buffer-->ix;

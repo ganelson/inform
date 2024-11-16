@@ -90,8 +90,10 @@ Global current_glk_object_reference = 0;
 	statuswin_cursize = 0;
 	gg_foregroundchan = 0;
 	gg_backgroundchan = 0;
+#Ifdef COMMAND_STREAM;
 	gg_commandstr = 0;
 	gg_command_reading = false;
+#Endif;
 	rfalse;
 ];
 
@@ -134,6 +136,9 @@ Global current_glk_object_reference = 0;
 			gg_savestr = current_glk_object_reference;
 		GG_SCRIPTSTR_ROCK:
 			gg_scriptstr = current_glk_object_reference;
+	}
+#Ifdef COMMAND_STREAM;
+	switch (current_glk_object_rock) {
 		GG_COMMANDWSTR_ROCK:
 			gg_commandstr = current_glk_object_reference;
 			gg_command_reading = false;
@@ -141,6 +146,7 @@ Global current_glk_object_reference = 0;
 			gg_commandstr = current_glk_object_reference;
 			gg_command_reading = true;
 	}
+#Endif;
 	rfalse;
 ];
 
