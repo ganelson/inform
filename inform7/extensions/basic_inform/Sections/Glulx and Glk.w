@@ -156,19 +156,19 @@ To decide what glk window is window of (ev - glk event)
 
 To decide what unicode character is the character value of (ev - glk event)
 	(documented at ph_glkeventcharactervalue):
-	(- GLK_EVENT_TY_Value1({ev}) -).
+	(- GLK_EVENT_TY_Value1({ev}, evtype_CharInput) -).
 
 To decide what number is the x coordinate of (ev - glk event):
-	(- GLK_EVENT_TY_Value1({ev}) -).
+	(- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).
 To decide what number is the y coordinate of (ev - glk event):
 	(- GLK_EVENT_TY_Value2({ev}) -).
 To decide what number is the row of (ev - glk event):
 	(- GLK_EVENT_TY_Value2({ev}) -).
-To decide what number is the column of (ev - glk event):
-	(- GLK_EVENT_TY_Value1({ev}) -).
+To decide what number is the column/col of (ev - glk event):
+	(- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).
 
 To decide what number is the hyperlink value of (ev - glk event):
-	(- GLK_EVENT_TY_Value1({ev}) -).
+	(- GLK_EVENT_TY_Value1({ev}, evtype_Hyperlink) -).
 
 To decide what text is the text of (ev - glk event)
 	(documented at ph_glkeventtextvalue):
@@ -189,7 +189,7 @@ First glk event handling rule for a glk event type
 	(this is the set glk event processing variables rule):
 	now the event is the current glk event initialiser.
 
-To handle (ev - glk event) instead:
+To handle (ev - glk event):
 	(- GLK_EVENT_TY_Handle_Instead({ev}); rtrue; -).
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):

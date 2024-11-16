@@ -373,8 +373,12 @@ event BVs.
 			}
 			! Fix the coordinates of grid window mouse events
 			if (win_obj.glk_window_type == wintype_TextGrid) {
-				val1 = val1--;
-				val2 = val2--;
+				val1--;
+				val2--;
+			}
+			if (val1 < 0 || val2 < 0) {
+				IssueRTP("EventInvalidMouseCoords", "GLK_EVENT_TY_New: Glk mouse event created with invalid coordinates.", Architecture32KitRTPs);
+				return ev;
 			}
 	}
 	ev-->GLK_EVENT_TYPE_SF = evtype;
@@ -400,17 +404,19 @@ event BVs.
 	return nothing;
 ];
 
-[ GLK_EVENT_TY_Value1 ev;
-	switch (ev-->GLK_EVENT_TYPE_SF) {
-		evtype_CharInput:
-			return MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF);
-		evtype_MouseInput:
-			if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
-				return ev-->GLK_EVENT_VALUE1_SF + 1;
-			}
-			return ev-->GLK_EVENT_VALUE1_SF;
-		evtype_Hyperlink:
-			return ev-->GLK_EVENT_VALUE1_SF;
+[ GLK_EVENT_TY_Value1 ev evtype;
+	if (evtype == ev-->GLK_EVENT_TYPE_SF) {
+		switch (evtype) {
+			evtype_CharInput:
+				return MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF);
+			evtype_MouseInput:
+				if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
+					return ev-->GLK_EVENT_VALUE1_SF + 1;
+				}
+				return ev-->GLK_EVENT_VALUE1_SF;
+			evtype_Hyperlink:
+				return ev-->GLK_EVENT_VALUE1_SF;
+		}
 	}
 	IssueRTP("EventWrongType", "GLK_EVENT_TY_Value1: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
 	return 0;
