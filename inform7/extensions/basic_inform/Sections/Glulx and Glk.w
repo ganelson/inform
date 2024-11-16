@@ -189,8 +189,8 @@ First glk event handling rule for a glk event type
 	(this is the set glk event processing variables rule):
 	now the event is the current glk event initialiser.
 
-To process (ev - glk event):
-	(- GLK_EVENT_TY_Process({ev}); rtrue; -).
+To handle (ev - glk event) instead:
+	(- GLK_EVENT_TY_Handle_Instead({ev}); rtrue; -).
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;

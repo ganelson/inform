@@ -494,16 +494,26 @@ the event struct.
 	event_struct-->3 = ev-->GLK_EVENT_VALUE2_SF;
 ];
 
-@ |GLK_EVENT_TY_Process| applies a glk event onto the current glk event, and
+@ |GLK_EVENT_TY_Handle_Instead| applies a glk event onto the current glk event, and
 tells glk_select to re-run the glk event handling rules. It also ensures that
 if there are any pending keyboard input requests they will be cancelled if the
 new event is a keyboard event.
 
 =
 Array current_glk_event --> [ BLK_BVBITMAP_SBONLY; GLK_EVENT_TY; 0; 0; 0; 0; 0; 0; 0; ];
-Global glk_event_replaced;
 
-[ GLK_EVENT_TY_Process ev evtype win_obj;
+Constant GLK_EVENT_HANDLING_INACTIVE   0;
+Constant GLK_EVENT_HANDLING_ACTIVE     1;
+Constant GLK_EVENT_HANDLING_REHANDLING 2;
+Global glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
+
+[ GLK_EVENT_TY_Handle_Instead ev evtype win_obj;
+	if (glk_event_handling_status == GLK_EVENT_HANDLING_INACTIVE) {
+		IssueRTP("EventHandledWhileInactive", "Cannot handle new event while not handling events.", Architecture32KitRTPs);
+		RulebookSucceeds();
+		rtrue;
+	}
+
 	evtype = ev-->GLK_EVENT_TYPE_SF;
 	win_obj = ev-->GLK_EVENT_WINDOW_SF;
 
@@ -534,7 +544,7 @@ Global glk_event_replaced;
 	current_glk_event-->GLK_EVENT_VALUE2_SF = ev-->GLK_EVENT_VALUE2_SF;
 
 	RulebookSucceeds();
-	glk_event_replaced = 1;
+	glk_event_handling_status = GLK_EVENT_HANDLING_REHANDLING;
 ];
 
 @ To handle events we intercept the |glk_select| function. This allows us to handle
@@ -552,9 +562,10 @@ events early and consistently.
 	@push debug_rules; @push say__p; @push say__pc;
 	debug_rules = false; ClearParagraphing(1);
 	do {
-		glk_event_replaced = 0;
+		glk_event_handling_status = GLK_EVENT_HANDLING_ACTIVE;
 		FollowRulebook(GLK_EVENT_HANDLING_RB, current_glk_event-->GLK_EVENT_TYPE_SF, true);
-	} until (glk_event_replaced == 0);
+	} until (glk_event_handling_status == GLK_EVENT_HANDLING_ACTIVE);
+	glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
 	GLK_EVENT_TY_To_Struct(current_glk_event, event_struct);
