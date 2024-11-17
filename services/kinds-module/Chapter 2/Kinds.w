@@ -380,6 +380,10 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 This operation corresponds to rounding kinds up to |W|: that is, any
 subkind of |W| is replaced by |W|.
 
+We do need to be careful over contravariance: the kind "object based rulebook
+producing a number" is stronger than "thing based rulebook producing a number",
+not weaker, because the K term for "K based rulebook producing L" is contravariant.
+
 =
 kind *Kinds::weaken(kind *K, kind *W) {
 	if (Kinds::is_proper_constructor(K)) {
@@ -387,13 +391,19 @@ kind *Kinds::weaken(kind *K, kind *W) {
 		int a = Kinds::arity_of_constructor(K);
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
-			return Kinds::unary_con(K->construct, Kinds::weaken(X, W));
+			kind *WX = X;
+			if (KindConstructors::variance(K->construct, 0) == COVARIANT) WX = Kinds::weaken(X, W);
+			return Kinds::unary_con(K->construct, WX);
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			return Kinds::binary_con(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
+			kind *WX = X, *WY = Y;
+			if (KindConstructors::variance(K->construct, 0) == COVARIANT) WX = Kinds::weaken(X, W);
+			if (KindConstructors::variance(K->construct, 1) == COVARIANT) WY = Kinds::weaken(Y, W);
+			return Kinds::binary_con(K->construct, WX, WY);
 		}
 	} else {
-		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE)) return W;
+		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE) &&
+			(Kinds::eq(K, K_void) == FALSE)) return W;
 	}
 	return K;
 }
