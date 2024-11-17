@@ -1,0 +1,16 @@
+   Stage
+  foo: xyzzy.
+  "whether or not the player fubars "xyzzy"" = truth state: true
+  list of xyzzy-fubarers: yourself
+  yourself fubars xyzzy.
+  Bob foo: plugh.
+  "whether or not bob fubars "plugh"" = truth state: true
+  Bob foo: rezrov.
+  "whether or not bob fubars "rezrov"" = truth state: true
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+> >   Stage
+> Are you sure you want to quit? 

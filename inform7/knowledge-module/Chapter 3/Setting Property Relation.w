@@ -159,10 +159,18 @@ and simplicity.
 =
 void SettingPropertyRelations::set_property_BP_schemas(binary_predicate *bp,
 	property *prn) {
-	bp->task_functions[TEST_ATOM_TASK] =
-		Calculus::Schemas::new("*1.%n == *2", RTProperties::iname(prn));
-	bp->task_functions[NOW_ATOM_TRUE_TASK] =
-		Calculus::Schemas::new("*1.%n = *2", RTProperties::iname(prn));
+	LOG("set_property_BP_schemas sees property %n of kind %u\n", RTProperties::iname(prn), ValueProperties::kind(prn));
+	if (Kinds::Behaviour::uses_block_values(ValueProperties::kind(prn))) {
+		bp->task_functions[TEST_ATOM_TASK] =
+			Calculus::Schemas::new("ComparePV(*1.%n, *2) == 0", RTProperties::iname(prn));
+		bp->task_functions[NOW_ATOM_TRUE_TASK] =
+			Calculus::Schemas::new("CopyPV(*1.%n, *2)", RTProperties::iname(prn));
+	} else {
+		bp->task_functions[TEST_ATOM_TASK] =
+			Calculus::Schemas::new("*1.%n == *2", RTProperties::iname(prn));
+		bp->task_functions[NOW_ATOM_TRUE_TASK] =
+			Calculus::Schemas::new("*1.%n = *2", RTProperties::iname(prn));
+	}
 	BPTerms::set_domain(&(bp->term_details[1]),
 		ValueProperties::kind(prn));
 }

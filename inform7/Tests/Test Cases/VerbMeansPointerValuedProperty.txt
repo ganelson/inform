@@ -1,0 +1,24 @@
+Test: VerbMeansPointerValuedProperty
+For: Z-Machine
+
+Bob is a person.
+
+A person has a text called the foo.
+The verb to fubar means the foo property.
+
+The player fubars "xyzzy".
+Bob fubars "plugh".
+
+when play begins:
+	say "foo: [the foo of the player].";
+	showme whether or not the player fubars "xyzzy";
+	say "list of xyzzy-fubarers: ";
+	say the list of people who fubar "xyzzy";
+	say line break;
+	repeat with p running through people:
+		if p fubars "xyzzy", say "[p] fubars xyzzy.";
+	say "Bob foo: [the foo of Bob].";
+	showme whether or not bob fubars "plugh";
+	now bob fubars "rezrov";
+	say "Bob foo: [the foo of Bob].";
+	showme whether or not bob fubars "rezrov";
