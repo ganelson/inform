@@ -104,6 +104,9 @@ has been renamed:
 - Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
 	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
 	([PR#116](https://github.com/ganelson/inform/pull/116))
+- Fix for Jira bug [I7-2376](https://inform7.atlassian.net/browse/I7-2376)
+	"Incorrect behavior for 'empty' adjective applied to 1-to-1 relations"
+	(see [commit 918f9c3](https://github.com/ganelson/inform/commit/918f9c37193ea4aa09a21e34c622233fe4cc69db))
 - Fix for Jira bug [I7-2370](https://inform7.atlassian.net/browse/I7-2370)
 	"A template file ending with a comment and no line break breaks the next file"
 	(see [Inweb commit 901d125](https://github.com/ganelson/inform/commit/901d12582f1d7746046f11ecac6c2f357ddfac81))
