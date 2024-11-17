@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 66 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35526 words long.
+Problem__ PM_RelationDomainWrongKind
+  >--> You wrote 'showme the vehicle that relates to s1 by the regard relation'
+    (source text, line 10), but the kinds here do not quite match: what we have
+    is a relation of containers to supporters, and a container is not
+    necessarily a vehicle.
+Inform 7 has finished.

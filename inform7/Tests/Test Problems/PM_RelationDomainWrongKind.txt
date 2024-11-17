@@ -1,0 +1,14 @@
+Problem: PM_RelationDomainWrongKind
+
+Regard relates one container to one supporter.
+The verb to respect means the regard relation.
+
+s1 is a supporter.
+c1 is a container.
+x1 is a vehicle.
+c1 respects s1.
+
+when play begins:
+	showme the vehicle that relates to s1 by the regard relation;
+	showme the thing that relates to s1 by the regard relation;
+	showme the container that relates to s1 by the regard relation;

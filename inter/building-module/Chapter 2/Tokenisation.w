@@ -257,6 +257,8 @@ a bracing.
 			c = strong_kind_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"weak-kind")) {
 			c = weak_kind_ISINC;
+		} else if (Str::eq_wide_string(t->command, U"object-kind")) {
+			c = object_kind_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"backspace")) {
 			c = backspace_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"erase")) {
@@ -315,6 +317,10 @@ a bracing.
 			c = initialise_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"matches-description")) {
 			c = matches_description_ISINC;
+		} else if (Str::eq_wide_string(t->command, U"match-right-relation-domain")) {
+			c = match_right_relation_domain_ISINC;
+		} else if (Str::eq_wide_string(t->command, U"match-left-relation-domain")) {
+			c = match_left_relation_domain_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"now-matches-description")) {
 			c = now_matches_description_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"arithmetic-operation")) {

@@ -771,6 +771,7 @@ We'll start with a suite of details about kinds:
 	if (C == previous_routine_ISINC) @<Inline command "previous-routine"@>;
 	if (C == strong_kind_ISINC)      @<Inline command "strong-kind"@>;
 	if (C == weak_kind_ISINC)        @<Inline command "weak-kind"@>;
+	if (C == object_kind_ISINC)      @<Inline command "object-kind"@>;
 
 @ The following produces a new value of the given kind. If it's stored as a
 word value, this will just be the default value, so |{-new:time}| will output
@@ -861,6 +862,17 @@ proposition.
 		Node::get_kind_variable_declarations(inv));
 	if (K) RTKindIDs::emit_weak_ID_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "object-kind"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) {
+		if (Kinds::Behaviour::is_object(K))
+			EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
+		else
+			EmitCode::val_number(0);
+	} else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Issue an inline no-such-kind problem@> =
@@ -1014,6 +1026,8 @@ a command, which is why it isn't here.)
 	if (C == unprotect_ISINC)               @<Inline command "unprotect"@>;
 	if (C == copy_ISINC)                    @<Inline command "copy"@>;
 	if (C == initialise_ISINC)              @<Inline command "initialise"@>;
+	if (C == match_right_relation_domain_ISINC) @<Inline command "match-right-relation-domain"@>;
+	if (C == match_left_relation_domain_ISINC)  @<Inline command "match-left-relation-domain"@>;
 	if (C == matches_description_ISINC)     @<Inline command "matches-description"@>;
 	if (C == now_matches_description_ISINC) @<Inline command "now-matches-description"@>;
 	if (C == arithmetic_operation_ISINC)    @<Inline command "arithmetic-operation"@>;
@@ -1291,6 +1305,48 @@ story title).
 			"the kind '%2', but there's no good way to do this.");
 		Problems::issue_problem_end();
 		return;
+	}
+
+@ These are needed to apply stricter kind-checking to phrases like "the X
+which relates to Y by R". For example, if R relates containers to doors then
+"the vehicle which relates to the oak door by R" is unsafe because what relates
+to the oak door may be a container which is not a vehicle.
+
+There are two forms according to which domain is implied.
+
+@<Inline command "match-left-relation-domain"@> =
+	kind *X = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
+	parse_node *R = CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
+	kind *KR = Specifications::to_kind(R);
+	if (Kinds::get_construct(KR) == CON_relation) {
+		kind *K = NULL; kind *unwanted = NULL;
+		Kinds::binary_construction_material(KR, &K, &unwanted);
+		@<Check there is strict conformance on this domain@>;
+	}
+	return;
+
+@<Inline command "match-right-relation-domain"@> =
+	kind *X = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
+	parse_node *R = CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
+	kind *KR = Specifications::to_kind(R);
+	if (Kinds::get_construct(KR) == CON_relation) {
+		kind *unwanted = NULL; kind *K = NULL; 
+		Kinds::binary_construction_material(KR, &unwanted, &K);
+		@<Check there is strict conformance on this domain@>;
+	}
+	return;
+
+@<Check there is strict conformance on this domain@> =
+	if (Kinds::conforms_to(K, X) == FALSE) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_kind(2, X);
+		Problems::quote_kind(3, KR);
+		Problems::quote_kind(4, K);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelationDomainWrongKind));
+		Problems::issue_problem_segment(
+			"You wrote %1, but the kinds here do not quite match: what we "
+			"have is %3, and %4 is not necessarily %2.");
+		Problems::issue_problem_end();
 	}
 
 @ The next command generates code able to test if a token in the invocation,

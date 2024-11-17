@@ -1507,57 +1507,57 @@ To decide which number is number of steps via (R - relation of objects)
 To decide which list of Ks is list of (name of kind of value K)
 	that/which/whom (R - relation of Ks to values of kind L) relates
 	(documented at ph_leftdomain):
-	(- RelationTest({-by-reference:R}, RELS_LIST, {-new:list of K}, RLIST_ALL_X) -).
+	(- {-match-left-relation-domain:K:R}RelationTest({-by-reference:R}, RELS_LIST, {-new:list of K}, RLIST_ALL_X) -).
 
 To decide which list of Ls is list of (name of kind of value L)
 	to which/whom (R - relation of values of kind K to Ls) relates
 	(documented at ph_rightdomain):
-	(- RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) -). [1]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) -). [1]
 
 To decide which list of Ls is list of (name of kind of value L)
 	that/which/whom (R - relation of values of kind K to Ls) relates to
 	(documented at ph_rightdomain):
-	(- RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) -). [2]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) -). [2]
 
 To decide which list of Ks is list of (name of kind of value K) that/which/who
 	relate to (Y - L) by (R - relation of Ks to values of kind L)
 	(documented at ph_leftlookuplist):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_X, {Y}, {-new:list of K}) -).
+	(- {-match-left-relation-domain:K:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_X, {Y}, {-new:list of K}) -).
 
 To decide which list of Ls is list of (name of kind of value L) to which/whom (X - K)
 	relates by (R - relation of values of kind K to Ls)
 	(documented at ph_rightlookuplist):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) -). [1]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) -). [1]
 
 To decide which list of Ls is list of (name of kind of value L)
 	that/which/whom (X - K) relates to by (R - relation of values of kind K to Ls)
 	(documented at ph_rightlookuplist):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) -). [2]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) -). [2]
 
 To decide whether (name of kind of value K) relates to (Y - L) by
 	(R - relation of Ks to values of kind L)
 	(documented at ph_ifright):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_CAN_GET_X) -).
+	(- {-match-left-relation-domain:K:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_CAN_GET_X) -).
 
 To decide whether (X - K) relates to (name of kind of value L) by
 	(R - relation of values of kind K to Ls)
 	(documented at ph_ifleft):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_CAN_GET_Y) -).
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_CAN_GET_Y) -).
 
 To decide which K is (name of kind of value K) that/which/who relates to
 	(Y - L) by (R - relation of Ks to values of kind L)
 	(documented at ph_leftlookup):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_GET_X) -).
+	(- {-match-left-relation-domain:K:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_GET_X) -).
 
 To decide which L is (name of kind of value L) to which/whom (X - K)
 	relates by (R - relation of values of kind K to Ls)
 	(documented at ph_rightlookup):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [1]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [1]
 
 To decide which L is (name of kind of value L) that/which/whom (X - K)
 	relates to by (R - relation of values of kind K to Ls)
 	(documented at ph_rightlookup):
-	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]
+	(- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]
 
 @h Functional Programming.
 Here we have the ability to use the name of a function as a value, and to

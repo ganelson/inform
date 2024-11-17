@@ -12,9 +12,9 @@ To say relations for (item - a thing):
 	showme the containment relation;
 
 To describe (R - a relation of objects) for (item - a thing):
-	say "[item]: [the list of things to which item relates by R with indefinite articles].";
-	if a thing to which item relates by R is a thing: 
-		say "[The item] [verb rendering applied to a random verb that means R] [the list of things to which item relates by R with indefinite articles]. [run paragraph on]"
+	say "[item]: [the list of objects to which item relates by R with indefinite articles].";
+	if an object to which item relates by R is a thing: 
+		say "[The item] [verb rendering applied to a random verb that means R] [the list of objects to which item relates by R with indefinite articles]. [run paragraph on]"
 
 To decide which text is the rendering of (V - verb) (this is verb rendering):
 	decide on "[adapt V]".  

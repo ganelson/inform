@@ -63,9 +63,9 @@ The following uses what is, strictly speaking, a piece of internal machinery not
 	Before printing the name of something (called mentioned target) while writing a paragraph about something:
 		add the mentioned target to the current paragraph, if absent.
 	
-	To describe (R - a relation of objects) for (item - a thing):
-		if a thing to which item relates by R is a thing:
-			say "[The item with pronoun] [verb rendering applied to a random verb that means R] [the list of things to which item relates by R with indefinite articles]. [run paragraph on]"
+	To describe (R - a relation of objects) for (item - an object):
+		if an object to which item relates by R is a thing:
+			say "[The item with pronoun] [verb rendering applied to a random verb that means R] [the list of objects to which item relates by R with indefinite articles]. [run paragraph on]"
 	
 	To decide which text is the rendering of (V - verb) (this is verb rendering):
 		decide on "[adapt V]".

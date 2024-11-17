@@ -329,6 +329,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e indexing_routine_ISINC
 @e strong_kind_ISINC
 @e weak_kind_ISINC
+@e object_kind_ISINC
 @e backspace_ISINC
 @e erase_ISINC
 @e open_brace_ISINC
@@ -357,6 +358,8 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e unprotect_ISINC
 @e copy_ISINC
 @e initialise_ISINC
+@e match_right_relation_domain_ISINC
+@e match_left_relation_domain_ISINC
 @e matches_description_ISINC
 @e now_matches_description_ISINC
 @e arithmetic_operation_ISINC
