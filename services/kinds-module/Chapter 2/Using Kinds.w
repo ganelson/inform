@@ -89,7 +89,8 @@ int Kinds::Behaviour::semidefinite(kind *K) {
 	if (KindConstructors::is_definite(K->construct) == FALSE) return FALSE;
 	int arity = KindConstructors::arity(K->construct);
 	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_void))) arity = 1;
-	if ((K->construct == CON_phrase) || (K->construct == CON_activity)) {
+	if ((K->construct == CON_phrase) || (K->construct == CON_activity) ||
+		(K->construct == CON_rulebook) || (K->construct == CON_rule)) {
 		for (int i=0; i<arity; i++)
 			if ((Kinds::eq(K->kc_args[i], K_nil) == FALSE) &&
 				(Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE))

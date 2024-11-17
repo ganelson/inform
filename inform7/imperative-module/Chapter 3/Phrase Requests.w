@@ -111,6 +111,7 @@ list is a list of. The result would be:
 @<Issue a problem if K is still too vague@> =
 	if ((idb == NULL) || (K == NULL)) internal_error("bad request");
 	if (Kinds::Behaviour::semidefinite(K) == FALSE) {
+		LOG("Kind K = %u\n", K);
 		Problems::quote_source(1, ImperativeDefinitions::body_at(idb));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UndeterminedKind));
 		if (Wordings::empty(W)) {
