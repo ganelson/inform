@@ -151,6 +151,9 @@ has been renamed:
 	[I7-2333](https://inform7.atlassian.net/browse/I7-2333),
 	[I7-2364](https://inform7.atlassian.net/browse/I7-2364), all duplicates
 	to do with actions defined with "it" in the name
+- Fix for Jira bug [I7-2308](https://inform7.atlassian.net/browse/I7-2308)
+	"If you define a verb to mean a block-valued property, setting via verb works, but testing via verb is always false"
+	([commit d911182](https://github.com/ganelson/inform/commit/d911182b36e308dde5b7827ac3cac367c178831e))
 - Fix for Jira bug [I7-2306](https://inform7.atlassian.net/browse/I7-2306)
 	"remaining arbitary ifdefs in kit code": also fixes an unreported bug in
 	which the use options "Use numbered rules", "Use manual pronouns",
