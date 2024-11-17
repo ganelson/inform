@@ -918,7 +918,7 @@ are as specified in the ZSCII and Unicode standards.
 						or '(' or ')' or '[' or ']' or '{' or '}') bnd = 1;
 				}
 				if (case == 3) {
-					if (ch ~= 0 or 10 or 13 or 32 or 9) {
+					if (ch ~= 0 or 10 or 13 or 32 or 9 or 34 or 39) {
 						if (bnd == 1) bnd = 0;
 						else {
 							if (ch == '.' or '!' or '?') bnd = 1;
