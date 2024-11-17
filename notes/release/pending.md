@@ -210,6 +210,9 @@ has been renamed:
 - Fix for Jira bug [I7-2241](https://inform7.atlassian.net/browse/I7-2241)
 	"Error using a rulebook as one of the kinds of value in a relation"
 	([commit bb3fe3a](https://github.com/ganelson/inform/commit/bb3fe3aae2a3a8fb53b4deecd102f4766289ae50))
+- Fix for Jira bug [I7-2239](https://inform7.atlassian.net/browse/I7-2239)
+	"Can't use a nothing-based rulebook as a parameter"
+	([commit b525fba](https://github.com/ganelson/inform/commit/b525fbaf50f866312de34103c6cda16a4f2bd8c9))
 - Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
 	"Inform hangs when reading a Neptune file in a kit with no final newline"
 	([commit 1cd75d8](https://github.com/ganelson/inform/commit/1cd75d8a4946ba10636a8ec474aded9716fffe9b))
