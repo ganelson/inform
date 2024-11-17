@@ -176,6 +176,9 @@ has been renamed:
 	"segfaults in linux with latest inform, ..., built with gcc": see
 	also [I7-2108](https://inform7.atlassian.net/browse/I7-2108)
 	(hat-tip to Adrian Welcker: [PR#111](https://github.com/ganelson/inform/pull/111))
+- Fix for Jira bug [I7-2278](https://inform7.atlassian.net/browse/I7-2278)
+	"Object or subkind of object with anonymous properties causing compilation failure"
+	([commit aaf0aa9](https://github.com/ganelson/inform/commit/aaf0aa9ca0f0b589d63f0d07b123ccecb35049de))	
 - Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
 	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"
 	([commit 46349cb](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))
