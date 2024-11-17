@@ -207,6 +207,18 @@ do this is to write a rule about taking, which covers all possibilities."
 @ Check.
 
 =
+Check an actor removing something from something (this is the can't remove something from itself rule):
+	if the noun is the second noun:
+		if the actor is the player:
+			say "[We] [can't] remove something from itself." (A);
+		stop the action.
+
+Check an actor removing something from something (this is the can't remove something from non-containers rule):
+	if the second noun is not a container:
+		if the actor is the player:
+			say "[regarding the second noun][Those] [can't] contain anything." (A);
+		stop the action.
+
 Check an actor removing something from (this is the can't remove what's not inside rule):
 	if the holder of the noun is not the second noun:
 		if the actor is the player:
