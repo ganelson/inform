@@ -76,8 +76,10 @@ cookies.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_QUOTEWIN_ROCK</span><span class="plain-syntax">       </span><span class="constant-syntax">203</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_SAVESTR_ROCK</span><span class="plain-syntax">        </span><span class="constant-syntax">301</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_SCRIPTSTR_ROCK</span><span class="plain-syntax">      </span><span class="constant-syntax">302</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_COMMANDWSTR_ROCK</span><span class="plain-syntax">    </span><span class="constant-syntax">303</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_COMMANDRSTR_ROCK</span><span class="plain-syntax">    </span><span class="constant-syntax">304</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_SCRIPTFREF_ROCK</span><span class="plain-syntax">     </span><span class="constant-syntax">401</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_FOREGROUNDCHAN_ROCK</span><span class="plain-syntax"> </span><span class="constant-syntax">410</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_BACKGROUNDCHAN_ROCK</span><span class="plain-syntax"> </span><span class="constant-syntax">411</span><span class="plain-syntax">;</span>
@@ -204,8 +206,10 @@ routine was added to concentrate lookups of this field in one place.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_statuswin</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_quotewin</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_savestr</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;      </span><span class="comment-syntax">true if gg_commandstr is being replayed</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_foregroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_backgroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
@@ -248,6 +252,7 @@ to document all of that.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyChar</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">done</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> </span><span class="identifier-syntax">jx</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">jx</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ch</span><span class="plain-syntax">; </span><span class="comment-syntax">squash compiler warnings</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gg_mainwin</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> ~= </span><span class="reserved-syntax">false</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">done</span><span class="plain-syntax"> = </span><span class="identifier-syntax">glk_get_line_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">, </span><span class="constant-syntax">31</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">done</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -278,6 +283,7 @@ to document all of that.
 <span class="character-syntax">            jump KCPContinue;</span>
 <span class="character-syntax">        }</span>
 <span class="character-syntax">    }</span>
+<span class="character-syntax">#Endif;</span>
 <span class="character-syntax">    done = false;</span>
 <span class="character-syntax">    glk_request_char_event(win);</span>
 <span class="character-syntax">    while (~~done) {</span>
@@ -290,6 +296,7 @@ to document all of that.
 <span class="character-syntax">            }</span>
 <span class="character-syntax">        }</span>
 <span class="character-syntax">    }</span>
+<span class="character-syntax">#Ifdef COMMAND_STREAM;</span>
 <span class="character-syntax">    if (gg_commandstr ~= 0 &amp;&amp; gg_command_reading == false) {</span>
 <span class="character-syntax">        if (res &lt; 32 || res &gt;= 256 || (res == '</span><span class="plain-syntax">\</span><span class="character-syntax">' or '</span><span class="plain-syntax"> </span><span class="character-syntax">')) {</span>
 <span class="character-syntax">            glk_put_char_stream(gg_commandstr, '</span><span class="plain-syntax">\</span><span class="character-syntax">');</span>
@@ -312,6 +319,7 @@ to document all of that.
 <span class="character-syntax">        glk_put_char_stream(gg_commandstr, 10); </span><span class="comment-syntax">newline</span>
 <span class="character-syntax">    }</span>
 <span class="character-syntax">  .KCPContinue;</span>
+<span class="character-syntax">#Endif;</span>
 <span class="character-syntax">    return MapGlkKeyCodeToUnicode(res);</span>
 <span class="character-syntax">];</span>
 
@@ -334,6 +342,7 @@ to document all of that.
 <span class="character-syntax">Constant UnicodeWhitespaceLen = 8;</span>
 
 <span class="character-syntax">[ VM_ReadKeyboard  a_buffer a_table done ix chr;</span>
+<span class="character-syntax">#Ifdef COMMAND_STREAM;</span>
 <span class="character-syntax">    if (gg_commandstr ~= 0 &amp;&amp; gg_command_reading ~= false) {</span>
 <span class="character-syntax">        done = glk_get_line_stream_uni(gg_commandstr, a_buffer+WORDSIZE,</span>
 <span class="character-syntax">            (INPUT_BUFFER_LEN-1)-1);</span>
@@ -352,6 +361,7 @@ to document all of that.
 <span class="character-syntax">            jump KPContinue;</span>
 <span class="character-syntax">        }</span>
 <span class="character-syntax">    }</span>
+<span class="character-syntax">#Endif;</span>
 <span class="character-syntax">    done = false;</span>
 <span class="character-syntax">    glk_request_line_event_uni(gg_mainwin, a_buffer+WORDSIZE, INPUT_BUFFER_LEN-1, 0);</span>
 <span class="character-syntax">    while (~~done) {</span>
@@ -371,11 +381,13 @@ to document all of that.
 <span class="character-syntax">        glk_set_style(style_Normal);</span>
 <span class="character-syntax">        glk_put_char(10); </span><span class="comment-syntax">newline</span>
 <span class="character-syntax">    }</span>
+<span class="character-syntax">#Ifdef COMMAND_STREAM;</span>
 <span class="character-syntax">    if (gg_commandstr ~= 0 &amp;&amp; gg_command_reading == false) {</span>
 <span class="character-syntax">        glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer--&gt;0);</span>
 <span class="character-syntax">        glk_put_char_stream(gg_commandstr, 10); </span><span class="comment-syntax">newline</span>
 <span class="character-syntax">    }</span>
 <span class="character-syntax">  .KPContinue;</span>
+<span class="character-syntax">#Endif;</span>
 
 <span class="character-syntax">    for ( ix = 1 : ix &lt;= (a_buffer--&gt;0) : ix++ ) {</span>
 <span class="character-syntax">      chr = a_buffer--&gt;ix;</span>

@@ -7371,11 +7371,11 @@
         very first rule <rulebook-stem-name> 
           (hits 0/311) constraint DS = {19} extremes [4, infinity)
         very first <rulebook-stem-name> 
-          (hits 0/329) constraint DS = {19} extremes [3, infinity)
+          (hits 1/329) (matched long text) constraint DS = {19} extremes [3, infinity)
         first rule <rulebook-stem-name> 
-          (hits 0/329) constraint DS = {19} extremes [3, infinity)
+          (hits 0/328) constraint DS = {19} extremes [3, infinity)
         first <rulebook-stem-name> 
-          (hits 9/338) (matched long text) constraint DS = {19} extremes [2, infinity)
+          (hits 8/337) (matched: 'first check an actor locking something with') constraint DS = {19} extremes [2, infinity)
         last rule <rulebook-stem-name> 
           (hits 0/320) constraint DS = {19} extremes [3, infinity)
         last <rulebook-stem-name> 

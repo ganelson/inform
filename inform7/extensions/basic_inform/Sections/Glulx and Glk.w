@@ -185,7 +185,7 @@ The glk event handling rulebook has a glk event called the event.
 The current glk event initialiser is a glk event variable.
 The current glk event initialiser variable is defined by Inter as "current_glk_event".
 
-First glk event handling rule for a glk event type
+Very first glk event handling rule for a glk event type
 	(this is the set glk event processing variables rule):
 	now the event is the current glk event initialiser.
 

@@ -267,12 +267,14 @@ last rule, if there is one.
 
 	/* move forward to final valid first rule (if any exist) */
 	while ((insert_after->next_booking != end_rule)
-		&& (insert_after->next_booking->placement == FIRST_PLACEMENT))
+		&& ((insert_after->next_booking->placement == VERY_FIRST_PLACEMENT) ||
+			(insert_after->next_booking->placement == FIRST_PLACEMENT)))
 		insert_after = insert_after->next_booking;
 
 	/* move forward past other middle rules if they are not less specific */
 	while ((insert_after->next_booking != end_rule) /* stop before $p$ leaves valid range */
 		&& (insert_after->next_booking->placement != LAST_PLACEMENT) /* or reaches a last rule */
+		&& (insert_after->next_booking->placement != VERY_LAST_PLACEMENT) /* or a very last rule */
 		&& (RuleBookings::cmp(insert_after->next_booking, new_br,
 			log) >= 0)) /* or a rule less specific than the new one */
 		insert_after = insert_after->next_booking;

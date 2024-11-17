@@ -295,11 +295,15 @@ forceextensions:
 
 .PHONY: kits
 kits:
-	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Inter
+	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Materials/Inter
+	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Materials/Inter
+	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Inter
 
 .PHONY: forcekits
 forcekits:
-	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Inter
+	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Materials/Inter
+	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Materials/Inter
+	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Inter
 
 # -----------------------------------------------------------------------------
 # Target "tools"

@@ -139,8 +139,10 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_foregroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_backgroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -183,6 +185,9 @@
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_savestr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_object_reference</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">GG_SCRIPTSTR_ROCK</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_scriptstr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_object_reference</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_glk_object_rock</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">GG_COMMANDWSTR_ROCK</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_object_reference</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
@@ -190,6 +195,7 @@
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_commandstr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_object_reference</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">gg_command_reading</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -417,8 +423,12 @@ event BVs.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">Fix the coordinates of grid window mouse events</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_window_type</span><span class="plain-syntax"> == </span><span class="identifier-syntax">wintype_TextGrid</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val1</span><span class="plain-syntax">--;</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val2</span><span class="plain-syntax">--;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">val1</span><span class="plain-syntax">--;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">val2</span><span class="plain-syntax">--;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val1</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"EventInvalidMouseCoords"</span><span class="plain-syntax">, </span><span class="string-syntax">"GLK_EVENT_TY_New: Glk mouse event created with invalid coordinates."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax"> = </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">;</span>
@@ -444,17 +454,19 @@ event BVs.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Value1</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">MapGlkKeyCodeToUnicode</span><span class="plain-syntax">(</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">evtype_MouseInput</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">).</span><span class="identifier-syntax">glk_window_type</span><span class="plain-syntax"> == </span><span class="identifier-syntax">wintype_TextGrid</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Value1</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">evtype</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">MapGlkKeyCodeToUnicode</span><span class="plain-syntax">(</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">evtype_MouseInput</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">).</span><span class="identifier-syntax">glk_window_type</span><span class="plain-syntax"> == </span><span class="identifier-syntax">wintype_TextGrid</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"EventWrongType"</span><span class="plain-syntax">, </span><span class="string-syntax">"GLK_EVENT_TY_Value1: Glk event phrase called for wrong event type."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -540,7 +552,7 @@ the event struct.
 <span class="plain-syntax">    </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">--&gt;3 = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">GLK_EVENT_TY_Process</span></span> applies a glk event onto the current glk event, and
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">GLK_EVENT_TY_Handle_Instead</span></span> applies a glk event onto the current glk event, and
 tells glk_select to re-run the glk event handling rules. It also ensures that
 if there are any pending keyboard input requests they will be cancelled if the
 new event is a keyboard event.
@@ -548,9 +560,19 @@ new event is a keyboard event.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax"> --&gt; [ </span><span class="identifier-syntax">BLK_BVBITMAP_SBONLY</span><span class="plain-syntax">; </span><span class="identifier-syntax">GLK_EVENT_TY</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_event_replaced</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Process</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GLK_EVENT_HANDLING_INACTIVE</span><span class="plain-syntax">   </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GLK_EVENT_HANDLING_ACTIVE</span><span class="plain-syntax">     </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GLK_EVENT_HANDLING_REHANDLING</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_INACTIVE</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Handle_Instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> == </span><span class="identifier-syntax">GLK_EVENT_HANDLING_INACTIVE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"EventHandledWhileInactive"</span><span class="plain-syntax">, </span><span class="string-syntax">"Cannot handle new event while not handling events."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RulebookSucceeds</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+
 <span class="plain-syntax">    </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">;</span>
 
@@ -581,7 +603,7 @@ new event is a keyboard event.
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">RulebookSucceeds</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">glk_event_replaced</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_REHANDLING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>To handle events we intercept the <span class="extract"><span class="extract-syntax">glk_select</span></span> function. This allows us to handle
@@ -600,9 +622,10 @@ events early and consistently.
 <span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="identifier-syntax">ClearParagraphing</span><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_event_replaced</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_ACTIVE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_HANDLING_RB</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">until</span><span class="plain-syntax"> (</span><span class="identifier-syntax">glk_event_replaced</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">until</span><span class="plain-syntax"> (</span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> == </span><span class="identifier-syntax">GLK_EVENT_HANDLING_ACTIVE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_INACTIVE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">GLK_EVENT_TY_To_Struct</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">);</span>
