@@ -90,8 +90,10 @@ Global current_glk_object_reference = 0;
 	statuswin_cursize = 0;
 	gg_foregroundchan = 0;
 	gg_backgroundchan = 0;
+#Ifdef COMMAND_STREAM;
 	gg_commandstr = 0;
 	gg_command_reading = false;
+#Endif;
 	rfalse;
 ];
 
@@ -134,6 +136,9 @@ Global current_glk_object_reference = 0;
 			gg_savestr = current_glk_object_reference;
 		GG_SCRIPTSTR_ROCK:
 			gg_scriptstr = current_glk_object_reference;
+	}
+#Ifdef COMMAND_STREAM;
+	switch (current_glk_object_rock) {
 		GG_COMMANDWSTR_ROCK:
 			gg_commandstr = current_glk_object_reference;
 			gg_command_reading = false;
@@ -141,6 +146,7 @@ Global current_glk_object_reference = 0;
 			gg_commandstr = current_glk_object_reference;
 			gg_command_reading = true;
 	}
+#Endif;
 	rfalse;
 ];
 
@@ -367,8 +373,12 @@ event BVs.
 			}
 			! Fix the coordinates of grid window mouse events
 			if (win_obj.glk_window_type == wintype_TextGrid) {
-				val1 = val1--;
-				val2 = val2--;
+				val1--;
+				val2--;
+			}
+			if (val1 < 0 || val2 < 0) {
+				IssueRTP("EventInvalidMouseCoords", "GLK_EVENT_TY_New: Glk mouse event created with invalid coordinates.", Architecture32KitRTPs);
+				return ev;
 			}
 	}
 	ev-->GLK_EVENT_TYPE_SF = evtype;
@@ -394,17 +404,19 @@ event BVs.
 	return nothing;
 ];
 
-[ GLK_EVENT_TY_Value1 ev;
-	switch (ev-->GLK_EVENT_TYPE_SF) {
-		evtype_CharInput:
-			return MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF);
-		evtype_MouseInput:
-			if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
-				return ev-->GLK_EVENT_VALUE1_SF + 1;
-			}
-			return ev-->GLK_EVENT_VALUE1_SF;
-		evtype_Hyperlink:
-			return ev-->GLK_EVENT_VALUE1_SF;
+[ GLK_EVENT_TY_Value1 ev evtype;
+	if (evtype == ev-->GLK_EVENT_TYPE_SF) {
+		switch (evtype) {
+			evtype_CharInput:
+				return MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF);
+			evtype_MouseInput:
+				if ((ev-->GLK_EVENT_WINDOW_SF).glk_window_type == wintype_TextGrid) {
+					return ev-->GLK_EVENT_VALUE1_SF + 1;
+				}
+				return ev-->GLK_EVENT_VALUE1_SF;
+			evtype_Hyperlink:
+				return ev-->GLK_EVENT_VALUE1_SF;
+		}
 	}
 	IssueRTP("EventWrongType", "GLK_EVENT_TY_Value1: Glk event phrase called for wrong event type.", Architecture32KitRTPs);
 	return 0;
@@ -488,16 +500,26 @@ the event struct.
 	event_struct-->3 = ev-->GLK_EVENT_VALUE2_SF;
 ];
 
-@ |GLK_EVENT_TY_Process| applies a glk event onto the current glk event, and
+@ |GLK_EVENT_TY_Handle_Instead| applies a glk event onto the current glk event, and
 tells glk_select to re-run the glk event handling rules. It also ensures that
 if there are any pending keyboard input requests they will be cancelled if the
 new event is a keyboard event.
 
 =
 Array current_glk_event --> [ BLK_BVBITMAP_SBONLY; GLK_EVENT_TY; 0; 0; 0; 0; 0; 0; 0; ];
-Global glk_event_replaced;
 
-[ GLK_EVENT_TY_Process ev evtype win_obj;
+Constant GLK_EVENT_HANDLING_INACTIVE   0;
+Constant GLK_EVENT_HANDLING_ACTIVE     1;
+Constant GLK_EVENT_HANDLING_REHANDLING 2;
+Global glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
+
+[ GLK_EVENT_TY_Handle_Instead ev evtype win_obj;
+	if (glk_event_handling_status == GLK_EVENT_HANDLING_INACTIVE) {
+		IssueRTP("EventHandledWhileInactive", "Cannot handle new event while not handling events.", Architecture32KitRTPs);
+		RulebookSucceeds();
+		rtrue;
+	}
+
 	evtype = ev-->GLK_EVENT_TYPE_SF;
 	win_obj = ev-->GLK_EVENT_WINDOW_SF;
 
@@ -528,7 +550,7 @@ Global glk_event_replaced;
 	current_glk_event-->GLK_EVENT_VALUE2_SF = ev-->GLK_EVENT_VALUE2_SF;
 
 	RulebookSucceeds();
-	glk_event_replaced = 1;
+	glk_event_handling_status = GLK_EVENT_HANDLING_REHANDLING;
 ];
 
 @ To handle events we intercept the |glk_select| function. This allows us to handle
@@ -546,9 +568,10 @@ events early and consistently.
 	@push debug_rules; @push say__p; @push say__pc;
 	debug_rules = false; ClearParagraphing(1);
 	do {
-		glk_event_replaced = 0;
+		glk_event_handling_status = GLK_EVENT_HANDLING_ACTIVE;
 		FollowRulebook(GLK_EVENT_HANDLING_RB, current_glk_event-->GLK_EVENT_TYPE_SF, true);
-	} until (glk_event_replaced == 0);
+	} until (glk_event_handling_status == GLK_EVENT_HANDLING_ACTIVE);
+	glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
 	GLK_EVENT_TY_To_Struct(current_glk_event, event_struct);
