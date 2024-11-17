@@ -37,13 +37,26 @@ property *NewPropertyAssertions::recursively_declare(parse_node *owner_ref,
 automatically creates it.
 
 @<This is a leaf containing just a property name@> =
-	if ((<k-kind>(Node::get_text(p))) &&
-		((<<rp>> == K_number) || (<<rp>> == K_text))) {
+	kind *PK = NULL; if (<k-kind>(Node::get_text(p))) PK = <<rp>>;
+	if ((PK == K_number) || (PK == K_text)) {
 		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BareProperty),
 			"this would create a property called 'number' or 'text'",
 			"and although bare names of kinds are usually allowed as properties, "
 			"these aren't. Instead, try '... has a number called position.' or "
 			"something like that, to give the property a name.");
+	}
+	if (Kinds::Behaviour::is_object(PK)) {
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BareObjectProperty),
+			"this would create a property whose name is also the name of a kind of object",
+			"and although bare names of kinds are usually allowed as properties, those "
+			"can't be names of kinds of object - that becomes too confusing when sentences "
+			"involving 'to have' come up. (Suppose we allowed 'A person has a thing.' "
+			"to create a new property, with no name, identified only by being a thing. "
+			"What would a sentence like 'Dr Jones has a ray gun.' mean, then? Would it "
+			"mean Jones has an actual ray gun, or only that his 'thing' property has "
+			"the value 'ray gun'? That's too ambiguous. Instead 'A person has a thing "
+			"called talisman. Professor Smith has the ray gun. The talisman of Dr Jones "
+			"is the ray gun.' is much clearer.)");
 	}
 	inference_subject *owner_infs = Node::get_subject(owner_ref);
 	kind *K = KindSubjects::to_kind(owner_infs);

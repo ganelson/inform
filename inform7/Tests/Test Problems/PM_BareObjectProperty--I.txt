@@ -1,0 +1,21 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 32 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35526 words long.
+Problem__ PM_BareObjectProperty
+  >--> You wrote 'The rock has an object' (source text, line 5): but this would
+    create a property whose name is also the name of a kind of object, and
+    although bare names of kinds are usually allowed as properties, those can't
+    be names of kinds of object - that becomes too confusing when sentences
+    involving 'to have' come up. (Suppose we allowed 'A person has a thing.' to
+    create a new property, with no name, identified only by being a thing. What
+    would a sentence like 'Dr Jones has a ray gun.' mean, then? Would it mean
+    Jones has an actual ray gun, or only that his 'thing' property has the
+    value 'ray gun'? That's too ambiguous. Instead 'A person has a thing called
+    talisman. Professor Smith has the ray gun. The talisman of Dr Jones is the
+    ray gun.' is much clearer.)
+Problem__ PM_BareObjectProperty
+  >--> You wrote 'The rock has a thing' (source text, line 6): again, this
+    would create a property whose name is also the name of a kind of object.
+Inform 7 has finished.

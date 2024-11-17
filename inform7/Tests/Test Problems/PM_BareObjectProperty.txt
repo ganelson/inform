@@ -1,0 +1,8 @@
+Problem: PM_BareObjectProperty
+
+The rock is a thing.
+
+A color is a kind of value. Red, green, blue are colors.
+The rock has a color.
+The rock has an object.
+The rock has a thing.
