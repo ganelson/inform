@@ -204,6 +204,9 @@ has been renamed:
 - Fix for Jira bug [I7-2242](https://inform7.atlassian.net/browse/I7-2242)
 	"Creating kinds via tables fails"
 	([commit 0038a2e](https://github.com/ganelson/inform/commit/0038a2e46f91fa104f65c7c910ff7097f1c09198))
+- Fix for Jira bug [I7-2241](https://inform7.atlassian.net/browse/I7-2241)
+	"Error using a rulebook as one of the kinds of value in a relation"
+	([commit bb3fe3a](https://github.com/ganelson/inform/commit/bb3fe3aae2a3a8fb53b4deecd102f4766289ae50))
 - Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
 	"Inform hangs when reading a Neptune file in a kit with no final newline"
 	([commit 1cd75d8](https://github.com/ganelson/inform/commit/1cd75d8a4946ba10636a8ec474aded9716fffe9b))
