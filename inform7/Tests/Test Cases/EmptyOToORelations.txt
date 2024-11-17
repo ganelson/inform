@@ -1,0 +1,46 @@
+Test: EmptyOToORelations
+For: Z-Machine
+
+Place is a room.
+
+A color is a kind of value. The colors are red, orange, yellow, green, blue, indigo and violet.
+
+Counterpart relates one color to one color. The verb to counter means the counterpart relation.
+
+When play begins:
+	show relation the counterpart relation;
+	showme whether or not the counterpart relation is empty;
+	now red counters blue;
+	now orange counters green; 
+	show relation the counterpart relation;
+	showme whether or not the counterpart relation is empty;
+	now the counterpart relation is empty;
+	show relation the counterpart relation;
+	showme whether or not the counterpart relation is empty;
+	now yellow counters indigo;
+	show relation the counterpart relation; 
+	showme whether or not the counterpart relation is empty;
+
+Alice is a woman in Place.
+
+Bob is a man in Place.
+
+Carl is a man in Place.
+
+A color is a kind of value. The colors are red, orange, yellow, green, blue, indigo and violet.
+
+Pairing relates one person to one color. The verb to pair with means the pairing relation.
+
+When play begins:
+	show relation the pairing relation;
+	showme whether or not the pairing relation is empty;
+	now Alice pairs with red;
+	now Bob pairs with orange;
+	show relation the pairing relation;
+	showme whether or not the pairing relation is empty;
+	now the pairing relation is empty;
+	show relation the pairing relation;
+	showme whether or not the pairing relation is empty;
+	now Carl pairs with yellow;
+	show relation the pairing relation;
+	showme whether or not the pairing relation is empty; 

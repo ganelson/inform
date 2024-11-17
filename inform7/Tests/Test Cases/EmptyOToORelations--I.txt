@@ -1,0 +1,37 @@
+   Place
+  relation of colors: counterpart relation
+  "whether or not the counterpart relation is empty" = truth state: true
+  relation of colors: counterpart relation
+  Counterpart relates one color to one color:
+    red  >=>  blue
+    orange  >=>  green
+  "whether or not the counterpart relation is empty" = truth state: false
+  relation of colors: counterpart relation
+  "whether or not the counterpart relation is empty" = truth state: true
+  relation of colors: counterpart relation
+  Counterpart relates one color to one color:
+    yellow  >=>  indigo
+  "whether or not the counterpart relation is empty" = truth state: false
+  relation of people to colors: pairing relation
+  "whether or not the pairing relation is empty" = truth state: true
+  relation of people to colors: pairing relation
+  Pairing relates one person to one color:
+    Alice  >=>  red
+    Bob  >=>  orange
+  "whether or not the pairing relation is empty" = truth state: false
+  relation of people to colors: pairing relation
+  "whether or not the pairing relation is empty" = truth state: true
+  relation of people to colors: pairing relation
+  Pairing relates one person to one color:
+    Carl  >=>  yellow
+  "whether or not the pairing relation is empty" = truth state: false
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Place
+  You can see Alice, Bob and Carl here.
+  
+> >   Place
+> Are you sure you want to quit? 

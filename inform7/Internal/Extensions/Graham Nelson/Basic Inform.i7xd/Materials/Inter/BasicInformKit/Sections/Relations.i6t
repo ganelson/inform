@@ -633,41 +633,43 @@ whether the relation is empty at the end of the call. For relations in groups,
 "empty" is understood to mean that each object relates only to itself.
 
 =
-[ Relation_EmptyOtoO relation sym clear relation_property obj1 obj2 t1 t2 N1 N2;
+[ Relation_EmptyOtoO relation sym clear relation_property kind1 kind2 N1 N2 pval ix;
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t1 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	t2 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
-	if (t2 == OBJECT_TY) {
-		objectloop (obj2 provides relation_property) {
-			obj1 = obj2.relation_property;
-			if (obj1) {
-				if (clear) obj2.relation_property = nothing;
+	kind1 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	kind2 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
+	if (kind2 == OBJECT_TY) {
+		objectloop ((ix ofclass K0_kind) && (ix provides relation_property)) {
+			pval = ix.relation_property;
+			if (pval) {
+				if (clear) ix.relation_property = nothing;
 				else rfalse;
 			}
 		}
 	} else {
-		for (obj2=1: obj2<=N2: obj2++) {
-			obj1 = GProperty(t2, obj2, relation_property);
-			if (obj1) {
-				if (clear) WriteGProperty(t2, obj2, relation_property, 0);
+		N2 = KindDomainSize(kind2);
+		for (ix=1: ix<=N2: ix++) {
+			pval = GProperty(kind2, ix, relation_property);
+			if (pval) {
+				if (clear) WriteGProperty(kind2, ix, relation_property, 0);
 				else rfalse;
 			}
 		}
 	}
-	if (t1 ~= t2) {
-		if (t1 == OBJECT_TY) {
-			objectloop (obj1 provides relation_property) {
-				obj2 = obj1.relation_property;
-				if (obj2) {
-					if (clear) obj1.relation_property = nothing;
+	if (kind1 ~= kind2) {
+		if (kind1 == OBJECT_TY) {
+			objectloop ((ix ofclass K0_kind) && (ix provides relation_property)) {
+				pval = ix.relation_property;
+				if (pval) {
+					if (clear) ix.relation_property = nothing;
 					else rfalse;
 				}
 			}
 		} else {
-			for (obj1=1: obj1<=N2: obj1++) {
-				obj2 = GProperty(t1, obj1, relation_property);
-				if (obj2) {
-					if (clear) WriteGProperty(t1, obj1, relation_property, 0);
+			N1 = KindDomainSize(kind1);
+			for (ix=1: ix<=N1: ix++) {
+				pval = GProperty(kind1, ix, relation_property);
+				if (pval) {
+					if (clear) WriteGProperty(kind1, ix, relation_property, 0);
 					else rfalse;
 				}
 			}
