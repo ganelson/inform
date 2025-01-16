@@ -17,6 +17,7 @@ void LanguageManager::start(void) {
 	METHOD_ADD(language_genre, GENRE_CLAIM_AS_COPY_MTID, LanguageManager::claim_as_copy);
 	METHOD_ADD(language_genre, GENRE_SEARCH_NEST_FOR_MTID, LanguageManager::search_nest_for);
 	METHOD_ADD(language_genre, GENRE_COPY_TO_NEST_MTID, LanguageManager::copy_to_nest);
+	METHOD_ADD(language_genre, GENRE_CONSTRUCT_GRAPH_MTID, LanguageManager::construct_graph);
 }
 
 void LanguageManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -166,4 +167,8 @@ int LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_n
 		rv = Pathnames::rsync(C->location_if_path, dest_language);
 	}
 	return rv;
+}
+
+void LanguageManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
+	Languages::construct_graph(LanguageManager::from_copy(C));
 }

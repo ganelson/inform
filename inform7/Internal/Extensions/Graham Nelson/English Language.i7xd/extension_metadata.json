@@ -5,12 +5,6 @@
         "author": "Graham Nelson",
         "version": "10.2.0"
     },
-    "needs": [ {
-        "need": {
-            "type": "kit",
-            "title": "EnglishLanguageKit"
-        }
-    } ],
     "rights": {
         "licence": "Artistic-2.0",
         "rights-owner": "Graham Nelson",

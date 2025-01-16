@@ -285,7 +285,9 @@ void Projects::add_language_extension_nest(inform_project *proj) {
 	if ((proj->language_of_play) && (proj->language_of_play->belongs_to)) {
 		inform_extension *E = proj->language_of_play->belongs_to;
 		inbuild_nest *N = Extensions::materials_nest(E);
-		if (N) ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+		if (N) {
+			ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+		}
 	}
 }
 
@@ -455,7 +457,6 @@ are set only once, and can't be changed after that.
 =
 void Projects::set_languages(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
-
 	text_stream *name = proj->name_of_language_of_syntax;
 	inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
 	if (L) {

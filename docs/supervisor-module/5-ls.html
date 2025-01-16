@@ -58,7 +58,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inbuildn.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#5">Chapter 5: Genre Services</a></li><li><b>Language Services</b></li></ul></div>
 <p class="purpose">Behaviour specific to copies of the language genre.</p>
 
-<ul class="toc"><li><a href="5-ls.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-ls.html#SP4">&#167;4. Logging</a></li><li><a href="5-ls.html#SP5">&#167;5. Language code</a></li><li><a href="5-ls.html#SP6">&#167;6. Support</a></li><li><a href="5-ls.html#SP7">&#167;7. Kit</a></li><li><a href="5-ls.html#SP8">&#167;8. Finding by name</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-ls.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-ls.html#SP4">&#167;4. Logging</a></li><li><a href="5-ls.html#SP5">&#167;5. Language code</a></li><li><a href="5-ls.html#SP6">&#167;6. Support</a></li><li><a href="5-ls.html#SP7">&#167;7. Graph</a></li><li><a href="5-ls.html#SP9">&#167;9. Finding by name</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scanning metadata. </b>Metadata for natural languages is stored in the following structure.
 Inform can read and write text in multiple natural languages, though it
@@ -216,16 +216,29 @@ detect the language of play for a story file without actually running it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">supports</span><span class="plain-syntax">[</span><span class="identifier-syntax">S</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Kit. </b>At one time, the language of play added a kit dependency here. That's now
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Graph. </b>At one time, the language of play added a kit dependency here. That's now
 handled differently, in that the kit in question (`FrenchLanguageKit`, say)
 should now be included in the `French Language` extension.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::add_kit_dependencies_to_project</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Languages::add_kit_dependencies_to_project</span></span>:<br/>Project Services - <a href="5-ps2.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">kitname</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">kitname</span><span class="plain-syntax">, </span><span class="string-syntax">"%SLanguageKit"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-ps2.html#SP21" class="function-link"><span class="function-syntax">Projects::add_kit_dependency</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">, </span><span class="identifier-syntax">kitname</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">kitname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Finding by name. </b>Given the name of a natural language (e.g., "German") we find the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::construct_graph</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Languages::construct_graph</span></span>:<br/>Language Manager - <a href="4-lm.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">belongs_to</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><a href="3-bg.html#SP4" class="function-link"><span class="function-syntax">Graphs::need_this_to_use</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vertex</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">belongs_to</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vertex</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Finding by name. </b>Given the name of a natural language (e.g., "German") we find the
 corresponding definition. That will mean searching for a copy, and that
 raises the question of where to look &mdash; in particular, it's important to
 include the Materials folder for any relevant project.
@@ -233,7 +246,7 @@ include the Materials folder for any relevant project.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_list_for_Preform_callback</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_Preform_definition</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Languages::read_Preform_definition</span></span>:<br/>Extension Services - <a href="5-es.html#SP11">&#167;11</a><br/>Project Services - <a href="5-ps2.html#SP37">&#167;37</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_Preform_definition</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Languages::read_Preform_definition</span></span>:<br/>Extension Services - <a href="5-es.html#SP11">&#167;11</a><br/>Project Services - <a href="5-ps2.html#SP37">&#167;37</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no language"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">Preform_loaded</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">Preform_loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -244,21 +257,21 @@ include the Materials folder for any relevant project.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This function is called only from Preform...
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This function is called only from Preform...
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-ls.html#SP9" class="function-link"><span class="function-syntax">Languages::Preform_find</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-ls.html#SP10" class="function-link"><span class="function-syntax">Languages::Preform_find</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::Preform_find</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-ls.html#SP10" class="function-link"><span class="function-syntax">Languages::find_for</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_list_for_Preform_callback</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-ls.html#SP11" class="function-link"><span class="function-syntax">Languages::find_for</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_list_for_Preform_callback</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>...but this one is more generally available.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>...but this one is more generally available.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::find_for</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Languages::find_for</span></span>:<br/><a href="5-ls.html#SP9">&#167;9</a><br/>Extension Services - <a href="5-es.html#SP11">&#167;11</a><br/>Project Services - <a href="5-ps2.html#SP18">&#167;18</a>, <a href="5-ps2.html#SP37">&#167;37</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::find_for</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Languages::find_for</span></span>:<br/><a href="5-ls.html#SP10">&#167;10</a><br/>Extension Services - <a href="5-es.html#SP11">&#167;11</a><br/>Project Services - <a href="5-ps2.html#SP18">&#167;18</a>, <a href="5-ps2.html#SP37">&#167;37</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">author</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Regexp::create_mr</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Regexp::match</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"(%c+) [Ll]anguage by (%c+)"</span><span class="plain-syntax">)) {</span>
@@ -299,7 +312,7 @@ include the Materials folder for any relevant project.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Or we can convert the native cue, <span class="extract"><span class="extract-syntax">en français</span></span>, to the name, <span class="extract"><span class="extract-syntax">French</span></span>,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Or we can convert the native cue, <span class="extract"><span class="extract-syntax">en français</span></span>, to the name, <span class="extract"><span class="extract-syntax">French</span></span>,
 though this will not work for language bundles inside of extensions, and
 so the function is now deprecated:
 </p>
@@ -321,7 +334,7 @@ so the function is now deprecated:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Finally, the following Preform nonterminal matches the English-language
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Finally, the following Preform nonterminal matches the English-language
 name of a language: for example, "French". Unlike the above functions, it
 looks only at languages already loaded, and doesn't scan nests for more.
 </p>

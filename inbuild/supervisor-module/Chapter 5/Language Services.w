@@ -150,14 +150,28 @@ int Languages::supports(inform_language *L, int S) {
 	return L->supports[S];
 }
 
-@h Kit.
+@h Graph.
 At one time, the language of play added a kit dependency here. That's now
 handled differently, in that the kit in question (`FrenchLanguageKit`, say)
 should now be included in the `French Language` extension.
 
 =
 void Languages::add_kit_dependencies_to_project(inform_language *L, inform_project *project) {
+	TEMPORARY_TEXT(kitname)
+	WRITE_TO(kitname, "%SLanguageKit", L->as_copy->edition->work->title);
+	Projects::add_kit_dependency(project, kitname, L, NULL, NULL, NULL);
+	DISCARD_TEXT(kitname)
 }
+
+@
+
+=
+void Languages::construct_graph(inform_language *L) {
+	if ((L) && (L->belongs_to)) {
+		Graphs::need_this_to_use(L->as_copy->vertex, L->belongs_to->as_copy->vertex);
+	}
+}
+
 
 @h Finding by name.
 Given the name of a natural language (e.g., "German") we find the
