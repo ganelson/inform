@@ -114,7 +114,7 @@ Instead of clicking Go, we click Replay, and can sit back and watch what has cha
 
 ^^{user interface: Index panel} ^^{Index panel+ui+} ^^{user interface: Results panel} ^^{Results panel+ui+}
 
-If, when Go! is clicked, the text in the Source panel is not fully understood, then Inform will generate a report of the problems it found, which will open in the "Errors" panel. (Other information is also available in "Errors", but most of it is used for debugging Inform, and can be ignored.)
+If, when Go! is clicked, the text in the Source panel is not fully understood, then Inform will generate a report of the problems it found, which will open in the "Results" panel. (Other information is also available in "Results", but most of it is used for debugging Inform, and can be ignored.)
 
 On the other hand, if the text was fully understood then another new panel will become available: the "Index". This is a cross-referenced index of the source, or rather, of the interactive fiction which has been generated. The Index is only an optional convenience, but becomes more and more helpful as the fiction grows larger. Its exact format does not matter for now.
 
@@ -124,7 +124,7 @@ The icon ![Below](doc_images/Below.png) indicates that more detailed information
 
 Lastly, the icon ![help](doc_images/help.png) hints that there is a relevant page of this manual: clicking this opens the Documentation panel and switches to it.
 
-{Linux:}The Index is accessible by typing "I" at the prompt, if you have set your browser.  You can set the browser by typing "S" to get to the settings panel, and then "I" for the IDE panel.  From the top-level Index you will be able to access Errors as well as other information.
+{Linux:}The Index is accessible by typing "I" at the prompt, if you have set your browser.  You can set the browser by typing "S" to get to the settings panel, and then "I" for the IDE panel.  From the top-level Index you will be able to access Results as well as other information.
 
 ## The Skein or Testing panel
 
