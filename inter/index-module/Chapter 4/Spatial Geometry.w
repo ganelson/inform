@@ -15,7 +15,6 @@ typedef struct vector {
 =
 vector Zero_vector = {0, 0, 0};
 
-=
 vector Geometry::zero(void) {
 	return Zero_vector;
 }

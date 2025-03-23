@@ -107,7 +107,7 @@ void Coverage::which_problems_exist(void) {
 	pathname *tools = Pathnames::up(path_to_inpolicy);
 	pathname *path_to_inweb = Pathnames::down(Pathnames::up(tools), I"inweb");
 	pathname *path_to_inform7 = Pathnames::down(tools, I"inform7");
-	web_md *Wm = WebMetadata::get(path_to_inform7, NULL, V2_SYNTAX,
+	web_md *Wm = WebMetadata::get(path_to_inform7, NULL, NULL,
 					NULL, FALSE, TRUE, path_to_inweb);
 	chapter_md *Cm;
 	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {

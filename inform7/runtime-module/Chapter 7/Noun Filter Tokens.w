@@ -68,6 +68,7 @@ inter_name *NounFilterTokens::filter_fn_iname(noun_filter_token *nft) {
 @e VIA_SCOPE_FILTER_NFTIMP
 @e VIA_NOUN_FILTER_NFTIMP
 
+=
 int NounFilterTokens::implementation(noun_filter_token *nft) {
 	kind *K = Specifications::to_kind(nft->the_filter);
 	if (Kinds::Behaviour::is_object(K) == FALSE) return VIA_GPR_NFTIMP;

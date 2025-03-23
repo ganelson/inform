@@ -505,7 +505,6 @@ for an individual subject.
 INT_METHOD_TYPE(EMIT_ALL_INFS_MTID, inference_subject_family *f, int ignored)
 VOID_METHOD_TYPE(EMIT_ONE_INFS_MTID, inference_subject_family *f, inference_subject *infs)
 
-=
 void InferenceSubjects::emit_all(void) {
 	inference_subject *infs;
 

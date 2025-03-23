@@ -685,6 +685,7 @@ text of the clause in the normal way.
 
 @e PARSE_AP_CLAUSE_PLUG
 
+=
 int PluginCalls::parse_AP_clause(action_name *an, anl_clause *c, int *bits) {
 	PLUGINS_CALL(PARSE_AP_CLAUSE_PLUG, an, c, bits);
 }

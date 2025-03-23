@@ -16,7 +16,6 @@ typedef struct inbuild_nest {
 	CLASS_DEFINITION
 } inbuild_nest;
 
-=
 inbuild_nest *Nests::new(pathname *P) {
 	inbuild_nest *N = CREATE(inbuild_nest);
 	N->location = P;

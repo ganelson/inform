@@ -8,7 +8,7 @@ either-or or valued.
 = (early code)
 inference_family *property_inf = NULL;
 
-=
+@ =
 void PropertyInferences::start(void) {
 	property_inf = Inferences::new_family(I"property_inf");
 	METHOD_ADD(property_inf, LOG_DETAILS_INF_MTID, PropertyInferences::log_details);
