@@ -11,9 +11,9 @@ Part Six - Grammar
 Understand "take [things]" as taking.
 Understand "take off [something]" as taking off.
 Understand "take [something] off" as taking off.
-Understand "take [things inside] from [something]" as removing it from.
+Understand "take [things] from [something]" as removing it from.
 Understand "take [something] from [something]" as removing it from. [For better error messages.]
-Understand "take [things inside] off [something]" as removing it from.
+Understand "take [things] off [something]" as removing it from.
 Understand "take [something] off [something]" as removing it from. [For better error messages.]
 Understand "take inventory" as taking inventory.
 Understand the commands "carry" and "hold" as "take".
@@ -23,7 +23,7 @@ Understand "get out/off/down/up" as exiting.
 Understand "get [things]" as taking.
 Understand "get in/into/on/onto [something]" as entering.
 Understand "get off/down [something]" as getting off.
-Understand "get [things inside] from [something]" as removing it from.
+Understand "get [things] from [something]" as removing it from.
 Understand "get [something] from [something]" as removing it from. [For better error messages.]
 
 Understand "pick up [things]" or "pick [things] up" as taking.
@@ -32,7 +32,7 @@ Understand "stand" or "stand up" as exiting.
 Understand "stand on [something]" as entering.
 
 Understand "remove [something preferably held]" as taking off.
-Understand "remove [things inside] from [something]" as removing it from.
+Understand "remove [things] from [something]" as removing it from.
 Understand "remove [something] from [something]" as removing it from. [For better error messages.]
 
 Understand "shed [something preferably held]" as taking off.
@@ -41,17 +41,17 @@ Understand the commands "doff" and "disrobe" as "shed".
 Understand "wear [something preferably held]" as wearing.
 Understand the command "don" as "wear".
 
-Understand "put [other things] in/inside/into [something]" as inserting it into.
-Understand "put [other things] on/onto [something]" as putting it on.
+Understand "put [things] in/inside/into [something]" as inserting it into.
+Understand "put [things] on/onto [something]" as putting it on.
 Understand "put on [something preferably held]" as wearing.
 Understand "put [something preferably held] on" as wearing.
 Understand "put down [things preferably held]" or "put [things preferably held] down" as dropping.
 
-Understand "insert [other things] in/into [something]" as inserting it into.
+Understand "insert [things] in/into [something]" as inserting it into.
 
 Understand "drop [things preferably held]" as dropping.
-Understand "drop [other things] in/into/down [something]" as inserting it into.
-Understand "drop [other things] on/onto [something]" as putting it on.
+Understand "drop [things] in/into/down [something]" as inserting it into.
+Understand "drop [things] on/onto [something]" as putting it on.
 Understand "drop [something preferably held] at/against [something]" as throwing it at.
 Understand the commands "throw" and "discard" as "drop".
 

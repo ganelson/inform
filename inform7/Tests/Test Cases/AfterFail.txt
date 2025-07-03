@@ -1,0 +1,15 @@
+"Jumper Bob"
+
+Lab is a room.
+
+Bob is a person in the Lab.
+
+Persuasion: rule succeeds.
+
+After an actor jumping: rule fails; continue the action.
+
+Unsuccessful attempt by Bob doing anything: say "Bob failed to jump."
+
+Every turn: if we have jumped, say "Someone has jumped!"
+
+Test me with "Bob, jump"
