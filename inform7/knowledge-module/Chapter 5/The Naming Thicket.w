@@ -11,9 +11,12 @@ to contain its complexity.
 
 =
 void Naming::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, Naming::production_line);
 	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Naming::naming_new_property_notify);
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, Naming::naming_complete_model);
+#pragma clang diagnostic pop
 }
 
 int Naming::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

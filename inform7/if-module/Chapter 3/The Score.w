@@ -9,8 +9,11 @@ a little compiler support, and this is where.
 
 =
 void TheScore::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, TheScore::production_line);
 	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG, TheScore::new_variable_notify);
+#pragma clang diagnostic pop
 }
 
 int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

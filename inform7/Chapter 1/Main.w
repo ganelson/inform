@@ -35,6 +35,7 @@ text_stream *log_to_project = NULL;
 int Main::deputy(int argc, char *argv[]) {
 	@<Start up@>;
 	int proceed = Main::read_command_line(argc, argv);
+	Pathnames::set_path_to_LP_resources(Nests::get_location(Supervisor::internal_if_set()));
 	PluginCalls::start();
 	if (proceed) {
 		if (silence_is_golden)

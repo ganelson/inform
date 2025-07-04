@@ -31,6 +31,8 @@ description of an action which may have happened in the past: for example,
 void ActionsPlugin::start(void) {
 	ActionsNodes::nodes_and_annotations();
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
@@ -48,6 +50,7 @@ void ActionsPlugin::start(void) {
 	PluginCalls::plug(COMPILE_TEST_HEAD_PLUG, RTRules::actions_compile_test_head);
 	PluginCalls::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
 	PluginCalls::plug(NEW_RCD_NOTIFY_PLUG, ActionRules::new_rcd);
+#pragma clang diagnostic pop
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(U"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(U"asking"), ACTION_PARTICIPLE_MC);

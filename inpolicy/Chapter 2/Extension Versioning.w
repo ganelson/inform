@@ -21,8 +21,8 @@ void ExtensionVersioning::sync_versions(void) {
 }
 
 semantic_version_number ExtensionVersioning::simplified_core_version(void) {
-	web_md *inform7_web =
-		WebMetadata::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
+	ls_web *inform7_web =
+		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
 	semantic_version_number V = inform7_web->version_number;
 	V.prerelease_segments = NULL;
 	V.build_metadata = NULL;
@@ -117,7 +117,7 @@ difference at all.
 	DISCARD_TEXT(a)
 	DISCARD_TEXT(b)
 
-@ We change the JSON object for the kit's metadata (at object.is.version), and
+@ We change the JSON object for the extension's metadata (at object.is.version), and
 then encode the object out as a new version of the file:
 
 @<Change the version to set_to@> =
@@ -163,6 +163,8 @@ directory names, since that makes make-files more stable.
 	WRITE_TO(leaf, "%S.i7x", name);
 	filename *F = Filenames::in(Pathnames::down(X, I"Source"), leaf);
 	DISCARD_TEXT(leaf)
+	if (TextFiles::exists(F) == FALSE)
+		F = Filenames::in(Pathnames::down(X, I"Source"), I"Contents.w");
 	TEMPORARY_TEXT(source)
 	TextFiles::read(F, FALSE, "unable to read file of extension source", TRUE,
 		&ExtensionVersioning::read_metadata_file_helper, NULL, source);

@@ -40,7 +40,10 @@ appear.
 
 =
 void TimesOfDay::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, TimesOfDay::times_new_base_kind_notify);
+#pragma clang diagnostic pop
 }
 
 int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {

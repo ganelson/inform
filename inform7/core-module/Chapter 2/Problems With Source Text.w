@@ -23,6 +23,16 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"typo in it?");
 				Problems::issue_problem_end();		
 				break;
+			case TANGLE_ERROR_CE: 
+				Problems::quote_work(1, CE->copy->edition->work);
+				Problems::quote_stream(2, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The extension %1 has its source text written as a literate "
+					"program, but that program is malformed. Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
+
 			case EXT_MISWORDED_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_stream(2, CE->details);

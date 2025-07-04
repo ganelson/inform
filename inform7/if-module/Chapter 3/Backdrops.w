@@ -12,11 +12,14 @@ inferences to avoid piling up bogus inconsistencies.
 =
 void Backdrops::start(void) {
 	Backdrops::create_inference_families();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Backdrops::new_base_kind_notify);
 	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, Backdrops::new_subject_notify);
 	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Backdrops::new_property_notify);
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, Backdrops::complete_model);
 	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Backdrops::intervene_in_assertion);
+#pragma clang diagnostic pop
 }
 
 @h Instances.

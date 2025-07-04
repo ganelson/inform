@@ -10,6 +10,8 @@ chapter.
 void ParsingPlugin::start(void) {
 	ParsingPlugin::nodes_and_annotations();
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Understand::make_special_meanings);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, ParsingPlugin::compare_CONSTANT);
@@ -17,6 +19,7 @@ void ParsingPlugin::start(void) {
 	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
 	PluginCalls::plug(NEW_PERMISSION_NOTIFY_PLUG, Visibility::new_permission_notify);
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
+#pragma clang diagnostic pop
 	
 	RTLiteralPatterns::enable_parsing();
 	RTKindConstructors::enable_parsing();

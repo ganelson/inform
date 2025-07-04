@@ -15,12 +15,15 @@ fully with the Treaty and the code below should be maintained as such.
 
 =
 void BibliographicData::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG,
 		BibliographicData::production_line);
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG,
 		BibliographicData::make_special_meanings);
 	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG,
 		BibliographicData::bibliographic_new_variable_notify);
+#pragma clang diagnostic pop
 }
 
 int BibliographicData::production_line(int stage, int debugging,

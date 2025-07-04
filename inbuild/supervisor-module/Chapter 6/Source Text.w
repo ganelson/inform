@@ -42,35 +42,61 @@ int SourceText::for_documentation_only(int state) {
 	return old_state;
 }
 
-source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *synopsis,
-	int primary) {
+source_file *SourceText::read_file(inbuild_copy *C, ls_web *W, filename *F,
+	text_stream *synopsis, int primary) {
 	int documentation_only = source_reader_in_documentation_only_mode;
 
 	currently_lexing_into = C;
 	general_pointer ref = STORE_POINTER_inbuild_copy(NULL);
-	FILE *handle = Filenames::fopen(F, "r");
+	text_stream *leaf = Filenames::get_leafname(F);
+	if (primary) leaf = I"main source text";
+	int mode = UNICODE_UFBHM;
+	target_vm *vm = Supervisor::current_vm();
+	if (TargetVMs::is_16_bit(vm)) mode = ZSCII_UFBHM;
+
+	int succeeded = FALSE;
 	source_file *sf = NULL;
-	if (handle) {
-		text_stream *leaf = Filenames::get_leafname(F);
-		if (primary) leaf = I"main source text";
-		int mode = UNICODE_UFBHM;
-		target_vm *vm = Supervisor::current_vm();
-		if (TargetVMs::is_16_bit(vm)) mode = ZSCII_UFBHM;
-		sf = TextFromFiles::feed_open_file_into_lexer(F, handle,
-			leaf, documentation_only, ref, mode);
-		if (sf == NULL) {
-			Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
-		} else {
-			fclose(handle);
-			#ifdef CORE_MODULE
-			if ((documentation_only == FALSE) && (Main::silence_is_golden() == FALSE))
-				@<Tell console output about the file@>;
-			#endif
+	if (W) {
+		succeeded = TRUE;
+		WebStructure::read_web_source(W, FALSE, FALSE);
+		@<Deal with literate source errors@>;
+		if (succeeded) {
+			sf = TextFromFiles::feed_open_file_into_lexer(F, NULL, W,
+				leaf, documentation_only, ref, mode);
+		}
+	} else {
+		FILE *handle = Filenames::fopen(F, "r");
+		if (handle) {
+			sf = TextFromFiles::feed_open_file_into_lexer(F, handle, NULL,
+				leaf, documentation_only, ref, mode);
+			if (sf == NULL) {
+				Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
+			} else {
+				fclose(handle);
+				succeeded = TRUE;
+			}
 		}
 	}
+	#ifdef CORE_MODULE
+	if ((succeeded) && (documentation_only == FALSE) && (Main::silence_is_golden() == FALSE))
+		@<Tell console output about the file@>;
+	#endif
 	currently_lexing_into = NULL;
 	return sf;
 }
+
+@<Deal with literate source errors@> =
+	ls_chapter *Ch;
+	ls_section *S;
+	ls_error *error;
+	LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
+			LOOP_OVER_LINKED_LIST(error, ls_error, S->literate_source->errors) {
+				text_stream *msg = Str::new();
+				WebErrors::write(msg, error);
+				Copies::attach_error(C, CopyErrors::new_TF(TANGLE_ERROR_CE, -1, msg, F));
+				succeeded = FALSE;
+			}
 
 @ This is where messages like
 = (text as ConsoleText)

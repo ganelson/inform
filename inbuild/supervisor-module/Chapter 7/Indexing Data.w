@@ -166,13 +166,6 @@ indexing_category *IndexingData::find_or_create_category(compiled_documentation 
 	return ic;
 }
 
-@ When we want to say "use my new category X instead of the built-in category
-Y", we use the redirection dictionary. Here |redirect| is Y, and |name| is X.
-
-@<This is a redirection@> =
-	text_stream *val = Dictionaries::create_text(cd->id.categories_redirect, redirect);
-	Str::copy(val, name);
-
 @ There's a whole little mini-language for how to express details of our
 category:
 

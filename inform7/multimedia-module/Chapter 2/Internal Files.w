@@ -7,9 +7,12 @@ the small I6 arrays associated with each.
 
 =
 void InternalFiles::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, InternalFiles::production_line);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, InternalFiles::files_new_base_kind_notify);
 	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, InternalFiles::files_new_named_instance_notify);
+#pragma clang diagnostic pop
 }
 
 int InternalFiles::production_line(int stage, int debugging,

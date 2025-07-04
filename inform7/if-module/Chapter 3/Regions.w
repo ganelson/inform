@@ -11,6 +11,8 @@ result, a new "regional containment" relation is needed.
 
 =
 void Regions::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Regions::create_inference_subjects);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Regions::new_base_kind_notify);
 	PluginCalls::plug(SET_SUBKIND_NOTIFY_PLUG, Regions::set_subkind_notify);
@@ -20,6 +22,7 @@ void Regions::start(void) {
 	PluginCalls::plug(MORE_SPECIFIC_PLUG, Regions::more_specific);
 	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
 	PluginCalls::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
+#pragma clang diagnostic pop
 }
 
 @ There is one kind of interest: "region", of course. It is recognised by the English

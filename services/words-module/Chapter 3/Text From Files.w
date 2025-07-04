@@ -13,16 +13,62 @@ typedef struct source_file {
 	int words_of_source; /* word count, omitting comments and verbatim matter */
 	struct wording text_read;
 	int words_of_quoted_text; /* word count for text in double-quotes */
+	unicode_file_buffer ufb; /* for unpacking UTF-8, while open */
 	FILE *handle; /* file handle while open */
 	general_pointer your_ref; /* for the client to attach some meaning */
 	struct text_stream *body_text;
 	struct text_stream *torn_off_documentation;
+	struct text_stream *tangled;
+	int tangled_position;
 	CLASS_DEFINITION
 } source_file;
 
+source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general_pointer ref, int mode) {
+	source_file *sf = CREATE(source_file);
+	sf->words_of_source = 0;
+	sf->words_of_quoted_text = 0;
+	sf->ufb = TextFiles::create_filtered_ufb(mode);
+	sf->your_ref = ref;
+	sf->name = F;
+	sf->handle = handle;
+	sf->body_text = Str::new();
+	sf->torn_off_documentation = Str::new();
+	sf->tangled = Str::new();
+	sf->tangled_position = -1;
+	if (W) {
+		if (Str::len(Bibliographic::get_datum(W, I"Version")) > 0)
+			WRITE_TO(sf->tangled, "%S of %S by %S begins here.\n\n",
+				Bibliographic::get_datum(W, I"Version"),
+				Bibliographic::get_datum(W, I"Title"),
+				Bibliographic::get_datum(W, I"Author"));
+		else
+			WRITE_TO(sf->tangled, "%S by %S begins here.\n\n",
+				Bibliographic::get_datum(W, I"Title"),
+				Bibliographic::get_datum(W, I"Author"));
+		if (Str::len(Bibliographic::get_datum(W, I"Purpose")) > 0)
+			WRITE_TO(sf->tangled, "\"%S\"\n\n",
+				Bibliographic::get_datum(W, I"Purpose"));
+		Tangler::tangle_web(sf->tangled, W, NULL, TangleTargets::primary_target(W));
+		WRITE_TO(sf->tangled, "\n%S ends here.\n\n",
+			Bibliographic::get_datum(W, I"Title"));
+		sf->tangled_position = 0;
+	}
+	return sf;
+}
+
+inchar32_t TextFromFiles::next_char(source_file *sf) {
+	if (sf->tangled_position < 0) {
+		return TextFiles::utf8_fgetc(sf->handle, NULL, &(sf->ufb));
+	} else {
+		inchar32_t c = Str::get_at(sf->tangled, sf->tangled_position++);
+		if (c == 0) return CH32EOF;
+		return c;
+	}
+}
+
 @h Feeding whole files into the lexer.
-This is one of the two feeder routines for the lexer, the other being in
-Lexical Writing Back.w: see Lexer.w for its obligations.
+This is one of the three feeder routines for the lexer: two are here and the
+other is in Lexical Writing Back.w: see Lexer.w for its obligations.
 
 We feed characters from an open file into the lexer, and continue until there
 is nothing left in it. Inform is used on operating systems which between them
@@ -35,31 +81,22 @@ We also want to look out for the tear-off documentation line, if there is one.
 
 =
 source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
-	text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
-	source_file *sf = CREATE(source_file);
-	sf->words_of_source = 0;
-	sf->words_of_quoted_text = 0;
-	sf->your_ref = ref;
-	sf->name = F;
-	sf->handle = handle;
-	sf->body_text = Str::new();
-	sf->torn_off_documentation = Str::new();
-	source_location top_of_file;
+	ls_web *W, text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
+	source_file *sf = TextFromFiles::new_sf(F, handle, W, ref, mode);
 	inchar32_t cr, last_cr, next_cr, read_cr, newline_char = 0;
 	int torn_off = FALSE;
 
-	unicode_file_buffer ufb = TextFiles::create_filtered_ufb(mode);
-
+	source_location top_of_file;
 	top_of_file.file_of_origin = sf;
 	top_of_file.line_number = 1;
 
 	Lexer::feed_begins(top_of_file);
 	if (documentation_only) lexer_wait_for_dashes = TRUE;
 
-	last_cr = ' '; cr = ' '; next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb);
-	if (next_cr == 0xFEFF) next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb); /* Unicode BOM code */
+	last_cr = ' '; cr = ' '; next_cr = TextFromFiles::next_char(sf);
+	if (next_cr == 0xFEFF) next_cr = TextFromFiles::next_char(sf); /* Unicode BOM code */
 	if (next_cr != CH32EOF)
-		while (((read_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb)), next_cr) != CH32EOF) {
+		while (((read_cr = TextFromFiles::next_char(sf)), next_cr) != CH32EOF) {
 			last_cr = cr; cr = next_cr; next_cr = read_cr;
 			switch(cr) {
 				case '\x0a':
@@ -128,13 +165,13 @@ quoted text (i.e., their text within double-quotes).
 	}
 	if (quads == 2) Str::truncate(sf->body_text, i);
 
-@ A much simpler version:
+@ A more convenient front-end:
 
 =
 source_file *TextFromFiles::feed_into_lexer(filename *F, general_pointer ref) {
 	FILE *handle = Filenames::fopen(F, "r");
 	if (handle == NULL) return NULL;
-	source_file *sf = TextFromFiles::feed_open_file_into_lexer(F, handle,
+	source_file *sf = TextFromFiles::feed_open_file_into_lexer(F, handle, NULL,
 		Filenames::get_leafname(F), FALSE, ref, UNICODE_UFBHM);
 	fclose(handle);
 	return sf;

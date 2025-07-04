@@ -12,6 +12,7 @@ length to one character less than the following constants:
 =
 typedef struct inform_extension {
 	struct inbuild_copy *as_copy;
+	int has_literate_source;
 	struct wording body_text; /* Body of source text supplied in extension, if any */
 	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
 	struct compiled_documentation *documentation; /* or |NULL| if none supplied */
@@ -96,33 +97,51 @@ void Extensions::scan(inbuild_copy *C) {
 	E->kits = NEW_LINKED_LIST(inbuild_requirement);
 	E->materials_nest = NULL;
 	E->documented_on_this_run = FALSE;
+	E->has_literate_source = FALSE;
 
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
 alone, and the version number is returned.
 
+If the source directory for a directory-based extension contains a |Contents.w|
+file, then this is considered as a literate-programming web containing the
+source text.
+
 =
 @<Scan the file@> =
+	int acceptably_named = FALSE;
 	TEMPORARY_TEXT(titling_line)
 	TEMPORARY_TEXT(version_text)
 	filename *F = Extensions::main_source_file(C);
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
-		filename *A = Extensions::alternative_source_file(C->location_if_path);
-		if (A) {
-			EXTF = Filenames::fopen_caseless(A, "r");
-			if (EXTF) {
-				extension_source_filename = A;
-				@<Look inside the file@>;
-				fclose(EXTF);
+		if (C->location_if_path) {
+			F = Filenames::in(Pathnames::down(C->location_if_path, I"Source"), I"Contents.w");
+			EXTF = Filenames::fopen_caseless(F, "r");
+		} 
+		if (EXTF) {
+			extension_source_filename = F;
+			acceptably_named = TRUE;
+			E->has_literate_source = TRUE;
+			@<Look inside the file@>;
+			fclose(EXTF);
+		} else {
+			filename *A = Extensions::alternative_source_file(C->location_if_path);
+			if (A) {
+				EXTF = Filenames::fopen_caseless(A, "r");
+				if (EXTF) {
+					extension_source_filename = A;
+					@<Look inside the file@>;
+					fclose(EXTF);
+				} else Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
 			} else Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
-		} else Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
+		}
 	} else {
 		extension_source_filename = F;
 		@<Look inside the file@>;
 		fclose(EXTF);
 	}
-	if (C->location_if_path) {
+	if ((C->location_if_path) && (acceptably_named == FALSE)) {
 		TEMPORARY_TEXT(correct_leafname)
 		WRITE_TO(correct_leafname, "%S.i7x", claimed_title);
 		if (Str::ne_insensitive(correct_leafname, Filenames::get_leafname(extension_source_filename))) {
@@ -230,6 +249,9 @@ optional, but the division word "of" and the concluding "begin[s] here"
 are not. We break it up into pieces; for speed, we won't use the lexer to
 load the entire file.
 
+The top line of a literate-programming web will look exactly the same, but
+without the "begins here" part.
+
 @<Parse the version, title, author and VM requirements from the titling line@> =
 	match_results mr = Regexp::create_mr();
 	if (Str::get_last_char(titling_line) == '.') Str::delete_last_character(titling_line);
@@ -241,8 +263,9 @@ load the entire file.
 			(Regexp::match(&mr, titling_line, U"(%c*) Starts Here"))) {
 			Str::copy(titling_line, mr.exp[0]);
 		}
-		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
-			I"the opening line does not end 'begin(s) here'"));
+		if (E->has_literate_source == FALSE)
+			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+				I"the opening line does not end 'begin(s) here'"));
 	}
 	@<Scan the version text, if any, and advance to the position past Version... Of@>;
 	if (Regexp::match(&mr, titling_line, U"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
@@ -649,8 +672,9 @@ filename *Extensions::main_source_file(inbuild_copy *C) {
 filename *Extensions::alternative_source_file(pathname *P) {
 	if (P) {
 		P = Pathnames::down(P, I"Source");
+		filename *A = Filenames::in(P, I"Contents.w");
+		if (TextFiles::exists(A)) return A;
 		linked_list *L = Directories::listing(P);
-		filename *A = NULL;
 		text_stream *entry;
 		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 			if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
@@ -842,10 +866,19 @@ At present all extensions are assumed to have English as the language of syntax.
 void Extensions::read_source_text_for(inform_extension *E) {
 	inform_language *L = Languages::find_for(I"English", Extensions::nest_list(E));
 	Languages::read_Preform_definition(L, Extensions::nest_list(E));
-	filename *F = Extensions::main_source_file(E->as_copy);
+	filename *F = NULL;
+	ls_web *W = NULL;
+	if (E->has_literate_source) {
+		pathname *P = Pathnames::down(E->as_copy->location_if_path, I"Source");
+		F = Filenames::in(P, I"Contents.w");
+		W = WebStructure::get(NULL, F, WebSyntax::default(), NULL, FALSE, FALSE,
+			TangleTargets::find_language(I"Inform 7", NULL, FALSE));
+	} else {
+		F = Extensions::main_source_file(E->as_copy);
+	}
 	TEMPORARY_TEXT(synopsis)
 	@<Concoct a synopsis for the extension to be read@>;
-	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, FALSE);
+	E->read_into_file = SourceText::read_file(E->as_copy, W, F, synopsis, FALSE);
 	SVEXPLAIN(1, "(from %f)\n", F);
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {

@@ -7,10 +7,13 @@ to allow the final story file to show illustrations.
 
 =
 void Figures::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Figures::make_special_meanings);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Figures::figures_new_base_kind_notify);
 	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Figures::figures_new_named_instance_notify);
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, Figures::production_line);
+#pragma clang diagnostic pop
 }
 
 int Figures::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

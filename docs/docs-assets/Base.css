@@ -256,3 +256,52 @@ a.paragraph-anchor::before {
 	visibility: hidden;
 	pointer-events: none;
 }
+
+/* These are for commentary rendered out from Markdown */
+
+div.lsmarkdown li {
+	list-style-type:circle;
+	margin-left: 30px;
+}
+
+div.lsmarkdown pre {
+	padding-top: 0px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+div.lsmarkdown code {
+	font-size: 15px;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}
+
+div.lsmarkdown pre code {
+	font-size: 15px;
+	border: 0px;
+	border-radius: 0px;
+	background-color: transparent;
+	padding: 0px;
+}
+
+div.lsmarkdown table {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+div.lsmarkdown table, div.lsmarkdown th, div.lsmarkdown td {
+	border: 1px solid #909090;
+	border-collapse: collapse;
+}
+
+div.lsmarkdown th, div.lsmarkdown td {
+	padding: 8px;
+}
+

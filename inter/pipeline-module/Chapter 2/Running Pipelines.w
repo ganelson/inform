@@ -219,7 +219,6 @@ once is enough. But we cache them on each step, wiping the cache at the end
 of the step, since running a step changes the Inter tree and could conceivably
 move, add or remove some of these symbols.
 
-=
 @e object_kind_RPSYM from 0
 @e direction_kind_RPSYM
 

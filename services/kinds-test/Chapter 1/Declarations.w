@@ -176,10 +176,6 @@ typedef struct kind_relationship {
 	==> { -, K }
 	PRINT("'%<W': %u\n", W, K);
 
-@<No such kind error@> =
-	PRINT("No such kind as '%W'\n", W);
-	==> { fail }
-
 @<Fail with error@> =
 	PRINT("Declaration not understood: '%W'\n", W);
 	==> { fail }

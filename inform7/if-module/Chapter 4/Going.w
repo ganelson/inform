@@ -12,6 +12,8 @@ below will ever be called.
 
 =
 void GoingPlugin::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_ACTION_NOTIFY_PLUG, GoingPlugin::new_action_notify);
 	PluginCalls::plug(WRITE_AP_CLAUSE_ID_PLUG, GoingPlugin::write_clause_ID);
 	PluginCalls::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, GoingPlugin::aspect);
@@ -26,6 +28,7 @@ void GoingPlugin::start(void) {
 		RTGoing::set_pattern_match_requirements);
 	PluginCalls::plug(COMPILE_PATTERN_MATCH_CLAUSE_PLUG,
 		RTGoing::compile_pattern_match_clause);
+#pragma clang diagnostic pop
 }
 
 @ Firstly, we have to recognise the action we will treat differently, which

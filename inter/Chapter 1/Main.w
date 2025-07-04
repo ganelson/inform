@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
     @<Start up the modules@>;
 	@<Begin with an empty file list and variables dictionary@>;
 	@<Read the command line@>;
+	Pathnames::set_path_to_LP_resources(Main::internal_path());
 	if (kit_to_build) @<Select the build-kit pipeline@>;
 	@<Run the pipeline@>;
 	@<Shut down the modules@>;

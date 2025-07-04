@@ -9,9 +9,12 @@ called on every run: see //core: Core Module//.
 
 =
 void InstanceCounting::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, InstanceCounting::counting_new_subject_notify);
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, InstanceCounting::counting_complete_model);
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, InstanceCounting::production_line);
+#pragma clang diagnostic pop
 }
 
 int InstanceCounting::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

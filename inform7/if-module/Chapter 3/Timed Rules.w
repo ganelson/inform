@@ -16,9 +16,12 @@ special significance:
 
 =
 void TimedRules::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_RULE_DEFN_NOTIFY_PLUG, TimedRules::new_rule_defn_notify);
 	PluginCalls::plug(INLINE_ANNOTATION_PLUG, TimedRules::inline_annotation);
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, TimedRules::production_line);
+#pragma clang diagnostic pop
 }
 
 int TimedRules::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

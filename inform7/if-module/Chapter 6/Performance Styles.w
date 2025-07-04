@@ -7,9 +7,12 @@ Manners of speaking, used in dialogue.
 =
 void PerformanceStyles::start(void) {
 	PerformanceStyles::declare_annotations();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, PerformanceStyles::new_named_instance_notify);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, PerformanceStyles::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, PerformanceStyles::compare_CONSTANT);
+#pragma clang diagnostic pop
 }
 
 @ Performance styles are the instances of a built-in enumeration kind, created by a

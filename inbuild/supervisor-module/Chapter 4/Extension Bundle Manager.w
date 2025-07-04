@@ -259,19 +259,9 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
-			TEMPORARY_TEXT(subdir)
-			WRITE_TO(subdir, "%S", entry);
-			Str::delete_last_character(subdir);
-			TEMPORARY_TEXT(error_text)
-			WRITE_TO(error_text,
-				"the 'Source' subdirectory of the extension directory '%S' contains a "
-				"further subdirectory called '%S', but should not have further subdirectories",
-				Pathnames::directory_name(P), subdir);
-			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
-			DISCARD_TEXT(error_text)
-			DISCARD_TEXT(subdir)
 		} else {
 			if (Str::eq(entry, Filenames::get_leafname(canonical))) continue;
+			if (Str::ends_with(entry, I".w")) continue;
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,
 				"the 'Source' subdirectory of the extension directory '%S' contains a "

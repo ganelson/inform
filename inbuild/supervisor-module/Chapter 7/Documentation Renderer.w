@@ -45,11 +45,6 @@ except the examples, and then up to 26 pages holding the content of examples A t
 =
 void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 	text_stream *extras, inform_project *proj) {
-	inbuild_nest *N = Supervisor::internal();
-	if (N) {
-		pathname *LP = Pathnames::down(Nests::get_location(N), I"PLs");
-		Languages::set_default_directory(LP);
-	}
 	if (cd) {
 		DocumentationCompiler::watch_image_use(cd);
 		text_stream *OUT = DocumentationRenderer::open_subpage(P, cd->contents_URL_pattern);

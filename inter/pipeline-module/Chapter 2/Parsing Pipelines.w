@@ -87,7 +87,10 @@ pipeline_stage *ParsingPipelines::new_stage(text_stream *name,
 	int (*X)(struct pipeline_step *), int arg, int tr) {
 	pipeline_stage *stage = CREATE(pipeline_stage);
 	stage->stage_name = Str::duplicate(name);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
 	stage->execute = (int (*)(void *)) X;
+#pragma clang diagnostic pop
 	stage->stage_arg = arg;
 	stage->takes_tree = tr;
 	return stage;

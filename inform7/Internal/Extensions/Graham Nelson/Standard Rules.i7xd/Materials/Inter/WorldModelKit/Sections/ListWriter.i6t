@@ -349,7 +349,7 @@ account.
 	rfalse;
 ];
 
-@h Having Evident Content
+@h Having Evident Content.
 This is true when something has at least one unconcealed thing in it.
 It's false when something is truly empty or when all the things in
 it are concealed or undescribed, and is used to ensure that output

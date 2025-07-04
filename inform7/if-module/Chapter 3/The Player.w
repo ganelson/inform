@@ -16,6 +16,8 @@ has highly unusual semantics, even though an Inform user is barely aware of that
 
 =
 void Player::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, Player::production_line);
 	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG, Player::new_variable_notify);
 	PluginCalls::plug(VARIABLE_VALUE_NOTIFY_PLUG, Player::variable_set_warning);
@@ -24,6 +26,7 @@ void Player::start(void) {
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, Player::complete_model);
 	PluginCalls::plug(REFINE_IMPLICIT_NOUN_PLUG, Player::refine_implicit_noun);
 	PluginCalls::plug(DETECT_BODYSNATCHING_PLUG, Player::detect_bodysnatching);
+#pragma clang diagnostic pop
 }
 
 int Player::production_line(int stage, int debugging,

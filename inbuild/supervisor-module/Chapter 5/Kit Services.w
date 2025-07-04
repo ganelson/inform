@@ -459,7 +459,7 @@ void Kits::construct_graph(inform_kit *K) {
 	linked_list *BVL = NEW_LINKED_LIST(build_vertex); /* list of vertices for the binaries */
 	@<Add build edges to the binaries for each architecture@>;
 
-	web_md *Wm = WebMetadata::get_without_modules(C->location_if_path, NULL);
+	ls_web *Wm = WebStructure::get_without_modules(C->location_if_path, NULL);
 
 	build_vertex *CV = Graphs::file_vertex(Wm->contents_filename); /* the contents page vertex */
 	@<Add build edges from the binary vertices to the contents vertex@>;
@@ -498,10 +498,10 @@ internal nest shouldn't be written to even on other platforms.
 		Graphs::need_this_to_build(BV, CV);
 
 @<Add build edges from the binary vertices to each section vertex@> =
-	chapter_md *Cm;
-	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
-		section_md *Sm;
-		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
+	ls_chapter *Cm;
+	LOOP_OVER_LINKED_LIST(Cm, ls_chapter, Wm->chapters) {
+		ls_section *Sm;
+		LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
 			filename *SF = Sm->source_file_for_section;
 			build_vertex *SV = Graphs::file_vertex(SF);
 			build_vertex *BV;

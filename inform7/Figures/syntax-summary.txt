@@ -1,8 +1,8 @@
 ROOT_NT
     HEADING_NT'implied inclusions' {under: H0'implied inclusions'} {heading 0} {implied}
         INCLUSION_NT'include basic inform by graham nelson'
-            HEADING_NT'version 10.2.0 of basic inform by graham nelson begins here' {heading 0} {under: H0'version 10.2.0 of basic inform by graham nelson begins here'} {includes: Basic Inform v10.2.0 } {unit: 0}
-                BEGINHERE_NT'version 10.2.0 of basic inform by graham nelson' {unit: 0}
+            HEADING_NT'10.2.0 of basic inform by graham nelson begins here' {heading 0} {under: H0'10.2.0 of basic inform by graham nelson begins here'} {includes: Basic Inform v10.2.0 } {unit: 0}
+                BEGINHERE_NT'10.2.0 of basic inform by graham nelson' {unit: 0}
                 ...
         INCLUSION_NT'include english language by graham nelson'
             HEADING_NT'version 10.2.0 of english language by graham nelson begins h' {heading 0} {under: H0'version 10.2.0 of english language by graham nelson begins here'} {includes: English Language v10.2.0 } {unit: 1}
@@ -10,8 +10,8 @@ ROOT_NT
                 ...
         INCLUSION_NT'include english language by graham nelson'
         INCLUSION_NT'include standard rules by graham nelson'
-            HEADING_NT'version 10.2.0 of the standard rules by graham nelson begins' {heading 0} {under: H0'version 10.2.0 of the standard rules by graham nelson begins here'} {includes: Standard Rules v10.2.0 } {unit: 2}
-                BEGINHERE_NT'version 10.2.0 of the standard rules by graham nelson' {unit: 2}
+            HEADING_NT'10.2.0 of standard rules by graham nelson begins here' {heading 0} {under: H0'10.2.0 of standard rules by graham nelson begins here'} {includes: Standard Rules v10.2.0 } {unit: 2}
+                BEGINHERE_NT'10.2.0 of standard rules by graham nelson' {unit: 2}
                 ...
         INCLUSION_NT'include standard rules by graham nelson'
     HEADING_NT'use the serial comma and no scoring' {heading 0} {under: H0'use the serial comma and no scoring'} {unit: 3}

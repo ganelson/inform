@@ -16,6 +16,8 @@ regions, and so on.
 void Spatial::start(void) {
 	SpatialInferences::create();
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Spatial::create_inference_subjects);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Spatial::new_base_kind_notify);
 	PluginCalls::plug(ACT_ON_SPECIAL_NPS_PLUG, Spatial::act_on_special_NPs);
@@ -28,6 +30,7 @@ void Spatial::start(void) {
 	PluginCalls::plug(SET_KIND_NOTIFY_PLUG, Spatial::set_kind_notify);
 	PluginCalls::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
 	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
+#pragma clang diagnostic pop
 }
 
 @h Kinds of interest.

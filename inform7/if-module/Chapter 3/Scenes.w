@@ -10,12 +10,15 @@ met, or by virtue of having been anchored together.
 =
 void Scenes::start(void) {
 	Scenes::declare_annotations();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Scenes::new_property_notify);
 	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Scenes::new_named_instance_notify);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
 	PluginCalls::plug(NEW_RCD_NOTIFY_PLUG, Scenes::new_rcd);
+#pragma clang diagnostic pop
 }
 
 @ This feature needs one extra syntax tree annotation:

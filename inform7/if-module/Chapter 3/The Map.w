@@ -14,6 +14,8 @@ quite specific problem messages.
 =
 void Map::start(void) {
 	Map::create_inference();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Map::make_special_meanings);
 	PluginCalls::plug(NEW_ASSERTION_NOTIFY_PLUG, Map::look_for_direction_creation);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Map::new_base_kind_notify);
@@ -26,6 +28,7 @@ void Map::start(void) {
 	PluginCalls::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
 	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Map::intervene_in_assertion);
 	PluginCalls::plug(PRODUCTION_LINE_PLUG, Map::production_line);
+#pragma clang diagnostic pop
 }
 
 int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

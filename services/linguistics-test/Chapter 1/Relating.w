@@ -36,7 +36,6 @@ typedef struct rel {
 @ //linguistics// requires that whatever this is, it has to be "reversible".
 (This transposes the two terms. The reversal of "X sees Y" is "X is seen by Y".)
 
-=
 @d VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK Relating::reverse_rel
 
 =

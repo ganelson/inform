@@ -10,7 +10,10 @@ tomfoolery.
 
 =
 void PL::Persons::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, PL::Persons::IF_complete_model);
+#pragma clang diagnostic pop
 }
 
 int PL::Persons::IF_complete_model(int stage) {

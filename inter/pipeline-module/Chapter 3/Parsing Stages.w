@@ -33,10 +33,14 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_package *main_package = LargeScale::main_package(I);
 	@<Create a module to hold the Inter read in from this kit@>;
 	TEMPORARY_TEXT(namespacename)
-	simple_tangle_docket docket;
+	tangle_docket docket;
 	rpi_docket_state state;
 	@<Make a suitable simple tangler docket@>;
-	SimpleTangler::tangle_web(&docket);
+	TEMPORARY_TEXT(tangled)
+	Tangler::tangle_web_directory_with_docket(tangled, &docket, step->ephemera.the_kit,
+		Languages::find_by_name(I"Inform 6", NULL, FALSE));
+	ParsingStages::receive_raw(tangled, &docket);
+	DISCARD_TEXT(tangled)
 	DISCARD_TEXT(namespacename)
 	return TRUE;
 }
@@ -71,14 +75,14 @@ it from there.
 
 =
 typedef struct rpi_state {
-	struct simple_tangle_docket *docket;
+	struct tangle_docket *docket;
 	struct pipeline_step *step;
 } rpi_state;
 
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	TEMPORARY_TEXT(namespacename)
-	simple_tangle_docket docket;
+	tangle_docket docket;
 	rpi_docket_state state;
 	@<Make a suitable simple tangler docket@>;
 	rpi_state rpis;
@@ -92,11 +96,16 @@ int ParsingStages::run_parse_insertions(pipeline_step *step) {
 void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *insertion = InsertInstruction::insertion(P);
 	rpi_state *rpis = (rpi_state *) state;
-	simple_tangle_docket *docket = rpis->docket;
+	tangle_docket *docket = rpis->docket;
 	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
 	docket_state->assimilation_point = InterBookmark::after_this_node(P);
 	docket_state->provenance = InsertInstruction::provenance(P);
-	SimpleTangler::tangle_text(docket, insertion);
+	TEMPORARY_TEXT(tangled)
+	Tangler::tangle_code_with_docket(tangled, docket, insertion,
+		TextFiles::at(NULL, docket_state->provenance.line_number),
+		Languages::find_by_name(I"Inform 6", NULL, FALSE));
+	ParsingStages::receive_raw(tangled, docket);
+	DISCARD_TEXT(tangled)
 	text_stream *replacing = InsertInstruction::replacing(P);
 	if (Str::len(replacing) > 0) {
 		linked_list *L = rpis->step->pipeline->ephemera.replacements_list[rpis->step->tree_argument];
@@ -132,13 +141,25 @@ typedef struct rpi_docket_state {
 		InterBookmark::at_end_of_this_package(assimilation_package);
 	state.namespace = namespacename;
 	state.provenance = Provenance::nowhere();
-	docket = SimpleTangler::new_docket(
-		&(ParsingStages::receive_raw),
+	docket = Tangler::new_docket(
 		&(ParsingStages::receive_command),
 		&(ParsingStages::receive_bplus),
 		&(ParsingStages::line_marker),
-		&(I6Errors::issue),
-		step->ephemera.the_kit, &state);
+		&(ParsingStages::issue_tangling_error),
+		&state);
+
+@ Note that errors might come here from multiple sources, not just the tangler:
+the I6T reader also uses this callback.
+
+=
+void ParsingStages::issue_tangling_error(text_file_position *at, char *message, text_stream *quote) {
+	if (at) {
+		text_stream *name = Str::new();
+		WRITE_TO(name, "%f", at->text_file_filename);
+		I6Errors::set_current_location(Provenance::at_file_and_line(name, at->line_count));
+	}
+	I6Errors::issue(message, quote);
+}
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
 reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
@@ -151,7 +172,7 @@ syntaxes in use. Now those have all gone, so in all cases we issue an error:
 
 =
 void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
-	text_stream *argument, simple_tangle_docket *docket) {
+	text_stream *argument, tangle_docket *docket) {
 	if ((Str::eq_wide_string(command, U"plugin")) ||
 		(Str::eq_wide_string(command, U"type")) ||
 		(Str::eq_wide_string(command, U"open-file")) ||
@@ -176,12 +197,12 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 		(Str::eq_wide_string(command, U"testing-routine")) ||
 		(Str::eq_wide_string(command, U"testing-command"))) {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
-		(*(docket->error_callback))(
+		(*(docket->error_callback))(NULL,
 			"the template command '{-%S}' has been withdrawn in this version of Inform",
 			command);
 	} else {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
-		(*(docket->error_callback))("no such {-command} as '%S'", command);
+		(*(docket->error_callback))(NULL, "no such {-command} as '%S'", command);
 	}
 }
 
@@ -189,16 +210,18 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 in kit files:
 
 =
-void ParsingStages::receive_bplus(text_stream *material, simple_tangle_docket *docket) {
-	(*(docket->error_callback))(
+void ParsingStages::receive_bplus(text_stream *material, tangle_docket *docket) {
+	(*(docket->error_callback))(NULL,
 		"use of (+ ... +) in kit source has been withdrawn: '%S'", material);
 }
 
 @ This is used to place I6 comments showing the provenance of the tangled text:
 
 =
-void ParsingStages::line_marker(text_stream *material, simple_tangle_docket *docket) {
-	WRITE_TO(material, "! LINEMARKER %d %f\n", docket->current_start_line, docket->current_filename);
+void ParsingStages::line_marker(text_stream *material, tangle_docket *docket) {
+	text_file_position *tfp = &(docket->at);
+	WRITE_TO(material, "! LINEMARKER %d %f\n",
+		TextFiles::get_line_count(tfp), TextFiles::get_filename(tfp));
 }
 
 @ We very much do not ignore the raw I6 code read in, though. When the reader
@@ -235,7 +258,7 @@ and
 	(COMMENTED_I6TBIT + SQUOTED_I6TBIT + DQUOTED_I6TBIT + ROUTINED_I6TBIT)
 
 =
-void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
+void ParsingStages::receive_raw(text_stream *S, tangle_docket *docket) {
 	text_stream *R = Str::new();
 	int mode = IGNORE_WS_I6TBIT + NOTE_LINES_I6TBIT;
 	rpi_docket_state *state = (rpi_docket_state *) docket->state;
@@ -315,7 +338,7 @@ state being carried in the docket.
 Note that this function empties the splat buffer |R| before exiting.
 
 =
-void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
+void ParsingStages::splat(text_stream *R, tangle_docket *docket) {
 	if (Str::len(R) > 0) {
 		rpi_docket_state *state = (rpi_docket_state *) docket->state;
 		I6Errors::set_current_location(state->provenance);

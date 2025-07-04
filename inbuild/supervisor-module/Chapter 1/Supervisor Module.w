@@ -152,6 +152,8 @@ void SupervisorModule::write_inclusion_of_extension_ANNOT(text_stream *OUT, pars
 	}
 }
 
+@
+
 @d STILL_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK SupervisorModule::grant_annotation_permissions
 
 =

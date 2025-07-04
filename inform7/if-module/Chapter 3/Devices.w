@@ -9,8 +9,11 @@ age of Inter we want to avoid that sort of tomfoolery.
 
 =
 void PL::Devices::start(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Devices::new_base_kind_notify);
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, PL::Devices::IF_complete_model);
+#pragma clang diagnostic pop
 }
 
 @ As usual with notable kinds, this is recognised by its English name, so there

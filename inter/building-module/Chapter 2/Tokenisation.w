@@ -138,18 +138,6 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	Str::clear(current_raw);
 	tokeniser_state = NO_TOKSTATE;
 
-@<Process any escape character notation in single quotes@> =
-	for (int i=0; i<Str::len(current_raw); i++) {
-		inchar32_t c = Str::get_at(current_raw, i);
-		PUT_TO(unescaped, c);
-	}
-
-@<Process any escape character notation in double quotes@> =
-	for (int i=0; i<Str::len(current_raw); i++) {
-		inchar32_t c = Str::get_at(current_raw, i);
-		PUT_TO(unescaped, c);
-	}
-
 @ Material in |(+ ... +)| notation is an interpolation of I7 source text.
 
 @<Look for a possible Inform 7 fragment@> =

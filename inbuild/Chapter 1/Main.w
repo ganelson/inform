@@ -53,6 +53,12 @@ int main(int argc, char **argv) {
 	@<Read the command line@>;
 	CommandLine::play_back_log();
 	@<Complete the list of targets@>;
+	pathname *P = Nests::get_location(Supervisor::internal());
+	if (P == NULL) {
+		P = Pathnames::down(NULL, I"inform7");
+		P = Pathnames::down(P, I"Internal");
+	}
+	Pathnames::set_path_to_LP_resources(P);
 	if (to_install) @<Perform an extension installation@>
 	else if (to_uninstall) @<Perform an extension uninstallation@>
 	else if (to_modernise) @<Perform an extension modernisation@>

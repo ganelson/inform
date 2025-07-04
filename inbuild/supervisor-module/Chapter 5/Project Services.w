@@ -1176,7 +1176,7 @@ it comes.
 			Sentences::set_start_of_source(sfsm, lexer_wordcount);
 		}
 		N->as_source_file =
-			SourceText::read_file(proj->as_copy, F, N->source_source, TRUE);
+			SourceText::read_file(proj->as_copy, NULL, F, N->source_source, TRUE);
 		SVEXPLAIN(1, "(from %f)\n", F);
 	}
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);

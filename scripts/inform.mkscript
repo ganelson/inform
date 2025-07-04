@@ -155,13 +155,8 @@ INFORM6WEB = inform6
 {component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit   set: kits}
 {component type: web symbol: DIALOGUEKIT          webname: DialogueKit          path: inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/DialogueKit            set: kits}
 
-{component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
-{component type: web symbol: BASICINFORM          webname: basic_inform         path: inform7/extensions/basic_inform             set: extensions}
-
-# Those extensions, when tangled from these webs, will need to be placed here:
-
-STANDARDRULESTANGLED = $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Source/Standard\ Rules.i7x
-BASICINFORMTANGLED =   $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Source/Basic\ Inform.i7x
+{component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Source                                 set: extensions}
+{component type: web symbol: BASICINFORM          webname: basic_inform         path: inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Source                                   set: extensions}
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
@@ -173,10 +168,10 @@ BASICINFORMTANGLED =   $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ I
 # by "make integration" explicitly.
 
 .PHONY: all
-all: tools kits extensions localintegration
+all: tools kits localintegration
 
 .PHONY: force
-force: forcetools forcekits forceextensions localintegration
+force: forcetools forcekits localintegration
 
 # -----------------------------------------------------------------------------
 # Target "localintegration"
@@ -261,31 +256,6 @@ versions:
 	$({SYMBOL}X) -version
 	{end-components}
 	$(INFORM6X) -V
-
-# -----------------------------------------------------------------------------
-# Targets "extensions" and "forceextensions"
-# -----------------------------------------------------------------------------
-# "make extensions" incrementally re-tangles any extensions defined by webs
-# (such as Basic Inform); "make forceextensions" does so regardless of timestamps.
-
-{define: tangle-extension name: SYMBOL}
-	$(INWEBX) $({SYMBOL}WEB) -tangle-to $({SYMBOL}TANGLED)
-{end-define}
-
-.PHONY: extensions
-extensions: {components type: web set: extensions}$({SYMBOL}TANGLED) {end-components}
-
-{components type: web set: extensions}
-$({SYMBOL}TANGLED): $({SYMBOL}WEB)/Contents.w $({SYMBOL}WEB)/Sections/*.w
-	{tangle-extension name: {SYMBOL}}
-
-{end-components}
-
-PHONY: forceextensions
-forceextensions:
-	{components type: web set: extensions}
-	{tangle-extension name: {SYMBOL}}
-	{end-components}
 
 # -----------------------------------------------------------------------------
 # Targets "kits" and "forcekits"

@@ -516,6 +516,10 @@ inbuild_nest *Supervisor::internal(void) {
 	return shared_internal_nest;
 }
 
+inbuild_nest *Supervisor::internal_if_set(void) {
+	return shared_internal_nest;
+}
+
 inbuild_nest *Supervisor::external(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_external_nest;

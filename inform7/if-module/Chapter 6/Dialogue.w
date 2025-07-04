@@ -11,10 +11,13 @@ handles that kind, so it won't be dealt with in the code for this feature.
 =
 void Dialogue::start(void) {
 	Dialogue::declare_annotations();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types-strict"
 	PluginCalls::plug(NEW_ACTIVITY_NOTIFY_PLUG, Dialogue::new_activity_notify);
 	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Dialogue::new_property_notify);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Dialogue::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, Dialogue::compare_CONSTANT);
+#pragma clang diagnostic pop
 }
 
 @ These two kinds are both created by a Neptune file belonging to //DialogueKit//,

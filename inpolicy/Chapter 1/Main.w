@@ -20,7 +20,10 @@ int return_happy = TRUE, silence_mode = FALSE, verbose_mode = FALSE;
 
 int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
-	
+	pathname *P = Pathnames::down(NULL, I"inform7");
+	P = Pathnames::down(P, I"Internal");
+	Pathnames::set_path_to_LP_resources(P);
+
 	CommandLine::declare_heading(
 		U"[[Purpose]]\n\n"
 		U"usage: inpolicy [options]\n");

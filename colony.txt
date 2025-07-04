@@ -54,8 +54,8 @@ module: "linguistics" at "services/linguistics-module" in "docs/linguistics-modu
 module: "problems" at "services/problems-module" in "docs/problems-module"
 
 breadcrumbs: "Home: //overview//" > "Extensions: //extensions//"
-web: "basic_inform" at "inform7/extensions/basic_inform" in "docs/basic_inform"
-web: "standard_rules" at "inform7/extensions/standard_rules" in "docs/standard_rules"
+web: "basic_inform" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Source" in "docs/basic_inform"
+web: "standard_rules" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Source" in "docs/standard_rules"
 breadcrumbs: "Home: //overview//" > "Kits: //extensions//"
 web: "WorldModelKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit" in "docs/WorldModelKit"
 web: "EnglishLanguageKit" at "inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit" in "docs/EnglishLanguageKit"

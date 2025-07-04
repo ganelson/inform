@@ -13,6 +13,7 @@ sentence is which is mis-punctuated, and such. In every case most of these
 fields are blank.
 
 @e OPEN_FAILED_CE from 1
+@e TANGLE_ERROR_CE
 @e METADATA_MALFORMED_CE
 @e MALFORMED_LICENCE_CE
 @e EXT_MISWORDED_CE
@@ -85,6 +86,13 @@ copy_error *CopyErrors::new_F(int cat, int subcat, filename *F) {
 	return CE;
 }
 
+copy_error *CopyErrors::new_TF(int cat, int subcat, text_stream *NB, filename *F) {
+	copy_error *CE = CopyErrors::new(cat, subcat);
+	CE->details = Str::duplicate(NB);
+	CE->details_file = F;
+	return CE;
+}
+
 copy_error *CopyErrors::new_WT(int cat, int subcat, inchar32_t *details_word, text_stream *NB) {
 	copy_error *CE = CopyErrors::new(cat, subcat);
 	CE->details_word = details_word;
@@ -133,6 +141,7 @@ output.
 void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 	switch (CE->error_category) {
 		case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->details_file); break;
+		case TANGLE_ERROR_CE: WRITE("problem with literate source: %S", CE->details); break;
 		case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->details); break;
 		case EXT_BAD_DIRNAME_CE: WRITE("extension directory name wrong: %S", CE->details); break;
 		case EXT_BAD_FILENAME_CE: WRITE("extension filename wrong: %S", CE->details); break;
