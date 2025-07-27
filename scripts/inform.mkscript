@@ -600,7 +600,8 @@ forceintegration: \
 		forcetransferdocumentation \
 		forcetransferoutcomepages \
 		forcetransfertemplates \
-		forcetransferdelia
+		forcetransferdelia \
+		forcetransfersyntaxes
 
 # -----------------------------------------------------------------------------
 # Copying part of the Inform toolchain into the app
@@ -754,6 +755,16 @@ forcetransferotherinternals:
 .PHONY: forcetransferdelia
 forcetransferdelia:
 	{transfer-delia}
+
+{define: transfer-syntaxes}
+	mkdir -p "$(INTERNAL)/Syntaxes"
+	rm -f $(INTERNAL)/Syntaxes/*
+	cp -R -f $(INFORM7WEB)/Internal/Syntaxes $(INTERNAL)/Syntaxes/..
+{end-define}
+
+.PHONY: forcetransfersyntaxes
+forcetransfersyntaxes:
+	{transfer-syntaxes}
 
 # -----------------------------------------------------------------------------
 # Incrementally copying the internal tree
