@@ -55,6 +55,12 @@ void TargetVMs::create(void) {
 	TargetVMs::new(Architectures::from_codename(I"32d"), I"C",
 		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
 
+	/* C# support added March 2023 */
+	TargetVMs::new(Architectures::from_codename(I"32"), I"C#",
+		VersionNumbers::from_text(I"1"), I"cs", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"C#",
+		VersionNumbers::from_text(I"1"), I"cs", I"", I"", I"", NULL);
+
 	/* Inventory support added March 2022 */
 	TargetVMs::new(Architectures::from_codename(I"16"), I"Inventory",
 		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
