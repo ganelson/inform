@@ -94,14 +94,14 @@ value of kind \(L\) without modification &mdash; the Liskov substitution princip
 maximal with that property.
 </li></ul>
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Introducing kind variables complicates the picture, because whether or not
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote"><span class="extract"><span class="extract-syntax">list of K</span></span> conforms to <span class="extract"><span class="extract-syntax">list of arithmetic values</span></span> depends on the current
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">value of <span class="extract"><span class="extract-syntax">K</span></span> and therefore on the current context.
+<span class="extract"><span class="extract-syntax">list of K</span></span> conforms to <span class="extract"><span class="extract-syntax">list of arithmetic values</span></span> depends on the current
+value of <span class="extract"><span class="extract-syntax">K</span></span> and therefore on the current context.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> <span class="extract"><span class="extract-syntax">K_nil</span></span> is a kind which exists only for kind-checking purposes, meaning
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">"a member of the empty set". Clearly no value can ever have this. This
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">differs from <span class="extract"><span class="extract-syntax">K_void</span></span>, which means "the absence of a value". Neither can ever
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">be the kind of a variable, of course.
+"a member of the empty set". Clearly no value can ever have this. This
+differs from <span class="extract"><span class="extract-syntax">K_void</span></span>, which means "the absence of a value". Neither can ever
+be the kind of a variable, of course.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Also known as strong behavioural subtyping. This only applies to definite
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">kinds, because no value ever has an indefinite kind.
+kinds, because no value ever has an indefinite kind.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>In general there is no guarantee of antisymmetry, i.e., that \(K\leq L\)
 and \(L\leq K\) must mean \(K = L\), nor that \(K\lor L\) or \(K\land L\) are unique.

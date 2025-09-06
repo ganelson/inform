@@ -2,7 +2,10 @@
 
 To parse version numbers written semver-style.
 
-@ 
+@ The notable thing about this code is that we could match v4, v5, and so forth,
+but choose not to: we want to avoid collisions with variable names innocently
+chosen as "v" plus a number. So you need to use at least one dot. "v4.0"
+achieves the same effect as "v4" would in any case.
 
 =
 <s-literal-version-number> internal {
@@ -27,7 +30,7 @@ To parse version numbers written semver-style.
 			}
 			i++;
 		}
-		if (digits > 0) {
+		if ((digits > 0) && (segment_count > 0)) {
 			TEMPORARY_TEXT(vtext)
 			WRITE_TO(vtext, "%d", segments[0]);
 			if (segment_count >= 1) WRITE_TO(vtext, ".%d", segments[1]);

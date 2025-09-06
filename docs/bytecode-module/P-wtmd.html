@@ -125,11 +125,11 @@ feasible. (Not very much of this is actually done at present, but see e.g.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> In fact Inter schemas are so useful as a tool for generating short runs of
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">Inter that the main <a href="../inform7/index.html" class="internal">inform7</a> compiler also uses them from time to time, but
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">not directly to represent the source text.
+Inter that the main <a href="../inform7/index.html" class="internal">inform7</a> compiler also uses them from time to time, but
+not directly to represent the source text.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Though IRs vary considerably. Microsoft's Common Intermediate Language (CIL),
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">used as a back-end by C#, has quite low-level bytecode but stores it in a
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">highly structured object-oriented way.
+used as a back-end by C#, has quite low-level bytecode but stores it in a
+highly structured object-oriented way.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Textual, Binary, Memory.</b>Inter code has three representations: as a binary file, as a textual file,
 and in memory &mdash; a sort of cross-referenced form of binary. Binary or
@@ -297,7 +297,7 @@ example, we can't have this:
 <span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> (list_of_integers) primes</span>
 </pre>
 <ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The term "bytecode" is a misnomer, since this is word-based, not byte-based.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">But it is traditional and seems to have been used as far back as the mid-1960s.
+But it is traditional and seems to have been used as far back as the mid-1960s.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>Constants are useful also for providing metadata about the program. This
 is not simply commentary: what makes it "meta" is that it does not literally
@@ -375,8 +375,8 @@ which is the content of some text literal in a function, while 179 might be
 an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to some package.
 </li></ul>
 <ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In real-life botany, trees do not have building sites or warehouses, but
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">mixing some metaphors cannot really be helped. Trees in nature do not grow
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">the way they do in computer science.
+mixing some metaphors cannot really be helped. Trees in nature do not grow
+the way they do in computer science.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Nodes and instructions.</b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> details of
 which are stored as a stretch of bytecode in memory.
@@ -425,7 +425,7 @@ instruction.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Well, except for the root node, which has no real meaning. But there is
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">only one of those.
+only one of those.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
 and are under no obligation to do so in sequence or all at once. (Indeed, we
@@ -481,8 +481,8 @@ would be no good to find instead "<span class="extract"><span class="extract-syn
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> There are fleeting exceptional cases when a symbol can be wired to another
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote">symbol in the same package, but those occur only with sockets and plugs in the
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote">special connectors package, and only temporarily even then.
+symbol in the same package, but those occur only with sockets and plugs in the
+special connectors package, and only temporarily even then.
 <a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>Special symbols called plugs and sockets are used to import or export meanings
 from one tree of Inter code to a potential other tree, which will be "linked"

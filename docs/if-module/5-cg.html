@@ -191,9 +191,9 @@ verbal".
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The Standard Rules do not use the no verb verb, but Inform designers
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">sometimes do, to allow players to type commands which are meaningful even
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">when they do not start with a verb. We treat those as being commands which
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">do in fact start with the invisible "no verb verb".
+sometimes do, to allow players to type commands which are meaningful even
+when they do not start with a verb. We treat those as being commands which
+do in fact start with the invisible "no verb verb".
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::get_verb_text</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
@@ -375,11 +375,11 @@ kinds.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Because in our run-time representation, objects and kinds of objects have
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">data which makes it convenient for them to provide their own "general parsing
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">routines", whereas enumeration values do not. So to give exotic names to instances
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">of non-object kinds we use <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span> instead. And in any case numbers or
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">times of day are not inference subjects anyway, so we would need <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span>
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">in any case for those.
+data which makes it convenient for them to provide their own "general parsing
+routines", whereas enumeration values do not. So to give exotic names to instances
+of non-object kinds we use <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span> instead. And in any case numbers or
+times of day are not inference subjects anyway, so we would need <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span>
+in any case for those.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::for_subject</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::for_subject</span></span>:<br/>Understand Sentences - <a href="5-us.html#SP19_11">&#167;19.11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
@@ -442,8 +442,8 @@ Note that exactly one consultation can be made at a time.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The term "consultation" goes back to the origins of this feature in the
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">CONSULT command, which in turn goes right back to a game called "Curses" (1993),
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">in which players consulted a biographical dictionary of the Meldrew family.
+CONSULT command, which in turn goes right back to a game called "Curses" (1993),
+in which players consulted a biographical dictionary of the Meldrew family.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">consultation_gv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

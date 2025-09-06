@@ -109,12 +109,12 @@ simplifications, Inform would generate much less efficient code.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> At time of writing, <a href="https://en.wikipedia.org/wiki/Calculus_(disambiguation)" class="external">nearly 40 can be found here</a>,
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">though admittedly that includes a genus of spider and a Tintin character.
+though admittedly that includes a genus of spider and a Tintin character.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Specifically, first order predicate calculus with equality, but with
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">generalised quantifiers added, and disjunction removed.
+generalised quantifiers added, and disjunction removed.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> This is not altogether a coincidence since the pioneers of mathematical
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">logic, and in particular Frege and Wittgenstein, began by thinking about
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">natural language.
+logic, and in particular Frege and Wittgenstein, began by thinking about
+natural language.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Notation.</b>This module deals with propositions in predicate calculus, that is, with
 logical statements which are normally written in mathematical notation. To
@@ -189,17 +189,17 @@ specifying the domain of \(v\), and \(P\) is a proposition.<sup id="fnref:6"><a 
 </li><li>&#9679; An existential quantification \(\exists v: P\) without a domain.
 </li></ul>
 <ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In this module we use words such as "constant", "variable" and "function" in
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">their predicate-calculus senses, not their Inform ones. For example, if we are
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">to decide whether it is true that "a container in the location of Nicole contains
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">the prize", we have to forget about the passage of time and think only about a
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">single moment. In the resultant proposition, "the location of Nicole" and
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">"the prize" lead to constant terms, "a container" leads to a variable term (since
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">we do not know its identity) and there are no functions.
+their predicate-calculus senses, not their Inform ones. For example, if we are
+to decide whether it is true that "a container in the location of Nicole contains
+the prize", we have to forget about the passage of time and think only about a
+single moment. In the resultant proposition, "the location of Nicole" and
+"the prize" lead to constant terms, "a container" leads to a variable term (since
+we do not know its identity) and there are no functions.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> We do not support higher arities of predicates as such, but they can be
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">simulated. The universal relation in Inform is in effect a ternary predicate,
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">but is achieved by combining two of its terms into an ordered pair.
+simulated. The universal relation in Inform is in effect a ternary predicate,
+but is achieved by combining two of its terms into an ordered pair.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Some quantifiers also carry a numerical parameter, to express, e.g.,
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote">"at least 7" &mdash; the parameter for that being 7.
+"at least 7" &mdash; the parameter for that being 7.
 <a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>The implementation uses the term "atom" a little more loosely, to include
 four punctuation marks: <span class="extract"><span class="extract-syntax">NOT&lt;</span></span>, <span class="extract"><span class="extract-syntax">NOT&gt;</span></span>, <span class="extract"><span class="extract-syntax">IN&lt;</span></span>, <span class="extract"><span class="extract-syntax">IN&gt;</span></span>, which act like
@@ -282,8 +282,8 @@ Binary predicate atoms are made using <a href="4-ap.html#SP10" class="internal">
 </li><li>&#9679; <a href="4-prp.html#SP16" class="internal">Propositions::quantify</a>.
 </li></ul>
 <ul class="footnotetexts"><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> But beware that propositions are passed by reference not value. Use
-<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><a href="4-prp.html#SP13" class="internal">Propositions::copy</a> before changing one, if you need to use it
-<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote">again.
+<a href="4-prp.html#SP13" class="internal">Propositions::copy</a> before changing one, if you need to use it
+again.
 <a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>There are two senses in which it's possible to make an impossible proposition:
 </p>
@@ -326,7 +326,7 @@ form roughly 20 functions in the <a href="5-smp.html" class="internal">Simplific
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> In fact, a proposition with no free variables. It's not a coincidence that
-<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:9"><p class="inwebfootnote">logicians call such propositions "sentences".
+logicians call such propositions "sentences".
 <a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-sc.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>

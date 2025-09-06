@@ -116,7 +116,7 @@ is the parent, a variety of other functions may be made.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Compare <a href="../inform7/M-rc.html" class="internal">Reference Card (in inform7)</a> and <a href="../inbuild/M-rc.html" class="internal">Reference Card (in inbuild)</a>
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">to see the effect.
+to see the effect.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Genre, work, edition, copy.</b>A "genre" is a category of software or artistic work for us to manage. For
 example, "Inform 7 extension" and "website template" are both genres. Each
@@ -156,11 +156,11 @@ does this to convert copy errors into Inform problem messages: see
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Note that because it is <a href="index.html" class="internal">supervisor</a> which causes source text to be read
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">in, and not <a href="../core-module/index.html" class="internal">core</a>, lexical problems such as improperly paired comment
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">brackets or overly long quoted strings will come to light as copy errors,
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">as will blunders in identifying extensions. In general, though, a copy which
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">has no copy errors is not necessarily a correct program: only one which is
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">in good enough condition for the compiler to look at.
+in, and not <a href="../core-module/index.html" class="internal">core</a>, lexical problems such as improperly paired comment
+brackets or overly long quoted strings will come to light as copy errors,
+as will blunders in identifying extensions. In general, though, a copy which
+has no copy errors is not necessarily a correct program: only one which is
+in good enough condition for the compiler to look at.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Searches and requirements.</b>Copies may be strewn all over the user's file system, and it's not for us to
 go poking around without being asked.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Instead, the user will give the
@@ -195,9 +195,9 @@ requirement.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Indeed, such a scan would violate sandboxing restrictions, for example
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">when <a href="index.html" class="internal">supervisor</a> is running as part of <a href="../inform7/index.html" class="internal">inform7</a> inside the MacOS Inform app.
+when <a href="index.html" class="internal">supervisor</a> is running as part of <a href="../inform7/index.html" class="internal">inform7</a> inside the MacOS Inform app.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> A typical requirement might read, say, "genre=extension, author=Emily Short",
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">which matches any extension by Emily Short.
+which matches any extension by Emily Short.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>Although such searches can be used with vague requirements to scan for,
 say, everything with a given genre, they can also be used to seek specific
@@ -309,11 +309,11 @@ So we only graph what we need.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Arguably the speed hit would be worth it for the gain in simplicity,
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">but there's also another technicality: an extension's dependencies
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">depend on the virtual machine they are to be used for. Some extensions
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">claimed during searches will not be compatible with the current VM at all,
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">and that's fine, since they won't be used: but we can't read their text in
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">without throwing copy errors. So we read only what we will use.
+but there's also another technicality: an extension's dependencies
+depend on the virtual machine they are to be used for. Some extensions
+claimed during searches will not be compatible with the current VM at all,
+and that's fine, since they won't be used: but we can't read their text in
+without throwing copy errors. So we read only what we will use.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reading source text.</b>For any copy, <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> will instruct the Supervisor to
 read in the Inform source text associated with it &mdash; if any: this does nothing

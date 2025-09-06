@@ -106,20 +106,20 @@ while consuming less memory. There are demerits too,<sup id="fnref:4"><a href="#
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Though, for example: are functions values? How about pointers to functions?
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">Parameters passed by reference, or pass-throughs? Are types also values? How
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">about type classes? Conditions? Exceptions? And if the answer is no, why can
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:1"><p class="inwebfootnote">they often be used as if it were yes?
+Parameters passed by reference, or pass-throughs? Are types also values? How
+about type classes? Conditions? Exceptions? And if the answer is no, why can
+they often be used as if it were yes?
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Inform phrases include even structural language features like "if", and
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">are not simply function calls: so their tokens can be conditions, lvalues,
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">or descriptions as well as rvalues. The "type" of such a token must therefore
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote">be broader than simply a kind, because only values have kinds.
+are not simply function calls: so their tokens can be conditions, lvalues,
+or descriptions as well as rvalues. The "type" of such a token must therefore
+be broader than simply a kind, because only values have kinds.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> A fairly convoluted conversion layer of code once existed in order to
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">turn pieces of parse tree into <span class="extract"><span class="extract-syntax">type_specification</span></span> objects, but that entire
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote">layer has now gone, and all of its bugs and edge cases went with it.
+turn pieces of parse tree into <span class="extract"><span class="extract-syntax">type_specification</span></span> objects, but that entire
+layer has now gone, and all of its bugs and edge cases went with it.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The main demerit is that while all specifications are <span class="extract"><span class="extract-syntax">parse_node</span></span>s, not
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">all <span class="extract"><span class="extract-syntax">parse_node</span></span>s are specifications &mdash; chapter subheadings, for example. So
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">the use of the <span class="extract"><span class="extract-syntax">parse_node</span></span> type in source code does not communicate whether
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote">we're trying to work with specifications, or doing general parsing.
+all <span class="extract"><span class="extract-syntax">parse_node</span></span>s are specifications &mdash; chapter subheadings, for example. So
+the use of the <span class="extract"><span class="extract-syntax">parse_node</span></span> type in source code does not communicate whether
+we're trying to work with specifications, or doing general parsing.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>Given that these disparate ideas are hard to unify, it might seem clearer
 not to unify them at all &mdash; if they are different concepts, represent that
@@ -172,11 +172,11 @@ the potential to be written to.<sup id="fnref:5"><a href="#fn:5" rel="footnote">
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> We have to treat lvalues in this slightly unusual way because, contrary to
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">C-like languages, we have no syntactic way to mark that the name of a variable
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">means its value rather than its identity &mdash; in C, this would be <span class="extract"><span class="extract-syntax">name</span></span> versus
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><span class="extract"><span class="extract-syntax">&amp;name</span></span>, with the "pointer to" marker <span class="extract"><span class="extract-syntax">&amp;</span></span> distinguishing the cases. We must
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">instead look to the context. Even C sometimes does that &mdash; when C writes <span class="extract"><span class="extract-syntax">v = 5</span></span>,
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote">it would arguably be more consistent to say something like <span class="extract"><span class="extract-syntax">store(&amp;v, 5)</span></span>.
+C-like languages, we have no syntactic way to mark that the name of a variable
+means its value rather than its identity &mdash; in C, this would be <span class="extract"><span class="extract-syntax">name</span></span> versus
+<span class="extract"><span class="extract-syntax">&amp;name</span></span>, with the "pointer to" marker <span class="extract"><span class="extract-syntax">&amp;</span></span> distinguishing the cases. We must
+instead look to the context. Even C sometimes does that &mdash; when C writes <span class="extract"><span class="extract-syntax">v = 5</span></span>,
+it would arguably be more consistent to say something like <span class="extract"><span class="extract-syntax">store(&amp;v, 5)</span></span>.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>"Conditions" express a state of being which might, or might not, be true:
 Inform allows these to be tested with "if" and brought about with "now".
@@ -232,7 +232,7 @@ large composite expressions &mdash; those essentially never arise in natural lan
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> In particular it does not need a constraint-satisfaction algorithm, as is
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote">needed by the almost-Turing complete type systems in some languages.
+needed by the almost-Turing complete type systems in some languages.
 <a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Literals.</b><a href="3-pl.html" class="internal">Chapter 3: Literals</a> then works through different ways to write constant values in
 source text, which we loosely call "literals". What makes them literal is that

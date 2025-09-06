@@ -50,7 +50,11 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#3">Chapter 3: Literals</a></li><li><b>Literal Version Numbers</b></li></ul></div>
 <p class="purpose">To parse version numbers written semver-style.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>The notable thing about this code is that we could match v4, v5, and so forth,
+but choose not to: we want to avoid collisions with variable names innocently
+chosen as "v" plus a number. So you need to use at least one dot. "v4.0"
+achieves the same effect as "v4" would in any case.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="function-syntax">&lt;s-literal-version-number&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal</span>
@@ -75,7 +79,7 @@
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">digits</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">digits</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">segment_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">vtext</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">vtext</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">segments</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">segment_count</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">vtext</span><span class="plain-syntax">, </span><span class="string-syntax">".%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">segments</span><span class="plain-syntax">[1]);</span>
