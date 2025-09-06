@@ -1,4 +1,4 @@
-Total memory consumption was 159609K = 156 MB
+Total memory consumption was 159604K = 156 MB
 
  ---- was used for 2325150 objects, in 405055 frames in 0 x 800K = 0K = 0 MB:
 
@@ -287,9 +287,9 @@ Total memory consumption was 159609K = 156 MB
      ----  md_links_dictionary                      1 object, 32 bytes
      ----  i6_memory_setting                        1 object, 32 bytes
 
-99.9% was used for memory not allocated for objects:
+100.0% was used for memory not allocated for objects:
 
-    65.8%  text stream storage                      107658560 bytes in 602135 claims
+    65.8%  text stream storage                      107653660 bytes in 602134 claims
      3.7%  dictionary storage                       6158144 bytes in 8256 claims
      ----  sorting                                  20984 bytes in 2640 claims
      4.4%  source text                              7200000 bytes in 3 claims

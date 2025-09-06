@@ -852,7 +852,7 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 			parse_node *spec = idtd->token_sequence[ix].to_match;
 			if (Specifications::is_kind_like(spec)) {
 				HTML::begin_span(OUT, I"phrasetokendesctext");
-				Kinds::Textual::write(OUT, Specifications::to_kind(spec));
+				Kinds::Textual::write(OUT, idtd->token_sequence[ix].token_kind);
 				HTML::end_span(OUT);
 			} else if ((Node::is(spec, CONSTANT_NT)) ||
 					(Specifications::is_description(spec))) {
