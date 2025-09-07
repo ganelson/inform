@@ -334,7 +334,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("&nbsp;<i>name</i> ");
 
 	Str::clear(S);
-	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Response", name,
+	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Unlist", name,
 		Metadata::optional_textual(owner, I"^printed_name"));
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");

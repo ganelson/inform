@@ -147,6 +147,10 @@ has been renamed:
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
+- Fix for Jira bug [I7-2317](https://inform7.atlassian.net/browse/I7-2317) and
+	duplicate [I7-2368](https://inform7.atlassian.net/browse/I7-2368)
+	"A phrase passed as a parameter to a 'To phrase' in the form 'now <condition>' is compiled as a condition, not an assertion"
+	([commit 0c0e099](https://github.com/ganelson/inform/commit/0c0e099171d4bc713c426fec31101662ca699720))
 - Fix for Jira bugs [I7-2310](https://inform7.atlassian.net/browse/I7-2310),
 	[I7-2333](https://inform7.atlassian.net/browse/I7-2333),
 	[I7-2364](https://inform7.atlassian.net/browse/I7-2364), all duplicates
