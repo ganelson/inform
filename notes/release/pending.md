@@ -53,6 +53,9 @@ has been renamed:
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
 	"The parser nothing error internal rule response (C) is badly worded"
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
+- Fix for Jira bug [I7-2540](https://inform7.atlassian.net/browse/I7-2540)
+	"Clicking the unlist rule button gives the rule response text statement instead of the unlist rule statement"
+	([commit 33e44aa](https://github.com/ganelson/inform/commit/33e44aa47876ae110a69b0de12618516dedb3e24))
 - Fix for Jira bug [I7-2543](https://inform7.atlassian.net/browse/I7-2543)
 	"Out-of-bounds memory access with one text to various K relations"
 	([commit 693da60](https://github.com/ganelson/inform/commit/693da60d8f734d62b0c7e9c04c34d5e814f9f613))	
