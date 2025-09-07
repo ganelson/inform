@@ -1058,13 +1058,6 @@ void ImperativeSubtrees::break_up_says(parse_node *block) {
 				p = blank_cb_node;
 				break;
 			}
-			case NOW_SIGF: {
-				Node::set_control_structure_used(p, now_CSP);
-				parse_node *cond_node = Node::new(CONDITION_CONTEXT_NT);
-				Node::set_text(cond_node, W);
-				p->down = cond_node;
-				break;
-			}
 		}
 		if (p->down) ImperativeSubtrees::break_up_says(p);
 	}

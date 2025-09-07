@@ -191,7 +191,6 @@ need bespoke handling:
 
 @<Compile the midriff@> =
 	if (Node::get_type(to_compile) == INVOCATION_LIST_SAY_NT) @<Compile a say term midriff@>
-	else if (csp == now_CSP) @<Compile a now midriff@>
 	else if (csp == if_CSP) @<Compile an if midriff@>
 	else if (csp == switch_CSP) @<Compile a switch midriff@>
 	else if ((csp != say_CSP) && (csp != instead_CSP)) {
@@ -207,11 +206,6 @@ need bespoke handling:
 	CompileBlocksAndLines::evaluate_invocation(to_compile, TRUE, INTER_VOID_VHMODE,
 		allow_implied_newlines);
 	allow_implied_newlines = s;
-
-@<Compile a now midriff@> =
-	current_sentence = to_compile;
-	wording XW = Node::get_text(p->down);
-	CompileBlocksAndLines::compile_a_now(XW);
 
 @<Compile a named rulebook outline midriff@> =
 	current_sentence = to_compile;

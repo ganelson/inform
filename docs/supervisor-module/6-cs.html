@@ -113,7 +113,7 @@ extensions cannot extend it.
 <span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    *</span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>And this is where they are all created:
 </p>
@@ -163,8 +163,6 @@ extensions cannot extend it.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"SAY"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"NOW"</span><span class="plain-syntax">);</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"INS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -180,9 +178,14 @@ structures it might be. Note that &lt;s-command&gt; has a grammar partially
 overlapping with this, and they need to match.
 </p>
 
+<p class="commentary">At one time we handled "now" as a control structure, but have rowed back
+on that: it's possible to implement it as a regular phrase (at the cost of
+introducing a complication to how its one token is invoked), and that seems
+better. See Jira bug report I7-2317.
+</p>
+
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">SAY_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOW_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="function-syntax">&lt;control-structure-phrase&gt;</span>
@@ -203,8 +206,7 @@ overlapping with this, and they need to match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">repeat</span>
 
 <span class="function-syntax">&lt;other-significant-phrase&gt;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> ...</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> ...</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>This is used to see if an "if" is being used with the comma notation:
 </p>
@@ -245,7 +247,7 @@ overlapping with this, and they need to match.
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::opens_block</span><span class="plain-syntax">(</span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> != </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> != </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> != </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> != </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> != </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 

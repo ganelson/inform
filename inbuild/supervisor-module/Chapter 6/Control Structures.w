@@ -51,7 +51,7 @@ extensions cannot extend it.
 control_structure_phrase *switch_CSP = NULL, *if_CSP = NULL, *repeat_CSP = NULL,
 	*while_CSP = NULL, *otherwise_CSP = NULL, *abbreviated_otherwise_CSP = NULL,
 	*otherwise_if_CSP = NULL, *default_case_CSP = NULL, *case_CSP = NULL,
-	*say_CSP = NULL, *now_CSP = NULL, *instead_CSP = NULL;
+	*say_CSP = NULL, *instead_CSP = NULL;
 
 @ And this is where they are all created:
 
@@ -100,8 +100,6 @@ void ControlStructures::create_standard(void) {
 
 	say_CSP = ControlStructures::new(I"SAY");
 
-	now_CSP = ControlStructures::new(I"NOW");
-
 	instead_CSP = ControlStructures::new(I"INS");
 }
 
@@ -115,9 +113,13 @@ Here we parse the text of a command phrase which, if any, of the control
 structures it might be. Note that <s-command> has a grammar partially
 overlapping with this, and they need to match.
 
+At one time we handled "now" as a control structure, but have rowed back
+on that: it's possible to implement it as a regular phrase (at the cost of
+introducing a complication to how its one token is invoked), and that seems
+better. See Jira bug report I7-2317.
+
 @d NO_SIGF 0
 @d SAY_SIGF 1
-@d NOW_SIGF 2
 
 =
 <control-structure-phrase> ::=
@@ -138,8 +140,7 @@ overlapping with this, and they need to match.
 	end repeat                      ==> { -, repeat_CSP }
 
 <other-significant-phrase> ::=
-	say ... |                       ==> { SAY_SIGF, - }
-	now ...                         ==> { NOW_SIGF, - }
+	say ...                         ==> { SAY_SIGF, - }
 
 @ This is used to see if an "if" is being used with the comma notation:
 
@@ -176,7 +177,7 @@ int ControlStructures::is_a_loop(control_structure_phrase *csp) {
 
 int ControlStructures::opens_block(control_structure_phrase *csp) {
 	if ((csp) && (csp->subordinate_to == NULL) &&
-		(csp != say_CSP) && (csp != now_CSP) && (csp != instead_CSP)) return TRUE;
+		(csp != say_CSP) && (csp != instead_CSP)) return TRUE;
 	return FALSE;
 }
 

@@ -277,6 +277,8 @@ a bracing.
 			c = lvalue_by_reference_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"by-value")) {
 			c = by_value_ISINC;
+		} else if (Str::eq_wide_string(t->command, U"make-true")) {
+			c = make_true_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"box-quotation-text")) {
 			c = box_quotation_text_ISINC;
 		} else if (Str::eq_wide_string(t->command, U"try-action")) {

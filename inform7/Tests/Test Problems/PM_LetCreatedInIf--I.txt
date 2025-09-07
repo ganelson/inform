@@ -1,7 +1,8 @@
-Inform 7.10.1 build 6P01 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 187 words long.
-I've also read Standard Rules by Graham Nelson, which is 43240 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_LetCreatedInIf
   >--> You wrote 'let rude comment be "It was lighted!"' (source text, line 4),
     but when a temporary value is created inside an 'if ..., ...' or an
@@ -10,7 +11,7 @@ Problem__ PM_LetCreatedInIf
     make something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (rude comment - a new name) be ("It was lighted!" - description of
-    relations of values) 
+    relations of Ks to Ls) 
     2.  let (rude comment - a new name) be ("It was lighted!" - name of
     kind) 
     3.  let (rude comment - a new name) be ("It was lighted!" - value) 
@@ -25,7 +26,7 @@ Problem__ PM_LetCreatedInIf
     make something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (rude comment - a new name) be ("It was dark!" - description of
-    relations of values) 
+    relations of Ks to Ls) 
     2.  let (rude comment - a new name) be ("It was dark!" - name of kind) 
     3.  let (rude comment - a new name) be ("It was dark!" - value) 
     4.  let (rude comment - a temporary named value) be ("It was dark!" - value)
@@ -39,7 +40,7 @@ Problem__ PM_LetCreatedInIf
     something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (spong - a new name) be (list of things - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (spong - a new name) be (list of things - name of kind) 
     3.  let (spong - a new name) be (list of things - value) 
     4.  let (spong - a temporary named value) be (list of things - value) 
@@ -54,7 +55,7 @@ Problem__ PM_LetCreatedInIf
     something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (spong - a new name) be (list of things - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (spong - a new name) be (list of things - name of kind) 
     3.  let (spong - a new name) be (list of things - value) 
     4.  let (spong - a temporary named value) be (list of things - value) 
@@ -69,7 +70,7 @@ Problem__ PM_LetCreatedInIf
     something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (spong - a new name) be (list of things - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (spong - a new name) be (list of things - name of kind) 
     3.  let (spong - a new name) be (list of things - value) 
     4.  let (spong - a temporary named value) be (list of things - value) 
@@ -84,7 +85,7 @@ Problem__ PM_LetCreatedInIf
     something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (spong - a new name) be (list of things - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (spong - a new name) be (list of things - name of kind) 
     3.  let (spong - a new name) be (list of things - value) 
     4.  let (spong - a temporary named value) be (list of things - value) 
@@ -99,11 +100,11 @@ Problem__ PM_LetCreatedInIf
     something more durable, create it before the 'if' or 'otherwise'.
     I was trying to match one of these phrases:
     1.  let (spong - a new name) be (list of things - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (spong - a new name) be (list of things - name of kind) 
     3.  let (spong - a new name) be (list of things - value) 
     4.  let (spong - a temporary named value) be (list of things - value) 
     I recognised:
     list of things = an instruction to work out a list of things
     The name 'spong' doesn't yet exist.
-Inform 7 has finished: 156 centiseconds used.
+Inform 7 has finished.

@@ -1,12 +1,17 @@
-Inform 7 build 6L63 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 11 words long.
-I've also read Standard Rules by Graham Nelson, which is 42518 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_AdjectiveMisapplied
   >--> In the sentence 'now the Laboratory is empty' (source text, line 4), it
-    looks as if you intend 'the Laboratory is empty' to be a condition, but
-    that seems to involve applying the adjective 'empty' to a room - and I have
-    no definition of it which would apply in that situation. (Try looking it up
-    in the Lexicon part of the Phrasebook index to see what definition(s)
-    'empty' has.)
-Inform 7 has finished: 47 centiseconds used.
+    looks as if you intend 'Laboratory is empty' to be a condition, but that
+    seems to involve applying the adjective 'empty' to a room - and I have no
+    definition of it which would apply in that situation. (Try looking it up in
+    the Lexicon part of the Phrasebook index to see what definition(s) 'empty'
+    has.)
+    I was trying to match this phrase:
+      now (laboratory is empty - a condition) 
+    I recognised:
+    laboratory is empty = a condition
+Inform 7 has finished.

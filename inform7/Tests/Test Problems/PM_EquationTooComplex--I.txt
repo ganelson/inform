@@ -1,7 +1,8 @@
-Inform 7 build 6M27 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 218 words long.
-I've also read Standard Rules by Graham Nelson, which is 42500 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_EquationTooComplex
   >--> In 'let F be given by F = 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
     + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
@@ -31,7 +32,7 @@ Problem__ PM_EquationTooComplex
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 +
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 +
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 , where f is a
-    number - description of relations of values) 
+    number - description of relations of Ks to Ls) 
     4.  let (f - a new name) be (given by f = 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 +
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 +
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 +
@@ -68,4 +69,4 @@ Problem__ PM_EquationTooComplex
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 , where f is a
     number'.
     The name 'f' doesn't yet exist.
-Inform 7 has finished: 62 centiseconds used.
+Inform 7 has finished.

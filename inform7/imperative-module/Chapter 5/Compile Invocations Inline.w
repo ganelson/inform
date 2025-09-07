@@ -379,6 +379,7 @@ These all modify the way a token is compiled.
 	if (C == reference_exists_ISINC)       @<Inline annotation "reference-exists"@>;
 	if (C == lvalue_by_reference_ISINC)    @<Inline annotation "lvalue-by-reference"@>;
 	if (C == by_value_ISINC)               @<Inline annotation "by-value"@>;
+	if (C == make_true_ISINC)              @<Inline annotation "make-true"@>;
 
 	if (C == box_quotation_text_ISINC)     @<Inline annotation "box-quotation-text"@>;
 
@@ -438,6 +439,14 @@ would behave pretty oddly at run-time.
 @<Inline annotation "by-value"@> =
 	by_value_not_reference = TRUE;
 	valid_annotation = TRUE;
+
+@ The one token of a "now" is a condition, but must be compiled in a special
+way to make it come true rather than to test it.
+
+@<Inline annotation "make-true"@> =
+	wording XW = Node::get_text(supplied);
+	CompileBlocksAndLines::compile_a_now(XW);
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ This is used only for compiling down to the |box| statement in I6, which has
 slightly different textual requirements than regular text. We could get rid of
@@ -596,7 +605,7 @@ that would be "property name". Instead:
 			EmitCode::val_false();
 		}
 	}
-	return;
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ This little annotation is used in //if: Timed Rules//.
 
@@ -630,7 +639,7 @@ that would be "property name". Instead:
 			}
 		} else @<Throw PM_UnrecognisedRTPCode@>;
 	}
-	return;
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @<Inline annotation "rtp-location"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_text) == FALSE) {
@@ -661,7 +670,7 @@ that would be "property name". Instead:
 			}
 		} else @<Throw PM_UnrecognisedRTPCode@>;
 	}
-	return;
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @<Throw PM_NonConstantRTPCode@> =
 	Problems::quote_source(1, current_sentence);

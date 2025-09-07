@@ -1,18 +1,19 @@
-Inform 7 build 6M27 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 18 words long.
-I've also read Standard Rules by Graham Nelson, which is 42500 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_EntryOfNonList
   >--> You wrote 'let N be entry 3 of K' (source text, line 5): but that
     doesn't make sense to me as a list entry, since the entry is taken from
     something which isn't a list.
     I was trying to match one of these phrases:
-    1.  let (n - a new name) be (entry 3 of k - description of relations of
-    values) 
+    1.  let (n - a new name) be (entry 3 of k - description of relations of Ks to
+    Ls) 
     2.  let (n - a new name) be (entry 3 of k - name of kind) 
     3.  let (n - a new name) be (entry 3 of k - value) 
     4.  let (n - a temporary named value) be (entry 3 of k - value) 
     I recognised:
     entry 3 of k = a list entry, holding a value
     The name 'n' doesn't yet exist.
-Inform 7 has finished: 57 centiseconds used.
+Inform 7 has finished.

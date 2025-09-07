@@ -1,15 +1,15 @@
-Inform 7 v10.1.0 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 17 words long.
-I've also read Basic Inform by Graham Nelson, which is 7691 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_LookedUpForbiddenProperty
   >--> In the sentence 'let M be the carrying capacity of the Entire Game' (source
     text, line 4), you seem to be looking up the 'carrying capacity' property,
     but 'Entire Game' is not allowed to have that property.
     I was trying to match one of these phrases:
     1.  let (m - a new name) be (carrying capacity of the entire game - description
-    of relations of values) 
+    of relations of Ks to Ls) 
     2.  let (m - a new name) be (carrying capacity of the entire game - name of
     kind) 
     3.  let (m - a new name) be (carrying capacity of the entire game - value)

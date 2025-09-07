@@ -345,6 +345,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e reference_exists_ISINC
 @e lvalue_by_reference_ISINC
 @e by_value_ISINC
+@e make_true_ISINC
 @e box_quotation_text_ISINC
 @e try_action_ISINC
 @e try_action_silently_ISINC

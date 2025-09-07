@@ -1,8 +1,8 @@
-Inform 7 v10.1.0 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 46 words long.
-I've also read Basic Inform by Graham Nelson, which is 7687 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 32067 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_UndeterminedKind
   >--> The phrase 'To decide which K is foo (L - a value of kind K) bar (Q - a
     value of kind Z)' (source text, line 4) needs to be used in such a way that
@@ -11,15 +11,15 @@ Problem__ PM_UndeterminedKind
 Problem__ PM_AllInvsFailed
   >--> You wrote 'add 0 to Q' (source text, line 5), which I tried to match
     against several possible phrase definitions. None of them worked.
-    1.  add (0 - list of values) to (q - list of values) 
-    2.  add (0 - value) to (q - list of values) 
+    1.  add (0 - list of Ks) to (q - list of Ks) 
+    2.  add (0 - K) to (q - list of Ks) 
     I recognised:
     q = a temporary named value, holding a list of nothing
 Problem__ PM_AllInvsFailed
   >--> You wrote 'add "" to Q' (source text, line 6), which I tried to match
     against several possible phrase definitions. None of them worked.
-    1.  add ("" - list of values) to (q - list of values) 
-    2.  add ("" - value) to (q - list of values) 
+    1.  add ("" - list of Ks) to (q - list of Ks) 
+    2.  add ("" - K) to (q - list of Ks) 
     I recognised:
     q = a temporary named value, holding a list of nothing
 Inform 7 has finished.

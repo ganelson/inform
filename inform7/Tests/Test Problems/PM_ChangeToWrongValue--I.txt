@@ -1,17 +1,18 @@
-Inform 7 build 6M53 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 31 words long.
-I've also read Standard Rules by Graham Nelson, which is 42477 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_ChangeToWrongValue
   >--> You wrote 'let the stanza be 123' (source text, line 5), but 'stanza' is
     supposed to be a stored value holding a room, so it cannot be set equal to
     123, whose kind is a number.
     I was trying to match one of these phrases:
-    1.  let (stanza - a new name) be (123 - description of relations of
-    values) 
+    1.  let (stanza - a new name) be (123 - description of relations of Ks to
+    Ls) 
     2.  let (stanza - a new name) be (123 - name of kind) 
     3.  let (stanza - a new name) be (123 - value) 
     4.  let (stanza - a temporary named value) be (123 - value) 
     I recognised:
     stanza = a temporary named value, holding a room
-Inform 7 has finished: 72 centiseconds used.
+Inform 7 has finished.

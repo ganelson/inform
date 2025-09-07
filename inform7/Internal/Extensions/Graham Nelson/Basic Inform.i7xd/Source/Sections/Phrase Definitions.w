@@ -434,7 +434,7 @@ Section 1 - Conditions
 
 To now (cn - condition)
 	(documented at ph_now):
-	(- {cn} -).
+	(- {-make-true:cn} -).
 To decide what truth state is whether or not (C - condition)
 	(documented at ph_whether):
 	(- ({C}) -).

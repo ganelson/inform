@@ -1377,13 +1377,6 @@ annotations to them.
 <span class="plain-syntax">                </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">blank_cb_node</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_SIGF:</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Node::set_control_structure_used</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cond_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">CONDITION_CONTEXT_NT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">cond_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cond_node</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) </span><a href="2-is.html#SP9" class="function-link"><span class="function-syntax">ImperativeSubtrees::break_up_says</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>

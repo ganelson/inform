@@ -1,7 +1,8 @@
-Inform 7 build 6M27 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 20 words long.
-I've also read Standard Rules by Graham Nelson, which is 42500 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35524 words long.
 Problem__ PM_NonNumericListEntry
   >--> You wrote 'let M be entry "three" of L' (source text, line 5): but that
     doesn't make sense to me as a list entry, because the indication of which
@@ -9,11 +10,11 @@ Problem__ PM_NonNumericListEntry
     'entry "six" of L'. (List entries are numbered 1, 2, 3, ...)
     I was trying to match one of these phrases:
     1.  let (m - a new name) be (entry "three" of l - description of relations of
-    values) 
+    Ks to Ls) 
     2.  let (m - a new name) be (entry "three" of l - name of kind) 
     3.  let (m - a new name) be (entry "three" of l - value) 
     4.  let (m - a temporary named value) be (entry "three" of l - value) 
     I recognised:
     entry "three" of l = a list entry, holding a number
     The name 'm' doesn't yet exist.
-Inform 7 has finished: 57 centiseconds used.
+Inform 7 has finished.
