@@ -1,8 +1,8 @@
 100.0% in inform7 run
-     65.1% in compilation to Inter
-         42.0% in //Sequence::undertake_queued_tasks//
-          5.2% in //MajorNodes::pre_pass//
-          3.9% in //MajorNodes::pass_1//
+     65.0% in compilation to Inter
+         41.8% in //Sequence::undertake_queued_tasks//
+          4.5% in //MajorNodes::pre_pass//
+          4.2% in //MajorNodes::pass_1//
           1.9% in //RTKindConstructors::compile//
           1.6% in //ImperativeDefinitions::assess_all//
           1.6% in //RTPhrasebook::compile_entries//
@@ -15,16 +15,17 @@
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Task::make_built_in_kind_constructors//
-          4.2% not specifically accounted for
-     24.7% in running Inter pipeline
-          8.1% in step 14/15: generate inform6 -> auto.inf
+          4.6% not specifically accounted for
+     25.4% in running Inter pipeline
+          8.4% in step 14/15: generate inform6 -> auto.inf
           6.5% in step 5/15: load-binary-kits
           5.2% in step 6/15: make-synoptic-module
           1.9% in step 9/15: make-identifiers-unique
+          0.3% in step 11/15: eliminate-redundant-labels
           0.3% in step 12/15: eliminate-redundant-operations
           0.3% in step 4/15: compile-splats
           0.3% in step 7/15: shorten-wiring
           0.3% in step 8/15: detect-indirect-calls
           1.6% not specifically accounted for
-      9.7% in supervisor
+      9.1% in supervisor
       0.4% not specifically accounted for
