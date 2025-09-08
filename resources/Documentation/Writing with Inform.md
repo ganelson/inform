@@ -2113,6 +2113,17 @@ This is a dead end. You'll have to go back the way you came, consoled only by a 
 
 And this is because `[river sound]` was substituted with the value of the `river sound` property of each of the rooms. And so, as the player explores these dead ends, subtle differences will appear in their room descriptions.
 
+Most of the time it's very convenient not to have spell out the owner of the property, in texts like this, but ambiguity can occasionally arise. One case in particular is when a property name coincides with the name of a kind, and then is used by this name in a test within some text. For example:
+
+	Polish is a kind of value. The polishes are gleaming, stippled, and dull.
+	A thing has a polish.
+
+	A brass plaque is here. "A brass plaque on one wall is [if polish is gleaming]highly[otherwise]barely[end if] reflective." The plaque is dull.
+
+This does _not_ result in the plaque being called ```barely reflective```, as might have been expected. That is because the word `polish` in the test is read by Inform as a common noun (the name of a kind which refers to all forms of polish), not as a proper noun (the specific polish property which the plaque has at the moment). The test `if polish is gleaming` then passes, because Inform asks itself if one of the values of `polish` is `gleaming`... which of course it is. And so, even though the plaque is dull, the description says it is ```highly reflective```. So, when writing conditions about properties whose names are the same as kinds inside of text like this, it's safer to spell things out:
+
+	"A brass plaque on one wall is [if the polish of the plaque is gleaming]highly[otherwise]barely[end if] reflective."
+	
 ## How Inform reads quoted text
 
 ^^{text substitutions: punctuation} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions}
