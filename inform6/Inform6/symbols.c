@@ -2,7 +2,7 @@
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -533,7 +533,8 @@ extern void issue_unused_warnings(void)
 
     /*  Update any ad-hoc variables that might help the library  */
     if (glulx_mode)
-    {   global_initial_value[10]=statusline_flag;
+    {
+        set_constant_otv(&global_initial_value[10], statusline_flag);
     }
     /*  Now back to mark anything necessary as used  */
 
@@ -662,14 +663,6 @@ extern void write_the_identifier_names(void)
             sprintf(temp_symbol_buf, "%s", symbols[i].name);
             temp_symbol_buf[strlen(temp_symbol_buf)-3] = 0;
 
-            if (debugfile_switch)
-            {   debug_file_printf("<action>");
-                debug_file_printf
-                    ("<identifier>##%s</identifier>", temp_symbol_buf);
-                debug_file_printf("<value>%d</value>", symbols[i].value);
-                debug_file_printf("</action>");
-            }
-
             action_name_strings[symbols[i].value]
                 = compile_string(temp_symbol_buf, STRCTX_SYMBOL);
         }
@@ -726,6 +719,33 @@ extern void write_the_identifier_names(void)
 
     veneer_mode = FALSE;
 }
+
+extern void write_debug_information_for_actions(void)
+{
+    int i, action;
+    
+    for (i=0; i<no_symbols; i++) {
+        if (symbols[i].flags & ACTION_SFLAG)
+        {
+            int sleni = strlen(symbols[i].name);
+            ensure_memory_list_available(&temp_symbol_buf_memlist, sleni+1);
+            sprintf(temp_symbol_buf, "%s", symbols[i].name);
+            temp_symbol_buf[strlen(temp_symbol_buf)-3] = 0;
+
+            action = symbols[i].value;
+            if (GRAMMAR_META_FLAG) {
+                action = sorted_actions[action].internal_to_ext;
+            }
+            
+            debug_file_printf("<action>");
+            debug_file_printf
+                ("<identifier>##%s</identifier>", temp_symbol_buf);
+            debug_file_printf("<value>%d</value>", action);
+            debug_file_printf("</action>");
+        }
+    }
+}
+
 /* ------------------------------------------------------------------------- */
 /*   Creating symbols                                                        */
 /* ------------------------------------------------------------------------- */
@@ -893,17 +913,19 @@ static void stockup_symbols(void)
     }    
 
     if (!glulx_mode) {
-        create_symbol("temp_global",  255, GLOBAL_VARIABLE_T);
-        create_symbol("temp__global2", 254, GLOBAL_VARIABLE_T);
-        create_symbol("temp__global3", 253, GLOBAL_VARIABLE_T);
-        create_symbol("temp__global4", 252, GLOBAL_VARIABLE_T);
-        create_symbol("self",         251, GLOBAL_VARIABLE_T);
-        create_symbol("sender",       250, GLOBAL_VARIABLE_T);
-        create_symbol("sw__var",      249, GLOBAL_VARIABLE_T);
-        
-        create_symbol("sys__glob0",     16, GLOBAL_VARIABLE_T);
-        create_symbol("sys__glob1",     17, GLOBAL_VARIABLE_T);
-        create_symbol("sys__glob2",     18, GLOBAL_VARIABLE_T);
+        create_symbol("temp_global",   globalv_z_temp_var1, GLOBAL_VARIABLE_T);
+        create_symbol("temp__global2", globalv_z_temp_var2, GLOBAL_VARIABLE_T);
+        create_symbol("temp__global3", globalv_z_temp_var3, GLOBAL_VARIABLE_T);
+        create_symbol("temp__global4", globalv_z_temp_var4, GLOBAL_VARIABLE_T);
+        create_symbol("self",          globalv_z_self, GLOBAL_VARIABLE_T);
+        create_symbol("sender",        globalv_z_sender, GLOBAL_VARIABLE_T);
+        create_symbol("sw__var",       globalv_z_sw__var, GLOBAL_VARIABLE_T);
+
+        /* These three are always the first three Z-machine globals,
+           which are significant in v3 (but not any later version). */
+        create_symbol("sys__glob0",    16, GLOBAL_VARIABLE_T);
+        create_symbol("sys__glob1",    17, GLOBAL_VARIABLE_T);
+        create_symbol("sys__glob2",    18, GLOBAL_VARIABLE_T);
         
         create_symbol("create",        64, INDIVIDUAL_PROPERTY_T);
         create_symbol("recreate",      65, INDIVIDUAL_PROPERTY_T);

@@ -2,7 +2,7 @@
 /*   "lexer" : Lexical analyser                                              */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -1730,9 +1730,10 @@ extern void release_token_texts(void)
 }
 
 extern void put_token_back(void)
-{   tokens_put_back++;
+{   int pos;
 
-    int pos = circle_position - tokens_put_back + 1;
+    tokens_put_back++;
+    pos = circle_position - tokens_put_back + 1;
     if (pos<0) pos += CIRCLE_SIZE;
 
     if (tokens_trace_level > 0)

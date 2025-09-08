@@ -2,7 +2,7 @@
 /*   "syntax" : Syntax analyser and compiler                                 */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -588,7 +588,7 @@ extern int32 parse_routine(char *source, int embedded_flag, char *name,
                 put_token_back(); put_token_back();
 
                 if (!glulx_mode) {
-                    INITAOTV(&AO, VARIABLE_OT, 249);
+                    INITAOTV(&AO, VARIABLE_OT, globalv_z_sw__var);
                 }
                 else {
                     INITAOTV(&AO, GLOBALVAR_OT, MAX_LOCAL_VARIABLES+6); /* sw__var */

@@ -1,2 +1,2 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 The Inform 6 memory setting "MAX_QTEXT_SIZE" is no longer needed and has been withdrawn.

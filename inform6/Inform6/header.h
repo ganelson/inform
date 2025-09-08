@@ -4,7 +4,7 @@
 /*                              Inform 6.43                                  */
 /*                                                                           */
 /*   This header file and the others making up the Inform source code are    */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /*   Manuals for this language are available from the IF-Archive at          */
 /*   https://www.ifarchive.org/                                              */
@@ -31,7 +31,7 @@
 /* ------------------------------------------------------------------------- */
 
 /* For releases, set to the release date in the form "1st January 2000" */
-#define RELEASE_DATE "in development"
+#define RELEASE_DATE "6th August 2025"
 #define RELEASE_NUMBER 1643
 #define GLULX_RELEASE_NUMBER 38
 #define VNUMBER RELEASE_NUMBER
@@ -1289,11 +1289,6 @@ typedef struct operator_s
 #define FORINIT_CONTEXT    8
 #define RETURN_Q_CONTEXT   9
 
-#define LOWEST_SYSTEM_VAR_NUMBER 249        /* globals 249 to 255 are used
-                                               in compiled code (Z-code 
-                                               only; in Glulx, the range can
-                                               change) */
-
 /* ------------------------------------------------------------------------- */
 /*   Dictionary flags (for #dict_par1)                                       */
 /* ------------------------------------------------------------------------- */
@@ -2144,17 +2139,26 @@ extern memory_list dynamic_array_area_memlist;
 extern int static_array_area_size;
 extern uchar *static_array_area;
 extern memory_list static_array_area_memlist;
-extern int32 *global_initial_value;
+extern assembly_operand *global_initial_value;
 extern arrayinfo *arrays;
 
 extern void make_global(void);
 extern void set_variable_value(int i, int32 v);
+extern void ensure_builtin_globals(void);
 extern void make_array(void);
-extern void check_globals(void);
 extern int32 begin_table_array(void);
 extern int32 begin_word_array(void);
 extern void array_entry(int32 i, int is_static, assembly_operand VAL);
 extern void finish_array(int32 i, int is_static);
+extern int globalv_z_temp_var1;
+extern int globalv_z_temp_var2;
+extern int globalv_z_temp_var3;
+extern int globalv_z_temp_var4;
+extern int globalv_z_sw__var;
+extern int globalv_z_sender;
+extern int globalv_z_self;
+extern int zcode_user_global_start_no;
+extern int zcode_highest_allowed_global;
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "asm"                                            */
@@ -2179,9 +2183,11 @@ extern int32 *named_routine_symbols;
 
 extern void print_operand(const assembly_operand *o, int annotate);
 extern char *variable_name(int32 i);
+extern void set_constant_otv(assembly_operand *AO, int32 val);
 extern void set_constant_ot(assembly_operand *AO);
 extern int  is_constant_ot(int otval);
 extern int  is_variable_ot(int otval);
+extern int  operands_identical(const assembly_operand *AO1, const assembly_operand *AO2);
 extern void assemblez_instruction(const assembly_instruction *a);
 extern void assembleg_instruction(const assembly_instruction *a);
 extern void assemble_label_no(int n);
@@ -2472,8 +2478,6 @@ extern void write_debug_undef(int32 symbol_index);
 
 extern void end_debug_file(void);
 
-extern void add_to_checksum(void *address);
-
 extern void load_sourcefile(char *story_name, int style);
 extern int file_load_chars(int file_number, char *buffer, int length);
 extern void close_all_source(void);
@@ -2619,6 +2623,7 @@ extern int ZCODE_HEADER_EXT_WORDS, ZCODE_HEADER_FLAGS_3;
 extern int ZCODE_FILE_END_PADDING;
 extern int ZCODE_LESS_DICT_DATA;
 extern int ZCODE_MAX_INLINE_STRING;
+extern int ZCODE_COMPACT_GLOBALS;
 extern int NUM_ATTR_BYTES, GLULX_OBJECT_EXT_BYTES;
 extern int WARN_UNUSED_ROUTINES, OMIT_UNUSED_ROUTINES;
 extern int STRIP_UNREACHABLE_LABELS;
@@ -2683,9 +2688,9 @@ extern void make_object(int nearby_flag,
     char *textual_name, int specified_parent, int specified_class,
     int instance_of);
 extern void make_class(char *metaclass_name);
-extern int  object_provides(int obj, int id);
 extern void list_object_tree(void);
 extern void write_the_identifier_names(void);
+extern void write_debug_information_for_actions(void);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "symbols"                                        */
@@ -2782,6 +2787,7 @@ extern int release_number, statusline_flag;
 extern int flags2_requirements[];
 extern int serial_code_given_in_program;
 extern char serial_code_buffer[];
+extern int zcode_compact_globals_adjustment;
 
 extern void construct_storyfile(void);
 extern void write_serial_number(char *buffer);

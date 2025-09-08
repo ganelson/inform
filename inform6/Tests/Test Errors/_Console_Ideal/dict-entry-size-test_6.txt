@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 line 11: Error:  Grammar version 1 cannot be used with ZCODE_LESS_DICT_DATA
 > Verb 'xyzzy' * 'foo'
 Compiled with 1 error (no output)

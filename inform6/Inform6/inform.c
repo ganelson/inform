@@ -3,7 +3,7 @@
 /*               conventions, ICL (Inform Command Line) files, main          */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -1010,6 +1010,7 @@ static void run_pass(void)
 
     parse_program(NULL);
 
+    ensure_builtin_globals();
     find_the_actions();
     issue_unused_warnings();
     compile_veneer();
@@ -1155,7 +1156,7 @@ static void cli_print_help(int help_level)
     printf(
 "\nThis program is a compiler of Infocom format (also called \"Z-machine\")\n\
 story files, as well as \"Glulx\" story files:\n\
-Copyright (c) Graham Nelson 1993 - 2024.\n\n");
+Copyright (c) Graham Nelson 1993 - 2025.\n\n");
 
    /* For people typing just "inform", a summary only: */
 

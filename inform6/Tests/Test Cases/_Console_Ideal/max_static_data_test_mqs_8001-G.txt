@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 The Inform 6 memory setting "MAX_QTEXT_SIZE" is no longer needed and has been withdrawn.
 line 4: Warning:  Array "arr_0" declared but not used
 line 5: Warning:  Array "arr_1" declared but not used

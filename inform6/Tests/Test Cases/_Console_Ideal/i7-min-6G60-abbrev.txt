@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 The Inform 6 memory setting "MAX_ARRAYS" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_CLASSES" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_VERBS" is no longer needed and has been withdrawn.
@@ -25,14 +25,10 @@ line 4633: Warning:  Local variable "partition_class_sizes" declared but not use
 line 4652: Warning:  Local variable "k2" declared but not used
 line 5227: Warning:  Using '-->' to access a -> or string array
 >  buffer2-->0 = 120;
-line 5442: Warning:  This statement can never be reached
->  }
 line 6696: Warning:  Local variable "cto" declared but not used
 line 6696: Warning:  Local variable "n" declared but not used
 line 7668: Warning:  Local variable "i" declared but not used
 line 7758: Warning:  Local variable "i" declared but not used
-line 8310: Warning:  This statement can never be reached
->   }
 line 8463: Warning:  Local variable "i" declared but not used
 line 8463: Warning:  Local variable "j" declared but not used
 line 8463: Warning:  Local variable "k" declared but not used
@@ -371,8 +367,6 @@ line 24286: Warning:  Local variable "i" declared but not used
 line 24286: Warning:  Local variable "j" declared but not used
 line 24286: Warning:  Local variable "v" declared but not used
 line 24444: Warning:  Local variable "From" declared but not used
-line 24508: Warning:  This statement can never be reached
->   }
 line 24540: Warning:  Local variable "flag" declared but not used
 line 24540: Warning:  Local variable "i" declared but not used
 line 24589: Warning:  Local variable "x" declared but not used
@@ -392,96 +386,72 @@ line 25707: Warning:  Local variable "ct_0" declared but not used
 line 25707: Warning:  Local variable "ct_1" declared but not used
 line 25746: Warning:  Local variable "ct_0" declared but not used
 line 25746: Warning:  Local variable "ct_1" declared but not used
-line 26127: Warning:  This statement can never be reached
->         }
 line 26092: Warning:  Local variable "group_wn" declared but not used
 line 26092: Warning:  Local variable "w" declared but not used
 line 26092: Warning:  Local variable "rv" declared but not used
 line 26092: Warning:  Local variable "g" declared but not used
 line 26092: Warning:  Local variable "ss" declared but not used
 line 26092: Warning:  Local variable "spn" declared but not used
-line 26177: Warning:  This statement can never be reached
->         }
 line 26142: Warning:  Local variable "group_wn" declared but not used
 line 26142: Warning:  Local variable "w" declared but not used
 line 26142: Warning:  Local variable "rv" declared but not used
 line 26142: Warning:  Local variable "g" declared but not used
 line 26142: Warning:  Local variable "ss" declared but not used
 line 26142: Warning:  Local variable "spn" declared but not used
-line 26227: Warning:  This statement can never be reached
->         }
 line 26192: Warning:  Local variable "group_wn" declared but not used
 line 26192: Warning:  Local variable "w" declared but not used
 line 26192: Warning:  Local variable "rv" declared but not used
 line 26192: Warning:  Local variable "g" declared but not used
 line 26192: Warning:  Local variable "ss" declared but not used
 line 26192: Warning:  Local variable "spn" declared but not used
-line 26277: Warning:  This statement can never be reached
->         }
 line 26242: Warning:  Local variable "group_wn" declared but not used
 line 26242: Warning:  Local variable "w" declared but not used
 line 26242: Warning:  Local variable "rv" declared but not used
 line 26242: Warning:  Local variable "g" declared but not used
 line 26242: Warning:  Local variable "ss" declared but not used
 line 26242: Warning:  Local variable "spn" declared but not used
-line 26327: Warning:  This statement can never be reached
->         }
 line 26292: Warning:  Local variable "group_wn" declared but not used
 line 26292: Warning:  Local variable "w" declared but not used
 line 26292: Warning:  Local variable "rv" declared but not used
 line 26292: Warning:  Local variable "g" declared but not used
 line 26292: Warning:  Local variable "ss" declared but not used
 line 26292: Warning:  Local variable "spn" declared but not used
-line 26377: Warning:  This statement can never be reached
->         }
 line 26342: Warning:  Local variable "group_wn" declared but not used
 line 26342: Warning:  Local variable "w" declared but not used
 line 26342: Warning:  Local variable "rv" declared but not used
 line 26342: Warning:  Local variable "g" declared but not used
 line 26342: Warning:  Local variable "ss" declared but not used
 line 26342: Warning:  Local variable "spn" declared but not used
-line 26427: Warning:  This statement can never be reached
->         }
 line 26392: Warning:  Local variable "group_wn" declared but not used
 line 26392: Warning:  Local variable "w" declared but not used
 line 26392: Warning:  Local variable "rv" declared but not used
 line 26392: Warning:  Local variable "g" declared but not used
 line 26392: Warning:  Local variable "ss" declared but not used
 line 26392: Warning:  Local variable "spn" declared but not used
-line 26477: Warning:  This statement can never be reached
->         }
 line 26442: Warning:  Local variable "group_wn" declared but not used
 line 26442: Warning:  Local variable "w" declared but not used
 line 26442: Warning:  Local variable "rv" declared but not used
 line 26442: Warning:  Local variable "g" declared but not used
 line 26442: Warning:  Local variable "ss" declared but not used
 line 26442: Warning:  Local variable "spn" declared but not used
-line 26527: Warning:  This statement can never be reached
->         }
 line 26492: Warning:  Local variable "group_wn" declared but not used
 line 26492: Warning:  Local variable "w" declared but not used
 line 26492: Warning:  Local variable "rv" declared but not used
 line 26492: Warning:  Local variable "g" declared but not used
 line 26492: Warning:  Local variable "ss" declared but not used
 line 26492: Warning:  Local variable "spn" declared but not used
-line 26577: Warning:  This statement can never be reached
->         }
 line 26542: Warning:  Local variable "group_wn" declared but not used
 line 26542: Warning:  Local variable "w" declared but not used
 line 26542: Warning:  Local variable "rv" declared but not used
 line 26542: Warning:  Local variable "g" declared but not used
 line 26542: Warning:  Local variable "ss" declared but not used
 line 26542: Warning:  Local variable "spn" declared but not used
-line 26627: Warning:  This statement can never be reached
->         }
 line 26592: Warning:  Local variable "group_wn" declared but not used
 line 26592: Warning:  Local variable "w" declared but not used
 line 26592: Warning:  Local variable "rv" declared but not used
 line 26592: Warning:  Local variable "g" declared but not used
 line 26592: Warning:  Local variable "ss" declared but not used
 line 26592: Warning:  Local variable "spn" declared but not used
-line 26677: Warning:  This statement can never be reached
->         }
 line 26642: Warning:  Local variable "group_wn" declared but not used
 line 26642: Warning:  Local variable "w" declared but not used
 line 26642: Warning:  Local variable "rv" declared but not used
@@ -1565,4 +1535,4 @@ line 31480: Warning:  Routine "EmptyRelationHandler" declared but not used
 line 33006: Warning:  Routine "RELATION_TY_Name" declared but not used
 line 33017: Warning:  Array "ResourceIDsOfFigures" declared but not used
 line 33019: Warning:  Array "ResourceIDsOfSounds" declared but not used
-Compiled with 1406 warnings
+Compiled with 1391 warnings

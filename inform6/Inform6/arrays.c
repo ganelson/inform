@@ -4,7 +4,7 @@
 /*               simpler form of the same thing.                             */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -35,7 +35,7 @@ uchar   *dynamic_array_area;           /* See above                          */
 memory_list dynamic_array_area_memlist;
 int dynamic_array_area_size;           /* Size in bytes                      */
 
-int32   *global_initial_value;         /* Allocated to no_globals            */
+assembly_operand *global_initial_value;  /* Allocated to no_globals          */
 static memory_list global_initial_value_memlist;
 
 int no_globals;                        /* Number of global variables used
@@ -67,6 +67,28 @@ static int array_entry_size,           /* 1 for byte array, 2 for word array */
 
 static memory_list current_array_name; /* The name of the global or array
                                           currently being compiled.          */
+
+/* In Z-code, the built-in globals may be numbered differently depending
+   on the version and the ZCODE_COMPACT_GLOBALS option. Here we store
+   the Z-code global index for each variable.
+*/
+int globalv_z_temp_var1;
+int globalv_z_temp_var2;
+int globalv_z_temp_var3;
+int globalv_z_temp_var4;
+int globalv_z_sw__var;
+int globalv_z_self;
+int globalv_z_sender;
+
+/* The range of global variables available to the user. These will be set
+   to avoid globalv_z_temp_var1..globalv_z_sender.
+   To make things just a bit confusing, zcode_user_global_start_no is in
+   the 0..239 range. zcode_highest_allowed_global, and the values above,
+   are shifted by 16. (Remember that variable indexes 0-15 are reserved
+   for the stack pointer and locals.)
+*/
+int zcode_user_global_start_no;
+int zcode_highest_allowed_global;
 
 /* Complete the array. Fill in the size field (if it has one) and 
    advance foo_array_area_size.
@@ -262,7 +284,21 @@ extern void set_variable_value(int i, int32 v)
     /* This isn't currently called to create a new global, but it has
        been used that way within living memory. So we call ensure. */
     ensure_memory_list_available(&global_initial_value_memlist, i+1);
-    global_initial_value[i]=v;
+    set_constant_otv(&global_initial_value[i], v);
+}
+
+extern void ensure_builtin_globals(void)
+{
+    /* A corner case: in v3 ZCODE_COMPACT_GLOBALS mode, we might not
+       have allocated enough globals to hit the "skip ahead 7" point.
+       Adjust the global count to ensure that the built-ins are
+       reserved.
+       In all other cases, this does nothing and can be peacefully
+       ignored. */
+       
+    if (!glulx_mode && ZCODE_COMPACT_GLOBALS && version_number <= 3 && no_globals < 10) {
+        no_globals = 10;
+    }
 }
 
 /*  There are four ways to initialise arrays:                                */
@@ -281,6 +317,7 @@ extern void make_global()
 
     uint32 globalnum;
     int32 global_symbol;
+    int redefining = FALSE;
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
@@ -293,18 +330,10 @@ extern void make_global()
     ensure_memory_list_available(&current_array_name, name_length);
     strncpy(current_array_name.data, token_text, name_length);
 
-    if (!glulx_mode) {
-        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)
-            && (symbols[i].value >= LOWEST_SYSTEM_VAR_NUMBER)) {
-            globalnum = symbols[i].value - MAX_LOCAL_VARIABLES;
-            goto RedefinitionOfSystemVar;
-        }
-    }
-    else {
-        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)) {
-            globalnum = symbols[i].value - MAX_LOCAL_VARIABLES;
-            goto RedefinitionOfSystemVar;
-        }
+    if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)) {
+        globalnum = symbols[i].value - MAX_LOCAL_VARIABLES;
+        redefining = TRUE;
+        goto RedefinitionOfGlobalVar;
     }
 
     if (token_type != SYMBOL_TT)
@@ -332,7 +361,16 @@ extern void make_global()
         put_token_back();
     }
     
-    if (!glulx_mode && no_globals==233)
+    if (!glulx_mode && ZCODE_COMPACT_GLOBALS && version_number <= 3 && no_globals == 3) {
+        /* Special handling for ZCODE_COMPACT_GLOBALS in z3.
+           Because z3 requires that the first three globals contain
+           location, turns and score, we've let those be user globals.
+           Now we've reached globalv_z_temp_var1, so we skip ahead
+           7. */
+        no_globals += 7;
+    }
+
+    if (!glulx_mode && no_globals == (233 + zcode_user_global_start_no))
     {   discard_token_location(beginning_debug_location);
         error("All 233 global variables already declared");
         panic_mode_error_recovery();
@@ -347,17 +385,19 @@ extern void make_global()
     assign_symbol(i, MAX_LOCAL_VARIABLES+no_globals, GLOBAL_VARIABLE_T);
 
     ensure_memory_list_available(&global_initial_value_memlist, no_globals+1);
-    global_initial_value[no_globals++]=0;
-
+    set_constant_otv(&global_initial_value[no_globals], 0);
+    no_globals++;
+    
     directive_keywords.enabled = TRUE;
 
-    RedefinitionOfSystemVar:
+    RedefinitionOfGlobalVar:
 
     get_next_token();
 
     if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
     {
-        /* No initial value. */
+        /* No initial value. (If redefining, we let the previous initial value
+           stand.) */
         put_token_back();
         if (debugfile_switch)
         {
@@ -389,6 +429,41 @@ extern void make_global()
         put_token_back();
 
     AO = parse_expression(CONSTANT_CONTEXT);
+    
+    if (globalnum >= global_initial_value_memlist.count)
+        compiler_error("Globalnum out of range");
+    
+    if (redefining) {
+        /* We permit a global to be redefined to the exact same value. */
+        if (operands_identical(&AO, &global_initial_value[globalnum])) {
+            /* The value and backpatch (and debug output) are already
+               set up, so we're done. */
+            return;
+        }
+        
+        /* We permit a zero global to be redefined, because (sigh)
+           we can't distinguish "Global g;" from "Global g=0;" after
+           the fact. */
+        if (!is_constant_ot(global_initial_value[globalnum].type)
+            || global_initial_value[globalnum].value != 0) {
+            /* Replacing a nonzero value is not allowed. */
+            ebf_symbol_error("global variable with a different value", symbols[i].name, typename(symbols[i].type), symbols[i].line);
+            return;
+        }
+        
+        /* Fall through and replace the zero with the new value.
+           (Note that we wind up with two debug file entries, which is 
+           not great. But we need to write out the new initial value
+           somehow.) */
+    }
+
+    /* This error should have been caught above, but we'll check a different
+       way just in case. (Prevents a backpatch error later.) */
+    if (global_initial_value[globalnum].marker) {
+        error("A global which has been defined as a non-constant cannot later be redefined");
+        return;
+    }
+    
     if (!glulx_mode) {
         if (AO.marker != 0)
             backpatch_zmachine(AO.marker, DYNAMIC_ARRAY_ZA,
@@ -400,9 +475,7 @@ extern void make_global()
                 4*globalnum);
     }
     
-    if (globalnum >= global_initial_value_memlist.count)
-        compiler_error("Globalnum out of range");
-    global_initial_value[globalnum] = AO.value;
+    global_initial_value[globalnum] = AO;
     
     if (debugfile_switch)
     {
@@ -791,6 +864,64 @@ extern void init_arrays_vars(void)
     arrays = NULL;
     global_initial_value = NULL;
     variables = NULL;
+
+    if (!glulx_mode) {
+        if (ZCODE_COMPACT_GLOBALS == 0) {
+            /* The traditional layout for Z-code globals is that the
+               built-ins are numbered from 255 down to 249. User
+               globals run from 16 to 248. */
+            globalv_z_temp_var1 = 255;
+            globalv_z_temp_var2 = 254;
+            globalv_z_temp_var3 = 253;
+            globalv_z_temp_var4 = 252;
+            globalv_z_self = 251;
+            globalv_z_sender = 250;
+            globalv_z_sw__var = 249;
+            zcode_user_global_start_no = 0;
+            zcode_highest_allowed_global = 249;
+        }
+        else {
+            /* In the compact arrangement, the built-ins are numbered
+               16-22... */
+            zcode_highest_allowed_global = 256;
+            if (version_number > 3) {
+                globalv_z_temp_var1 = 16;
+                globalv_z_temp_var2 = 17;
+                globalv_z_temp_var3 = 18;
+                globalv_z_temp_var4 = 19;
+                globalv_z_self = 20;
+                globalv_z_sender = 21;
+                globalv_z_sw__var = 22;
+                zcode_user_global_start_no = 7;
+            }
+            else {
+                /* ...Except that in version 3, the first three globals are
+                   hard-wired to the status line (displaying the location,
+                   moves, and score). So the built-ins are 19-25;
+                   user globals are 16-18 and then 26+. Yes, it's messy. */
+                globalv_z_temp_var1 = 19;
+                globalv_z_temp_var2 = 20;
+                globalv_z_temp_var3 = 21;
+                globalv_z_temp_var4 = 22;
+                globalv_z_self = 23;
+                globalv_z_sender = 24;
+                globalv_z_sw__var = 25;
+                zcode_user_global_start_no = 0;
+            }
+        }
+    }
+    else {
+        /* These are not used in Glulx. */
+        globalv_z_temp_var1 = -1;
+        globalv_z_temp_var2 = -1;
+        globalv_z_temp_var3 = -1;
+        globalv_z_temp_var4 = -1;
+        globalv_z_self = -1;
+        globalv_z_sender = -1;
+        globalv_z_sw__var = -1;
+        zcode_user_global_start_no = -1;
+        zcode_highest_allowed_global = -1;
+    }
 }
 
 extern void arrays_begin_pass(void)
@@ -799,9 +930,10 @@ extern void arrays_begin_pass(void)
     
     no_arrays = 0; 
     if (!glulx_mode) {
-        no_globals = 0;
-        /* The compiler-defined globals start at 239 and go down, so
-           we need to initialize the entire list from the start. */
+        no_globals = zcode_user_global_start_no;
+        /* The compiler-defined globals start at 239 and go down...
+           well, they might or might not. We'll just initialize the
+           entire globals list. */
         totalvar = MAX_ZCODE_GLOBAL_VARS;
     }
     else {
@@ -812,7 +944,7 @@ extern void arrays_begin_pass(void)
     
     ensure_memory_list_available(&global_initial_value_memlist, totalvar);
     for (ix=0; ix<totalvar; ix++) {
-        global_initial_value[ix] = 0;
+        set_constant_otv(&global_initial_value[ix], 0);
     }
     
     ensure_memory_list_available(&variables_memlist, MAX_LOCAL_VARIABLES+totalvar);
@@ -852,7 +984,7 @@ extern void arrays_allocate_arrays(void)
         sizeof(arrayinfo), 64, (void**)&arrays,
         "array info");
     initialise_memory_list(&global_initial_value_memlist,
-        sizeof(int32), 200, (void**)&global_initial_value,
+        sizeof(assembly_operand), 200, (void**)&global_initial_value,
         "global variable values");
 
     initialise_memory_list(&current_array_name,

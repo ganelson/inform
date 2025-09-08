@@ -2,7 +2,7 @@
 /*   "states" :  Statement translator                                        */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -882,7 +882,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  if (version_number == 3) return;
 
                  INITAOTV(&AO2, SHORT_CONSTANT_OT, ln2);
-                 INITAOTV(&AO4, VARIABLE_OT, 255);
+                 INITAOTV(&AO4, VARIABLE_OT, globalv_z_temp_var1);
                  assemblez_3_to(call_vs_zc, veneer_routine(Box__Routine_VR),
                      AO2, AO3, AO4);
                  return;
@@ -963,7 +963,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  /* Set the fixed-pitch header bit. */
                  INITAOTV(&AO, SHORT_CONSTANT_OT, 0);
                  INITAOTV(&AO2, SHORT_CONSTANT_OT, 8);
-                 INITAOTV(&AO3, VARIABLE_OT, 255);
+                 INITAOTV(&AO3, VARIABLE_OT, globalv_z_temp_var1);
                  assemblez_2_to(loadw_zc, AO, AO2, AO3);
 
                  if (token_value == ON_MK)
@@ -1496,7 +1496,7 @@ static void parse_statement_z(int break_label, int continue_label)
     /*  -------------------------------------------------------------------- */
 
         case READ_CODE:
-                 INITAOTV(&AO, VARIABLE_OT, 252);
+                 INITAOTV(&AO, VARIABLE_OT, globalv_z_temp_var4);
                  assemblez_store(AO,
                      code_generate(parse_expression(QUANTITY_CONTEXT),
                                    QUANTITY_CONTEXT, -1));
@@ -1614,7 +1614,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  if (version_number < 5)
                      assemblez_0_branch(save_zc, parse_label(), TRUE);
                  else
-                 {   INITAOTV(&AO, VARIABLE_OT, 255);
+                 {   INITAOTV(&AO, VARIABLE_OT, globalv_z_temp_var1);
                      assemblez_0_to(save_zc, AO);
                      assemblez_1_branch(jz_zc, AO, parse_label(), FALSE);
                  }
@@ -1627,7 +1627,7 @@ static void parse_statement_z(int break_label, int continue_label)
         case SPACES_CODE:
                  AO = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
-                 INITAOTV(&AO2, VARIABLE_OT, 255);
+                 INITAOTV(&AO2, VARIABLE_OT, globalv_z_temp_var1);
 
                  assemblez_store(AO2, AO);
 
@@ -1649,7 +1649,7 @@ static void parse_statement_z(int break_label, int continue_label)
         case STRING_CODE:
                  INITAOTV(&AO, SHORT_CONSTANT_OT, 0);
                  INITAOTV(&AO2, SHORT_CONSTANT_OT, 12);
-                 INITAOTV(&AO3, VARIABLE_OT, 252);
+                 INITAOTV(&AO3, VARIABLE_OT, globalv_z_temp_var4);
                  assemblez_2_to(loadw_zc, AO, AO2, AO3);
                  AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
@@ -1721,7 +1721,7 @@ static void parse_statement_z(int break_label, int continue_label)
                      QUANTITY_CONTEXT, -1);
                  match_close_bracket();
 
-                 INITAOTV(&AO2, VARIABLE_OT, 255);
+                 INITAOTV(&AO2, VARIABLE_OT, globalv_z_temp_var1);
                  assemblez_store(AO2, AO);
 
                  parse_code_block(ln = next_label++, continue_label, 1);
@@ -1742,7 +1742,8 @@ static void parse_statement_z(int break_label, int continue_label)
 
                  parse_code_block(ln2, ln, 0);
                  sequence_point_follows = FALSE;
-                 assemblez_jump(ln);
+                 if (!execution_never_reaches_here)
+                     assemblez_jump(ln);
                  assemble_forward_label_no(ln2);
                  return;
 
@@ -2704,7 +2705,8 @@ static void parse_statement_g(int break_label, int continue_label)
 
                  parse_code_block(ln2, ln, 0);
                  sequence_point_follows = FALSE;
-                 assembleg_jump(ln);
+                 if (!execution_never_reaches_here)
+                     assembleg_jump(ln);
                  assemble_forward_label_no(ln2);
                  return;
 

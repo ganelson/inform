@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 line 1: Error:  A definite value must be given as version number.
 > Version FORWARD_CONSTANT;
 Compiled with 1 error (no output)

@@ -2,7 +2,7 @@
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -194,7 +194,7 @@ static void make_abbrevs_lookup(void)
 /*   In Glulx, we *do not* do this overwriting with 1's.                     */
 /* ------------------------------------------------------------------------- */
 
-static int try_abbreviations_from(unsigned char *text, int i, int from)
+static int try_abbreviations_from(uchar *text, int i, int from)
 {   int j, k; uchar *p, c;
     c=text[i];
     for (j=from;
@@ -481,7 +481,7 @@ static int zchar_weight(int c)
 extern int32 translate_text(int32 p_limit, char *s_text, int strctx)
 {   int i, j, k, in_alphabet, lookup_value, is_abbreviation;
     int32 unicode; int zscii;
-    unsigned char *text_in;
+    uchar *text_in;
 
     if (p_limit >= 0) {
         ensure_memory_list_available(&translated_text_memlist, p_limit);
@@ -499,7 +499,7 @@ extern int32 translate_text(int32 p_limit, char *s_text, int strctx)
     /*  Cast the input and output streams to unsigned char: text_out_pos will
         advance as bytes of Z-coded text are written, but text_in doesn't    */
 
-    text_in     = (unsigned char *) s_text;
+    text_in     = (uchar *) s_text;
     text_out_pos = 0;
     text_out_limit = p_limit;
     text_out_overflow = FALSE;
@@ -756,6 +756,8 @@ advance as part of 'Zcharacter table':", unicode);
                     error("'@..' must have two decimal digits");
                 else
                 {
+                    if (strctx == STRCTX_ABBREV || strctx == STRCTX_LOWSTRING)
+                        warning("The Z-machine standard does not allow dynamic strings inside an abbreviation or dynamic string.");
                     j = d1*10 + d2;
                     if (!glulx_mode && j >= 96) {
                         error_max_dynamic_strings(j);
@@ -1124,7 +1126,7 @@ void compress_game_text()
       "huffman node list");
 
     /* How many entities have we currently got? Well, 256 plus the
-       string-terminator plus Unicode chars plus abbrevations plus
+       string-terminator plus Unicode chars plus abbreviations plus
        dynamic strings. */
     entities = 256+1;
     huff_unicode_start = entities;
@@ -2136,7 +2138,7 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
     if (LONG_DICT_FLAG_BUG && i>=DICT_WORD_SIZE)
         truncbug = TRUE;
 
-    k= ((unsigned char *)dword)[j];
+    k= ((uchar *)dword)[j];
     if (k=='\'') 
       warning_named("Obsolete usage: use the ^ character for the \
 apostrophe in", dword);
@@ -2529,13 +2531,15 @@ extern void dictionary_set_verb_number(int dictword, int infverb)
 /* In the dictionary-showing code, if d_show_buf is NULL, the text is
    printed directly. (The "Trace dictionary" directive does this.)
    If d_show_buf is not NULL, we add words to it (reallocing if necessary)
-   until it's a page-width. 
+   until it's a page-width. (The -r "gametext.txt" option does this.)
 */
 static char *d_show_buf = NULL;
 static int d_show_size; /* allocated size */
 static int d_show_len;  /* current length */
 
-static void show_char(char c)
+/* Print a byte to the screen or d_show_buf (see above). The caller
+   is responsible for character encoding. */
+static void show_char(uchar c)
 {
     if (d_show_buf == NULL) {
         printf("%c", c);
@@ -2552,7 +2556,7 @@ static void show_char(char c)
 }
 
 /* Display a Unicode character in user-readable form. This uses the same
-   character encoding as the source code. */
+   character encoding as the source code (determined by the -C option). */
 static void show_uchar(uint32 c)
 {
     char buf[16];
@@ -2662,7 +2666,7 @@ void print_dict_word(int node)
         word_to_ascii(p, textual_form);
         
         for (cprinted = 0; textual_form[cprinted]!=0; cprinted++)
-            show_char(textual_form[cprinted]);
+            show_uchar((uchar)textual_form[cprinted]);
     }
     else {
         p = (uchar *)dictionary + 4 + DICT_ENTRY_BYTE_LENGTH*node;
@@ -2694,7 +2698,7 @@ static void recursively_show_z(int node, int level)
     word_to_ascii(p, textual_form);
 
     for (cprinted = 0; textual_form[cprinted]!=0; cprinted++)
-        show_char(textual_form[cprinted]);
+        show_uchar((uchar)textual_form[cprinted]);
     for (; cprinted < 4 + ((version_number==3)?6:9); cprinted++)
         show_char(' ');
 

@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 line 2039: Warning:  This statement can never be reached
 >    m=#adjectives_table;
 line 3814: Warning:  This statement can never be reached

@@ -2,7 +2,7 @@
 /*   "asm" : The Inform assembler                                            */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -255,6 +255,12 @@ static void mark_label_used(int label)
 /*   Useful tool for building operands                                       */
 /* ------------------------------------------------------------------------- */
 
+extern void set_constant_otv(assembly_operand *AO, int32 val)
+{
+    AO->value = val;
+    set_constant_ot(AO);
+}
+
 extern void set_constant_ot(assembly_operand *AO)
 {
   if (!glulx_mode) {
@@ -300,6 +306,14 @@ extern int is_variable_ot(int otval)
   }
 }
 
+extern int operands_identical(const assembly_operand *AO1, const assembly_operand *AO2)
+{
+    /* We don't need to check the symindex; that doesn't affect value generation. */
+    return (AO1->value == AO2->value
+        && AO1->type == AO2->type
+        && AO1->marker == AO2->marker);
+}
+
 /* ------------------------------------------------------------------------- */
 /*   Used in printing assembly traces                                        */
 /* ------------------------------------------------------------------------- */
@@ -310,13 +324,13 @@ extern char *variable_name(int32 i)
     if (i<MAX_LOCAL_VARIABLES) return get_local_variable_name(i-1);
 
     if (!glulx_mode) {
-      if (i==255) return("TEMP1");
-      if (i==254) return("TEMP2");
-      if (i==253) return("TEMP3");
-      if (i==252) return("TEMP4");
-      if (i==251) return("self");
-      if (i==250) return("sender");
-      if (i==249) return("sw__var");
+      if (i == globalv_z_temp_var1) return("TEMP1");
+      if (i == globalv_z_temp_var2) return("TEMP2");
+      if (i == globalv_z_temp_var3) return("TEMP3");
+      if (i == globalv_z_temp_var4) return("TEMP4");
+      if (i == globalv_z_self) return("self");
+      if (i == globalv_z_sender) return("sender");
+      if (i == globalv_z_sw__var) return("sw__var");
       if (i >= 256 && i < 286)
       {   if (i - 256 < NUMBER_SYSTEM_FUNCTIONS) return system_functions.keywords[i - 256];
           return "<unnamed system function>";
@@ -1171,8 +1185,10 @@ extern void assemblez_instruction(const assembly_instruction *AI)
             are used as scratch workspace, so need no mapping between
             modules and story files: nor do local variables 0 to 15.
             (Modules no longer exist but why drop a good comment.) */
+        /*  (If COMPACT_GLOBALS is set, the scratch workspace is moved
+            to beginning of the globals area.) */
 
-        if ((o1.value >= MAX_LOCAL_VARIABLES) && (o1.value < 249))
+        if ((o1.value >= MAX_LOCAL_VARIABLES) && (o1.value < zcode_highest_allowed_global))
             o1.marker = VARIABLE_MV;
         write_operand(o1);
     }
@@ -1827,7 +1843,7 @@ extern int32 assemble_routine_header(int routine_asterisked, char *name,
           {
             if (embedded_flag)
             {
-                INITAOTV(&SLF, VARIABLE_OT, 251);
+                INITAOTV(&SLF, VARIABLE_OT, globalv_z_self);
                 INITAOTV(&CON, SHORT_CONSTANT_OT, 0);
                 assemblez_2_branch(test_attr_zc, SLF, CON, ln2, FALSE);
             }
@@ -2136,7 +2152,7 @@ void assemble_routine_end(int embedded_flag, debug_locations locations)
 static void transfer_routine_z(void)
 {   int32 i, j, pc, new_pc, label, long_form, offset_of_next, addr,
           branch_on_true, rstart_pc;
-    int32 adjusted_pc;
+    int32 adjusted_pc, opcode_at_label;
 
     adjusted_pc = zmachine_pc - zcode_ha_size; rstart_pc = adjusted_pc;
 
@@ -2150,7 +2166,12 @@ static void transfer_routine_z(void)
             short form) with DELETED_MV.
             We also look for jumps that can be entirely eliminated (because
             they are jumping to the very next instruction). The opcode and
-            both label bytes get DELETED_MV. */
+            both label bytes get DELETED_MV.
+            We also look for jumps that can be eliminated because they
+            are jumping to a (one-byte) return opcode. The jump opcode is
+            replaced by a copy of the destination opcode; the label bytes
+            get DELETED_MV. (However, we don't do the extra work to detect
+            whether this orphans the destination opcode.) */
 
     for (i=0, pc=adjusted_pc; i<zcode_ha_size; i++, pc++)
     {   if (zcode_markers[i] == BRANCH_MV)
@@ -2170,6 +2191,7 @@ static void transfer_routine_z(void)
             if (asm_trace_level >= 4)
                 printf("Jump detected at offset %04x\n", pc);
             j = (256*zcode_holding_area[i] + zcode_holding_area[i+1]) & 0x7fff;
+            opcode_at_label = zcode_holding_area[i + labels[j].offset - pc];
             if (asm_trace_level >= 4)
                 printf("...To label %d, which is %d from here\n",
                     j, labels[j].offset-pc);
@@ -2178,6 +2200,19 @@ static void transfer_routine_z(void)
                 zcode_markers[i-1] = DELETED_MV;
                 zcode_markers[i] = DELETED_MV;
                 zcode_markers[i+1] = DELETED_MV;
+            }
+            else if (opcode_at_label == 176
+                || opcode_at_label == 177
+                || opcode_at_label == 184) {
+                /* 176, 177, and 184 are the encoded forms of rtrue_zc,
+                   rfalse_zc, and ret_popped_zc. It would be cleaner
+                   to pull these from opcodes_table_z[] (adding 0xB0 for
+                   the opcode form) but it's not like they're going to
+                   ever change. */
+                if (asm_trace_level >= 4) printf("...Replacing jump with return opcode\n");
+                zcode_holding_area[i - 1] = opcode_at_label;
+                zcode_markers[i] = DELETED_MV;
+                zcode_markers[i + 1] = DELETED_MV;
             }
         }
     }
@@ -2356,7 +2391,10 @@ static void transfer_routine_g(void)
             short form) with DELETED_MV.
             We also look for branches that can be entirely eliminated (because
             they are jumping to the very next instruction). The opcode and
-            all label bytes get DELETED_MV. */
+            all label bytes get DELETED_MV.
+            (This doesn't bother with the "replace jump with return"
+            optimization that Z-code does. Figuring out the operand
+            lengths is too much work.) */
 
     for (i=0, pc=adjusted_pc; i<zcode_ha_size; i++, pc++) {
       if (zcode_markers[i] >= BRANCH_MV && zcode_markers[i] < BRANCHMAX_MV) {
@@ -2825,7 +2863,7 @@ void assemblez_objcode(int internal_number,
 extern void assemblez_inc(assembly_operand o1)
 {   int m = 0;
     if ((o1.value >= MAX_LOCAL_VARIABLES) 
-        && (o1.value<LOWEST_SYSTEM_VAR_NUMBER))
+        && (o1.value< zcode_highest_allowed_global))
             m = VARIABLE_MV;
     AI.internal_number = inc_zc;
     AI.operand_count = 1;
@@ -2840,7 +2878,7 @@ extern void assemblez_inc(assembly_operand o1)
 extern void assemblez_dec(assembly_operand o1)
 {   int m = 0;
     if ((o1.value >= MAX_LOCAL_VARIABLES) 
-        && (o1.value<LOWEST_SYSTEM_VAR_NUMBER))
+        && (o1.value< zcode_highest_allowed_global))
             m = VARIABLE_MV;
     AI.internal_number = dec_zc;
     AI.operand_count = 1;
@@ -2855,7 +2893,7 @@ extern void assemblez_dec(assembly_operand o1)
 extern void assemblez_store(assembly_operand o1, assembly_operand o2)
 {   int m = 0;
     if ((o1.value >= MAX_LOCAL_VARIABLES)
-        && (o1.value<LOWEST_SYSTEM_VAR_NUMBER))
+        && (o1.value< zcode_highest_allowed_global))
             m = VARIABLE_MV;
 
     if ((o2.type == VARIABLE_OT) && (o2.value == 0))
@@ -3291,7 +3329,7 @@ T (text), I (indirect addressing), F** (set this Flags 2 bit)");
             if ((token_type != SYMBOL_TT)
                 && (token_type != LOCAL_VARIABLE_TT))
                 ebf_curtoken_error("variable name or 'sp'");
-            n = 255;
+            n = globalv_z_temp_var1;
             if (token_type == LOCAL_VARIABLE_TT) n = token_value;
             else
             {   if (strcmp(token_text, "sp") == 0) n = 0;
@@ -3396,7 +3434,7 @@ T (text), I (indirect addressing), F** (set this Flags 2 bit)");
     {   if (AI.store_variable_number == -1)
         {   if (AI.operand_count == 0)
             {   error_flag = TRUE;
-                AI.store_variable_number = 255;
+                AI.store_variable_number = globalv_z_temp_var1;
             }
             else
             {   AI.store_variable_number

@@ -3,7 +3,7 @@
 /*              correcting symbol values not known at compilation time       */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -116,7 +116,7 @@ static int32 backpatch_value_z(int32 value)
     {   case STRING_MV:
             value += strings_offset/scale_factor; break;
         case ARRAY_MV:
-            value += variables_offset; break;
+            value += variables_offset - zcode_compact_globals_adjustment; break;
         case STATIC_ARRAY_MV:
             value += static_arrays_offset; break;
         case IROUTINE_MV:
@@ -509,6 +509,10 @@ extern void backpatch_zmachine_image_z(void)
                     backpatch_error_flag = TRUE;
         }
         addr += offset;
+
+        /* If arrays have been moved up, addr must be adjusted for the move */
+        if (ZCODE_COMPACT_GLOBALS && zmachine_area == DYNAMIC_ARRAY_ZA && offset >= 480) 
+            addr -= zcode_compact_globals_adjustment;
 
         value = 256*zmachine_paged_memory[addr]
                 + zmachine_paged_memory[addr+1];

@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 line 9: Error:  An additive property has inherited so many values that the list has overflowed the maximum 32 entries
 >  with prop 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32;
 line 9: Error:  Too many values for Z-machine property

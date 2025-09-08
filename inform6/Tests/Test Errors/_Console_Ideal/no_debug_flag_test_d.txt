@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 "<constructing output>", line 0: Warning:  DEBUG mode is on, but this story or library does not appear to support it
 > 
 "<constructing output>", line 0: Error:  No such constant as "debug_flag"

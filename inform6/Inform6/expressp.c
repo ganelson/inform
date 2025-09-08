@@ -2,7 +2,7 @@
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -687,7 +687,7 @@ static int32 value_of_system_constant_z(int t)
         case ipv__end_SC:
             return variables_offset;
         case array__start_SC:
-            return variables_offset + (MAX_ZCODE_GLOBAL_VARS*WORDSIZE);
+            return arrays_offset;
         case array__end_SC:
             return static_memory_offset;
         case dictionary_table_SC:

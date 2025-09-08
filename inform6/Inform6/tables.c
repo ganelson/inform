@@ -4,7 +4,7 @@
 /*               tables.                                                     */
 /*                                                                           */
 /*   Part of Inform 6.43                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2024                                 */
+/*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -67,6 +67,8 @@ int32 arrays_offset,
 
 int32 Out_Size, Write_Code_At, Write_Strings_At;
 int32 RAM_Size, Write_RAM_At; /* Glulx */
+
+int zcode_compact_globals_adjustment; 
 
 /* ------------------------------------------------------------------------- */
 /*   Story file header settings.   (Written to in "directs.c" and "asm.c".)  */
@@ -259,7 +261,7 @@ static void construct_storyfile_z(void)
           abbrevs_at=0, prop_defaults_at=0, object_tree_at=0, object_props_at=0,
           grammar_table_at=0, charset_at=0, headerext_at=0,
           terminating_chars_at=0, unicode_at=0, id_names_length=0,
-          static_arrays_at=0;
+          arrays_at, static_arrays_at=0;
     int32 rough_size;
     int skip_backpatching = FALSE;
     char *output_called = "story file";
@@ -516,12 +518,31 @@ static void construct_storyfile_z(void)
 
     globals_at = mark;
 
-    for (i=0; i<dynamic_array_area_size; i++)
-        p[mark++] = dynamic_array_area[i];
+    if (ZCODE_COMPACT_GLOBALS) {
+        for (i = 0; i < no_globals; i++) {
+            j = global_initial_value[i].value;
+            p[mark++] = j / 256; p[mark++] = j % 256;
+        }
 
-    for (i=0; i<240; i++)
-    {   j=global_initial_value[i];
-        p[globals_at+i*2]   = j/256; p[globals_at+i*2+1] = j%256;
+        arrays_at = mark;
+        for (i = (MAX_ZCODE_GLOBAL_VARS * WORDSIZE); i < dynamic_array_area_size; i++)
+            p[mark++] = dynamic_array_area[i];
+
+        /* When arrays move up we need a adjustment value to use when backkpatching */
+        zcode_compact_globals_adjustment = ((MAX_ZCODE_GLOBAL_VARS - no_globals) * WORDSIZE);
+    }
+    else
+    {
+        for (i = 0; i < dynamic_array_area_size; i++)
+            p[mark++] = dynamic_array_area[i];
+
+        for (i = 0; i < 240; i++)
+        {
+            j = global_initial_value[i].value;
+            p[globals_at + i * 2] = j / 256; p[globals_at + i * 2 + 1] = j % 256;
+        }
+        arrays_at = globals_at + (MAX_ZCODE_GLOBAL_VARS * WORDSIZE);
+        zcode_compact_globals_adjustment = 0;
     }
 
     /*  ------------------ Terminating Characters Table -------------------- */
@@ -531,6 +552,15 @@ static void construct_storyfile_z(void)
         for (i=0; i<no_termcs; i++) p[mark++] = terminating_characters[i];
         p[mark++] = 0;
     }
+
+    /*  ------------------------ Static Memory ----------------------------- */
+
+    /* Ensure that static memory begins at least 480 bytes after the globals.
+       There's normally 240 globals, but with ZCODE_COMPACT_GLOBALS it
+       might be less. */
+
+    if (mark < globals_at+480)
+        mark = globals_at+480;
 
     /*  ------------------------ Grammar Table ----------------------------- */
 
@@ -757,6 +787,7 @@ or less.");
 
     dictionary_offset = dictionary_at;
     variables_offset = globals_at;
+    arrays_offset = arrays_at;
     actions_offset = actions_at;
     preactions_offset = preactions_at;
     prop_defaults_offset = prop_defaults_at;
@@ -831,7 +862,7 @@ or less.");
     p[10]=prop_defaults_at/256; p[11]=prop_defaults_at%256;       /* Objects */
     p[12]=(globals_at/256); p[13]=(globals_at%256);          /* Dynamic area */
     p[14]=(grammar_table_at/256);
-    p[15]=(grammar_table_at%256);                                 /* Grammar */
+    p[15]=(grammar_table_at%256);                             /* Static area */
     for (i=0, j=0, k=1;i<16;i++, k=k*2)         /* Flags 2 as needed for any */
         j+=k*flags2_requirements[i];            /* unusual opcodes assembled */
     p[16]=j/256; p[17]=j%256;
@@ -921,8 +952,10 @@ or less.");
             p[mark++]=j/256; p[mark++]=j%256;
         }
 
-        if (grammar_version_number == 1 || grammar_version_number == 3)
-        {   mark = preactions_at;
+        if (grammar_version_number == 1)
+        {
+            /* backpatch the grammar routine addresses (in preactions) */
+            mark = preactions_at;
             for (i=0; i<no_grammar_token_routines; i++)
             {   j=grammar_token_routine[i];
                 if (OMIT_UNUSED_ROUTINES)
@@ -942,20 +975,55 @@ or less.");
                         int action = p[i+7];
                         action = sorted_actions[action].internal_to_ext;
                         p[i+7] = action;
+                        i += 8;
                     }
                 }
             }
         }
-        else
-        {   for (l = 0; l<no_Inform_verbs; l++)
+        else if (grammar_version_number == 3)
+        {
+            /* backpatch the grammar routine addresses (in preactions) */
+            mark = preactions_at;
+            for (i=0; i<no_grammar_token_routines; i++)
+            {   j=grammar_token_routine[i];
+                if (OMIT_UNUSED_ROUTINES)
+                    j = df_stripped_address_for_address(j);
+                j += code_offset/scale_factor;
+                p[mark++]=j/256; p[mark++]=j%256;
+            }
+            if (GRAMMAR_META_FLAG) {
+                /* backpatch the action numbers */
+                for (l = 0; l<no_Inform_verbs; l++)
+                {
+                    int linecount;
+                    k = grammar_table_at + 2*l;
+                    i = p[k]*256 + p[k+1];
+                    linecount = p[i++];
+                    for (j=0; j<linecount; j++)
+                    {   int word = p[i]*256 + p[i+1];
+                        int action = word & 0x03FF;
+                        int flags = word & 0x0400;
+                        int tokcount = (word >> 11) & 0x1F;
+                        if (action >= 0 && action < no_actions) {
+                            action = sorted_actions[action].internal_to_ext;
+                            word = flags | action | (tokcount << 11);
+                            p[i] = word/256; p[i+1] = word%256;
+                        }
+                        i = i + 2 + 2*tokcount;
+                    }
+                }
+            }
+        }
+        else if (grammar_version_number == 2)
+        {
+            for (l = 0; l<no_Inform_verbs; l++)
             {
                 int linecount;
                 k = grammar_table_at + 2*l;
                 i = p[k]*256 + p[k+1];
                 linecount = p[i++];
                 for (j=0; j<linecount; j++)
-                {   int topbits; int32 value;
-                    if (GRAMMAR_META_FLAG) {
+                {   if (GRAMMAR_META_FLAG) {
                         /* backpatch the action number */
                         int word = p[i]*256 + p[i+1];
                         int action = word & 0x03FF;
@@ -967,9 +1035,10 @@ or less.");
                         }
                     }
                     i = i + 2;
+                    /* backpatch the grammar routine addresses (in tokens) */
                     while (p[i] != 15)
-                    {   topbits = (p[i]/0x40) & 3;
-                        value = p[i+1]*256 + p[i+2];
+                    {   int topbits = (p[i]/0x40) & 3;
+                        int32 value = p[i+1]*256 + p[i+2];
                         switch(topbits)
                         {   case 1:
                                 value = final_dict_order[value]
@@ -989,12 +1058,19 @@ or less.");
                 }
             }
         }
+        else {
+            fatalerror_fmt(
+                "Invalid grammar version: %d", grammar_version_number);
+        }
     }
 
     /*  ---- From here on, it's all reportage: construction is finished ---- */
 
     if (debugfile_switch)
-    {   begin_writing_debug_sections();
+    {
+        write_debug_information_for_actions();
+        
+        begin_writing_debug_sections();
         write_debug_section("abbreviations", 64);
         write_debug_section("abbreviations table", abbrevs_at);
         write_debug_section("header extension", headerext_at);
@@ -1200,7 +1276,7 @@ static void construct_storyfile_g(void)
 
     globals_at = mark;
     for (i=0; i<no_globals; i++) {
-      j = global_initial_value[i];
+      j = global_initial_value[i].value;
       WriteInt32(p+mark, j);
       mark += 4;
     }
@@ -1533,8 +1609,6 @@ static void construct_storyfile_g(void)
           i -= Write_RAM_At;
           linecount = p[i++];
           for (j=0; j<linecount; j++) {
-            int topbits; 
-            int32 value;
             if (GRAMMAR_META_FLAG) {
               /* backpatch the action number */
               int action = (p[i+0] << 8) | (p[i+1]);
@@ -1544,8 +1618,8 @@ static void construct_storyfile_g(void)
             }
             i = i + 3;
             while (p[i] != 15) {
-              topbits = (p[i]/0x40) & 3;
-              value = ((p[i+1] << 24) | (p[i+2] << 16) 
+              int topbits = (p[i]/0x40) & 3;
+              int32 value = ((p[i+1] << 24) | (p[i+2] << 16) 
                 | (p[i+3] << 8) | (p[i+4]));
               switch(topbits) {
               case 1:
@@ -1570,7 +1644,10 @@ static void construct_storyfile_g(void)
     /*  ---- From here on, it's all reportage: construction is finished ---- */
 
     if (debugfile_switch)
-    {   begin_writing_debug_sections();
+    {
+        write_debug_information_for_actions();
+        
+        begin_writing_debug_sections();
         write_debug_section("memory layout id", GLULX_HEADER_SIZE);
         write_debug_section("code area", Write_Code_At);
         write_debug_section("string decoding table", Write_Strings_At);
@@ -1735,6 +1812,7 @@ static void display_statistics_z()
     char *k_str = "";
     uchar *p = (uchar *) zmachine_paged_memory;
     char *output_called = "story file";
+    int globcount;
     int limit = 0;
 
     /* Yeah, we're repeating this calculation from construct_storyfile_z() */
@@ -1776,12 +1854,17 @@ Out:   Version %d \"%s\" %s %d.%c%c%c%c%c%c (%ld%sK long):\n",
                release_number, p[18], p[19], p[20], p[21], p[22], p[23],
                (long int) k_long, k_str);
 
+        if (version_number <= 3 && ZCODE_COMPACT_GLOBALS)
+            globcount = no_globals - (7+zcode_user_global_start_no);
+        else            
+            globcount = no_globals - zcode_user_global_start_no;
+        
         printf("\
 %6d classes                      %6d objects\n\
 %6d global vars (maximum 233)    %6d variable/array space\n",
                no_classes,
                no_objects,
-               no_globals,
+               globcount,
                dynamic_array_area_size);
 
         printf(
@@ -1988,8 +2071,9 @@ extern void init_tables_vars(void)
       individuals_offset=0x800;
       identifier_names_offset=0x800;
       class_numbers_offset = 0x800;
-      arrays_offset = 0x0800; /* only used in Glulx, but might as well set */
+      arrays_offset = 0x0800;
       static_arrays_offset = 0x0800;
+      zcode_compact_globals_adjustment = 0;
     }
     else {
       code_offset = 0x12345;
@@ -2004,6 +2088,7 @@ extern void init_tables_vars(void)
       identifier_names_offset=0x12345;
       class_numbers_offset = 0x12345;
       static_arrays_offset = 0x12345;
+      zcode_compact_globals_adjustment = -1;
     }
 }
 

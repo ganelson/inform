@@ -1,4 +1,4 @@
-Inform 6.42 for MacOS (10th February 2024)
+Inform 6.43 for MacOS (6th August 2025)
 line 45: Warning:  In "give" statement, expected Attribute but found Dictionary word
 >  give obj 'word';
 line 46: Warning:  In "give" statement, expected Object but found Dictionary word

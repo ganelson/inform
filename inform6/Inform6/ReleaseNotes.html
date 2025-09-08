@@ -27,7 +27,7 @@ specific ones to Graham Nelson for permitting it in the first place, and to Andr
 for most of the actual changes to the compiler code.
 
 <h2>Inform 6.43</h2>
-These are the changes delivered in version 6.42 of the Inform compiler.
+These are the changes delivered in version 6.43 of the Inform compiler.
 
 <h3>Features added</h3>
 <ul>
@@ -37,18 +37,18 @@ or <tt>'word//~s'</tt> to not set it.
 <li><p>A new setting <tt>$DICT_TRUNCATE_FLAG</tt> has been added. If this is set to 1, then bit 6 of the dictionary
 word flag is set for any word whose source code definition is truncated to fit in the dictionary. In <tt>--trace dict</tt>
 listings, this is shown as "tr" when the flag is set.
-Without this option, bit 6 of the dictionary word flag is set for all verbs (which is the old behavior, redundant with bit 1).
+Without this option, bit 6 of the dictionary word flag is set for all verbs (which is the old behavior, redundant with bit 0).
 If the compiler truncates only the <tt>//p</tt> flag (as in <tt>$LONG_DICT_FLAG_BUG</tt>), that does not count as truncating
 the dictionary word: the only relevant test is whether or not characters were dropped.
 <li><p>A new setting <tt>$GRAMMAR_VERSION</tt> has been added. Setting this has the same effect as the existing <tt>Grammar__Version</tt>
 constant, but provides a more standard way to set the grammar table version number.
-<li><p>An experimental new grammar version 3 can be enabled with the <tt>$GRAMMAR_VERSION</tt> setting (or the <tt>Grammar__Version</tt>
+<li><p>A new grammar version 3 can be enabled with the <tt>$GRAMMAR_VERSION</tt> setting (or the <tt>Grammar__Version</tt>
 constant). This is a variation on grammar version 2 with a more compact data structure, and is only available for Z-code.
 Note that using this grammar version will require library changes that are not currently in the Inform 6 library.
 <li><p>A new setting <tt>$GRAMMAR_META_FLAG</tt> has been added. If set to 1, there is a new way to declare meta actions.
 Previously, meta actions were defined by writing lines like
 <pre>
-  Verb 'score' * -> Score meta;
+  Verb meta 'score' * -> Score;
 </pre>
 This associates the <tt>meta</tt> flag with the dictionary word "score". This is not ideal as we could have verbs which are
 meta in some phrasings but not others. If <tt>$GRAMMAR_META_FLAG</tt> is set the old syntax is still supported, but there is
@@ -66,14 +66,59 @@ declarations had been made with <tt>Extend</tt>, and a warning is produced to th
 <li><p>The output of the <tt>--trace-verbs</tt> option now shows all verb synonyms, rather than just the first one.
 <li><p>It is now an error to declare two verbs that refer to the same dictionary word. Previously this was accepted, but generated
 an incorrect story file.
+<li><p>A new setting <tt>$ZCODE_COMPACT_GLOBALS</tt> has been added. If this is set to 1, then when compiling to Z-code,
+the compiler tracks how many global variables are used, and moves the start of arrays to immediately after that. If this is left
+as the default of 0, then the compiler always allocates 480 bytes in the story file's dynamic memory for globals.
 <li><p>A new setting <tt>$ZCODE_FILE_END_PADDING</tt> has been added. By default it is set to 1, but if it is set to 0, then
 when outputting a Z-code game file Inform 6 will no longer pad the file to be a multiple of 512 bytes.
+<li><p>A warning is now issued if a dynamic string is used in another dynamic string or an abbreviation.
+<li><p>When compiling to Z-code version 3, the compiler now checks that the number of objects does not exceed the maximum
+possible, which is 255.
+<li><p>Various arithmetic opcodes are replaced with shorter versions:
+ <ul>
+ <li><tt>@add x 0 -> x</tt> &rarr; (skip)
+ <li><tt>@add x 0 -> y</tt> &rarr; <tt>@store y x</tt>
+ <li><tt>@add x 1 -> x</tt> &rarr; <tt>@inc x</tt>
+ <li><tt>@sub x 0 -> x</tt> &rarr; (skip)
+ <li><tt>@sub x 0 -> y</tt> &rarr; <tt>@store y x</tt>
+ <li><tt>@sub x 1 -> x</tt> &rarr; <tt>@dec x</tt>
+ <li><tt>@mul x 1 -> x</tt> &rarr; (skip)
+ <li><tt>@mul x 1 -> y</tt> &rarr; <tt>@store y x</tt>
+ <li><tt>@div x 1 -> x</tt> &rarr; (skip)
+ <li><tt>@div x 1 -> y</tt> &rarr; <tt>@store y x</tt>
+ </ul>
+<li><p>The property operator previously generated code like the following:
+<pre>
+  @get_prop x p -> TEMP1
+  @store y TEMP1
+</pre>
+This now skips the <tt>TEMP1</tt> step and stores directly to the variable.
+<li><p>When performing Z-code branch optimizations, if there is a <tt>@jump</tt> to an <tt>@rtrue</tt>/<tt>@rfalse</tt>/<tt>@ret_popped</tt>,
+the <tt>@jump</tt> opcode is replaced with the return opcode, which shortens the jump by one byte. In some cases this
+leaves the original return opcode unreachable. Unfortunately the dead-code-strip phase has already finished by this
+point so it is not convenient to detect this and strip it out.
 </ul>
 
 <h3>Bugs fixed</h3>
 <ul>
 <li><p>Dictionary flags were being set incorrectly when <tt>$DICT_WORD_SIZE</tt> was set sufficiently large.
-<li><p>In <tt>--trace asm</tt> output, when a Z-string has abbreviation marks, <tt>&lt;ABBR&gt;</tt> is printed, rather than Ctrl-A characters.
+<li><p>In <tt>--trace asm</tt> output, when a Z-string has abbreviation marks, <tt>&lt;ABBR&gt;</tt> is printed, rather
+than Ctrl-A characters.
+<li><p>With the <tt>$OMIT_SYMBOL_TABLE</tt> option enabled, the <tt>&lt;action&gt;</tt> section was missing from the
+"gameinfo.dbg" file.
+<li><p>Dictionary words in UTF-8 encoded source files are now printed correctly in <tt>--trace dict</tt> and <tt>-r</tt>
+"gametext.txt" output.
+<li><p>The compiler is now consistent in how it handles the redeclaration of a global variable in Z-code and in Glulx: this
+is allowed, provided that all declarations have the same initial value.
+<li><p>Dead code elimination no longer produces warnings on <tt>while</tt> loops where the closing brace cannot be reached,
+such as
+<pre>
+  while (true) {
+    i--;
+    if (i > 0) continue;
+    break;
+  }
+</pre>
 </ul>
 
 <h2>Inform 6.42</h2>
