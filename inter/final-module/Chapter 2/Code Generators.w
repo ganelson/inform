@@ -19,7 +19,7 @@ code_generator *Generators::new(text_stream *name) {
 	return generator;
 }
 
-@ Note that some code-generators, like the ones for C of Inform 6, correspond
+@ Note that some code-generators, like the ones for C or Inform 6, correspond
 to families of |target_vm|: others, like the one for printing an inventory of
 what is in an Inter tree, are not tied to VMs. But those which are tied to VMs
 must have the same names as the family names for those VMs.
@@ -51,6 +51,7 @@ void Generators::make_all(void) {
 		InvTarget::create_generator();
 		I6Target::create_generator();
 		CTarget::create_generator();
+		CSTarget::create_generator();
 	}
 }
 

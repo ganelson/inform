@@ -16,11 +16,16 @@ which use this module:
 @e vanilla_function_CLASS
 @e I6_generation_data_CLASS
 @e C_generation_data_CLASS
+@e CS_generation_data_CLASS
 @e vanilla_dword_CLASS
 @e C_property_CLASS
+@e CS_property_CLASS
 @e C_pv_pair_CLASS
+@e CS_pv_pair_CLASS
 @e C_property_owner_CLASS
+@e CS_property_owner_CLASS
 @e C_supported_opcode_CLASS
+@e CS_supported_opcode_CLASS
 
 =
 DECLARE_CLASS(code_generator)
@@ -29,11 +34,16 @@ DECLARE_CLASS(generated_segment)
 DECLARE_CLASS(vanilla_function)
 DECLARE_CLASS(I6_generation_data)
 DECLARE_CLASS(C_generation_data)
+DECLARE_CLASS(CS_generation_data)
 DECLARE_CLASS(vanilla_dword)
 DECLARE_CLASS(C_property)
+DECLARE_CLASS(CS_property)
 DECLARE_CLASS(C_pv_pair)
+DECLARE_CLASS(CS_pv_pair)
 DECLARE_CLASS(C_property_owner)
+DECLARE_CLASS(CS_property_owner)
 DECLARE_CLASS(C_supported_opcode)
+DECLARE_CLASS(CS_supported_opcode)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

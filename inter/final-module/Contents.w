@@ -48,3 +48,20 @@ Chapter 5: C
 	C Input-Output Model
 	C Miniglk
 	C Utility Functions
+
+Chapter 6: C#
+	Final C#
+	C# Namespace
+	C# References
+	C# Global Variables
+	C# Memory Model
+	C# Assembly
+	C# Arithmetic
+	C# Program Control
+	C# Conditions
+	C# Literals
+	C# Object Model
+	C# Function Model
+	C# Input-Output Model
+	C# Miniglk
+	C# Utility Functions
