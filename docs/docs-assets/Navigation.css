@@ -149,3 +149,38 @@ nav[role="navigation"] h1 {
 		display: none;
 	}
 }
+
+/* A few overrides to make the documentation useful on small screens, such as phones */
+
+@media (max-width: 700px) {
+    /* tighten up the margins and allow putting the nav menu at the end of the page */
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 5px 0 !important;
+    }
+    /* nav menu at the end of the page, not a floating sidebar over the top of the content */
+    nav[role="navigation"] {
+        position: static;
+        overflow: auto;
+        order: 2;
+    }
+    /* full-width main without big indent to leave space for the nav menu */
+    main {
+        width: 100%;
+        margin: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+        box-sizing: border-box;
+    }
+    /* constrain to screen width on narrow screens, rather than explicitly overflowing */
+    main p.commentary, main p.purpose {
+        width: auto;
+    }
+    div.breadcrumbs {
+        position: static;
+    }
+    div.contentspage .chapterlist .sectionlist li {
+        padding-left: 1.5em;
+    }
+}
