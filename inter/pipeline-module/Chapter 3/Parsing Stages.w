@@ -38,7 +38,7 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	@<Make a suitable simple tangler docket@>;
 	TEMPORARY_TEXT(tangled)
 	Tangler::tangle_web_directory_with_docket(tangled, &docket, step->ephemera.the_kit,
-		Languages::find_by_name(I"Inform 6", NULL, FALSE));
+		Languages::find_without_context(I"Inform 6"));
 	ParsingStages::receive_raw(tangled, &docket);
 	DISCARD_TEXT(tangled)
 	DISCARD_TEXT(namespacename)
@@ -103,7 +103,7 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	TEMPORARY_TEXT(tangled)
 	Tangler::tangle_code_with_docket(tangled, docket, insertion,
 		TextFiles::at(NULL, docket_state->provenance.line_number),
-		Languages::find_by_name(I"Inform 6", NULL, FALSE));
+		Languages::find_without_context(I"Inform 6"));
 	ParsingStages::receive_raw(tangled, docket);
 	DISCARD_TEXT(tangled)
 	text_stream *replacing = InsertInstruction::replacing(P);

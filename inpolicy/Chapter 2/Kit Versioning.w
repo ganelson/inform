@@ -6,22 +6,26 @@ To ensure that the built-in kits share version numbers with the core compiler.
 
 =
 void KitVersioning::show_versions(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number core_V = inform7_web->version_number;
-	PRINT("Core version is %v\n", &core_V);
-	KitVersioning::iterate(VersionNumbers::null());
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number core_V = inform7_web->version_number;
+		PRINT("Core version is %v\n", &core_V);
+		KitVersioning::iterate(VersionNumbers::null());
+	}
 }
 
 @ And |-sync-kit-versions|:
 
 =
 void KitVersioning::sync_versions(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number core_V = inform7_web->version_number;
-	PRINT("inform7 web has version %v\n", &core_V);
-	KitVersioning::iterate(core_V);
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number core_V = inform7_web->version_number;
+		PRINT("inform7 web has version %v\n", &core_V);
+		KitVersioning::iterate(core_V);
+	}
 }
 
 @ Both use the following to work through the built-in kits:

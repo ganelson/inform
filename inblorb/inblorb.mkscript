@@ -2,7 +2,7 @@
 # used to build the tool "inblorb". Do not edit "inblorb.mk" directly. Instead,
 # edit this script, and then rebuild "inblorb.mk" with the command:
 
-# ../inweb/Tangled/inweb inblorb -makefile inblorb/inblorb.mk
+# ../inweb/Tangled/inweb make-makefile inblorb -to inblorb/inblorb.mk
 
 # (Or simply type "make makers" to make all of the subsidiary makefiles inside the
 # inform repository, including this one.)
@@ -37,7 +37,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) $(ME) -tangle
+	$(INWEB) tangle $(ME)
 	{compile from: $(ME)/Tangled/$(ME).c   to:   $(ME)/Tangled/$(ME).o}
 	{link    from: $(ME)/Tangled/$(ME).o   to:   $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
 endef

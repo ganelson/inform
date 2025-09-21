@@ -1,7 +1,0 @@
-Name: "code"
-Details: "For quoting generic code samples."
-Extension: ".txt"
-
-colouring {
-	=> !identifier
-}

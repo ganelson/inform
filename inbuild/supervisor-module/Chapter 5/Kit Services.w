@@ -458,17 +458,19 @@ void Kits::construct_graph(inform_kit *K) {
 	build_vertex *KV = C->vertex; /* the kit vertex */
 	linked_list *BVL = NEW_LINKED_LIST(build_vertex); /* list of vertices for the binaries */
 	@<Add build edges to the binaries for each architecture@>;
-
-	ls_web *Wm = WebStructure::get_without_modules(C->location_if_path, NULL);
-
-	build_vertex *CV = Graphs::file_vertex(Wm->contents_filename); /* the contents page vertex */
-	@<Add build edges from the binary vertices to the contents vertex@>;
-
-	@<Add build edges from the binary vertices to each section vertex@>;
-
-	inbuild_requirement *req;
-	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions)
-		Kits::add_extension_dependency(KV, req);
+	wcl_declaration *D = WCL::read_web(P, NULL);
+	if (D) {
+		ls_web *Wm = WebStructure::from_declaration(D);
+	
+		build_vertex *CV = Graphs::file_vertex(Wm->contents_filename); /* the contents page vertex */
+		@<Add build edges from the binary vertices to the contents vertex@>;
+	
+		@<Add build edges from the binary vertices to each section vertex@>;
+	
+		inbuild_requirement *req;
+		LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions)
+			Kits::add_extension_dependency(KV, req);
+	}
 }
 
 @ The test for nest protection here ensures that a kit in an internal nest

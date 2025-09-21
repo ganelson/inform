@@ -106,14 +106,17 @@ Which is to say, actually existing problem messages.
 void Coverage::which_problems_exist(void) {
 	pathname *tools = Pathnames::up(path_to_inpolicy);
 	pathname *path_to_inform7 = Pathnames::down(tools, I"inform7");
-	ls_web *Wm = WebStructure::get_without_targets(path_to_inform7, NULL, NULL);
-	ls_chapter *Cm;
-	LOOP_OVER_LINKED_LIST(Cm, ls_chapter, Wm->chapters) {
-		ls_section *Sm;
-		LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
-			filename *SF = Sm->source_file_for_section;
-			TextFiles::read(SF, FALSE, "unable to read section page from 'inform7'",
-				TRUE, &Coverage::existence_harvester, NULL, (void *) SF);
+	wcl_declaration *D = WCL::read_web(path_to_inform7, NULL);
+	if (D) {
+		ls_web *Wm = WebStructure::from_declaration(D);
+		ls_chapter *Cm;
+		LOOP_OVER_LINKED_LIST(Cm, ls_chapter, Wm->chapters) {
+			ls_section *Sm;
+			LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
+				filename *SF = Sm->source_file_for_section;
+				TextFiles::read(SF, FALSE, "unable to read section page from 'inform7'",
+					TRUE, &Coverage::existence_harvester, NULL, (void *) SF);
+			}
 		}
 	}
 }

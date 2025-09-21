@@ -8,7 +8,7 @@ set: $RLOG = $MAKERSPACE/actual_output.txt
 set: $ILOG = $MAKERSPACE/ideal_output.txt
 set: $INWEBOUTPUT = $MAKERSPACE/inweb_output.txt
 
-step: $INWEB -prototype $MAKERSPACE/$CASE.mkscript -makefile $MAKERSPACE/makefile >$INWEBOUTPUT
+step: $INWEB make-makefile $MAKERSPACE/makefile -script $MAKERSPACE/$CASE.mkscript >$INWEBOUTPUT
 or: 'failed to construct a makefile using inweb'
 
 step: make -C $MAKERSPACE -s clean

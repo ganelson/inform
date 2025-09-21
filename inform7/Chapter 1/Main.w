@@ -264,15 +264,16 @@ int Main::read_command_line(int argc, char *argv[]) {
 
 	@<Register command-line arguments@>;
 	Supervisor::declare_options();
-	int proceed = CommandLine::read(argc, argv, NULL, &Main::switch, &Main::bareword);
-	if (proceed) {
+	
+	int sub = CommandLine::read(argc, argv, NULL, &Main::switch, &Main::bareword);
+	if (sub != NO_CLSUB) {
 		if (shared_internal_nest == NULL) {
 			pathname *path_to_inform = Pathnames::installation_path("INFORM7_PATH", I"inform7");
 			Supervisor::add_nest(Pathnames::down(path_to_inform, I"Internal"), INTERNAL_NEST_TAG);
 		}
 		Supervisor::optioneering_complete(NULL, TRUE, &CorePreform::load);
 	}
-	return proceed;
+	return (sub != NO_CLSUB)?TRUE:FALSE;
 }
 
 @ What remains here are just some eldritch options for testing the |inform7|

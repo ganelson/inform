@@ -7,7 +7,7 @@
 # Do not edit "inform/makefile" directly. Instead, edit this script, and then
 # rebuild "inform/makefile" with the command:
 
-# ../inweb/Tangled/inweb -prototype scripts/inform.mkscript -makefile makefile
+# ../inweb/Tangled/inweb make-makefile -script scripts/inform.mkscript -to makefile
 
 # (Note that typing "make makers" will remake all of the subsidiary makefiles
 # inside the repository from their scripts, but _not_ this one: we don't want
@@ -206,10 +206,10 @@ $(INFORM7WEB)/Internal/Miscellany/inform7_clib.c: $(INFORM7WEB)/Tangled/inform7_
 # the two C-library files:
 
 $(INFORM7WEB)/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
-	$(INWEBX) $(INTERWEB) -tangle
+	$(INWEBX) tangle $(INTERWEB)
 
 $(INFORM7WEB)/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
-	$(INWEBX) $(INTERWEB) -tangle
+	$(INWEBX) tangle $(INTERWEB)
 
 # -----------------------------------------------------------------------------
 # Target "makers"
@@ -225,10 +225,10 @@ $(INFORM7WEB)/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
 .PHONY: makers
 makers:
 	{components type: tool}
-	$(INWEBX) $({SYMBOL}WEB) -makefile $({SYMBOL}MAKER)
+	$(INWEBX) make-makefile $({SYMBOL}WEB) -to $({SYMBOL}MAKER)
 	{end-components}
-	$(INWEBX) -prototype $(INFORM6WEB)/inform6.mkscript -makefile $(INFORM6WEB)/inform6.mk
-	$(INWEBX) -prototype retrospective/retrospective.mkscript -makefile retrospective/makefile
+	$(INWEBX) make-makefile -to $(INFORM6WEB)/inform6.mk -script $(INFORM6WEB)/inform6.mkscript
+	$(INWEBX) make-makefile -to retrospective/makefile -script retrospective/retrospective.mkscript
 
 # -----------------------------------------------------------------------------
 # Target "gitignores"
@@ -239,11 +239,11 @@ makers:
 
 .PHONY: gitignores
 gitignores:
-	$(INWEBX) -prototype scripts/inform.giscript -gitignore .gitignore
+	$(INWEBX) make-gitignore .gitignore -script scripts/inform.giscript
 	{components type: tool}
 	$(INWEBX) $({SYMBOL}WEB) -gitignore $({SYMBOL}WEB)/.gitignore
 	{end-components}
-	$(INWEBX) -prototype $(INFORM6WEB)/inform6.giscript -gitignore $(INFORM6WEB)/.gitignore
+	$(INWEBX) make-gitignore $(INFORM6WEB)/.gitignore -script $(INFORM6WEB)/inform6.giscript
 
 # -----------------------------------------------------------------------------
 # Target "versions"
@@ -341,12 +341,12 @@ check:
 # -----------------------------------------------------------------------------
 
 {define: update-readme}
-	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
+	$(INWEBX) make-readme README.md -script scripts/inform.rmscript
 {end-define}
 
 .PHONY: commit
 commit:
-	$(INWEBX) -advance-build-file build.txt
+	$(INWEBX) advance-build build.txt
 	$(INPOLICYX) -sync-kit-versions
 	$(INPOLICYX) -sync-extension-versions
 	{update-readme}
@@ -455,7 +455,7 @@ diagnostics:
 {set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, indocn, inpolicyn, secrets}
 
 {define: weave-one page: PAGE}
-	$(INWEBX) -colony $(COLONY) -member {PAGE} -weave
+	$(INWEBX) weave -colony $(COLONY) -member {PAGE}
 {end-define}
 
 .PHONY: navigationpages
@@ -490,12 +490,12 @@ forcenavigationpages:
 
 docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
 	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+	$(INWEBX) weave -colony $(COLONY) -member $({SYMBOL}LEAF)
 
 .PHONY: {SYMBOL}FORCEPAGES
 {SYMBOL}FORCEPAGES:
 	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+	$(INWEBX) weave -colony $(COLONY) -member $({SYMBOL}LEAF)
 
 {end-define}
 
@@ -505,12 +505,12 @@ docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
 
 docs/$({SYMBOL}LEAF)/index.html: {dependent-files module: {SYMBOL}}
 	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+	$(INWEBX) weave -colony $(COLONY) -member $({SYMBOL}LEAF)
 
 .PHONY: {SYMBOL}FORCEPAGES
 {SYMBOL}FORCEPAGES:
 	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+	$(INWEBX) weave -colony $(COLONY) -member $({SYMBOL}LEAF)
 
 {end-define}
 
@@ -594,14 +594,13 @@ forceintegration: \
 		forcetransferindext \
 		forcetransferkits \
 		forcetransferextensions \
-		forcetransferplanguages \
+		forcetransferinwebresources \
 		forcetransferimages \
 		forcetransferotherinternals \
 		forcetransferdocumentation \
 		forcetransferoutcomepages \
 		forcetransfertemplates \
-		forcetransferdelia \
-		forcetransfersyntaxes
+		forcetransferdelia
 
 # -----------------------------------------------------------------------------
 # Copying part of the Inform toolchain into the app
@@ -704,16 +703,16 @@ forcetransferextensions:
 	{transfer-extensions}
 
 # -----------------------------------------------------------------------------
-# Copying programming language defns into the app
+# Copying literate programming resources into the app
 
-{define: transfer-planguages}
-	mkdir -p "$(INTERNAL)/PLs"
-	cp -R -f $(INFORM7WEB)/Internal/PLs $(INTERNAL)/PLs/..
+{define: transfer-inwebresources}
+	mkdir -p "$(INTERNAL)/Inweb"
+	cp -R -f $(INFORM7WEB)/Internal/Inweb $(INTERNAL)/Inweb/..
 {end-define}
 
-.PHONY: forcetransferplanguages
-forcetransferplanguages:
-	{transfer-planguages}
+.PHONY: forcetransferinwebresources
+forcetransferinwebresources:
+	{transfer-inwebresources}
 
 # -----------------------------------------------------------------------------
 # Copying website templates into the app
@@ -756,16 +755,6 @@ forcetransferotherinternals:
 forcetransferdelia:
 	{transfer-delia}
 
-{define: transfer-syntaxes}
-	mkdir -p "$(INTERNAL)/Syntaxes"
-	rm -f $(INTERNAL)/Syntaxes/*
-	cp -R -f $(INFORM7WEB)/Internal/Syntaxes $(INTERNAL)/Syntaxes/..
-{end-define}
-
-.PHONY: forcetransfersyntaxes
-forcetransfersyntaxes:
-	{transfer-syntaxes}
-
 # -----------------------------------------------------------------------------
 # Incrementally copying the internal tree
 # This is super-awkward and probably should be dropped in favour of rsync, but
@@ -801,7 +790,7 @@ $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Miscellany/[A-Za-z]*.*
 	touch $(INTERNALEXEMPLUMFROM)
 	{transfer-extensions}
-	{transfer-planguages}
+	{transfer-inwebresources}
 	{transfer-templates}
 	{transfer-other-internals}
 	{transfer-images}

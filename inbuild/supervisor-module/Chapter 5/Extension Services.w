@@ -871,8 +871,9 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	if (E->has_literate_source) {
 		pathname *P = Pathnames::down(E->as_copy->location_if_path, I"Source");
 		F = Filenames::in(P, I"Contents.w");
-		W = WebStructure::get(NULL, F, WebSyntax::default(), NULL, FALSE, FALSE,
-			TangleTargets::find_language(I"Inform 7", NULL, FALSE));
+		wcl_declaration *D = WCL::read_web_or_halt(NULL, F);
+		W = WebStructure::from_declaration(D);
+		WebStructure::set_language(W, Languages::find(W, I"Inform 7"));
 	} else {
 		F = Extensions::main_source_file(E->as_copy);
 	}

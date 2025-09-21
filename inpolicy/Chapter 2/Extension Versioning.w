@@ -21,12 +21,15 @@ void ExtensionVersioning::sync_versions(void) {
 }
 
 semantic_version_number ExtensionVersioning::simplified_core_version(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number V = inform7_web->version_number;
-	V.prerelease_segments = NULL;
-	V.build_metadata = NULL;
-	return V;
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number V = inform7_web->version_number;
+		V.prerelease_segments = NULL;
+		V.build_metadata = NULL;
+		return V;
+	}
+	return VersionNumbers::null();
 }
 
 @ Both use the following to work through the built-in kits:

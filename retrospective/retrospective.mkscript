@@ -3,7 +3,7 @@
 # "inform/retrospective" directory. Do not edit "retrospective.mk" directly.
 # Instead, edit this script, and then rebuild "retrospective.mk" with the command:
 
-# ../inweb/Tangled/inweb -prototype retrospective/retrospective.mkscript -makefile retrospective/retrospective.mk
+# ../inweb/Tangled/inweb make-makefile -script retrospective/retrospective.mkscript -to retrospective/retrospective.mk
 
 # (Or simply type "make makers" to make all of the subsidiary makefiles inside the
 # inform repository, including this one.)

@@ -2,7 +2,7 @@
 # used to build the tool "inform7". Do not edit "inform7.mk" directly. Instead,
 # edit this script, and then rebuild "inform7.mk" with the command:
 
-# ../inweb/Tangled/inweb inform7 -makefile inform7/inform7.mk
+# ../inweb/Tangled/inweb make-makefile inform7 -to inform7/inform7.mk
 
 # (Or simply type "make makers" to make all of the subsidiary makefiles inside the
 # inform repository, including this one.)
@@ -50,7 +50,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) $(ME) -import-from modules -tangle
+	$(INWEB) tangle $(ME) -import-from modules
 	{compile from: $(ME)/Tangled/$(ME).c to: $(ME)/Tangled/$(ME).o}
 	{link from:    $(ME)/Tangled/$(ME).o to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
 endef
