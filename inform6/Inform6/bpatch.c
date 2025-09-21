@@ -2,7 +2,7 @@
 /*   "bpatch" : Keeps track of, and finally acts on, backpatch markers,      */
 /*              correcting symbol values not known at compilation time       */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -235,7 +235,7 @@ static int32 backpatch_value_z(int32 value)
                             value = df_stripped_address_for_address(value);
                         value += code_offset/scale_factor; 
                         break;
-                    case ARRAY_T: value += variables_offset; break;
+                    case ARRAY_T: value += variables_offset - zcode_compact_globals_adjustment; break;
                     case STATIC_ARRAY_T: value += static_arrays_offset; break;
                 }
             }
@@ -431,10 +431,10 @@ symbol");
 
 extern int32 backpatch_value(int32 value)
 {
-  if (!glulx_mode)
-    return backpatch_value_z(value);
-  else
-    return backpatch_value_g(value);
+    if (!glulx_mode)
+        return backpatch_value_z(value);
+    else
+        return backpatch_value_g(value);
 }
 
 static void backpatch_zmachine_z(int mv, int zmachine_area, int32 offset)
@@ -478,10 +478,10 @@ static void backpatch_zmachine_g(int mv, int zmachine_area, int32 offset)
 
 extern void backpatch_zmachine(int mv, int zmachine_area, int32 offset)
 {
-  if (!glulx_mode)
-    backpatch_zmachine_z(mv, zmachine_area, offset);
-  else
-    backpatch_zmachine_g(mv, zmachine_area, offset);
+    if (!glulx_mode)
+        backpatch_zmachine_z(mv, zmachine_area, offset);
+    else
+        backpatch_zmachine_g(mv, zmachine_area, offset);
 }
 
 extern void backpatch_zmachine_image_z(void)
@@ -494,8 +494,8 @@ extern void backpatch_zmachine_image_z(void)
         zmachine_area
             = zmachine_backpatch_table[bm+1];
         offset
-          = 256*zmachine_backpatch_table[bm+2]
-            + zmachine_backpatch_table[bm+3];
+            = 256*zmachine_backpatch_table[bm+2]
+                + zmachine_backpatch_table[bm+3];
         bm += 4;
 
         switch(zmachine_area)
@@ -539,14 +539,14 @@ extern void backpatch_zmachine_image_g(void)
             = zmachine_backpatch_table[bm+1];
         offset = zmachine_backpatch_table[bm+2];
         offset = (offset << 8) |
-          zmachine_backpatch_table[bm+3];
+            zmachine_backpatch_table[bm+3];
         offset = (offset << 8) |
-          zmachine_backpatch_table[bm+4];
+            zmachine_backpatch_table[bm+4];
         offset = (offset << 8) |
-          zmachine_backpatch_table[bm+5];
+            zmachine_backpatch_table[bm+5];
         bm += 6;
 
-            switch(zmachine_area) {   
+        switch(zmachine_area) {   
         case PROP_DEFAULTS_ZA:   addr = prop_defaults_offset+4; break;
         case PROP_ZA:            addr = prop_values_offset; break;
         case INDIVIDUAL_PROP_ZA: addr = individuals_offset; break;

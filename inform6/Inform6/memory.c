@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
-/*   "memory" : Memory management and ICL memory setting commands            */
+/*   "memory" : Memory management, trace options, and ICL dollar commands    */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -134,7 +134,9 @@ extern void my_recalloc(void *pointer, size_t size, size_t oldhowmany,
         my_free(pointer, whatfor);
         return;
     }
-    c=realloc(*(int **)pointer, size*howmany); 
+    c=realloc(*(int **)pointer, size*howmany);
+    if (howmany > oldhowmany)
+        memset((char *)c+size*oldhowmany, 0, size*(howmany-oldhowmany));
     malloced_bytes+=size*(howmany-oldhowmany);
     if (c==0) fatalerror_memory_out(size, howmany, whatfor);
     if (memout_switch)
@@ -278,382 +280,10 @@ int DICT_TRUNCATE_FLAG; /* 0: no, 1: yes */
 int LONG_DICT_FLAG_BUG; /* 0: no bug, 1: bug (default for historic reasons) */
 int TRANSCRIPT_FORMAT; /* 0: classic, 1: prefixed */
 
-/* The way memory sizes are set causes great nuisance for those parameters
-   which have different defaults under Z-code and Glulx. We have to get
-   the defaults right whether the user sets "-G $HUGE" or "$HUGE -G". 
-   And an explicit value set by the user should override both defaults. */
-static int DICT_WORD_SIZE_z, DICT_WORD_SIZE_g;
-static int NUM_ATTR_BYTES_z, NUM_ATTR_BYTES_g;
-static int MAX_DYNAMIC_STRINGS_z, MAX_DYNAMIC_STRINGS_g;
-
-/* These hold the given parameter. See the grammar_version_number variable
-   for the final validated setting. */
-int GRAMMAR_VERSION_z, GRAMMAR_VERSION_g;
-
 /* ------------------------------------------------------------------------- */
 /*   Memory control from the command line                                    */
 /* ------------------------------------------------------------------------- */
 
-static void list_memory_sizes(void)
-{   printf("+--------------------------------------+\n");
-    printf("|  %25s = %-7s |\n","Memory setting","Value");
-    printf("+--------------------------------------+\n");
-    printf("|  %25s = %-7d |\n","MAX_ABBREVS",MAX_ABBREVS);
-    printf("|  %25s = %-7d |\n","NUM_ATTR_BYTES",NUM_ATTR_BYTES);
-    printf("|  %25s = %-7d |\n","DICT_WORD_SIZE",DICT_WORD_SIZE);
-    if (glulx_mode)
-      printf("|  %25s = %-7d |\n","DICT_CHAR_SIZE",DICT_CHAR_SIZE);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","GRAMMAR_VERSION",GRAMMAR_VERSION_z);
-    else
-      printf("|  %25s = %-7d |\n","GRAMMAR_VERSION",GRAMMAR_VERSION_g);
-    printf("|  %25s = %-7d |\n","GRAMMAR_META_FLAG",GRAMMAR_META_FLAG);
-    printf("|  %25s = %-7d |\n","MAX_DYNAMIC_STRINGS",MAX_DYNAMIC_STRINGS);
-    printf("|  %25s = %-7d |\n","HASH_TAB_SIZE",HASH_TAB_SIZE);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","ZCODE_HEADER_EXT_WORDS",ZCODE_HEADER_EXT_WORDS);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","ZCODE_HEADER_FLAGS_3",ZCODE_HEADER_FLAGS_3);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","ZCODE_FILE_END_PADDING",ZCODE_FILE_END_PADDING);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","ZCODE_LESS_DICT_DATA",ZCODE_LESS_DICT_DATA);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n","ZCODE_MAX_INLINE_STRING",ZCODE_MAX_INLINE_STRING);
-    if (!glulx_mode)
-      printf("|  %25s = %-7d |\n", "ZCODE_COMPACT_GLOBALS", ZCODE_COMPACT_GLOBALS);
-    printf("|  %25s = %-7d |\n","INDIV_PROP_START", INDIV_PROP_START);
-    if (glulx_mode)
-      printf("|  %25s = %-7d |\n","MEMORY_MAP_EXTENSION",
-        MEMORY_MAP_EXTENSION);
-    if (glulx_mode)
-      printf("|  %25s = %-7d |\n","GLULX_OBJECT_EXT_BYTES",
-        GLULX_OBJECT_EXT_BYTES);
-    if (glulx_mode)
-      printf("|  %25s = %-7ld |\n","MAX_STACK_SIZE",
-           (long int) MAX_STACK_SIZE);
-    printf("|  %25s = %-7d |\n","TRANSCRIPT_FORMAT",TRANSCRIPT_FORMAT);
-    printf("|  %25s = %-7d |\n","WARN_UNUSED_ROUTINES",WARN_UNUSED_ROUTINES);
-    printf("|  %25s = %-7d |\n","OMIT_UNUSED_ROUTINES",OMIT_UNUSED_ROUTINES);
-    printf("|  %25s = %-7d |\n","STRIP_UNREACHABLE_LABELS",STRIP_UNREACHABLE_LABELS);
-    printf("|  %25s = %-7d |\n","OMIT_SYMBOL_TABLE",OMIT_SYMBOL_TABLE);
-    printf("|  %25s = %-7d |\n","DICT_IMPLICIT_SINGULAR",DICT_IMPLICIT_SINGULAR);
-    printf("|  %25s = %-7d |\n","DICT_TRUNCATE_FLAG",DICT_TRUNCATE_FLAG);
-    printf("|  %25s = %-7d |\n","LONG_DICT_FLAG_BUG",LONG_DICT_FLAG_BUG);
-    printf("+--------------------------------------+\n");
-}
-
-extern void set_memory_sizes(void)
-{
-    HASH_TAB_SIZE      = 512;
-    DICT_CHAR_SIZE = 1;
-    DICT_WORD_SIZE_z = 6;
-    DICT_WORD_SIZE_g = 9;
-    GRAMMAR_VERSION_z = 1;
-    GRAMMAR_VERSION_g = 2;
-    GRAMMAR_META_FLAG = 0;
-    NUM_ATTR_BYTES_z = 6;
-    NUM_ATTR_BYTES_g = 7;
-    MAX_ABBREVS = 64;
-    MAX_DYNAMIC_STRINGS_z = 32;
-    MAX_DYNAMIC_STRINGS_g = 100;
-    /* Backwards-compatible behavior: allow for a unicode table
-       whether we need one or not. The user can set this to zero if
-       there's no unicode table. */
-    ZCODE_HEADER_EXT_WORDS = 3;
-    ZCODE_HEADER_FLAGS_3 = 0;
-    ZCODE_FILE_END_PADDING = 1;
-    ZCODE_LESS_DICT_DATA = 0;
-    ZCODE_MAX_INLINE_STRING = 32;
-    ZCODE_COMPACT_GLOBALS = 0;
-    GLULX_OBJECT_EXT_BYTES = 0;
-    MEMORY_MAP_EXTENSION = 0;
-    /* We estimate the default Glulx stack size at 4096. That's about
-       enough for 90 nested function calls with 8 locals each -- the
-       same capacity as the Z-Spec's suggestion for Z-machine stack
-       size. Note that Inform 7 wants more stack; I7-generated code
-       sets MAX_STACK_SIZE to 65536 by default. */
-    MAX_STACK_SIZE = 4096;
-    OMIT_UNUSED_ROUTINES = 0;
-    WARN_UNUSED_ROUTINES = 0;
-    STRIP_UNREACHABLE_LABELS = 1;
-    OMIT_SYMBOL_TABLE = 0;
-    DICT_IMPLICIT_SINGULAR = 0;
-    DICT_TRUNCATE_FLAG = 0;
-    LONG_DICT_FLAG_BUG = 1;
-    TRANSCRIPT_FORMAT = 0;
-
-    adjust_memory_sizes();
-}
-
-extern void adjust_memory_sizes()
-{
-  if (!glulx_mode) {
-    DICT_WORD_SIZE = DICT_WORD_SIZE_z;
-    NUM_ATTR_BYTES = NUM_ATTR_BYTES_z;
-    MAX_DYNAMIC_STRINGS = MAX_DYNAMIC_STRINGS_z;
-    INDIV_PROP_START = 64;
-  }
-  else {
-    DICT_WORD_SIZE = DICT_WORD_SIZE_g;
-    NUM_ATTR_BYTES = NUM_ATTR_BYTES_g;
-    MAX_DYNAMIC_STRINGS = MAX_DYNAMIC_STRINGS_g;
-    INDIV_PROP_START = 256;
-  }
-}
-
-static void explain_parameter(char *command)
-{   printf("\n");
-    if (strcmp(command,"HASH_TAB_SIZE")==0)
-    {   printf(
-"  HASH_TAB_SIZE is the size of the hash tables used for the heaviest \n\
-  symbols banks.\n");
-        return;
-    }
-    if (strcmp(command,"DICT_WORD_SIZE")==0)
-    {   printf(
-"  DICT_WORD_SIZE is the number of characters in a dictionary word. In \n\
-  Z-code this is always 6 (only 4 are used in v3 games). In Glulx it \n\
-  can be any number.\n");
-        return;
-    }
-    if (strcmp(command,"DICT_CHAR_SIZE")==0)
-    {   printf(
-"  DICT_CHAR_SIZE is the byte size of one character in the dictionary. \n\
-  (This is only meaningful in Glulx, since Z-code has compressed dictionary \n\
-  words.) It can be either 1 (the default) or 4 (to enable full Unicode \n\
-  input.)\n");
-        return;
-    }
-    if (strcmp(command,"GRAMMAR_VERSION")==0)
-    {   printf(
-"  GRAMMAR_VERSION defines the table format for the verb grammar. 2 is \n\
-  the Inform standard. 1 is an older version based on Infocom's format. \n\
-  The default is 1 in Z-code, 2 in Glulx.\n");
-        return;
-    }
-    if (strcmp(command,"GRAMMAR_META_FLAG")==0)
-    {   printf(
-"  GRAMMAR_META_FLAG indicates actions which have the 'meta' flag by \n\
-  ensure that their values are <= #largest_meta_action. This allows \n\
-  individual actions to be marked 'meta', rather than relying on dict \n\
-  word flags.\n");
-        return;
-    }
-    if (strcmp(command,"NUM_ATTR_BYTES")==0)
-    {   printf(
-"  NUM_ATTR_BYTES is the space used to store attribute flags. Each byte \n\
-  stores eight attributes. In Z-code this is always 6 (only 4 are used in \n\
-  v3 games). In Glulx it can be any number which is a multiple of four, \n\
-  plus three.\n");
-        return;
-    }
-    if (strcmp(command,"ZCODE_HEADER_EXT_WORDS")==0)
-    {   printf(
-"  ZCODE_HEADER_EXT_WORDS is the number of words in the Z-code header \n\
-  extension table (Z-Spec 1.0). The -W switch also sets this. It defaults \n\
-  to 3, but can be set higher. (It can be set lower if no Unicode \n\
-  translation table is created.)\n");
-        return;
-    }
-    if (strcmp(command,"ZCODE_HEADER_FLAGS_3")==0)
-    {   printf(
-"  ZCODE_HEADER_FLAGS_3 is the value to store in the Flags 3 word of the \n\
-  header extension table (Z-Spec 1.1).\n");
-        return;
-    }
-    if (strcmp(command,"ZCODE_FILE_END_PADDING")==0)
-    {   printf(
-"  ZCODE_FILE_END_PADDING, if set, pads the game file length to a multiple \n\
-  of 512 bytes. (Z-code only.)\n");
-        return;
-    }
-    if (strcmp(command,"ZCODE_LESS_DICT_DATA")==0)
-    {   printf(
-"  ZCODE_LESS_DICT_DATA, if set, provides each dict word with two data bytes\n\
-  rather than three. (Z-code only.)\n");
-        return;
-    }
-    if (strcmp(command,"ZCODE_MAX_INLINE_STRING")==0)
-    {   printf(
-"  ZCODE_MAX_INLINE_STRING is the length beyond which string literals cannot\n\
-  be inlined in assembly opcodes. (Z-code only.)\n");
-        return;
-    }
-    if (strcmp(command, "ZCODE_COMPACT_GLOBALS") == 0)
-    {
-        printf(
-"  ZCODE_COMPACT_GLOBALS, if set, reuses space from unused global variables\n\
-   in the global variables segment. (Z-code only.)\n");
-        return;
-    }
-    if (strcmp(command,"GLULX_OBJECT_EXT_BYTES")==0)
-    {   printf(
-"  GLULX_OBJECT_EXT_BYTES is an amount of additional space to add to each \n\
-  object record. It is initialized to zero bytes, and the game is free to \n\
-  use it as desired. (This is only meaningful in Glulx, since Z-code \n\
-  specifies the object structure.)\n");
-        return;
-    }
-    if (strcmp(command,"MAX_ABBREVS")==0)
-    {   printf(
-"  MAX_ABBREVS is the maximum number of declared abbreviations.  It is not \n\
-  allowed to exceed 96 in Z-code. (This is not meaningful in Glulx, where \n\
-  there is no limit on abbreviations.)\n");
-        return;
-    }
-    if (strcmp(command,"MAX_DYNAMIC_STRINGS")==0)
-    {   printf(
-"  MAX_DYNAMIC_STRINGS is the maximum number of string substitution variables\n\
-  (\"@00\" or \"@(0)\").  It is not allowed to exceed 96 in Z-code.\n");
-        return;
-    }
-    if (strcmp(command,"INDIV_PROP_START")==0)
-    {   printf(
-"  Properties 1 to INDIV_PROP_START-1 are common properties; individual\n\
-  properties are numbered INDIV_PROP_START and up.\n");
-        return;
-    }
-    if (strcmp(command,"MAX_STACK_SIZE")==0)
-    {
-        printf(
-"  MAX_STACK_SIZE is the maximum size (in bytes) of the interpreter stack \n\
-  during gameplay. (Glulx only)\n");
-        return;
-    }
-    if (strcmp(command,"MEMORY_MAP_EXTENSION")==0)
-    {
-        printf(
-"  MEMORY_MAP_EXTENSION is the number of bytes (all zeroes) to map into \n\
-  memory after the game file. (Glulx only)\n");
-        return;
-    }
-    if (strcmp(command,"TRANSCRIPT_FORMAT")==0)
-    {
-        printf(
-"  TRANSCRIPT_FORMAT, if set to 1, adjusts the gametext.txt transcript for \n\
-  easier machine processing; each line will be prefixed by its context.\n");
-        return;
-    }
-    if (strcmp(command,"WARN_UNUSED_ROUTINES")==0)
-    {
-        printf(
-"  WARN_UNUSED_ROUTINES, if set to 2, will display a warning for each \n\
-  routine in the game file which is never called. (This includes \n\
-  routines called only from uncalled routines, etc.) If set to 1, will warn \n\
-  only about functions in game code, not in the system library.\n");
-        return;
-    }
-    if (strcmp(command,"OMIT_UNUSED_ROUTINES")==0)
-    {
-        printf(
-"  OMIT_UNUSED_ROUTINES, if set to 1, will avoid compiling unused routines \n\
-  into the game file.\n");
-        return;
-    }
-    if (strcmp(command,"STRIP_UNREACHABLE_LABELS")==0)
-    {
-        printf(
-"  STRIP_UNREACHABLE_LABELS, if set to 1, will skip labels in unreachable \n\
-  statements. Jumping to a skipped label is an error. If 0, all labels \n\
-  will be compiled, at the cost of less optimized code. The default is 1.\n");
-        return;
-    }
-    if (strcmp(command,"OMIT_SYMBOL_TABLE")==0)
-    {
-        printf(
-"  OMIT_SYMBOL_TABLE, if set to 1, will skip compiling debug symbol names \n\
-  into the game file.\n");
-        return;
-    }
-    if (strcmp(command,"DICT_IMPLICIT_SINGULAR")==0)
-    {
-        printf(
-"  DICT_IMPLICIT_SINGULAR, if set to 1, will cause dict words in noun \n\
-  context to have the '//s' flag if the '//p' flag is not set. \n");
-        return;
-    }
-    if (strcmp(command,"DICT_TRUNCATE_FLAG")==0)
-    {
-        printf(
-"  DICT_TRUNCATE_FLAG, if set to 1, will set bit 6 of a dict word if the \n\
-  word is truncated (extends beyond DICT_WORD_SIZE). If 0, bit 6 will be \n\
-  set for verbs (legacy behavior). \n");
-        return;
-    }
-    if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
-    {
-        printf(
-"  LONG_DICT_FLAG_BUG, if set to 0, will fix the old bug which ignores \n\
-  the '//p' flag in long dictionary words. If 1, the buggy behavior is \n\
-  retained.\n");
-        return;
-    }
-    if (strcmp(command,"SERIAL")==0)
-    {
-        printf(
-"  SERIAL, if set, will be used as the six digit serial number written into \n\
-  the header of the output file.\n");
-        return;
-    }
-
-    printf("No such memory setting as \"%s\"\n",command);
-
-    return;
-}
-
-/* Parse a decimal number as an int32. Return true if a valid number
-   was found; otherwise print a warning and return false.
-
-   Anything over nine digits is considered an overflow; we report a
-   warning but return +/- 999999999 (and true). This is not entirely
-   clever about leading zeroes ("0000000001" is treated as an
-   overflow) but this is better than trying to detect genuine
-   overflows in a long.
-
-   (Some Glulx settings might conceivably want to go up to $7FFFFFFF,
-   which is a ten-digit number, but we're not going to allow that
-   today.)
-
-   This used to rely on atoi(), and we retain the atoi() behavior of
-   ignoring garbage characters after a valid decimal number.
- */
-static int parse_memory_setting(char *str, char *label, int32 *result)
-{
-    char *cx = str;
-    char *ex;
-    long val;
-
-    *result = 0;
-
-    while (*cx == ' ') cx++;
-
-    val = strtol(cx, &ex, 10);    
-
-    if (ex == cx) {
-        printf("Bad numerical setting in $ command \"%s=%s\"\n",
-            label, str);
-        return 0;
-    }
-
-    if (*cx == '-') {
-        if (ex > cx+10) {
-            val = -999999999;
-            printf("Numerical setting underflowed in $ command \"%s=%s\" (limiting to %ld)\n",
-                label, str, val);
-        }
-    }
-    else {
-        if (ex > cx+9) {
-            val = 999999999;
-            printf("Numerical setting overflowed in $ command \"%s=%s\" (limiting to %ld)\n",
-                label, str, val);
-        }
-    }
-
-    *result = (int32)val;
-    return 1;
-}
 
 static void add_predefined_symbol(char *command)
 {
@@ -679,7 +309,7 @@ static void add_predefined_symbol(char *command)
     }
 
     if (valpos) {
-        if (!parse_memory_setting(valpos, command, &value)) {
+        if (!parse_numeric_setting(valpos, command, &value)) {
             return;
         };
     }
@@ -816,21 +446,25 @@ static void set_trace_option(char *command)
 
 /* Handle a dollar-sign command option: $LIST, $FOO=VAL, and so on.
    The option may come from the command line, an ICL file, or a header
-   comment.
+   comment. The optprec argument distinguishes header comments
+   (HEADCOM_OPTPREC) from the command line (CMDLINE_OPTPREC).
 
    (Unix-style command-line options are converted to dollar-sign format
    before being sent here.)
-
-   The name of this function is outdated. Many of these settings are not
-   really about memory allocation.
 */
-extern void memory_command(char *command)
+extern void execute_dollar_command(char *command, int optprec)
 {   int i, k;
 
-    for (k=0; command[k]!=0; k++)
-        if (islower((uchar)command[k])) command[k]=toupper((uchar)command[k]);
+    /* Upper-case the command, or the part of the command up to the equal
+       sign. (For $foo=val, the variable name is case-folded but the value
+       is not.) (Most values are numbers but we support string options now.)
+    */
+    for (k=0; command[k] != 0 && command[k] != '='; k++) {
+        if (islower((uchar)command[k]))
+            command[k]=toupper((uchar)command[k]);
+    }
 
-    if (command[0]=='?') { explain_parameter(command+1); return; }
+    if (command[0]=='?') { explain_compiler_option(command+1); return; }
     if (command[0]=='#') { add_predefined_symbol(command+1); return; }
     if (command[0]=='!') { set_trace_option(command+1); return; }
 
@@ -842,217 +476,20 @@ extern void memory_command(char *command)
         return;
     }
     
-    if (strcmp(command, "LIST")==0)  { list_memory_sizes(); return; }
+    if (strcmp(command, "LIST")==0) {
+        list_compiler_options();
+        return;
+    }
     
     for (i=0; command[i]!=0; i++)
     {   if (command[i]=='=')
         {
-            int flag = 0;
-            int32 j = 0;
             command[i]=0;
-            if (!parse_memory_setting(command+i+1, command, &j)) {
-                return;
-            }
-            if (strcmp(command,"BUFFER_LENGTH")==0)
-                flag=2;
-            if (strcmp(command,"MAX_QTEXT_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_SYMBOLS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_BANK_SIZE")==0)
-                flag=2;
-            if (strcmp(command,"SYMBOLS_CHUNK_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"BANK_CHUNK_SIZE")==0)
-                flag=2;
-            if (strcmp(command,"HASH_TAB_SIZE")==0)
-                HASH_TAB_SIZE=j, flag=1;
-            if (strcmp(command,"MAX_OBJECTS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_ACTIONS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_ADJECTIVES")==0)
-                flag=3;
-            if (strcmp(command,"MAX_DICT_ENTRIES")==0)
-                flag=3;
-            if (strcmp(command,"DICT_WORD_SIZE")==0) 
-            {   DICT_WORD_SIZE=j, flag=1;
-                DICT_WORD_SIZE_g=DICT_WORD_SIZE_z=j;
-            }
-            if (strcmp(command,"DICT_CHAR_SIZE")==0)
-                DICT_CHAR_SIZE=j, flag=1;
-            if (strcmp(command,"GRAMMAR_VERSION")==0)
-                GRAMMAR_VERSION_z=GRAMMAR_VERSION_g=j, flag=1;
-            if (strcmp(command,"GRAMMAR_META_FLAG")==0)
-                GRAMMAR_META_FLAG=j, flag=1;
-            if (strcmp(command,"NUM_ATTR_BYTES")==0) 
-            {   NUM_ATTR_BYTES=j, flag=1;
-                NUM_ATTR_BYTES_g=NUM_ATTR_BYTES_z=j;
-            }
-            if (strcmp(command,"ZCODE_HEADER_EXT_WORDS")==0)
-                ZCODE_HEADER_EXT_WORDS=j, flag=1;
-            if (strcmp(command,"ZCODE_HEADER_FLAGS_3")==0)
-                ZCODE_HEADER_FLAGS_3=j, flag=1;
-            if (strcmp(command,"ZCODE_FILE_END_PADDING")==0)
-                ZCODE_FILE_END_PADDING=j, flag=1;
-            if (strcmp(command,"ZCODE_LESS_DICT_DATA")==0)
-                ZCODE_LESS_DICT_DATA=j, flag=1;
-            if (strcmp(command,"ZCODE_MAX_INLINE_STRING")==0)
-                ZCODE_MAX_INLINE_STRING=j, flag=1;
-            if (strcmp(command, "ZCODE_COMPACT_GLOBALS") == 0)
-                ZCODE_COMPACT_GLOBALS = j, flag = 1;
-            if (strcmp(command,"GLULX_OBJECT_EXT_BYTES")==0)
-                GLULX_OBJECT_EXT_BYTES=j, flag=1;
-            if (strcmp(command,"MAX_STATIC_DATA")==0)
-                flag=3;
-            if (strcmp(command,"MAX_OLDEPTH")==0)
-                flag=2;
-            if (strcmp(command,"MAX_ROUTINES")==0)
-                flag=2;
-            if (strcmp(command,"MAX_GCONSTANTS")==0)
-                flag=2;
-            if (strcmp(command,"MAX_PROP_TABLE_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_FORWARD_REFS")==0)
-                flag=2;
-            if (strcmp(command,"STACK_SIZE")==0)
-                flag=2;
-            if (strcmp(command,"STACK_LONG_SLOTS")==0)
-                flag=2;
-            if (strcmp(command,"STACK_SHORT_LENGTH")==0)
-                flag=2;
-            if (strcmp(command,"MAX_ABBREVS")==0)
-                MAX_ABBREVS=j, flag=1;
-            if (strcmp(command,"MAX_DYNAMIC_STRINGS")==0)
-            {   MAX_DYNAMIC_STRINGS=j, flag=1;
-                MAX_DYNAMIC_STRINGS_g=MAX_DYNAMIC_STRINGS_z=j;
-            }
-            if (strcmp(command,"MAX_ARRAYS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_EXPRESSION_NODES")==0)
-                flag=3;
-            if (strcmp(command,"MAX_VERBS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_VERBSPACE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_LABELS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_LINESPACE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_NUM_STATIC_STRINGS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_STATIC_STRINGS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_ZCODE_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_LINK_DATA_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_LOW_STRINGS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_TRANSCRIPT_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_CLASSES")==0)
-                flag=3;
-            if (strcmp(command,"MAX_INCLUSION_DEPTH")==0)
-                flag=3;
-            if (strcmp(command,"MAX_SOURCE_FILES")==0)
-                flag=3;
-            if (strcmp(command,"MAX_INDIV_PROP_TABLE_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"INDIV_PROP_START")==0)
-                INDIV_PROP_START=j, flag=1;
-            if (strcmp(command,"MAX_OBJ_PROP_TABLE_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_OBJ_PROP_COUNT")==0)
-                flag=3;
-            if (strcmp(command,"MAX_LOCAL_VARIABLES")==0)
-                flag=3;
-            if (strcmp(command,"MAX_GLOBAL_VARIABLES")==0)
-                flag=3;
-            if (strcmp(command,"ALLOC_CHUNK_SIZE")==0)
-                flag=3;
-            if (strcmp(command,"MAX_UNICODE_CHARS")==0)
-                flag=3;
-            if (strcmp(command,"MAX_STACK_SIZE")==0)
-            {
-                MAX_STACK_SIZE=j, flag=1;
-                /* Adjust up to a 256-byte boundary. */
-                MAX_STACK_SIZE = (MAX_STACK_SIZE + 0xFF) & (~0xFF);
-            }
-            if (strcmp(command,"MEMORY_MAP_EXTENSION")==0)
-            {
-                MEMORY_MAP_EXTENSION=j, flag=1;
-                /* Adjust up to a 256-byte boundary. */
-                MEMORY_MAP_EXTENSION = (MEMORY_MAP_EXTENSION + 0xFF) & (~0xFF);
-            }
-            if (strcmp(command,"TRANSCRIPT_FORMAT")==0)
-            {
-                TRANSCRIPT_FORMAT=j, flag=1;
-                if (TRANSCRIPT_FORMAT > 1 || TRANSCRIPT_FORMAT < 0)
-                    TRANSCRIPT_FORMAT = 1;
-            }
-            if (strcmp(command,"WARN_UNUSED_ROUTINES")==0)
-            {
-                WARN_UNUSED_ROUTINES=j, flag=1;
-                if (WARN_UNUSED_ROUTINES > 2 || WARN_UNUSED_ROUTINES < 0)
-                    WARN_UNUSED_ROUTINES = 2;
-            }
-            if (strcmp(command,"OMIT_UNUSED_ROUTINES")==0)
-            {
-                OMIT_UNUSED_ROUTINES=j, flag=1;
-                if (OMIT_UNUSED_ROUTINES > 1 || OMIT_UNUSED_ROUTINES < 0)
-                    OMIT_UNUSED_ROUTINES = 1;
-            }
-            if (strcmp(command,"STRIP_UNREACHABLE_LABELS")==0)
-            {
-                STRIP_UNREACHABLE_LABELS=j, flag=1;
-                if (STRIP_UNREACHABLE_LABELS > 1 || STRIP_UNREACHABLE_LABELS < 0)
-                    STRIP_UNREACHABLE_LABELS = 1;
-            }
-            if (strcmp(command,"OMIT_SYMBOL_TABLE")==0)
-            {
-                OMIT_SYMBOL_TABLE=j, flag=1;
-                if (OMIT_SYMBOL_TABLE > 1 || OMIT_SYMBOL_TABLE < 0)
-                    OMIT_SYMBOL_TABLE = 1;
-            }
-            if (strcmp(command,"DICT_IMPLICIT_SINGULAR")==0)
-            {
-                DICT_IMPLICIT_SINGULAR=j, flag=1;
-                if (DICT_IMPLICIT_SINGULAR > 1 || DICT_IMPLICIT_SINGULAR < 0)
-                    DICT_IMPLICIT_SINGULAR = 1;
-            }
-            if (strcmp(command,"DICT_TRUNCATE_FLAG")==0)
-            {
-                DICT_TRUNCATE_FLAG=j, flag=1;
-                if (DICT_TRUNCATE_FLAG > 1 || DICT_TRUNCATE_FLAG < 0)
-                    DICT_TRUNCATE_FLAG = 1;
-            }
-            if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
-            {
-                LONG_DICT_FLAG_BUG=j, flag=1;
-                if (LONG_DICT_FLAG_BUG > 1 || LONG_DICT_FLAG_BUG < 0)
-                    LONG_DICT_FLAG_BUG = 1;
-            }
-            if (strcmp(command,"SERIAL")==0)
-            {
-                if (j >= 0 && j <= 999999)
-                {
-                    sprintf(serial_code_buffer,"%06d",j);
-                    serial_code_given_in_program = TRUE;
-                    flag=1;
-                }
-            }
-
-            if (flag==0)
-                printf("No such memory setting as \"%s\"\n", command);
-            if (flag==2 && !nowarnings_switch)
-                printf("The Inform 5 memory setting \"%s\" has been withdrawn.\n", command);
-            if (flag==3 && !nowarnings_switch)
-                printf("The Inform 6 memory setting \"%s\" is no longer needed and has been withdrawn.\n", command);
+            set_compiler_option(command, command+i+1, optprec);
             return;
         }
     }
-    printf("No such memory $ command as \"%s\"\n",command);
+    printf("No such $ command as \"%s\"\n",command);
 }
 
 extern void print_memory_usage(void)

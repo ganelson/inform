@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -825,7 +825,8 @@ static void emit_debug_information_for_predefined_symbol
 }
 
 static void create_symbol(char *p, int32 value, int type)
-{   int i = symbol_index(p, -1, NULL);
+{
+    int i = symbol_index(p, -1, NULL);
     if (!(symbols[i].flags & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG))) {
         /* Symbol already defined! */
         if (symbols[i].value == value && symbols[i].type == type) {
@@ -845,9 +846,13 @@ static void create_symbol(char *p, int32 value, int type)
 }
 
 static void create_rsymbol(char *p, int value, int type)
-{   int i = symbol_index(p, -1, NULL);
-    /* This is only called for a few symbols with known names.
-       They will not collide. */
+{
+    /* Create a symbol which the user can redefine later.
+       This is only called for a few symbols with known names;
+       they shouldn't collide. */
+    int i = symbol_index(p, -1, NULL);
+    if (!(symbols[i].flags & UNKNOWN_SFLAG))
+        compiler_error_named("create_rsymbol called with existing symbol", p);
     symbols[i].value = value; symbols[i].type = type; symbols[i].line = blank_brief_location;
     symbols[i].flags = USED_SFLAG + SYSTEM_SFLAG + REDEFINABLE_SFLAG;
     emit_debug_information_for_predefined_symbol(p, i, value, type);
@@ -940,50 +945,50 @@ static void stockup_symbols(void)
         /* In Glulx, these system globals are entered in order, not down 
            from 255. */
         create_symbol("temp_global",  MAX_LOCAL_VARIABLES+0, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("temp__global2", MAX_LOCAL_VARIABLES+1, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("temp__global3", MAX_LOCAL_VARIABLES+2, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("temp__global4", MAX_LOCAL_VARIABLES+3, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("self",         MAX_LOCAL_VARIABLES+4, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("sender",       MAX_LOCAL_VARIABLES+5, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("sw__var",      MAX_LOCAL_VARIABLES+6, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
 
         /* These are almost certainly meaningless, and can be removed. */
         create_symbol("sys__glob0",     MAX_LOCAL_VARIABLES+7, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("sys__glob1",     MAX_LOCAL_VARIABLES+8, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
         create_symbol("sys__glob2",     MAX_LOCAL_VARIABLES+9, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
 
         /* value of statusline_flag to be written later */
         create_symbol("sys_statusline_flag",  MAX_LOCAL_VARIABLES+10, 
-          GLOBAL_VARIABLE_T);
+            GLOBAL_VARIABLE_T);
 
         /* These are created in order, but not necessarily at a fixed
            value. */
         create_symbol("create",        INDIV_PROP_START+0, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("recreate",      INDIV_PROP_START+1, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("destroy",       INDIV_PROP_START+2, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("remaining",     INDIV_PROP_START+3, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("copy",          INDIV_PROP_START+4, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("call",          INDIV_PROP_START+5, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("print",         INDIV_PROP_START+6, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
         create_symbol("print_to_array",INDIV_PROP_START+7, 
-          INDIVIDUAL_PROPERTY_T);
+            INDIVIDUAL_PROPERTY_T);
 
         /* Floating-point constants. Note that FLOAT_NINFINITY is not
            -FLOAT_INFINITY, because float negation doesn't work that
@@ -1141,8 +1146,8 @@ static int df_functions_sorted_count;
 static df_reference_t **df_symbol_map;
 
 /* Globals used while a function is being compiled. When a function
-  *isn't* being compiled, df_current_function_addr will be DF_NOT_IN_FUNCTION
-  and df_current_function will refer to the global namespace record. */
+   *isn't* being compiled, df_current_function_addr will be DF_NOT_IN_FUNCTION
+   and df_current_function will refer to the global namespace record. */
 static df_function_t *df_current_function;
 static char *df_current_function_name;
 static uint32 df_current_function_addr;
@@ -1666,10 +1671,8 @@ extern void symbols_allocate_arrays(void)
         df_tables_closed = FALSE;
 
         df_symbol_map = my_calloc(sizeof(df_reference_t *), DF_SYMBOL_HASH_BUCKETS, "df symbol-map hash table");
-        memset(df_symbol_map, 0, sizeof(df_reference_t *) * DF_SYMBOL_HASH_BUCKETS);
 
         df_functions = my_calloc(sizeof(df_function_t *), DF_FUNCTION_HASH_BUCKETS, "df function hash table");
-        memset(df_functions, 0, sizeof(df_function_t *) * DF_FUNCTION_HASH_BUCKETS);
         df_functions_head = NULL;
         df_functions_tail = NULL;
 

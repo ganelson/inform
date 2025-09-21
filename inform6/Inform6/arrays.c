@@ -3,7 +3,7 @@
 /*               likewise global variables, which are in some ways a         */
 /*               simpler form of the same thing.                             */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -95,69 +95,69 @@ int zcode_highest_allowed_global;
 */
 extern void finish_array(int32 i, int is_static)
 {
-  uchar *area;
-  int area_size;
+    uchar *area;
+    int area_size;
   
-  if (!is_static) {
-      ensure_memory_list_available(&dynamic_array_area_memlist, dynamic_array_area_size+array_base+1*array_entry_size);
-      area = dynamic_array_area;
-      area_size = dynamic_array_area_size;
-  }
-  else {
-      ensure_memory_list_available(&static_array_area_memlist, static_array_area_size+array_base+1*array_entry_size);
-      area = static_array_area;
-      area_size = static_array_area_size;
-  }
+    if (!is_static) {
+        ensure_memory_list_available(&dynamic_array_area_memlist, dynamic_array_area_size+array_base+1*array_entry_size);
+        area = dynamic_array_area;
+        area_size = dynamic_array_area_size;
+    }
+    else {
+        ensure_memory_list_available(&static_array_area_memlist, static_array_area_size+array_base+1*array_entry_size);
+        area = static_array_area;
+        area_size = static_array_area_size;
+    }
 
-  if (i == 0) {
-      error("An array must have at least one entry");
-  }
+    if (i == 0) {
+        error("An array must have at least one entry");
+    }
   
     /*  Write the array size into the 0th byte/word of the array, if it's
         a "table" or "string" array                                          */
-  if (!glulx_mode) {
+    if (!glulx_mode) {
 
-    if (array_base != area_size)
-    {   if (area_size-array_base==2)
-        {   area[array_base]   = i/256;
-            area[array_base+1] = i%256;
+        if (array_base != area_size)
+        {   if (area_size-array_base==2)
+            {   area[array_base]   = i/256;
+                area[array_base+1] = i%256;
+            }
+            else
+            {   if (i>=256)
+                    error("A 'string' array can have at most 256 entries");
+                area[array_base] = i;
+            }
         }
-        else
-        {   if (i>=256)
-                error("A 'string' array can have at most 256 entries");
-            area[array_base] = i;
+        
+    }
+    else {
+        if (array_base != area_size)
+        {   if (area_size-array_base==4)
+            {   
+                area[array_base]   = (i >> 24) & 0xFF;
+                area[array_base+1] = (i >> 16) & 0xFF;
+                area[array_base+2] = (i >> 8) & 0xFF;
+                area[array_base+3] = (i) & 0xFF;
+            }
+            else
+            {   if (i>=256)
+                    error("A 'string' array can have at most 256 entries");
+                area[array_base] = i;
+            }
         }
+        
     }
 
-  }
-  else {
-    if (array_base != area_size)
-    {   if (area_size-array_base==4)
-        {   
-            area[array_base]   = (i >> 24) & 0xFF;
-            area[array_base+1] = (i >> 16) & 0xFF;
-            area[array_base+2] = (i >> 8) & 0xFF;
-            area[array_base+3] = (i) & 0xFF;
-        }
-        else
-        {   if (i>=256)
-                error("A 'string' array can have at most 256 entries");
-            area[array_base] = i;
-        }
+    /*  Move on the static/dynamic array size so that it now points to the
+        next available free space  */
+    
+    if (!is_static) {
+        dynamic_array_area_size += i*array_entry_size;
+    }
+    else {
+        static_array_area_size += i*array_entry_size;
     }
     
-  }
-
-  /*  Move on the static/dynamic array size so that it now points to the
-      next available free space                                              */
-
-  if (!is_static) {
-      dynamic_array_area_size += i*array_entry_size;
-  }
-  else {
-      static_array_area_size += i*array_entry_size;
-  }
-
 }
 
 /* Fill in array entry i (in either the static or dynamic area).
@@ -166,98 +166,98 @@ extern void finish_array(int32 i, int is_static)
 */
 extern void array_entry(int32 i, int is_static, assembly_operand VAL)
 {
-  uchar *area;
-  int area_size;
+    uchar *area;
+    int area_size;
   
-  if (!is_static) {
-      ensure_memory_list_available(&dynamic_array_area_memlist, dynamic_array_area_size+(i+1)*array_entry_size);
-      area = dynamic_array_area;
-      area_size = dynamic_array_area_size;
-  }
-  else {
-      ensure_memory_list_available(&static_array_area_memlist, static_array_area_size+(i+1)*array_entry_size);
-      area = static_array_area;
-      area_size = static_array_area_size;
-  }
-  
-  if (!glulx_mode) {
-    /*  Array entry i (initial entry has i=0) is set to Z-machine value j    */
-
-    if (array_entry_size==1)
-    {   area[area_size+i] = (VAL.value)%256;
-
-        if (VAL.marker != 0)
-           error("Entries in byte arrays and strings must be known constants");
-
-        /*  If the entry is too large for a byte array, issue a warning
-            and truncate the value                                           */
-        else
-        if (VAL.value >= 256)
-            warning("Entry in '->', 'string' or 'buffer' array not in range 0 to 255");
+    if (!is_static) {
+        ensure_memory_list_available(&dynamic_array_area_memlist, dynamic_array_area_size+(i+1)*array_entry_size);
+        area = dynamic_array_area;
+        area_size = dynamic_array_area_size;
     }
-    else
-    {
-        int32 addr = area_size + 2*i;
-        area[addr]   = (VAL.value)/256;
-        area[addr+1] = (VAL.value)%256;
-        if (VAL.marker != 0) {
-            if (!is_static) {
-                backpatch_zmachine(VAL.marker, DYNAMIC_ARRAY_ZA,
-                    addr);
-            }
-            else {
-                backpatch_zmachine(VAL.marker, STATIC_ARRAY_ZA,
-                    addr);
+    else {
+        ensure_memory_list_available(&static_array_area_memlist, static_array_area_size+(i+1)*array_entry_size);
+        area = static_array_area;
+        area_size = static_array_area_size;
+    }
+  
+    if (!glulx_mode) {
+        /* Array entry i (initial entry has i=0) is set to Z-machine value j */
+
+        if (array_entry_size==1)
+        {   area[area_size+i] = (VAL.value)%256;
+            
+            if (VAL.marker != 0)
+                error("Entries in byte arrays and strings must be known constants");
+            
+            /*  If the entry is too large for a byte array, issue a warning
+                and truncate the value */
+            else
+                if (VAL.value >= 256)
+                    warning("Entry in '->', 'string' or 'buffer' array not in range 0 to 255");
+        }
+        else
+        {
+            int32 addr = area_size + 2*i;
+            area[addr]   = (VAL.value)/256;
+            area[addr+1] = (VAL.value)%256;
+            if (VAL.marker != 0) {
+                if (!is_static) {
+                    backpatch_zmachine(VAL.marker, DYNAMIC_ARRAY_ZA,
+                                       addr);
+                }
+                else {
+                    backpatch_zmachine(VAL.marker, STATIC_ARRAY_ZA,
+                                       addr);
+                }
             }
         }
     }
-  }
-  else {
-    /*  Array entry i (initial entry has i=0) is set to value j              */
-
-    if (array_entry_size==1)
-    {   area[area_size+i] = (VAL.value) & 0xFF;
-
-        if (VAL.marker != 0)
-           error("Entries in byte arrays and strings must be known constants");
-
-        /*  If the entry is too large for a byte array, issue a warning
-            and truncate the value                                           */
-        else
-        if (VAL.value >= 256)
-            warning("Entry in '->', 'string' or 'buffer' array not in range 0 to 255");
-    }
-    else if (array_entry_size==4)
-    {
-        int32 addr = area_size + 4*i;
-        area[addr]   = (VAL.value >> 24) & 0xFF;
-        area[addr+1] = (VAL.value >> 16) & 0xFF;
-        area[addr+2] = (VAL.value >> 8) & 0xFF;
-        area[addr+3] = (VAL.value) & 0xFF;
-        if (VAL.marker != 0) {
-            if (!is_static) {
-                backpatch_zmachine(VAL.marker, DYNAMIC_ARRAY_ZA,
-                    addr);
-            }
-            else {
-                /* We can't use backpatch_zmachine() because that only applies to RAM. Instead we add an entry to staticarray_backpatch_table.
-                   A backpatch entry is five bytes: *_MV followed by the array offset (in static array area). */
-                if (bpatch_trace_setting >= 2)
-                    printf("BP added: MV %d staticarray %04x\n", VAL.marker, addr);
-                ensure_memory_list_available(&staticarray_backpatch_table_memlist, staticarray_backpatch_size+5);
-                staticarray_backpatch_table[staticarray_backpatch_size++] = VAL.marker;
-                staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 24) & 0xFF);
-                staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 16) & 0xFF);
-                staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 8) & 0xFF);
-                staticarray_backpatch_table[staticarray_backpatch_size++] = (addr & 0xFF);
+    else {
+        /*  Array entry i (initial entry has i=0) is set to value j  */
+        
+        if (array_entry_size==1)
+        {   area[area_size+i] = (VAL.value) & 0xFF;
+            
+            if (VAL.marker != 0)
+                error("Entries in byte arrays and strings must be known constants");
+            
+            /*  If the entry is too large for a byte array, issue a warning
+                and truncate the value  */
+            else
+                if (VAL.value >= 256)
+                    warning("Entry in '->', 'string' or 'buffer' array not in range 0 to 255");
+        }
+        else if (array_entry_size==4)
+        {
+            int32 addr = area_size + 4*i;
+            area[addr]   = (VAL.value >> 24) & 0xFF;
+            area[addr+1] = (VAL.value >> 16) & 0xFF;
+            area[addr+2] = (VAL.value >> 8) & 0xFF;
+            area[addr+3] = (VAL.value) & 0xFF;
+            if (VAL.marker != 0) {
+                if (!is_static) {
+                    backpatch_zmachine(VAL.marker, DYNAMIC_ARRAY_ZA,
+                                       addr);
+                }
+                else {
+                    /* We can't use backpatch_zmachine() because that only applies to RAM. Instead we add an entry to staticarray_backpatch_table.
+                       A backpatch entry is five bytes: *_MV followed by the array offset (in static array area). */
+                    if (bpatch_trace_setting >= 2)
+                        printf("BP added: MV %d staticarray %04x\n", VAL.marker, addr);
+                    ensure_memory_list_available(&staticarray_backpatch_table_memlist, staticarray_backpatch_size+5);
+                    staticarray_backpatch_table[staticarray_backpatch_size++] = VAL.marker;
+                    staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 24) & 0xFF);
+                    staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 16) & 0xFF);
+                    staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 8) & 0xFF);
+                    staticarray_backpatch_table[staticarray_backpatch_size++] = (addr & 0xFF);
+                }
             }
         }
+        else
+        {
+            error("Somehow created an array of shorts");
+        }
     }
-    else
-    {
-        error("Somehow created an array of shorts");
-    }
-  }
 }
 
 /* ------------------------------------------------------------------------- */

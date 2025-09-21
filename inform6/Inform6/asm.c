@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "asm" : The Inform assembler                                            */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -263,47 +263,47 @@ extern void set_constant_otv(assembly_operand *AO, int32 val)
 
 extern void set_constant_ot(assembly_operand *AO)
 {
-  if (!glulx_mode) {
-    if (AO->value >= 0 && AO->value <= 255)
-      AO->type = SHORT_CONSTANT_OT;
-    else
-      AO->type = LONG_CONSTANT_OT;
-  }
-  else {
-    if (AO->value == 0)
-      AO->type = ZEROCONSTANT_OT;
-    else if (AO->value >= -0x80 && AO->value < 0x80)
-      AO->type = BYTECONSTANT_OT;
-    else if (AO->value >= -0x8000 && AO->value < 0x8000) 
-      AO->type = HALFCONSTANT_OT;
-    else
-      AO->type = CONSTANT_OT;
-  }
+    if (!glulx_mode) {
+        if (AO->value >= 0 && AO->value <= 255)
+            AO->type = SHORT_CONSTANT_OT;
+        else
+            AO->type = LONG_CONSTANT_OT;
+    }
+    else {
+        if (AO->value == 0)
+            AO->type = ZEROCONSTANT_OT;
+        else if (AO->value >= -0x80 && AO->value < 0x80)
+            AO->type = BYTECONSTANT_OT;
+        else if (AO->value >= -0x8000 && AO->value < 0x8000) 
+            AO->type = HALFCONSTANT_OT;
+        else
+            AO->type = CONSTANT_OT;
+    }
 }
 
 extern int is_constant_ot(int otval)
 {
-  if (!glulx_mode) {
-    return ((otval == LONG_CONSTANT_OT) 
-      || (otval == SHORT_CONSTANT_OT));
-  }
-  else {
-    return ((otval == CONSTANT_OT)
-      || (otval == HALFCONSTANT_OT)
-      || (otval == BYTECONSTANT_OT)
-      || (otval == ZEROCONSTANT_OT));
-  }
+    if (!glulx_mode) {
+        return ((otval == LONG_CONSTANT_OT) 
+                || (otval == SHORT_CONSTANT_OT));
+    }
+    else {
+        return ((otval == CONSTANT_OT)
+                || (otval == HALFCONSTANT_OT)
+                || (otval == BYTECONSTANT_OT)
+                || (otval == ZEROCONSTANT_OT));
+    }
 }
 
 extern int is_variable_ot(int otval)
 {
-  if (!glulx_mode) {
-    return (otval == VARIABLE_OT);
-  }
-  else {
-    return ((otval == LOCALVAR_OT)
-      || (otval == GLOBALVAR_OT));
-  }
+    if (!glulx_mode) {
+        return (otval == VARIABLE_OT);
+    }
+    else {
+        return ((otval == LOCALVAR_OT)
+                || (otval == GLOBALVAR_OT));
+    }
 }
 
 extern int operands_identical(const assembly_operand *AO1, const assembly_operand *AO2)
@@ -324,32 +324,32 @@ extern char *variable_name(int32 i)
     if (i<MAX_LOCAL_VARIABLES) return get_local_variable_name(i-1);
 
     if (!glulx_mode) {
-      if (i == globalv_z_temp_var1) return("TEMP1");
-      if (i == globalv_z_temp_var2) return("TEMP2");
-      if (i == globalv_z_temp_var3) return("TEMP3");
-      if (i == globalv_z_temp_var4) return("TEMP4");
-      if (i == globalv_z_self) return("self");
-      if (i == globalv_z_sender) return("sender");
-      if (i == globalv_z_sw__var) return("sw__var");
-      if (i >= 256 && i < 286)
-      {   if (i - 256 < NUMBER_SYSTEM_FUNCTIONS) return system_functions.keywords[i - 256];
-          return "<unnamed system function>";
-      }
+        if (i == globalv_z_temp_var1) return("TEMP1");
+        if (i == globalv_z_temp_var2) return("TEMP2");
+        if (i == globalv_z_temp_var3) return("TEMP3");
+        if (i == globalv_z_temp_var4) return("TEMP4");
+        if (i == globalv_z_self) return("self");
+        if (i == globalv_z_sender) return("sender");
+        if (i == globalv_z_sw__var) return("sw__var");
+        if (i >= 256 && i < 286)
+            {   if (i - 256 < NUMBER_SYSTEM_FUNCTIONS) return system_functions.keywords[i - 256];
+                return "<unnamed system function>";
+            }
     }
     else {
-      switch (i - MAX_LOCAL_VARIABLES) {
-      case 0: return "temp_global";
-      case 1: return "temp__global2";
-      case 2: return "temp__global3";
-      case 3: return "temp__global4";
-      case 4: return "self";
-      case 5: return "sender";
-      case 6: return "sw__var";
-      case 7: return "sys__glob0";
-      case 8: return "sys__glob1";
-      case 9: return "sys__glob2";
-      case 10: return "sys_statusline_flag";
-      }
+        switch (i - MAX_LOCAL_VARIABLES) {
+        case 0: return "temp_global";
+        case 1: return "temp__global2";
+        case 2: return "temp__global3";
+        case 3: return "temp__global4";
+        case 4: return "self";
+        case 5: return "sender";
+        case 6: return "sw__var";
+        case 7: return "sys__glob0";
+        case 8: return "sys__glob1";
+        case 9: return "sys__glob2";
+        case 10: return "sys_statusline_flag";
+        }
     }
 
     return (symbols[variables[i].token].name);
@@ -402,42 +402,42 @@ static void print_operand_z(const assembly_operand *o, int annotate)
 
 static void print_operand_g(const assembly_operand *o, int annotate)
 {
-  switch (o->type) {
-  case EXPRESSION_OT: printf("expr_"); break;
-  case CONSTANT_OT: printf("long_"); break;
-  case HALFCONSTANT_OT: printf("short_"); break;
-  case BYTECONSTANT_OT: printf("byte_"); break;
-  case ZEROCONSTANT_OT: printf("zero_"); return;
-  case DEREFERENCE_OT: printf("*"); break;
-  case GLOBALVAR_OT: 
-    printf("global_%d (%s)", o->value, variable_name(o->value)); 
-    return;
-  case LOCALVAR_OT: 
-    if (o->value == 0)
-      printf("stackptr"); 
-    else
-      printf("local_%d (%s)", o->value-1, variable_name(o->value)); 
-    return;
-  case SYSFUN_OT:
-    if (o->value >= 0 && o->value < NUMBER_SYSTEM_FUNCTIONS)
-      printf("%s", system_functions.keywords[o->value]);
-    else
-      printf("<unnamed system function>");
-    return;
-  case OMITTED_OT: printf("<no value>"); return;
-  default: printf("???_"); break; 
-  }
-  printf("%d", o->value);
-  if (annotate)
-    print_operand_annotation(o);
+    switch (o->type) {
+    case EXPRESSION_OT: printf("expr_"); break;
+    case CONSTANT_OT: printf("long_"); break;
+    case HALFCONSTANT_OT: printf("short_"); break;
+    case BYTECONSTANT_OT: printf("byte_"); break;
+    case ZEROCONSTANT_OT: printf("zero_"); return;
+    case DEREFERENCE_OT: printf("*"); break;
+    case GLOBALVAR_OT: 
+        printf("global_%d (%s)", o->value, variable_name(o->value)); 
+        return;
+    case LOCALVAR_OT: 
+        if (o->value == 0)
+            printf("stackptr"); 
+        else
+            printf("local_%d (%s)", o->value-1, variable_name(o->value)); 
+        return;
+    case SYSFUN_OT:
+        if (o->value >= 0 && o->value < NUMBER_SYSTEM_FUNCTIONS)
+            printf("%s", system_functions.keywords[o->value]);
+        else
+            printf("<unnamed system function>");
+        return;
+    case OMITTED_OT: printf("<no value>"); return;
+    default: printf("???_"); break; 
+    }
+    printf("%d", o->value);
+    if (annotate)
+        print_operand_annotation(o);
 }
 
 extern void print_operand(const assembly_operand *o, int annotate)
 {
-  if (!glulx_mode)
-    print_operand_z(o, annotate);
-  else
-    print_operand_g(o, annotate);
+    if (!glulx_mode)
+        print_operand_z(o, annotate);
+    else
+        print_operand_g(o, annotate);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -694,165 +694,165 @@ static opcodez custom_opcode_z;
 */
 
 static opcodeg opcodes_table_g[] = {
-  { (uchar *) "nop",        0x00,  0, 0, 0 },
-  { (uchar *) "add",        0x10, St, 0, 3 },
-  { (uchar *) "sub",        0x11, St, 0, 3 },
-  { (uchar *) "mul",        0x12, St, 0, 3 },
-  { (uchar *) "div",        0x13, St, 0, 3 },
-  { (uchar *) "mod",        0x14, St, 0, 3 },
-  { (uchar *) "neg",        0x15, St, 0, 2 },
-  { (uchar *) "bitand",     0x18, St, 0, 3 },
-  { (uchar *) "bitor",      0x19, St, 0, 3 },
-  { (uchar *) "bitxor",     0x1A, St, 0, 3 },
-  { (uchar *) "bitnot",     0x1B, St, 0, 2 },
-  { (uchar *) "shiftl",     0x1C, St, 0, 3 },
-  { (uchar *) "sshiftr",    0x1D, St, 0, 3 },
-  { (uchar *) "ushiftr",    0x1E, St, 0, 3 },
-  { (uchar *) "jump",       0x20, Br|Rf, 0, 1 },
-  { (uchar *) "jz",     0x22, Br, 0, 2 },
-  { (uchar *) "jnz",        0x23, Br, 0, 2 },
-  { (uchar *) "jeq",        0x24, Br, 0, 3 },
-  { (uchar *) "jne",        0x25, Br, 0, 3 },
-  { (uchar *) "jlt",        0x26, Br, 0, 3 },
-  { (uchar *) "jge",        0x27, Br, 0, 3 },
-  { (uchar *) "jgt",        0x28, Br, 0, 3 },
-  { (uchar *) "jle",        0x29, Br, 0, 3 },
-  { (uchar *) "jltu",       0x2A, Br, 0, 3 },
-  { (uchar *) "jgeu",       0x2B, Br, 0, 3 },
-  { (uchar *) "jgtu",       0x2C, Br, 0, 3 },
-  { (uchar *) "jleu",       0x2D, Br, 0, 3 },
-  { (uchar *) "call",       0x30, St, 0, 3 },
-  { (uchar *) "return",     0x31, Rf, 0, 1 },
-  { (uchar *) "catch",      0x32, Br|St, 0, 2 },
-  { (uchar *) "throw",      0x33, Rf, 0, 2 },
-  { (uchar *) "tailcall",   0x34, Rf, 0, 2 },
-  { (uchar *) "copy",       0x40, St, 0, 2 },
-  { (uchar *) "copys",      0x41, St, 0, 2 },
-  { (uchar *) "copyb",      0x42, St, 0, 2 },
-  { (uchar *) "sexs",       0x44, St, 0, 2 },
-  { (uchar *) "sexb",       0x45, St, 0, 2 },
-  { (uchar *) "aload",      0x48, St, 0, 3 },
-  { (uchar *) "aloads",     0x49, St, 0, 3 },
-  { (uchar *) "aloadb",     0x4A, St, 0, 3 },
-  { (uchar *) "aloadbit",   0x4B, St, 0, 3 },
-  { (uchar *) "astore",     0x4C,  0, 0, 3 },
-  { (uchar *) "astores",    0x4D,  0, 0, 3 },
-  { (uchar *) "astoreb",    0x4E,  0, 0, 3 },
-  { (uchar *) "astorebit",  0x4F,  0, 0, 3 },
-  { (uchar *) "stkcount",   0x50, St, 0, 1 },
-  { (uchar *) "stkpeek",    0x51, St, 0, 2 },
-  { (uchar *) "stkswap",    0x52,  0, 0, 0 },
-  { (uchar *) "stkroll",    0x53,  0, 0, 2 },
-  { (uchar *) "stkcopy",    0x54,  0, 0, 1 },
-  { (uchar *) "streamchar", 0x70,  0, 0, 1 },
-  { (uchar *) "streamnum",  0x71,  0, 0, 1 },
-  { (uchar *) "streamstr",  0x72,  0, 0, 1 },
-  { (uchar *) "gestalt",    0x0100, St, 0, 3 },
-  { (uchar *) "debugtrap",  0x0101, 0, 0, 1 },
-  { (uchar *) "getmemsize",     0x0102, St, 0, 1 },
-  { (uchar *) "setmemsize",     0x0103, St, 0, 2 },
-  { (uchar *) "jumpabs",    0x0104, Rf, 0, 1 },
-  { (uchar *) "random",     0x0110, St, 0, 2 },
-  { (uchar *) "setrandom",  0x0111,  0, 0, 1 },
-  { (uchar *) "quit",       0x0120, Rf, 0, 0 },
-  { (uchar *) "verify",     0x0121, St, 0, 1 },
-  { (uchar *) "restart",    0x0122,  0, 0, 0 },
-  { (uchar *) "save",       0x0123, St, 0, 2 },
-  { (uchar *) "restore",    0x0124, St, 0, 2 },
-  { (uchar *) "saveundo",   0x0125, St, 0, 1 },
-  { (uchar *) "restoreundo",    0x0126, St, 0, 1 },
-  { (uchar *) "protect",    0x0127,  0, 0, 2 },
-  { (uchar *) "glk",        0x0130, St, 0, 3 },
-  { (uchar *) "getstringtbl",   0x0140, St, 0, 1 },
-  { (uchar *) "setstringtbl",   0x0141, 0, 0, 1 },
-  { (uchar *) "getiosys",   0x0148, St|St2, 0, 2 },
-  { (uchar *) "setiosys",   0x0149, 0, 0, 2 },
-  { (uchar *) "linearsearch",   0x0150, St, 0, 8 },
-  { (uchar *) "binarysearch",   0x0151, St, 0, 8 },
-  { (uchar *) "linkedsearch",   0x0152, St, 0, 7 },
-  { (uchar *) "callf",      0x0160, St, 0, 2 },
-  { (uchar *) "callfi",     0x0161, St, 0, 3 },
-  { (uchar *) "callfii",    0x0162, St, 0, 4 },
-  { (uchar *) "callfiii",   0x0163, St, 0, 5 },
-  { (uchar *) "streamunichar", 0x73,  0, GOP_Unicode, 1 },
-  { (uchar *) "mzero",      0x170,  0, GOP_MemHeap, 2 },
-  { (uchar *) "mcopy",      0x171,  0, GOP_MemHeap, 3 },
-  { (uchar *) "malloc",     0x178,  St, GOP_MemHeap, 2 },
-  { (uchar *) "mfree",      0x179,  0, GOP_MemHeap, 1 },
-  { (uchar *) "accelfunc",  0x180,  0, GOP_Acceleration, 2 },
-  { (uchar *) "accelparam", 0x181,  0, GOP_Acceleration, 2 },
-  { (uchar *) "hasundo",    0x128,  St, GOP_ExtUndo, 1 },
-  { (uchar *) "discardundo",0x129,   0, GOP_ExtUndo, 0 },
-  { (uchar *) "numtof",     0x190,  St, GOP_Float, 2 },
-  { (uchar *) "ftonumz",    0x191,  St, GOP_Float, 2 },
-  { (uchar *) "ftonumn",    0x192,  St, GOP_Float, 2 },
-  { (uchar *) "ceil",       0x198,  St, GOP_Float, 2 },
-  { (uchar *) "floor",      0x199,  St, GOP_Float, 2 },
-  { (uchar *) "fadd",       0x1A0,  St, GOP_Float, 3 },
-  { (uchar *) "fsub",       0x1A1,  St, GOP_Float, 3 },
-  { (uchar *) "fmul",       0x1A2,  St, GOP_Float, 3 },
-  { (uchar *) "fdiv",       0x1A3,  St, GOP_Float, 3 },
-  { (uchar *) "fmod",       0x1A4,  St|St2, GOP_Float, 4 },
-  { (uchar *) "sqrt",       0x1A8,  St, GOP_Float, 2 },
-  { (uchar *) "exp",        0x1A9,  St, GOP_Float, 2 },
-  { (uchar *) "log",        0x1AA,  St, GOP_Float, 2 },
-  { (uchar *) "pow",        0x1AB,  St, GOP_Float, 3 },
-  { (uchar *) "sin",        0x1B0,  St, GOP_Float, 2 },
-  { (uchar *) "cos",        0x1B1,  St, GOP_Float, 2 },
-  { (uchar *) "tan",        0x1B2,  St, GOP_Float, 2 },
-  { (uchar *) "asin",       0x1B3,  St, GOP_Float, 2 },
-  { (uchar *) "acos",       0x1B4,  St, GOP_Float, 2 },
-  { (uchar *) "atan",       0x1B5,  St, GOP_Float, 2 },
-  { (uchar *) "atan2",      0x1B6,  St, GOP_Float, 3 },
-  { (uchar *) "jfeq",       0x1C0,  Br, GOP_Float, 4 },
-  { (uchar *) "jfne",       0x1C1,  Br, GOP_Float, 4 },
-  { (uchar *) "jflt",       0x1C2,  Br, GOP_Float, 3 },
-  { (uchar *) "jfle",       0x1C3,  Br, GOP_Float, 3 },
-  { (uchar *) "jfgt",       0x1C4,  Br, GOP_Float, 3 },
-  { (uchar *) "jfge",       0x1C5,  Br, GOP_Float, 3 },
-  { (uchar *) "jisnan",     0x1C8,  Br, GOP_Float, 2 },
-  { (uchar *) "jisinf",     0x1C9,  Br, GOP_Float, 2 },
-  { (uchar *) "numtod",     0x200,  St|St2, GOP_Double, 3 },
-  { (uchar *) "dtonumz",    0x201,  St, GOP_Double, 3 },
-  { (uchar *) "dtonumn",    0x202,  St, GOP_Double, 3 },
-  { (uchar *) "ftod",       0x203,  St|St2, GOP_Double, 3 },
-  { (uchar *) "dtof",       0x204,  St, GOP_Double, 3 },
-  { (uchar *) "dceil",      0x208,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dfloor",     0x209,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dadd",       0x210,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dsub",       0x211,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dmul",       0x212,  St|St2, GOP_Double, 6 },
-  { (uchar *) "ddiv",       0x213,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dmodr",      0x214,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dmodq",      0x215,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dsqrt",      0x218,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dexp",       0x219,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dlog",       0x21A,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dpow",       0x21B,  St|St2, GOP_Double, 6 },
-  { (uchar *) "dsin",       0x220,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dcos",       0x221,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dtan",       0x222,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dasin",      0x223,  St|St2, GOP_Double, 4 },
-  { (uchar *) "dacos",      0x224,  St|St2, GOP_Double, 4 },
-  { (uchar *) "datan",      0x225,  St|St2, GOP_Double, 4 },
-  { (uchar *) "datan2",     0x226,  St|St2, GOP_Double, 6 },
-  { (uchar *) "jdeq",       0x230,  Br, GOP_Double, 7 },
-  { (uchar *) "jdne",       0x231,  Br, GOP_Double, 7 },
-  { (uchar *) "jdlt",       0x232,  Br, GOP_Double, 5 },
-  { (uchar *) "jdle",       0x233,  Br, GOP_Double, 5 },
-  { (uchar *) "jdgt",       0x234,  Br, GOP_Double, 5 },
-  { (uchar *) "jdge",       0x235,  Br, GOP_Double, 5 },
-  { (uchar *) "jdisnan",    0x238,  Br, GOP_Double, 3 },
-  { (uchar *) "jdisinf",    0x239,  Br, GOP_Double, 3 },
+    { (uchar *) "nop",        0x00,  0, 0, 0 },
+    { (uchar *) "add",        0x10, St, 0, 3 },
+    { (uchar *) "sub",        0x11, St, 0, 3 },
+    { (uchar *) "mul",        0x12, St, 0, 3 },
+    { (uchar *) "div",        0x13, St, 0, 3 },
+    { (uchar *) "mod",        0x14, St, 0, 3 },
+    { (uchar *) "neg",        0x15, St, 0, 2 },
+    { (uchar *) "bitand",     0x18, St, 0, 3 },
+    { (uchar *) "bitor",      0x19, St, 0, 3 },
+    { (uchar *) "bitxor",     0x1A, St, 0, 3 },
+    { (uchar *) "bitnot",     0x1B, St, 0, 2 },
+    { (uchar *) "shiftl",     0x1C, St, 0, 3 },
+    { (uchar *) "sshiftr",    0x1D, St, 0, 3 },
+    { (uchar *) "ushiftr",    0x1E, St, 0, 3 },
+    { (uchar *) "jump",       0x20, Br|Rf, 0, 1 },
+    { (uchar *) "jz",     0x22, Br, 0, 2 },
+    { (uchar *) "jnz",        0x23, Br, 0, 2 },
+    { (uchar *) "jeq",        0x24, Br, 0, 3 },
+    { (uchar *) "jne",        0x25, Br, 0, 3 },
+    { (uchar *) "jlt",        0x26, Br, 0, 3 },
+    { (uchar *) "jge",        0x27, Br, 0, 3 },
+    { (uchar *) "jgt",        0x28, Br, 0, 3 },
+    { (uchar *) "jle",        0x29, Br, 0, 3 },
+    { (uchar *) "jltu",       0x2A, Br, 0, 3 },
+    { (uchar *) "jgeu",       0x2B, Br, 0, 3 },
+    { (uchar *) "jgtu",       0x2C, Br, 0, 3 },
+    { (uchar *) "jleu",       0x2D, Br, 0, 3 },
+    { (uchar *) "call",       0x30, St, 0, 3 },
+    { (uchar *) "return",     0x31, Rf, 0, 1 },
+    { (uchar *) "catch",      0x32, Br|St, 0, 2 },
+    { (uchar *) "throw",      0x33, Rf, 0, 2 },
+    { (uchar *) "tailcall",   0x34, Rf, 0, 2 },
+    { (uchar *) "copy",       0x40, St, 0, 2 },
+    { (uchar *) "copys",      0x41, St, 0, 2 },
+    { (uchar *) "copyb",      0x42, St, 0, 2 },
+    { (uchar *) "sexs",       0x44, St, 0, 2 },
+    { (uchar *) "sexb",       0x45, St, 0, 2 },
+    { (uchar *) "aload",      0x48, St, 0, 3 },
+    { (uchar *) "aloads",     0x49, St, 0, 3 },
+    { (uchar *) "aloadb",     0x4A, St, 0, 3 },
+    { (uchar *) "aloadbit",   0x4B, St, 0, 3 },
+    { (uchar *) "astore",     0x4C,  0, 0, 3 },
+    { (uchar *) "astores",    0x4D,  0, 0, 3 },
+    { (uchar *) "astoreb",    0x4E,  0, 0, 3 },
+    { (uchar *) "astorebit",  0x4F,  0, 0, 3 },
+    { (uchar *) "stkcount",   0x50, St, 0, 1 },
+    { (uchar *) "stkpeek",    0x51, St, 0, 2 },
+    { (uchar *) "stkswap",    0x52,  0, 0, 0 },
+    { (uchar *) "stkroll",    0x53,  0, 0, 2 },
+    { (uchar *) "stkcopy",    0x54,  0, 0, 1 },
+    { (uchar *) "streamchar", 0x70,  0, 0, 1 },
+    { (uchar *) "streamnum",  0x71,  0, 0, 1 },
+    { (uchar *) "streamstr",  0x72,  0, 0, 1 },
+    { (uchar *) "gestalt",    0x0100, St, 0, 3 },
+    { (uchar *) "debugtrap",  0x0101, 0, 0, 1 },
+    { (uchar *) "getmemsize",     0x0102, St, 0, 1 },
+    { (uchar *) "setmemsize",     0x0103, St, 0, 2 },
+    { (uchar *) "jumpabs",    0x0104, Rf, 0, 1 },
+    { (uchar *) "random",     0x0110, St, 0, 2 },
+    { (uchar *) "setrandom",  0x0111,  0, 0, 1 },
+    { (uchar *) "quit",       0x0120, Rf, 0, 0 },
+    { (uchar *) "verify",     0x0121, St, 0, 1 },
+    { (uchar *) "restart",    0x0122,  0, 0, 0 },
+    { (uchar *) "save",       0x0123, St, 0, 2 },
+    { (uchar *) "restore",    0x0124, St, 0, 2 },
+    { (uchar *) "saveundo",   0x0125, St, 0, 1 },
+    { (uchar *) "restoreundo",    0x0126, St, 0, 1 },
+    { (uchar *) "protect",    0x0127,  0, 0, 2 },
+    { (uchar *) "glk",        0x0130, St, 0, 3 },
+    { (uchar *) "getstringtbl",   0x0140, St, 0, 1 },
+    { (uchar *) "setstringtbl",   0x0141, 0, 0, 1 },
+    { (uchar *) "getiosys",   0x0148, St|St2, 0, 2 },
+    { (uchar *) "setiosys",   0x0149, 0, 0, 2 },
+    { (uchar *) "linearsearch",   0x0150, St, 0, 8 },
+    { (uchar *) "binarysearch",   0x0151, St, 0, 8 },
+    { (uchar *) "linkedsearch",   0x0152, St, 0, 7 },
+    { (uchar *) "callf",      0x0160, St, 0, 2 },
+    { (uchar *) "callfi",     0x0161, St, 0, 3 },
+    { (uchar *) "callfii",    0x0162, St, 0, 4 },
+    { (uchar *) "callfiii",   0x0163, St, 0, 5 },
+    { (uchar *) "streamunichar", 0x73,  0, GOP_Unicode, 1 },
+    { (uchar *) "mzero",      0x170,  0, GOP_MemHeap, 2 },
+    { (uchar *) "mcopy",      0x171,  0, GOP_MemHeap, 3 },
+    { (uchar *) "malloc",     0x178,  St, GOP_MemHeap, 2 },
+    { (uchar *) "mfree",      0x179,  0, GOP_MemHeap, 1 },
+    { (uchar *) "accelfunc",  0x180,  0, GOP_Acceleration, 2 },
+    { (uchar *) "accelparam", 0x181,  0, GOP_Acceleration, 2 },
+    { (uchar *) "hasundo",    0x128,  St, GOP_ExtUndo, 1 },
+    { (uchar *) "discardundo",0x129,   0, GOP_ExtUndo, 0 },
+    { (uchar *) "numtof",     0x190,  St, GOP_Float, 2 },
+    { (uchar *) "ftonumz",    0x191,  St, GOP_Float, 2 },
+    { (uchar *) "ftonumn",    0x192,  St, GOP_Float, 2 },
+    { (uchar *) "ceil",       0x198,  St, GOP_Float, 2 },
+    { (uchar *) "floor",      0x199,  St, GOP_Float, 2 },
+    { (uchar *) "fadd",       0x1A0,  St, GOP_Float, 3 },
+    { (uchar *) "fsub",       0x1A1,  St, GOP_Float, 3 },
+    { (uchar *) "fmul",       0x1A2,  St, GOP_Float, 3 },
+    { (uchar *) "fdiv",       0x1A3,  St, GOP_Float, 3 },
+    { (uchar *) "fmod",       0x1A4,  St|St2, GOP_Float, 4 },
+    { (uchar *) "sqrt",       0x1A8,  St, GOP_Float, 2 },
+    { (uchar *) "exp",        0x1A9,  St, GOP_Float, 2 },
+    { (uchar *) "log",        0x1AA,  St, GOP_Float, 2 },
+    { (uchar *) "pow",        0x1AB,  St, GOP_Float, 3 },
+    { (uchar *) "sin",        0x1B0,  St, GOP_Float, 2 },
+    { (uchar *) "cos",        0x1B1,  St, GOP_Float, 2 },
+    { (uchar *) "tan",        0x1B2,  St, GOP_Float, 2 },
+    { (uchar *) "asin",       0x1B3,  St, GOP_Float, 2 },
+    { (uchar *) "acos",       0x1B4,  St, GOP_Float, 2 },
+    { (uchar *) "atan",       0x1B5,  St, GOP_Float, 2 },
+    { (uchar *) "atan2",      0x1B6,  St, GOP_Float, 3 },
+    { (uchar *) "jfeq",       0x1C0,  Br, GOP_Float, 4 },
+    { (uchar *) "jfne",       0x1C1,  Br, GOP_Float, 4 },
+    { (uchar *) "jflt",       0x1C2,  Br, GOP_Float, 3 },
+    { (uchar *) "jfle",       0x1C3,  Br, GOP_Float, 3 },
+    { (uchar *) "jfgt",       0x1C4,  Br, GOP_Float, 3 },
+    { (uchar *) "jfge",       0x1C5,  Br, GOP_Float, 3 },
+    { (uchar *) "jisnan",     0x1C8,  Br, GOP_Float, 2 },
+    { (uchar *) "jisinf",     0x1C9,  Br, GOP_Float, 2 },
+    { (uchar *) "numtod",     0x200,  St|St2, GOP_Double, 3 },
+    { (uchar *) "dtonumz",    0x201,  St, GOP_Double, 3 },
+    { (uchar *) "dtonumn",    0x202,  St, GOP_Double, 3 },
+    { (uchar *) "ftod",       0x203,  St|St2, GOP_Double, 3 },
+    { (uchar *) "dtof",       0x204,  St, GOP_Double, 3 },
+    { (uchar *) "dceil",      0x208,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dfloor",     0x209,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dadd",       0x210,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dsub",       0x211,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dmul",       0x212,  St|St2, GOP_Double, 6 },
+    { (uchar *) "ddiv",       0x213,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dmodr",      0x214,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dmodq",      0x215,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dsqrt",      0x218,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dexp",       0x219,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dlog",       0x21A,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dpow",       0x21B,  St|St2, GOP_Double, 6 },
+    { (uchar *) "dsin",       0x220,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dcos",       0x221,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dtan",       0x222,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dasin",      0x223,  St|St2, GOP_Double, 4 },
+    { (uchar *) "dacos",      0x224,  St|St2, GOP_Double, 4 },
+    { (uchar *) "datan",      0x225,  St|St2, GOP_Double, 4 },
+    { (uchar *) "datan2",     0x226,  St|St2, GOP_Double, 6 },
+    { (uchar *) "jdeq",       0x230,  Br, GOP_Double, 7 },
+    { (uchar *) "jdne",       0x231,  Br, GOP_Double, 7 },
+    { (uchar *) "jdlt",       0x232,  Br, GOP_Double, 5 },
+    { (uchar *) "jdle",       0x233,  Br, GOP_Double, 5 },
+    { (uchar *) "jdgt",       0x234,  Br, GOP_Double, 5 },
+    { (uchar *) "jdge",       0x235,  Br, GOP_Double, 5 },
+    { (uchar *) "jdisnan",    0x238,  Br, GOP_Double, 3 },
+    { (uchar *) "jdisinf",    0x239,  Br, GOP_Double, 3 },
 };
 
 /* The opmacros table is used for fake opcodes. The opcode numbers are
    ignored; this table is only used for argument parsing. */
 static opcodeg opmacros_table_g[] = {
-  { (uchar *) "pull",   pull_gm,       St, 0, 1 },
-  { (uchar *) "push",   push_gm,        0, 0, 1 },
-  { (uchar *) "dload",  dload_gm,  St|St2, 0, 3 },
-  { (uchar *) "dstore", dstore_gm,      0, 0, 3 },
+    { (uchar *) "pull",   pull_gm,       St, 0, 1 },
+    { (uchar *) "push",   push_gm,        0, 0, 1 },
+    { (uchar *) "dload",  dload_gm,  St|St2, 0, 3 },
+    { (uchar *) "dstore", dstore_gm,      0, 0, 3 },
 };
 
 static opcodeg custom_opcode_g;
@@ -1315,8 +1315,8 @@ static void assembleg_macro(const assembly_instruction *AI)
     for (ix = 0; ix < no_operands_given; ix++) {
         int type = AI->operand[ix].type;
         if ((opco.flags & St) 
-          && ((!(opco.flags & Br) && (ix == no_operands_given-1))
-          || ((opco.flags & Br) && (ix == no_operands_given-2)))) {
+            && ((!(opco.flags & Br) && (ix == no_operands_given-1))
+            || ((opco.flags & Br) && (ix == no_operands_given-2)))) {
             if (is_constant_ot(type)) {
                 error("*** assembly macro tried to store to a constant ***");
                 goto OpcodeSyntaxError; 
@@ -1459,17 +1459,17 @@ extern void assembleg_instruction(const assembly_instruction *AI)
     start_pc = zcode_ha_size; 
 
     if (opco.code < 0x80) {
-      byteout(opco.code, 0);
+        byteout(opco.code, 0);
     }
     else if (opco.code < 0x4000) {
-      byteout(((opco.code >> 8) & 0xFF) | 0x80, 0);
-      byteout((opco.code & 0xFF), 0);
+        byteout(((opco.code >> 8) & 0xFF) | 0x80, 0);
+        byteout((opco.code & 0xFF), 0);
     }
     else {
-      byteout(((opco.code >> 24) & 0xFF) | 0xC0, 0);
-      byteout(((opco.code >> 16) & 0xFF), 0);
-      byteout(((opco.code >> 8) & 0xFF), 0);
-      byteout(((opco.code) & 0xFF), 0);
+        byteout(((opco.code >> 24) & 0xFF) | 0xC0, 0);
+        byteout(((opco.code >> 16) & 0xFF), 0);
+        byteout(((opco.code >> 8) & 0xFF), 0);
+        byteout(((opco.code) & 0xFF), 0);
     }
 
     /* ... and the operand addressing modes. There's one byte for
@@ -1479,7 +1479,7 @@ extern void assembleg_instruction(const assembly_instruction *AI)
     opmodes_pc = zcode_ha_size;
 
     for (ix=0; ix<opco.no; ix+=2) {
-      byteout(0, 0);
+        byteout(0, 0);
     }
 
     /* 2. Dispose of the special rules */
@@ -1488,7 +1488,7 @@ extern void assembleg_instruction(const assembly_instruction *AI)
     /* 3. Sort out the operands */
 
     if (no_operands_given != opco.no) {
-      goto OpcodeSyntaxError;
+        goto OpcodeSyntaxError;
     }
 
     for (ix=0; ix<no_operands_given; ix++) {
@@ -1528,167 +1528,167 @@ extern void assembleg_instruction(const assembly_instruction *AI)
                 }
             }
         }
-    if ((opco.flags & St) 
-      && ((!(opco.flags & Br) && (ix == no_operands_given-1))
-      || ((opco.flags & Br) && (ix == no_operands_given-2)))) {
-        if (type == BYTECONSTANT_OT || type == HALFCONSTANT_OT
-            || type == CONSTANT_OT) {
-            error("*** instruction tried to store to a constant ***");
-            goto OpcodeSyntaxError; 
+        if ((opco.flags & St) 
+            && ((!(opco.flags & Br) && (ix == no_operands_given-1))
+                || ((opco.flags & Br) && (ix == no_operands_given-2)))) {
+            if (type == BYTECONSTANT_OT || type == HALFCONSTANT_OT
+                || type == CONSTANT_OT) {
+                error("*** instruction tried to store to a constant ***");
+                goto OpcodeSyntaxError; 
+            }
         }
-    }
-    if ((opco.flags & St2) 
-        && (ix == no_operands_given-2)) {
-        if (type == BYTECONSTANT_OT || type == HALFCONSTANT_OT
-          || type == CONSTANT_OT) {
-          error("*** instruction tried to store to a constant ***");
-          goto OpcodeSyntaxError; 
-        }
-    }
-
-      if (marker && (type == HALFCONSTANT_OT 
-        || type == BYTECONSTANT_OT
-        || type == ZEROCONSTANT_OT)) {
-        compiler_error("Assembling marker in less than 32-bit constant.");
-        /* Actually we should store marker|0x80 for a byte constant,
-           but let's hold off on that. */
+        if ((opco.flags & St2) 
+            && (ix == no_operands_given-2)) {
+            if (type == BYTECONSTANT_OT || type == HALFCONSTANT_OT
+                || type == CONSTANT_OT) {
+                error("*** instruction tried to store to a constant ***");
+                goto OpcodeSyntaxError; 
+            }
         }
 
-      switch (type) {
-      case LONG_CONSTANT_OT:
-      case SHORT_CONSTANT_OT:
-      case VARIABLE_OT:
-        j = 0;
-        compiler_error("Z-code OT in Glulx assembly operand.");
-        break;
-      case CONSTANT_OT:
-        j = 3;
-        byteout((k >> 24) & 0xFF, marker);
-        byteout((k >> 16) & 0xFF, 0);
-        byteout((k >> 8) & 0xFF, 0);
-        byteout((k & 0xFF), 0);
-        break;
-      case HALFCONSTANT_OT:
-        j = 2;
-        byteout((k >> 8) & 0xFF, marker);
-        byteout((k & 0xFF), 0);
-        break;
-      case BYTECONSTANT_OT:
-        j = 1;
-        byteout((k & 0xFF), marker);
-        break;
-      case ZEROCONSTANT_OT:
-        j = 0;
-        break;
-      case DEREFERENCE_OT:
-        j = 7;
-        byteout((k >> 24) & 0xFF, marker);
-        byteout((k >> 16) & 0xFF, 0);
-        byteout((k >> 8) & 0xFF, 0);
-        byteout((k & 0xFF), 0);
-        break;
-      case GLOBALVAR_OT:
-        /* Global variable -- a constant address. */
-        k -= MAX_LOCAL_VARIABLES;
-        if (/* DISABLES CODE */ (0)) {
-            /* We could write the value as a marker and patch it later... */
+        if (marker && (type == HALFCONSTANT_OT 
+                       || type == BYTECONSTANT_OT
+                       || type == ZEROCONSTANT_OT)) {
+            compiler_error("Assembling marker in less than 32-bit constant.");
+            /* Actually we should store marker|0x80 for a byte constant,
+               but let's hold off on that. */
+        }
+
+        switch (type) {
+        case LONG_CONSTANT_OT:
+        case SHORT_CONSTANT_OT:
+        case VARIABLE_OT:
+            j = 0;
+            compiler_error("Z-code OT in Glulx assembly operand.");
+            break;
+        case CONSTANT_OT:
+            j = 3;
+            byteout((k >> 24) & 0xFF, marker);
+            byteout((k >> 16) & 0xFF, 0);
+            byteout((k >> 8) & 0xFF, 0);
+            byteout((k & 0xFF), 0);
+            break;
+        case HALFCONSTANT_OT:
+            j = 2;
+            byteout((k >> 8) & 0xFF, marker);
+            byteout((k & 0xFF), 0);
+            break;
+        case BYTECONSTANT_OT:
+            j = 1;
+            byteout((k & 0xFF), marker);
+            break;
+        case ZEROCONSTANT_OT:
+            j = 0;
+            break;
+        case DEREFERENCE_OT:
             j = 7;
-            byteout(((k) >> 24) & 0xFF, VARIABLE_MV);
-            byteout(((k) >> 16) & 0xFF, 0);
-            byteout(((k) >> 8) & 0xFF, 0);
-            byteout(((k) & 0xFF), 0);
-        }
-        else {
-            /* ...but it's more efficient to write it as a RAM operand,
-                  which can be 1, 2, or 4 bytes. Remember that global variables
-                  are the very first thing in RAM. */
-            k = k * 4; /* each variable is four bytes */
-            if (k <= 255) {
-                j = 13;
-                byteout(((k) & 0xFF), 0);
-            }
-            else if (k <= 65535) {
-                j = 14;
-                byteout(((k) >> 8) & 0xFF, 0);
-                byteout(((k) & 0xFF), 0);
-            }
-            else {
-                j = 15;
-                byteout(((k) >> 24) & 0xFF, 0);
+            byteout((k >> 24) & 0xFF, marker);
+            byteout((k >> 16) & 0xFF, 0);
+            byteout((k >> 8) & 0xFF, 0);
+            byteout((k & 0xFF), 0);
+            break;
+        case GLOBALVAR_OT:
+            /* Global variable -- a constant address. */
+            k -= MAX_LOCAL_VARIABLES;
+            if (/* DISABLES CODE */ (0)) {
+                /* We could write the value as a marker and patch it later... */
+                j = 7;
+                byteout(((k) >> 24) & 0xFF, VARIABLE_MV);
                 byteout(((k) >> 16) & 0xFF, 0);
                 byteout(((k) >> 8) & 0xFF, 0);
-                byteout(((k) & 0xFF), 0);       
-            }
-        }
-        break;
-      case LOCALVAR_OT:
-        if (k == 0) {
-            /* Stack-pointer magic variable */
-            j = 8; 
-        }
-        else {
-            /* Local variable -- a byte or short offset from the
-               frame pointer. It's an unsigned offset, so we can
-               fit up to long 63 (offset 4*63) in a byte. */
-            if ((k-1) < 64) {
-                j = 9;
-                byteout((k-1)*4, 0);
+                byteout(((k) & 0xFF), 0);
             }
             else {
-                j = 10;
-                byteout((((k-1)*4) >> 8) & 0xFF, 0);
-                byteout(((k-1)*4) & 0xFF, 0);
+                /* ...but it's more efficient to write it as a RAM operand,
+                   which can be 1, 2, or 4 bytes. Remember that global variables
+                   are the very first thing in RAM. */
+                k = k * 4; /* each variable is four bytes */
+                if (k <= 255) {
+                    j = 13;
+                    byteout(((k) & 0xFF), 0);
+                }
+                else if (k <= 65535) {
+                    j = 14;
+                    byteout(((k) >> 8) & 0xFF, 0);
+                    byteout(((k) & 0xFF), 0);
+                }
+                else {
+                    j = 15;
+                    byteout(((k) >> 24) & 0xFF, 0);
+                    byteout(((k) >> 16) & 0xFF, 0);
+                    byteout(((k) >> 8) & 0xFF, 0);
+                    byteout(((k) & 0xFF), 0);       
+                }
             }
+            break;
+        case LOCALVAR_OT:
+            if (k == 0) {
+                /* Stack-pointer magic variable */
+                j = 8; 
+            }
+            else {
+                /* Local variable -- a byte or short offset from the
+                   frame pointer. It's an unsigned offset, so we can
+                   fit up to long 63 (offset 4*63) in a byte. */
+                if ((k-1) < 64) {
+                    j = 9;
+                    byteout((k-1)*4, 0);
+                }
+                else {
+                    j = 10;
+                    byteout((((k-1)*4) >> 8) & 0xFF, 0);
+                    byteout(((k-1)*4) & 0xFF, 0);
+                }
+            }
+            break;
+        default:
+            j = 0;
+            break;
         }
-        break;
-      default:
-        j = 0;
-        break;
-      }
 
-      if (ix & 1)
-          j = (j << 4);
-      zcode_holding_area[opmodes_pc+ix/2] |= j;
+        if (ix & 1)
+            j = (j << 4);
+        zcode_holding_area[opmodes_pc+ix/2] |= j;
     }
 
     /* Print assembly trace. */
     if (asm_trace_level > 0) {
-      int i;
-      printf("%5d  +%05lx %3s %-12s ", ErrorReport.line_number,
-        ((long int) offset),
-        (at_seq_point)?"<*>":"   ", opco.name);
-      for (i=0; i<AI->operand_count; i++) {
-          if ((opco.flags & Br) && (i == opco.no-1)) {
-            if (AI->operand[i].value == -4)
-                printf("to rtrue");
-            else if (AI->operand[i].value == -3)
-                printf("to rfalse");
-            else
-                printf("to L%d", AI->operand[i].value);
-            }
-          else {
-            print_operand_g(&AI->operand[i], TRUE);
-          }
-          printf(" ");
-      }
-
-      if (asm_trace_level>=2) {
-        for (j=0;
-            start_pc<zcode_ha_size;
-            j++, start_pc++) {
-            if (j%16==0) printf("\n                               ");
-            if (/* DISABLES CODE */ (0)) {
-                printf("%02x ", zcode_holding_area[start_pc]);
+        int i;
+        printf("%5d  +%05lx %3s %-12s ", ErrorReport.line_number,
+               ((long int) offset),
+               (at_seq_point)?"<*>":"   ", opco.name);
+        for (i=0; i<AI->operand_count; i++) {
+            if ((opco.flags & Br) && (i == opco.no-1)) {
+                if (AI->operand[i].value == -4)
+                    printf("to rtrue");
+                else if (AI->operand[i].value == -3)
+                    printf("to rfalse");
+                else
+                    printf("to L%d", AI->operand[i].value);
             }
             else {
-                if (zcode_markers[start_pc])
-                    printf("{%s}", describe_mv_short(zcode_markers[start_pc]));
-                printf("%02x", zcode_holding_area[start_pc]);
-                printf(" ");
+                print_operand_g(&AI->operand[i], TRUE);
+            }
+            printf(" ");
+        }
+
+        if (asm_trace_level>=2) {
+            for (j=0;
+                 start_pc<zcode_ha_size;
+                 j++, start_pc++) {
+                if (j%16==0) printf("\n                               ");
+                if (/* DISABLES CODE */ (0)) {
+                    printf("%02x ", zcode_holding_area[start_pc]);
+                }
+                else {
+                    if (zcode_markers[start_pc])
+                        printf("{%s}", describe_mv_short(zcode_markers[start_pc]));
+                    printf("%02x", zcode_holding_area[start_pc]);
+                    printf(" ");
+                }
             }
         }
-      }
-      printf("\n");
+        printf("\n");
     }
 
     return;
@@ -1813,186 +1813,186 @@ extern int32 assemble_routine_header(int routine_asterisked, char *name,
     /*  provide the possibility in any case.)                                */
 
     if (!glulx_mode) {
+        
+        if (stackargs) 
+            warning("Z-code does not support stack-argument function definitions.");
 
-      if (stackargs) 
-        warning("Z-code does not support stack-argument function definitions.");
+        byteout(no_locals, 0);
 
-      byteout(no_locals, 0);
+        /*  Not the packed address, but the scaled offset from code area start:  */
 
-      /*  Not the packed address, but the scaled offset from code area start:  */
+        rv = zmachine_pc/scale_factor;
 
-      rv = zmachine_pc/scale_factor;
+        if (instruction_set_number<5)
+            for (i=0; i<no_locals; i++) { byteout(0,0); byteout(0,0); }
 
-      if (instruction_set_number<5)
-          for (i=0; i<no_locals; i++) { byteout(0,0); byteout(0,0); }
+        next_label = 0; next_sequence_point = 0; last_label = -1;
+        labeluse_size = 0;
 
-      next_label = 0; next_sequence_point = 0; last_label = -1;
-      labeluse_size = 0;
+        /*  Compile code to print out text like "a=3, b=4, c=5" when the     */
+        /*  function is called, if it's required.                            */
 
-      /*  Compile code to print out text like "a=3, b=4, c=5" when the       */
-      /*  function is called, if it's required.                              */
-
-      if ((routine_asterisked) || (define_INFIX_switch))
-      {   char fnt[256]; assembly_operand PV, RFA, CON, STP, SLF; int ln, ln2;
-          /* TODO: fnt[256] is unsafe */
+        if ((routine_asterisked) || (define_INFIX_switch))
+        {   char fnt[256]; assembly_operand PV, RFA, CON, STP, SLF; int ln, ln2;
+            /* TODO: fnt[256] is unsafe */
           
-          ln = next_label++;
-          ln2 = next_label++;
-
-          if (define_INFIX_switch)
-          {
-            if (embedded_flag)
+            ln = next_label++;
+            ln2 = next_label++;
+          
+            if (define_INFIX_switch)
             {
-                INITAOTV(&SLF, VARIABLE_OT, globalv_z_self);
-                INITAOTV(&CON, SHORT_CONSTANT_OT, 0);
-                assemblez_2_branch(test_attr_zc, SLF, CON, ln2, FALSE);
+                if (embedded_flag)
+                {
+                    INITAOTV(&SLF, VARIABLE_OT, globalv_z_self);
+                    INITAOTV(&CON, SHORT_CONSTANT_OT, 0);
+                    assemblez_2_branch(test_attr_zc, SLF, CON, ln2, FALSE);
+                }
+                else
+                {   i = no_named_routines++;
+                    ensure_memory_list_available(&named_routine_symbols_memlist, no_named_routines);
+                    named_routine_symbols[i] = the_symbol;
+                    INITAOTV(&CON, LONG_CONSTANT_OT, i/8);
+                    INITAOTV(&RFA, LONG_CONSTANT_OT, routine_flags_array_SC);
+                    RFA.marker = INCON_MV;
+                    INITAOTV(&STP, VARIABLE_OT, 0);
+                    assemblez_2_to(loadb_zc, RFA, CON, STP);
+                    INITAOTV(&CON, SHORT_CONSTANT_OT, (1 << (i%8)));
+                    assemblez_2_to(and_zc, STP, CON, STP);
+                    assemblez_1_branch(jz_zc, STP, ln2, TRUE);
+                }
             }
-            else
-            {   i = no_named_routines++;
-                ensure_memory_list_available(&named_routine_symbols_memlist, no_named_routines);
-                named_routine_symbols[i] = the_symbol;
-                INITAOTV(&CON, LONG_CONSTANT_OT, i/8);
-                INITAOTV(&RFA, LONG_CONSTANT_OT, routine_flags_array_SC);
-                RFA.marker = INCON_MV;
-                INITAOTV(&STP, VARIABLE_OT, 0);
-                assemblez_2_to(loadb_zc, RFA, CON, STP);
-                INITAOTV(&CON, SHORT_CONSTANT_OT, (1 << (i%8)));
-                assemblez_2_to(and_zc, STP, CON, STP);
-                assemblez_1_branch(jz_zc, STP, ln2, TRUE);
-            }
-        }
-        sprintf(fnt, "[ %s(", name);
-        AI.text = fnt; assemblez_0(print_zc);
-        for (i=1; (i<=7)&&(i<=no_locals); i++)
-        {   if (version_number >= 5)
-            {
-                INITAOTV(&PV, SHORT_CONSTANT_OT, i);
-                assemblez_1_branch(check_arg_count_zc, PV, ln, FALSE);
-            }
-            sprintf(fnt, "%s%s = ", (i==1)?"":", ", variable_name(i));
+            sprintf(fnt, "[ %s(", name);
             AI.text = fnt; assemblez_0(print_zc);
-            INITAOTV(&PV, VARIABLE_OT, i);
-            assemblez_1(print_num_zc, PV);
+            for (i=1; (i<=7)&&(i<=no_locals); i++)
+            {   if (version_number >= 5)
+                {
+                    INITAOTV(&PV, SHORT_CONSTANT_OT, i);
+                    assemblez_1_branch(check_arg_count_zc, PV, ln, FALSE);
+                }
+                sprintf(fnt, "%s%s = ", (i==1)?"":", ", variable_name(i));
+                AI.text = fnt; assemblez_0(print_zc);
+                INITAOTV(&PV, VARIABLE_OT, i);
+                assemblez_1(print_num_zc, PV);
+            }
+            assemble_label_no(ln);
+            sprintf(fnt, ") ]^"); AI.text = fnt;
+            assemblez_0(print_zc);
+            AI.text = NULL;
+            assemble_label_no(ln2);
         }
-        assemble_label_no(ln);
-        sprintf(fnt, ") ]^"); AI.text = fnt;
-        assemblez_0(print_zc);
-        AI.text = NULL;
-        assemble_label_no(ln2);
-      }
-
+        
     }
     else {
-      rv = zmachine_pc;
+        rv = zmachine_pc;
 
-      if (stackargs)
-        byteout(0xC0, 0); /* Glulx type byte for function */
-      else
-        byteout(0xC1, 0); /* Glulx type byte for function */
+        if (stackargs)
+            byteout(0xC0, 0); /* Glulx type byte for function */
+        else
+            byteout(0xC1, 0); /* Glulx type byte for function */
 
-      /* Now the locals format list. This is simple; we only use
-        four-byte locals. That's a single pair, unless we have more
-        than 255 locals, or none at all. */
-      i = no_locals;
-      while (i) {
-        int j = i;
-        if (j > 255)
-          j = 255;
-        byteout(4, 0); 
-        byteout(j, 0);
-        i -= j;
-      }
-      /* Terminate the list with a (0, 0) pair. */
-      byteout(0, 0);
-      byteout(0, 0);
-
-      if (stackargs) {
-        /* The top stack value is the number of function arguments. Let's
-           move that into the first local, which is _vararg_count. */
-        /* @copy sp _vararg_count; */
-        byteout(0x40, 0); byteout(0x98, 0); byteout(0x00, 0);
-      }
-
-      next_label = 0; next_sequence_point = 0; last_label = -1; 
-      labeluse_size = 0;
-
-      if ((routine_asterisked) || (define_INFIX_switch)) {
-        int ix;
-        char fnt[256];
-        assembly_operand AO, AO2;
-        if (define_INFIX_switch) {
-          /* This isn't supported */
-          if (embedded_flag) {
-          }
-          else {
-            i = no_named_routines++;
-            ensure_memory_list_available(&named_routine_symbols_memlist, no_named_routines);
-            named_routine_symbols[i] = the_symbol;
-          }
+        /* Now the locals format list. This is simple; we only use
+           four-byte locals. That's a single pair, unless we have more
+           than 255 locals, or none at all. */
+        i = no_locals;
+        while (i) {
+            int j = i;
+            if (j > 255)
+                j = 255;
+            byteout(4, 0); 
+            byteout(j, 0);
+            i -= j;
         }
-        INITAO(&AO);
-        INITAO(&AO2);
-        sprintf(fnt, "[ %s(", name);
-        AO.marker = STRING_MV;
-        AO.type   = CONSTANT_OT;
-        AO.value  = compile_string(fnt, STRCTX_INFIX);
-        assembleg_1(streamstr_gc, AO);
+        /* Terminate the list with a (0, 0) pair. */
+        byteout(0, 0);
+        byteout(0, 0);
 
-        if (!stackargs) {
-          for (ix=1; ix<=no_locals; ix++) {
-            sprintf(fnt, "%s%s = ", (ix==1)?"":", ", variable_name(ix));
+        if (stackargs) {
+            /* The top stack value is the number of function arguments. Let's
+               move that into the first local, which is _vararg_count. */
+            /* @copy sp _vararg_count; */
+            byteout(0x40, 0); byteout(0x98, 0); byteout(0x00, 0);
+        }
+
+        next_label = 0; next_sequence_point = 0; last_label = -1; 
+        labeluse_size = 0;
+
+        if ((routine_asterisked) || (define_INFIX_switch)) {
+            int ix;
+            char fnt[256];
+            assembly_operand AO, AO2;
+            if (define_INFIX_switch) {
+                /* This isn't supported */
+                if (embedded_flag) {
+                }
+                else {
+                    i = no_named_routines++;
+                    ensure_memory_list_available(&named_routine_symbols_memlist, no_named_routines);
+                    named_routine_symbols[i] = the_symbol;
+                }
+            }
+            INITAO(&AO);
+            INITAO(&AO2);
+            sprintf(fnt, "[ %s(", name);
             AO.marker = STRING_MV;
             AO.type   = CONSTANT_OT;
             AO.value  = compile_string(fnt, STRCTX_INFIX);
             assembleg_1(streamstr_gc, AO);
-            AO.marker = 0;
-            AO.type = LOCALVAR_OT;
-            AO.value = ix;
-            assembleg_1(streamnum_gc, AO);
-          }
-        }
-        else {
-          int lntop, lnbottom;
-          sprintf(fnt, "%s = ", variable_name(1));
-          AO.marker = STRING_MV;
-          AO.type   = CONSTANT_OT;
-          AO.value  = compile_string(fnt, STRCTX_INFIX);
-          assembleg_1(streamstr_gc, AO);
-          AO.marker = 0;
-          AO.type = LOCALVAR_OT;
-          AO.value = 1;
-          assembleg_1(streamnum_gc, AO);
-          AO2.type = BYTECONSTANT_OT;
-          AO2.marker = 0;
-          AO2.value = ':';
-          assembleg_1(streamchar_gc, AO2);
-          AO2.type = BYTECONSTANT_OT;
-          AO2.marker = 0;
-          AO2.value = ' ';
-          /* for (temp_var4=0 : temp_var4<_vararg_count : temp_var4++) {
-               @streamchar ' ';
-               @stkpeek temp_var4 sp;
-               @stream_num sp;
-             }
-          */
-          assembleg_store(temp_var4, zero_operand);
-          lntop = next_label++;
-          lnbottom = next_label++;
-          assemble_label_no(lntop);
-          assembleg_2_branch(jge_gc, temp_var4, AO, lnbottom); /* AO is _vararg_count */
-          assembleg_1(streamchar_gc, AO2); /* AO2 is space */
-          assembleg_2(stkpeek_gc, temp_var4, stack_pointer);
-          assembleg_1(streamnum_gc, stack_pointer);
-          assembleg_3(add_gc, temp_var4, one_operand, temp_var4);
-          assembleg_0_branch(jump_gc, lntop);
-          assemble_label_no(lnbottom);
-        }
 
-        AO.marker = STRING_MV;
-        AO.type   = CONSTANT_OT;
-        AO.value  = compile_string(") ]^", STRCTX_INFIX);
-        assembleg_1(streamstr_gc, AO);
-      }
+            if (!stackargs) {
+                for (ix=1; ix<=no_locals; ix++) {
+                    sprintf(fnt, "%s%s = ", (ix==1)?"":", ", variable_name(ix));
+                    AO.marker = STRING_MV;
+                    AO.type   = CONSTANT_OT;
+                    AO.value  = compile_string(fnt, STRCTX_INFIX);
+                    assembleg_1(streamstr_gc, AO);
+                    AO.marker = 0;
+                    AO.type = LOCALVAR_OT;
+                    AO.value = ix;
+                    assembleg_1(streamnum_gc, AO);
+                }
+            }
+            else {
+                int lntop, lnbottom;
+                sprintf(fnt, "%s = ", variable_name(1));
+                AO.marker = STRING_MV;
+                AO.type   = CONSTANT_OT;
+                AO.value  = compile_string(fnt, STRCTX_INFIX);
+                assembleg_1(streamstr_gc, AO);
+                AO.marker = 0;
+                AO.type = LOCALVAR_OT;
+                AO.value = 1;
+                assembleg_1(streamnum_gc, AO);
+                AO2.type = BYTECONSTANT_OT;
+                AO2.marker = 0;
+                AO2.value = ':';
+                assembleg_1(streamchar_gc, AO2);
+                AO2.type = BYTECONSTANT_OT;
+                AO2.marker = 0;
+                AO2.value = ' ';
+                /* for (temp_var4=0 : temp_var4<_vararg_count : temp_var4++) {
+                   @streamchar ' ';
+                   @stkpeek temp_var4 sp;
+                   @stream_num sp;
+                   }
+                */
+                assembleg_store(temp_var4, zero_operand);
+                lntop = next_label++;
+                lnbottom = next_label++;
+                assemble_label_no(lntop);
+                assembleg_2_branch(jge_gc, temp_var4, AO, lnbottom); /* AO is _vararg_count */
+                assembleg_1(streamchar_gc, AO2); /* AO2 is space */
+                assembleg_2(stkpeek_gc, temp_var4, stack_pointer);
+                assembleg_1(streamnum_gc, stack_pointer);
+                assembleg_3(add_gc, temp_var4, one_operand, temp_var4);
+                assembleg_0_branch(jump_gc, lntop);
+                assemble_label_no(lnbottom);
+            }
+
+            AO.marker = STRING_MV;
+            AO.type   = CONSTANT_OT;
+            AO.value  = compile_string(") ]^", STRCTX_INFIX);
+            assembleg_1(streamstr_gc, AO);
+        }
     }
 
     return rv;
@@ -2010,27 +2010,27 @@ void assemble_routine_end(int embedded_flag, debug_locations locations)
 
     if (!execution_never_reaches_here)
     {   
-      if (!glulx_mode) {
-        if (embedded_flag) assemblez_0(rfalse_zc);
-                      else assemblez_0(rtrue_zc);
-      }
-      else {
-        assembly_operand AO;
-        if (embedded_flag) 
-            AO = zero_operand;
-        else 
-            AO = one_operand;
-        assembleg_1(return_gc, AO);
-      }
+        if (!glulx_mode) {
+            if (embedded_flag) assemblez_0(rfalse_zc);
+            else assemblez_0(rtrue_zc);
+        }
+        else {
+            assembly_operand AO;
+            if (embedded_flag) 
+                AO = zero_operand;
+            else 
+                AO = one_operand;
+            assembleg_1(return_gc, AO);
+        }
     }
-
+    
     /* Dump the contents of the current routine into longer-term Z-code
        storage                                                               */
 
     if (!glulx_mode)
-      transfer_routine_z();
+        transfer_routine_z();
     else
-      transfer_routine_g();
+        transfer_routine_g();
 
     if (track_unused_routines)
         df_note_function_end(zmachine_pc);
@@ -2188,10 +2188,17 @@ static void transfer_routine_z(void)
         }
         else if (zcode_markers[i] == LABEL_MV)
         {
+            int32 label_offset;
             if (asm_trace_level >= 4)
                 printf("Jump detected at offset %04x\n", pc);
             j = (256*zcode_holding_area[i] + zcode_holding_area[i+1]) & 0x7fff;
-            opcode_at_label = zcode_holding_area[i + labels[j].offset - pc];
+            label_offset = i + labels[j].offset - pc;
+            if (label_offset < 0 || label_offset >= zcode_ha_size) {
+                /* Probably the label was never defined. We'll report
+                   that error later. */
+                continue;
+            }
+            opcode_at_label = zcode_holding_area[label_offset];
             if (asm_trace_level >= 4)
                 printf("...To label %d, which is %d from here\n",
                     j, labels[j].offset-pc);
@@ -2397,54 +2404,54 @@ static void transfer_routine_g(void)
             lengths is too much work.) */
 
     for (i=0, pc=adjusted_pc; i<zcode_ha_size; i++, pc++) {
-      if (zcode_markers[i] >= BRANCH_MV && zcode_markers[i] < BRANCHMAX_MV) {
-        int opmodeoffset = (zcode_markers[i] - BRANCH_MV);
-        int32 opmodebyte;
-        if (asm_trace_level >= 4)
-            printf("Branch detected at offset %04x\n", pc);
-        j = ((zcode_holding_area[i] << 24) 
-            | (zcode_holding_area[i+1] << 16)
-            | (zcode_holding_area[i+2] << 8)
-            | (zcode_holding_area[i+3]));
-        offset_of_next = pc + 4;
-        addr = (labels[j].offset - offset_of_next) + 2;
-        opmodebyte = i - ((opmodeoffset+1)/2);
-        if (asm_trace_level >= 4)
-            printf("...To label %d, which is (%d-2) = %d from here\n",
-                j, addr, labels[j].offset - offset_of_next);
-        if (addr == 2 && i >= 2 && opmodeoffset == 2 && zcode_holding_area[opmodebyte-1] == opcodes_table_g[jump_gc].code) {
-            if (asm_trace_level >= 4) printf("...Deleting branch\n");
-            zcode_markers[i-2] = DELETED_MV;
-            zcode_markers[i-1] = DELETED_MV;
-            zcode_markers[i] = DELETED_MV;
-            zcode_markers[i+1] = DELETED_MV;
-            zcode_markers[i+2] = DELETED_MV;
-            zcode_markers[i+3] = DELETED_MV;
+        if (zcode_markers[i] >= BRANCH_MV && zcode_markers[i] < BRANCHMAX_MV) {
+            int opmodeoffset = (zcode_markers[i] - BRANCH_MV);
+            int32 opmodebyte;
+            if (asm_trace_level >= 4)
+                printf("Branch detected at offset %04x\n", pc);
+            j = ((zcode_holding_area[i] << 24) 
+                 | (zcode_holding_area[i+1] << 16)
+                 | (zcode_holding_area[i+2] << 8)
+                 | (zcode_holding_area[i+3]));
+            offset_of_next = pc + 4;
+            addr = (labels[j].offset - offset_of_next) + 2;
+            opmodebyte = i - ((opmodeoffset+1)/2);
+            if (asm_trace_level >= 4)
+                printf("...To label %d, which is (%d-2) = %d from here\n",
+                       j, addr, labels[j].offset - offset_of_next);
+            if (addr == 2 && i >= 2 && opmodeoffset == 2 && zcode_holding_area[opmodebyte-1] == opcodes_table_g[jump_gc].code) {
+                if (asm_trace_level >= 4) printf("...Deleting branch\n");
+                zcode_markers[i-2] = DELETED_MV;
+                zcode_markers[i-1] = DELETED_MV;
+                zcode_markers[i] = DELETED_MV;
+                zcode_markers[i+1] = DELETED_MV;
+                zcode_markers[i+2] = DELETED_MV;
+                zcode_markers[i+3] = DELETED_MV;
+            }
+            else if (addr >= -0x80 && addr < 0x80) {
+                if (asm_trace_level >= 4) printf("...Byte form\n");
+                zcode_markers[i+1] = DELETED_MV;
+                zcode_markers[i+2] = DELETED_MV;
+                zcode_markers[i+3] = DELETED_MV;
+                if ((opmodeoffset & 1) == 0)
+                    zcode_holding_area[opmodebyte] = 
+                        (zcode_holding_area[opmodebyte] & 0xF0) | 0x01;
+                else
+                    zcode_holding_area[opmodebyte] = 
+                        (zcode_holding_area[opmodebyte] & 0x0F) | 0x10;
+            }
+            else if (addr >= -0x8000 && addr < 0x8000) {
+                if (asm_trace_level >= 4) printf("...Short form\n");
+                zcode_markers[i+2] = DELETED_MV;
+                zcode_markers[i+3] = DELETED_MV;
+                if ((opmodeoffset & 1) == 0)
+                    zcode_holding_area[opmodebyte] = 
+                        (zcode_holding_area[opmodebyte] & 0xF0) | 0x02;
+                else
+                    zcode_holding_area[opmodebyte] = 
+                        (zcode_holding_area[opmodebyte] & 0x0F) | 0x20;
+            }
         }
-        else if (addr >= -0x80 && addr < 0x80) {
-            if (asm_trace_level >= 4) printf("...Byte form\n");
-            zcode_markers[i+1] = DELETED_MV;
-            zcode_markers[i+2] = DELETED_MV;
-            zcode_markers[i+3] = DELETED_MV;
-            if ((opmodeoffset & 1) == 0)
-                zcode_holding_area[opmodebyte] = 
-                    (zcode_holding_area[opmodebyte] & 0xF0) | 0x01;
-            else
-                zcode_holding_area[opmodebyte] = 
-                    (zcode_holding_area[opmodebyte] & 0x0F) | 0x10;
-        }
-        else if (addr >= -0x8000 && addr < 0x8000) {
-            if (asm_trace_level >= 4) printf("...Short form\n");
-            zcode_markers[i+2] = DELETED_MV;
-            zcode_markers[i+3] = DELETED_MV;
-            if ((opmodeoffset & 1) == 0)
-                zcode_holding_area[opmodebyte] = 
-                    (zcode_holding_area[opmodebyte] & 0xF0) | 0x02;
-            else
-                zcode_holding_area[opmodebyte] = 
-                    (zcode_holding_area[opmodebyte] & 0x0F) | 0x20;
-        }
-      }
     }
 
     /*  (2) Calculate the new positions of the labels.  Note that since the
@@ -2455,26 +2462,26 @@ static void transfer_routine_g(void)
             (if two labels move inside the "short" range as a result of
             a previous optimisation).  However, this is acceptably uncommon. */
     if (next_label > 0) {
-      if (asm_trace_level >= 4) {
-        printf("Opening label: %d\n", first_label);
-        for (i=0;i<next_label;i++)
-            printf("Label %d offset %04x next -> %d previous -> %d\n",
-                i, labels[i].offset, labels[i].next, labels[i].prev);
-      }
-
-      /* label will advance through the linked list as pc increases. */
-      for (i=0, pc=adjusted_pc, new_pc=adjusted_pc, label = first_label;
-        i<zcode_ha_size; 
-        i++, pc++) {
-        while ((label != -1) && (labels[label].offset == pc)) {
-            if (asm_trace_level >= 4)
-                printf("Position of L%d corrected from %04x to %04x\n",
-                label, labels[label].offset, new_pc);
-            labels[label].offset = new_pc;
-            label = labels[label].next;
+        if (asm_trace_level >= 4) {
+            printf("Opening label: %d\n", first_label);
+            for (i=0;i<next_label;i++)
+                printf("Label %d offset %04x next -> %d previous -> %d\n",
+                       i, labels[i].offset, labels[i].next, labels[i].prev);
         }
-        if (zcode_markers[i] != DELETED_MV) new_pc++;
-      }
+
+        /* label will advance through the linked list as pc increases. */
+        for (i=0, pc=adjusted_pc, new_pc=adjusted_pc, label = first_label;
+             i<zcode_ha_size; 
+             i++, pc++) {
+            while ((label != -1) && (labels[label].offset == pc)) {
+                if (asm_trace_level >= 4)
+                    printf("Position of L%d corrected from %04x to %04x\n",
+                           label, labels[label].offset, new_pc);
+                labels[label].offset = new_pc;
+                label = labels[label].next;
+            }
+            if (zcode_markers[i] != DELETED_MV) new_pc++;
+        }
     }
 
     /*  (3) As we are transferring, replace the label numbers in branch
@@ -2485,107 +2492,107 @@ static void transfer_routine_g(void)
     
     for (i=0, new_pc=adjusted_pc; i<zcode_ha_size; i++) {
 
-      if (zcode_markers[i] >= BRANCH_MV && zcode_markers[i] < BRANCHMAX_MV) {
-        form_len = 4;
-        if (zcode_markers[i+1] == DELETED_MV) {
-            form_len = 1;
-        }
-        else {
-            if (zcode_markers[i+2] == DELETED_MV)
-                form_len = 2;
-        }
-        j = ((zcode_holding_area[i] << 24) 
-            | (zcode_holding_area[i+1] << 16)
-            | (zcode_holding_area[i+2] << 8)
-            | (zcode_holding_area[i+3]));
-
-        /* At the moment, we can safely assume that the branch operand
-           is the end of the opcode, so the next opcode starts right
-           after it. */
-        offset_of_next = new_pc + form_len;
-
-        if (labels[j].offset < 0) {
-            char *lname = "(anon)";
-            if (labels[j].symbol >= 0 && labels[j].symbol < no_symbols)
-                lname = symbols[labels[j].symbol].name;
-            error_named("Attempt to jump to an unreachable label", lname);
-            addr = 0;
-        }
-        else {
-            addr = (labels[j].offset - offset_of_next) + 2;
-        }
-        if (asm_trace_level >= 4) {
-            printf("Branch at offset %04x: %04x (%s)\n",
-                new_pc, addr, ((form_len == 1) ? "byte" :
-                ((form_len == 2) ? "short" : "long")));
-        }
-        if (form_len == 1) {
-            if (addr < -0x80 || addr >= 0x80) {
-                error("*** Label out of range for byte branch ***");
+        if (zcode_markers[i] >= BRANCH_MV && zcode_markers[i] < BRANCHMAX_MV) {
+            form_len = 4;
+            if (zcode_markers[i+1] == DELETED_MV) {
+                form_len = 1;
             }
-            zcode_holding_area[i] = (addr) & 0xFF;
-        }
-        else if (form_len == 2) {
-            if (addr < -0x8000 || addr >= 0x8000) {
-                error("*** Label out of range for short branch ***");
+            else {
+                if (zcode_markers[i+2] == DELETED_MV)
+                    form_len = 2;
             }
-            zcode_holding_area[i] = (addr >> 8) & 0xFF;
-            zcode_holding_area[i+1] = (addr) & 0xFF;
+            j = ((zcode_holding_area[i] << 24) 
+                 | (zcode_holding_area[i+1] << 16)
+                 | (zcode_holding_area[i+2] << 8)
+                 | (zcode_holding_area[i+3]));
+
+            /* At the moment, we can safely assume that the branch operand
+               is the end of the opcode, so the next opcode starts right
+               after it. */
+            offset_of_next = new_pc + form_len;
+
+            if (labels[j].offset < 0) {
+                char *lname = "(anon)";
+                if (labels[j].symbol >= 0 && labels[j].symbol < no_symbols)
+                    lname = symbols[labels[j].symbol].name;
+                error_named("Attempt to jump to an unreachable label", lname);
+                addr = 0;
+            }
+            else {
+                addr = (labels[j].offset - offset_of_next) + 2;
+            }
+            if (asm_trace_level >= 4) {
+                printf("Branch at offset %04x: %04x (%s)\n",
+                    new_pc, addr, ((form_len == 1) ? "byte" :
+                                   ((form_len == 2) ? "short" : "long")));
+            }
+            if (form_len == 1) {
+                if (addr < -0x80 || addr >= 0x80) {
+                    error("*** Label out of range for byte branch ***");
+                }
+                zcode_holding_area[i] = (addr) & 0xFF;
+            }
+            else if (form_len == 2) {
+                if (addr < -0x8000 || addr >= 0x8000) {
+                    error("*** Label out of range for short branch ***");
+                }
+                zcode_holding_area[i] = (addr >> 8) & 0xFF;
+                zcode_holding_area[i+1] = (addr) & 0xFF;
+            }
+            else {
+                zcode_holding_area[i] = (addr >> 24) & 0xFF;
+                zcode_holding_area[i+1] = (addr >> 16) & 0xFF;
+                zcode_holding_area[i+2] = (addr >> 8) & 0xFF;
+                zcode_holding_area[i+3] = (addr) & 0xFF;
+            }
+            zcode_area[adjusted_pc++] = zcode_holding_area[i]; new_pc++;
+        }
+        else if (zcode_markers[i] == LABEL_MV) {
+            error("*** No LABEL opcodes in Glulx ***");
+        }
+        else if (zcode_markers[i] == DELETED_MV) {
+            /* skip it */
         }
         else {
-            zcode_holding_area[i] = (addr >> 24) & 0xFF;
-            zcode_holding_area[i+1] = (addr >> 16) & 0xFF;
-            zcode_holding_area[i+2] = (addr >> 8) & 0xFF;
-            zcode_holding_area[i+3] = (addr) & 0xFF;
-        }
-        zcode_area[adjusted_pc++] = zcode_holding_area[i]; new_pc++;
-      }
-      else if (zcode_markers[i] == LABEL_MV) {
-          error("*** No LABEL opcodes in Glulx ***");
-      }
-      else if (zcode_markers[i] == DELETED_MV) {
-        /* skip it */
-      }
-      else {
-        switch(zcode_markers[i] & 0x7f) {
-        case NULL_MV: 
-            break;
-        case ERROR_MV:
-            break;
-        case IDENT_MV:
-            break;
-        case ACTION_MV:
-            if (!GRAMMAR_META_FLAG) break;
-            /* Actions are backpatchable if GRAMMAR_META_FLAG; fall
-               through and create entry */
-            /* Fall through */
-        case OBJECT_MV:
-        case VARIABLE_MV:
-        default:
-            if ((zcode_markers[i] & 0x7f) > LARGEST_BPATCH_MV) {
-                error("*** Illegal code backpatch value ***");
-                printf("Illegal value of %02x at PC = %04x\n",
-                zcode_markers[i] & 0x7f, new_pc);
+            switch(zcode_markers[i] & 0x7f) {
+            case NULL_MV: 
+                break;
+            case ERROR_MV:
+                break;
+            case IDENT_MV:
+                break;
+            case ACTION_MV:
+                if (!GRAMMAR_META_FLAG) break;
+                /* Actions are backpatchable if GRAMMAR_META_FLAG; fall
+                   through and create entry */
+                /* Fall through */
+            case OBJECT_MV:
+            case VARIABLE_MV:
+            default:
+                if ((zcode_markers[i] & 0x7f) > LARGEST_BPATCH_MV) {
+                    error("*** Illegal code backpatch value ***");
+                    printf("Illegal value of %02x at PC = %04x\n",
+                           zcode_markers[i] & 0x7f, new_pc);
+                    break;
+                }
+                /* The backpatch table format for Glulx:
+                   First, the marker byte (0..LARGEST_BPATCH_MV).
+                   Then a byte indicating the data size to be patched (1, 2, 4).
+                   Then the four-byte address (new_pc).
+                */
+                if (bpatch_trace_setting >= 2)
+                    printf("BP added: MV %d size %d PC %04x\n", zcode_markers[i], 4, new_pc);
+                ensure_memory_list_available(&zcode_backpatch_table_memlist, zcode_backpatch_size+6);
+                zcode_backpatch_table[zcode_backpatch_size++] = zcode_markers[i];
+                zcode_backpatch_table[zcode_backpatch_size++] = 4;
+                zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 24) & 0xFF);
+                zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 16) & 0xFF);
+                zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 8) & 0xFF);
+                zcode_backpatch_table[zcode_backpatch_size++] = (new_pc & 0xFF);
                 break;
             }
-          /* The backpatch table format for Glulx:
-             First, the marker byte (0..LARGEST_BPATCH_MV).
-             Then a byte indicating the data size to be patched (1, 2, 4).
-             Then the four-byte address (new_pc).
-          */
-          if (bpatch_trace_setting >= 2)
-              printf("BP added: MV %d size %d PC %04x\n", zcode_markers[i], 4, new_pc);
-          ensure_memory_list_available(&zcode_backpatch_table_memlist, zcode_backpatch_size+6);
-          zcode_backpatch_table[zcode_backpatch_size++] = zcode_markers[i];
-          zcode_backpatch_table[zcode_backpatch_size++] = 4;
-          zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 24) & 0xFF);
-          zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 16) & 0xFF);
-          zcode_backpatch_table[zcode_backpatch_size++] = ((new_pc >> 8) & 0xFF);
-          zcode_backpatch_table[zcode_backpatch_size++] = (new_pc & 0xFF);
-          break;
+            zcode_area[adjusted_pc++] = zcode_holding_area[i]; new_pc++;
         }
-        zcode_area[adjusted_pc++] = zcode_holding_area[i]; new_pc++;
-      }
     }
 
     /* Consistency check */
@@ -2965,7 +2972,7 @@ void assembleg_1(int internal_number, assembly_operand o1)
 }
 
 void assembleg_2(int internal_number, assembly_operand o1,
-  assembly_operand o2)
+    assembly_operand o2)
 {   AI.internal_number = internal_number;
     AI.operand_count = 2;
     AI.operand[0] = o1;
@@ -2974,7 +2981,7 @@ void assembleg_2(int internal_number, assembly_operand o1,
 }
 
 void assembleg_3(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3)
+    assembly_operand o2, assembly_operand o3)
 {   AI.internal_number = internal_number;
     AI.operand_count = 3;
     AI.operand[0] = o1;
@@ -2984,8 +2991,8 @@ void assembleg_3(int internal_number, assembly_operand o1,
 }
 
 void assembleg_4(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3,
-  assembly_operand o4)
+    assembly_operand o2, assembly_operand o3,
+    assembly_operand o4)
 {   AI.internal_number = internal_number;
     AI.operand_count = 4;
     AI.operand[0] = o1;
@@ -2996,8 +3003,8 @@ void assembleg_4(int internal_number, assembly_operand o1,
 }
 
 void assembleg_5(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3,
-  assembly_operand o4, assembly_operand o5)
+    assembly_operand o2, assembly_operand o3,
+    assembly_operand o4, assembly_operand o5)
 {   AI.internal_number = internal_number;
     AI.operand_count = 5;
     AI.operand[0] = o1;
@@ -3026,12 +3033,12 @@ void assembleg_1_branch(int internal_number,
        to zero. */
     if (o1.marker == 0 && is_constant_ot(o1.type)) {
         if ((internal_number == jz_gc && o1.value == 0)
-          || (internal_number == jnz_gc && o1.value != 0)) {
+            || (internal_number == jnz_gc && o1.value != 0)) {
             assembleg_0_branch(jump_gc, label);
             return;
         }
         if ((internal_number == jz_gc && o1.value != 0)
-          || (internal_number == jnz_gc && o1.value == 0)) {
+            || (internal_number == jnz_gc && o1.value == 0)) {
             /* assemble nothing at all! */
             return;
         }
@@ -3059,41 +3066,41 @@ void assembleg_2_branch(int internal_number,
 }
 
 void assembleg_call_1(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand odest)
+    assembly_operand odest)
 {
-  assembleg_3(callfi_gc, oaddr, o1, odest);
+    assembleg_3(callfi_gc, oaddr, o1, odest);
 }
 
 void assembleg_call_2(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand o2, assembly_operand odest)
+    assembly_operand o2, assembly_operand odest)
 {
-  assembleg_4(callfii_gc, oaddr, o1, o2, odest);
+    assembleg_4(callfii_gc, oaddr, o1, o2, odest);
 }
 
 void assembleg_call_3(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand o2, assembly_operand o3, assembly_operand odest)
+    assembly_operand o2, assembly_operand o3, assembly_operand odest)
 {
-  assembleg_5(callfiii_gc, oaddr, o1, o2, o3, odest);
+    assembleg_5(callfiii_gc, oaddr, o1, o2, o3, odest);
 }
 
 void assembleg_inc(assembly_operand o1)
 {
-  AI.internal_number = add_gc;
-  AI.operand_count = 3;
-  AI.operand[0] = o1;
-  AI.operand[1] = one_operand;
-  AI.operand[2] = o1;
-  assembleg_instruction(&AI);
+    AI.internal_number = add_gc;
+    AI.operand_count = 3;
+    AI.operand[0] = o1;
+    AI.operand[1] = one_operand;
+    AI.operand[2] = o1;
+    assembleg_instruction(&AI);
 }
 
 void assembleg_dec(assembly_operand o1)
 {
-  AI.internal_number = sub_gc;
-  AI.operand_count = 3;
-  AI.operand[0] = o1;
-  AI.operand[1] = one_operand;
-  AI.operand[2] = o1;
-  assembleg_instruction(&AI);
+    AI.internal_number = sub_gc;
+    AI.operand_count = 3;
+    AI.operand[0] = o1;
+    AI.operand[1] = one_operand;
+    AI.operand[2] = o1;
+    assembleg_instruction(&AI);
 }
 
 void assembleg_store(assembly_operand o1, assembly_operand o2)
@@ -3104,15 +3111,15 @@ void assembleg_store(assembly_operand o1, assembly_operand o2)
 
 void assembleg_jump(int n)
 {
-  if (n==-4) {
-      assembleg_1(return_gc, one_operand);
-  }
-  else if (n==-3) {
-      assembleg_1(return_gc, zero_operand); 
-  }
-  else {
-      assembleg_0_branch(jump_gc, n);
-  }
+    if (n==-4) {
+        assembleg_1(return_gc, one_operand);
+    }
+    else if (n==-3) {
+        assembleg_1(return_gc, zero_operand); 
+    }
+    else {
+        assembleg_0_branch(jump_gc, n);
+    }
 }
 
 /* ========================================================================= */
@@ -3709,10 +3716,10 @@ S (store), SS (two stores), R (execution never continues)");
 
 extern void parse_assembly(void)
 {
-  if (!glulx_mode)
-    parse_assembly_z();
-  else
-    parse_assembly_g();
+    if (!glulx_mode)
+        parse_assembly_z();
+    else
+        parse_assembly_g();
 }
 
 /* ========================================================================= */

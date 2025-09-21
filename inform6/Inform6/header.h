@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   Header file for Inform:  Z-machine ("Infocom" format) compiler          */
 /*                                                                           */
-/*                              Inform 6.43                                  */
+/*                              Inform 6.44                                  */
 /*                                                                           */
 /*   This header file and the others making up the Inform source code are    */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
@@ -31,8 +31,8 @@
 /* ------------------------------------------------------------------------- */
 
 /* For releases, set to the release date in the form "1st January 2000" */
-#define RELEASE_DATE "6th August 2025"
-#define RELEASE_NUMBER 1643
+#define RELEASE_DATE "11th September 2025"
+#define RELEASE_NUMBER 1644
 #define GLULX_RELEASE_NUMBER 38
 #define VNUMBER RELEASE_NUMBER
 
@@ -314,7 +314,7 @@
 /* ------------------------------------------------------------------------- */
 #ifdef PC_WIN32
 /* 1 */
-#define MACHINE_STRING   "Win32"
+#define MACHINE_STRING   "Windows"
 /* 2 */
 #define HAS_REALPATH
 /* 4 */
@@ -537,17 +537,17 @@
 #endif
 
 #if defined(USE_OLD_TIME_API)
-  #define TIMEVALUE time_t
-  #define TIMEVALUE_NOW(t) (*t) = time(0)
-  #define TIMEVALUE_DIFFERENCE(begt, endt) (float)(*(endt) - *(begt))
+    #define TIMEVALUE time_t
+    #define TIMEVALUE_NOW(t) (*t) = time(0)
+    #define TIMEVALUE_DIFFERENCE(begt, endt) (float)(*(endt) - *(begt))
 #elif defined(USE_C11_TIME_API)
-  #define TIMEVALUE struct timespec
-  #define TIMEVALUE_NOW(t) timespec_get((t), TIME_UTC)
-  #define TIMEVALUE_DIFFERENCE(begt, endt) ((float)((endt)->tv_sec - (begt)->tv_sec) + (float)((endt)->tv_nsec - (begt)->tv_nsec) / 1000000000.0F)
+    #define TIMEVALUE struct timespec
+    #define TIMEVALUE_NOW(t) timespec_get((t), TIME_UTC)
+    #define TIMEVALUE_DIFFERENCE(begt, endt) ((float)((endt)->tv_sec - (begt)->tv_sec) + (float)((endt)->tv_nsec - (begt)->tv_nsec) / 1000000000.0F)
 #elif defined(USE_POSIX_TIME_API)
-  #define TIMEVALUE struct timespec
-  #define TIMEVALUE_NOW(t) clock_gettime(CLOCK_REALTIME, (t))
-  #define TIMEVALUE_DIFFERENCE(begt, endt) ((float)((endt)->tv_sec - (begt)->tv_sec) + (float)((endt)->tv_nsec - (begt)->tv_nsec) / 1000000000.0F)
+    #define TIMEVALUE struct timespec
+    #define TIMEVALUE_NOW(t) clock_gettime(CLOCK_REALTIME, (t))
+    #define TIMEVALUE_DIFFERENCE(begt, endt) ((float)((endt)->tv_sec - (begt)->tv_sec) + (float)((endt)->tv_nsec - (begt)->tv_nsec) / 1000000000.0F)
 #endif
 
 /* ------------------------------------------------------------------------- */
@@ -574,25 +574,30 @@
 #define ASSERT_GLULX()
 
 
-#define ReadInt32(ptr)                               \
-  (   (((uint32)(((uchar *)(ptr))[0])) << 24)         \
-    | (((uint32)(((uchar *)(ptr))[1])) << 16)         \
-    | (((uint32)(((uchar *)(ptr))[2])) <<  8)         \
-    | (((uint32)(((uchar *)(ptr))[3]))      ) )
+#define ReadInt32(ptr)                                  \
+    (   (((uint32)(((uchar *)(ptr))[0])) << 24)         \
+      | (((uint32)(((uchar *)(ptr))[1])) << 16)         \
+      | (((uint32)(((uchar *)(ptr))[2])) <<  8)         \
+      | (((uint32)(((uchar *)(ptr))[3]))      ) )
 
-#define ReadInt16(ptr)                               \
-  (   (((uint32)(((uchar *)(ptr))[0])) << 8)          \
-    | (((uint32)(((uchar *)(ptr))[1]))     ) )
+#define ReadInt16(ptr)                                  \
+    (   (((uint32)(((uchar *)(ptr))[0])) << 8)          \
+      | (((uint32)(((uchar *)(ptr))[1]))     ) )
 
-#define WriteInt32(ptr, val)                         \
-  ((ptr)[0] = (uchar)(((int32)(val)) >> 24),         \
-   (ptr)[1] = (uchar)(((int32)(val)) >> 16),         \
-   (ptr)[2] = (uchar)(((int32)(val)) >>  8),         \
-   (ptr)[3] = (uchar)(((int32)(val))      ) )
+#define WriteInt32(ptr, val)                            \
+    ((ptr)[0] = (uchar)(((int32)(val)) >> 24),          \
+     (ptr)[1] = (uchar)(((int32)(val)) >> 16),          \
+     (ptr)[2] = (uchar)(((int32)(val)) >>  8),          \
+     (ptr)[3] = (uchar)(((int32)(val))      ) )
 
-#define WriteInt16(ptr, val)                         \
-  ((ptr)[0] = (uchar)(((int32)(val)) >> 8),          \
-   (ptr)[1] = (uchar)(((int32)(val))     ) )
+#define WriteInt16(ptr, val)                            \
+    ((ptr)[0] = (uchar)(((int32)(val)) >> 8),           \
+     (ptr)[1] = (uchar)(((int32)(val))     ) )
+
+/* Precedence for compiler options (see set_compiler_option()) */
+#define DEFAULT_OPTPREC (0)   /* original default value */
+#define HEADCOM_OPTPREC (1)   /* header comment line */
+#define CMDLINE_OPTPREC (2)   /* command-line option */
 
 /* ------------------------------------------------------------------------- */
 /*   If your compiler doesn't recognise \t, and you use ASCII, you could     */
@@ -614,11 +619,11 @@
 #define  VENEER_CONSTRAINT_ON_CLASSES_G       32768
 #define  VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_G 32768
 #define  VENEER_CONSTRAINT_ON_CLASSES  \
-  (glulx_mode ? VENEER_CONSTRAINT_ON_CLASSES_G  \
-              : VENEER_CONSTRAINT_ON_CLASSES_Z)
+    (glulx_mode ? VENEER_CONSTRAINT_ON_CLASSES_G  \
+                : VENEER_CONSTRAINT_ON_CLASSES_Z)
 #define  VENEER_CONSTRAINT_ON_IP_TABLE_SIZE  \
-  (glulx_mode ? VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_G  \
-              : VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_Z)
+    (glulx_mode ? VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_G  \
+                : VENEER_CONSTRAINT_ON_IP_TABLE_SIZE_Z)
 
 #define  GLULX_HEADER_SIZE 36
 /* Number of bytes in the header. */
@@ -2258,26 +2263,26 @@ extern void assemblez_jump(int n);
 extern void assembleg_0(int internal_number);
 extern void assembleg_1(int internal_number, assembly_operand o1);
 extern void assembleg_2(int internal_number, assembly_operand o1,
-  assembly_operand o2);
+    assembly_operand o2);
 extern void assembleg_3(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3);
+    assembly_operand o2, assembly_operand o3);
 extern void assembleg_4(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3, assembly_operand o4);
+    assembly_operand o2, assembly_operand o3, assembly_operand o4);
 extern void assembleg_5(int internal_number, assembly_operand o1,
-  assembly_operand o2, assembly_operand o3, assembly_operand o4,
-  assembly_operand o5);
+    assembly_operand o2, assembly_operand o3, assembly_operand o4,
+    assembly_operand o5);
 extern void assembleg_0_branch(int internal_number,
-  int label);
+    int label);
 extern void assembleg_1_branch(int internal_number,
-  assembly_operand o1, int label);
+    assembly_operand o1, int label);
 extern void assembleg_2_branch(int internal_number,
-  assembly_operand o1, assembly_operand o2, int label);
+    assembly_operand o1, assembly_operand o2, int label);
 extern void assembleg_call_1(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand odest);
+    assembly_operand odest);
 extern void assembleg_call_2(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand o2, assembly_operand odest);
+    assembly_operand o2, assembly_operand odest);
 extern void assembleg_call_3(assembly_operand oaddr, assembly_operand o1, 
-  assembly_operand o2, assembly_operand o3, assembly_operand odest);
+    assembly_operand o2, assembly_operand o3, assembly_operand odest);
 extern void assembleg_inc(assembly_operand o1);
 extern void assembleg_dec(assembly_operand o1);
 extern void assembleg_store(assembly_operand o1, assembly_operand o2);
@@ -2411,7 +2416,7 @@ extern assembly_operand stack_pointer, temp_var1, temp_var2, temp_var3,
 
 assembly_operand code_generate(assembly_operand AO, int context, int label);
 assembly_operand check_nonzero_at_runtime(assembly_operand AO1, int label,
-       int rte_number);
+    int rte_number);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "expressp"                                       */
@@ -2617,7 +2622,6 @@ extern int32 MAX_STACK_SIZE, MEMORY_MAP_EXTENSION;
 
 extern int MAX_LOCAL_VARIABLES;
 extern int DICT_WORD_SIZE, DICT_CHAR_SIZE, DICT_WORD_BYTES;
-extern int GRAMMAR_VERSION_z, GRAMMAR_VERSION_g;
 extern int GRAMMAR_META_FLAG;
 extern int ZCODE_HEADER_EXT_WORDS, ZCODE_HEADER_FLAGS_3;
 extern int ZCODE_FILE_END_PADDING;
@@ -2651,9 +2655,7 @@ extern void my_recalloc(void *pointer, size_t size, size_t oldhowmany,
     size_t howmany, char *whatfor);
 extern void my_free(void *pointer, char *whatitwas);
 
-extern void set_memory_sizes(void);
-extern void adjust_memory_sizes(void);
-extern void memory_command(char *command);
+extern void execute_dollar_command(char *command, int optprec);
 extern void print_memory_usage(void);
 
 extern void initialise_memory_list(memory_list *ML, size_t itemsize, size_t initalloc, void **extpointer, char *whatfor);
@@ -2691,6 +2693,18 @@ extern void make_class(char *metaclass_name);
 extern void list_object_tree(void);
 extern void write_the_identifier_names(void);
 extern void write_debug_information_for_actions(void);
+
+/* ------------------------------------------------------------------------- */
+/*   Extern definitions for "options"                                        */
+/* ------------------------------------------------------------------------- */
+
+extern void prepare_compiler_options(void);
+extern int parse_numeric_setting(char *str, char *label, int32 *result);
+extern void set_compiler_option(char *str, char *sval, int prec);
+extern void list_compiler_options(void);
+extern void explain_compiler_option(char *str);
+extern void apply_compiler_options(void);
+extern int32 get_grammar_version_option(void);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "symbols"                                        */
@@ -2825,8 +2839,8 @@ extern int no_unicode_chars;
 
 typedef struct unicode_usage_s unicode_usage_t;
 struct unicode_usage_s {
-  int32 ch;
-  int next; /* index in unicode_usage_entries of next */
+    int32 ch;
+    int next; /* index in unicode_usage_entries of next */
 };
 
 extern unicode_usage_t *unicode_usage_entries;
@@ -2837,19 +2851,19 @@ extern unicode_usage_t *unicode_usage_entries;
 #define MAXHUFFBYTES (4)
 
 typedef struct huffbitlist_struct {
-  uchar b[MAXHUFFBYTES];
+    uchar b[MAXHUFFBYTES];
 } huffbitlist_t;
 typedef struct huffentity_struct {
-  int count;
-  int type;
-  union {
-    int branch[2];
-    uchar ch;
-    int val;
-  } u;
-  int depth;
-  int32 addr;
-  huffbitlist_t bits;
+    int count;
+    int type;
+    union {
+        int branch[2];
+        uchar ch;
+        int val;
+    } u;
+    int depth;
+    int32 addr;
+    huffbitlist_t bits;
 } huffentity_t;
 
 extern huffentity_t *huff_entities;
@@ -2914,6 +2928,7 @@ extern int32 *grammar_token_routine,
              *adjectives;
 
 extern void set_grammar_version(int val);
+extern void set_grammar_option_constant(int optnum, assembly_operand AO);
 extern void find_the_actions(void);
 extern int lowest_fake_action(void);
 extern void make_fake_action(void);

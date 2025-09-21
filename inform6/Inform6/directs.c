@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -198,23 +198,7 @@ extern int parse_given_directive(int internal_flag)
             if (i == grammar_version_symbol) {
                 /* Special case for changing Grammar__Version. We check
                    conditions carefully before applying the change. */
-                if (AO.marker != 0) {
-                    error("Grammar__Version must be given an explicit constant value");
-                }
-                else if (grammar_version_number == AO.value) {
-                    /* no change needed */
-                }
-                else if (no_fake_actions > 0) {
-                    error("Once a fake action has been defined \
-it is too late to change the grammar version.");
-                }
-                else if (no_grammar_lines > 0) {
-                    error("Once an action has been defined \
-it is too late to change the grammar version.");
-                }
-                else {
-                    set_grammar_version(AO.value);
-                }
+                set_grammar_option_constant(i, AO);
             }
         }
 

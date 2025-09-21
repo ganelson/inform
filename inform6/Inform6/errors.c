@@ -2,7 +2,7 @@
 /*   "errors" : Warnings, errors and fatal errors                            */
 /*              (with error throwback code for RISC OS machines)             */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -570,8 +570,8 @@ extern int compiler_error_named(char *s1, char *s2)
 #include "kernel.h"
 
 extern void throwback_start(void)
-{    _kernel_swi_regs regs;
-     if (throwback_switch)
+{   _kernel_swi_regs regs;
+    if (throwback_switch)
          _kernel_swi(DDEUtils_ThrowbackStart, &regs, &regs);
 }
 

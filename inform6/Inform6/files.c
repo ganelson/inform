@@ -7,7 +7,7 @@
 /*             routines in "inform.c", since they are tied up with ICL       */
 /*             settings and are very host OS-dependent.                      */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -81,7 +81,7 @@ static debug_backpatch_accumulator grammar_backpatch_accumulator;
 #include <windows.h>
 char *realpath(const char *path, char *resolved_path)
 {
-  return GetFullPathNameA(path,PATHLEN,resolved_path,NULL) != 0 ? resolved_path : 0;
+    return GetFullPathNameA(path,PATHLEN,resolved_path,NULL) != 0 ? resolved_path : 0;
 }
 #endif
 
@@ -269,38 +269,38 @@ static void sf_put(int c)
 {
     if (!glulx_mode) {
 
-      /*  The checksum is the unsigned sum mod 65536 of the bytes in the
-          story file from 0x0040 (first byte after header) to the end.       */
+        /*  The checksum is the unsigned sum mod 65536 of the bytes in the
+            story file from 0x0040 (first byte after header) to the end.     */
 
-      checksum_low_byte += c;
-      if (checksum_low_byte>=256)
-      {   checksum_low_byte-=256;
-          if (++checksum_high_byte==256) checksum_high_byte=0;
-      }
-
+        checksum_low_byte += c;
+        if (checksum_low_byte>=256)
+        {   checksum_low_byte-=256;
+            if (++checksum_high_byte==256) checksum_high_byte=0;
+        }
+        
     }
     else {
 
-      /*  The checksum is the unsigned 32-bit sum of the entire story file,
-          considered as a list of 32-bit words, with the checksum field
-          being zero. */
-
-      switch (checksum_count) {
-      case 0:
-        checksum_long += (((uint32)(c & 0xFF)) << 24);
-        break;
-      case 1:
-        checksum_long += (((uint32)(c & 0xFF)) << 16);
-        break;
-      case 2:
-        checksum_long += (((uint32)(c & 0xFF)) << 8);
-        break;
-      case 3:
-        checksum_long += ((uint32)(c & 0xFF));
-        break;
-      }
+        /*  The checksum is the unsigned 32-bit sum of the entire story file,
+            considered as a list of 32-bit words, with the checksum field
+            being zero. */
+        
+        switch (checksum_count) {
+        case 0:
+            checksum_long += (((uint32)(c & 0xFF)) << 24);
+            break;
+        case 1:
+            checksum_long += (((uint32)(c & 0xFF)) << 16);
+            break;
+        case 2:
+            checksum_long += (((uint32)(c & 0xFF)) << 8);
+            break;
+        case 3:
+            checksum_long += ((uint32)(c & 0xFF));
+            break;
+        }
       
-      checksum_count = (checksum_count+1) & 3;
+        checksum_count = (checksum_count+1) & 3;
       
     }
 
@@ -311,65 +311,65 @@ static void sf_put(int c)
 
 static void output_compression(int entnum, uint32 *size, int *count)
 {
-  huffentity_t *ent = &(huff_entities[entnum]);
-  int32 val;
-  char *cx;
+    huffentity_t *ent = &(huff_entities[entnum]);
+    int32 val;
+    char *cx;
 
-  sf_put(ent->type);
-  (*size)++;
-  (*count)++;
+    sf_put(ent->type);
+    (*size)++;
+    (*count)++;
 
-  switch (ent->type) {
-  case 0:
-    val = Write_Strings_At + huff_entities[ent->u.branch[0]].addr;
-    sf_put((val >> 24) & 0xFF);
-    sf_put((val >> 16) & 0xFF);
-    sf_put((val >> 8) & 0xFF);
-    sf_put((val) & 0xFF);
-    (*size) += 4;
-    val = Write_Strings_At + huff_entities[ent->u.branch[1]].addr;
-    sf_put((val >> 24) & 0xFF);
-    sf_put((val >> 16) & 0xFF);
-    sf_put((val >> 8) & 0xFF);
-    sf_put((val) & 0xFF);
-    (*size) += 4;
-    output_compression(ent->u.branch[0], size, count);
-    output_compression(ent->u.branch[1], size, count);
-    break;
-  case 1:
-    /* no data */
-    break;
-  case 2:
-    sf_put(ent->u.ch);
-    (*size) += 1;
-    break;
-  case 3:
-    cx = abbreviation_text(ent->u.val);
-    while (*cx) {
-      sf_put(*cx);
-      cx++;
-      (*size) += 1;  
+    switch (ent->type) {
+    case 0:
+        val = Write_Strings_At + huff_entities[ent->u.branch[0]].addr;
+        sf_put((val >> 24) & 0xFF);
+        sf_put((val >> 16) & 0xFF);
+        sf_put((val >> 8) & 0xFF);
+        sf_put((val) & 0xFF);
+        (*size) += 4;
+        val = Write_Strings_At + huff_entities[ent->u.branch[1]].addr;
+        sf_put((val >> 24) & 0xFF);
+        sf_put((val >> 16) & 0xFF);
+        sf_put((val >> 8) & 0xFF);
+        sf_put((val) & 0xFF);
+        (*size) += 4;
+        output_compression(ent->u.branch[0], size, count);
+        output_compression(ent->u.branch[1], size, count);
+        break;
+    case 1:
+        /* no data */
+        break;
+    case 2:
+        sf_put(ent->u.ch);
+        (*size) += 1;
+        break;
+    case 3:
+        cx = abbreviation_text(ent->u.val);
+        while (*cx) {
+            sf_put(*cx);
+            cx++;
+            (*size) += 1;  
+        }
+        sf_put('\0');
+        (*size) += 1;  
+        break;
+    case 4:
+        val = unicode_usage_entries[ent->u.val].ch;
+        sf_put((val >> 24) & 0xFF);
+        sf_put((val >> 16) & 0xFF);
+        sf_put((val >> 8) & 0xFF);
+        sf_put((val) & 0xFF);
+        (*size) += 4;
+        break;
+    case 9:
+        val = abbreviations_offset + 4 + ent->u.val*4;
+        sf_put((val >> 24) & 0xFF);
+        sf_put((val >> 16) & 0xFF);
+        sf_put((val >> 8) & 0xFF);
+        sf_put((val) & 0xFF);
+        (*size) += 4;
+        break;
     }
-    sf_put('\0');
-    (*size) += 1;  
-    break;
-  case 4:
-    val = unicode_usage_entries[ent->u.val].ch;
-    sf_put((val >> 24) & 0xFF);
-    sf_put((val >> 16) & 0xFF);
-    sf_put((val >> 8) & 0xFF);
-    sf_put((val) & 0xFF);
-    (*size) += 4;
-    break;
-  case 9:
-    val = abbreviations_offset + 4 + ent->u.val*4;
-    sf_put((val >> 24) & 0xFF);
-    sf_put((val >> 16) & 0xFF);
-    sf_put((val >> 8) & 0xFF);
-    sf_put((val) & 0xFF);
-    (*size) += 4;
-    break;
-  }
 }
 
 static void output_file_z(void)
@@ -570,7 +570,7 @@ static void output_file_z(void)
     fputc(checksum_low_byte, sf_handle);
 
     if (ferror(sf_handle))
-      fatalerror("I/O failure: couldn't backtrack on story file for checksum");
+        fatalerror("I/O failure: couldn't backtrack on story file for checksum");
 
     fclose(sf_handle);
 
@@ -643,30 +643,30 @@ static void output_file_g(void)
 
     /* Increase for various features the game may have used. */
     if (no_unicode_chars != 0 || (uses_unicode_features)) {
-      final_glulx_version = 0x00030000;
+        final_glulx_version = 0x00030000;
     }
     if (uses_memheap_features) {
-      final_glulx_version = 0x00030100;
+        final_glulx_version = 0x00030100;
     }
     if (uses_acceleration_features) {
-      final_glulx_version = 0x00030101;
+        final_glulx_version = 0x00030101;
     }
     if (uses_float_features) {
-      final_glulx_version = 0x00030102;
+        final_glulx_version = 0x00030102;
     }
     if (uses_double_features || uses_extundo_features) {
-      final_glulx_version = 0x00030103;
+        final_glulx_version = 0x00030103;
     }
 
     /* And check if the user has requested a specific version. */
     if (requested_glulx_version) {
-      if (requested_glulx_version < final_glulx_version) {
-        warning_fmt("Version 0x%08lx requested, but game features require version 0x%08lx",
-                    (long)requested_glulx_version, (long)final_glulx_version);
-      }
-      else {
-        final_glulx_version = requested_glulx_version;
-      }
+        if (requested_glulx_version < final_glulx_version) {
+            warning_fmt("Version 0x%08lx requested, but game features require version 0x%08lx",
+                (long)requested_glulx_version, (long)final_glulx_version);
+        }
+        else {
+            final_glulx_version = requested_glulx_version;
+        }
     }
 
     /*  (1)  Output the header. We use sf_put here, instead of fputc,
@@ -744,10 +744,10 @@ static void output_file_g(void)
     sf_put(release_number & 0xFF);
     /* Game serial number */
     {
-      char serialnum[8];
-      write_serial_number(serialnum);
-      for (i=0; i<6; i++)
-        sf_put(serialnum[i]);
+        char serialnum[8];
+        write_serial_number(serialnum);
+        for (i=0; i<6; i++)
+            sf_put(serialnum[i]);
     }
     size += GLULX_STATIC_ROM_SIZE;
 
@@ -779,19 +779,19 @@ static void output_file_g(void)
     size_before_code = size;
 
     j=0;
-      for (i=0; i<zcode_backpatch_size; i=i+6) {
+    for (i=0; i<zcode_backpatch_size; i=i+6) {
         int data_len;
         int32 v;
         offset = 
-          (zcode_backpatch_table[i+2] << 24)
-          | (zcode_backpatch_table[i+3] << 16)
-          | (zcode_backpatch_table[i+4] << 8)
-          | (zcode_backpatch_table[i+5]);
+            (zcode_backpatch_table[i+2] << 24)
+            | (zcode_backpatch_table[i+3] << 16)
+            | (zcode_backpatch_table[i+4] << 8)
+            | (zcode_backpatch_table[i+5]);
         backpatch_error_flag = FALSE;
         backpatch_marker =
-          zcode_backpatch_table[i];
+            zcode_backpatch_table[i];
         data_len =
-          zcode_backpatch_table[i+1];
+            zcode_backpatch_table[i+1];
 
         /* All code up until the next backpatch marker gets flushed out
            as-is. (Unless we're in a stripped-out function.) */
@@ -817,63 +817,63 @@ static void output_file_g(void)
         switch (data_len) {
 
         case 4:
-          v = (zcode_area[j]);
-          v = (v << 8) | (zcode_area[j+1]);
-          v = (v << 8) | (zcode_area[j+2]);
-          v = (v << 8) | (zcode_area[j+3]);
-          j += 4;
-          if (!use_function)
-              break;
-          v = backpatch_value(v);
-          sf_put((v >> 24) & 0xFF);
-          sf_put((v >> 16) & 0xFF);
-          sf_put((v >> 8) & 0xFF);
-          sf_put((v) & 0xFF);
-          size += 4;
-          break;
+            v = (zcode_area[j]);
+            v = (v << 8) | (zcode_area[j+1]);
+            v = (v << 8) | (zcode_area[j+2]);
+            v = (v << 8) | (zcode_area[j+3]);
+            j += 4;
+            if (!use_function)
+                break;
+            v = backpatch_value(v);
+            sf_put((v >> 24) & 0xFF);
+            sf_put((v >> 16) & 0xFF);
+            sf_put((v >> 8) & 0xFF);
+            sf_put((v) & 0xFF);
+            size += 4;
+            break;
 
         case 2:
-          v = (zcode_area[j]);
-          v = (v << 8) | (zcode_area[j+1]);
-          j += 2;
-          if (!use_function)
-              break;
-          v = backpatch_value(v);
-          if (v >= 0x10000) {
-            printf("*** backpatch value does not fit ***\n");
-            backpatch_error_flag = TRUE;
-          }
-          sf_put((v >> 8) & 0xFF);
-          sf_put((v) & 0xFF);
-          size += 2;
-          break;
+            v = (zcode_area[j]);
+            v = (v << 8) | (zcode_area[j+1]);
+            j += 2;
+            if (!use_function)
+                break;
+            v = backpatch_value(v);
+            if (v >= 0x10000) {
+                printf("*** backpatch value does not fit ***\n");
+                backpatch_error_flag = TRUE;
+            }
+            sf_put((v >> 8) & 0xFF);
+            sf_put((v) & 0xFF);
+            size += 2;
+            break;
 
         case 1:
-          v = (zcode_area[j]);
-          j += 1;
-          if (!use_function)
-              break;
-          v = backpatch_value(v);
-          if (v >= 0x100) {
-            printf("*** backpatch value does not fit ***\n");
-            backpatch_error_flag = TRUE;
-          }
-          sf_put((v) & 0xFF);
-          size += 1;
-          break;
+            v = (zcode_area[j]);
+            j += 1;
+            if (!use_function)
+                break;
+            v = backpatch_value(v);
+            if (v >= 0x100) {
+                printf("*** backpatch value does not fit ***\n");
+                backpatch_error_flag = TRUE;
+            }
+            sf_put((v) & 0xFF);
+            size += 1;
+            break;
 
         default:
-          printf("*** unknown backpatch data len = %d ***\n",
-            data_len);
-          backpatch_error_flag = TRUE;
+            printf("*** unknown backpatch data len = %d ***\n",
+                   data_len);
+            backpatch_error_flag = TRUE;
         }
 
         if (j > next_cons_check)
-          compiler_error("Backpatch appears to straddle function break");
+            compiler_error("Backpatch appears to straddle function break");
 
         if (backpatch_error_flag) {
-          printf("*** %d bytes  zcode offset=%08lx  backpatch offset=%08lx ***\n",
-            data_len, (long int) j, (long int) i);
+            printf("*** %d bytes  zcode offset=%08lx  backpatch offset=%08lx ***\n",
+                   data_len, (long int) j, (long int) i);
         }
     }
 
@@ -903,150 +903,150 @@ static void output_file_g(void)
     /*  (4)  Output the static strings area.                                 */
 
     {
-      int32 ix, lx;
-      int ch, jx, curbyte, bx;
-      int depth, checkcount;
-      huffbitlist_t *bits;
-      int32 origsize;
+        int32 ix, lx;
+        int ch, jx, curbyte, bx;
+        int depth, checkcount;
+        huffbitlist_t *bits;
+        int32 origsize;
 
-      origsize = size;
+        origsize = size;
 
-      if (compression_switch) {
+        if (compression_switch) {
 
-        /* The 12-byte table header. */
-        lx = compression_table_size;
-        sf_put((lx >> 24) & 0xFF);
-        sf_put((lx >> 16) & 0xFF);
-        sf_put((lx >> 8) & 0xFF);
-        sf_put((lx) & 0xFF);
-        size += 4;
-        sf_put((no_huff_entities >> 24) & 0xFF);
-        sf_put((no_huff_entities >> 16) & 0xFF);
-        sf_put((no_huff_entities >> 8) & 0xFF);
-        sf_put((no_huff_entities) & 0xFF);
-        size += 4;
-        lx = Write_Strings_At + 12;
-        sf_put((lx >> 24) & 0xFF);
-        sf_put((lx >> 16) & 0xFF);
-        sf_put((lx >> 8) & 0xFF);
-        sf_put((lx) & 0xFF);
-        size += 4;
+            /* The 12-byte table header. */
+            lx = compression_table_size;
+            sf_put((lx >> 24) & 0xFF);
+            sf_put((lx >> 16) & 0xFF);
+            sf_put((lx >> 8) & 0xFF);
+            sf_put((lx) & 0xFF);
+            size += 4;
+            sf_put((no_huff_entities >> 24) & 0xFF);
+            sf_put((no_huff_entities >> 16) & 0xFF);
+            sf_put((no_huff_entities >> 8) & 0xFF);
+            sf_put((no_huff_entities) & 0xFF);
+            size += 4;
+            lx = Write_Strings_At + 12;
+            sf_put((lx >> 24) & 0xFF);
+            sf_put((lx >> 16) & 0xFF);
+            sf_put((lx >> 8) & 0xFF);
+            sf_put((lx) & 0xFF);
+            size += 4;
 
-        checkcount = 0;
-        output_compression(huff_entity_root, &size, &checkcount);
-        if (checkcount != no_huff_entities)
-          compiler_error("Compression table count mismatch.");
-      }
+            checkcount = 0;
+            output_compression(huff_entity_root, &size, &checkcount);
+            if (checkcount != no_huff_entities)
+                compiler_error("Compression table count mismatch.");
+        }
 
-      if ((int32)size - origsize != compression_table_size)
-        compiler_error("Compression table size mismatch.");
+        if ((int32)size - origsize != compression_table_size)
+            compiler_error("Compression table size mismatch.");
 
-      origsize = size;
+        origsize = size;
 
-      for (lx=0, ix=0; lx<no_strings; lx++) {
-        int escapelen=0, escapetype=0;
-        int done=FALSE;
-        int32 escapeval=0;
-        if (compression_switch)
-          sf_put(0xE1); /* type byte -- compressed string */
-        else
-          sf_put(0xE0); /* type byte -- non-compressed string */
-        size++;
-        jx = 0; 
-        curbyte = 0;
-        while (!done) {
-          ch = static_strings_area[ix];
-          ix++;
-          if (ix > static_strings_extent || ch < 0)
-            compiler_error("Read too much not-yet-compressed text.");
+        for (lx=0, ix=0; lx<no_strings; lx++) {
+            int escapelen=0, escapetype=0;
+            int done=FALSE;
+            int32 escapeval=0;
+            if (compression_switch)
+                sf_put(0xE1); /* type byte -- compressed string */
+            else
+                sf_put(0xE0); /* type byte -- non-compressed string */
+            size++;
+            jx = 0; 
+            curbyte = 0;
+            while (!done) {
+                ch = static_strings_area[ix];
+                ix++;
+                if (ix > static_strings_extent || ch < 0)
+                    compiler_error("Read too much not-yet-compressed text.");
 
-          if (escapelen == -1) {
-            escapelen = 0;
-            if (ch == '@') {
-              ch = '@';
+                if (escapelen == -1) {
+                    escapelen = 0;
+                    if (ch == '@') {
+                        ch = '@';
+                    }
+                    else if (ch == '0') {
+                        ch = '\0';
+                    }
+                    else if (ch == 'A' || ch == 'D' || ch == 'U') {
+                        escapelen = 4;
+                        escapetype = ch;
+                        escapeval = 0;
+                        continue;
+                    }
+                    else {
+                        compiler_error("Strange @ escape in processed text.");
+                    }
+                }
+                else if (escapelen) {
+                    escapeval = (escapeval << 4) | ((ch-'A') & 0x0F);
+                    escapelen--;
+                    if (escapelen == 0) {
+                        if (escapetype == 'A') {
+                            ch = huff_abbrev_start+escapeval;
+                        }
+                        else if (escapetype == 'D') {
+                            ch = huff_dynam_start+escapeval;
+                        }
+                        else if (escapetype == 'U') {
+                            ch = huff_unicode_start+escapeval;
+                        }
+                        else {
+                            compiler_error("Strange @ escape in processed text.");
+                        }
+                    }
+                    else 
+                        continue;
+                }
+                else {
+                    if (ch == '@') {
+                        escapelen = -1;
+                        continue;
+                    }
+                    if (ch == 0) {
+                        ch = 256;
+                        done = TRUE;
+                    }
+                }
+
+                if (compression_switch) {
+                    bits = &(huff_entities[ch].bits);
+                    depth = huff_entities[ch].depth;
+                    for (bx=0; bx<depth; bx++) {
+                        if (bits->b[bx / 8] & (1 << (bx % 8)))
+                            curbyte |= (1 << jx);
+                        jx++;
+                        if (jx == 8) {
+                            sf_put(curbyte);
+                            size++;
+                            curbyte = 0;
+                            jx = 0;
+                        }
+                    }
+                }
+                else {
+                    if (ch >= huff_dynam_start) {
+                        sf_put(' '); sf_put(' '); sf_put(' ');
+                        size += 3;
+                    }
+                    else if (ch >= huff_abbrev_start) {
+                        /* nothing */
+                    }
+                    else {
+                        /* 256, the string terminator, comes out as zero */
+                        sf_put(ch & 0xFF);
+                        size++;
+                    }
+                }
             }
-            else if (ch == '0') {
-              ch = '\0';
-            }
-            else if (ch == 'A' || ch == 'D' || ch == 'U') {
-              escapelen = 4;
-              escapetype = ch;
-              escapeval = 0;
-              continue;
-            }
-            else {
-              compiler_error("Strange @ escape in processed text.");
-            }
-          }
-          else if (escapelen) {
-            escapeval = (escapeval << 4) | ((ch-'A') & 0x0F);
-            escapelen--;
-            if (escapelen == 0) {
-              if (escapetype == 'A') {
-                ch = huff_abbrev_start+escapeval;
-              }
-              else if (escapetype == 'D') {
-                ch = huff_dynam_start+escapeval;
-              }
-              else if (escapetype == 'U') {
-                ch = huff_unicode_start+escapeval;
-              }
-              else {
-                compiler_error("Strange @ escape in processed text.");
-              }
-            }
-            else 
-              continue;
-          }
-          else {
-            if (ch == '@') {
-              escapelen = -1;
-              continue;
-            }
-            if (ch == 0) {
-              ch = 256;
-              done = TRUE;
-            }
-          }
-
-          if (compression_switch) {
-            bits = &(huff_entities[ch].bits);
-            depth = huff_entities[ch].depth;
-            for (bx=0; bx<depth; bx++) {
-              if (bits->b[bx / 8] & (1 << (bx % 8)))
-                curbyte |= (1 << jx);
-              jx++;
-              if (jx == 8) {
+            if (compression_switch && jx) {
                 sf_put(curbyte);
                 size++;
-                curbyte = 0;
-                jx = 0;
-              }
             }
-          }
-          else {
-            if (ch >= huff_dynam_start) {
-              sf_put(' '); sf_put(' '); sf_put(' ');
-              size += 3;
-            }
-            else if (ch >= huff_abbrev_start) {
-              /* nothing */
-            }
-            else {
-              /* 256, the string terminator, comes out as zero */
-              sf_put(ch & 0xFF);
-              size++;
-            }
-          }
         }
-        if (compression_switch && jx) {
-          sf_put(curbyte);
-          size++;
-        }
-      }
       
-      if ((int32)size - origsize != compression_string_size)
-        compiler_error("Compression string size mismatch.");
+        if ((int32)size - origsize != compression_string_size)
+            compiler_error("Compression string size mismatch.");
 
     }
     
@@ -1117,7 +1117,7 @@ static void output_file_g(void)
     fputc((checksum_long) & 0xFF, sf_handle);
 
     if (ferror(sf_handle))
-      fatalerror("I/O failure: couldn't backtrack on story file for checksum");
+        fatalerror("I/O failure: couldn't backtrack on story file for checksum");
 
     /*  Write a copy of the first 64 bytes into the debugging information file
         (mainly so that it can be used to identify which story file matches with
@@ -1155,10 +1155,10 @@ static void output_file_g(void)
 
 extern void output_file(void)
 {
-  if (!glulx_mode)
-    output_file_z();
-  else
-    output_file_g();
+    if (!glulx_mode)
+        output_file_z();
+    else
+        output_file_g();
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1462,7 +1462,7 @@ extern void write_debug_optional_identifier(int32 symbol_index)
         }
     }
     fgetpos
-      (Debug_fp, &symbol_debug_info[symbol_index].replacement_backpatch_pos.position);
+        (Debug_fp, &symbol_debug_info[symbol_index].replacement_backpatch_pos.position);
     symbol_debug_info[symbol_index].replacement_backpatch_pos.valid = TRUE;
     debug_file_printf("<identifier>%s</identifier>", symbols[symbol_index].name);
     /* Space for:       artificial="true" (superseded replacement) */

@@ -3,7 +3,7 @@
 /*              by the compiler (e.g. DefArt) which the program doesn't      */
 /*              provide                                                      */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -30,7 +30,7 @@ extern void compile_initial_routine(void)
         In order not to impose these restrictions on "Main", we compile a
         trivial routine consisting of a call to "Main" followed by "quit".   */
 
-  int32 j;
+    int32 j;
     assembly_operand AO;
 
     j = symbol_index("Main__", -1, NULL);
@@ -2262,129 +2262,129 @@ static void compile_symbol_table_routine(void)
     symbols[j].flags |= SYSTEM_SFLAG + USED_SFLAG;
     if (trace_fns_setting==3) symbols[j].flags |= STAR_SFLAG;
 
-  if (!glulx_mode) {
+    if (!glulx_mode) {
 
-    if (define_INFIX_switch == FALSE)
-    {   assemblez_0(rfalse_zc);
-        variables[1].usage = TRUE;
-        variables[2].usage = TRUE;
-        assemble_routine_end(FALSE, null_debug_locations);
-        veneer_mode = FALSE;
-        return;
-    }
-
-    INITAOTV(&AO, VARIABLE_OT, 1);
-    INITAOT(&AO2, SHORT_CONSTANT_OT);
-    INITAOT(&AO3, LONG_CONSTANT_OT);
-
-    arrays_l = next_label++;
-    routines_l = next_label++;
-    constants_l = next_label++;
-
-    sequence_point_follows = FALSE;
-    AO2.value = 1;
-    assemblez_2_branch(je_zc, AO, AO2, arrays_l, TRUE);
-    sequence_point_follows = FALSE;
-    AO2.value = 2;
-    assemblez_2_branch(je_zc, AO, AO2, routines_l, TRUE);
-    sequence_point_follows = FALSE;
-    AO2.value = 3;
-    assemblez_2_branch(je_zc, AO, AO2, constants_l, TRUE);
-    sequence_point_follows = FALSE;
-    assemblez_0(rtrue_zc);
-
-    assemble_label_no(arrays_l);
-    AO.value = 2;
-    for (j=0; j<no_arrays; j++)
-    {   {   AO2.value = j;
-            if (AO2.value<256) AO2.type = SHORT_CONSTANT_OT;
-            else AO2.type = LONG_CONSTANT_OT;
-            nl = next_label++;
-            sequence_point_follows = FALSE;
-            assemblez_2_branch(je_zc, AO, AO2, nl, FALSE);
-            AO3.value = arrays[j].size;
-            AO3.marker = 0;
-            assemblez_store(temp_var2, AO3);
-            AO3.value = arrays[j].type;
-            if (symbols[arrays[j].symbol].flags & (INSF_SFLAG+SYSTEM_SFLAG))
-                AO3.value = AO3.value + 16;
-            AO3.marker = 0;
-            assemblez_store(temp_var3, AO3);
-            AO3.value = symbols[arrays[j].symbol].value;
-            AO3.marker = (!arrays[j].loc ? ARRAY_MV : STATIC_ARRAY_MV);
-            assemblez_1(ret_zc, AO3);
-            assemble_label_no(nl);
+        if (define_INFIX_switch == FALSE)
+        {   assemblez_0(rfalse_zc);
+            variables[1].usage = TRUE;
+            variables[2].usage = TRUE;
+            assemble_routine_end(FALSE, null_debug_locations);
+            veneer_mode = FALSE;
+            return;
         }
-    }
-    sequence_point_follows = FALSE;
-    assemblez_0(rtrue_zc);
-    assemble_label_no(routines_l);
-    for (j=0; j<no_named_routines; j++)
-    {   AO2.value = j;
-        if (AO2.value<256) AO2.type = SHORT_CONSTANT_OT;
-        else AO2.type = LONG_CONSTANT_OT;
-        nl = next_label++;
+    
+        INITAOTV(&AO, VARIABLE_OT, 1);
+        INITAOT(&AO2, SHORT_CONSTANT_OT);
+        INITAOT(&AO3, LONG_CONSTANT_OT);
+    
+        arrays_l = next_label++;
+        routines_l = next_label++;
+        constants_l = next_label++;
+    
         sequence_point_follows = FALSE;
-        assemblez_2_branch(je_zc, AO, AO2, nl, FALSE);
-        AO3.value = 0;
-        if (symbols[named_routine_symbols[j]].flags
-            & (INSF_SFLAG+SYSTEM_SFLAG)) AO3.value = 16;
-        AO3.marker = 0;
-        assemblez_store(temp_var3, AO3);
-        AO3.value = symbols[named_routine_symbols[j]].value;
-        AO3.marker = IROUTINE_MV;
-        assemblez_1(ret_zc, AO3);
-        assemble_label_no(nl);
-    }
-    sequence_point_follows = FALSE;
-    assemblez_0(rtrue_zc);
-
-    assemble_label_no(constants_l);
-    for (j=0, no_named_constants=0; j<no_symbols; j++)
-    {   if (((symbols[j].type == OBJECT_T) || (symbols[j].type == CLASS_T)
-            || (symbols[j].type == CONSTANT_T))
-            && ((symbols[j].flags & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
-        {   AO2.value = no_named_constants++;
+        AO2.value = 1;
+        assemblez_2_branch(je_zc, AO, AO2, arrays_l, TRUE);
+        sequence_point_follows = FALSE;
+        AO2.value = 2;
+        assemblez_2_branch(je_zc, AO, AO2, routines_l, TRUE);
+        sequence_point_follows = FALSE;
+        AO2.value = 3;
+        assemblez_2_branch(je_zc, AO, AO2, constants_l, TRUE);
+        sequence_point_follows = FALSE;
+        assemblez_0(rtrue_zc);
+    
+        assemble_label_no(arrays_l);
+        AO.value = 2;
+        for (j=0; j<no_arrays; j++)
+        {   {   AO2.value = j;
+                if (AO2.value<256) AO2.type = SHORT_CONSTANT_OT;
+                else AO2.type = LONG_CONSTANT_OT;
+                nl = next_label++;
+                sequence_point_follows = FALSE;
+                assemblez_2_branch(je_zc, AO, AO2, nl, FALSE);
+                AO3.value = arrays[j].size;
+                AO3.marker = 0;
+                assemblez_store(temp_var2, AO3);
+                AO3.value = arrays[j].type;
+                if (symbols[arrays[j].symbol].flags & (INSF_SFLAG+SYSTEM_SFLAG))
+                    AO3.value = AO3.value + 16;
+                AO3.marker = 0;
+                assemblez_store(temp_var3, AO3);
+                AO3.value = symbols[arrays[j].symbol].value;
+                AO3.marker = (!arrays[j].loc ? ARRAY_MV : STATIC_ARRAY_MV);
+                assemblez_1(ret_zc, AO3);
+                assemble_label_no(nl);
+            }
+        }
+        sequence_point_follows = FALSE;
+        assemblez_0(rtrue_zc);
+        assemble_label_no(routines_l);
+        for (j=0; j<no_named_routines; j++)
+        {   AO2.value = j;
             if (AO2.value<256) AO2.type = SHORT_CONSTANT_OT;
             else AO2.type = LONG_CONSTANT_OT;
             nl = next_label++;
             sequence_point_follows = FALSE;
             assemblez_2_branch(je_zc, AO, AO2, nl, FALSE);
             AO3.value = 0;
-            if (symbols[j].type == OBJECT_T) AO3.value = 2;
-            if (symbols[j].type == CLASS_T) AO3.value = 1;
-            if (symbols[j].flags & (INSF_SFLAG+SYSTEM_SFLAG))
-                AO3.value = AO3.value + 16;
+            if (symbols[named_routine_symbols[j]].flags
+                & (INSF_SFLAG+SYSTEM_SFLAG)) AO3.value = 16;
             AO3.marker = 0;
             assemblez_store(temp_var3, AO3);
-            AO3.value = j;
-            AO3.marker = SYMBOL_MV;
+            AO3.value = symbols[named_routine_symbols[j]].value;
+            AO3.marker = IROUTINE_MV;
             assemblez_1(ret_zc, AO3);
             assemble_label_no(nl);
         }
-    }
-    no_named_constants = 0; AO3.marker = 0;
-
-    sequence_point_follows = FALSE;
-    assemblez_0(rfalse_zc);
-    variables[1].usage = TRUE;
-    variables[2].usage = TRUE;
-    assemble_routine_end(FALSE, null_debug_locations);
-    veneer_mode = FALSE;
-  }
-  else {
-
-    if (define_INFIX_switch == FALSE)
-    {   assembleg_1(return_gc, zero_operand);
+        sequence_point_follows = FALSE;
+        assemblez_0(rtrue_zc);
+    
+        assemble_label_no(constants_l);
+        for (j=0, no_named_constants=0; j<no_symbols; j++)
+        {   if (((symbols[j].type == OBJECT_T) || (symbols[j].type == CLASS_T)
+                || (symbols[j].type == CONSTANT_T))
+                && ((symbols[j].flags & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
+            {   AO2.value = no_named_constants++;
+                if (AO2.value<256) AO2.type = SHORT_CONSTANT_OT;
+                else AO2.type = LONG_CONSTANT_OT;
+                nl = next_label++;
+                sequence_point_follows = FALSE;
+                assemblez_2_branch(je_zc, AO, AO2, nl, FALSE);
+                AO3.value = 0;
+                if (symbols[j].type == OBJECT_T) AO3.value = 2;
+                if (symbols[j].type == CLASS_T) AO3.value = 1;
+                if (symbols[j].flags & (INSF_SFLAG+SYSTEM_SFLAG))
+                    AO3.value = AO3.value + 16;
+                AO3.marker = 0;
+                assemblez_store(temp_var3, AO3);
+                AO3.value = j;
+                AO3.marker = SYMBOL_MV;
+                assemblez_1(ret_zc, AO3);
+                assemble_label_no(nl);
+            }
+        }
+        no_named_constants = 0; AO3.marker = 0;
+    
+        sequence_point_follows = FALSE;
+        assemblez_0(rfalse_zc);
         variables[1].usage = TRUE;
         variables[2].usage = TRUE;
         assemble_routine_end(FALSE, null_debug_locations);
         veneer_mode = FALSE;
-        return;
     }
-
-    error("*** Infix symbol-table routine is not yet implemented. ***");
-  }
+    else {
+    
+        if (define_INFIX_switch == FALSE)
+        {   assembleg_1(return_gc, zero_operand);
+            variables[1].usage = TRUE;
+            variables[2].usage = TRUE;
+            assemble_routine_end(FALSE, null_debug_locations);
+            veneer_mode = FALSE;
+            return;
+        }
+    
+        error("*** Infix symbol-table routine is not yet implemented. ***");
+    }
 }
 
 extern void compile_veneer(void)

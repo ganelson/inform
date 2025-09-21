@@ -2,7 +2,7 @@
 /*   "verbs" :  Manages actions and grammar tables; parses the directives    */
 /*              Verb and Extend.                                             */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -109,34 +109,38 @@ static int English_verbs_text_size;
 /*   Arrays used by this file                                                */
 /* ------------------------------------------------------------------------- */
 
-  verbt   *Inform_verbs;  /* Allocated up to no_Inform_verbs */
-  static memory_list Inform_verbs_memlist;
-  uchar   *grammar_lines; /* Allocated to grammar_lines_top */
-  static memory_list grammar_lines_memlist;
-  int32    grammar_lines_top;
-  int      no_grammar_lines, no_grammar_tokens;
+verbt   *Inform_verbs;  /* Allocated up to no_Inform_verbs */
+static memory_list Inform_verbs_memlist;
+uchar   *grammar_lines; /* Allocated to grammar_lines_top */
+static memory_list grammar_lines_memlist;
+int32    grammar_lines_top;
+int      no_grammar_lines, no_grammar_tokens;
 
-  actioninfo *actions; /* Allocated to no_actions */
-  memory_list actions_memlist;
-  int32   *grammar_token_routine; /* Allocated to no_grammar_token_routines */
-  static memory_list grammar_token_routine_memlist;
-  actionsort *sorted_actions; /* only used if GRAMMAR_META_FLAG */
-  int no_meta_actions; /* only used if GRAMMAR_META_FLAG */
+actioninfo *actions; /* Allocated to no_actions */
+memory_list actions_memlist;
+int32   *grammar_token_routine; /* Allocated to no_grammar_token_routines */
+static memory_list grammar_token_routine_memlist;
+actionsort *sorted_actions; /* only used if GRAMMAR_META_FLAG */
+int no_meta_actions; /* only used if GRAMMAR_META_FLAG */
 
-  int32   *adjectives; /* Allocated to no_adjectives */
-  static memory_list adjectives_memlist;
+int32   *adjectives; /* Allocated to no_adjectives */
+static memory_list adjectives_memlist;
 
-  static uchar *adjective_sort_code; /* Allocated to no_adjectives*DICT_WORD_BYTES, except it's sometimes no_adjectives+1 because we can bump it tentatively */
-  static memory_list adjective_sort_code_memlist;
+static uchar *adjective_sort_code; /* Allocated to no_adjectives*DICT_WORD_BYTES, except it's sometimes no_adjectives+1 because we can bump it tentatively */
+static memory_list adjective_sort_code_memlist;
 
-  static memory_list action_symname_memlist; /* Used for temporary symbols */
+static memory_list action_symname_memlist; /* Used for temporary symbols */
 
 /* ------------------------------------------------------------------------- */
 /*   Grammar version                                                         */
 /* ------------------------------------------------------------------------- */
 
 /* Set grammar_version_number, or report an error if the number is not
-   valid for the current VM. */
+   valid for the current VM.
+   
+   This is called at verbs_begin_pass() time, but it can be changed
+   (carefully) by a "Constant Grammar__Version=..." directive.
+*/
 void set_grammar_version(int val)
 {
     if (!glulx_mode) {
@@ -155,6 +159,42 @@ void set_grammar_version(int val)
     grammar_version_number = val;
     /* We also have to adjust the symbol value. */
     symbols[grammar_version_symbol].value = val;
+}
+
+/* This is called if we encounter a "Constant Grammar__Version=X" directive.
+   Check that the change is valid and safe. If so, do it.
+*/
+void set_grammar_option_constant(int optnum, assembly_operand AO)
+{
+    char *symname;
+    int origval;
+
+    if (optnum == grammar_version_symbol) {
+        symname = "Grammar__Version";
+        origval = grammar_version_number;
+    }
+    else {
+        compiler_error("set_grammar_option_constant called with invalid symbol");
+        return;
+    }
+
+    if (AO.marker != 0) {
+        error_fmt("%s must be given an explicit constant value", symname);
+        return;
+    }
+    if (origval == AO.value) {
+        /* no change needed */
+        return;
+    }    
+    if (no_fake_actions > 0) {
+        error_fmt("Once a fake action has been defined it is too late to change %s", symname);
+        return;
+    }
+    if (no_grammar_lines > 0) {
+        error_fmt("Once an action has been defined it is too late to change %s", symname);
+        return;
+    }
+    set_grammar_version(AO.value);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -546,9 +586,9 @@ extern assembly_operand action_of_name(char *name)
     {   INITAO(&AO);
         AO.value = symbols[j].value;
         if (!glulx_mode)
-          AO.type = LONG_CONSTANT_OT;
+            AO.type = LONG_CONSTANT_OT;
         else
-          set_constant_ot(&AO);
+            set_constant_ot(&AO);
         symbols[j].flags |= USED_SFLAG;
         return AO;
     }
@@ -587,11 +627,11 @@ extern assembly_operand action_of_name(char *name)
     AO.value = symbols[j].value;
     AO.marker = ACTION_MV;
     if (!glulx_mode) {
-      AO.type = SHORT_CONSTANT_OT;
-      if (symbols[j].value >= 256) AO.type = LONG_CONSTANT_OT;
+        AO.type = SHORT_CONSTANT_OT;
+        if (symbols[j].value >= 256) AO.type = LONG_CONSTANT_OT;
     }
     else {
-      AO.type = CONSTANT_OT;
+        AO.type = CONSTANT_OT;
     }
     return AO;
 }
@@ -666,8 +706,8 @@ static int make_adjective_v1(char *English_word)
     dictionary_prepare(English_word, new_sort_code);
     for (i=0; i<no_adjectives; i++)
         if (compare_sorts(new_sort_code,
-          adjective_sort_code+i*DICT_WORD_BYTES) == 0)
-            return(0xff-i);
+            adjective_sort_code+i*DICT_WORD_BYTES) == 0)
+                return(0xff-i);
     adjectives[no_adjectives]
         = dictionary_add(English_word,PREP_DFLAG,0,0xff-no_adjectives);
     return(0xff-no_adjectives++);
@@ -1617,10 +1657,7 @@ extern void verbs_begin_pass(void)
     grammar_lines_top = 0;
 
     /* Set the version requested by compiler setting (with validity check) */
-    if (!glulx_mode)
-        set_grammar_version(GRAMMAR_VERSION_z);
-    else
-        set_grammar_version(GRAMMAR_VERSION_g);
+    set_grammar_version(get_grammar_version_option());
 }
 
 extern void verbs_allocate_arrays(void)

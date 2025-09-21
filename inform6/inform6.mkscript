@@ -2,7 +2,7 @@
 # used to build the tool "inform6". Do not edit "inform6.mk" directly. Instead,
 # edit this script, and then rebuild "inform6.mk" with the command:
 
-# ../inweb/Tangled/inweb inform6 -makefile inform6/inform6.mk
+# ../inweb/Tangled/inweb make-makefile inform6 -to inform6/inform6.mk
 
 # (Or simply type "make makers" to make all of the subsidiary makefiles inside the
 # inform repository, including this one.)
@@ -51,6 +51,7 @@ define make-me
 	{compile-indulgently from: $(SANDBOX)/lexer.c    to: $(SANDBOX)/lexer.o    options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/memory.c   to: $(SANDBOX)/memory.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/objects.c  to: $(SANDBOX)/objects.o  options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/options.c  to: $(SANDBOX)/options.o  options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/states.c   to: $(SANDBOX)/states.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/symbols.c  to: $(SANDBOX)/symbols.o  options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/syntax.c   to: $(SANDBOX)/syntax.o   options: -D$(INFORM6OS)}

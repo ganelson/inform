@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "states" :  Statement translator                                        */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -140,43 +140,43 @@ static void parse_action(void)
 
     if (!glulx_mode) {
 
-      AO = veneer_routine(R_Process_VR);
+        AO = veneer_routine(R_Process_VR);
 
-      switch(args)
-      {   case 0:
-            if (codegen_action) AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
-            if (version_number>=5)
-                assemblez_2(call_2n_zc, AO, AO2);
-            else
-            if (version_number==4)
-                assemblez_2_to(call_vs_zc, AO, AO2, temp_var1);
-            else
-                assemblez_2_to(call_zc, AO, AO2, temp_var1);
-            break;
-          case 1:
+        switch(args)
+        {   case 0:
+                if (codegen_action) AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
+                if (version_number>=5)
+                    assemblez_2(call_2n_zc, AO, AO2);
+                else
+                    if (version_number==4)
+                        assemblez_2_to(call_vs_zc, AO, AO2, temp_var1);
+                    else
+                        assemblez_2_to(call_zc, AO, AO2, temp_var1);
+                break;
+        case 1:
             AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
             if (codegen_action) AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
             if (version_number>=5)
                 assemblez_3(call_vn_zc, AO, AO2, AO3);
             else
-            if (version_number==4)
-                assemblez_3_to(call_vs_zc, AO, AO2, AO3, temp_var1);
-            else
-                assemblez_3_to(call_zc, AO, AO2, AO3, temp_var1);
+                if (version_number==4)
+                    assemblez_3_to(call_vs_zc, AO, AO2, AO3, temp_var1);
+                else
+                    assemblez_3_to(call_zc, AO, AO2, AO3, temp_var1);
             break;
-          case 2:
+        case 2:
             AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
             AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
             if (codegen_action) AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
             if (version_number>=5)
                 assemblez_4(call_vn_zc, AO, AO2, AO3, AO4);
             else
-            if (version_number==4)
-                assemblez_4_to(call_vs_zc, AO, AO2, AO3, AO4, temp_var1);
-            else
-                assemblez_4_to(call_zc, AO, AO2, AO3, AO4, temp_var1);
+                if (version_number==4)
+                    assemblez_4_to(call_vs_zc, AO, AO2, AO3, AO4, temp_var1);
+                else
+                    assemblez_4_to(call_zc, AO, AO2, AO3, AO4, temp_var1);
             break;
-          case 3:
+        case 3:
             AO5 = code_generate(AO5, QUANTITY_CONTEXT, -1);
             AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
             AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
@@ -184,63 +184,63 @@ static void parse_action(void)
             if (version_number>=5)
                 assemblez_5(call_vn2_zc, AO, AO2, AO3, AO4, AO5);
             else
-            if (version_number==4)
-                assemblez_5_to(call_vs2_zc, AO, AO2, AO3, AO4, AO5, temp_var1);
+                if (version_number==4)
+                    assemblez_5_to(call_vs2_zc, AO, AO2, AO3, AO4, AO5, temp_var1);
             /* if V3 or earlier, we've already displayed an error */
             break;
             break;
-      }
+        }
 
-      if (level == 2) assemblez_0(rtrue_zc);
+        if (level == 2) assemblez_0(rtrue_zc);
 
     }
     else {
 
-      AO = veneer_routine(R_Process_VR);
+        AO = veneer_routine(R_Process_VR);
 
-      switch (args) {
+        switch (args) {
 
-      case 0:
-        if (codegen_action) 
-          AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
-        assembleg_call_1(AO, AO2, zero_operand);
-        break;
+        case 0:
+            if (codegen_action) 
+                AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
+            assembleg_call_1(AO, AO2, zero_operand);
+            break;
 
-      case 1:
-        AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
-        if (codegen_action)
-          AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
-        assembleg_call_2(AO, AO2, AO3, zero_operand);
-        break;
+        case 1:
+            AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
+            if (codegen_action)
+                AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
+            assembleg_call_2(AO, AO2, AO3, zero_operand);
+            break;
 
-      case 2:
-        AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
-        AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
-        if (codegen_action) 
-          AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
-        assembleg_call_3(AO, AO2, AO3, AO4, zero_operand);
-        break;
+        case 2:
+            AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
+            AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
+            if (codegen_action) 
+                AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
+            assembleg_call_3(AO, AO2, AO3, AO4, zero_operand);
+            break;
 
-      case 3:
-        AO5 = code_generate(AO5, QUANTITY_CONTEXT, -1);
-        if (!((AO5.type == LOCALVAR_OT) && (AO5.value == 0)))
-            assembleg_store(stack_pointer, AO5);
-        AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
-        if (!((AO4.type == LOCALVAR_OT) && (AO4.value == 0)))
-            assembleg_store(stack_pointer, AO4);
-        AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
-        if (!((AO3.type == LOCALVAR_OT) && (AO3.value == 0)))
-            assembleg_store(stack_pointer, AO3);
-        if (codegen_action) 
-          AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
-        if (!((AO2.type == LOCALVAR_OT) && (AO2.value == 0)))
-          assembleg_store(stack_pointer, AO2);
-        assembleg_3(call_gc, AO, four_operand, zero_operand);
-        break;
-      }
+        case 3:
+            AO5 = code_generate(AO5, QUANTITY_CONTEXT, -1);
+            if (!((AO5.type == LOCALVAR_OT) && (AO5.value == 0)))
+                assembleg_store(stack_pointer, AO5);
+            AO4 = code_generate(AO4, QUANTITY_CONTEXT, -1);
+            if (!((AO4.type == LOCALVAR_OT) && (AO4.value == 0)))
+                assembleg_store(stack_pointer, AO4);
+            AO3 = code_generate(AO3, QUANTITY_CONTEXT, -1);
+            if (!((AO3.type == LOCALVAR_OT) && (AO3.value == 0)))
+                assembleg_store(stack_pointer, AO3);
+            if (codegen_action) 
+                AO2 = code_generate(AO2, QUANTITY_CONTEXT, -1);
+            if (!((AO2.type == LOCALVAR_OT) && (AO2.value == 0)))
+                assembleg_store(stack_pointer, AO2);
+            assembleg_3(call_gc, AO, four_operand, zero_operand);
+            break;
+        }
 
-      if (level == 2) 
-        assembleg_1(return_gc, one_operand);
+        if (level == 2) 
+            assembleg_1(return_gc, one_operand);
 
     }
 }
@@ -2529,48 +2529,48 @@ static void parse_statement_g(int break_label, int continue_label)
     /*  -------------------------------------------------------------------- */
 
         case REMOVE_CODE:
-                 AO = code_generate(parse_expression(QUANTITY_CONTEXT),
-                     QUANTITY_CONTEXT, -1);
-                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"remove\" statement");
-                 if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
-                     assembleg_call_1(veneer_routine(RT__ChR_VR), AO,
-                         zero_operand);
-                 else
-                     assembleg_call_1(veneer_routine(OB__Remove_VR), AO,
-                         zero_operand);
-                 break;
+            AO = code_generate(parse_expression(QUANTITY_CONTEXT),
+                QUANTITY_CONTEXT, -1);
+            check_warn_symbol_type(&AO, OBJECT_T, 0, "\"remove\" statement");
+            if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
+                assembleg_call_1(veneer_routine(RT__ChR_VR), AO,
+                    zero_operand);
+            else
+                assembleg_call_1(veneer_routine(OB__Remove_VR), AO,
+                    zero_operand);
+            break;
 
     /*  -------------------------------------------------------------------- */
     /*  return [<expression>] ---------------------------------------------- */
     /*  -------------------------------------------------------------------- */
 
         case RETURN_CODE:
-          get_next_token();
-          if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)) {
-            assembleg_1(return_gc, one_operand); 
-            return; 
-          }
-          put_token_back();
-          AO = code_generate(parse_expression(RETURN_Q_CONTEXT),
-            QUANTITY_CONTEXT, -1);
-          assembleg_1(return_gc, AO);
-          break;
-
+            get_next_token();
+            if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)) {
+                assembleg_1(return_gc, one_operand); 
+                return; 
+            }
+            put_token_back();
+            AO = code_generate(parse_expression(RETURN_Q_CONTEXT),
+                QUANTITY_CONTEXT, -1);
+            assembleg_1(return_gc, AO);
+            break;
+            
     /*  -------------------------------------------------------------------- */
     /*  rfalse ------------------------------------------------------------- */
     /*  -------------------------------------------------------------------- */
 
         case RFALSE_CODE:   
-          assembleg_1(return_gc, zero_operand); 
-          break;
+            assembleg_1(return_gc, zero_operand); 
+            break;
 
     /*  -------------------------------------------------------------------- */
     /*  rtrue -------------------------------------------------------------- */
     /*  -------------------------------------------------------------------- */
 
         case RTRUE_CODE:   
-          assembleg_1(return_gc, one_operand); 
-          break;
+            assembleg_1(return_gc, one_operand); 
+            break;
 
     /*  -------------------------------------------------------------------- */
     /*  spaces <expression> ------------------------------------------------ */
@@ -2726,8 +2726,8 @@ static void parse_statement_g(int break_label, int continue_label)
        Inform compiler, but which is important in development. */
 
         default:
-          error("*** Statement code gen: Can't generate yet ***\n");
-          panic_mode_error_recovery(); return;
+            error("*** Statement code gen: Can't generate yet ***\n");
+            panic_mode_error_recovery(); return;
     }
 
     StatementTerminator:

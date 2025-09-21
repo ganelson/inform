@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -778,68 +778,68 @@ int glulx_system_constant_list[] =
 
 static int32 value_of_system_constant_g(int t)
 { 
-  switch (t) {
-  case classes_table_SC:
-    return Write_RAM_At + class_numbers_offset;
-  case identifiers_table_SC:
-    return Write_RAM_At + identifier_names_offset;
-  case array_names_offset_SC:
-    return Write_RAM_At + array_names_offset;
-  case cpv__start_SC:
-    return prop_defaults_offset;
-  case cpv__end_SC:
-    return Write_RAM_At + class_numbers_offset;
-  case dictionary_table_SC:
-    return dictionary_offset;
-  case dynam_string_table_SC:
-    return abbreviations_offset;
-  case grammar_table_SC:
-    return grammar_table_offset;
-  case actions_table_SC:
-    return actions_offset;
-  case globals_array_SC:
-    return variables_offset;
-  case highest_class_number_SC:
-    return no_classes-1;
-  case highest_object_number_SC:
-    return no_objects-1;
-  case highest_action_number_SC:
-    return no_actions-1;
-  case action_names_array_SC:
-    return Write_RAM_At + action_names_offset;
-  case lowest_fake_action_number_SC:
-    return lowest_fake_action();
-  case highest_fake_action_number_SC:
-    return lowest_fake_action() + no_fake_actions-1;
-  case fake_action_names_array_SC:
-    return Write_RAM_At + fake_action_names_offset;
+    switch (t) {
+    case classes_table_SC:
+        return Write_RAM_At + class_numbers_offset;
+    case identifiers_table_SC:
+        return Write_RAM_At + identifier_names_offset;
+    case array_names_offset_SC:
+        return Write_RAM_At + array_names_offset;
+    case cpv__start_SC:
+        return prop_defaults_offset;
+    case cpv__end_SC:
+        return Write_RAM_At + class_numbers_offset;
+    case dictionary_table_SC:
+        return dictionary_offset;
+    case dynam_string_table_SC:
+        return abbreviations_offset;
+    case grammar_table_SC:
+        return grammar_table_offset;
+    case actions_table_SC:
+        return actions_offset;
+    case globals_array_SC:
+        return variables_offset;
+    case highest_class_number_SC:
+        return no_classes-1;
+    case highest_object_number_SC:
+        return no_objects-1;
+    case highest_action_number_SC:
+        return no_actions-1;
+    case action_names_array_SC:
+        return Write_RAM_At + action_names_offset;
+    case lowest_fake_action_number_SC:
+        return lowest_fake_action();
+    case highest_fake_action_number_SC:
+        return lowest_fake_action() + no_fake_actions-1;
+    case fake_action_names_array_SC:
+        return Write_RAM_At + fake_action_names_offset;
 
-  case highest_meta_action_number_SC:
-    if (!GRAMMAR_META_FLAG)
-      error_named("Must set $GRAMMAR_META_FLAG to use option:", system_constants.keywords[t]);
-    return no_meta_actions-1;
-  }
+    case highest_meta_action_number_SC:
+        if (!GRAMMAR_META_FLAG)
+            error_named("Must set $GRAMMAR_META_FLAG to use option:", system_constants.keywords[t]);
+        return no_meta_actions-1;
+    }
 
-  error_named("System constant not implemented in Glulx",
-    system_constants.keywords[t]);
+    error_named("System constant not implemented in Glulx",
+                system_constants.keywords[t]);
 
-  return 0;
+    return 0;
 }
 
 extern int32 value_of_system_constant(int t)
 {
-  if (!glulx_mode)
-    return value_of_system_constant_z(t);
-  else
-    return value_of_system_constant_g(t);    
+    if (!glulx_mode)
+        return value_of_system_constant_z(t);
+    else
+        return value_of_system_constant_g(t);    
 }
 
 extern char *name_of_system_constant(int t)
 {
-  if (t < 0 || t >= NO_SYSTEM_CONSTANTS) {
-    return "???";
-  }
-  return system_constants.keywords[t];
+    if (t < 0 || t >= NO_SYSTEM_CONSTANTS) {
+        return "???";
+    }
+    return system_constants.keywords[t];
 }
 
 static int evaluate_term(const token_data *t, assembly_operand *o)
@@ -1829,50 +1829,50 @@ static unsigned int etoken_num_children(int n)
 
 static void func_args_on_stack(int n, int context)
 {
-  /* Make sure that the arguments of every function-call expression
-     are stored to the stack. If any aren't (ie, if any arguments are
-     constants or variables), cover them with push operators. 
-     (The very first argument does not need to be so treated, because
-     it's the function address, not a function argument. We also
-     skip the treatment for most system functions.) */
+    /* Make sure that the arguments of every function-call expression
+       are stored to the stack. If any aren't (ie, if any arguments are
+       constants or variables), cover them with push operators. 
+       (The very first argument does not need to be so treated, because
+       it's the function address, not a function argument. We also
+       skip the treatment for most system functions.) */
 
-  int new, pn, fnaddr, opnum;
+    int new, pn, fnaddr, opnum;
 
-  ASSERT_GLULX();
+    ASSERT_GLULX();
 
-  if (ET[n].right != -1) 
-    func_args_on_stack(ET[n].right, context);
-  if (ET[n].down == -1) {
-    pn = ET[n].up;
-    if (pn != -1) {
-      opnum = ET[pn].operator_number;
-      if (opnum == FCALL_OP
-        || opnum == MESSAGE_CALL_OP
-        || opnum == PROP_CALL_OP) {
-        /* If it's an FCALL, get the operand which contains the function 
-           address (or system-function number) */
-        if (opnum == MESSAGE_CALL_OP 
-          || opnum == PROP_CALL_OP
-          || ((fnaddr=ET[pn].down) != n
-            && (ET[fnaddr].value.type != SYSFUN_OT
-              || ET[fnaddr].value.value == INDIRECT_SYSF
-              || ET[fnaddr].value.value == GLK_SYSF))) {
-        if (etoken_num_children(pn) > (unsigned int)(opnum == FCALL_OP ? 4:3)) {
-          ensure_memory_list_available(&ET_memlist, ET_used+1);
-          new = ET_used++;
-          ET[new] = ET[n];
-          ET[n].down = new; 
-          ET[n].operator_number = PUSH_OP;
-          ET[new].up = n; 
-          ET[new].right = -1;
+    if (ET[n].right != -1) 
+        func_args_on_stack(ET[n].right, context);
+    if (ET[n].down == -1) {
+        pn = ET[n].up;
+        if (pn != -1) {
+            opnum = ET[pn].operator_number;
+            if (opnum == FCALL_OP
+                || opnum == MESSAGE_CALL_OP
+                || opnum == PROP_CALL_OP) {
+                /* If it's an FCALL, get the operand which contains the function 
+                   address (or system-function number) */
+                if (opnum == MESSAGE_CALL_OP 
+                    || opnum == PROP_CALL_OP
+                    || ((fnaddr=ET[pn].down) != n
+                        && (ET[fnaddr].value.type != SYSFUN_OT
+                            || ET[fnaddr].value.value == INDIRECT_SYSF
+                            || ET[fnaddr].value.value == GLK_SYSF))) {
+                    if (etoken_num_children(pn) > (unsigned int)(opnum == FCALL_OP ? 4:3)) {
+                        ensure_memory_list_available(&ET_memlist, ET_used+1);
+                        new = ET_used++;
+                        ET[new] = ET[n];
+                        ET[n].down = new; 
+                        ET[n].operator_number = PUSH_OP;
+                        ET[new].up = n; 
+                        ET[new].right = -1;
+                    }
+                }
+            }
         }
-        }
-      }
+        return;
     }
-    return;
-  }
 
-  func_args_on_stack(ET[n].down, context);
+    func_args_on_stack(ET[n].down, context);
 }
 
 static assembly_operand check_conditions(assembly_operand AO, int context)

@@ -6,7 +6,7 @@
 /*                    checks syntax and translates such directives into      */
 /*                    specifications for the object-maker.                   */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -105,31 +105,31 @@ extern void make_attribute(void)
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
- if (!glulx_mode) { 
-    if (no_attributes==((version_number==3)?32:48))
-    {   discard_token_location(beginning_debug_location);
-        if (version_number==3)
-            error("All 32 attributes already declared (compile as Advanced \
+    if (!glulx_mode) { 
+        if (no_attributes==((version_number==3)?32:48))
+            {   discard_token_location(beginning_debug_location);
+                if (version_number==3)
+                    error("All 32 attributes already declared (compile as Advanced \
 game to get an extra 16)");
-        else
-            error("All 48 attributes already declared");
-        panic_mode_error_recovery();
-        put_token_back();
-        return;
+                else
+                    error("All 48 attributes already declared");
+                panic_mode_error_recovery();
+                put_token_back();
+                return;
+            }
     }
- }
- else {
-    if (no_attributes==NUM_ATTR_BYTES*8) {
-      discard_token_location(beginning_debug_location);
-      error_fmt(
-        "All %d attributes already declared -- increase NUM_ATTR_BYTES to use \
+    else {
+        if (no_attributes==NUM_ATTR_BYTES*8) {
+            discard_token_location(beginning_debug_location);
+            error_fmt(
+                "All %d attributes already declared -- increase NUM_ATTR_BYTES to use \
 more", 
-        NUM_ATTR_BYTES*8);
-      panic_mode_error_recovery(); 
-      put_token_back();
-      return;
+                NUM_ATTR_BYTES*8);
+            panic_mode_error_recovery(); 
+            put_token_back();
+            return;
+        }
     }
- }
 
     get_next_token();
     i = token_value; name = token_text;
@@ -712,116 +712,116 @@ so many values that the list has overflowed the maximum 4 entries");
 
 static void property_inheritance_g(void)
 {
-  /*  Apply the property inheritance rules to full_object, which should
-      initially be complete (i.e., this routine takes place after the whole
-      Nearby/Object/Class definition has been parsed through).
+    /*  Apply the property inheritance rules to full_object, which should
+        initially be complete (i.e., this routine takes place after the whole
+        Nearby/Object/Class definition has been parsed through).
       
-      On exit, full_object contains the final state of the properties to
-      be written. */
+        On exit, full_object contains the final state of the properties to
+        be written. */
 
-  int i, j, k, class, num_props,
-    prop_number, prop_length, prop_flags, prop_in_current_defn;
-  int32 mark, prop_addr;
-  uchar *cpb, *pe;
+    int i, j, k, class, num_props,
+        prop_number, prop_length, prop_flags, prop_in_current_defn;
+    int32 mark, prop_addr;
+    uchar *cpb, *pe;
 
-  ASSERT_GLULX();
+    ASSERT_GLULX();
 
-  for (class=0; class<no_classes_to_inherit_from; class++) {
-    mark = class_info[classes_to_inherit_from[class] - 1].begins_at;
-    cpb = (properties_table + mark);
-    /* This now points to the compiled property-table for the class.
-       We'll have to go through and decompile it. (For our sins.) */
-    num_props = ReadInt32(cpb);
-    for (j=0; j<num_props; j++) {
-      pe = cpb + 4 + j*10;
-      prop_number = ReadInt16(pe);
-      pe += 2;
-      prop_length = ReadInt16(pe);
-      pe += 2;
-      prop_addr = ReadInt32(pe);
-      pe += 4;
-      prop_flags = ReadInt16(pe);
-      pe += 2;
+    for (class=0; class<no_classes_to_inherit_from; class++) {
+        mark = class_info[classes_to_inherit_from[class] - 1].begins_at;
+        cpb = (properties_table + mark);
+        /* This now points to the compiled property-table for the class.
+           We'll have to go through and decompile it. (For our sins.) */
+        num_props = ReadInt32(cpb);
+        for (j=0; j<num_props; j++) {
+            pe = cpb + 4 + j*10;
+            prop_number = ReadInt16(pe);
+            pe += 2;
+            prop_length = ReadInt16(pe);
+            pe += 2;
+            prop_addr = ReadInt32(pe);
+            pe += 4;
+            prop_flags = ReadInt16(pe);
+            pe += 2;
 
-      /*  So we now have property number prop_number present in the
-          property block for the class being read. Its bytes are
-          cpb[prop_addr ... prop_addr + prop_length - 1]
-          Question now is: is there already a value given in the
-          current definition under this property name? */
+            /*  So we now have property number prop_number present in the
+                property block for the class being read. Its bytes are
+                cpb[prop_addr ... prop_addr + prop_length - 1]
+                Question now is: is there already a value given in the
+                current definition under this property name? */
 
-      prop_in_current_defn = FALSE;
+            prop_in_current_defn = FALSE;
 
-      for (k=0; k<full_object_g.numprops; k++) {
-        if (full_object_g.props[k].num == prop_number) {
-          prop_in_current_defn = TRUE;
-          break;
-        }
-      }
-
-      if (prop_in_current_defn) {
-        if ((prop_number==1)
-          || (prop_number < INDIV_PROP_START 
-            && commonprops[prop_number].is_additive)) {
-          /*  The additive case: we accumulate the class
-              property values onto the end of the full_object
-              properties. Remember that k is still the index number
-              of the first prop-block matching our property number. */
-          int prevcont;
-          if (full_object_g.props[k].continuation == 0) {
-            full_object_g.props[k].continuation = 1;
-            prevcont = 1;
-          }
-          else {
-            prevcont = full_object_g.props[k].continuation;
-            for (k++; k<full_object_g.numprops; k++) {
-              if (full_object_g.props[k].num == prop_number) {
-                prevcont = full_object_g.props[k].continuation;
-              }
+            for (k=0; k<full_object_g.numprops; k++) {
+                if (full_object_g.props[k].num == prop_number) {
+                    prop_in_current_defn = TRUE;
+                    break;
+                }
             }
-          }
-          k = full_object_g.numprops++;
-          ensure_memory_list_available(&full_object_g.props_memlist, k+1);
-          full_object_g.props[k].num = prop_number;
-          full_object_g.props[k].flags = 0;
-          full_object_g.props[k].datastart = full_object_g.propdatasize;
-          full_object_g.props[k].continuation = prevcont+1;
-          full_object_g.props[k].datalen = prop_length;
+
+            if (prop_in_current_defn) {
+                if ((prop_number==1)
+                    || (prop_number < INDIV_PROP_START 
+                        && commonprops[prop_number].is_additive)) {
+                    /*  The additive case: we accumulate the class
+                        property values onto the end of the full_object
+                        properties. Remember that k is still the index number
+                        of the first prop-block matching our property number. */
+                    int prevcont;
+                    if (full_object_g.props[k].continuation == 0) {
+                        full_object_g.props[k].continuation = 1;
+                        prevcont = 1;
+                    }
+                    else {
+                        prevcont = full_object_g.props[k].continuation;
+                        for (k++; k<full_object_g.numprops; k++) {
+                            if (full_object_g.props[k].num == prop_number) {
+                                prevcont = full_object_g.props[k].continuation;
+                            }
+                        }
+                    }
+                    k = full_object_g.numprops++;
+                    ensure_memory_list_available(&full_object_g.props_memlist, k+1);
+                    full_object_g.props[k].num = prop_number;
+                    full_object_g.props[k].flags = 0;
+                    full_object_g.props[k].datastart = full_object_g.propdatasize;
+                    full_object_g.props[k].continuation = prevcont+1;
+                    full_object_g.props[k].datalen = prop_length;
           
-          ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
-          for (i=0; i<prop_length; i++) {
-            int ppos = full_object_g.propdatasize++;
-            INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
-            full_object_g.propdata[ppos].marker = INHERIT_MV;
-          }
-        }
-        else {
-          /*  The ordinary case: the full_object_g property
-              values simply overrides the class definition,
-              so we skip over the values in the class table. */
-        }
-      }
-          else {
-            /*  The case where the class defined a property which wasn't
-                defined at all in full_object_g: we copy out the data into
-                a new property added to full_object_g. */
-            k = full_object_g.numprops++;
-            ensure_memory_list_available(&full_object_g.props_memlist, k+1);
-            full_object_g.props[k].num = prop_number;
-            full_object_g.props[k].flags = prop_flags;
-            full_object_g.props[k].datastart = full_object_g.propdatasize;
-            full_object_g.props[k].continuation = 0;
-            full_object_g.props[k].datalen = prop_length;
-
-            ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
-            for (i=0; i<prop_length; i++) {
-              int ppos = full_object_g.propdatasize++;
-              INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
-              full_object_g.propdata[ppos].marker = INHERIT_MV; 
+                    ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
+                    for (i=0; i<prop_length; i++) {
+                        int ppos = full_object_g.propdatasize++;
+                        INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
+                        full_object_g.propdata[ppos].marker = INHERIT_MV;
+                    }
+                }
+                else {
+                    /*  The ordinary case: the full_object_g property
+                        values simply overrides the class definition,
+                        so we skip over the values in the class table. */
+                }
             }
-          }
+            else {
+                /*  The case where the class defined a property which wasn't
+                    defined at all in full_object_g: we copy out the data into
+                    a new property added to full_object_g. */
+                k = full_object_g.numprops++;
+                ensure_memory_list_available(&full_object_g.props_memlist, k+1);
+                full_object_g.props[k].num = prop_number;
+                full_object_g.props[k].flags = prop_flags;
+                full_object_g.props[k].datastart = full_object_g.propdatasize;
+                full_object_g.props[k].continuation = 0;
+                full_object_g.props[k].datalen = prop_length;
 
+                ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
+                for (i=0; i<prop_length; i++) {
+                    int ppos = full_object_g.propdatasize++;
+                    INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
+                    full_object_g.propdata[ppos].marker = INHERIT_MV; 
+                }
+            }
+
+        }
     }
-  }
   
 }
 
@@ -920,104 +920,104 @@ static int write_property_block_z(char *shortname)
 
 static int gpropsort(void *ptr1, void *ptr2)
 {
-  propg *prop1 = ptr1;
-  propg *prop2 = ptr2;
+    propg *prop1 = ptr1;
+    propg *prop2 = ptr2;
   
-  if (prop2->num == -1)
-    return -1;
-  if (prop1->num == -1)
-    return 1;
-  if (prop1->num < prop2->num)
-    return -1;
-  if (prop1->num > prop2->num)
-    return 1;
+    if (prop2->num == -1)
+        return -1;
+    if (prop1->num == -1)
+        return 1;
+    if (prop1->num < prop2->num)
+        return -1;
+    if (prop1->num > prop2->num)
+        return 1;
 
-  return (prop1->continuation - prop2->continuation);
+    return (prop1->continuation - prop2->continuation);
 }
 
 static int32 write_property_block_g(void)
 {
-  /*  Compile the (now complete) full_object properties into a
-      property-table block at "p" in Inform's memory. 
-      Return the number of bytes written to the block. 
-      In Glulx, the shortname property isn't used here; it's already
-      been compiled into an ordinary string. */
+    /*  Compile the (now complete) full_object properties into a
+        property-table block at "p" in Inform's memory. 
+        Return the number of bytes written to the block. 
+        In Glulx, the shortname property isn't used here; it's already
+        been compiled into an ordinary string. */
 
-  int32 i;
-  int ix, jx, kx, totalprops;
-  int32 mark = properties_table_size;
-  int32 datamark;
+    int32 i;
+    int ix, jx, kx, totalprops;
+    int32 mark = properties_table_size;
+    int32 datamark;
 
-  if (current_defn_is_class) {
-    ensure_memory_list_available(&properties_table_memlist, mark+NUM_ATTR_BYTES);
-    for (i=0;i<NUM_ATTR_BYTES;i++)
-      properties_table[mark++] = full_object_g.atts[i];
-    ensure_memory_list_available(&class_info_memlist, no_classes+1);
-    class_info[no_classes++].begins_at = mark;
-  }
-
-  qsort(full_object_g.props, full_object_g.numprops, sizeof(propg), 
-    (int (*)(const void *, const void *))(&gpropsort));
-
-  full_object_g.finalpropaddr = mark;
-
-  totalprops = 0;
-
-  for (ix=0; ix<full_object_g.numprops; ix=jx) {
-    int propnum = full_object_g.props[ix].num;
-    if (propnum == -1)
-        break;
-    for (jx=ix; 
-        jx<full_object_g.numprops && full_object_g.props[jx].num == propnum;
-        jx++);
-    totalprops++;
-  }
-
-  /* Write out the number of properties in this table. */
-  ensure_memory_list_available(&properties_table_memlist, mark+4);
-  WriteInt32(properties_table+mark, totalprops);
-  mark += 4;
-
-  datamark = mark + 10*totalprops;
-
-  for (ix=0; ix<full_object_g.numprops; ix=jx) {
-    int propnum = full_object_g.props[ix].num;
-    int flags = full_object_g.props[ix].flags;
-    int totallen = 0;
-    int32 datamarkstart = datamark;
-    if (propnum == -1)
-      break;
-    for (jx=ix; 
-        jx<full_object_g.numprops && full_object_g.props[jx].num == propnum;
-        jx++) {
-      int32 datastart = full_object_g.props[jx].datastart;
-      ensure_memory_list_available(&properties_table_memlist, datamark+4*full_object_g.props[jx].datalen);
-      for (kx=0; kx<full_object_g.props[jx].datalen; kx++) {
-        int32 val = full_object_g.propdata[datastart+kx].value;
-        WriteInt32(properties_table+datamark, val);
-        if (full_object_g.propdata[datastart+kx].marker != 0)
-          backpatch_zmachine(full_object_g.propdata[datastart+kx].marker,
-            PROP_ZA, datamark);
-        totallen++;
-        datamark += 4;
-      }
+    if (current_defn_is_class) {
+        ensure_memory_list_available(&properties_table_memlist, mark+NUM_ATTR_BYTES);
+        for (i=0;i<NUM_ATTR_BYTES;i++)
+            properties_table[mark++] = full_object_g.atts[i];
+        ensure_memory_list_available(&class_info_memlist, no_classes+1);
+        class_info[no_classes++].begins_at = mark;
     }
-    ensure_memory_list_available(&properties_table_memlist, mark+10);
-    WriteInt16(properties_table+mark, propnum);
-    mark += 2;
-    WriteInt16(properties_table+mark, totallen);
-    mark += 2;
-    WriteInt32(properties_table+mark, datamarkstart); 
+
+    qsort(full_object_g.props, full_object_g.numprops, sizeof(propg), 
+        (int (*)(const void *, const void *))(&gpropsort));
+
+    full_object_g.finalpropaddr = mark;
+
+    totalprops = 0;
+
+    for (ix=0; ix<full_object_g.numprops; ix=jx) {
+        int propnum = full_object_g.props[ix].num;
+        if (propnum == -1)
+            break;
+        for (jx=ix; 
+             jx<full_object_g.numprops && full_object_g.props[jx].num == propnum;
+             jx++);
+        totalprops++;
+    }
+
+    /* Write out the number of properties in this table. */
+    ensure_memory_list_available(&properties_table_memlist, mark+4);
+    WriteInt32(properties_table+mark, totalprops);
     mark += 4;
-    WriteInt16(properties_table+mark, flags);
-    mark += 2;
-  }
 
-  mark = datamark;
+    datamark = mark + 10*totalprops;
 
-  i = mark - properties_table_size;
-  properties_table_size = mark;
-  return i;
+    for (ix=0; ix<full_object_g.numprops; ix=jx) {
+        int propnum = full_object_g.props[ix].num;
+        int flags = full_object_g.props[ix].flags;
+        int totallen = 0;
+        int32 datamarkstart = datamark;
+        if (propnum == -1)
+            break;
+        for (jx=ix; 
+             jx<full_object_g.numprops && full_object_g.props[jx].num == propnum;
+             jx++) {
+            int32 datastart = full_object_g.props[jx].datastart;
+            ensure_memory_list_available(&properties_table_memlist, datamark+4*full_object_g.props[jx].datalen);
+            for (kx=0; kx<full_object_g.props[jx].datalen; kx++) {
+                int32 val = full_object_g.propdata[datastart+kx].value;
+                WriteInt32(properties_table+datamark, val);
+                if (full_object_g.propdata[datastart+kx].marker != 0)
+                    backpatch_zmachine(full_object_g.propdata[datastart+kx].marker,
+                                       PROP_ZA, datamark);
+                totallen++;
+                datamark += 4;
+            }
+        }
+        ensure_memory_list_available(&properties_table_memlist, mark+10);
+        WriteInt16(properties_table+mark, propnum);
+        mark += 2;
+        WriteInt16(properties_table+mark, totallen);
+        mark += 2;
+        WriteInt32(properties_table+mark, datamarkstart); 
+        mark += 4;
+        WriteInt16(properties_table+mark, flags);
+        mark += 2;
+    }
+
+    mark = datamark;
+
+    i = mark - properties_table_size;
+    properties_table_size = mark;
+    return i;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1100,7 +1100,7 @@ static void manufacture_object_g(void)
     }
 
     objectsg[no_objects].shortname = compile_string(shortname_buffer,
-      STRCTX_OBJNAME);
+        STRCTX_OBJNAME);
 
         /*  The properties table consists simply of a sequence of property
             blocks, one for each object in order of definition, exactly as
@@ -1648,10 +1648,10 @@ the names \"%s\" and \"%s\" actually refer to the same property",
 
 static void properties_segment(int this_segment)
 {
-  if (!glulx_mode)
-    properties_segment_z(this_segment);
-  else
-    properties_segment_g(this_segment);
+    if (!glulx_mode)
+        properties_segment_z(this_segment);
+    else
+        properties_segment_g(this_segment);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1843,24 +1843,24 @@ object/class definition but found", token_text);
 
 static void initialise_full_object(void)
 {
-  int i;
-  if (!glulx_mode) {
-    full_object.symbol = 0;
-    full_object.l = 0;
-    full_object.atts[0] = 0;
-    full_object.atts[1] = 0;
-    full_object.atts[2] = 0;
-    full_object.atts[3] = 0;
-    full_object.atts[4] = 0;
-    full_object.atts[5] = 0;
-  }
-  else {
-    full_object_g.symbol = 0;
-    full_object_g.numprops = 0;
-    full_object_g.propdatasize = 0;
-    for (i=0; i<NUM_ATTR_BYTES; i++)
-      full_object_g.atts[i] = 0;
-  }
+    int i;
+    if (!glulx_mode) {
+        full_object.symbol = 0;
+        full_object.l = 0;
+        full_object.atts[0] = 0;
+        full_object.atts[1] = 0;
+        full_object.atts[2] = 0;
+        full_object.atts[3] = 0;
+        full_object.atts[4] = 0;
+        full_object.atts[5] = 0;
+    }
+    else {
+        full_object_g.symbol = 0;
+        full_object_g.numprops = 0;
+        full_object_g.propdatasize = 0;
+        for (i=0; i<NUM_ATTR_BYTES; i++)
+            full_object_g.atts[i] = 0;
+    }
 }
 
 extern void make_class(char * metaclass_name)
@@ -1937,26 +1937,26 @@ inconvenience, please contact the maintainers.");
         since property 2 is always set to "additive" -- see below)           */
 
     if (!glulx_mode) {
-      full_object.symbol = current_classname_symbol;
-      full_object.l = 1;
-      full_object.pp[0].num = 2;
-      full_object.pp[0].l = 1;
-      INITAOTV(&full_object.pp[0].ao[0], LONG_CONSTANT_OT, no_objects + 1);
-      full_object.pp[0].ao[0].marker = OBJECT_MV;
+        full_object.symbol = current_classname_symbol;
+        full_object.l = 1;
+        full_object.pp[0].num = 2;
+        full_object.pp[0].l = 1;
+        INITAOTV(&full_object.pp[0].ao[0], LONG_CONSTANT_OT, no_objects + 1);
+        full_object.pp[0].ao[0].marker = OBJECT_MV;
     }
     else {
-      full_object_g.symbol = current_classname_symbol;
-      full_object_g.numprops = 1;
-      ensure_memory_list_available(&full_object_g.props_memlist, 1);
-      full_object_g.props[0].num = 2;
-      full_object_g.props[0].flags = 0;
-      full_object_g.props[0].datastart = 0;
-      full_object_g.props[0].continuation = 0;
-      full_object_g.props[0].datalen = 1;
-      full_object_g.propdatasize = 1;
-      ensure_memory_list_available(&full_object_g.propdata_memlist, 1);
-      INITAOTV(&full_object_g.propdata[0], CONSTANT_OT, no_objects + 1);
-      full_object_g.propdata[0].marker = OBJECT_MV;
+        full_object_g.symbol = current_classname_symbol;
+        full_object_g.numprops = 1;
+        ensure_memory_list_available(&full_object_g.props_memlist, 1);
+        full_object_g.props[0].num = 2;
+        full_object_g.props[0].flags = 0;
+        full_object_g.props[0].datastart = 0;
+        full_object_g.props[0].continuation = 0;
+        full_object_g.props[0].datalen = 1;
+        full_object_g.propdatasize = 1;
+        ensure_memory_list_available(&full_object_g.propdata_memlist, 1);
+        INITAOTV(&full_object_g.propdata[0], CONSTANT_OT, no_objects + 1);
+        full_object_g.propdata[0].marker = OBJECT_MV;
     }
 
     if (!metaclass_flag)
@@ -2001,9 +2001,9 @@ inconvenience, please contact the maintainers.");
     }
 
     if (!glulx_mode)
-      manufacture_object_z();
+        manufacture_object_z();
     else
-      manufacture_object_g();
+        manufacture_object_g();
 
     if (individual_prop_table_size >= VENEER_CONSTRAINT_ON_IP_TABLE_SIZE)
         error("This class is too complex: it now carries too many properties. \
@@ -2077,7 +2077,7 @@ extern void make_object(int nearby_flag,
 
     if ((token_type == SEP_TT) && (token_value == ARROW_SEP))
     {   if (nearby_flag)
-          error("The syntax '->' is only used as an alternative to 'Nearby'");
+            error("The syntax '->' is only used as an alternative to 'Nearby'");
 
         while ((token_type == SEP_TT) && (token_value == ARROW_SEP))
         {   tree_depth++;
@@ -2270,9 +2270,9 @@ extern void make_object(int nearby_flag,
     }
 
     if (!glulx_mode)
-      manufacture_object_z();
+        manufacture_object_z();
     else
-      manufacture_object_g();
+        manufacture_object_g();
 }
 
 /* ========================================================================= */
@@ -2401,23 +2401,23 @@ extern void objects_allocate_arrays(void)
         "temporary storage for inline function name");
     
     if (!glulx_mode) {
-      initialise_memory_list(&objectsz_memlist,
-          sizeof(objecttz), 256, (void**)&objectsz,
-          "z-objects");
+        initialise_memory_list(&objectsz_memlist,
+            sizeof(objecttz), 256, (void**)&objectsz,
+            "z-objects");
     }
     else {
-      initialise_memory_list(&objectsg_memlist,
-          sizeof(objecttg), 256, (void**)&objectsg,
-          "g-objects");
-      initialise_memory_list(&objectatts_memlist,
-          NUM_ATTR_BYTES, 256, (void**)&objectatts,
-          "g-attributes");
-      initialise_memory_list(&full_object_g.props_memlist,
-          sizeof(propg), 64, (void**)&full_object_g.props,
-          "object property list");
-      initialise_memory_list(&full_object_g.propdata_memlist,
-          sizeof(assembly_operand), 1024, (void**)&full_object_g.propdata,
-          "object property data table");
+        initialise_memory_list(&objectsg_memlist,
+            sizeof(objecttg), 256, (void**)&objectsg,
+            "g-objects");
+        initialise_memory_list(&objectatts_memlist,
+            NUM_ATTR_BYTES, 256, (void**)&objectatts,
+            "g-attributes");
+        initialise_memory_list(&full_object_g.props_memlist,
+            sizeof(propg), 64, (void**)&full_object_g.props,
+            "object property list");
+        initialise_memory_list(&full_object_g.propdata_memlist,
+            sizeof(assembly_operand), 1024, (void**)&full_object_g.propdata,
+            "object property data table");
     }
 }
 

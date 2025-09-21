@@ -2,7 +2,7 @@
 /*   "inform" :  The top level of Inform: switches, pathnames, filenaming    */
 /*               conventions, ICL (Inform Command Line) files, main          */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.44                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -16,7 +16,8 @@
 /*   Compiler progress                                                       */
 /* ------------------------------------------------------------------------- */
 
-static int no_compilations;
+static int in_compilation;    /* set when inside compile() */
+static int no_compilations;   /* number of times we've entered compile() */
 
 int endofpass_flag;      /* set to TRUE when an "end" directive is reached
                             (the inputs routines insert one into the stream
@@ -56,27 +57,27 @@ extern void select_version(int vn)
 
 static int select_glulx_version(char *str)
 {
-  /* Parse an "X.Y.Z" style version number, and store it for later use. */
-  char *cx = str;
-  int major=0, minor=0, patch=0;
+    /* Parse an "X.Y.Z" style version number, and store it for later use. */
+    char *cx = str;
+    int major=0, minor=0, patch=0;
 
-  while (isdigit((uchar)*cx))
-    major = major*10 + ((*cx++)-'0');
-  if (*cx == '.') {
-    cx++;
     while (isdigit((uchar)*cx))
-      minor = minor*10 + ((*cx++)-'0');
+        major = major*10 + ((*cx++)-'0');
     if (*cx == '.') {
-      cx++;
-      while (isdigit((uchar)*cx))
-        patch = patch*10 + ((*cx++)-'0');
+        cx++;
+        while (isdigit((uchar)*cx))
+            minor = minor*10 + ((*cx++)-'0');
+        if (*cx == '.') {
+            cx++;
+            while (isdigit((uchar)*cx))
+                patch = patch*10 + ((*cx++)-'0');
+        }
     }
-  }
 
-  requested_glulx_version = ((major & 0x7FFF) << 16) 
-    + ((minor & 0xFF) << 8) 
-    + (patch & 0xFF);
-  return (cx - str);
+    requested_glulx_version = ((major & 0x7FFF) << 16) 
+        + ((minor & 0xFF) << 8) 
+        + (patch & 0xFF);
+    return (cx - str);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -105,113 +106,134 @@ int DICT_ENTRY_BYTE_LENGTH;
 */
 int DICT_ENTRY_FLAG_POS;
 
-static void select_target(int targ)
+static void set_compile_variables()
 {
-  if (!targ) {
-    /* Z-machine */
-    WORDSIZE = 2;
-    MAXINTWORD = 0x7FFF;
+    /* Set all the compiler's globals, such as WORDSIZE.
+     
+       Most of these are taken from the options module; see
+       apply_compiler_options().
+     
+       Some globals must already be set when this is called: glulx_mode,
+       scale_factor, requested_glulx_version, and a few others. These
+       exceptional cases are handled directly by the switches() routine
+       during option parsing. */
 
-    MAX_LOCAL_VARIABLES = 16; /* including "sp" */
+    /* First we set a few values that depend only on glulx_mode. */
+    
+    if (!glulx_mode) {
+        /* Z-machine */
+        WORDSIZE = 2;
+        MAXINTWORD = 0x7FFF;
 
-    if (INDIV_PROP_START != 64) {
-        INDIV_PROP_START = 64;
-        fatalerror("You cannot change INDIV_PROP_START in Z-code");
-    }
-    if (DICT_WORD_SIZE != 6) {
-      DICT_WORD_SIZE = 6;
-      fatalerror("You cannot change DICT_WORD_SIZE in Z-code");
-    }
-    if (DICT_CHAR_SIZE != 1) {
-      DICT_CHAR_SIZE = 1;
-      fatalerror("You cannot change DICT_CHAR_SIZE in Z-code");
-    }
-    if (NUM_ATTR_BYTES != 6) {
-      NUM_ATTR_BYTES = 6;
-      fatalerror("You cannot change NUM_ATTR_BYTES in Z-code");
-    }
-  }
-  else {
-    /* Glulx */
-    WORDSIZE = 4;
-    MAXINTWORD = 0x7FFFFFFF;
-    scale_factor = 0; /* It should never even get used in Glulx */
-
-    /* This could really be 120, since the practical limit is the size
-       of local_variables.keywords. But historically it's been 119. */
-    MAX_LOCAL_VARIABLES = 119; /* including "sp" */
-
-    if (INDIV_PROP_START < 256) {
-        INDIV_PROP_START = 256;
-        warning_fmt("INDIV_PROP_START should be at least 256 in Glulx; setting to %d", INDIV_PROP_START);
-    }
-
-    if (NUM_ATTR_BYTES % 4 != 3) {
-      NUM_ATTR_BYTES += (3 - (NUM_ATTR_BYTES % 4)); 
-      warning_fmt("NUM_ATTR_BYTES must be a multiple of four, plus three; increasing to %d", NUM_ATTR_BYTES);
-    }
-
-    if (DICT_CHAR_SIZE != 1 && DICT_CHAR_SIZE != 4) {
-      DICT_CHAR_SIZE = 4;
-      warning_fmt("DICT_CHAR_SIZE must be either 1 or 4; setting to %d", DICT_CHAR_SIZE);
-    }
-  }
-
-  if (MAX_LOCAL_VARIABLES > MAX_KEYWORD_GROUP_SIZE) {
-    compiler_error("MAX_LOCAL_VARIABLES cannot exceed MAX_KEYWORD_GROUP_SIZE");
-    MAX_LOCAL_VARIABLES = MAX_KEYWORD_GROUP_SIZE;
-  }
-
-  if (NUM_ATTR_BYTES > MAX_NUM_ATTR_BYTES) {
-    NUM_ATTR_BYTES = MAX_NUM_ATTR_BYTES;
-    warning_fmt(
-      "NUM_ATTR_BYTES cannot exceed MAX_NUM_ATTR_BYTES; resetting to %d",
-      MAX_NUM_ATTR_BYTES);
-    /* MAX_NUM_ATTR_BYTES can be increased in header.h without fear. */
-  }
-
-  /* Set up a few more variables that depend on the above values */
-
-  if (!targ) {
-    /* Z-machine */
-    DICT_WORD_BYTES = DICT_WORD_SIZE;
-    OBJECT_BYTE_LENGTH = 0;
-    DICT_ENTRY_BYTE_LENGTH = ((version_number==3)?7:9) - (ZCODE_LESS_DICT_DATA?1:0);
-    DICT_ENTRY_FLAG_POS = 0;
-  }
-  else {
-    /* Glulx */
-    OBJECT_BYTE_LENGTH = (1 + (NUM_ATTR_BYTES) + 6*4 + (GLULX_OBJECT_EXT_BYTES));
-    DICT_WORD_BYTES = DICT_WORD_SIZE*DICT_CHAR_SIZE;
-    if (DICT_CHAR_SIZE == 1) {
-      DICT_ENTRY_BYTE_LENGTH = (7+DICT_WORD_BYTES);
-      DICT_ENTRY_FLAG_POS = (1+DICT_WORD_BYTES);
+        MAX_LOCAL_VARIABLES = 16; /* including "sp" */
     }
     else {
-      DICT_ENTRY_BYTE_LENGTH = (12+DICT_WORD_BYTES);
-      DICT_ENTRY_FLAG_POS = (4+DICT_WORD_BYTES);
-    }
-  }
+        /* Glulx */
+        WORDSIZE = 4;
+        MAXINTWORD = 0x7FFFFFFF;
+        scale_factor = 0; /* It should never even get used in Glulx */
 
-  if (!targ) {
-    /* Z-machine */
-    /* The Z-machine's 96 abbreviations are used for these two purposes.
-       Make sure they are set consistently. If exactly one has been
-       set non-default, set the other to match. */
-    if (MAX_DYNAMIC_STRINGS == 32 && MAX_ABBREVS != 64) {
-        MAX_DYNAMIC_STRINGS = 96 - MAX_ABBREVS;
+        /* This could really be 120, since the practical limit is the size
+           of local_variables.keywords. But historically it's been 119. */
+        MAX_LOCAL_VARIABLES = 119; /* including "sp" */
     }
-    if (MAX_ABBREVS == 64 && MAX_DYNAMIC_STRINGS != 32) {
-        MAX_ABBREVS = 96 - MAX_DYNAMIC_STRINGS;
+
+    /* Set all those option variables. */
+  
+    apply_compiler_options();
+
+    /* Now we do final safety checks on them. */
+  
+    if (!glulx_mode) {
+        if (INDIV_PROP_START != 64) {
+            INDIV_PROP_START = 64;
+            fatalerror("You cannot change INDIV_PROP_START in Z-code");
+        }
+        if (DICT_WORD_SIZE != 6) {
+            DICT_WORD_SIZE = 6;
+            fatalerror("You cannot change DICT_WORD_SIZE in Z-code");
+        }
+        if (DICT_CHAR_SIZE != 1) {
+            DICT_CHAR_SIZE = 1;
+            fatalerror("You cannot change DICT_CHAR_SIZE in Z-code");
+        }
+        if (NUM_ATTR_BYTES != 6) {
+            NUM_ATTR_BYTES = 6;
+            fatalerror("You cannot change NUM_ATTR_BYTES in Z-code");
+        }
     }
-    if (MAX_ABBREVS + MAX_DYNAMIC_STRINGS != 96
-        || MAX_ABBREVS < 0
-        || MAX_DYNAMIC_STRINGS < 0) {
-      warning("MAX_ABBREVS plus MAX_DYNAMIC_STRINGS must be 96 in Z-code; resetting both");
-      MAX_DYNAMIC_STRINGS = 32;
-      MAX_ABBREVS = 64;
+    else {
+        if (INDIV_PROP_START < 256) {
+            INDIV_PROP_START = 256;
+            warning_fmt("INDIV_PROP_START should be at least 256 in Glulx; setting to %d", INDIV_PROP_START);
+        }
+
+        if (NUM_ATTR_BYTES % 4 != 3) {
+            NUM_ATTR_BYTES += (3 - (NUM_ATTR_BYTES % 4)); 
+            warning_fmt("NUM_ATTR_BYTES must be a multiple of four, plus three; increasing to %d", NUM_ATTR_BYTES);
+        }
+
+        if (DICT_CHAR_SIZE != 1 && DICT_CHAR_SIZE != 4) {
+            DICT_CHAR_SIZE = 4;
+            warning_fmt("DICT_CHAR_SIZE must be either 1 or 4; setting to %d", DICT_CHAR_SIZE);
+        }
     }
-  }
+
+    if (MAX_LOCAL_VARIABLES > MAX_KEYWORD_GROUP_SIZE) {
+        compiler_error("MAX_LOCAL_VARIABLES cannot exceed MAX_KEYWORD_GROUP_SIZE");
+        MAX_LOCAL_VARIABLES = MAX_KEYWORD_GROUP_SIZE;
+    }
+
+    if (NUM_ATTR_BYTES > MAX_NUM_ATTR_BYTES) {
+        NUM_ATTR_BYTES = MAX_NUM_ATTR_BYTES;
+        warning_fmt(
+                    "NUM_ATTR_BYTES cannot exceed MAX_NUM_ATTR_BYTES; resetting to %d",
+                    MAX_NUM_ATTR_BYTES);
+        /* MAX_NUM_ATTR_BYTES can be increased in header.h without fear. */
+    }
+
+    /* Set up a few more variables that depend on the above values */
+
+    if (!glulx_mode) {
+        /* Z-machine */
+        DICT_WORD_BYTES = DICT_WORD_SIZE;
+        OBJECT_BYTE_LENGTH = 0;
+        DICT_ENTRY_BYTE_LENGTH = ((version_number==3)?7:9) - (ZCODE_LESS_DICT_DATA?1:0);
+        DICT_ENTRY_FLAG_POS = 0;
+    }
+    else {
+        /* Glulx */
+        OBJECT_BYTE_LENGTH = (1 + (NUM_ATTR_BYTES) + 6*4 + (GLULX_OBJECT_EXT_BYTES));
+        DICT_WORD_BYTES = DICT_WORD_SIZE*DICT_CHAR_SIZE;
+        if (DICT_CHAR_SIZE == 1) {
+            DICT_ENTRY_BYTE_LENGTH = (7+DICT_WORD_BYTES);
+            DICT_ENTRY_FLAG_POS = (1+DICT_WORD_BYTES);
+        }
+        else {
+            DICT_ENTRY_BYTE_LENGTH = (12+DICT_WORD_BYTES);
+            DICT_ENTRY_FLAG_POS = (4+DICT_WORD_BYTES);
+        }
+    }
+
+    if (!glulx_mode) {
+        /* Z-machine */
+        /* The Z-machine's 96 abbreviations are used for these two purposes.
+           Make sure they are set consistently. If exactly one has been
+           set non-default, set the other to match. */
+        if (MAX_DYNAMIC_STRINGS == 32 && MAX_ABBREVS != 64) {
+            MAX_DYNAMIC_STRINGS = 96 - MAX_ABBREVS;
+        }
+        if (MAX_ABBREVS == 64 && MAX_DYNAMIC_STRINGS != 32) {
+            MAX_ABBREVS = 96 - MAX_DYNAMIC_STRINGS;
+        }
+        if (MAX_ABBREVS + MAX_DYNAMIC_STRINGS != 96
+            || MAX_ABBREVS < 0
+            || MAX_DYNAMIC_STRINGS < 0) {
+            warning("MAX_ABBREVS plus MAX_DYNAMIC_STRINGS must be 96 in Z-code; resetting both");
+            MAX_DYNAMIC_STRINGS = 32;
+            MAX_ABBREVS = 64;
+        }
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1084,10 +1106,14 @@ static int compile(int number_of_files_specified, char *file1, char *file2)
     TIMEVALUE time_start, time_end;
     float duration;
 
-    if (execute_icl_header(file1))
+    in_compilation = TRUE;
+    
+    if (execute_icl_header(file1)) {
+      in_compilation = FALSE;
       return 1;
+    }
 
-    select_target(glulx_mode);
+    set_compile_variables();
 
     if (define_INFIX_switch && glulx_mode) {
         printf("Infix (-X) facilities are not available in Glulx: \
@@ -1144,6 +1170,7 @@ disabling -X switch\n");
         ao_free_arrays();
     }
 
+    in_compilation = FALSE;
     return (no_errors==0)?0:1;
 }
 
@@ -1160,18 +1187,18 @@ Copyright (c) Graham Nelson 1993 - 2025.\n\n");
 
    /* For people typing just "inform", a summary only: */
 
-   if (help_level==0)
-   {
+    if (help_level==0)
+    {
 
 #ifndef PROMPT_INPUT
-  printf("Usage: \"inform [commands...] <file1> [<file2>]\"\n\n");
+        printf("Usage: \"inform [commands...] <file1> [<file2>]\"\n\n");
 #else
-  printf("When run, Inform prompts you for commands (and switches),\n\
+        printf("When run, Inform prompts you for commands (and switches),\n\
 which are optional, then an input <file1> and an (optional) output\n\
 <file2>.\n\n");
 #endif
 
-  printf(
+        printf(
 "<file1> is the Inform source file of the game to be compiled. <file2>,\n\
 if given, overrides the filename Inform would normally use for the\n\
 compiled output.  Try \"inform -h1\" for file-naming conventions.\n\n\
@@ -1184,7 +1211,7 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   ++PATH=dir    add this directory to the PATH\n\n\
   $...          one of the following configuration commands:\n");
   
-  printf(
+        printf(
 "     $list            list current settings\n\
      $?SETTING        explain briefly what SETTING is for\n\
      $SETTING=number  change SETTING to given number\n\
@@ -1193,11 +1220,11 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
                       $! by itself to list all trace options)\n\
      $#SYMBOL=number  define SYMBOL as a constant in the story\n\n");
 
-  printf(
+        printf(
 "  (filename)    read in a list of commands (in the format above)\n\
                 from this \"setup file\"\n\n");
 
-  printf("Alternate command-line formats for the above:\n\
+    printf("Alternate command-line formats for the above:\n\
   --help                 (this page)\n\
   --path PATH=dir        (set path)\n\
   --addpath PATH=dir     (add to path)\n\
@@ -1211,22 +1238,22 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   --config filename      (read setup file)\n\n");
 
 #ifndef PROMPT_INPUT
-    printf("For example: \"inform -dexs curses\".\n\n");
+        printf("For example: \"inform -dexs curses\".\n\n");
 #endif
 
-    printf(
+        printf(
 "For fuller information, see the Inform Designer's Manual.\n");
 
-       return;
-   }
+        return;
+    }
 
-   /* The -h1 (filenaming) help information: */
+    /* The -h1 (filenaming) help information: */
 
-   if (help_level == 1) { help_on_filenames(); return; }
+    if (help_level == 1) { help_on_filenames(); return; }
 
-   /* The -h2 (switches) help information: */
+    /* The -h2 (switches) help information: */
 
-   printf("Help on the full list of legal switch commands:\n\n\
+    printf("Help on the full list of legal switch commands:\n\n\
   a   trace assembly-language\n\
   a2  trace assembly with hex dumps\n\
   c   more concise error messages\n\
@@ -1234,7 +1261,7 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   d2  contract double spaces after exclamation and question marks, too\n\
   e   economy mode (slower): make use of declared abbreviations\n");
 
-   printf("\
+    printf("\
   f   frequencies mode: show how useful abbreviations are\n\
   g   traces calls to all game functions\n\
   g2  traces calls to all game and library functions\n\
@@ -1243,17 +1270,17 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   h1  print help information on filenames and path options\n\
   h2  print help information on switches (this page)\n");
 
-   printf("\
+    printf("\
   i   ignore default switches set within the file\n\
   k   output debugging information to \"%s\"\n",
           Debugging_Name);
-   printf("\
+    printf("\
   q   keep quiet about obsolete usages\n\
   r   record all the text to \"%s\"\n\
   s   give statistics\n",
       Transcript_Name);
 
-   printf("\
+    printf("\
   u   work out most useful abbreviations (very very slowly)\n\
   v3  compile to version-3 (\"Standard\"/\"ZIP\") story file\n\
   v4  compile to version-4 (\"Plus\"/\"EZIP\") story file\n\
@@ -1265,36 +1292,36 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   x   print # for every 100 lines compiled\n\
   z   print memory map of the virtual machine\n\n");
 
-printf("\
+    printf("\
   B   use big memory model (for large V6/V7 files)\n\
   C0  text character set is plain ASCII only\n\
   Cu  text character set is UTF-8\n\
   Cn  text character set is ISO 8859-n (n = 1 to 9)\n\
       (1 to 4, Latin1 to Latin4; 5, Cyrillic; 6, Arabic;\n\
        7, Greek; 8, Hebrew; 9, Latin5.  Default is -C1.)\n");
-printf("  D   insert \"Constant DEBUG;\" automatically\n");
-printf("  E0  Archimedes-style error messages%s\n",
-      (error_format==0)?" (current setting)":"");
-printf("  E1  Microsoft-style error messages%s\n",
-      (error_format==1)?" (current setting)":"");
-printf("  E2  Macintosh MPW-style error messages%s\n",
-      (error_format==2)?" (current setting)":"");
-printf("  G   compile a Glulx game file\n");
-printf("  H   use Huffman encoding to compress Glulx strings\n");
+    printf("  D   insert \"Constant DEBUG;\" automatically\n");
+    printf("  E0  Archimedes-style error messages%s\n",
+        (error_format==0)?" (current setting)":"");
+    printf("  E1  Microsoft-style error messages%s\n",
+        (error_format==1)?" (current setting)":"");
+    printf("  E2  Macintosh MPW-style error messages%s\n",
+        (error_format==2)?" (current setting)":"");
+    printf("  G   compile a Glulx game file\n");
+    printf("  H   use Huffman encoding to compress Glulx strings\n");
 
 #ifdef ARCHIMEDES
-printf("\
+    printf("\
   R0  use filetype 060 + version number for games (default)\n\
   R1  use official Acorn filetype 11A for all games\n");
 #endif
-printf("  S   compile strict error-checking at run-time (on by default)\n");
+    printf("  S   compile strict error-checking at run-time (on by default)\n");
 #ifdef ARC_THROWBACK
-printf("  T   enable throwback of errors in the DDE\n");
+    printf("  T   enable throwback of errors in the DDE\n");
 #endif
-printf("  V   print the version and date of this program\n");
-printf("  Wn  header extension table is at least n words (n = 3 to 99)\n");
-printf("  X   compile with INFIX debugging facilities present\n");
-  printf("\n");
+    printf("  V   print the version and date of this program\n");
+    printf("  Wn  header extension table is at least n words (n = 3 to 99)\n");
+    printf("  X   compile with INFIX debugging facilities present\n");
+    printf("\n");
 }
 
 extern void switches(char *p, int cmode)
@@ -1431,9 +1458,7 @@ extern void switches(char *p, int cmode)
                   else if (version_set_switch)
                       error("The '-G' switch cannot follow the '-v' switch");
                   else
-                  {   glulx_mode = state;
-                      adjust_memory_sizes();
-                  }
+                      glulx_mode = state;
                   break;
         case 'H': compression_switch = state; break;
         case 'V': exit(0); break;
@@ -1511,22 +1536,6 @@ static int copy_icl_word(char *from, char *to, int max)
     return i;
 }
 
-/* Copy a string, converting to uppercase. The to array should be
-   (at least) max characters. Result will be null-terminated, so
-   at most max-1 characters will be copied. 
-*/
-static int strcpyupper(char *to, char *from, int max)
-{
-    int ix;
-    for (ix=0; ix<max-1; ix++) {
-        char ch = from[ix];
-        if (islower(ch)) ch = toupper(ch);
-        to[ix] = ch;
-    }
-    to[ix] = 0;
-    return ix;
-}
-
 static void execute_icl_command(char *p);
 static int execute_dashdash_command(char *p, char *p2);
 
@@ -1542,50 +1551,50 @@ static int execute_dashdash_command(char *p, char *p2);
  */
 static int execute_icl_header(char *argname)
 {
-  FILE *command_file;
-  char cli_buff[CMD_BUF_SIZE], fw[CMD_BUF_SIZE];
-  int line = 0;
-  int errcount = 0;
-  int i;
-  char filename[PATHLEN]; 
-  int x = 0;
+    FILE *command_file;
+    char cli_buff[CMD_BUF_SIZE], fw[CMD_BUF_SIZE];
+    int line = 0;
+    int errcount = 0;
+    int i;
+    char filename[PATHLEN]; 
+    int x = 0;
 
-  do
-    {   x = translate_in_filename(x, filename, argname, 0, 1);
-        command_file = fopen(filename,"rb");
-    } while ((command_file == NULL) && (x != 0));
-  if (!command_file) {
-    /* Fail silently. The regular compiler will try to open the file
-       again, and report the problem. */
-    return 0;
-  }
-
-  while (feof(command_file)==0) {
-    if (fgets(cli_buff,CMD_BUF_SIZE,command_file)==0) break;
-    line++;
-    if (!(cli_buff[0] == '!' && cli_buff[1] == '%'))
-      break;
-    i = copy_icl_word(cli_buff+2, fw, CMD_BUF_SIZE);
-    if (icl_command(fw)) {
-      execute_icl_command(fw);
-      copy_icl_word(cli_buff+2 + i, fw, CMD_BUF_SIZE);
-      if ((fw[0] != 0) && (fw[0] != '!')) {
-        icl_header_error(filename, line);
-        errcount++;
-        printf("expected comment or nothing but found '%s'\n", fw);
-      }
+    do
+        {   x = translate_in_filename(x, filename, argname, 0, 1);
+            command_file = fopen(filename,"rb");
+        } while ((command_file == NULL) && (x != 0));
+    if (!command_file) {
+        /* Fail silently. The regular compiler will try to open the file
+           again, and report the problem. */
+        return 0;
     }
-    else {
-      if (fw[0]!=0) {
-        icl_header_error(filename, line);
-        errcount++;
-        printf("Expected command or comment but found '%s'\n", fw);
-      }
-    }
-  }
-  fclose(command_file);
 
-  return (errcount==0)?0:1;
+    while (feof(command_file)==0) {
+        if (fgets(cli_buff,CMD_BUF_SIZE,command_file)==0) break;
+        line++;
+        if (!(cli_buff[0] == '!' && cli_buff[1] == '%'))
+            break;
+        i = copy_icl_word(cli_buff+2, fw, CMD_BUF_SIZE);
+        if (icl_command(fw)) {
+            execute_icl_command(fw);
+            copy_icl_word(cli_buff+2 + i, fw, CMD_BUF_SIZE);
+            if ((fw[0] != 0) && (fw[0] != '!')) {
+                icl_header_error(filename, line);
+                errcount++;
+                printf("expected comment or nothing but found '%s'\n", fw);
+            }
+        }
+        else {
+            if (fw[0]!=0) {
+                icl_header_error(filename, line);
+                errcount++;
+                printf("Expected command or comment but found '%s'\n", fw);
+            }
+        }
+    }
+    fclose(command_file);
+
+    return (errcount==0)?0:1;
 }
 
 
@@ -1650,12 +1659,15 @@ static void run_icl_file(char *filename, FILE *command_file)
 static void execute_icl_command(char *p)
 {   char filename[PATHLEN], cli_buff[CMD_BUF_SIZE];
     FILE *command_file;
+    int optprec;
     int len;
     
     switch(p[0])
     {   case '+': set_path_command(p+1); break;
         case '-': switches(p,1); break;
-        case '$': memory_command(p+1); break;
+        case '$': optprec = (in_compilation ? HEADCOM_OPTPREC : CMDLINE_OPTPREC);
+                  execute_dollar_command(p+1, optprec);
+                  break;
         case '(': len = strlen(p);
                   if (p[len-1] != ')') {
                       printf("Error in ICL: (command) missing closing paren\n");
@@ -1707,8 +1719,7 @@ static int execute_dashdash_command(char *p, char *p2)
             printf("--size must be followed by \"huge\", \"large\", or \"small\"\n");
             return consumed2;
         }
-        strcpy(cli_buff, "$");
-        strcpyupper(cli_buff+1, p2, CMD_BUF_SIZE-1);
+        snprintf(cli_buff, CMD_BUF_SIZE, "$%s", p2);
     }
     else if (!strcmp(p, "opt")) {
         consumed2 = TRUE;
@@ -1716,8 +1727,7 @@ static int execute_dashdash_command(char *p, char *p2)
             printf("--opt must be followed by \"setting=number\"\n");
             return consumed2;
         }
-        strcpy(cli_buff, "$");
-        strcpyupper(cli_buff+1, p2, CMD_BUF_SIZE-1);
+        snprintf(cli_buff, CMD_BUF_SIZE, "$%s", p2);
     }
     else if (!strcmp(p, "helpopt")) {
         consumed2 = TRUE;
@@ -1725,8 +1735,7 @@ static int execute_dashdash_command(char *p, char *p2)
             printf("--helpopt must be followed by \"setting\"\n");
             return consumed2;
         }
-        strcpy(cli_buff, "$?");
-        strcpyupper(cli_buff+2, p2, CMD_BUF_SIZE-2);
+        snprintf(cli_buff, CMD_BUF_SIZE, "$?%s", p2);
     }
     else if (!strcmp(p, "define")) {
         consumed2 = TRUE;
@@ -1734,8 +1743,7 @@ static int execute_dashdash_command(char *p, char *p2)
             printf("--define must be followed by \"symbol=number\"\n");
             return consumed2;
         }
-        strcpy(cli_buff, "$#");
-        strcpyupper(cli_buff+2, p2, CMD_BUF_SIZE-2);
+        snprintf(cli_buff, CMD_BUF_SIZE, "$#%s", p2);
     }
     else if (!strcmp(p, "path")) {
         consumed2 = TRUE;
@@ -1909,10 +1917,13 @@ static int sub_main(int argc, char **argv)
 
     banner();
 
-    set_memory_sizes(); set_default_paths();
+    prepare_compiler_options();
+    set_default_paths();
     reset_switch_settings(); select_version(5);
 
-    cli_files_specified = 0; no_compilations = 0;
+    in_compilation = FALSE;
+    no_compilations = 0;
+    cli_files_specified = 0;
     cli_file1 = "source"; cli_file2 = "output";
 
     read_command_line(argc, argv);

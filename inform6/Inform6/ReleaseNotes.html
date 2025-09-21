@@ -26,6 +26,27 @@ listed. So instead, this is a general thank-you to everybody who has made this r
 specific ones to Graham Nelson for permitting it in the first place, and to Andrew Plotkin, who is responsible
 for most of the actual changes to the compiler code.
 
+<h2>Inform 6.44</h2>
+These are the changes delivered in version 6.44 of the Inform compiler.
+
+<h3>Features added</h3>
+<ul>
+<li>Options specified on the command line now take precedence over options specified in the source code in <tt>!%</tt> headers.
+Previously, the options specified in the source code took precedence.
+</ul>
+
+<h3>Bugs fixed</h3>
+<ul>
+<li><p>A problem with dynamic memory reallocation used for buffers in the compiler, which could lead to spurious errors when
+compiling with Inform 6.43.
+<li><p>A case where the line number in a "no such constant" error message was wrong.
+<li><p>With <tt>$ZCODE_COMPACT_GLOBALS</tt> turned on, references in functions to arrays before the array declaration were
+backpatched to an incorrect address.
+<li><p>Output showing the Z-machine memory map gave an incorrect size for the global variables area with
+<tt>$ZCODE_COMPACT_GLOBALS</tt> enabled.
+<li><p>The optimization logic could read outside allocated memory if it encountered an undefined label.
+</ul>
+
 <h2>Inform 6.43</h2>
 These are the changes delivered in version 6.43 of the Inform compiler.
 
