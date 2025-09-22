@@ -20,6 +20,7 @@ int return_happy = TRUE, silence_mode = FALSE, verbose_mode = FALSE;
 
 int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
+	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
 	pathname *P = Pathnames::down(NULL, I"inform7");
 	P = Pathnames::down(P, I"Internal");
 	Pathnames::set_path_to_LP_resources(P);

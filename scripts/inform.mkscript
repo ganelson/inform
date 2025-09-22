@@ -341,7 +341,7 @@ check:
 # -----------------------------------------------------------------------------
 
 {define: update-readme}
-	$(INWEBX) make-readme README.md -script scripts/inform.rmscript
+	$(INWEBX) make-readme -to README.md -script scripts/inform.rmscript
 {end-define}
 
 .PHONY: commit

@@ -72,8 +72,8 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 	CommandLine::declare_switch(INSTRUCTIONS_CLSW, U"instructions", 2,
 		U"read further instructions from file X");
 
-	if (CommandLine::read(argc, argv, &state, &Configuration::switch, &Configuration::bareword)
-		== FALSE) exit(0);
+	int sub = CommandLine::read(argc, argv, &state, &Configuration::switch, &Configuration::bareword);
+	if (sub == NO_CLSUB) exit(0);
 
 @ =
 void Configuration::switch(int id, int val, text_stream *arg, void *v_cl_state) {
