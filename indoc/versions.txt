@@ -1,4 +1,0 @@
-Aquinas	1	3K27	April 2006	First Perl version
-Bonaventure	2	5Z71	April 2009	Tidied up somewhat
-Cranmer	3	6L02	May 2014	EPUB ebook generation support	
-Didache	4	*9Z99	31 December 9999	Ported to C with Unicode support

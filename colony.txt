@@ -16,7 +16,6 @@ web: "inform7n" at "docs-src/inform7n.inweb" in "docs"
 web: "inbuildn" at "docs-src/inbuildn.inweb" in "docs"
 web: "intern" at "docs-src/intern.inweb" in "docs"
 web: "inblorbn" at "docs-src/inblorbn.inweb" in "docs"
-web: "indocn" at "docs-src/indocn.inweb" in "docs"
 web: "inpolicyn" at "docs-src/inpolicyn.inweb" in "docs"
 
 breadcrumbs: "Home: //overview//"
@@ -67,7 +66,6 @@ web: "DialogueKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.
 
 breadcrumbs: "Home: //overview//"
 web: "inblorb" at "inblorb" in "docs/inblorb"
-web: "indoc" at "indoc" in "docs/indoc"
 web: "inpolicy" at "inpolicy" in "docs/inpolicy"
 
 breadcrumbs: "Home: //overview//" > "Services: //services//"

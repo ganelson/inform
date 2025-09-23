@@ -118,7 +118,6 @@ INWEBWEB = ../inweb
 # same inform7 code-base but in different ways; the "otools" are other tools.
 
 {component type: tool   symbol: INBLORB   webname: inblorb     path: inblorb   set: otools}
-{component type: tool   symbol: INDOC     webname: indoc       path: indoc     set: otools}
 {component type: tool   symbol: INFORM7   webname: inform7     path: inform7   set: ctools}
 {component type: tool   symbol: INPOLICY  webname: inpolicy    path: inpolicy  set: otools}
 {component type: tool   symbol: INBUILD   webname: inbuild     path: inbuild   set: ctools}
@@ -452,7 +451,7 @@ diagnostics:
 # "index" because that would be a name clash with the "index" module of I7,
 # which is already a web in the colony file.
 
-{set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, indocn, inpolicyn, secrets}
+{set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, inpolicyn, secrets}
 
 {define: weave-one page: PAGE}
 	$(INWEBX) weave -colony $(COLONY) -member {PAGE}
@@ -606,7 +605,7 @@ forceintegration: \
 # Copying part of the Inform toolchain into the app
 
 # The UI apps do not contain all of the intools: for example, they do not need
-# indoc or inpolicy, which are run only at the command line. They do have these:
+# inpolicy, which is run only at the command line. They do have these:
 
 {set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST, INBUILD}
 
@@ -860,13 +859,11 @@ forcetransferimages:
 	{transfer-images}
 
 # -----------------------------------------------------------------------------
-# Typesetting documentation to HTML inside the app, using indoc
+# Typesetting documentation to HTML inside the app, using inbuild
 
 # Note that make-integration-settings.mk is expected to define BUILTINHTMLINNER as
 # the directory which will hold the text pages of the mini-website formed by the
-# in-app manuals. That may or may not be the same as BUILTINHTML, but whatever
-# the relation between the two, the indoc settings for the platform will need to
-# agree with that.
+# in-app manuals. That may or may not be the same as BUILTINHTML.
 
 {define: compile-inapp-advice}
 ifdef ADVICEHTML

@@ -35,8 +35,7 @@ zeros as needed, and |A| to |F| will be written in upper case. The only
 Unicode characters with codes below |0x0020| which must be handled are
 newline, |0x000A|, and tab, |0x0009|.
 
-And any Inform tool generating such an argument -- either the renderer below,
-or the one in //indoc//, which also generates pastes -- must use this notation
+And any Inform tool generating such an argument must use this notation
 to escape every instance of the following problematic characters:
 
 (a) every tab is escaped to |[=0x0009=]|;

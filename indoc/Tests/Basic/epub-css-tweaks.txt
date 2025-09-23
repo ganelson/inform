@@ -1,3 +1,0 @@
-css: body.paper ++ {
-	overflow-y: visible;
-}
