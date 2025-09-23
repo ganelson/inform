@@ -51,8 +51,3 @@ for testing and debugging inform7:
 -locale X                  set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
 -log X                     write the debugging log to include diagnostics on X
 -version                   print out version number
-Inform 7 v10.2.0 has started.
-
-  The 0-word source text has successfully been translated. There were 0 rooms
-    and 0 things.
-Inform 7 has finished.

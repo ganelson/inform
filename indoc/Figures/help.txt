@@ -20,4 +20,3 @@ where TARGET must be one of those set up in the instructions.
 -locale X           set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
 -log X              write the debugging log to include diagnostics on X
 -version            print out version number
-sub = 0
