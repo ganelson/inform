@@ -62,7 +62,7 @@
 # The makefile needs to deal with many "literate programs" at various places
 # in the repository. A sort of roster of these, called a "colony file", is here:
 
-COLONY = colony.txt
+COLONY = colony.inweb
 
 # We will also make use of two webs outside the inform repository, from our
 # sidekick projects intest and inweb, which must both also be installed in order
@@ -460,11 +460,11 @@ diagnostics:
 .PHONY: navigationpages
 navigationpages: docs/index.html {repeat with: PAGE in: {NAVIGATIONPAGES}}docs/{PAGE}.html {end-repeat}
 
-docs/index.html: docs-src/index.inweb docs-src/nav.html
+docs/index.html: docs-src/index.inweb
 	{weave-one page: overview}
 
 {repeat with: PAGE in: {NAVIGATIONPAGES}}
-docs/{PAGE}.html: docs-src/{PAGE}.inweb docs-src/nav.html
+docs/{PAGE}.html: docs-src/{PAGE}.inweb
 	{weave-one page: {PAGE}}
 
 {end-repeat}

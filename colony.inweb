@@ -1,0 +1,111 @@
+Colony {
+	default: pattern "W3Enhanced" breadcrumbs ""
+	member: "overview" at "docs-src/index.inweb"
+	member: "extensions" at "docs-src/extensions.inweb"
+	member: "kits" at "docs-src/kits.inweb"
+	member: "secrets" at "docs-src/secrets.inweb"
+
+	default: pattern "GitHubPages" breadcrumbs "Home: //overview//"
+	member: "structure" at "docs-src/structure.inweb"
+	member: "services"  at "docs-src/services.inweb"
+	member: "inform6"   at "docs-src/inform6.inweb"
+	member: "inform7n"  at "docs-src/inform7n.inweb"
+	member: "inbuildn"  at "docs-src/inbuildn.inweb"
+	member: "intern"    at "docs-src/intern.inweb"
+	member: "inblorbn"  at "docs-src/inblorbn.inweb"
+	member: "inpolicyn" at "docs-src/inpolicyn.inweb"
+
+	member: "inform7" at "inform7" to "inform7"
+	member: "inter" at "inter" to "inter"
+	member: "inbuild" at "inbuild" to "inbuild"
+
+	default: breadcrumbs "Home: //overview// > Inbuild Modules: //inbuildn//"
+	member: "supervisor" at "inbuild/supervisor-module" to "supervisor-module"
+
+	default: breadcrumbs "Home: //overview// > Inform7: //inform7n//"
+	member: "core" at "inform7/core-module" to "core-module"
+	member: "assertions" at "inform7/assertions-module" to "assertions-module"
+	member: "values" at "inform7/values-module" to "values-module"
+	member: "knowledge" at "inform7/knowledge-module" to "knowledge-module"
+	member: "imperative" at "inform7/imperative-module" to "imperative-module"
+	member: "runtime" at "inform7/runtime-module" to "runtime-module"
+	member: "if" at "inform7/if-module" to "if-module"
+	member: "multimedia" at "inform7/multimedia-module" to "multimedia-module"
+
+	default: breadcrumbs "Home: //overview// > Inter Modules: //intern//"
+	member: "bytecode" at "inter/bytecode-module" to "bytecode-module"
+	member: "building" at "inter/building-module" to "building-module"
+	member: "pipeline" at "inter/pipeline-module" to "pipeline-module"
+	member: "final" at "inter/final-module" to "final-module"
+	member: "index" at "inter/index-module" to "index-module"
+
+	default: breadcrumbs "Home: //overview// > Services: //services//"
+	member: "arch" at "services/arch-module" to "arch-module"
+	member: "syntax" at "services/syntax-module" to "syntax-module"
+	member: "words" at "services/words-module" to "words-module"
+	member: "html" at "services/html-module" to "html-module"
+	member: "inflections" at "services/inflections-module" to "inflections-module"
+	member: "lexicon" at "services/lexicon-module" to "lexicon-module"
+	member: "kinds" at "services/kinds-module" to "kinds-module"
+	member: "calculus" at "services/calculus-module" to "calculus-module"
+	member: "linguistics" at "services/linguistics-module" to "linguistics-module"
+	member: "problems" at "services/problems-module" to "problems-module"
+	
+	default: breadcrumbs "Home: //overview// > Extensions: //extensions//"
+	member: "basic_inform" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Source" to "basic_inform"
+	member: "standard_rules" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Source" to "standard_rules"
+
+	default: breadcrumbs "Home: //overview// > Kits: //extensions//"
+	member: "WorldModelKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit" to "WorldModelKit"
+	member: "EnglishLanguageKit" at "inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit" to "EnglishLanguageKit"
+	member: "CommandParserKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/CommandParserKit" to "CommandParserKit"
+	member: "BasicInformKit" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/BasicInformKit" to "BasicInformKit"
+	member: "Architecture16Kit" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/Architecture16Kit" to "Architecture16Kit"
+	member: "Architecture32Kit" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Materials/Inter/Architecture32Kit" to "Architecture32Kit"
+	member: "DialogueKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/DialogueKit" to "DialogueKit"
+	
+	default: breadcrumbs "Home: //overview//"
+	member: "inblorb" at "inblorb" to "inblorb"
+	member: "inpolicy" at "inpolicy" to "inpolicy"
+	
+	default: breadcrumbs "Home: //overview// > Services: //services//"
+	member: "arch-test" at "services/arch-test" to "arch-test"
+	member: "building-test" at "inter/building-test" to "building-test"
+	member: "inflections-test" at "services/inflections-test" to "inflections-test"
+	member: "linguistics-test" at "services/linguistics-test" to "linguistics-test"
+	member: "problems-test" at "services/problems-test" to "problems-test"
+	member: "syntax-test" at "services/syntax-test" to "syntax-test"
+	member: "kinds-test" at "services/kinds-test" to "kinds-test"
+	member: "calculus-test" at "services/calculus-test" to "calculus-test"
+	member: "words-test" at "services/words-test" to "words-test"
+	
+	external: "foundation"      at "../inweb/foundation-module"
+	external: "foundation-test" at "../inweb/foundation-test"
+	external: "inweb"           at "../inweb"
+	external: "goldbach"        at "../inweb/Examples/goldbach"
+	external: "intest"          at "../intest/docs-src/index.inweb"
+
+	Navigation {
+		[[Home "<Inform.png@72>" -> overview]]
+		[[Item "home" -> //overview//]]
+		[[Menu "Compiler"]]
+		[[Item "structure" -> //structure//]]
+		[[Item "inbuild" -> //inbuildn//]]
+		[[Item "inform7" -> //inform7n//]]
+		[[Item "inter" -> //intern//]]
+		[[Item "services" -> //services//]]
+		[[Item "secrets" -> //secrets//]]
+		[[Menu "Other Tools"]]
+		[[Item "inblorb" -> //inblorbn//]]
+		[[Item "inform6" -> //inform6//]]
+		[[Item "inpolicy" -> //inpolicyn//]]
+		[[Menu "Resources"]]
+		[[Item "extensions" -> //extensions//]]
+		[[Item "kits" -> //kits//]]
+		[[Menu "Repository"]]
+		[[Item "<github.png> github" -> https://github.com/ganelson/inform]]
+		[[Menu "Related Projects"]]
+		[[Item "<github.png> inweb" -> https://github.com/ganelson/inweb]]
+		[[Item "<github.png> intest" -> https://github.com/ganelson/intest]]
+	}
+}

@@ -20,12 +20,12 @@ The Inform 7 build process works in two stages: first it generates abstract
 Inter code, then it further generates "final code" from that.
 
 It's an appealing notion that this first stage might be universal: that
-is, that //inform7// could generate the same Inter code regardless of the
+is, that Inform 7 could generate the same Inter code regardless of the
 eventual build product needed, and that only the second stage would vary
 according to this.
 
 Which is very nearly true, but not quite. Here's why not:
-(a) //inform7// has to generate different code if integers are 16 rather
+(a) Inform 7 has to generate different code if integers are 16 rather
 than 32 bits wide, and
 (b) kits of Inter code normally used in compilation make certain other
 architectural assumptions based on the integer size (for example, the
@@ -47,7 +47,7 @@ can now, for example, also generate C.
 
 As a result, "VM" now has a more general meaning, and really means "form of
 final code generation". The Glulx format used to be specified by supplying the
-command-line option |-format=ulx| to //inform7// or //inter//: that still works,
+command-line option |-format=ulx| to Inform 7 or Inter: that still works,
 though it is deprecated, and |-format=Inform6/32d| is better. But equally
 possible now would be |-format=C/32d|. Here the target is a native executable
 to be compiled with a C compiler.
