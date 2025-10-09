@@ -1,4 +1,4 @@
-[UseOptions::] Use Options.
+[UseOptions::] Use Option Requests.
 
 Special sentences for setting compilation options.
 

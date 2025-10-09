@@ -1,4 +1,4 @@
-[Produce::] Producing Inter.
+[Produce::] Produce.
 
 Convenient machinery for generating individual Inter instructions.
 

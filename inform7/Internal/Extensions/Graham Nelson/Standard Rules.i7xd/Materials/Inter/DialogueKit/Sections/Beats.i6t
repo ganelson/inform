@@ -1,4 +1,4 @@
-Beats Template.
+Beats
 
 Runtime support for dialogue beats.
 
@@ -34,7 +34,7 @@ meaningful return value. If |RELEVANCE_DBMETADATA| is 0, the beat has no explici
 about values, so the call (which of course cannot be made) would do nothing anyway.
 
 (*) |PROGRAM_DBMETADATA| points to the D-code program for the beat, which is
-too complex to explain here: see //Programs Template//.
+too complex to explain here: see //Programs//.
 
 (*) |TIED_SCENE_DBMETADATA| is either 0 or a valid scene instance value. (Scenes
 are enumerated from 1, so 0 cannot be a scene.) This is the scene to which the

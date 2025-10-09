@@ -1,4 +1,4 @@
-Tests Template.
+Tests
 
 The command grammar and I6 implementation for testing commands such
 as TEST, ACTIONS and PURLOIN.

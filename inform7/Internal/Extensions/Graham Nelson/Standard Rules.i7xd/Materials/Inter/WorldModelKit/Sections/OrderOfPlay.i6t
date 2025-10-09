@@ -1,4 +1,4 @@
-OrderOfPlay Template.
+OrderOfPlay
 
 The sequence of events in play: the Main routine which runs the
 startup rulebook, the turn sequence rulebook and the shutdown rulebook; and

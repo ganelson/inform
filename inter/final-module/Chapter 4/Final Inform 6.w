@@ -1,4 +1,4 @@
-[I6Target::] Generating Inform 6.
+[I6Target::] Final Inform 6.
 
 To generate I6 code from intermediate code.
 

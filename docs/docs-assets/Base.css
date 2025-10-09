@@ -265,13 +265,17 @@ div.lsmarkdown li {
 }
 
 div.lsmarkdown pre {
-	padding-top: 0px;
+	padding: 3px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-left: 30px;
 	margin-right: 10px;
 	word-wrap: break-word;
 	white-space: pre-wrap;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
 }
 
 div.lsmarkdown code {

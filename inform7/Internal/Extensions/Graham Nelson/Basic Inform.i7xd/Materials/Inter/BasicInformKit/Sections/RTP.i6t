@@ -1,4 +1,4 @@
-RTP Template.
+RTP
 
 To issue run-time problem messages, and to perform some run-time
 type checking which may issue such messages.

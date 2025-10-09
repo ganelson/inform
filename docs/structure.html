@@ -22,9 +22,7 @@
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="index.html">
-<img src="docs-assets/Inform.png" height=72">
-</a></h1>
+		<h1><a href="index.html"><img src="docs-assets/Inform.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">home</span></a></li>
 </ul><h2>Compiler</h2><ul>
 <li><span class="unlink">structure</span></li>
@@ -41,11 +39,10 @@
 <li><a href="extensions.html">extensions</a></li>
 <li><a href="kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inform"><img src="docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/inform"><img src="docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../inweb/index.html">inweb</a></li>
-<li><a href="../../intest/index.html">intest</a></li>
-
+<li><a href="https://github.com/ganelson/inweb"><img src="docs-assets/github.png" height=0> inweb</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="docs-assets/github.png" height=0> intest</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -147,8 +144,8 @@ to programs dealing with natural language.
 </li><li>&#9679; Those <a href="inbuildn.html" class="internal">owned by Inbuild</a>.
 </li><li>&#9679; Those <a href="inform7n.html" class="internal">owned by Inform7</a>.
 </li><li>&#9679; Those <a href="intern.html" class="internal">owned by Inter</a>.
-</li><li>&#9679; The <a href="../../inweb/foundation-module/index.html" class="internal">foundation</a> library for memory-management, string handling and so
-on, which is a module held in the <a href="../../inweb/index.html" class="internal">inweb</a> repository rather than here.
+</li><li>&#9679; The <a href="foundation/index.html" class="internal">foundation</a> library for memory-management, string handling and so
+on, which is a module held in the <a href="inweb/index.html" class="internal">inweb</a> repository rather than here.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>The full breakdown of the three compiler tools into modules is as follows.
 An <span class="extract"><span class="extract-syntax">o</span></span> means that the tool is the owner of the module in question; a <span class="extract"><span class="extract-syntax">x</span></span> means
@@ -184,7 +181,7 @@ that it imports the module from somewhere else.
 <a href="words-module/index.html" class="internal">words</a><span class="plain-syntax"> </span><span class="element-syntax">service</span><span class="plain-syntax">       </span><span class="element-syntax">Throughout</span><span class="plain-syntax">        -         </span><span class="element-syntax">o</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">          </span><span class="element-syntax">x</span>
 <a href="arch-module/index.html" class="internal">arch</a><span class="plain-syntax"> </span><span class="element-syntax">service</span><span class="plain-syntax">        </span><span class="element-syntax">Throughout</span><span class="plain-syntax">        -         </span><span class="element-syntax">o</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">          </span><span class="element-syntax">x</span>
 <a href="html-module/index.html" class="internal">html</a><span class="plain-syntax"> </span><span class="element-syntax">service</span><span class="plain-syntax">        </span><span class="element-syntax">Throughout</span><span class="plain-syntax">        -         </span><span class="element-syntax">o</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">          </span><span class="element-syntax">x</span>
-<a href="../../inweb/foundation-module/index.html" class="internal">foundation</a><span class="plain-syntax"> </span><span class="element-syntax">library</span><span class="plain-syntax">  </span><span class="element-syntax">Throughout</span><span class="plain-syntax">        </span><span class="element-syntax">o</span><span class="plain-syntax">         -           </span><span class="element-syntax">x</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">          </span><span class="element-syntax">x</span>
+<a href="foundation/index.html" class="internal">foundation</a><span class="plain-syntax"> </span><span class="element-syntax">library</span><span class="plain-syntax">  </span><span class="element-syntax">Throughout</span><span class="plain-syntax">        </span><span class="element-syntax">o</span><span class="plain-syntax">         -           </span><span class="element-syntax">x</span><span class="plain-syntax">           </span><span class="element-syntax">x</span><span class="plain-syntax">          </span><span class="element-syntax">x</span>
 </pre>
 <p class="commentary">The executables otherwise contain only a few POSIX or Windows-related functions
 for file and directory handling, and functions from the standard C library.

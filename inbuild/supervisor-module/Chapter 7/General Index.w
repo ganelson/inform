@@ -1,4 +1,4 @@
-[Indexes::] Contents and Indexes.
+[Indexes::] General Index.
 
 To render a documentation index into HTML form.
 

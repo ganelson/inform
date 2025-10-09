@@ -134,12 +134,12 @@ actual content of these boxes, or the definitions which the symbols refer to.
 In short, the actual Inter code.
 
 The straightforward way to compile some Inter code is to make calls to functions
-in //Producing Inter//, which provide a straightforward if low-level API. For example:
+in //Produce//, which provide a straightforward if low-level API. For example:
 = (text as InC)
 	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_PROPERTY_HL);
 	Produce::numeric_constant(I, iname, K_value, x);
 =
-Note that we do not need to say where this code will go. //Producing Inter//
+Note that we do not need to say where this code will go. //Produce//
 looks at the iname, works out what package request it should go into, incarnates
 that into a real |inter_package| if necessary, then incarnates the iname into
 a real |inter_symbol| if necessary; and finally emits a |CONSTANT_IST| in the

@@ -1,4 +1,4 @@
-[RTDialogueLines::] Dialogue.
+[RTDialogueLines::] Dialogue Line Instances.
 
 To compile any dialogue details in the instances submodule.
 

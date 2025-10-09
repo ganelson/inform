@@ -1,19 +1,21 @@
 Colony {
+	patterns: "docs-src/Patterns"
+
 	default: pattern "W3Enhanced" breadcrumbs ""
-	member: "overview" at "docs-src/index.inweb"
-	member: "extensions" at "docs-src/extensions.inweb"
-	member: "kits" at "docs-src/kits.inweb"
-	member: "secrets" at "docs-src/secrets.inweb"
+	member: "overview" at "docs-src/index.inweb" to ""
+	member: "extensions" at "docs-src/extensions.inweb" to ""
+	member: "kits" at "docs-src/kits.inweb" to ""
+	member: "secrets" at "docs-src/secrets.inweb" to ""
 
 	default: pattern "GitHubPages" breadcrumbs "Home: //overview//"
-	member: "structure" at "docs-src/structure.inweb"
-	member: "services"  at "docs-src/services.inweb"
-	member: "inform6"   at "docs-src/inform6.inweb"
-	member: "inform7n"  at "docs-src/inform7n.inweb"
-	member: "inbuildn"  at "docs-src/inbuildn.inweb"
-	member: "intern"    at "docs-src/intern.inweb"
-	member: "inblorbn"  at "docs-src/inblorbn.inweb"
-	member: "inpolicyn" at "docs-src/inpolicyn.inweb"
+	member: "structure" at "docs-src/structure.inweb" to ""
+	member: "services"  at "docs-src/services.inweb" to ""
+	member: "inform6"   at "docs-src/inform6.inweb" to ""
+	member: "inform7n"  at "docs-src/inform7n.inweb" to ""
+	member: "inbuildn"  at "docs-src/inbuildn.inweb" to ""
+	member: "intern"    at "docs-src/intern.inweb" to ""
+	member: "inblorbn"  at "docs-src/inblorbn.inweb" to ""
+	member: "inpolicyn" at "docs-src/inpolicyn.inweb" to ""
 
 	member: "inform7" at "inform7" to "inform7"
 	member: "inter" at "inter" to "inter"
@@ -83,7 +85,7 @@ Colony {
 	external: "foundation-test" at "../inweb/foundation-test"
 	external: "inweb"           at "../inweb"
 	external: "goldbach"        at "../inweb/Examples/goldbach"
-	external: "intest"          at "../intest/docs-src/index.inweb"
+	external: "intest"          at "../intest"
 
 	Navigation {
 		[[Home "<Inform.png@72>" -> overview]]

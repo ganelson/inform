@@ -1,3 +1,0 @@
-from TeX
-format = PDF
-embed css

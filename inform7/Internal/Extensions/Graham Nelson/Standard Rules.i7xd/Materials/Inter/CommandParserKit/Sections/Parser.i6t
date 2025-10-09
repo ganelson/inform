@@ -1,4 +1,4 @@
-Parser Template.
+Parser
 
 The parser for turning the text of the typed command into a proposed
 action by the player.

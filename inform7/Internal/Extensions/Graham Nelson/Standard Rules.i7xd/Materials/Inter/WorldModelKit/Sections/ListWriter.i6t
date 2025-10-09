@@ -1,4 +1,4 @@
-ListWriter Template.
+ListWriter
 
 A flexible object-lister taking care of plurals, inventory information,
 various formats and so on.

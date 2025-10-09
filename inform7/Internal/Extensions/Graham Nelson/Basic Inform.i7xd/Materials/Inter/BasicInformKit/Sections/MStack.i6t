@@ -1,4 +1,4 @@
-MStack Template.
+MStack
 
 To allocate space on the memory stack for frames of variables to
 be used by rulebooks, activities and actions.

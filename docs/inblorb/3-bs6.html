@@ -39,9 +39,7 @@ function togglePopup(material_id) {
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="../index.html">
-<img src="../docs-assets/Inform.png" height=72">
-</a></h1>
+		<h1><a href="../index.html"><img src="../docs-assets/Inform.png" height=72> </a></h1>
 <ul><li><a href="../index.html">home</a></li>
 </ul><h2>Compiler</h2><ul>
 <li><a href="../structure.html">structure</a></li>
@@ -52,18 +50,16 @@ function togglePopup(material_id) {
 <li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
-<li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/index.html">inweb</a></li>
-<li><a href="../../../intest/index.html">intest</a></li>
-
+<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> inweb</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> intest</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -96,13 +92,13 @@ line breaks, but we don't avail ourselves.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Base64::encode</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Base64::encode</span></span>:<br/>Releaser - <a href="3-rls.html#SP6_5">&#167;6.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_filename</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">out_filename</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">top</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tail</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">IN</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/6-bf.html#SP8" class="function-link"><span class="function-syntax">BinaryFiles::open_for_reading</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">in_filename</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">IN</span><span class="plain-syntax"> = </span><a href="../foundation/6-bf.html#SP8" class="function-link"><span class="function-syntax">BinaryFiles::open_for_reading</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">in_filename</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">TO_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">TO</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">TO_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">TO</span><span class="plain-syntax">, </span><span class="identifier-syntax">out_filename</span><span class="plain-syntax">, </span><span class="constant-syntax">UTF8_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="1-be.html#SP2" class="function-link"><span class="function-syntax">BlorbErrors::fatal_fs</span></a><span class="plain-syntax">(</span><span class="string-syntax">"can't open base-64 encoded story file for output"</span><span class="plain-syntax">, </span><span class="identifier-syntax">out_filename</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-bs6.html#SP2" class="function-link"><span class="function-syntax">Base64::encode_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TO</span><span class="plain-syntax">, </span><span class="identifier-syntax">IN</span><span class="plain-syntax">, </span><span class="identifier-syntax">top</span><span class="plain-syntax">, </span><span class="identifier-syntax">tail</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/6-bf.html#SP8" class="function-link"><span class="function-syntax">BinaryFiles::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IN</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation/6-bf.html#SP8" class="function-link"><span class="function-syntax">BinaryFiles::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IN</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">TO</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
