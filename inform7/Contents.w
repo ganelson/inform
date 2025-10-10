@@ -8,6 +8,7 @@ Preform Language: English
 Licence: Artistic License 2.0
 
 Import: foundation
+Import: literate
 Import: services/words
 Import: services/syntax
 Import: services/html

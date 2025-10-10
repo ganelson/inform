@@ -73,6 +73,7 @@ int main(int argc, char **argv) {
 
 @<Start up the modules@> =
 	Foundation::start(argc, argv); /* must be started first */
+	LiterateModule::start();
 	WordsModule::start();
 	SyntaxModule::start();
 	HTMLModule::start();
@@ -272,6 +273,7 @@ utility functions in the //supervisor// module, which we call.
 	HTMLModule::end();
 	SyntaxModule::end();
 	WordsModule::end();
+	LiterateModule::end();
 	Foundation::end(); /* must be ended last */
 
 @ Preform is the crowning jewel of the |words| module, and parses excerpts of

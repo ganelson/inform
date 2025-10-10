@@ -12,6 +12,7 @@ What shall we test?
 =
 int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
+	LiterateModule::start();
 	WordsModule::start();
 
 	CommandLine::declare_heading(U"inexample: a tool for testing foundation facilities\n");
@@ -24,6 +25,7 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 
 	WordsModule::end();
+	LiterateModule::end();
 	Foundation::end();
 	return 0;
 }

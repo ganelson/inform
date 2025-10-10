@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Plan A
 
 Import: foundation
+Import: literate
 
 Manual
 	Using Inpolicy

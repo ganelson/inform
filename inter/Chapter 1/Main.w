@@ -54,6 +54,7 @@ int main(int argc, char **argv) {
 
 @<Start up the modules@> =
 	Foundation::start(argc, argv); /* must be started first */
+	LiterateModule::start();
 	ArchModule::start();
 	BytecodeModule::start();
 	BuildingModule::start();
@@ -130,6 +131,7 @@ int main(int argc, char **argv) {
 	FinalModule::end();
 	ArchModule::end();
 	IndexModule::end();
+	LiterateModule::end();
 	Foundation::end(); /* must be ended last */
 
 @h Command line.

@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Axion
 
 Import: foundation
+Import: literate
 Import: services/words
 Import: services/html
 Import: services/arch

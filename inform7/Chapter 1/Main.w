@@ -67,6 +67,7 @@ See the |problems| module for more.
 
 @<Start up the modules@> =
 	Foundation::start(argc, argv); /* must be started first */
+	LiterateModule::start();
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();
@@ -223,6 +224,7 @@ they can be rather lengthy.
 	PipelineModule::end();
 	FinalModule::end();
 	SupervisorModule::end();
+	LiterateModule::end();
 	Foundation::end(); /* must be ended last */
 
 @ =

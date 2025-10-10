@@ -83,6 +83,8 @@ Colony {
 	
 	external: "foundation"      at "../inweb/foundation-module"
 	external: "foundation-test" at "../inweb/foundation-test"
+	external: "literate"        at "../inweb/literate-module"
+	external: "literate-test"   at "../inweb/literate-test"
 	external: "inweb"           at "../inweb"
 	external: "goldbach"        at "../inweb/Examples/goldbach"
 	external: "intest"          at "../intest"

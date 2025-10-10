@@ -23,7 +23,7 @@ typedef struct source_file {
 	CLASS_DEFINITION
 } source_file;
 
-source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general_pointer ref, int mode) {
+source_file *TextFromFiles::new_sf(filename *F, FILE *handle, void *W_void, general_pointer ref, int mode) {
 	source_file *sf = CREATE(source_file);
 	sf->words_of_source = 0;
 	sf->words_of_quoted_text = 0;
@@ -35,7 +35,9 @@ source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general
 	sf->torn_off_documentation = Str::new();
 	sf->tangled = Str::new();
 	sf->tangled_position = -1;
-	if (W) {
+	#ifdef LITERATE_MODULE
+	if (W_void) {
+		ls_web *W = (ls_web *) W_void;
 		if (Str::len(Bibliographic::get_datum(W, I"Version")) > 0)
 			WRITE_TO(sf->tangled, "%S of %S by %S begins here.\n\n",
 				Bibliographic::get_datum(W, I"Version"),
@@ -53,6 +55,7 @@ source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general
 			Bibliographic::get_datum(W, I"Title"));
 		sf->tangled_position = 0;
 	}
+	#endif
 	return sf;
 }
 
@@ -81,7 +84,7 @@ We also want to look out for the tear-off documentation line, if there is one.
 
 =
 source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
-	ls_web *W, text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
+	void *W, text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
 	source_file *sf = TextFromFiles::new_sf(F, handle, W, ref, mode);
 	inchar32_t cr, last_cr, next_cr, read_cr, newline_char = 0;
 	int torn_off = FALSE;

@@ -20,6 +20,7 @@ int return_happy = TRUE, silence_mode = FALSE, verbose_mode = FALSE;
 
 int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
+	LiterateModule::start();
 	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
 	pathname *P = Pathnames::down(NULL, I"inform7");
 	P = Pathnames::down(P, I"Internal");
@@ -51,6 +52,7 @@ int main(int argc, char **argv) {
 	path_to_inpolicy_workspace = Pathnames::down(path_to_inpolicy, I"Workspace");
 	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inpolicy);
 
+	LiterateModule::end();
 	Foundation::end();
 	if (return_happy) return 0; else return 1;
 }

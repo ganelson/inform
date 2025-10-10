@@ -131,11 +131,12 @@ See the <span class="extract"><span class="extract-syntax">problems</span></span
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="../foundation/1-fm.html#SP8" class="function-link"><span class="function-syntax">Foundation::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">); </span><span class="comment-syntax"> must be started first</span>
-<span class="plain-syntax">    </span><a href="../words-module/1-wm.html#SP3" class="function-link"><span class="function-syntax">WordsModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="1-lm.html#SP3" class="function-link"><span class="function-syntax">LiterateModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../words-module/1-wm2.html#SP3" class="function-link"><span class="function-syntax">WordsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../inflections-module/1-im.html#SP3" class="function-link"><span class="function-syntax">InflectionsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/1-sm.html#SP3" class="function-link"><span class="function-syntax">SyntaxModule::start</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../lexicon-module/1-lm.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::start</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../lexicon-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../linguistics-module/1-lm3.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../problems-module/1-pm.html#SP3" class="function-link"><span class="function-syntax">ProblemsModule::start</span></a><span class="plain-syntax">();</span>
@@ -237,7 +238,7 @@ compilation.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="../supervisor-module/1-ic.html#SP12" class="function-link"><span class="function-syntax">Supervisor::go_operational</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">proj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="../supervisor-module/3-is.html#SP3" class="function-link"><span class="function-syntax">InterSkill::echo_kit_building</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><a href="../supervisor-module/3-is2.html#SP3" class="function-link"><span class="function-syntax">InterSkill::echo_kit_building</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><a href="../supervisor-module/2-cps.html#SP12" class="function-link"><span class="function-syntax">Copies::build</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">, </span><a href="../supervisor-module/3-bm.html#SP3" class="function-link"><span class="function-syntax">BuildMethodology::stay_in_current_process</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><a href="../core-module/1-wtc.html#SP1" class="function-link"><span class="function-syntax">Task::stop_timers</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
@@ -291,11 +292,11 @@ they can be rather lengthy.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="../words-module/1-wm.html#SP3" class="function-link"><span class="function-syntax">WordsModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../words-module/1-wm2.html#SP3" class="function-link"><span class="function-syntax">WordsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../inflections-module/1-im.html#SP3" class="function-link"><span class="function-syntax">InflectionsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/1-sm.html#SP3" class="function-link"><span class="function-syntax">SyntaxModule::end</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../lexicon-module/1-lm.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::end</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../lexicon-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../linguistics-module/1-lm3.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../problems-module/1-pm.html#SP3" class="function-link"><span class="function-syntax">ProblemsModule::end</span></a><span class="plain-syntax">();</span>
@@ -315,6 +316,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    </span><a href="../pipeline-module/1-pm2.html#SP3" class="function-link"><span class="function-syntax">PipelineModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../final-module/1-fm2.html#SP3" class="function-link"><span class="function-syntax">FinalModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../supervisor-module/1-sm2.html#SP3" class="function-link"><span class="function-syntax">SupervisorModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="1-lm.html#SP3" class="function-link"><span class="function-syntax">LiterateModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../foundation/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">(); </span><span class="comment-syntax"> must be ended last</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>

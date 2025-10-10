@@ -5,6 +5,7 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
+Import: literate
 Import: words
 
 Chapter 1: Scaffolding

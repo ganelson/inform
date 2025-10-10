@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
+Import: literate
 Import: services/words
 Import: services/syntax
 Import: services/html
