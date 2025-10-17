@@ -645,8 +645,8 @@ To decide which real number is the real square root of (R - a real number)
 	(- REAL_NUMBER_TY_Root({R}) -).
 To decide which real number is the real square of (R - a real number)
 	(this is the rsqr function inverse to root):
-	let x be given by x = R^2 where x is a real number;
-	decide on x.
+	let xrealsqr99 be given by xrealsqr99 = R^2 where xrealsqr99 is a real number;
+	decide on xrealsqr99.
 To decide which real number is the ceiling of (R - a real number)
 	(documented at ph_ceiling)
 	(this is the ceiling function):
@@ -734,18 +734,18 @@ To decide which real number is the hyperbolic tangent of (R - a real number)
 To decide which real number is the hyperbolic arcsine of (R - a real number)
 	(documented at ph_hyperbolicarcsine)
 	(this is the arcsinh function inverse to sinh):
-	let x be given by x = log(R + root(R^2 + 1)) where x is a real number;
-	decide on x.
+	let xarcsinh99 be given by xarcsinh99 = log(R + root(R^2 + 1)) where xarcsinh99 is a real number;
+	decide on xarcsinh99.
 To decide which real number is the hyperbolic arccosine of (R - a real number)
 	(documented at ph_hyperbolicarccosine)
 	(this is the arccosh function inverse to cosh):
-	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
-	decide on x.
+	let xarcosh99 be given by xarcosh99 = log(R + root(R^2 - 1)) where xarcosh99 is a real number;
+	decide on xarcosh99.
 To decide which real number is the hyperbolic arctangent of (R - a real number)
 	(documented at ph_hyperbolicarctangent)
 	(this is the arctanh function inverse to tanh):
-	let x be given by x = 0.5*(log(1+R) - log(1-R)) where x is a real number;
-	decide on x.
+	let xarctanh99 be given by xarctanh99 = 0.5*(log(1+R) - log(1-R)) where xarctanh99 is a real number;
+	decide on xarctanh99.
 
 @h Control structures.
 The term "control structure" conjures up the thought of conditionals and loops,
