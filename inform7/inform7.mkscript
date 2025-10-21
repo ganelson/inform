@@ -42,7 +42,7 @@ preform: $(ME)/Tangled/Syntax.preform
 $(ME)/Tangled/$(MYNAME): {dependent-files}
 	$(call make-me)
 
-$(ME)/TangledSyntax.preform:
+$(ME)/Tangled/Syntax.preform:
 	$(call make-me)
 
 .PHONY: force
