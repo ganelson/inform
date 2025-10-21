@@ -202,13 +202,19 @@ $(INFORM7WEB)/Internal/Miscellany/inform7_clib.c: $(INFORM7WEB)/Tangled/inform7_
 	cp -f "$(INFORM7WEB)/Tangled/inform7_clib.c" "$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c"
 
 # It is in fact sufficient to tangle just the inter subset of inform7 to make
-# the two C-library files:
+# the two C-library files: of course they then need to be copied into the inform7 directory.
+# Note the use of the phony intermediate tangleintersubset target to ensure that
+# the tangle is only run once even when both files are needed.
 
-$(INFORM7WEB)/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
+.PHONY: tangleintersubset
+tangleintersubset: inter/final-module/Chapter\ 5/*.w
 	$(INWEBX) tangle $(INTERWEB)
 
-$(INFORM7WEB)/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
-	$(INWEBX) tangle $(INTERWEB)
+$(INFORM7WEB)/Tangled/inform7_clib.h: tangleintersubset
+	cp -f "$(INTERWEB)/Tangled/inform7_clib.h" "$(INFORM7WEB)/Tangled/inform7_clib.h"
+
+$(INFORM7WEB)/Tangled/inform7_clib.c: tangleintersubset
+	cp -f "$(INTERWEB)/Tangled/inform7_clib.c" "$(INFORM7WEB)/Tangled/inform7_clib.c"
 
 # -----------------------------------------------------------------------------
 # Target "makers"
