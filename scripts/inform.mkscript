@@ -165,12 +165,15 @@ INFORM6WEB = inform6
 # one of these performs a "make integration", to push the results of our efforts
 # into a surrounding GUI app (if it is present) - that must be done (if desired)
 # by "make integration" explicitly.
+# Note the use of .WAIT to ensure order during parallel builds.
+# This is necessary because localintegration depends on the preform grammar
+# generated when building inform7.
 
 .PHONY: all
-all: tools kits localintegration
+all: tools kits .WAIT localintegration
 
 .PHONY: force
-force: forcetools forcekits localintegration
+force: forcetools forcekits .WAIT localintegration
 
 # -----------------------------------------------------------------------------
 # Target "localintegration"
@@ -267,15 +270,16 @@ versions:
 # -----------------------------------------------------------------------------
 # These are easier because Inbuild already performs a make-like service on
 # directories of kits; that saves a great deal of messy make code here.
+# We do depend on $(INBUILDX) and $(INTERX) to avoid errors during parallel builds
 
 .PHONY: kits
-kits:
+kits: $(INBUILDX) $(INTERX)
 	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Materials/Inter
 	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Materials/Inter
 	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Inter
 
 .PHONY: forcekits
-forcekits:
+forcekits: force_$(INBUILDX) force_$(INTERX)
 	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7xd/Materials/Inter
 	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7xd/Materials/Inter
 	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Inter
@@ -303,13 +307,24 @@ $(INFORM6X): $(INFORM6WEB)/Inform6/*.c
 # -----------------------------------------------------------------------------
 # Target "forcetools"
 # -----------------------------------------------------------------------------
-# Similarly, but with a single target, since nothing is incremental here.
+# Similarly, but the targets are called force_$(INBLORBX), force_$(INBUILDX) etc.
+# This could be done with a single target, since nothing is incremental here,
+# but using multiple targets improves parallel building.
 
 .PHONY: forcetools
-forcetools:
-	{components type: tool}
+forcetools: {components type: tool}force_$({SYMBOL}X) {end-components}force_$(INFORM6X)
+
+{components type: tool}
+.PHONY: force_$({SYMBOL}X)
+force_$({SYMBOL}X):
 	$(MAKE) -f $({SYMBOL}MAKER) force
-	{end-components}
+
+{end-components}
+
+# As ever, Inform 6 needs special handling:
+
+.PHONY: force_$(INFORM6X)
+force_$(INFORM6X):
 	$(MAKE) -f $(INFORM6WEB)/inform6.mk force
 
 # -----------------------------------------------------------------------------
