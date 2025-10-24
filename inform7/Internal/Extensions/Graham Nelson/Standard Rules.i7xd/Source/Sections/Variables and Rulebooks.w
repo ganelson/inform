@@ -844,10 +844,10 @@ This is the announce items from multiple object lists rule:
 		say "[current item from the multiple object list]: [run paragraph on]" (A).
 
 This is the before stage rule:
-	abide by dialogue before action choices; 
+	abide by dialogue before action choices;
 	abide by the before rules.
 This is the instead stage rule:
-	abide by dialogue instead action choices; 
+	abide by dialogue instead action choices;
 	abide by the instead rules.
 
 @ The final rule in the rulebook always succeeds: this ensures that
@@ -1115,37 +1115,41 @@ When a scene (called the event) begins (this is the scene description text rule)
 
 @h Command parser errors.
 This abstracts a set of return codes from the I6 parser, which are written
-there as constants with the notation |*_ETYPE|.
+there as constants with the notation |*_ETYPE|.  (The constant definitions
+in Parser.i6t are commented with the corresponding command parser errors.)
+
+Corresponding Parser Error Internal Rule responses are given in comments.
+Some, labelled "vestigial" below are no longer in use.
 
 =
 Section 8 - Command parser errors
 
 A command parser error is a kind of value. The command parser errors are
-	didn't understand error,
-	only understood as far as error,
-	didn't understand that number error,
-	can only do that to something animate error,
-	can't see any such thing error,
-	said too little error,
-	aren't holding that error,
-	can't use multiple objects error,
-	can only use multiple objects error,
-	not sure what it refers to error,
-	excepted something not included error,
-	not a verb I recognise error,
-	not something you need to refer to error,
-	can't see it at the moment error,
-	didn't understand the way that finished error,
-	not enough of those available error,
-	nothing to do error,
-	referred to a determination of scope error,
-	noun did not make sense in that context error,
-	I beg your pardon error,
-	can't again the addressee error,
-	comma can't begin error,
-	can't see whom to talk to error,
-	can't talk to inanimate things error, and
-	didn't understand addressee's last name error.
+	didn't understand error, [ A ]
+	only understood as far as error, [ B, C ]
+	didn't understand that number error, [ D ]
+	can only do that to something animate error, [ M ]
+	can't see any such thing error, [ E ]
+	said too little error, [ F, vestigial ]
+	aren't holding that error, [ G, vestigial ]
+	can't use multiple objects error, [ H ]
+	can only use multiple objects error, [ I, vestigial ]
+	not sure what it refers to error, [ J ]
+	excepted something not included error, [ L, vestigial ]
+	not a verb I recognise error, [ N ]
+	not something you need to refer to error, [ O, vestigial ]
+	can't see it at the moment error, [ K ]
+	didn't understand the way that finished error, [ P, vestigial ]
+	not enough of those available error, [ Q ]
+	nothing to do error, [ see parser nothing error internal rule responses ]
+	referred to a determination of scope error, [ no corresponding response ]
+	noun did not make sense in that context error, [ R ]
+	I beg your pardon error, [ X ]
+	can't again the addressee error, [ S ]
+	comma can't begin error, [ T ]
+	can't see whom to talk to error, [ U ]
+	can't talk to inanimate things error, [ V ]
+	didn't understand addressee's last name error. [ W ]
 
 The latest parser error is a command parser error that varies.
 The latest parser error variable is defined by Inter as "etype".
@@ -1204,31 +1208,54 @@ The action processing internal rule is defined by Inter as
 
 The parser error internal rule is defined by Inter as
 	"PARSER_ERROR_INTERNAL_R" with
+	[ didn't understand error ]
 	"I didn't understand that sentence." (A),
-	"I only understood you as far as wanting to " (B),
-	"I only understood you as far as wanting to (go) " (C),
+	[ only understood as far as error ]
+		"I only understood you as far as wanting to " (B),
+		"I only understood you as far as wanting to (go) " (C),
+	[ didn't understand that number error ]
 	"I didn't understand that number." (D),
+	[ can't see any such thing error ]
 	"[We] [can't] see any such thing." (E),
+	[ said too little error (vestigial) ]
 	"You seem to have said too little!" (F),
+	[ aren't holding that error (vestigial) ]
 	"[We] [aren't] holding that!" (G),
+	[ can't use multiple objects error ]
 	"You can't use multiple objects with that verb." (H),
+	[ can only use multiple objects error (vestigial) ]
 	"You can only use multiple objects once on a line." (I),
+	[ not sure what it refers to error ]
 	"I'm not sure what ['][pronoun i6 dictionary word]['] refers to." (J),
+	[ can't see it at the moment error ]
 	"[We] [can't] see ['][pronoun i6 dictionary word]['] ([the noun]) at the moment." (K),
+	[ excepted something not included error (vestigial) ]
 	"You excepted something not included anyway!" (L),
+	[ can only do that to something animate error ]
 	"You can only do that to something animate." (M),
+	[ not a verb I recognise error ]
 	"That's not a verb I [if American dialect option is
 		active]recognize[otherwise]recognise[end if]." (N),
+	[ not something you need to refer to error (vestigial) ]
 	"That's not something you need to refer to in the course of this game." (O),
+	[ didn't understand the way that finished error (vestigial) ]
 	"I didn't understand the way that finished." (P),
+	[ not enough of those available error ]
 	"[if number understood is 0]None[otherwise]Only [number understood in words][end if]
 		of those [regarding the number understood][are] available." (Q),
+	[ noun did not make sense in that context error ]
 	"That noun did not make sense in this context." (R),
+	[ can't again the addressee error ]
 	"To repeat a command like 'frog, jump', just say 'again', not 'frog, again'." (S),
+	[ comma can't begin error ]
 	"You can't begin with a comma." (T),
+	[ can't see whom to talk to error ]
 	"You seem to want to talk to someone, but I can't see whom." (U),
+	[ can't talk to inanimate things error ]
 	"You can't talk to [the noun]." (V),
+	[ didn't understand addressee's last name error ]
 	"To talk to someone, try 'someone, hello' or some such." (W),
+	[ I beg your pardon error ]
 	"I beg your pardon?" (X).
 
 The parser nothing error internal rule is defined by Inter as
