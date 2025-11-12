@@ -2084,7 +2084,7 @@ Check an actor kissing (this is the kissing yourself rule):
 
 Check an actor kissing (this is the block kissing rule):
 	if the actor is the player:
-		say "[The noun] [might not] like that." (A);
+		say "[The noun] [might not like] that." (A);
 	stop the action.
 
 @h Answering it that.
