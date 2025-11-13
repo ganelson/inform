@@ -390,7 +390,7 @@ particular action in progress. Thus on a taking action, the six stages
 followed are before, instead, check taking, carry out taking, after and
 report taking.
 
-During play, then, the three rulebooks "check", "after" and "report"
+During play, then, the three rulebooks "check", "carry out" and "report"
 are completely empty. This is the result of a reform in April 2007 which
 wasn't altogether popular. Before then, Inform rather cleverly filed rules like
 "Check doing something with the haddock" in the generic "check"
@@ -409,7 +409,7 @@ and also a clearer conceptual definition of what these rulebooks were for.
 withdrawn.)
 
 So if they are always empty and never used, why are the three rulebooks
-called simply "check", "after" and "report" created in the first
+called simply "check", "carry out" and "report" created in the first
 place? The answer is that this is a convenience for parsing rule preambles
 in Inform: it provides a temporary home for such rules before they are divided up
 into their specific rulebooks, and it also makes it easier for Inform to detect
