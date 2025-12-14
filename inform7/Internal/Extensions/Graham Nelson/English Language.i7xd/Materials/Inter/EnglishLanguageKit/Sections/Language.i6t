@@ -181,13 +181,15 @@ Constant LanguageContractionForms = 2;     ! English has two:
     return 0;
 ];
 
+Constant LanguageCases = 1;     ! The number of article cases; English has one
+
 Array LanguageArticles -->
 
  !   Contraction form 0:     Contraction form 1:
  !   Cdef   Def    Indef     Cdef   Def    Indef
 
-     "The " "the " "a "      "The " "the " "an "          ! Articles 0
-     "The " "the " "some "   "The " "the " "some ";       ! Articles 1
+     "The " "the " "a "      "The " "the " "an "          ! Case 0, articles 0
+     "The " "the " "some "   "The " "the " "some ";       ! Case 0, articles 1
 
                    !             a           i
                    !             s     p     s     p
