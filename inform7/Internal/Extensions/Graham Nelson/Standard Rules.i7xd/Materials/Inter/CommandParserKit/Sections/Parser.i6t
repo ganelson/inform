@@ -1472,7 +1472,7 @@ Print best possible error message.
         pcount = pcount2;
     	if (inferred_go) {
     		PARSER_ERROR_INTERNAL_RM('C');
-    		print (name) parser_results-->INP1_PRES;
+    		print (LanguageDirection) parser_results-->INP1_PRES;
     	} else {
     		PARSER_ERROR_INTERNAL_RM('B');
         	PrintCommand(0);
