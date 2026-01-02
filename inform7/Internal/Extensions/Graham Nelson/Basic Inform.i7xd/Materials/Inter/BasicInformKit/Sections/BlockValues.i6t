@@ -576,9 +576,16 @@ local variables.)
 	I7SFRAME = blockv_stack + WORDSIZE*BLOCKV_STACK_SIZE;
 ];
 
-[ StackFrameCreate size new;
-	new = I7SFRAME - WORDSIZE*size;
-	if (new < blockv_stack) {
+[ StackFrameCreate size new bytesize;
+	bytesize = WORDSIZE*size;
+	if (UnsignedCompare(bytesize, I7SFRAME) == 1) {
+		IssueRTP("MemoryAllocationFailed",
+    		"Memory allocation proved impossible.", BasicInformKitRTPs);
+		print "*** Stack frame of ", size, " could not be created ***^";
+		@quit;
+	}
+	new = I7SFRAME - bytesize;
+	if (UnsignedCompare(new, blockv_stack) == -1) {
 		IssueRTP("MemoryAllocationFailed",
     		"Memory allocation proved impossible.", BasicInformKitRTPs);
 		print "*** Stack frame of ", size, " could not be created ***^";
