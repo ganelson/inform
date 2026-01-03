@@ -242,7 +242,7 @@ To say link (C - unicode character):
 	(- MakeTaggedHyperlink((+ keypress hyperlink +), {-by-reference:C}, UNICODE_CHARACTER_TY); -).
 
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
-	process a character event for (hyperlink value as a unicode character) in (window of the current glk event);
+	replace current event with a character event with (hyperlink value as a unicode character) in (window of the current glk event initialiser);
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
