@@ -189,17 +189,12 @@ Global scope_token; ! for "scope=Routine" grammar tokens
 Global scope_error;
 Global scope_stage; ! 1, 2 then 3
 Global advance_warning; ! what a later-named thing will be
-Global reason_code = NULL; ! for the I6 veneer
 
 Global ats_flag = 0; ! for AddToScope routines
 Global ats_hls;
 
 ! (11)
 Global move_pushing;
-Global move_from;
-Global move_to;
-Global move_by;
-Global move_through;
 
 ! (12)
 Global lookmode = WorldModelKit`ROOM_DESC_DETAIL_CFGV; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF

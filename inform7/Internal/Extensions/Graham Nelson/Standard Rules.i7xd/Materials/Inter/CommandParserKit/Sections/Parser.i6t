@@ -133,11 +133,8 @@ Global found_ttype;                 ! Used to break up tokens into type
 Global found_tdata;                 ! and data (by AnalyseToken)
 Global token_filter;                ! For noun filtering by user routines
 
-Global length_of_noun;              ! Set by NounDomain to no of words in noun
-
 Global lookahead;                   ! The token after the one now being matched
 
-Global multi_mode;                  ! Multiple mode
 Global multi_wanted;                ! Number of things needed in multitude
 Global multi_had;                   ! Number of things actually found
 Global multi_context;               ! What token the multi-obj was accepted for
@@ -2259,10 +2256,8 @@ looking -- and a context (i.e. token type), and returns:
 rewrote the player's input, so that the whole parser should start again
 on the rewritten input.
 
-In case (c), |NounDomain| also sets the variable |length_of_noun| to the
-number of words in the input text matched to the noun. In case (b),
-the multiple objects are added to |multiple_object| by hand (not by |MultiAdd|,
-because we want to allow duplicates).
+In case (b), the multiple objects are added to |multiple_object| by hand (not by
+|MultiAdd|, because we want to allow duplicates).
 
 =
 [ NounDomain domain1 domain2 context dont_ask
