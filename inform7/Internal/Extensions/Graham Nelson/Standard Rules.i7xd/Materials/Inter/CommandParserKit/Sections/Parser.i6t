@@ -29,34 +29,37 @@ Constant COMMANDPARSERKIT = 1;
 
 @h Parser Error Numbers.
 The traditional ways in which the I6 library's parser, which we adopt here
-more or less intact, can give up on a player's command.
+more or less intact, can give up on a player's command. Comments show the
+corresponding Command Parser Error kind-of-value from the Standard Rules
+and, where applicable, the corresponding Parser Error Internal Rule responses.
+Some of these (labelled "vestigial" below) are no longer in use.
 
 =
-Constant STUCK_PE         = 1;
-Constant UPTO_PE          = 2;
-Constant NUMBER_PE        = 3;
-Constant ANIMA_PE         = 4;
-Constant CANTSEE_PE       = 5;
-Constant TOOLIT_PE        = 6;
-Constant NOTHELD_PE       = 7;
-Constant MULTI_PE         = 8;
-Constant MMULTI_PE        = 9;
-Constant VAGUE_PE         = 10;
-Constant EXCEPT_PE        = 11;
-Constant VERB_PE          = 12;
-Constant SCENERY_PE       = 13;
-Constant ITGONE_PE        = 14;
-Constant JUNKAFTER_PE     = 15;
-Constant TOOFEW_PE        = 16;
-Constant NOTHING_PE       = 17;
-Constant ASKSCOPE_PE      = 18;
-Constant NOTINCONTEXT_PE  = 19;
-Constant BLANKLINE_PE     = 20; ! Not formally a parser error, but used by I7 as if
-Constant ANIMAAGAIN_PE    = 21;
-Constant COMMABEGIN_PE    = 22;
-Constant MISSINGPERSON_PE = 23;
-Constant ANIMALISTEN_PE   = 24;
-Constant TOTALK_PE        = 25;
+Constant STUCK_PE         = 1;   ! didn't understand error (A)
+Constant UPTO_PE          = 2;   ! only understood as far as error (B) / (C)
+Constant NUMBER_PE        = 3;   ! didn't understand that number error (D)
+Constant ANIMA_PE         = 4;   ! can only do that to something animate error (M)
+Constant CANTSEE_PE       = 5;   ! can't see any such thing error (E)
+Constant TOOLIT_PE        = 6;   ! [vestigial] said too little error (F)
+Constant NOTHELD_PE       = 7;   ! [vestigial] aren't holding that error (G)
+Constant MULTI_PE         = 8;   ! can't use multiple objects error (H)
+Constant MMULTI_PE        = 9;   ! [vestigial] can only use multiple objects error (I)
+Constant VAGUE_PE         = 10;  ! not sure what it refers to error (J)
+Constant EXCEPT_PE        = 11;  ! [vestigial] excepted something not included error (L)
+Constant VERB_PE          = 12;  ! not a verb I recognise error (N)
+Constant SCENERY_PE       = 13;  ! [vestigial] not something you need to refer to error (O)
+Constant ITGONE_PE        = 14;  ! can't see it at the moment error (K)
+Constant JUNKAFTER_PE     = 15;  ! [vestigial] didn't understand the way that finished error (P)
+Constant TOOFEW_PE        = 16;  ! not enough of those available error (Q)
+Constant NOTHING_PE       = 17;  ! nothing to do error [ parser nothing error internal rule responses ]
+Constant ASKSCOPE_PE      = 18;  ! referred to a determination of scope error
+Constant NOTINCONTEXT_PE  = 19;  ! noun did not make sense in that context error (R)
+Constant BLANKLINE_PE     = 20;  ! I beg your pardon error (X) [ Not formally a parser error, but used by I7 as if ]
+Constant ANIMAAGAIN_PE    = 21;  ! can't again the addressee error (S)
+Constant COMMABEGIN_PE    = 22;  ! comma can't begin error (T)  
+Constant MISSINGPERSON_PE = 23;  ! can't see whom to talk to error (U)
+Constant ANIMALISTEN_PE   = 24;  ! can't talk to inanimate things error (V)
+Constant TOTALK_PE        = 25;  ! didn't understand addressee's last name error (W)
 
 @h Grammar Line Variables.
 This is the I6 library parser in mostly untouched form: reformatted for template
@@ -1482,20 +1485,20 @@ Print best possible error message.
     }
     if (etype == NUMBER_PE) {   PARSER_ERROR_INTERNAL_RM('D'); new_line; }
     if (etype == CANTSEE_PE) {  PARSER_ERROR_INTERNAL_RM('E'); new_line; oops_from=saved_oops; }
-    if (etype == TOOLIT_PE) {   PARSER_ERROR_INTERNAL_RM('F'); new_line; }
-    if (etype == NOTHELD_PE) {  PARSER_ERROR_INTERNAL_RM('G'); new_line; oops_from=saved_oops; }
+    ! if (etype == TOOLIT_PE) {   PARSER_ERROR_INTERNAL_RM('F'); new_line; } ! vestigial
+    ! if (etype == NOTHELD_PE) {  PARSER_ERROR_INTERNAL_RM('G'); new_line; oops_from=saved_oops; } ! vestigial
     if (etype == MULTI_PE) {    PARSER_ERROR_INTERNAL_RM('H'); new_line; }
-    if (etype == MMULTI_PE) {   PARSER_ERROR_INTERNAL_RM('I'); new_line; }
+    ! if (etype == MMULTI_PE) {   PARSER_ERROR_INTERNAL_RM('I'); new_line; } ! vestigial
     if (etype == VAGUE_PE) {    PARSER_ERROR_INTERNAL_RM('J'); new_line; }
     if (etype == ITGONE_PE) {
         if (pronoun_obj == NULL) { PARSER_ERROR_INTERNAL_RM('J'); new_line; }
         else { PARSER_ERROR_INTERNAL_RM('K', noun); new_line; }
     }
-    if (etype == EXCEPT_PE) {   PARSER_ERROR_INTERNAL_RM('L'); new_line; }
+    ! if (etype == EXCEPT_PE) {   PARSER_ERROR_INTERNAL_RM('L'); new_line; } ! vestigial
     if (etype == ANIMA_PE) {    PARSER_ERROR_INTERNAL_RM('M'); new_line; }
     if (etype == VERB_PE) {     PARSER_ERROR_INTERNAL_RM('N'); new_line; }
-    if (etype == SCENERY_PE) {  PARSER_ERROR_INTERNAL_RM('O'); new_line; }
-    if (etype == JUNKAFTER_PE) {  PARSER_ERROR_INTERNAL_RM('P'); new_line; }
+    ! if (etype == SCENERY_PE) {  PARSER_ERROR_INTERNAL_RM('O'); new_line; } ! vestigial
+    ! if (etype == JUNKAFTER_PE) {  PARSER_ERROR_INTERNAL_RM('P'); new_line; } ! vestigial
     if (etype == TOOFEW_PE) {  PARSER_ERROR_INTERNAL_RM('Q', multi_had); new_line; }
     if (etype == NOTHING_PE) {
     	if (parser_results-->ACTION_PRES == ##Remove &&
