@@ -20,7 +20,7 @@ void LabelInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |label| instruction is laid out with the
+In bytecode, the frame of a `label` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d DEFN_LABEL_IFLD (DATA_IFLD + 0)
@@ -51,7 +51,7 @@ void LabelInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_pac
 }
 
 @h Creating from textual Inter syntax.
-Note that a |.LABEL| can occur either before or after it is used in |lab| instructions,
+Note that a `.LABEL` can occur either before or after it is used in `lab` instructions,
 so that the label name might already have been created: see //LabInstruction::read//.
 
 =

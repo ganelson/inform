@@ -8,8 +8,8 @@ Text substitutions arise from source text such as:
 	let Q be "the [fox speed] brown fox";
 	say "Where has that [sleeping animal] got to?";
 =
-These both look like text substitutions, but only |the [fox speed] brown fox|
-actually is one: |say| phrases are compiled directly, like so:
+These both look like text substitutions, but only `the [fox speed] brown fox`
+actually is one: `say` phrases are compiled directly, like so:
 = (text as Inform 7)
 	let Q be "the [fox speed] brown fox";
 	say "Where has that ";
@@ -25,7 +25,7 @@ the small block is a function pointer:
 	                    function
 =
 It is worth emphasising that this is a function. In an interpreted language
-like Perl, an interpolation such as |"Deleted $file_count files"| is immediately
+like Perl, an interpolation such as `"Deleted $file_count files"` is immediately
 converted to text when it is executed; and even in some compiled languages
 like Swift, the same is essentially true -- in that the text is compiled to
 code which immediately produces the expanded version.
@@ -39,15 +39,15 @@ came up. Consider for example:
 	write "remember [X]" to the file of Memos;
 =
 This is a context where it's clear what it means to refer to the local variable
-|X| in the text. But this is less clear:
+`X` in the text. But this is less clear:
 = (text as Inform 7)
 	let the cage be a random container in the Discount Cage Warehouse;
 	decide on "As bad as [a cage].";
 =
-The trouble is that |decide on| causes a return out of the current stack frame;
-at which point the local variable |cage| will cease to exist, and it will then
-not be possible to expand |"As bad as [a cage]."|. If we were pursuing closures
-more seriously, we would have to capture |cage|, and then worry about garbage
+The trouble is that `decide on` causes a return out of the current stack frame;
+at which point the local variable `cage` will cease to exist, and it will then
+not be possible to expand `"As bad as [a cage]."`. If we were pursuing closures
+more seriously, we would have to capture `cage`, and then worry about garbage
 collection.
 
 Instead we call a substitution like this "perishable", and in cases of doubt
@@ -71,8 +71,8 @@ like so:
 = (text as Inform 7)
 	let Q be "the [fox speed] brown fox";
 =
-When compiling this value, the following is called with |W| being the single-word
-wording |"the [fox speed] brown fox"|.
+When compiling this value, the following is called with `W` being the single-word
+wording `"the [fox speed] brown fox"`.
 
 =
 void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
@@ -251,7 +251,7 @@ int TextSubstitutions::compile_function(text_substitution *ts) {
 	if (frame) LocalVariableSlates::append(Frames::current_stack_frame(), frame);
 
 @ In DEBUG mode, there's an option to print the unsubstituted text instead --
-note the |rtrue| here, which stops the function from proceeding.
+note the `rtrue` here, which stops the function from proceeding.
 
 @<Compile some debugging text@> =
 	if (TargetVMs::debug_enabled(Task::vm())) {

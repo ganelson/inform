@@ -19,7 +19,7 @@ void TypenameInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |typename| instruction is laid out with the
+In bytecode, the frame of a `typename` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by these. The eventual
 length is flexible: there can be any number of operands from 0 upwards.
 

@@ -81,7 +81,7 @@ adjective *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 done quickly, so we use the lexicon's optimisation code to mark all words
 occurring in any known adjective. Whereas nouns are registered with the
 lexicon under any number of different meaning codes, adjectives are always
-registered under |ADJECTIVE_MC|.
+registered under `ADJECTIVE_MC`.
 
 @<Register the new adjective with the lexicon module@> =
 	if ((nl == NULL) && (Wordings::nonempty(W))) {
@@ -102,7 +102,7 @@ wording Adjectives::get_nominative_singular(adjective *adj) {
 
 @h Parsing adjectives.
 This does what its name suggests: matches the name of any adjective known to
-Inform. By construction there is only one |adjective| for any given excerpt of
+Inform. By construction there is only one `adjective` for any given excerpt of
 text, so the following is unambiguous:
 
 =

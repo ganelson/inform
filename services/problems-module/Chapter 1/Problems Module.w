@@ -11,13 +11,13 @@ which use this module:
 @ Note that this module uses its fellow services module //syntax//, and adds
 the following annotation to the syntax tree:
 
-@e problem_falls_under_ANNOT /* |parse_node|: what heading the sentence falls under */
+@e problem_falls_under_ANNOT /* `parse_node`: what heading the sentence falls under */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(problem_falls_under, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(problem_falls_under, parse_node)
 
-@ Like all modules, this one must define a |start| and |end| function.
+@ Like all modules, this one must define a `start` and `end` function.
 
 =
 void ProblemsModule::start(void) {

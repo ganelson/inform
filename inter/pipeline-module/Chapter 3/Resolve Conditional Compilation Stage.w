@@ -3,8 +3,8 @@
 To generate the initial state of storage for variables.
 
 @h Pipeline stage.
-This stage is intended to run immediately after |load-kit-source|. That will
-have produced a sequence of |SPLAT_IST| nodes corresponding to directives,
+This stage is intended to run immediately after `load-kit-source`. That will
+have produced a sequence of `SPLAT_IST` nodes corresponding to directives,
 and some of those will be conditional compilation directives. For example,
 we might see a sequence like this:
 = (text)
@@ -15,7 +15,7 @@ we might see a sequence like this:
 	ROUTINE_PLM
 	ENDIF_PLM
 =
-Clearly this either means a function (the first |ROUTINE_PLM|), or a different
+Clearly this either means a function (the first `ROUTINE_PLM`), or a different
 function plus an array. We have to decide that now, because optimisation, code
 generation and so on need to know exactly what they are dealing with.
 
@@ -33,9 +33,9 @@ or:
 	ARRAY_PLM
 	ROUTINE_PLM
 =
-depending on which way the |IFDEF_PLM| comes out. At the end of this stage,
-then, none of the directives |IFDEF_PLM|, |IFNDEF_PLM|, |IFTRUE_PLM|,
-|IFNOT_PLM| or |ENDIF_PLM| appear anywhere in the tree, and all compilation
+depending on which way the `IFDEF_PLM` comes out. At the end of this stage,
+then, none of the directives `IFDEF_PLM`, `IFNDEF_PLM`, `IFTRUE_PLM`,
+`IFNOT_PLM` or `ENDIF_PLM` appear anywhere in the tree, and all compilation
 is therefore unconditional.
 
 =
@@ -78,7 +78,7 @@ void ResolveConditionalsStage::resolve(inter_tree *I) {
 }
 
 @ Note that when the top of the stack is a block whose body is not to be compiled,
-we delete each node we traverse through. (The |InterTree::traverse| function
+we delete each node we traverse through. (The `InterTree::traverse` function
 is written such that this can safely be done.)
 
 =
@@ -109,7 +109,7 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 }
 
 @ In order to answer whether or not a symbol is defined... we must look for it.
-Note that definitions only count if they are in active code. Here, |Y| is added
+Note that definitions only count if they are in active code. Here, `Y` is added
 to the dictionary when it is reached:
 = (text as Inform 6)
 	Constant X = 1;
@@ -170,9 +170,9 @@ But here it is not:
 		"Must decide if %S defined: %s\n", symbol_name, (result)?"yes":"no");
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_INDENT;
 
-@ The following can test |#Iftrue S == W| only for non-negative integers |W|. It
+@ The following can test `#Iftrue S == W` only for non-negative integers `W`. It
 wouldn't be too hard to test other cases, but we just don't need to. The standard
-Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE == 2|.
+Inform kits use this only to test `#Iftrue WORDSIZE == 4` or `#Iftrue WORDSIZE == 2`.
 
 @<Deal with an IFTRUE@> =
 	TEMPORARY_TEXT(ident)
@@ -286,7 +286,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	compile_this = FALSE;
 
 @ That just leaves some dull code to tokenise the directive. E.g., the second
-token of |#Iftrue FROG == 2| is |FROG|; the "rest of text" is |FROG == 2|.
+token of `#Iftrue FROG == 2` is `FROG`; the "rest of text" is `FROG == 2`.
 
 @<Extract second token into ident@> =
 	int tcount = 0;

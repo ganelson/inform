@@ -3,9 +3,9 @@
 Compiling single command parser tokens.
 
 @ This section is a single function to compile a general token. Each of the
-"handle..." paragraphs is a complete implementation ending with a |return|.
+"handle..." paragraphs is a complete implementation ending with a `return`.
 In code mode, we compile code to test for a match and jump to a given
-|failure_label| if not, allowing execution to flow through if a match is made;
+`failure_label` if not, allowing execution to flow through if a match is made;
 in array mode, we compile a single array entry to represent the token.
 
 =
@@ -80,7 +80,7 @@ are related to X; that may well mean performing a loop, and can be quite slow.
 Any such loop must be made as efficiently as possible.
 
 In general, these tokens appear in grammar which matches the name of an object.
-Such grammar forms part of a |parse_name| function, which is why we are always
+Such grammar forms part of a `parse_name` function, which is why we are always
 in code mode here, so that there is no array mode implementation to worry about.
 
 There are hand-coded implementations for interactive fiction relations
@@ -89,7 +89,7 @@ other relations. For some relations, there's an extra test performed before
 the main test (and both must pass, to make a match); for other relations,
 there is only the main test.
 
-In all of this code, the |self| pseudo-variable is set to the object X.
+In all of this code, the `self` pseudo-variable is set to the object X.
 
 @<Handle a relation token@> =
 	EmitCode::call(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
@@ -191,15 +191,15 @@ is a person, so we check that.
 
 @ And this is the main test for any of those relationships, i.e., where for
 whatever reason the objects P, Q, R, ... are children of X in the object tree.
-We call |TryGivenObject(P)|, then |TryGivenObject(Q)|, and so on, until one
+We call `TryGivenObject(P)`, then `TryGivenObject(Q)`, and so on, until one
 of them succeeds or until all of them have failed.
 
 That being so, the most efficient way to loop through P, Q, R, ... is with an
-|OBJECTLOOP_BIP| construct, which is optimised for exactly this.
+`OBJECTLOOP_BIP` construct, which is optimised for exactly this.
 
-The local variable |rv| is used temporarily as a loop variable, but set back
+The local variable `rv` is used temporarily as a loop variable, but set back
 to 0 after the loop finishes (win or lose). It would be cleaner to use a new
-local variable here; but |parse_name| functions are desperately short of locals
+local variable here; but `parse_name` functions are desperately short of locals
 because of the absolute cap on the number of those in the Z-machine VM. So we
 recycle.
 
@@ -303,9 +303,9 @@ recycle.
 
 @ Here P, Q, R, ..., are component parts of the object X, and this is not
 represented using the VM's object tree but instead with oddball properties.
-So we need a completely different implementation, using a |WHILE_BIP|
-construct to work through P, Q, R, ... Again, though, we use |rv| as a
-temporary loop counter, and we call |TryGivenObject(P)|, then |TryGivenObject(Q)|,
+So we need a completely different implementation, using a `WHILE_BIP`
+construct to work through P, Q, R, ... Again, though, we use `rv` as a
+temporary loop counter, and we call `TryGivenObject(P)`, then `TryGivenObject(Q)`,
 and so on until one of them matches.
 
 @<Main test for an incorporation relation token@> =
@@ -511,7 +511,7 @@ properties rather than the object tree implement the relation.
 relation. Here X will relate to some collection P, Q, R, ... of possibilities,
 and we loop through them. There are three different implementations of the
 loop head, which manages the "through them" part, and then a common implementation
-of what to do in the loop -- i.e., test the possibility and jump to |success_label|
+of what to do in the loop -- i.e., test the possibility and jump to `success_label`
 if it works.
 
 @<Main test for a more general relation token@> =

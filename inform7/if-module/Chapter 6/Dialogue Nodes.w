@@ -15,7 +15,7 @@ Bernardo: "I have seen naught but [list of things in the Battlements]."
     Marcellus: "Horatio says 'tis but our fantasy."
 =
 Here the lines are at levels 0, 0 and 1. We actually allow them to go in as
-far as |MAX_DIALOGUE_NODE_NESTING|, which is a lot of tab stops: no human
+far as `MAX_DIALOGUE_NODE_NESTING`, which is a lot of tab stops: no human
 author would want that many.
 
 As we go through the beat looking for lines, we track the most recent line
@@ -47,7 +47,7 @@ typedef struct dialogue_node {
 	CLASS_DEFINITION
 } dialogue_node;
 
-@ The following should be called with exactly one non-|NULL| pointer. (Decision
+@ The following should be called with exactly one non-`NULL` pointer. (Decision
 nodes are created later.)
 
 =
@@ -86,7 +86,7 @@ dialogue_node *DialogueNodes::add_to_current_beat(int L, dialogue_line *dl, dial
 	precursor_dialogue_nodes[L] = dn;
 	DialogueNodes::clear_precursors(L+1);
 
-@ Note that a |DIALOGUE_LINE_NT| or |DIALOGUE_CHOICE_NT| is only made under a
+@ Note that a `DIALOGUE_LINE_NT` or `DIALOGUE_CHOICE_NT` is only made under a
 section marked as containing dialogue, so the internal error here should be
 impossible to hit.
 
@@ -131,7 +131,7 @@ impossible to hit.
 =
 typedef struct dialogue_decision {
 	CLASS_DEFINITION
-	int decision_type; /* one of the |*_DDT| constants above */
+	int decision_type; /* one of the `*_DDT` constants above */
 	struct dialogue_node *as_node;
 } dialogue_decision;
 

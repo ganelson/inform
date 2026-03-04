@@ -41,7 +41,7 @@ INT_METHOD_TYPE(BUILD_SKILL_INTERNAL_MTID,
 These are essentially just skills, but with a docket of contextual data. The
 idea is that a function outside the //supervisor// module can carry out a skill
 for us using only the contextual information in this structure, without having
-to access any of |inbuild|'s variables directly.
+to access any of `inbuild`'s variables directly.
 
 =
 typedef struct build_step {
@@ -72,9 +72,9 @@ build_step *BuildSteps::attach(build_vertex *vertex, build_skill *to_do,
 }
 
 @h Execution.
-Note that this prints a log of shell commands generated to |stdout| when
+Note that this prints a log of shell commands generated to `stdout` when
 we are running inside Inbuild at the command line, but not when we are running
-inside the |inform7| executable, where we are silent throughout.
+inside the `inform7` executable, where we are silent throughout.
 
 =
 int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
@@ -101,7 +101,7 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
 		if (returned != TRUE) rv = FALSE;
 	}
 
-@ This prints a shell command to |stdout| (except when inside |inform7|)
+@ This prints a shell command to `stdout` (except when inside `inform7`)
 and also executes it if the methodology allows, returning the result. Note
 that shell commands return 0 to indicate happiness.
 

@@ -7,7 +7,7 @@ Runtime context data (RCD) is a set of restrictions on when a body of code can r
 It's intended for rules, but in principle available for any imperative definition.
 For example,
 
->> Before taking a container when the player is in the Box Room: ...
+> Before taking a container when the player is in the Box Room: ...
 
 can take effect only if the action is "taking a container" and the condition
 about the location applies. Those two restrictions are both stored in its RCD.
@@ -129,14 +129,14 @@ int RuntimeContextData::compare_specificity(id_runtime_context_data *rcd1,
 The activity list part of a RCD is a list of activities, one of which must
 be currently running for the rule to fire. For example, in:
 
->> Rule for printing the name of the lemon sherbet while listing contents: ...
+> Rule for printing the name of the lemon sherbet while listing contents: ...
 
 the activity list is just "listing contents". These are like action patterns,
 but much simpler to parse -- an or-divided list of activities can be given,
 with or without operands; "not" can be used to negate the list; and ordinary
 conditions are also allowed, as here:
 
->> Rule for printing the name of the sack while the sack is not carried: ...
+> Rule for printing the name of the sack while the sack is not carried: ...
 
 where "the sack is not carried" is also a <run-time-context> even though
 it mentions no activities.
@@ -146,7 +146,7 @@ typedef struct activity_list {
 	struct activity *activity; /* what activity */
 	struct parse_node *acting_on; /* the parameter */
 	struct parse_node *only_when; /* condition for when this applies */
-	int ACL_parity; /* |+1| if meant positively, |-1| if negatively */
+	int ACL_parity; /* `+1` if meant positively, `-1` if negatively */
 	struct activity_list *next; /* next in activity list */
 } activity_list;
 
@@ -208,7 +208,7 @@ activity_list *RuntimeContextData::parse_avl(wording W) {
 @ Which in turn uses the following Preform grammar.
 
 The direct handling of "something" below is to avoid Inform from reading it
-as "some thing", with the implication that a |K_thing| value is meant. When
+as "some thing", with the implication that a `K_thing` value is meant. When
 people talk about "factorising something", where "factorising" is an activity
 on numbers, for example, they mean "something" to stand for "any number", not
 for "any physical object". Kind-checking means that only a number is possible

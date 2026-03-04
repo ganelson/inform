@@ -423,7 +423,7 @@ int VerbUsages::is_used_negatively(verb_usage *vu) {
 }
 
 @h Parsing source text against verb usages.
-Given a particular VU, and a word range |w1| to |w2|, we test whether the
+Given a particular VU, and a word range `w1` to `w2`, we test whether the
 range begins with but does not consist only of the text of the VU. We return
 the first word after the VU text if it does (which will therefore be a
 word number still inside the range), or $-1$ if it doesn't.
@@ -448,9 +448,11 @@ verb *permitted_verb = NULL;
 
 @ We now define a whole run of internals to parse verbs. As examples,
 
->> is
->> has not been
->> was carried by
+> is
+
+> has not been
+
+> was carried by
 
 are all, in the sense we mean it here, "verbs".
 

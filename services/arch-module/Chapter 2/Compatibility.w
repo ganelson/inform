@@ -10,7 +10,7 @@ it's a fully general way to express which VMs some piece of software works with:
 typedef struct compatibility_specification {
 	struct text_stream *parsed_from; /* if it came from text */
 	int default_allows;
-	struct linked_list *exceptions; /* of |target_vm| */
+	struct linked_list *exceptions; /* of `target_vm` */
 	CLASS_DEFINITION
 } compatibility_specification;
 
@@ -48,7 +48,7 @@ int Compatibility::add_exception(compatibility_specification *C, target_vm *VM) 
 }
 
 @h Converting to text.
-This often produces something verbose; the |parsed_from| text probably reads
+This often produces something verbose; the `parsed_from` text probably reads
 better, if available.
 
 =
@@ -75,12 +75,12 @@ void Compatibility::write(OUTPUT_STREAM, compatibility_specification *C) {
 @h Converting from text.
 This is quite a tricky little parser, which has to read, for example,
 text like "for Glulx only" used in Inform extension headings. A syntactically
-invalid description returns |NULL| but prints no error message; an empty
+invalid description returns `NULL` but prints no error message; an empty
 description returns the universally valid specification.
 
 A question we might return to is whether an unrecognisable description --
 say, "for Marzipan version 28.1 only" -- should return a universally-false
-specification rather than returning |NULL|: this would enable current Inform
+specification rather than returning `NULL`: this would enable current Inform
 tools to work with future resources which use VMs currently unthought of.
 But for now, it seems best to generate errors, because the more likely thing
 is that an extension author is botching the wording of something, or
@@ -91,14 +91,14 @@ hand. But we want to make it work in tools which don't have Preform available,
 and we want it to run quickly.
 
 Unless the text is empty, we start with the "works with nothing" specification
-and then add each VM with which |C| does work as an exception.
+and then add each VM with which `C` does work as an exception.
 
 =	
 compatibility_specification *Compatibility::from_text(text_stream *text) {
 	compatibility_specification *C = Compatibility::all();
 	C->parsed_from = Str::duplicate(text);
 	if (Str::len(text) == 0) return C;
-	Compatibility::reverse(C); /* now |C| works with nothing */
+	Compatibility::reverse(C); /* now `C` works with nothing */
 	int error_in_syntax = FALSE;
 
 	match_results mr = Regexp::create_mr();
@@ -182,8 +182,8 @@ compat_parser_state Compatibility::initial_state(compatibility_specification *C)
 	return cps;
 }
 
-@ So here's the specific details parser, then. We return |TRUE| if no syntax
-errors occurred, and we change |C| according to what |text| says.
+@ So here's the specific details parser, then. We return `TRUE` if no syntax
+errors occurred, and we change `C` according to what `text` says.
 
 =
 int Compatibility::parse_specifics(compatibility_specification *C, text_stream *text) {
@@ -199,11 +199,11 @@ int Compatibility::parse_specifics(compatibility_specification *C, text_stream *
 
 @ This is essentially simple -- it splits up text like "Z-machine versions 5 or 8"
 into tokens, sending them one at a time to //Compatibility::parse_token//.
-Note that commas are converted to the token |or|: e.g., "Z-machine versions 5, 6
+Note that commas are converted to the token `or`: e.g., "Z-machine versions 5, 6
 or 8" would be treated as "Z-machine versions 5 or 6 or 8"; and note also that
 "with debugging" and "without debugging" are handled specially.
 
-We end the sequence of tokens with a |NULL|, telling the token-parser that
+We end the sequence of tokens with a `NULL`, telling the token-parser that
 it has reached the end.
 
 @<Reduce the text to a sequence of tokens@> =
@@ -223,9 +223,9 @@ it has reached the end.
 		okay = (okay && Compatibility::parse_token(&cps, text, NOT_APPLICABLE));
 	okay = (okay && Compatibility::parse_token(&cps, NULL, NOT_APPLICABLE));
 
-@ Returns |TRUE| if the text |T| begins "with debugging", and trims that text
-away from |T|; returns |FALSE| if it begins "without debugging", and similarly
-trims; and otherwise returns |NOT_APPLICABLE| and leaves |T| unaltered.
+@ Returns `TRUE` if the text `T` begins "with debugging", and trims that text
+away from `T`; returns `FALSE` if it begins "without debugging", and similarly
+trims; and otherwise returns `NOT_APPLICABLE` and leaves `T` unaltered.
 
 =
 int Compatibility::parse_debugging(text_stream *T) {
@@ -244,8 +244,8 @@ int Compatibility::parse_debugging(text_stream *T) {
 	return with;
 }
 
-@ Once again we return |TRUE| if no syntax errors occurred, and we change |C|
-according to what the |token| says.
+@ Once again we return `TRUE` if no syntax errors occurred, and we change `C`
+according to what the `token` says.
 
 =
 int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int with) {

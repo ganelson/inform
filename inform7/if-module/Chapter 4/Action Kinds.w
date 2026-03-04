@@ -29,7 +29,7 @@ int ARvalues::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 
 @ A stored action can always be compared to a gerund: for instance,
 
->> if the current action is taking something...
+> if the current action is taking something...
 
 =
 int ARvalues::actions_typecheck_equality(kind *K1, kind *K2) {
@@ -53,10 +53,10 @@ action, the result has the kind "stored action" and corresponds to an
 //explicit_action// object; if the pattern is looser than that, the result
 is a "description of action" and correspond to an //action_pattern//.
 
-For example, "taking the golden telephone" might be a |K_stored_action|
+For example, "taking the golden telephone" might be a `K_stored_action`
 constant, but "doing something to the golden telephone" or "taking something"
 or "taking the golden telephone in the presence of Mr Wu" would all be
-|K_description_of_action|.
+`K_description_of_action`.
 
 =
 parse_node *ARvalues::from_action_pattern(action_pattern *val) {
@@ -79,7 +79,7 @@ explicit_action *ARvalues::to_explicit_action(parse_node *spec) {
 @ Finally, for a named action pattern, constant values correspond to
 //named_action_pattern// objects. These are actually never used at run-time
 and do not appear as rvalues in any permanent way inside the compiler, so
-the kind |K_description_of_action| is given to them only on principle. If
+the kind `K_description_of_action` is given to them only on principle. If
 they were used as values, this is the kind we would probably give them.
 
 =

@@ -6,12 +6,12 @@ To work out the verbs used and to diagram sentences in the source.
 The story so far: the //supervisor// module has arranged for the source
 text to be read in by //words// and has made a rudimentary parse tree for
 it using //syntax//. Certain "structural" sentences, such as headings, have
-been taken care of, and turned into nodes with types like |HEADING_NT|.
+been taken care of, and turned into nodes with types like `HEADING_NT`.
 
 But the assertions we want to read -- such as "The Mona Lisa is in the Louvre",
 or "The plural of major general is majors general" -- are all simply
-|SENTENCE_NT| nodes with no children. The following traverse begins Inform's
-compilation process in earnest: for each such |SENTENCE_NT| node, it asks
+`SENTENCE_NT` nodes with no children. The following traverse begins Inform's
+compilation process in earnest: for each such `SENTENCE_NT` node, it asks
 the //linguistics// module to identify a primary verb, noun phrases and so
 on, placing them in a subtree.
 
@@ -31,7 +31,7 @@ int Classifying::sentence_is_textual(parse_node *p) {
 }
 
 @h Classifying a single sentence.
-Every |SENTENCE_NT| node, however it is constructed, therefore ends up here,
+Every `SENTENCE_NT` node, however it is constructed, therefore ends up here,
 and we ask the //linguistics// module to "diagram" it.
 
 See //linguistics: About Sentence Diagrams// for many examples.
@@ -131,11 +131,11 @@ the test here in case of future changes.
 like this might be okay, but in practice they cannot be useful and are far
 more likely to occur as a result of something like:
 
->> "This is a dining room" East is the Ballroom.
+> "This is a dining room" East is the Ballroom.
 
 where the lack of a closing full stop in the quoted text means that //linguistics//
-read this as one single sentence, equating |"This is a dining room" East|
-with |the Ballroom|.
+read this as one single sentence, equating `"This is a dining room" East`
+with `the Ballroom`.
 
 Special-meaning sentences are exempt; this is needed because subject phrases
 for "Understand ... as ..." are indeed sometimes multiword clauses the first
@@ -160,8 +160,8 @@ word of which is quoted.
 		return;
 	}
 
-@ Here |py| is a |CALLED_NT| subtree for "an A called B", which we relabel
-as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node;
+@ Here `py` is a `CALLED_NT` subtree for "an A called B", which we relabel
+as a `PROPERTYCALLED_NT` subtree and hang beneath an `ALLOWED_NT` node;
 or else it's a property or list of properties, as in "carrying capacity 7".
 
 @<Diagram property callings@> =
@@ -292,7 +292,7 @@ this, a problem message of some kind will certainly result.
 where "colour" is a property name. We must be careful, though, to avoid
 confusion with variable declarations:
 
->> The interesting var is a description of numbers that varies.
+> The interesting var is a description of numbers that varies.
 
 which would otherwise be misread as an attempt to set the "description"
 property of something.

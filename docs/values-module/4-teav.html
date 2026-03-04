@@ -97,25 +97,19 @@ which would see it as a sort of half-way position between &quot;value&quot; and
 parameter in a phrase definition should be, though it has other uses elsewhere.
 That certainly includes cases which traditional programming languages would
 call types, so</p>
-</div>
 <blockquote>
-    <p>To adjust (X - closed door) by (N - number): ...</p>
+<p>To adjust (X - closed door) by (N - number): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>includes two type expressions, &quot;closed door&quot; and &quot;number&quot;. But a type
 expression can also be a constant, which languages like C (for instance) would
 consider a value and not a type at all:</p>
-</div>
 <blockquote>
-    <p>To adjust (X - closed door) by (N - 11): ...</p>
+<p>To adjust (X - closed door) by (N - 11): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>gives a definition to be used only where the second parameter evaluates to
 11. In this way any constant value is regarded as being a type -- the narrow
 type representing only its own value.</p>
-<p>The final use of &lt;s-object-instance&gt; here catches hardly any cases, but is
+<p>The final use of <s-object-instance> here catches hardly any cases, but is
 needed for a handful of object names which ambiguously look like uses of
 ordinal determiners. For example, a room called &quot;24th Street&quot; might be misread
 otherwise as the 24th &quot;Street&quot;.</p>
@@ -143,12 +137,9 @@ expression. It looks as if it never should, on the face of it -- &quot;opaque&qu
 does not make clear what kind of object is to be opaque -- but once again we
 are up against the problem that Inform needs to allow some slightly noun-like
 adjectives. For instance, this:</p>
-</div>
 <blockquote>
-    <p>To adjust (X - scenery): ...</p>
+<p>To adjust (X - scenery): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is allowed even though &quot;scenery&quot; is an adjective in Inform.</p>
 <p>To allow this, we have a minor variation:</p>
 </div>
@@ -164,18 +155,15 @@ adjectives. For instance, this:</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  And now we parse descriptions of variables such as the one appearing in</p>
-</div>
 <blockquote>
-    <p>To increment (V - existing number variable)</p>
+<p>To increment (V - existing number variable)</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>where &lt;s-variable-scope&gt; matches &quot;existing number variable&quot;.</p>
+<p>where <s-variable-scope> matches &quot;existing number variable&quot;.</p>
 <p>Note that these forms recurse, so that syntactically we allow &quot;T that
 varies&quot; for any type expression T. This would include contradictions in terms
 such as &quot;15 that varies&quot; or &quot;number that varies that varies that varies&quot;,
 but we want to allow the parse here so that a problem message can be issued
-higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case.</p>
+higher up in Inform. Ultimately, the text must match <k-kind> in each case.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-variable-scope&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -221,11 +209,10 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Unusual contexts.</b>  Two pieces of context. &quot;Let&quot; mode is in operation when we are in an equation
 written out in the phrase, such as here:</p>
-</div>
 <blockquote>
-    <p>let V be given by V = fl;</p>
+<p>let V be given by V = fl;</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let_equation_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">probable_noun_phrase_context</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

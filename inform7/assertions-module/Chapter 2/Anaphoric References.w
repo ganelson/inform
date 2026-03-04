@@ -12,12 +12,12 @@ happy with the result.
 But we try, just a little, by keeping track of the subject and object
 under discussion. Even this is tricky. Consider:
 
->> The Pavilion is a room. East is the Cricket Square.
+> The Pavilion is a room. East is the Cricket Square.
 
 East of where? Clearly of the current subject, the Pavilion (not
 the room kind). On the other hand,
 
->> On the desk is a pencil. It has description "2B."
+> On the desk is a pencil. It has description "2B."
 
 "It" here is the pencil, not the desk. To disentangle such things,
 we keep track of two different running references: the current subject and
@@ -39,16 +39,16 @@ int Anaphora::get_current_subject_plurality(void) {
 	return global_pass_state.subject_seems_to_be_plural;
 }
 
-@ The routine |Anaphora::new_discussion| is called when we reach a
+@ The routine `Anaphora::new_discussion` is called when we reach a
 heading or other barrier in the source text, to make clear that there has
 been a change of the topic discussed.
 
-|Anaphora::change_discussion_topic| is called once at the end of
+`Anaphora::change_discussion_topic` is called once at the end of
 processing each assertion during each pass.
 
 Note that we are careful to avoid changing the subject with sentences like:
 
->> East is the Central Plaza.
+> East is the Central Plaza.
 
 where this does not have the subject "east", but has instead an implicit
 subject carried over from previous sentences.
@@ -71,13 +71,13 @@ of subject-verb inversion ("in the bag is the ball" not "the ball is in the
 bag"). We extract a subject from a relationship node on the left, but not on
 the right, and we don't extract an object from one. Consider:
 
->> A billiards table is in the Gazebo. On it is a trophy cup.
+> A billiards table is in the Gazebo. On it is a trophy cup.
 
 What does "it" mean, and why? A human reader goes for the billiards table at
 once, because it seems more likely as a supporter than the Gazebo, but that's
 not how Inform gets the same answer. It all hangs on "billiards table" being
 the object of the first sentence, not the Gazebo; if we descended the RHS,
-which is |RELATIONSHIP_NT -> PROPER_NOUN_NT| pointing to the Gazebo, that's the
+which is `RELATIONSHIP_NT -> PROPER_NOUN_NT` pointing to the Gazebo, that's the
 conclusion we would have reached.
 
 =

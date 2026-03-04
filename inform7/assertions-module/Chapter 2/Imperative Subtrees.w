@@ -3,8 +3,8 @@
 To tidy up blocks of rule and phrase definition in the syntax tree.
 
 @ Blocks of imperative code in Inform 7 source text enter the syntax tree
-at |IMPERATIVE_NT| nodes: some define phrases, some define rules. Those nodes
-are initially followed by a run of |UNKNOWN_NT| nodes for the actual code.
+at `IMPERATIVE_NT` nodes: some define phrases, some define rules. Those nodes
+are initially followed by a run of `UNKNOWN_NT` nodes for the actual code.
 The process of "acceptance" turns such definitions into a subtree, as
 follows:
 = (text)
@@ -12,10 +12,10 @@ IMPERATIVE_NT 'every turn'                IMPERATIVE_NT 'every turn
 UNKNOWN_NT 'say "Hello!"'            -->      INVOCATION_LIST_NT 'say "Hello!"'
 UNKNOWN_NT 'now the guard is alert'           INVOCATION_LIST_NT 'now the guard is alert'
 =
-//ImperativeSubtrees::accept// needs to be called on every |IMPERATIVE_NT| node in order
+//ImperativeSubtrees::accept// needs to be called on every `IMPERATIVE_NT` node in order
 for this to work; note that it does nothing further, but also causes no harm,
 if called multiple times on the same node. //ImperativeSubtrees::accept_all// can
-therefore safely be used to sweep up any |IMPERATIVE_NT| nodes not already processed.
+therefore safely be used to sweep up any `IMPERATIVE_NT` nodes not already processed.
 
 =
 void ImperativeSubtrees::accept_all(void) {
@@ -38,7 +38,7 @@ void ImperativeSubtrees::accept_inner(parse_node *p, int accept_header) {
 		while ((end_def->next) && (Node::get_type(end_def->next) == UNKNOWN_NT))
 			end_def = end_def->next;
 		if (header != end_def) {
-			/* splice so that |p->next| to |end_def| become the children of |p|: */
+			/* splice so that `p->next` to `end_def` become the children of `p`: */
 			p->down = p->next;
 			p->next = end_def->next;
 			end_def->next = NULL;
@@ -60,7 +60,7 @@ Though it is now a historical relic, Inform has two different syntaxes for
 blocks of code: "colon syntax", introduced in March 2008, which uses Python-like
 colons and indentation to show structural subdivision; and "begin/end syntax",
 which uses explicit marker phrases like "end if" and "end while". The compiler
-continues to support both though they cannot be mixed in a single |IMPERATIVE_NT|
+continues to support both though they cannot be mixed in a single `IMPERATIVE_NT`
 subtree.
 
 The old syntax is retained not for compatibility with old code -- very little
@@ -253,7 +253,7 @@ or type-checked until compilation.
 @ "Comma notation" is when a comma is used in an "if" statement to divide
 off only a single consequential phrase, as in
 
->> if the hat is worn, try dropping the hat;
+> if the hat is worn, try dropping the hat;
 
 Such a line occupies a single node in its routine's parse tree, and we need
 to break this up.
@@ -316,7 +316,7 @@ to break this up.
 
 @ An abbreviated otherwise clause looks like this:
 
->> otherwise award 4 points;
+> otherwise award 4 points;
 
 and we want to split this, too, into distinct nodes.
 
@@ -390,10 +390,10 @@ report more or less helpfully.
 	Problems::issue_problem_end();
 	suppress_further_problems = TRUE;
 
-@ Here we set |indent| to the number of tab-stops in from the margin, or to
-|expected_indent| if the text does not appear to be at the start of its own
+@ Here we set `indent` to the number of tab-stops in from the margin, or to
+`expected_indent` if the text does not appear to be at the start of its own
 line in the source (because it runs on from a previous phrase, in
-which case we set the |run_on_at| flag: except for following on from cases
+which case we set the `run_on_at` flag: except for following on from cases
 in switches with a non-control-structure, which is allowed, because otherwise
 the lines often look silly and short).
 
@@ -417,14 +417,14 @@ the lines often look silly and short).
 	}
 	if (indent >= GROSS_AMOUNT_OF_INDENTATION) @<Record an excess of indentation@>;
 
-@ We now know the |indent| level of the line as read, and also the
-|expected_indent| given the definition so far. If they agree, fine. If they
+@ We now know the `indent` level of the line as read, and also the
+`expected_indent` given the definition so far. If they agree, fine. If they
 don't agree, it isn't necessarily bad news -- if each line's indentation were
 a function of the last, there would be no information in it, after all.
-Roughly speaking, when |indent| is greater than we expect, that must be
+Roughly speaking, when `indent` is greater than we expect, that must be
 wrong -- it means indentation has jumped inward as if to open a new block,
 but blocks are opened explicitly and not by simply raising the indent.
-But when |indent| is less than we expect, this may simply mean that the
+But when `indent` is less than we expect, this may simply mean that the
 current block(s) has or have been closed, because blocks are indeed closed
 implicitly just by moving the indentation back in.
 
@@ -474,8 +474,8 @@ within an "if".
 @ In colon syntax, blocks are explicitly opened; they are only implicitly
 closed. Here is the opening:
 
-If |p| is a node representing a phrase beginning a block, and we're in the
-colon syntax, then it is followed by a word which is the colon: thus if |p|
+If `p` is a node representing a phrase beginning a block, and we're in the
+colon syntax, then it is followed by a word which is the colon: thus if `p`
 reads "if x is 2" then the word following the "2" will be ":".
 
 @<Insert begin marker and increase expected indentation if a block begins here@> =
@@ -1117,15 +1117,15 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 	if (sqb != 0) @<Issue problem message for unclosed substitution@>;
 
 @ A long-standing annoyance in Inform syntax was that commas were not allowed
-inside text substitutions: |"Like [this, that]."| The reason for this was that
-such a text converts to the say phrase |say "Like ", this, that, "."|; so that
-what was intended as a single expression with a comma in |this, that| came out
-as two, |this| then |that|. This arose seldom, but meant that phrases using
+inside text substitutions: `"Like [this, that]."` The reason for this was that
+such a text converts to the say phrase `say "Like ", this, that, "."`; so that
+what was intended as a single expression with a comma in `this, that` came out
+as two, `this` then `that`. This arose seldom, but meant that phrases using
 phrase options, which unhappily include a comma in their syntax, could not
 easily be used in substitutions.
 
-The text now converts to |say "Like ", (this, that), "."|, so that a single
-bracketed expression |(this, that)| appears. Thus, round brackets are put
+The text now converts to `say "Like ", (this, that), "."`, so that a single
+bracketed expression `(this, that)` appears. Thus, round brackets are put
 around the contents of any substitution which contains a comma.
 
 @<Write a form of the text bracketing substitutions with commas@> =
@@ -1183,11 +1183,11 @@ around the contents of any substitution which contains a comma.
 is literal if it contains no square brackets, but is expanded if it includes text
 substitutions in squares. Thus:
 
->> "Look, [the noun] said."
+> "Look, [the noun] said."
 
 becomes:
 
->> "Look, ", the noun, " said."
+> "Look, ", the noun, " said."
 
 This is then re-parsed with the following nonterminal; note that we report any
 problem with misuse of commas -- really, of square brackets -- before handing back

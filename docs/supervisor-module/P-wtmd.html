@@ -200,12 +200,9 @@ of the search engine which returns a single result (or none): the best one.
 Best is defined by <a href="2-nst.html#SP11" class="internal">Nests::better_result</a> and makes careful use of both
 semantic versioning and the user's intentions to ensure a happy outcome.
 For example, if an Inform project says</p>
-</div>
 <blockquote>
-    <p>Include Upturned Faces by Raphael.</p>
+<p>Include Upturned Faces by Raphael.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then <a href="2-nst.html#SP10" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
 extension to use.</p>
 </div>
@@ -334,12 +331,9 @@ by the <a href="../words-module/index.html" class="internal">words</a> module, a
 to type into code.)</p>
 <p>For reasons which will become clear shortly, the sentences we care most about
 are extension inclusions and headings. Headings are sentences such as:</p>
-</div>
 <blockquote>
-    <p>Chapter the First - The Voyage</p>
+<p>Chapter the First - The Voyage</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>These are detected for us by the sentence-breaker in <a href="../syntax-module/index.html" class="internal">syntax</a>, which
 calls out to our function <a href="6-hdn.html#SP8" class="internal">Headings::place</a> when it finds one. Each is
 given a <a href="6-hdn.html#SP6" class="internal">heading</a> object. We will do three things with headings:</p>
@@ -355,41 +349,29 @@ though this stage is performed only later -- see below.</li>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  What happens next involves is carefully timed. What we want is to look
 through for sentences like this one:</p>
-</div>
 <blockquote>
-    <p>Include Holy Bat Artefacts by Bruce Wayne.</p>
+<p>Include Holy Bat Artefacts by Bruce Wayne.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...so that we can see what extensions the project/extension we are reading
 will further need. And this is performed by the <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a>
 function, which crawls over the syntax tree looking for such. However, if
 an extension inclusion occurs under a heading in the source text like this one:</p>
-</div>
 <blockquote>
-    <p>Chapter 9 - External Files (not for Z-machine)</p>
+<p>Chapter 9 - External Files (not for Z-machine)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and the current virtual machine doesn't meet stipulation, then we must ignore
 the inclusion and there's no dependency; and similarly:</p>
-</div>
 <blockquote>
-    <p>Section 1 - Figures (for figures language element only)</p>
+<p>Section 1 - Figures (for figures language element only)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Because of this, we make sure to call <a href="5-ps2.html#SP25" class="internal">Projects::activate_elements</a> before
 looking for inclusion sentences, in order to know whether or not, e.g., the
 figures language element is present.</p>
 <p>Worst of all is the case of an extension inclusion coming underneath a
 heading like this:</p>
-</div>
 <blockquote>
-    <p>Section 15 - Bolts (for use with Locksmith by Emily Short)</p>
+<p>Section 15 - Bolts (for use with Locksmith by Emily Short)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We can only base the decision on whether we have so far included Locksmith.
 Otherwise, it would be easy to set up flip-flop like paradoxes where if X
 is not present, Y is present, and vice versa, leaving it a matter of chance
@@ -415,12 +397,9 @@ will have been added to the build graph.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Finally comes the complicated business of rearranging the syntax tree due
 to headings like:</p>
-</div>
 <blockquote>
-    <p>Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)</p>
+<p>Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This is performed by <a href="6-hdn.html#SP22" class="internal">Headings::satisfy_individual_heading_dependency</a>,
 and it has to be done after all the extension inclusions have been made. It's
 a step only performed for the syntax tree of a whole project: if we've just

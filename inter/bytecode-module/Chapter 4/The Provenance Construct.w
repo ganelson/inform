@@ -21,10 +21,10 @@ void ProvenanceInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |provenance| instruction is laid out with the
+In bytecode, the frame of a `provenance` instruction is laid out with the
 compulsory words -- see //Inter Nodes//.
 
-If |ORIGIN_PROVENANCE_IFLD| is zero, the instruction means "Following
+If `ORIGIN_PROVENANCE_IFLD` is zero, the instruction means "Following
 bytecode is not from any specific source location." The line number is ignored
 in this case.
 
@@ -78,7 +78,7 @@ void ProvenanceInstruction::migrate(inter_tree_node *P, inter_tree *I) {
 }
 
 @ Verification consists only of checking that the origin, if given, was
-a symbol defined by an |origin| instruction.
+a symbol defined by an `origin` instruction.
 
 =
 void ProvenanceInstruction::verify(inter_construct *IC, inter_tree_node *P,

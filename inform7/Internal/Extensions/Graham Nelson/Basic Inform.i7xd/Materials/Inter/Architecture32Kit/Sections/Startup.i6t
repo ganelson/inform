@@ -2,7 +2,7 @@ Startup
 
 How programs for this architecture start up the virtual machine.
 
-@ |VM_Check_Functionality| checks that we are running in a Glk interpreter,
+@ `VM_Check_Functionality` checks that we are running in a Glk interpreter,
 as well as that it supports the minimum requirements, which are currently
 that Glk supports unicode, and Glulx supports real numbers. If one of those
 requirements is not met an error message will be shown before quitting.

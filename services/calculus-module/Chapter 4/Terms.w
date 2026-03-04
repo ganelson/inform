@@ -6,15 +6,15 @@ variables, constants or functions of other terms.
 @h About terms.
 A "term" can be a constant, a variable, or a function of another term: see
 //What This Module Does//. Our data structure therefore falls into three
-cases. At all times exactly one of the three relevant fields, |variable|,
-|constant| and |function| is used.
+cases. At all times exactly one of the three relevant fields, `variable`,
+`constant` and `function` is used.
 
-- Variables are represented by the numbers 0 to 25, and |-1| means
+- Variables are represented by the numbers 0 to 25, and `-1` means
 "not a variable".
-- Constants are pointers to |specification| structures of main
-type |VALUE|, and |NULL| means "not a constant".
-- Functions are pointers to |pcalc_func| structures (see below), and
-|NULL| means "not a function".
+- Constants are pointers to `specification` structures of main
+type `VALUE`, and `NULL` means "not a constant".
+- Functions are pointers to `pcalc_func` structures (see below), and
+`NULL` means "not a function".
 
 Cinders are discussed in //imperative: Cinders and Deferrals//, and can be ignored for now.
 
@@ -22,31 +22,31 @@ In order to verify that a proposition makes sense and does not mix up
 incompatible kinds of value, we will need to type-check it, and one part
 of that involves assigning a kind of value $K$ to every term $t$ occurring
 in the proposition. This calculation does involve some work, so we cache
-the result in the |term_checked_as_kind| field.
+the result in the `term_checked_as_kind` field.
 
 =
 typedef struct pcalc_term {
-	int variable; /* 0 to 25, or |-1| for "not a variable" */
-	struct parse_node *constant; /* or |NULL| for "not a constant" */
-	struct pcalc_func *function; /* or |NULL| for "not a function of another term" */
+	int variable; /* 0 to 25, or `-1` for "not a variable" */
+	struct parse_node *constant; /* or `NULL` for "not a constant" */
+	struct pcalc_func *function; /* or `NULL` for "not a function of another term" */
 	int cinder; /* complicated, this: used to worry about scope of I6 local variables */
-	struct kind *term_checked_as_kind; /* or |NULL| if unchecked */
+	struct kind *term_checked_as_kind; /* or `NULL` if unchecked */
 } pcalc_term;
 
-@ The |pcalc_func| structure represents a usage of a function inside a term.
+@ The `pcalc_func` structure represents a usage of a function inside a term.
 Terms such as $f_A(f_B(f_C(x)))$ often occur, an example which would be stored
 as:
 
-- A |pcalc_term| structure which has a |function| field pointing to
-- A |pcalc_func| structure whose |bp| field points to A, and whose |fn_of|
+- A `pcalc_term` structure which has a `function` field pointing to
+- A `pcalc_func` structure whose `bp` field points to A, and whose `fn_of`
 field is
-- A |pcalc_term| structure which has a |function| field pointing to
-- A |pcalc_func| structure whose |bp| field points to B, and whose |fn_of|
+- A `pcalc_term` structure which has a `function` field pointing to
+- A `pcalc_func` structure whose `bp` field points to B, and whose `fn_of`
 field is
-- A |pcalc_term| structure which has a |function| field pointing to
-- A |pcalc_func| structure whose |bp| field points to C, and whose |fn_of|
+- A `pcalc_term` structure which has a `function` field pointing to
+- A `pcalc_func` structure whose `bp` field points to C, and whose `fn_of`
 field is
-- A |pcalc_term| structure which has a |variable| field set to 0 (which is $x$).
+- A `pcalc_term` structure which has a `variable` field set to 0 (which is $x$).
 
 =
 typedef struct pcalc_func {
@@ -107,7 +107,7 @@ The number 26 turns up quite often in this chapter, and while it's normally
 good style to define named constants, here we're not going to. 26 is a number
 which anyone[1] will immediately associate with the size of the alphabet.
 Moreover, we can't really raise the total, because we will want to compile
-these with single-character identifier names, |a| to |z|.[2] To have a
+these with single-character identifier names, `a` to `z`.[2] To have a
 variable limit lower than 26 would be artificial, since there are no memory
 constraints arguing for it; but a proposition with 27 or more variables would
 be too huge to evaluate at run-time in any remotely plausible length of time.
@@ -117,7 +117,7 @@ not any restriction, and it greatly simplifies the code.
 [1] Well, perhaps not a string theorist. "There aren't enough small numbers to
 meet the many demands made of them" (Richard Guy).
 
-[2] Strictly speaking there is also |_|, but we won't go there.
+[2] Strictly speaking there is also `_`, but we won't go there.
 
 @ The variables 0 to 25 are referred to by the letters $x, y, z, a, b, c, ..., w$,
 as provided for by this lookup array:

@@ -3,9 +3,9 @@
 To read a tree from a file written in the plain text version of Inter.
 
 @h Reading textual inter.
-The test group |:syntax| of Inter test cases may be useful in checking
-the code below. Anyway, here we import the content of the file |F| into the
-tree |I|.
+The test group `:syntax` of Inter test cases may be useful in checking
+the code below. Anyway, here we import the content of the file `F` into the
+tree `I`.
 
 =
 void TextualInter::read(inter_tree *I, filename *F) {
@@ -80,7 +80,7 @@ of each line to be made of tabs, not spaces. If we intended textual Inter to be
 a programming language for humans to use, we might be more accommodating. But it's
 really an interchange format for programs to use.
 
-A blank line is treated as a comment, so we rewrite it with the explicit |#|
+A blank line is treated as a comment, so we rewrite it with the explicit `#`
 notation. If it is printed back, it will actually be printed back as empty
 anyway -- see //CommentInstruction::write//. So nobody will ever know our little
 deception.
@@ -113,9 +113,9 @@ root package of the tree.)
 		InterBookmark::move_into_package(write_pos,
 			InterPackage::parent(InterBookmark::package(write_pos)));
 
-@ A line ending, e.g., |... _bar _foo=2| has those annotations parsed and trimmed
-away. The result of the parsing goes into the annotation set |ilp.set|. Note
-that we do nothing with that result here -- it will be up to the |CONSTRUCT_READ_MTID|
+@ A line ending, e.g., `... _bar _foo=2` has those annotations parsed and trimmed
+away. The result of the parsing goes into the annotation set `ilp.set`. Note
+that we do nothing with that result here -- it will be up to the `CONSTRUCT_READ_MTID`
 method for the construct used on the line to make use of the set, or not, as it
 pleases.
 
@@ -167,9 +167,9 @@ inter_symbol *TextualInter::new_symbol(inter_error_location *eloc, inter_symbols
 }
 
 @ Second, this attempts to match a name against a symbol in the scope local to
-the bookmark |IBM|. If it exists, we return it, though if |construct| is non-zero
+the bookmark `IBM`. If it exists, we return it, though if `construct` is non-zero
 then we first check if it is defined by an instruction of that type. (This
-enables us to tell if it's, e.g., a variable, defined by |VARIABLE_IST| instruction.)
+enables us to tell if it's, e.g., a variable, defined by `VARIABLE_IST` instruction.)
 
 =
 inter_symbol *TextualInter::find_symbol(inter_bookmark *IBM, inter_error_location *eloc,
@@ -195,8 +195,8 @@ inter_symbol *TextualInter::find_symbol_in_table(inter_symbols_table *T, inter_e
 If this has already been created, all well and good, but it may be a forward
 reference, or even a reference to something in another tree which is to be
 linked in later on. So if we see a URL which does not (yet) exist, we wire
-a plug to it. For example, given |/some/enchanted/evening|, we make a local
-symbol |evening ~~> "/some/enchanted/evening"|. This is then fixed up when we
+a plug to it. For example, given `/some/enchanted/evening`, we make a local
+symbol `evening ~~> "/some/enchanted/evening"`. This is then fixed up when we
 resolve forward references at the end of the parsing process -- see below.
 
 @<Search using URL conventions@> =
@@ -281,18 +281,18 @@ void TextualInter::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	}
 }
 
-@ The unexpected case here is where our unresolved symbol |S| is itself a socket,
+@ The unexpected case here is where our unresolved symbol `S` is itself a socket,
 having been declared by a line of Inter like
 = (text as Inter)
 	socket hypothetical ~~> /ultima/thule
 =
-at a position in the text file where |/ultima/thule| has not yet been defined.
+at a position in the text file where `/ultima/thule` has not yet been defined.
 This then becomes that most heretical thing, a socket wired to a name:
 = (text as Inter)
 	socket hypothetical ~~> "/ultima/thule"
 =
 ...until we correct that heresy here by calling //Wiring::make_socket_to//.
-(It was already a socket: but now it's a socket to |S_to|.)
+(It was already a socket: but now it's a socket to `S_to`.)
 
 @<This is a forward reference wiring@> =
 	text_stream *N = Wiring::wired_to_name(S);
@@ -310,7 +310,7 @@ This then becomes that most heretical thing, a socket wired to a name:
 
 @h Writing textual inter.
 This more or less reverses the above process. Note that we do not write the
-|version| pseudo-construct, which would indicate the version number of Inter
+`version` pseudo-construct, which would indicate the version number of Inter
 used; that's a bit of a choice, but in the end it makes testing slightly easier
 if we don't, because otherwise many test cases would need changing whenever
 //The Inter Version// does.
@@ -329,7 +329,7 @@ typedef struct textual_write_state {
 	int (*filter)(inter_tree_node *);
 } textual_write_state;
 
-@ If the function |filter| is provided then we only write those nodes passing
+@ If the function `filter` is provided then we only write those nodes passing
 the filter test.
 
 =
@@ -544,7 +544,7 @@ rules on escape characters inside.
 		return E;
 	}
 
-@ Real numbers are written thus: |r"3.14159"|.
+@ Real numbers are written thus: `r"3.14159"`.
 
 @<Print real literal syntax@> =
 	WRITE("r");
@@ -560,8 +560,8 @@ rules on escape characters inside.
 		return E;
 	}
 
-@ Dictionary words are like literal text, but prefaced by |dw| or |dwp|. For
-example, |dw"xyzzy"| or |dwp"fruits"|.
+@ Dictionary words are like literal text, but prefaced by `dw` or `dwp`. For
+example, `dw"xyzzy"` or `dwp"fruits"`.
 
 @<Print singular dword syntax@> =
 	WRITE("dw");
@@ -592,7 +592,7 @@ example, |dw"xyzzy"| or |dwp"fruits"|.
 	}
 
 @ Globs should never be talked about at all, but if they were, they would be
-written |glob"..."|, with the same escaping rules as literal text.
+written `glob"..."`, with the same escaping rules as literal text.
 
 @<Print glob syntax@> =
 	WRITE("glob");
@@ -638,7 +638,7 @@ one above.
 	*pair = InterValuePairs::symbolic(IBM, symb);
 	return NULL;
 
-@ Note that the undef syntax is not a valid identifier, since it begins |!|.
+@ Note that the undef syntax is not a valid identifier, since it begins `!`.
 This choice of character is meant to give it a dangerous aspect.
 
 @<Print undef syntax@> =

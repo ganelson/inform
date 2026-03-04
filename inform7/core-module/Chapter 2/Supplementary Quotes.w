@@ -51,7 +51,7 @@ void Problems::quote_object(int t, instance *p) {
 @ Since numerous instances are created without explicit and distinct
 names, for instance by sentences like
 
->> Four coins are in the box.
+> Four coins are in the box.
 
 ...it's prudent to quote instances without names carefully, and not to ignore
 this as some kind of marginal will-never-happen case.

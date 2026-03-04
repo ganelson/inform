@@ -484,7 +484,7 @@ course.
 care of the soul is, of course, complicated. For example, the source text can
 say something like this:
 
->> The verb to flaunt means to wear.
+> The verb to flaunt means to wear.
 
 This tells Inform that a new verb's infinitive is "flaunt", but not how
 to construct its other parts. We will use Preform grammar not only to
@@ -544,7 +544,7 @@ example, to set has just three distinct forms -- to set, he sets, he set, he
 had set, setting.
 
 @ Form types are numbered from 0 up to, potentially, a constant
-called |MAX_FORM_TYPES|. (This is so large that there shouldn't ever be need
+called `MAX_FORM_TYPES`. (This is so large that there shouldn't ever be need
 for more.) Form type 0 is always the original text, and is used as the basis
 from which the others are generated. For English verbs Inform always sets form
 type 0 to the infinitive, but this needn't be true if it's more natural in
@@ -567,7 +567,7 @@ each language. English needs two: the present (5) and past (6) forms.
 @d ADJOINT_INFINITIVE_FORM_TYPE 4
 @d MAX_FORM_TYPES 123
 
-@ We're now ready to write the |<verb-conjugation-instructions>|. This is
+@ We're now ready to write the `<verb-conjugation-instructions>`. This is
 a block which looks at the infinitive of the verb and decides which of
 several conjugations should be used. Badly irregular verbs get
 conjugations of their own, and others are grouped together. In French,
@@ -578,17 +578,17 @@ Each row takes the form of a pattern of words to match, followed by a
 nonterminal giving the conjugation to use if a match is made. Matches
 are literal except:
 
-- The tail |...| means any string of one or more words, but can only be used
+- The tail `...` means any string of one or more words, but can only be used
 as the tail. Any text matching it is written into the adjoint infinitive.
-So |be able to ...| matches "be able to touch" and sets the adjoint
+So `be able to ...` matches "be able to touch" and sets the adjoint
 infinitive to "touch".
 
-- A pattern written in the form |-xyz| matches the tail of a verb. This
+- A pattern written in the form `-xyz` matches the tail of a verb. This
 isn't useful for English, but in French it neatly spots classes of verbs:
-for example, |-er| detects first-conjugation verbs such as "donner".
+for example, `-er` detects first-conjugation verbs such as "donner".
 
 Note that we have to make sure every possible infinitive text matches at
-least one line, and the best way to ensure that is to finish up with |...|
+least one line, and the best way to ensure that is to finish up with `...`
 as the last pattern -- this matches anything.
 
 @ The instructions for English are quite concise, except for the presence
@@ -627,7 +627,7 @@ Inform assertion sentences, but are needed for text substitutions.)
 forms of other verbs. The first is "to have"; as we'll see, English uses
 this to construct perfect tenses:
 
->> Peter has opened the gate. Jane had closed it.
+> Peter has opened the gate. Jane had closed it.
 
 "To have" doesn't really mean that anybody possessed anything here, except
 perhaps a history. It's simply used in conjunction with the past participle
@@ -638,11 +638,11 @@ But it's not actually true, despite what concise grammars say, that English
 uses "to have" here; it uses a slight variation which differs in the negated
 forms. We write
 
->> I have not taken the lantern.
+> I have not taken the lantern.
 
 rather than
 
->> I do not have taken the lantern.
+> I do not have taken the lantern.
 
 which strictly speaking ought to be correct. Inform handles this by using a
 modified form of "to have", which we'll call "to auxiliary-have", which
@@ -656,11 +656,11 @@ take within sentences. The verb forms are numbered -- see above -- and
 the recipe is called a "tabulation". We'll specify the format for this
 below, when we get to a more complicated example, but briefly: this one
 sets the present participle (2) to "having", the past participle (3) to
-"had", and then names |<to-have-tabulation>| as the tabulation. The
+"had", and then names `<to-have-tabulation>` as the tabulation. The
 text doesn't have to be a single word, and some ingenious tricks are
 possible to form it from other verb forms; see below.
 
-The marker |<auxiliary-verb-only>| means that this form of "have" can
+The marker `<auxiliary-verb-only>` means that this form of "have" can
 only be accessed from other verb conjugations, not via a text substitution
 for "[have]".
 
@@ -675,33 +675,44 @@ for "[have]".
 @ Tabulations give instructions for how to construct 120 possible versions
 of the verb. These are divided up first into active and passive "voices":
 
->> Peter carries the lantern. [Active.]
->> The lantern is carried by Peter. [Passive.]
+> Peter carries the lantern. [Active.]
+
+> The lantern is carried by Peter. [Passive.]
 
 This makes two sets of 60. Each set contains five tenses, which in English
-are present (1), past (2), perfect (3), past perfect (4) and future (5).
+are present, past, perfect, past perfect and future.
 
->> Peter carries the lantern. [1]
->> Peter carried the lantern. [2]
->> Peter has carried the lantern. [3]
->> Peter had carried the lantern. [4]
->> Peter will carry the lantern. [5]
+> Peter carries the lantern. [Present]
+
+> Peter carried the lantern. [Past]
+
+> Peter has carried the lantern. [Perfect]
+
+> Peter had carried the lantern. [Past Perfect]
+
+> Peter will carry the lantern. [Future]
 
 This makes five sets of 12. In each set there are six persons: first person
 singular, second person singular, third person singular, first person plural,
 second person plural, third person plural. We always write them in that order:
 
->> I carry the lantern. [1PS]
->> You carry the lantern. [2PS]
->> He carries the lantern. [3PS]
->> We carry the lantern. [1PP]
->> You [more than one person] carry the lantern. [2PP]
->> They carry the lantern. [3PP]
+> I carry the lantern. [1PS]
+
+> You carry the lantern. [2PS]
+
+> He carries the lantern. [3PS]
+
+> We carry the lantern. [1PP]
+
+> You [more than one person] carry the lantern. [2PP]
+
+> They carry the lantern. [3PP]
 
 And that makes six sets of 2: the positive sense and the negative.
 
->> I carry the lantern. [Positive.]
->> I do not carry the lantern. [Negative]
+> I carry the lantern. [Positive]
+
+> I do not carry the lantern. [Negative]
 
 To sum up, two voices times five tenses times six persons times two senses,
 which makes 120 versions in all.
@@ -718,7 +729,7 @@ chooses which of the 120 forms to set. The selector always begins with "a"
 or "p", meaning active or passive; it can then optionally give a digit from
 1 to 5, narrowing down to a given tense; and it can optionally give a plus or
 minus sign, narrowing down to positive or negative senses. In the following,
-for example, |a2+| means active voice (a), past tense (2), positive (|+|).
+for example, `a2+` means active voice (a), past tense (2), positive (`+`).
 This nails down the selection to just 6 versions of the verb.
 
 The text is used literally, except for the following:
@@ -732,23 +743,23 @@ following expands to "sought":
 	3 ( seek )
 =
 
-(b) Text in the form |1+xyz| expands into verb form 1 but with the letters
-"xyz" added. For example, |1+ed| for the verb "to mark" would expand to
+(b) Text in the form `1+xyz` expands into verb form 1 but with the letters
+"xyz" added. For example, `1+ed` for the verb "to mark" would expand to
 "marked", since 1 is the infinitive form. This feature is much more useful
 in heavily inflected languages like French.
 
 (c) If a bracket, an infinitive, then a close bracket, is given, it expands
 to the corresponding version of that verb. For example, the step
-|a1+ ( grab ) back| sets the positive present-tense versions of a verb to
+`a1+ ( grab ) back` sets the positive present-tense versions of a verb to
 "I grab back", "you grab back", "he grabs back", and so on. Note that
 the matching persons are used, i.e., if we're expanding this to make the
 first person singular, we use the first person singular of the verb we're
 borrowing. Finally, we can change the tense by placing a tense marker inside
-the open brackets: |a3+ ( t1 have ) grabbed| sets the perfects to "I have
+the open brackets: `a3+ ( t1 have ) grabbed` sets the perfects to "I have
 grabbed", "you have grabbed", and so on -- without the tense marker it
 would have been "I have have had grabbed", because "have" would expand
-to its perfect tense and not its present tense. The |t1| means present tense;
-|t2| means past tense, and so on.
+to its perfect tense and not its present tense. The `t1` means present tense;
+`t2` means past tense, and so on.
 
 (d) If a nonterminal name is given, then it will be set of six texts; these
 are used for the six persons.
@@ -776,9 +787,9 @@ we're going to need as an auxiliary verb when forming negatives ("Peter
 does not wear the hat" -- note the "does not"). But this time we give
 the full treatment, creating all 60 active forms.
 
-For the passive, though, we do something new. The selector |p*| is actually
-a way to set all 60 passive forms (which would normally be written |p|), but
-it tells Inform to use "to be" as an auxiliary. When we write the |p*|
+For the passive, though, we do something new. The selector `p*` is actually
+a way to set all 60 passive forms (which would normally be written `p`), but
+it tells Inform to use "to be" as an auxiliary. When we write the `p*`
 step:
 = (text as InC)
 	p*     done by
@@ -787,20 +798,20 @@ the effect is the same as writing:
 = (text as InC)
 	p      ( be ) done by
 =
-The difference is that Inform more efficiently implements the |p*| version,
+The difference is that Inform more efficiently implements the `p*` version,
 by implementing "done by" as if it were a preposition rather than as part
 of a verb. This parses more quickly and makes English passive forms play
 more nicely with implied uses of "to be". For example, in
 
->> number of things carried by the player (1)
+> number of things carried by the player (1)
 
 Inform has to infer the meaning
 
->> number of things which are carried by the player (2)
+> number of things which are carried by the player (2)
 
 and it can only do this if it recognises "carried by" as being prepositional
-in nature, like "on" or "in". In other words, if we wrote the |p| step
-above instead of the |p*| step, (2) would still work but (1) would not. (We
+in nature, like "on" or "in". In other words, if we wrote the `p` step
+above instead of the `p*` step, (2) would still work but (1) would not. (We
 may have to revisit this for languages other than English.)
 
 =
@@ -832,7 +843,7 @@ to make them somehow.
 
 We do this by giving their definitions not as fixed wording, as we did
 for the verbs above, but as tries which act on the infinitive to produce
-a wording. For example, |<en-trie-present-participle>| is a trie which
+a wording. For example, `<en-trie-present-participle>` is a trie which
 performs:
 = (text as InC)
 	take --> taking
@@ -909,7 +920,7 @@ as we'll see.)
 @ Except for tense formation (Peter "will" take the ball), the most common
 modal verb which can be used in Inform source text is "can". For example:
 
->> the number of people who can see the King
+> the number of people who can see the King
 
 This is modal because it makes the seeing only a possibility, not an actuality.
 An awkward thing about modal verbs in English is that they are deficient,
@@ -944,24 +955,24 @@ to elide, so we always pronounce it that way and the spelling now follows.
 allow the source text to use "can" in combination with arbitrary verbs.
 Instead, each legal combination has to be declared explicitly:
 
->> To be able to reach is a verb meaning ...
+> To be able to reach is a verb meaning ...
 
 Inform implements all of this by passing "be able to reach" through the
 same verb-conjugation mechanisms as all other verbs ("take", "see", and
 so on). But at least the conjugation used is now simple. Recall that when
 the instructions grammar, right back at the start of this discussion of
 verbs, chooses which conjugation to use, it converts the text matching
-the wild-card |...| into the "adjoint infinitive" form (4). We get to
+the wild-card `...` into the "adjoint infinitive" form (4). We get to
 this conjugation by matching
 = (text as InC)
 	be able to ...
 =
 so, for example, "be able to reach" results in 4 being set to "reach".
 
-Note also the construction |3 ( 4 )| in the passive. The 3 means "take the
+Note also the construction `3 ( 4 )` in the passive. The 3 means "take the
 past participle of the verb in brackets", and the 4 means that the text of
 this verb's infinitive is the contents of verb form 4. So, for example,
-for "be able to reach", |3 ( 4 )| expands to |3 ( reach )| which expands
+for "be able to reach", `3 ( 4 )` expands to `3 ( reach )` which expands
 to "reached", and we get passive forms like "Peter can be reached by
 Jane".
 
@@ -976,7 +987,7 @@ Jane".
 	p        ( be able to ) be 3 ( 4 ) by
 
 @ The following handles the other English modal verbs ("might", "should"
-and so on) surprisingly easily. The notation |++1| means that the verb
+and so on) surprisingly easily. The notation `++1` means that the verb
 being modified should appear in verb form 1, and so on: for example,
 "might not lead" as "might not" plus form 1 of "to lead", i.e., "lead".
 
@@ -1014,7 +1025,7 @@ But we still want people to be able to write adaptive text which uses
 these contracted forms: otherwise, how could we write classic messages
 like
 
->> You can't go that way.
+> You can't go that way.
 
 and have them adapt to other tenses and viewpoints?
 
@@ -1055,11 +1066,15 @@ dialects -- and we aren't even going to try to cope with that.
 @ And now "to 've", the contracted form of "to have". A subtle dialect
 point here concerns the negated present tense:
 
->> Sorry, I don't have a clue. [US]
->> Sorry, I haven't got a clue. [British]
->> Sorry, I haven't a clue. [British, but antiquated]
->> Sorry, I didn't have a clue. [US or British]
->> Sorry, I hadn't got a clue. [British]
+> Sorry, I don't have a clue. [US]
+
+> Sorry, I haven't got a clue. [British]
+
+> Sorry, I haven't a clue. [British, but antiquated]
+
+> Sorry, I didn't have a clue. [US or British]
+
+> Sorry, I hadn't got a clue. [British]
 
 But the American forms are becoming more common in British English, so we'll
 go with those.
@@ -1124,7 +1139,7 @@ that option here.)
 @ And finally: the contracted informal negatives of various modal verbs which
 it's useful to be able to print, like the "can't" in
 
->> You can't go that way.
+> You can't go that way.
 
 English has more modal verbs than one tends to remember, and the definition
 of "modal" itself arguable. This is the best we can do.
@@ -2355,12 +2370,12 @@ when to double the consonant, which again depends on stress.
 @h Present to past participles.
 Sentences like
 
->> The verb to carry means the carrying relation.
+> The verb to carry means the carrying relation.
 
 are only one way in which Inform creates new verbs; it also implicitly creates
 verbs when actions are declared:
 
->> Smoothing is an action applying to one thing.
+> Smoothing is an action applying to one thing.
 
 Verbs like this are not stored in anything like the full conjugations above;
 the action knows just two forms of its verb, the present and past participles.

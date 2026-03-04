@@ -8,9 +8,9 @@ To provide HTML links to an Inform source text, using the non-standard
 positions in the source text; when these are clicked in the Inform UI
 applications, the Source panel opens at the appropriate line.
 
-This is done with a non-standard HTML protocol called |source:|, one of
+This is done with a non-standard HTML protocol called `source:`, one of
 two which the Inform UI apps must provide special handling for. For instance,
-line 21 of file |Bits and Pieces/marbles.txt| has URL:
+line 21 of file `Bits and Pieces/marbles.txt` has URL:
 = (text)
 	source:Bits and Pieces/marbles.txt#line14
 =
@@ -21,19 +21,19 @@ For example,
 = (text)
 	source:Locksmith.i7x?case=B#line7
 =
-refers to line 7 of Example B of |Locksmith.i7x|.
+refers to line 7 of Example B of `Locksmith.i7x`.
 
 @ Locations are given relative to the current project bundle. However, if
-only a leafname is supplied, then this is read as a file within the |Source|
+only a leafname is supplied, then this is read as a file within the `Source`
 subfolder of the project bundle. (Thus it is not possible to have a
 source link to a source file at the root of the project bundle: but this is
 no loss, since source is not allowed to be kept there.) For instance,
-line 14 of file |Source/story.ni| has URL
+line 14 of file `Source/story.ni` has URL
 = (text)
 	source:story.ni#line14
 =
 The following routine writes the clickable source-reference icon, and
-is the only place in Inform where |source:| URLs are generated.
+is the only place in Inform where `source:` URLs are generated.
 
 =
 inchar32_t source_link_case = 0;

@@ -2,10 +2,10 @@
 
 A nascent system for managing conversation.
 
-@ This feature, |dialogue|, is technically not part of |if|, but it clearly
+@ This feature, `dialogue`, is technically not part of `if`, but it clearly
 belongs in this module.
 
-Note that a child feature called |performance styles| -- see //Performance Styles// --
+Note that a child feature called `performance styles` -- see //Performance Styles// --
 handles that kind, so it won't be dealt with in the code for this feature.
 
 =
@@ -133,9 +133,9 @@ int Dialogue::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 
 @ The following syntax tree annotations are used for the constant rvalues:
 
-@e constant_dialogue_beat_ANNOT /* |dialogue_beat|: for constant values */
-@e constant_dialogue_line_ANNOT /* |dialogue_line|: for constant values */
-@e constant_dialogue_choice_ANNOT /* |dialogue_choice|: for constant values */
+@e constant_dialogue_beat_ANNOT /* `dialogue_beat`: for constant values */
+@e constant_dialogue_line_ANNOT /* `dialogue_line`: for constant values */
+@e constant_dialogue_choice_ANNOT /* `dialogue_choice`: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_beat, dialogue_beat)

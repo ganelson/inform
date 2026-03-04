@@ -4,7 +4,7 @@ Claiming and creating copies of the kit genre: used for kits of precompiled
 Inter code.
 
 @h Genre definition.
-The |extension_bundle_genre| can be summarised as follows.
+The `extension_bundle_genre` can be summarised as follows.
 
 =
 void ExtensionBundleManager::start(void) {
@@ -33,7 +33,7 @@ pathname *ExtensionBundleManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Extensions");
 }
 
-@ Extension copies are annotated with a structure called an |inform_extension|,
+@ Extension copies are annotated with a structure called an `inform_extension`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -114,10 +114,10 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
 An extension bundle can be recognised by containing a valid metadata file.
@@ -416,7 +416,7 @@ void ExtensionBundleManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 
 @h Copying.
 Now the task is to copy an extension bundle into place in a nest. Since it is a
-directory, we need to |rsync| it.
+directory, we need to `rsync` it.
 
 =
 pathname *ExtensionBundleManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {

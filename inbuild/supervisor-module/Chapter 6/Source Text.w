@@ -102,7 +102,7 @@ source_file *SourceText::read_file(inbuild_copy *C, ls_web *W, filename *F,
 = (text as ConsoleText)
 	I've also read Standard Rules by Graham Nelson, which is 27204 words long.
 =
-are printed to |stdout| (not |stderr|), though occasionally I think silence is
+are printed to `stdout` (not `stderr`), though occasionally I think silence is
 golden and that these messages could go. It's a moot point for almost all users,
 though, because the console output is concealed from them by the Inform UI
 applications.
@@ -210,7 +210,7 @@ we want to expand on those. (And the //core// module will expand on them still
 further, so this still isn't everything: see //core: Inform-Only Nodes and Annotations//.)
 
 The node types we're adding are for the "structural sentences" which we will
-look for below. (The asterisk notation for |TRACE_NT| isn't known to most
+look for below. (The asterisk notation for `TRACE_NT` isn't known to most
 Inform users: it increases output to the debugging log.)
 
 @d NODE_METADATA_SETUP_SYNTAX_CALLBACK SourceText::node_metadata
@@ -242,16 +242,20 @@ and so on); nonstructural sentences, which make grammatical definitions and
 give Inform other more or less direct instructions; rule declarations; and
 regular sentences, those which use the standard verbs. Examples:
 
->> Volume II [dividing]
->> Include Locksmith by Emily Short [structural]
->> Release along with a website [nonstructural]
->> Instead of looking [rule]
->> The cushion is on the wooden chair [regular]
+> Volume II [dividing]
+
+> Include Locksmith by Emily Short [structural]
+
+> Release along with a website [nonstructural]
+
+> Instead of looking [rule]
+
+> The cushion is on the wooden chair [regular]
 
 Dividing sentences are always read, whereas the others may be skipped in
 sections of source not being included for one reason or another.
 
-//syntax// requires us to define the nonterminal |<dividing-sentence>|,
+//syntax// requires us to define the nonterminal `<dividing-sentence>`,
 and here goes:
 
 =
@@ -312,7 +316,7 @@ sentence consists of text matching the following grammar, followed by comma,
 followed by more text, then the comma is read as if it's a colon and the
 sentence becomes a rule. For example:
 
->> Instead of going north, try entering the cage
+> Instead of going north, try entering the cage
 
 =
 <comma-divisible-sentence> ::=
@@ -333,7 +337,7 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 	use ... language element/elements              ==> { -1, - }
 
 @ The following callback function is called by //syntax// when it breaks a
-sentence of type |BEGINHERE_NT| or |ENDHERE_NT| -- i.e., the beginning or end
+sentence of type `BEGINHERE_NT` or `ENDHERE_NT` -- i.e., the beginning or end
 of an extension.
 
 @d BEGIN_OR_END_HERE_SYNTAX_CALLBACK SourceText::new_beginend
@@ -352,7 +356,7 @@ or beat.
 
 @ Lastly, this callback is called by //syntax// when it hits a sentence like:
 
->> Use interactive fiction language element.
+> Use interactive fiction language element.
 
 This feature of Inform has been withdrawn (it has moved lower down the software
 stack into the new world of kits), so we issue a syntax error.

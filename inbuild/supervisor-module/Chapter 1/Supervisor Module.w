@@ -99,7 +99,7 @@ DECLARE_CLASS(kit_dependency)
 DECLARE_CLASS(satellite_test_case)
 DECLARE_CLASS(index_markup_notation)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e RESULTS_SORTING_MREASON
 @e EXTENSIONS_CENSUS_DA
@@ -118,11 +118,11 @@ void SupervisorModule::start(void) {
 void SupervisorModule::end(void) {
 }
 
-@ This module uses |syntax|, and adds the following annotations to the
+@ This module uses `syntax`, and adds the following annotations to the
 syntax tree.
 
-@e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
-@e inclusion_of_extension_ANNOT /* |inform_extension|: for parse nodes of headings */
+@e embodying_heading_ANNOT /* `heading`: for parse nodes of headings */
+@e inclusion_of_extension_ANNOT /* `inform_extension`: for parse nodes of headings */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)

@@ -20,11 +20,11 @@ void MeasurementAdjectives::start(void) {
 @ Measurement adjectives are created when we parse a "Definition:" clause for
 a new adjective, and then only when the definition has a particular form:
 
->> Definition: A container is roomy if its carrying capacity is 10 or more.
+> Definition: A container is roomy if its carrying capacity is 10 or more.
 
 <measurement-adjective-definition> is used to parse the definition part,
 
->> its carrying capacity is 10 or more
+> its carrying capacity is 10 or more
 
 The following grammar is a little sketchy because it's parsed very early in
 Inform's run; stricter rules eventually apply to all those ellipses.
@@ -114,18 +114,18 @@ int MeasurementAdjectives::claim_definition(adjective_meaning_family *f,
 @ Perhaps this is a good point to say why we allow any exact measurements at
 all. After all, if we didn't, a definition like:
 
->> Definition: a person is handy if his carrying capacity is 7.
+> Definition: a person is handy if his carrying capacity is 7.
 
-...would still work; and "handy" would then be created as a |condition_amf|
+...would still work; and "handy" would then be created as a `condition_amf`
 adjective. So why not let that happen?
 
-The answer is that our |measurement_amf| adjectives behave exactly the same
+The answer is that our `measurement_amf` adjectives behave exactly the same
 at run-time, but can also be asserted true in the model world at compile-time.
 In particular, we could write:
 
->> Peter is a handy person.
+> Peter is a handy person.
 
-This can't be done with general |condition_amf| adjectives, because conditions
+This can't be done with general `condition_amf` adjectives, because conditions
 can't normally be unravelled at compile time.
 
 @<Allow an exact measurement to be created only if we can already parse the threshold@> =

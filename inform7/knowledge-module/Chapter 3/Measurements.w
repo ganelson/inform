@@ -7,7 +7,7 @@ comparative and superlative forms.
 @h Measurements, regions and shapes.
 A typical example would be:
 
->> Definition: A container is roomy if its carrying capacity is 10 or more.
+> Definition: A container is roomy if its carrying capacity is 10 or more.
 
 Here the domain of the definition is "container", and we must assign an adjective
 meaning for "roomy" which involves the comparison of a property (here "carrying
@@ -17,13 +17,13 @@ form roomiest. The comparative will make a relation -- see //Comparative Relatio
 while and the must be a phrase. It can't be an adjective, since its domain
 would be too ambiguous in text such as:
 
->> if the canvas bag is roomiest, ...
+> if the canvas bag is roomiest, ...
 
 which begs the question: roomiest out of what? All containers, or implicitly
 some subcollection of them? So we avoid the problem by allowing superlatives
 only when explicitly followed by a domain:
 
->> roomiest container in Heathrow Terminal 5
+> roomiest container in Heathrow Terminal 5
 
 @ Each such definition allows the property value to belong to a "region", which
 takes one of these three "shapes":
@@ -81,7 +81,7 @@ typedef struct measurement_definition {
 	struct property *prop; /* the property being compared, if any */
 	struct wording name_of_property_to_compare; /* and its name */
 
-	int region_shape; /* one of the |MEASURE_T_*| constants */
+	int region_shape; /* one of the `MEASURE_T_*` constants */
 	int region_threshold; /* numerical value of threshold (if any) */
 	struct kind *region_kind; /* of this value */
 	int region_threshold_evaluated; /* have we evaluated this one yet? */
@@ -154,7 +154,7 @@ void Measurements::validate(measurement_definition *mdef) {
 		@<Fill in the missing threshold value, t@>;
 }
 
-@ Here we either make $P$ valid, or leave it |NULL| and issue a problem.
+@ Here we either make $P$ valid, or leave it `NULL` and issue a problem.
 
 @<Fill in the missing property name, P@> =
 	if (<property-name>(mdef->name_of_property_to_compare)) mdef->prop = <<rp>>;
@@ -171,7 +171,7 @@ void Measurements::validate(measurement_definition *mdef) {
 		return;
 	}
 
-@ Here we either make $t$ valid, or leave |mdef->region_threshold_evaluated| clear
+@ Here we either make $t$ valid, or leave `mdef->region_threshold_evaluated` clear
 and issue a problem.
 
 @<Fill in the missing threshold value, t@> =

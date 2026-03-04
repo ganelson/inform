@@ -95,20 +95,14 @@ and that they aren't the same as the &quot;and&quot; and &quot;or&quot; used a l
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Chronological restrictions include, for instance,</p>
-</div>
 <blockquote>
-    <p>if the gate is open for the first time, ...</p>
+<p>if the gate is open for the first time, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the condition is divided as</p>
-</div>
 <blockquote>
-    <p>if the gate is open / for the first time</p>
+<p>if the gate is open / for the first time</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>and &lt;s-cond-atomic&gt; is used to parse the first half. While it's possible
+<p>and <s-cond-atomic> is used to parse the first half. While it's possible
 to express this in Preform grammar, the result doesn't run quickly, so the
 following implements this as a hand-coded nonterminal instead.</p>
 </div>
@@ -138,40 +132,28 @@ following implements this as a hand-coded nonterminal instead.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The syntax for the logical operation &quot;not&quot; is more complicated, because
 it only sometimes work by simply preceding the text with &quot;not&quot;. Consider
 this, for instance:</p>
-</div>
 <blockquote>
-    <p>if not we are carrying the torch, ...</p>
+<p>if not we are carrying the torch, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>As a result, we can't handle negation in &lt;s-cond-pure&gt;, and have to
+<p>As a result, we can't handle negation in <s-cond-pure>, and have to
 work into the grammar below on a case by case basis. And where we do allow
 &quot;not&quot;, we always check the positive sense first -- people do sometimes
 create phrase options like &quot;not printing anything&quot;, for example, which
 begin with the word &quot;not&quot;.</p>
 <p>As a condition, an action pattern is implicitly considered as a test of
 what the current action is:</p>
-</div>
 <blockquote>
-    <p>if examining an open door, ...</p>
+<p>if examining an open door, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This wouldn't work so well for the past tense form:</p>
-</div>
 <blockquote>
-    <p>if examined an open door, ...</p>
+<p>if examined an open door, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>because it seems too clunky as neither quite active nor passive. Who examined
 the open door? So Inform uses the following version instead:</p>
-</div>
 <blockquote>
-    <p>if we have examined an open door, ...</p>
+<p>if we have examined an open door, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>thus adopting the &quot;science we&quot;. Not very elegant, but the alternatives were
 difficult to parse. &quot;We are&quot; is allowed for consistency's sake, but does
 nothing, i.e., &quot;we are taking&quot; and &quot;taking&quot; are synonymous. Translators
@@ -249,14 +231,11 @@ being compiled; all others are out of scope.</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Command phrases.</b>  The final clutch of nonterminals in the S-grammar handles individual commands,
 written in their semicolon-divided list in the body of a rule or &quot;To...&quot;
 definition. For instance, in the not very sensible rule:</p>
-</div>
 <blockquote>
-    <p>Instead of jumping: now the score is 10; say "Greetings!" instead.</p>
+<p>Instead of jumping: now the score is 10; say &quot;Greetings!&quot; instead.</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>Inform will use &lt;s-command&gt; to parse the text of the two commands in the rule
-body. &lt;s-command&gt; parses the text with little attempt to judge whether the
+<p>Inform will use <s-command> to parse the text of the two commands in the rule
+body. <s-command> parses the text with little attempt to judge whether the
 parameters of the phrase match; it simply records possibilities for
 typechecking to choose between much later on.</p>
 </div>

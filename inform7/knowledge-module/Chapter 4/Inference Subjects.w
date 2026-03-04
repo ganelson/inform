@@ -27,7 +27,7 @@ inference_subject_family *InferenceSubjects::new_family(void) {
 only for a few broad concepts. It provides few method functions, because these
 subjects serve a mainly organisational role.[1]
 
-[1] Though, for instance, by giving |global_variables| permission to have the
+[1] Though, for instance, by giving `global_variables` permission to have the
 "initial value" property, we immediately grant the same to every global
 variable, by inheritance. So fundamental subjects have their uses.
 
@@ -60,7 +60,7 @@ These subjects form a hierarchy.[1] I "inherits from" J if a fact about J
 is necessarily also a fact about I, unless directly contradicted by specific
 information about I. For example,
 
->> The plastic bag is a container. A container is usually opaque. The bag is transparent.
+> The plastic bag is a container. A container is usually opaque. The bag is transparent.
 
 The inference subject for the bag inherits from that for the container, so
 without that final sentence, the bag would have been opaque.
@@ -70,7 +70,7 @@ For the bag subject, that would be the container subject; for the container
 subject, it would be the thing subject; and so on.[2]
 
 [1] A directed acyclic graph of the sort sometimes called a spaghetti stack, in
-which all of the links run upwards to a common root -- the |model_world| subject,
+which all of the links run upwards to a common root -- the `model_world` subject,
 which represents the entire model.
 
 [2] The subject hierarchy thus contains the same tree structure of
@@ -86,7 +86,7 @@ inference_subject *global_variables = NULL;
 inference_subject *global_constants = NULL;
 inference_subject *relations = NULL;
 
-@ And these are set up in a tiny hierarchy, with |model_world| at the top, the
+@ And these are set up in a tiny hierarchy, with `model_world` at the top, the
 one and only subject with no broader subject:
 = (text)
 	model_world
@@ -115,10 +115,10 @@ typedef struct inference_subject {
 	struct general_pointer represents; /* family-specific data */
 	void *additional_data_for_features[MAX_COMPILER_FEATURES]; /* and managed by those features */
 
-	struct linked_list *inf_list; /* contingently true: each |inference| drawn about this */
-	struct linked_list *imp_list; /* necessarily true: each |implication| applying to this  */
+	struct linked_list *inf_list; /* contingently true: each `inference` drawn about this */
+	struct linked_list *imp_list; /* necessarily true: each `implication` applying to this  */
 
-	struct linked_list *permissions_list; /* of |property_permission| */
+	struct linked_list *permissions_list; /* of `property_permission` */
 	struct assemblies_data assemblies; /* what generalisations have been made about this? */
 	struct nonlocal_variable *alias_variable; /* in the way that "player" aliases "yourself" */
 
@@ -462,11 +462,11 @@ void InferenceSubjects::check_model(inference_subject *infs) {
 	VOID_METHOD_CALL(infs->infs_family, CHECK_MODEL_INFS_MTID, infs);
 }
 
-@ Here we must compile run-time code which tests whether the value in |t_0|
+@ Here we must compile run-time code which tests whether the value in `t_0`
 is a constant which the subject gives information about, given that we already
 know it has the right atomic kind. (In some cases there will be nothing to
-test -- if we know that |t_0| has kind "number" then it must be what we want.
-But in the case of objects, we need to check |t_0| is not |nothing| and that
+test -- if we know that `t_0` has kind "number" then it must be what we want.
+But in the case of objects, we need to check `t_0` is not `nothing` and that
 it has the right kind, and so on. If there's nothing to check, we leave the
 condition blank.)
 
@@ -491,11 +491,11 @@ void InferenceSubjects::emit_element_of_condition(inference_subject *infs,
 at run-time. Each subject may need its own data structure, and we want no
 part of thinking about what it looks like.
 
-@ |EMIT_ALL_INFS_MTID| has a chance to compile all its subjects at once,
+@ `EMIT_ALL_INFS_MTID` has a chance to compile all its subjects at once,
 which enables this to be done in a funny order or in some consolidated
 array, or else have its subjects compiled one at a time in order of their
-creation. |EMIT_ALL_INFS_MTID| should return |TRUE| to indicate the former
-course. And otherwise, the method |EMIT_ONE_INFS_MTID| should do the job
+creation. `EMIT_ALL_INFS_MTID` should return `TRUE` to indicate the former
+course. And otherwise, the method `EMIT_ONE_INFS_MTID` should do the job
 for an individual subject.
 
 @e EMIT_ALL_INFS_MTID
@@ -527,8 +527,8 @@ void InferenceSubjects::emit_all(void) {
 
 @h Feature data.
 If a feature is in use, it may need to attach data of its own to a subject,
-and the following macro does that. |name| should be the name of the feature,
-say |spatial|; |creator| a function to create and initialise the data structure,
+and the following macro does that. `name` should be the name of the feature,
+say `spatial`; `creator` a function to create and initialise the data structure,
 returning a pointer to it.
 
 @d ATTACH_FEATURE_DATA_TO_SUBJECT(name, S, val)
@@ -537,7 +537,7 @@ returning a pointer to it.
 @ Then, to access that same data, the following -- though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
 the features from the //if// module are concerned only with instances -- rooms
-and doors, say -- so |DATA_ON_INSTANCE|_PCALL pays its way.
+and doors, say -- so `DATA_ON_INSTANCE_PCALL` pays its way.
 
 @d FEATURE_DATA_ON_SUBJECT(name, S)
 	((name##_data *) (S)->additional_data_for_features[name##_feature->allocation_id])

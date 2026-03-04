@@ -9,7 +9,7 @@ the compilation phase, too.
 
 They are stored as a linked list with the links in an array indexed by the
 allocation IDs of the objects. This could all now alternatively be done with
-the |linked_list| type provided by //foundation//, but never mind: it works.
+the `linked_list` type provided by //foundation//, but never mind: it works.
 
 = (early code)
 instance *first_instance_in_list = NULL;

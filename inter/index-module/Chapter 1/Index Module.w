@@ -8,7 +8,7 @@ which use this module:
 
 @d INDEX_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e INDEX_SORTING_MREASON
 @e MAP_INDEX_MREASON

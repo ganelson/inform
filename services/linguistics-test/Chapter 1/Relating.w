@@ -6,8 +6,8 @@ Providing a sense of meaning for relationships.
 concept of what relationships are -- that is, of what might be meant by
 "X sees Y" or "X is on top of Y".
 
-Inform uses a class called |binary_predicate| for this, but we will use a
-class simply called |rel|.
+Inform uses a class called `binary_predicate` for this, but we will use a
+class simply called `rel`.
 
 @e rel_CLASS
 @d VERB_MEANING_LINGUISTICS_TYPE struct rel

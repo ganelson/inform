@@ -101,7 +101,7 @@ different dynamics altogether. In short, then: rules are not phrases.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">booking</span><span class="plain-syntax"> *</span><span class="identifier-syntax">automatic_booking</span><span class="plain-syntax">; </span><span class="comment-syntax">/* how this is placed in rulebooks */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">applicability_constraints</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of //applicability_constraint// */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">applicability_constraints</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <a href="6-rls.html#SP15" class="internal">applicability_constraint</a> */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allows_responses</span><span class="plain-syntax">; </span><span class="comment-syntax">/* was this rule explicitly named when created? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rule_response</span><span class="plain-syntax"> </span><span class="identifier-syntax">responses</span><span class="plain-syntax">[26]; </span><span class="comment-syntax">/* responses (A), (B), ... */</span>
@@ -114,12 +114,9 @@ different dynamics altogether. In short, then: rules are not phrases.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Rules are created before their definitions can be parsed or compiled. A
 typical rule like so:</p>
-</div>
 <blockquote>
-    <p>Before eating (this is the must say grace rule): ...</p>
+<p>Before eating (this is the must say grace rule): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>causes &quot;must say grace rule&quot; to be registered as a constant value early in
 Inform's run, allowing it to be a property value, or a table entry, for
 example. Note that the rule may just as well be nameless, as it would have
@@ -233,12 +230,9 @@ some form of &quot;K-based rule producing U&quot; would be reasonable, but leavi
 and L just to be &quot;value&quot; -- as the earliest versions of Inform 7 did, in the
 mid-2000s -- would be indefinite. Constants should always have definite kinds,
 because otherwise kind inference will fail on phrases like:</p>
-</div>
 <blockquote>
-    <p>let R be the foo rule;</p>
+<p>let R be the foo rule;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>So we have to give each rule a definite kind. Unfortunately for us, there is
 no indication of that kind in its declaration, as such: we must infer the
 kind from how the rule is used, that is, from the rulebook it is put into.
@@ -338,12 +332,9 @@ the variables belonging to that activity.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Defining rules with Inter functions.</b>  When a rule is really just a wrapper for an Inter-level function, as here:</p>
-</div>
 <blockquote>
-    <p>The can't reach inside rooms rule translates into Inter as |"CANT_REACH_INSIDE_ROOMS_R"|.</p>
+<p>The can't reach inside rooms rule translates into Inter as <code>&quot;CANT_REACH_INSIDE_ROOMS_R&quot;</code>.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...it has no <code>defn_as_I7_source</code> and instead has the name of the Inter function
 stored in <code>defn_as_Inter_function</code>.</p>
 <p>Here <code>W</code> is the rule's name, say &quot;can't reach inside rooms rule&quot;, and <code>FW</code>
@@ -375,8 +366,8 @@ is wording which should contain just the double-quoted function name.</p>
 at run-time if this should happen:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> |</span><span class="string-syntax">"SAME_R"</span><span class="plain-syntax">|.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> |</span><span class="string-syntax">"SAME_R"</span><span class="plain-syntax">|.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> `</span><span class="string-syntax">"SAME_R"</span><span class="plain-syntax">`.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> `</span><span class="string-syntax">"SAME_R"</span><span class="plain-syntax">`.</span>
 </pre>
 <div class="lsmarkdown">
 <p>And so we have the following:</p>
@@ -427,12 +418,9 @@ than <code>R1</code>, or 0 if they are equally good.</p>
 in somebody else's source text: for example, in the Standard Rules, or in an
 extension. They were introduced to the language in January 2011 to replace
 the functionality previously provided by procedural rules. For example,</p>
-</div>
 <blockquote>
-    <p>The can't reach inside rooms rule does nothing if the player wears the black hat.</p>
+<p>The can't reach inside rooms rule does nothing if the player wears the black hat.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We can either cancel the rule (&quot;does nothing&quot;) or substitute another rule
 for it, and this can be either conditional or unconditional. There can be any
 number of constraints attached to a given rule, so these are stored in a list.</p>
@@ -440,8 +428,8 @@ number of constraints attached to a given rule, so these are stored in a list.</
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">applicability_constraint</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_of_condition</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sense_of_applicability</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |TRUE| if condition must hold for rule to have effect */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substituted_rule</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rule to use instead if not, or |NULL| to do nothing */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sense_of_applicability</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>TRUE</code> if condition must hold for rule to have effect */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substituted_rule</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rule to use instead if not, or <code>NULL</code> to do nothing */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_imposed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">applicability_constraint</span><span class="plain-syntax">;</span>
@@ -503,19 +491,13 @@ the basis value entirely.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Automatic placement into rulebooks.</b>  Some rules are given their placements with explicit sentences like:</p>
-</div>
 <blockquote>
-    <p>The can't reach inside closed containers rule is listed in the reaching inside rules.</p>
+<p>The can't reach inside closed containers rule is listed in the reaching inside rules.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>But others have their placements made implicitly in their definitions:</p>
-</div>
 <blockquote>
-    <p>Before eating something: ...</p>
+<p>Before eating something: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(which creates a nameless rule and implicitly places it in the &quot;before&quot;
 rulebook). The process of placing those is called &quot;automatic placement&quot;.</p>
 <p>Automatic placement occurs in declaration order. This is important, because

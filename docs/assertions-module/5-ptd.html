@@ -93,18 +93,18 @@ parts in brackets.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_type_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">registration_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* words used to register the excerpt meaning */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_sequence</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_WORDS_PER_PHRASE</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* the "word sequence": see above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_sequence</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_WORDS_PER_PHRASE</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* the &quot;word sequence&quot;: see above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_words</span><span class="plain-syntax">; </span><span class="comment-syntax">/* length of the word sequence */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_type_token</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_sequence</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TOKENS_PER_PHRASE</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_tokens</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_MOR| values */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">return_kind</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |NULL| except in the |DECIDES_VALUE_MOR| case */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_MOR</code> values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">return_kind</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>NULL</code> except in the <code>DECIDES_VALUE_MOR</code> case */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_options_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">options_data</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">say_details</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_say</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only for "say" phrases, that is, text substitutions */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">say_details</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_say</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only for &quot;say&quot; phrases, that is, text substitutions */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inline_details</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_inline</span><span class="plain-syntax">; </span><span class="comment-syntax">/* side effects for phrases like C keywords */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_deprecated</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this a phrase likely to be withdrawn in future? */</span>
@@ -142,25 +142,25 @@ it a natural thing to do.<a href="#fnref:1" title="return to text"> &#x21A9;</a>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ERRONEOUS_IDTC</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* used only in parsing, never in an IDTT */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">STANDARD_IDTC</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |12|, |number|, |open door| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">STANDARD_IDTC</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>12</code>, <code>number</code>, <code>open door</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LOCAL_IDTC</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |nonexisting number variable| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LOCAL_IDTC</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>nonexisting number variable</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OLD_LOCAL_IDTC</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |existing number variable| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OLD_LOCAL_IDTC</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>existing number variable</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CONDITION_IDTC</span> <span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |a condition| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CONDITION_IDTC</span> <span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>a condition</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">STORAGE_IDTC</span> <span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |storage| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">STORAGE_IDTC</span> <span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>storage</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_REF_IDTC</span> <span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |table-reference| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_REF_IDTC</span> <span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>table-reference</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">KIND_NAME_IDTC</span> <span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |name of kind| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">KIND_NAME_IDTC</span> <span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>name of kind</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VOID_IDTC</span> <span class="constant-syntax">8</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., or in fact only, |phrase| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VOID_IDTC</span> <span class="constant-syntax">8</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., or in fact only, <code>phrase</code> */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_type_token</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">construct</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_IDTC| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">construct</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_IDTC</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_match</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what we expect to find here */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token_kind</span><span class="plain-syntax">;</span>
@@ -197,12 +197,12 @@ of a kind into a kind variable, the two will no longer match exactly. See
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">say_details</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the three |*_SAY_PHRASE| values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the three <code>*_SAY_PHRASE</code> values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase_running_on</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ignore implied newlines in previous invocation */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase_stream_position</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |SSP_*| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase_stream_position</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>SSP_*</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase_stream_token_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word number of say stream token name */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_phrase_stream_closing_token_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto for choice of ending */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_control_structure</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the four |*_SAY_CS| values below */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_control_structure</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the four <code>*_SAY_CS</code> values below */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">say_details</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure say_details is private to this section.</li></ul>
@@ -242,12 +242,12 @@ whistles and doodads which regular phrases don't.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inline_details</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">invoked_inline_not_as_call</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if |FALSE|, none of the rest applies */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">invoked_inline_not_as_call</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if <code>FALSE</code>, none of the rest applies */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_LET_PHRASE| values below */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assignment_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |TRUE| if this has to be typechecked as an assignment */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">offset_assignment_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |TRUE| if similarly, but as an increase/decrease */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">arithmetical_operation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |-1|, or one of the |*_OPERATION| constants */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_LET_PHRASE</code> values below */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assignment_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>TRUE</code> if this has to be typechecked as an assignment */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">offset_assignment_phrase</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>TRUE</code> if similarly, but as an increase/decrease */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">arithmetical_operation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>-1</code>, or one of the <code>*_OPERATION</code> constants */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">block_follows</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for inline phrases only: followed by a begin... end block? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">only_in_loop</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if not null, the phrase can only be used in this block */</span>
@@ -257,11 +257,11 @@ whistles and doodads which regular phrases don't.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Where:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_A_LET_PHRASE</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* needs to be 0 so that |let_phrase| can be a C condition */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_A_LET_PHRASE</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* needs to be 0 so that <code>let_phrase</code> can be a C condition */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ASSIGNMENT_LET_PHRASE</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the regular "let" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ASSIGNMENT_LET_PHRASE</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the regular &quot;let&quot; */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EQUATION_LET_PHRASE</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* "let" inviting Inform to solve an equation */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EQUATION_LET_PHRASE</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* &quot;let&quot; inviting Inform to solve an equation */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Manner of return.</b>  The &quot;manner of return&quot; (MOR) is similar to the type of value returned by a
@@ -277,13 +277,13 @@ definitions.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DONT_KNOW_MOR</span> <span class="constant-syntax">1</span><span class="plain-syntax">                       </span><span class="comment-syntax">/* but ask me later */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_NOTHING_MOR</span> <span class="constant-syntax">2</span><span class="plain-syntax">               </span><span class="comment-syntax">/* e.g., "award 4 points" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_NOTHING_MOR</span> <span class="constant-syntax">2</span><span class="plain-syntax">               </span><span class="comment-syntax">/* e.g., &quot;award 4 points&quot; */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_VALUE_MOR</span> <span class="constant-syntax">3</span><span class="plain-syntax">                   </span><span class="comment-syntax">/* e.g., "square root of 16" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_VALUE_MOR</span> <span class="constant-syntax">3</span><span class="plain-syntax">                   </span><span class="comment-syntax">/* e.g., &quot;square root of 16&quot; */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_CONDITION_MOR</span> <span class="constant-syntax">4</span><span class="plain-syntax">               </span><span class="comment-syntax">/* e.g., "a random chance of 1 in 3 succeeds" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_CONDITION_MOR</span> <span class="constant-syntax">4</span><span class="plain-syntax">               </span><span class="comment-syntax">/* e.g., &quot;a random chance of 1 in 3 succeeds&quot; */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_NOTHING_AND_RETURNS_MOR</span> <span class="constant-syntax">5</span><span class="plain-syntax">   </span><span class="comment-syntax">/* e.g., "continue the action" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DECIDES_NOTHING_AND_RETURNS_MOR</span> <span class="constant-syntax">5</span><span class="plain-syntax">   </span><span class="comment-syntax">/* e.g., &quot;continue the action&quot; */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IDTypeData::set_mor</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">IDTypeData::set_mor</span></span>:<br/>Adjectival Definition Family - <a href="5-adf.html#SP6">&#167;6</a><br/>Parsing Type Data - <a href="5-ptd2.html#SP3">&#167;3</a><br/>Rule Family - <a href="5-rf.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">id_type_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mor</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -324,26 +324,19 @@ definitions.</p>
 or &quot;now&quot;), but it might be tempting to think that for function-like phrases,
 at least, the kind tells you everything about when they apply. But this isn't
 true. Consider:</p>
-</div>
 <blockquote>
-    <p>To barricade (D - a door): ...</p>
+<p>To barricade (D - a door): ...</p>
 </blockquote>
-
 <blockquote>
-    <p>To barricade (D - a closed door): ...</p>
+<p>To barricade (D - a closed door): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>These both have the same kind, <code>phrase door -&gt; nothing</code>, and that's reasonable
 because they're safe to use in the same circumstances. But they will apply
 in different circumstances at run-time.</p>
 <p>A further subtlety comes with phrases like:</p>
-</div>
 <blockquote>
-    <p>To juxtapose (name of kind of value K) with (alpha - K) and (beta - K): ...</p>
+<p>To juxtapose (name of kind of value K) with (alpha - K) and (beta - K): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>What's the kind of this? The eventual result of compiling this will be a
 function of kind <code>phrase (V, V) -&gt; nothing</code>, where V is the particular kind
 it is used for. But this is not the kind of the definition itself, which
@@ -467,16 +460,12 @@ in the next.</p>
 <p class="commentary firstcommentary"><a id="SP17_4" class="paragraph-anchor"></a><b>&#167;17.4. </b>  At this point the two phrases have the same number of words and tokens,
 but the words may be different and/or the tokens in different places.
 We might for example be comparing these two:</p>
-</div>
 <blockquote>
-    <p>To grab (the prize - an object) swiftly: ...</p>
+<p>To grab (the prize - an object) swiftly: ...</p>
 </blockquote>
-
 <blockquote>
-    <p>To grab at (the rosette - an object): ...</p>
+<p>To grab at (the rosette - an object): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We use alphabetical order, placing &quot;grab ZZZZZZ swiftly&quot; after &quot;grab at ZZZZZZ&quot;.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Next use alphabetical order, counting tokens as after the Zs</span><span class="named-paragraph-number">17.4</span></span> =</p>
@@ -501,27 +490,21 @@ We might for example be comparing these two:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17_5" class="paragraph-anchor"></a><b>&#167;17.5. </b>  Now our two phrases have identical wording, and tokens in the same positions,
 but may have different specifications for them. For example:</p>
-</div>
 <blockquote>
-    <p>To grab at (the rosette - an object): ...</p>
+<p>To grab at (the rosette - an object): ...</p>
 </blockquote>
-
 <blockquote>
-    <p>To grab at (the rosette - a thing on the table): ...</p>
+<p>To grab at (the rosette - a thing on the table): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We give priority to the second of these, because it's more specific. On
 the other hand these are simply incomparable:</p>
+<blockquote>
+<p>To grab at (the rosette - an object): ...</p>
+</blockquote>
+<blockquote>
+<p>To grab at (the prime - a number): ...</p>
+</blockquote>
 </div>
-<blockquote>
-    <p>To grab at (the rosette - an object): ...</p>
-</blockquote>
-
-<blockquote>
-    <p>To grab at (the prime - a number): ...</p>
-</blockquote>
-
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Finally try comparing the to-match specifications of the tokens</span><span class="named-paragraph-number">17.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -539,16 +522,12 @@ the other hand these are simply incomparable:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ptd.html#SP17">&#167;17</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17_5_1" class="paragraph-anchor"></a><b>&#167;17.5.1. </b>  We need to watch out for this sort of thing:</p>
-</div>
 <blockquote>
-    <p>To decide what number is my special value: decide on 4.</p>
+<p>To decide what number is my special value: decide on 4.</p>
 </blockquote>
-
 <blockquote>
-    <p>To decide what person is my special value: decide on the player.</p>
+<p>To decide what person is my special value: decide on the player.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which makes &quot;my special value&quot; of a kind which can't be decided; but
 we can't just compare the return kinds, because that might pick up
 false positives in the case of kind variables, etc.</p>
@@ -610,7 +589,7 @@ source text.</p>
 </pre>
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Say phrases.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_A_SAY_PHRASE</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* needs to be 0 so that |sd.say_phrase| can be a C condition */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_A_SAY_PHRASE</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* needs to be 0 so that <code>sd.say_phrase</code> can be a C condition */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">A_MISCELLANEOUS_SAY_PHRASE</span> <span class="constant-syntax">1</span>
 </pre>
@@ -733,7 +712,7 @@ source text.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this_tok</span><span class="plain-syntax"> == </span><span class="constant-syntax">-1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this_pos</span><span class="plain-syntax"> != </span><span class="identifier-syntax">list_pos</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">compare_words</span><span class="plain-syntax">(</span><span class="identifier-syntax">ssp_tok</span><span class="plain-syntax">, </span><span class="identifier-syntax">this_tok</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::trim_first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">registration_text</span><span class="plain-syntax">); </span><span class="comment-syntax">/* to remove the word "say" */</span>
+<span class="plain-syntax">    *</span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::trim_first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">registration_text</span><span class="plain-syntax">); </span><span class="comment-syntax">/* to remove the word &quot;say&quot; */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -944,7 +923,7 @@ match is shown.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">writing_a_say</span><span class="plain-syntax"> = </span><a href="5-ptd.html#SP19" class="function-link"><span class="function-syntax">IDTypeData::preface_for_say_HTML</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_say</span><span class="plain-syntax">, </span><span class="identifier-syntax">paste_format</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">writing_a_say</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">writing_a_say</span><span class="plain-syntax">) </span><span class="identifier-syntax">seq_from</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">/* skip the first word, which is necessarily "say" in this case */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">writing_a_say</span><span class="plain-syntax">) </span><span class="identifier-syntax">seq_from</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">/* skip the first word, which is necessarily &quot;say&quot; in this case */</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_inline</span><span class="plain-syntax">.</span><span class="element-syntax">block_follows</span><span class="plain-syntax">) </span><span class="identifier-syntax">seq_to</span><span class="plain-syntax">--; </span><span class="comment-syntax">/* skip the last word, which is a block marker */</span>
 

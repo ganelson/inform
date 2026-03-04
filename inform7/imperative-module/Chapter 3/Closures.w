@@ -20,14 +20,14 @@ in the Swift programming language:
 	let fn = { x in return x > threshold }
 	return fn
 =
-a nameless function has been made with |{ x in return x > threshold }| which
+a nameless function has been made with `{ x in return x > threshold }` which
 includes a reference to a local variable not part of its own definition, i.e.,
-|threshold|. A reference to this must be "captured" and salted away in the
-closure data, since otherwise by the time the |fn| value is used, |threshold|
+`threshold`. A reference to this must be "captured" and salted away in the
+closure data, since otherwise by the time the `fn` value is used, `threshold`
 will not exist.
 
 This issue does not arise for Inform because, at present, there is no lambda
-operator, or syntax like Swift's |{ x in ... }|, for making one phrase inside
+operator, or syntax like Swift's `{ x in ... }`, for making one phrase inside
 the body of another one.[1] So we never need capture anything, and phrases are
 never half-open and so in that sense do not need closing, but we will continue
 to use the flattering term "closure" anyway.
@@ -35,7 +35,7 @@ to use the flattering term "closure" anyway.
 [1] Unless you count text substitutions, where exactly this issue of capturing
 values does arise.
 
-@ This returns the iname for a closure array for |cphr|. Since each phrase can
+@ This returns the iname for a closure array for `cphr`. Since each phrase can
 have at most one closure, and they occupy little memory, we do not need to
 create or destroy them dynamically as small blocks: we can simply store them
 in memory at known locations, and the iname here refers to that location.
@@ -113,7 +113,7 @@ to actually compile such functions. Since there are in principle an infinite
 number of distinct phrase kinds, we will only compile them for the phrase kinds
 which actually arise during compilation.
 
-The following function is called exactly once for each such kind |K|.
+The following function is called exactly once for each such kind `K`.
 
 =
 typedef struct default_closure_request {

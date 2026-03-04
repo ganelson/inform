@@ -135,7 +135,7 @@ source text. Why not perform these checks then, too?
 The answer is that both depend not only on the subject of the inferences
 made, but also on what that subject inherits from. Suppose we are told:
 
->> The cup is in the Yellow Cupboard. The Cupboard is lighted.
+> The cup is in the Yellow Cupboard. The Cupboard is lighted.
 
 When we make the "lighted" inference, we know for certain what subject
 it's about -- the Yellow Cupboard -- but not where this lives in the
@@ -197,10 +197,10 @@ convenience, and don't have to follow the I7 rules.
 @ It's never a problem when a vague fact about something general is contradicted
 by a fact about something specific; the problem comes with something like this:
 
->> A door is always open. The Marble Portal is a closed door.
+> A door is always open. The Marble Portal is a closed door.
 
-Here the "wide" property inference, for the "door" kind, is |CERTAIN_CE|
-rather than |LIKELY_CE|, and so we can't allow the "narrow" inference,
+Here the "wide" property inference, for the "door" kind, is `CERTAIN_CE`
+rather than `LIKELY_CE`, and so we can't allow the "narrow" inference,
 about the Portal, to stand.
 
 @<Check that these differently scoped inferences do not clash@> =

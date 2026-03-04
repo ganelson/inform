@@ -67,8 +67,8 @@ function togglePopup(material_id) {
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_command_definition</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text_of_command</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">opcode_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_KCC| values below */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">operand_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_KCA| values below */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">opcode_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_KCC</code> values below */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">operand_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_KCA</code> values below */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warning_if_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">kind_command_definition</span><span class="plain-syntax">;</span>
 </pre>
@@ -78,7 +78,7 @@ function togglePopup(material_id) {
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">NO_KCA</span> <span class="constant-syntax">0</span><span class="plain-syntax">   </span><span class="comment-syntax">/* there's no operand */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">BOOLEAN_KCA</span> <span class="comment-syntax">/* must be |yes| or |no| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">BOOLEAN_KCA</span> <span class="comment-syntax">/* must be <code>yes</code> or <code>no</code> */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CCM_KCA</span> <span class="comment-syntax">/* a constant compilation method */</span><span class="plain-syntax"> </span>
 </pre>
@@ -88,7 +88,7 @@ function togglePopup(material_id) {
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">NUMERIC_KCA</span> <span class="comment-syntax">/* any decimal number */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONSTRUCTOR_KCA</span> <span class="comment-syntax">/* any valid kind number, such as "number" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONSTRUCTOR_KCA</span> <span class="comment-syntax">/* any valid kind number, such as &quot;number&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEMPLATE_KCA</span> <span class="comment-syntax">/* the name of a template whose definition is given in the file */</span><span class="plain-syntax"> </span>
 </pre>
@@ -326,7 +326,7 @@ function togglePopup(material_id) {
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">additional_property_set</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">properties</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |additional_property| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">properties</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>additional_property</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">additional_property_set</span><span class="plain-syntax">;</span>
 

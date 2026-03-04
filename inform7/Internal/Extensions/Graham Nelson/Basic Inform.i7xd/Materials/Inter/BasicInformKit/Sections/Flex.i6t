@@ -29,9 +29,9 @@ data of.
 
 The header also contains a weak kind ID and a reference count, but the Flex
 routines do nothing with either of these except to initialise them; they're
-provided for the benefit of the |BlockValue| system.
+provided for the benefit of the `BlockValue` system.
 
-The data section of a block begins at the byte offset |BLK_DATA_OFFSET|
+The data section of a block begins at the byte offset `BLK_DATA_OFFSET`
 from the address of the block: but see below for how multiple-blocks
 behave differently.
 
@@ -64,27 +64,27 @@ might be stored in a list of blocks like so:
 = (text as Inform 6)
 	NULL <-- BN: "But now I wor" <--> BN2: "ship a celestiall Sunne" --> NULL
 =
-Note that the unique pointer to |BN2| is the one in the header of the
-|BN| block. When we need to grow such a text, we add additional blocks;
+Note that the unique pointer to `BN2` is the one in the header of the
+`BN` block. When we need to grow such a text, we add additional blocks;
 if the text should shrink, blocks at the end can at our discretion be
 deallocated. If the entire text should be deallocated, then all of the
 blocks used for it are deallocated, starting at the back and working
 towards the front.
 
-A multiple-block is one whose flags byte contains the |BLK_FLAG_MULTIPLE|.
+A multiple-block is one whose flags byte contains the `BLK_FLAG_MULTIPLE`.
 This information is redundant since it could in principle be deduced from
 the kind of value stored in the block, which is recorded in the
-|-->BLK_HEADER_KOV| word, but that would be too slow. |BLK_FLAG_MULTIPLE|
+`-->BLK_HEADER_KOV` word, but that would be too slow. `BLK_FLAG_MULTIPLE`
 can never change for a currently allocated block, just as it can never
 change its KOV.
 
 A multiple-block header is longer than that of an ordinary block, because
-it contains two extra words: |-->BLK_NEXT| is the next block in the
-doubly-linked list of blocks representing the current value, or |NULL|
-if this is the end; |-->BLK_PREV| is the previous block, or |NULL| if this
+it contains two extra words: `-->BLK_NEXT` is the next block in the
+doubly-linked list of blocks representing the current value, or `NULL`
+if this is the end; `-->BLK_PREV` is the previous block, or `NULL` if this
 is the beginning. The need to fit these two extra words in means that the
 data section is deferred, and so for a multiple-block data begins at the
-byte offset |BLK_DATA_MULTI_OFFSET| rather than |BLK_DATA_OFFSET|.
+byte offset `BLK_DATA_MULTI_OFFSET` rather than `BLK_DATA_OFFSET`.
 
 =
 Constant BLK_DATA_MULTI_OFFSET = BLK_DATA_OFFSET + 2*WORDSIZE;
@@ -94,7 +94,7 @@ Constant BLK_PREV 4;
 @h Tracing.
 Uncomment this line and rebuild the kit to enable tracing of what the algorithm
 below is doing. (This constant should not be used anywhere except in this file
-and in |BlockValues.i6t|, where |#Ifdef| on it will have the expected effect:
+and in `BlockValues.i6t`, where `#Ifdef` on it will have the expected effect:
 elsewhere, it might not.)
 
 =
@@ -111,17 +111,17 @@ might be faster.) The heap begins as a contiguous region of memory, but it
 need not remain so: on Glulx we use dynamic memory allocation to extend it.
 
 For I7 purposes we don't need a way to represent allocated memory, only
-the free memory. A block is free if and only if it has |-->BLK_HEADER_KOV|
+the free memory. A block is free if and only if it has `-->BLK_HEADER_KOV`
 equal to 0, which is never a valid kind of value, and also has the multiple
 flag set. We do that because we construct the whole collection of free
 blocks, at any given time, as a single, multiple-block "value": a doubly
-linked list joined by the |-->BLK_NEXT| and |<--BLK_PREV|.
+linked list joined by the `-->BLK_NEXT` and `<--BLK_PREV`.
 
 A single block, at the bottom of memory and never moving, never allocated
 to anyone, is preserved in order to be the head of this linked list of
 free blocks. This is a 16-byte (i.e., $n=4$) block, which we format when
-the heap is initialised in |HeapInitialise()|. Thus the heap is full
-if and only if the |-->BLK_NEXT| of the head-free-block is |NULL|.
+the heap is initialised in `HeapInitialise()`. Thus the heap is full
+if and only if the `-->BLK_NEXT` of the head-free-block is `NULL`.
 
 So far we have described a somewhat lax regime. After many allocations and
 deallocations one could imagine the list of free blocks becoming a very
@@ -129,7 +129,7 @@ long list of individually small blocks, which would both make it difficult
 to allocate large blocks, and also slow to look through the list. To
 ameliorate matters, we maintain the following invariants:
 
-- In the free blocks list, |B-->BLK_NEXT| is always an address after |B|;
+- In the free blocks list, `B-->BLK_NEXT` is always an address after `B`;
 - For any contiguous run of free space blocks in memory (excluding the
 head-free-block), taking up a total of $T$ bytes, the last block in the run
 has size $2^n$ where $n$ is the largest integer such that $2^n\leq T$.
@@ -149,7 +149,7 @@ freed and added to the free space object.
 Array Flex_Heap -> (MEMORY_HEAP_SIZE + BLK_DATA_MULTI_OFFSET); ! allow room for head-free-block
 
 @h Initialisation.
-To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the Inform compiler,
+To recap: the constant `MEMORY_HEAP_SIZE` has been predefined by the Inform compiler,
 and is always itself a power of 2, say $2^n$. We therefore have $2^n + 2^4$
 bytes available to us, and we format these as a free space list of two
 blocks: the $2^4$-sized "head-free-block" described above followed by
@@ -193,10 +193,10 @@ data) or single-block data (smaller header, more room).
 
 @h Make Space.
 The following routine determines if there is enough free space to accommodate
-another |size| bytes of data, given that it has to be multiple-block data if
-the |multiple| flag is set. If the answer turns out to be "no", we see if
+another `size` bytes of data, given that it has to be multiple-block data if
+the `multiple` flag is set. If the answer turns out to be "no", we see if
 the host virtual machine is able to allocate more for us: if it is, then
-we ask for $2^m$ further bytes, where $2^m$ is at least |size| plus the
+we ask for $2^m$ further bytes, where $2^m$ is at least `size` plus the
 worst-case header storage requirement (16 bytes), and in addition is large
 enough to make it worth while allocating. We don't want to bother the VM
 by asking for trivial amounts of memory.
@@ -272,20 +272,20 @@ Constant SMALLEST_BLK_WORTH_ALLOCATING = 12; ! i.e. 2^12 = 4096 bytes
 ];
 
 @h Block Allocation.
-Now for the Flex routines. Those with names ending in |Internal| are private
+Now for the Flex routines. Those with names ending in `Internal` are private
 and should only be called by other Flex routines. Even the public ones must
 be used with care, or memory leaks or crashes will occur.
 
-The routine |FlexAllocate(N, K, F)| allocates a block with room for |size|
-net bytes of data, which will have kind of value |K| and with flags |F|. If
-the flags include |BLK_FLAG_MULTIPLE|, this may be either a list of blocks
+The routine `FlexAllocate(N, K, F)` allocates a block with room for `size`
+net bytes of data, which will have kind of value `K` and with flags `F`. If
+the flags include `BLK_FLAG_MULTIPLE`, this may be either a list of blocks
 or a single block. It returns either the address of the block or else throws
 run-time problem message and returns 0.
 
 If it does succeed and return a nonzero address, then the caller must be
-able to guarantee that |FlexFree| will later be called, exactly once, on
-this address. In other words, |FlexAllocate| and |FlexFree| behave somewhat
-like C's |malloc| and |free| routines, with all the advantages and hazards
+able to guarantee that `FlexFree` will later be called, exactly once, on
+this address. In other words, `FlexAllocate` and `FlexFree` behave somewhat
+like C's `malloc` and `free` routines, with all the advantages and hazards
 that implies.
 
 In allocation, we try to find a block which is as close as possible to the
@@ -402,7 +402,7 @@ $$ 10000000_2 - 00001000_2 = 01111000_2 $$
 ];
 
 @h Errors.
-In the event that |FlexAllocate| returns 0, the caller may not be able
+In the event that `FlexAllocate` returns 0, the caller may not be able
 to survive, so the following is provided as a standardised way to halt
 the virtual machine.
 
@@ -415,8 +415,8 @@ the virtual machine.
 ];
 
 @h Merging.
-Given a free block |block|, find the maximal contiguous run of free blocks
-which contains it, and then call |FlexRecutInternal| to recut it to conform to
+Given a free block `block`, find the maximal contiguous run of free blocks
+which contains it, and then call `FlexRecutInternal` to recut it to conform to
 invariant (b) above.
 
 =
@@ -476,12 +476,12 @@ used up.
 ];
 
 @h Deallocation.
-As noted above, |FlexFree| must be called exactly once on each nonzero
-pointer returned by |FlexAllocate|.
+As noted above, `FlexFree` must be called exactly once on each nonzero
+pointer returned by `FlexAllocate`.
 
 There are two complications: first, when we free a multiple block we need
 to free all of the blocks in the list, starting from the back end and
-working forwards to the front -- this is the job of |FlexFree|. Second,
+working forwards to the front -- this is the job of `FlexFree`. Second,
 when any given block is freed it has to be put into the free block list
 at the correct position to preserve invariant (a): it might either come
 after all of the currently free blocks in memory, and have to be added to
@@ -536,7 +536,7 @@ that is, are indestructible. This enables Inform to compile constant values.
 
 @h Resizing.
 A block which has been allocated, but not yet freed, can sometimes have
-its data capacity changed by |FlexResize|.
+its data capacity changed by `FlexResize`.
 
 When the data being stored stretches or shrinks, we will sometimes need
 to change the size of the block(s) containing the data -- though not always:
@@ -577,7 +577,7 @@ allocated and freed, which is probably good.
 ];
 
 @h Block Size.
-These two routines are provided for the use of the |BlockValue| routines
+These two routines are provided for the use of the `BlockValue` routines
 only.
 
 =

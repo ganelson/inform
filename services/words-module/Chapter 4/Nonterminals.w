@@ -3,9 +3,9 @@
 The angle-bracketed terms appearing in Preform grammar.
 
 @h How nonterminals are stored.
-Each different nonterminal defined in the |Syntax.preform| code read in,
+Each different nonterminal defined in the `Syntax.preform` code read in,
 such as <any-integer>, is going to correspond to a global variable in the
-program reading it in, such as |any_integer_NTM|. On the face of it, this is
+program reading it in, such as `any_integer_NTM`. On the face of it, this is
 impossible. How can what happens at run-time affect what variables are named
 at compile time?
 
@@ -15,14 +15,14 @@ inserts declarations of the corresponding variables into the "tangled" form
 of the source code sent to a C compiler to make the actual program. (This is
 a feature of //inweb// available only for programs written in InC.)
 
-In particular, the tangler compiles the function |Inweb_InC_register_nonterminals|,
-called from below, with invocations of the |REGISTER_NONTERMINAL| and
-|INTERNAL_NONTERMINAL| macros. For example, the function includes the C line:
+In particular, the tangler compiles the function `Inweb_InC_register_nonterminals`,
+called from below, with invocations of the `REGISTER_NONTERMINAL` and
+`INTERNAL_NONTERMINAL` macros. For example, the function includes the C line:
 = (text as C)
 	INTERNAL_NONTERMINAL(U"<any-integer>", any_integer_NTM, 1, 1);
 =
 since this is an "internal" nonterminal; and the macro will then expand
-to code which sets up |any_integer_NTM| -- see below.
+to code which sets up `any_integer_NTM` -- see below.
 
 =
 void Nonterminals::register(void) {
@@ -35,9 +35,9 @@ void Nonterminals::register(void) {
 			internal_error("internal nonterminal has no definition function");
 }
 
-@ So, then, //inweb// tangles out code which uses the |REGISTER_NONTERMINAL|
+@ So, then, //inweb// tangles out code which uses the `REGISTER_NONTERMINAL`
 macro for any standard nonterminal, and also tangles a compositor function for
-it; the name of which is the nonterminal's name with a |C| suffix. For example,
+it; the name of which is the nonterminal's name with a `C` suffix. For example,
 suppose //inweb// sees the following in the web it is tangling:
 = (text as Preform)
 	<competitor> ::=
@@ -51,19 +51,19 @@ It then tangles this macro usage into //Nonterminals::register// above:
 =
 And it also tangles matching declarations for:
 
-- the global variable |competitor_NTM|, of type |nonterminal *|;
-- the "compositor function" |competitor_NTMC|, which is a function to
+- the global variable `competitor_NTM`, of type `nonterminal *`;
+- the "compositor function" `competitor_NTMC`, which is a function to
 deal with what happens when a successful match is made against the grammar --
-this incorporates the material which //inweb// finds to the right of the |==>|
+this incorporates the material which //inweb// finds to the right of the `==>`
 markers in the Preform definition.
 
 But if we left things at that, we would find ourselves at run-time with
 a null variable, a function not called from anywhere, and an instance
 somewhere in memory of a nonterminal read in from Preform syntax and
-called |"<competitor>"|, but which has no apparent connection to either
+called `"<competitor>"`, but which has no apparent connection to either
 the function or the variable. We clearly need to join these together.
 
-And so the |REGISTER_NONTERMINAL| macro expands to code which initialises the
+And so the `REGISTER_NONTERMINAL` macro expands to code which initialises the
 variable to the nonterminal having its name, and then connects that to the
 compositor function:
 
@@ -76,23 +76,23 @@ compositor function:
 	competitor_NTM = Nonterminals::find(Vocabulary::entry_for_text(U"<competitor>"));
 	competitor_NTM->compositor_fn = competitor_NTMC;
 =
-Note that it is absolutely necessary that |Nonterminals::find| does
+Note that it is absolutely necessary that `Nonterminals::find` does
 return a nonterminal. But we can be sure that it does, since the function creates
 a nonterminal object of that name even if one does not already exist.
 
 @ The position for internal nonterminals (i.e. those defined by a function
 written by the programmer, not by Preform grammar lines) is similar:
 
-- again there is a global variable, say |any_integer_NTM|, of type |nonterminal *|;
-- but now there is no compositor, and instead there is a function |any_integer_NTMR|
+- again there is a global variable, say `any_integer_NTM`, of type `nonterminal *`;
+- but now there is no compositor, and instead there is a function `any_integer_NTMR`
 which actually performs the parse directly.
 
-The |INTERNAL_NONTERMINAL| macro similarly initialises and connects these
-declarations. |min| and |max| are conveniences for speedy parsing, and supply
+The `INTERNAL_NONTERMINAL` macro similarly initialises and connects these
+declarations. `min` and `max` are conveniences for speedy parsing, and supply
 the minimum and maximum number of words that the nonterminal can match; these
-are needed because the Preform optimiser can't see inside |any_integer_NTMR| to
-calculate those bounds for itself. |max| can be infinity, in which case we
-use the constant |INFINITE_WORD_COUNT| for it.
+are needed because the Preform optimiser can't see inside `any_integer_NTMR` to
+calculate those bounds for itself. `max` can be infinity, in which case we
+use the constant `INFINITE_WORD_COUNT` for it.
 
 @d INTERNAL_NONTERMINAL(quotedname, identifier, min, max)
 	identifier = Nonterminals::find(Vocabulary::entry_for_text(quotedname));
@@ -107,7 +107,7 @@ textual name is referred to as an "ID".
 
 =
 typedef struct nonterminal {
-	struct vocabulary_entry *nonterminal_id; /* e.g. |"<any-integer>"| */
+	struct vocabulary_entry *nonterminal_id; /* e.g. `"<any-integer>"` */
 
 	/* For internal nonterminals */
 	int marked_internal; /* has, or will be given, an internal definition... */
@@ -201,11 +201,11 @@ nonterminal *Nonterminals::find(vocabulary_entry *name_word) {
 }
 
 @h Word ranges in a nonterminal.
-We now need to define the macros |GET_RW| and |PUT_RW|, which get and set 
+We now need to define the macros `GET_RW` and `PUT_RW`, which get and set 
 the results of a successful match against a nonterminal (see //About Preform//
 for more on this).
 
-We do so by giving each nonterminal a small array of |wording|s, which are
+We do so by giving each nonterminal a small array of `wording`s, which are
 lightweight structures incurring little time or space overhead. The fact that
 they are attached to the NT itself, rather than, say, being placed on a
 parsing stack of some kind, makes them faster to access, but is possible only
@@ -234,11 +234,11 @@ The parser records the result of the most recently matched nonterminal in the
 following global variables -- which, unlike word ranges, are not attached to
 any single NT.
 
-//inweb// translates the notation |<<r>>| and |<<rp>>| to these variable names:
+//inweb// translates the notation `<<r>>` and `<<rp>>` to these variable names:
 
 =
-int most_recent_result = 0; /* the variable which |inweb| writes |<<r>>| */
-void *most_recent_result_p = NULL; /* the variable which |inweb| writes |<<rp>>| */
+int most_recent_result = 0; /* the variable which `inweb` writes `<<r>>` */
+void *most_recent_result_p = NULL; /* the variable which `inweb` writes `<<rp>>` */
 
 @h Flagging and numbering.
 The following mechanism arranges for words used in the grammar for a NT to
@@ -247,7 +247,7 @@ For example, if we wanted the numbers from Stoppard's play "Dogg's Hamlet",
 we might have:
 = (text as Preform)
 	<dogg-numbers> ::=
-		sun | dock | trog | slack | pan
+		sun ` dock ` trog ` slack ` pan
 =
 And if <dogg-numbers> were made a "numbering" NT, the effect would be that
 these five words would pick up the numerical values 1, 2, 3, 4, 5, because
@@ -258,8 +258,8 @@ void Nonterminals::make_numbering(nonterminal *nt) {
 	nt->number_words_by_production = TRUE;
 }
 
-@ Similarly, we could flag this NT with |NUMBER_MC|, and then the five words
-sun, dock, trog, slack, pan would all pick up the |NUMBER_MC| flag
+@ Similarly, we could flag this NT with `NUMBER_MC`, and then the five words
+sun, dock, trog, slack, pan would all pick up the `NUMBER_MC` flag
 automatically.
 
 =
@@ -267,8 +267,8 @@ void Nonterminals::flag_words_with(nonterminal *nt, unsigned int flags) {
 	nt->flag_words_in_production = flags;
 }
 
-@ This is all done by the following function, which is called when a word |ve|
-is read as part of a production with match number |pc| for the nonterminal |nt|:
+@ This is all done by the following function, which is called when a word `ve`
+is read as part of a production with match number `pc` for the nonterminal `nt`:
 
 =
 void Nonterminals::note_word(vocabulary_entry *ve, nonterminal *nt, int pc) {

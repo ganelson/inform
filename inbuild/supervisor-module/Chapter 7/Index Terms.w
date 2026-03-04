@@ -24,12 +24,12 @@ normalised_term IndexTerms::new_normalised(void) {
 }
 
 @ We begin with raw text taken from the documentation source, such as
-|rockets++hardware++: ~Titan IV~|. We parse this into its subterms, and
+`rockets++hardware++: ~Titan IV~`. We parse this into its subterms, and
 remove any indexing notations, which convey the categories to be used.
 
 The "adjusting" version of this function takes a Markdown node as a further
 argument, and actually modifies that node. The idea is to be able to deal
-with something like |the ^{~Atlas V~} was...|, where an index marker node
+with something like `the ^{~Atlas V~} was...`, where an index marker node
 is immediately followed by a plain-text node so that the words "Atlas V"
 are both indexed and also included in the body text. We modify such that any
 notation we parse from the index marker node (here, the tildes) is removed
@@ -131,7 +131,7 @@ categorised_term IndexTerms::categorise_prim(compiled_documentation *cd,
 	return P;
 }
 
-@ A category beginning |!| is either redirected to a regular category, or
+@ A category beginning `!` is either redirected to a regular category, or
 else suppressed as unwanted (because the user didn't set up a redirection).
 
 @<Redirect category names starting with an exclamation@> =

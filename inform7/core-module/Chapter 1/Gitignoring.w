@@ -5,7 +5,7 @@ that can be put under version control with git more easily.
 
 @ Git is, so help us, the world's standard in version control, but is not
 the easiest system to configure, especially for beginners. One thing we can
-help with is the automatic setting up of |.gitignore| files, which tell git
+help with is the automatic setting up of `.gitignore` files, which tell git
 which files are ephemeral and need not be under source control.
 
 This very simple feature was added to Inform as IE-0002 in October 2022.
@@ -16,9 +16,9 @@ void Gitignoring::automatic(inform_project *proj) {
 	Gitignoring::for_materials(Projects::materials_path(proj));
 }
 
-@ In |.gitignore| file syntax, pathnames are relative to that of the file.
-|P/**| means "ignore |P| and all its contents, to any depth". Lines beginning
-with a |#| are comments.
+@ In `.gitignore` file syntax, pathnames are relative to that of the file.
+`P/**` means "ignore `P` and all its contents, to any depth". Lines beginning
+with a `#` are comments.
 
 =
 void Gitignoring::for_project(pathname *P) {
@@ -35,14 +35,14 @@ void Gitignoring::for_materials(pathname *P) {
 }
 
 @ What we do, for each of the directories relevant to a project (i.e. the project
-itself and its materials), is to see if a |.gitignore| file already exists. If it
+itself and its materials), is to see if a `.gitignore` file already exists. If it
 does, we look for a "stanza" between appropriate comments which will represent
 our contribution. If that stanza already contains the right contents, then we
 do not write the file. (There is no need, and we don't want to touch the timestamp
 on the file.) Otherwise, we write the file back but with out preferred contents
 of the stanza replacing whatever was there before.
 
-As a special case, if there is no |.gitignore| file, we create one consisting
+As a special case, if there is no `.gitignore` file, we create one consisting
 only of our stanza.
 
 =
@@ -64,7 +64,7 @@ void Gitignoring::fix(filename *F, text_stream *stanza_wanted) {
 	STREAM_CLOSE(OUT);
 }
 
-@ The process of extracting the content of any existing |.gitignore| file
+@ The process of extracting the content of any existing `.gitignore` file
 is called "harvesting", and results in one of these:
 
 =

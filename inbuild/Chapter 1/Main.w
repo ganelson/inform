@@ -38,12 +38,12 @@ typedef struct markdown_settings_struct {
 markdown_settings_struct markdown_settings = { NULL, NULL, NULL, NULL, NULL, NULL };
 
 @h Main routine.
-When Inbuild is called at the command line, it begins at |main|, like all C
+When Inbuild is called at the command line, it begins at `main`, like all C
 programs.
 
 Inbuild manages "copies", which are instances of programs or resources found
 somewhere in the file system. The copies which it acts on in a given run are
-called "targets". The task of |main| is to read the command-line arguments,
+called "targets". The task of `main` is to read the command-line arguments,
 set the following variables as needed, and produce a list of targets to work
 on; then to carry out that work, and then shut down again.
 
@@ -83,21 +83,21 @@ int main(int argc, char **argv) {
 @ Targets can arise in three ways:
 
 - They can be specified at the command line, either as bare names of files
-or paths, or with |-contents-of D| for a directory |D|. By the time the code
+or paths, or with `-contents-of D` for a directory `D`. By the time the code
 in this paragraph runs, those targets are already in the list.
 
-- They can be specified by a search request |-matching R| where |R| is a
+- They can be specified by a search request `-matching R` where `R` is a
 list of requirements to match. We now add anything found that way. (We didn't
 do so when reading the command line because at that time the search path for
-nests did not yet exist: it is created when |Supervisor::optioneering_complete|
+nests did not yet exist: it is created when `Supervisor::optioneering_complete`
 is called.)
 
 - One copy is always special to Inbuild: the "project", usually an Inform
-project bundle with a pathname like |Counterfeit Monkey.inform|. We go
-through a little dance with |Supervisor::optioneering_complete| to ensure that
+project bundle with a pathname like `Counterfeit Monkey.inform`. We go
+through a little dance with `Supervisor::optioneering_complete` to ensure that
 if a project is already in the target list, Inbuild will use that; and if not,
-but the user has specified a project to Inbuild already with |-project| (a
-command-line option recognised by |inform7| but not by us), then we add that
+but the user has specified a project to Inbuild already with `-project` (a
+command-line option recognised by `inform7` but not by us), then we add that
 to the target list. Tne net result is that however the user indicates interest
 in an Inform project bundle, it becomes both the Inbuild current project, and
 also a member of our target list. It follows that we cannot have two project
@@ -181,7 +181,7 @@ error in this case.
 		documentation_set, NULL, documentation_sitemap);
 	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL, NULL);
 
-@ We make the function call |Supervisor::go_operational| to signal to |inbuild|
+@ We make the function call `Supervisor::go_operational` to signal to `inbuild`
 that we want to start work now.
 
 @<Act on the targets@> =
@@ -279,17 +279,17 @@ utility functions in the //supervisor// module, which we call.
 	LiterateModule::end();
 	Foundation::end(); /* must be ended last */
 
-@ Preform is the crowning jewel of the |words| module, and parses excerpts of
-natural-language text against a "grammar". The |inform7| executable makes very
+@ Preform is the crowning jewel of the `words` module, and parses excerpts of
+natural-language text against a "grammar". The `inform7` executable makes very
 heavy-duty use of Preform, and we can use that too provided we have access to
 the English Preform syntax file stored inside the core Inform distribution,
-that is, in the |-internal| area.
+that is, in the `-internal` area.
 
 But suppose we can't get that? Well, then we fall back on a much coarser
 grammar, which simply breaks down source text into sentences, headings and so
-on. That grammar is stored in a file called |Syntax.preform| inside the
+on. That grammar is stored in a file called `Syntax.preform` inside the
 installation of Inbuild, which is why we need to have worked out
-|path_to_inbuild| (the pathname at which we are installed) already. Once the
+`path_to_inbuild` (the pathname at which we are installed) already. Once the
 following is run, Preform is ready for use.
 
 =
@@ -310,7 +310,7 @@ once. The following code runs quadratically in the number of targets, but for
 Inbuild this number is never likely to be more than about 100 at a time.
 
 =
-linked_list *targets = NULL; /* of |inbuild_copy| */
+linked_list *targets = NULL; /* of `inbuild_copy` */
 
 void Main::add_target(inbuild_copy *to_add) {
 	if (targets == NULL) targets = NEW_LINKED_LIST(inbuild_copy);
@@ -323,7 +323,7 @@ void Main::add_target(inbuild_copy *to_add) {
 }
 
 @ The following sorts the list of targets before returning it. This is partly
-to improve the quality of the output of |-inspect|, but also to make the
+to improve the quality of the output of `-inspect`, but also to make the
 behaviour of //inbuild// more predictable across platforms -- the raw target
 list tends to be in order of discovery of the copies, which in turn depends on
 the order in which filenames are read from a directory listing.
@@ -421,7 +421,7 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 }
 
 @h Command line.
-Note the call below to |Supervisor::declare_options|, which adds a whole lot of
+Note the call below to `Supervisor::declare_options`, which adds a whole lot of
 other options to the selection defined here.
 
 @d PROGRAM_NAME "inbuild"

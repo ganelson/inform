@@ -13,7 +13,7 @@ turn:
 relationships and properties, and so on are parsed.
 
 @h Raw nounphrases (NP1).
-A raw noun phrase is always a single |UNPARSED_NOUN_NT|. The following always
+A raw noun phrase is always a single `UNPARSED_NOUN_NT`. The following always
 matches any non-empty text:
 
 =
@@ -21,8 +21,8 @@ matches any non-empty text:
 	...                 ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 @ This "balanced" version, however, requires any brackets and braces to be
-used in a balanced way: thus |frogs ( and toads )| would match, but
-|frogs ( and| would not. It therefore does not always match.
+used in a balanced way: thus `frogs ( and toads )` would match, but
+`frogs ( and` would not. It therefore does not always match.
 
 =
 <np-unparsed-bal> ::=
@@ -41,7 +41,7 @@ Note that
 
 - Unexpectedly upper-case articles are left well alone, as in the sentence:
 
->> On the table is a thing called A Town Called Alice.
+  > On the table is a thing called A Town Called Alice.
 
 - Articles are not removed if that would leave the text empty.
 
@@ -112,7 +112,7 @@ articled.
 @h Full nounphrases (NP4).
 When fully parsing the structure of a nounphrase, we have five different
 constructions in play, and need to work out their precedence over each other:
-rather as |*| takes precedence over |+| in arithmetic expressions in C, so
+rather as `*` takes precedence over `+` in arithmetic expressions in C, so
 here we have --
 = (text)
 	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT
@@ -120,15 +120,15 @@ here we have --
 That is, relative clauses take precedence over callings, and so on. The
 above hierarchy is arrived at thus:
 
-- We need |RELATIONSHIP_NT > WITH_NT| so that "X is in a container with
+- We need `RELATIONSHIP_NT > WITH_NT` so that "X is in a container with
 carrying capacity 10" will work.
-- We need |WITH_NT > AND_NT| so that "X is a container with carrying
+- We need `WITH_NT > AND_NT` so that "X is a container with carrying
 capacity 10 and diameter 12" will work.
-- We need |CALLED_NT > WITH_NT| so that "X is a container called the flask
+- We need `CALLED_NT > WITH_NT` so that "X is a container called the flask
 with flange" will work.
-- We need |RELATIONSHIP_NT > CALLED_NT| so that "A man called Horse is in
+- We need `RELATIONSHIP_NT > CALLED_NT` so that "A man called Horse is in
 the High Sierra" will work.
-- We want |KIND_NT| to be of low precedence because it is always either
+- We want `KIND_NT` to be of low precedence because it is always either
 the word "kind" alone, or "kind of N" for some atomic noun N.
 
 See //About Sentence Diagrams// for numerous examples.
@@ -243,7 +243,7 @@ directions, in particular, a little better. But it means we do not recognise
 	if (R == NULL) return FALSE;
 	==> { -, Diagrams::new_RELATIONSHIP(W, VerbMeanings::reverse_VMT(R), RP[2]) };
 
-@ We have now disposed of |RELATIONSHIP_NT| and are left with the constructs:
+@ We have now disposed of `RELATIONSHIP_NT` and are left with the constructs:
 = (text)
 	CALLED_NT > WITH_NT > AND_NT > KIND_NT
 =
@@ -278,7 +278,7 @@ text like "smile X-)" will in fact match <np-nonrelative>.
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
 in the NP
 
->> a container with carrying capacity 5
+> a container with carrying capacity 5
 
 This makes use of a nifty feature of Preform: when Preform scans to see how to
 divide the text, it tries <np-with-or-having-tail> in each possible position.
@@ -316,7 +316,7 @@ bogus object called "locking it".)
 
 @ Kind phrases are easier:
 
->> A sedan chair is a kind of vehicle. A weather pattern is a kind.
+> A sedan chair is a kind of vehicle. A weather pattern is a kind.
 
 Note that indefinite articles are permitted before the word "kind(s)",
 but definite articles are not.

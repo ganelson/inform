@@ -26,11 +26,11 @@ inbuild_registry *Registries::new(pathname *P) {
 }
 
 @h The roster.
-This is a JSON file called |roster.json|, whose schema must match the one specified
-by the file |registry-metadata.jsonr| in the standard Inform distribution.
+This is a JSON file called `roster.json`, whose schema must match the one specified
+by the file `registry-metadata.jsonr` in the standard Inform distribution.
 
-The following silently returns |TRUE| if it does, or prints errors and returns
-|FALSE| if not (or if it doesn't exist).
+The following silently returns `TRUE` if it does, or prints errors and returns
+`FALSE` if not (or if it doesn't exist).
 
 =
 int Registries::read_roster(inbuild_registry *R) {
@@ -86,7 +86,7 @@ JSON_requirement *Registries::requirements(void) {
 To "build" a registry doesn't involve very much: just putting some indexing
 files together, using the preprocessor built into //foundation//.
 
-If the registry is |R|, we preprocess each file |R/source/X.Y| into |R/X.Y|:
+If the registry is `R`, we preprocess each file `R/source/X.Y` into `R/X.Y`:
 
 =
 void Registries::build(inbuild_registry *R) {
@@ -161,7 +161,7 @@ void Registries::build(inbuild_registry *R) {
 	Preprocessor::new_loop_macro(ML, I"if-forum-thread", I"for: ID",
 		Registries::if_forum_thread_expander, NULL);
 
-@ |{include file:I}| splices in the file |R/source/include/I|, unmodified.
+@ `{include file:I}` splices in the file `R/source/include/I`, unmodified.
 It can contain any textual material, and even braces and backslashes pass
 through exactly as written.
 
@@ -180,7 +180,7 @@ void Registries::scan_line(text_stream *line, text_file_position *tfp, void *X) 
 	WRITE_TO(PPS->dest, "%S\n", line);
 }
 
-@ |{process file:I}| also splices in the file |R/source/include/I|, but runs
+@ `{process file:I}` also splices in the file `R/source/include/I`, but runs
 it through the preprocessor first. This means any macros it contains will be
 expanded, and it has to comply with the syntax rules on use of braces and
 backslash.
@@ -195,8 +195,8 @@ void Registries::process_expander(preprocessor_macro *mm, preprocessor_state *PP
 		TRUE, Preprocessor::scan_line, NULL, PPS);
 }
 
-@ |{include-css platform:P}| splices in the Inform distribution's standard CSS
-files for the named platform. It's an |include|, not a |process|.
+@ `{include-css platform:P}` splices in the Inform distribution's standard CSS
+files for the named platform. It's an `include`, not a `process`.
 
 =
 void Registries::css_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -213,9 +213,9 @@ void Registries::css_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	WRITE_TO(PPS->dest, "--></style>\n");
 }
 
-@ |{sections}| ... |{end-sections}| is a loop construct, which loops over each
-section of the registry's roster file. The loop variable |{SECTIONID}| holds
-the ID text for the section; right now, that's just |0|, |1|, |2|, ...
+@ `{sections}` ... `{end-sections}` is a loop construct, which loops over each
+section of the registry's roster file. The loop variable `{SECTIONID}` holds
+the ID text for the section; right now, that's just `0`, `1`, `2`, ...
 
 =
 void Registries::sections_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -233,11 +233,11 @@ void Registries::sections_expander(preprocessor_macro *mm, preprocessor_state *P
 	}
 }
 
-@ |{subsections in: SID}| ... |{end-subsections}| loops similarly over all
-subsections in the section with id |SID|. The loop variable is |{SUBSECTIONID}|.
+@ `{subsections in: SID}` ... `{end-subsections}` loops similarly over all
+subsections in the section with id `SID`. The loop variable is `{SUBSECTIONID}`.
 This also now counts up from 0 (but textually: all preprocessor variables are
 text), but note that this SSID is unique in the registry: i.e., it doesn't go back
-to |0| at the start of each section.
+to `0` at the start of each section.
 
 =
 void Registries::subsections_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -267,9 +267,9 @@ void Registries::subsections_expander(preprocessor_macro *mm, preprocessor_state
 	}
 }
 
-@ |{resources in: SSID}| ... |{end-resources}| loops similarly over all
-resources in the subsection with id |SSID|, or over absolutely all resources
-if the id is given as |ALL|. The loop variable is |{ID}|.
+@ `{resources in: SSID}` ... `{end-resources}` loops similarly over all
+resources in the subsection with id `SSID`, or over absolutely all resources
+if the id is given as `ALL`. The loop variable is `{ID}`.
 
 =
 void Registries::resources_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -304,9 +304,9 @@ void Registries::resources_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 }
 
-@ We now have a run of macros which give details of the resource |ID|.
+@ We now have a run of macros which give details of the resource `ID`.
 
-First, |{section of: ID}| produces the SID of its section.
+First, `{section of: ID}` produces the SID of its section.
 
 =
 void Registries::section_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -319,7 +319,7 @@ void Registries::section_expander(preprocessor_macro *mm, preprocessor_state *PP
 	DISCARD_TEXT(section)
 }
 
-@ |{subsection of: ID}| produces the SSID of its subsection.
+@ `{subsection of: ID}` produces the SSID of its subsection.
 
 =
 void Registries::subsection_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -332,7 +332,7 @@ void Registries::subsection_expander(preprocessor_macro *mm, preprocessor_state 
 	DISCARD_TEXT(subsection)
 }
 
-@ |{author of: ID escape: ESC}| produces the author's name, optionally escaped
+@ `{author of: ID escape: ESC}` produces the author's name, optionally escaped
 with the system below.
 
 =
@@ -349,7 +349,7 @@ void Registries::author_expander(preprocessor_macro *mm, preprocessor_state *PPS
 	}
 }
 
-@ |{title of: ID escape: ESC}| produces the title, optionally escaped with the
+@ `{title of: ID escape: ESC}` produces the title, optionally escaped with the
 system below.
 
 =
@@ -366,7 +366,7 @@ void Registries::title_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	}
 }
 
-@ |{version of: ID escape: ESC}| produces the version, optionally escaped with the
+@ `{version of: ID escape: ESC}` produces the version, optionally escaped with the
 system below.
 
 =
@@ -383,7 +383,7 @@ void Registries::version_expander(preprocessor_macro *mm, preprocessor_state *PP
 	}
 }
 
-@ |{summary of: ID escape: ESC}| produces the summary, optionally escaped with the
+@ `{summary of: ID escape: ESC}` produces the summary, optionally escaped with the
 system below.
 
 =
@@ -400,7 +400,7 @@ void Registries::summary_expander(preprocessor_macro *mm, preprocessor_state *PP
 	}
 }
 
-@ |{thread of: ID}| produces the forum thread number, if it exists, and prints
+@ `{thread of: ID}` produces the forum thread number, if it exists, and prints
 nothing if it does not.
 
 =
@@ -415,8 +415,8 @@ void Registries::thread_expander(preprocessor_macro *mm, preprocessor_state *PPS
 	}
 }
 
-@ |{if-forum-thread for: ID}| ... |{end-if-forum-thread}| checks whether the
-resource has a thread number, and if so, expands the material |...|. This is
+@ `{if-forum-thread for: ID}` ... `{end-if-forum-thread}` checks whether the
+resource has a thread number, and if so, expands the material `...`. This is
 crudely done as either a 0- or 1-term loop.
 
 =
@@ -450,7 +450,7 @@ void Registries::if_forum_thread_expander(preprocessor_macro *mm, preprocessor_s
 	}
 }
 
-@ |{section-mark of: SID}| produces the "section mark" of the section.
+@ `{section-mark of: SID}` produces the "section mark" of the section.
 
 =
 void Registries::section_mark_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -463,7 +463,7 @@ void Registries::section_mark_expander(preprocessor_macro *mm, preprocessor_stat
 	DISCARD_TEXT(mark)
 }
 
-@ |{section-title of: SID}| produces the title of the section.
+@ `{section-title of: SID}` produces the title of the section.
 
 =
 void Registries::section_title_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -478,7 +478,7 @@ void Registries::section_title_expander(preprocessor_macro *mm, preprocessor_sta
 	}
 }
 
-@ |{subsection-mark of: SID}| produces the "subsection mark" of the subsection.
+@ `{subsection-mark of: SID}` produces the "subsection mark" of the subsection.
 
 =
 void Registries::subsection_mark_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -491,7 +491,7 @@ void Registries::subsection_mark_expander(preprocessor_macro *mm, preprocessor_s
 	DISCARD_TEXT(mark)
 }
 
-@ |{subsection-title of: SID}| produces the title of the subsection.
+@ `{subsection-title of: SID}` produces the title of the subsection.
 
 =
 void Registries::subsection_title_expander(preprocessor_macro *mm, preprocessor_state *PPS,
@@ -507,12 +507,12 @@ void Registries::subsection_title_expander(preprocessor_macro *mm, preprocessor_
 }
 
 @h Escapology.
-|quotes| escapes single quotation marks by placing a backslash before them,
+`quotes` escapes single quotation marks by placing a backslash before them,
 as is necessary in JavaScript string literals.
 
-|spaces| escapes spaces as |%20|, as is necessary in URLs.
+`spaces` escapes spaces as `%20`, as is necessary in URLs.
 
-|both| does both; |neither| does neither.
+`both` does both; `neither` does neither.
 
 =
 void Registries::write_escaped(OUTPUT_STREAM, text_stream *text, text_stream *escape) {
@@ -553,11 +553,11 @@ void Registries::write_escaped(OUTPUT_STREAM, text_stream *text, text_stream *es
 }
 
 @h Looking up by textual ID.
-Given a textual resource id |id|, return the JSON object for it, or else
-print an error and return |NULL|.
+Given a textual resource id `id`, return the JSON object for it, or else
+print an error and return `NULL`.
 
-On success, the SID of its section is written to |sectionid|, and the SSID
-of its subsection to |subsectionid|.
+On success, the SID of its section is written to `sectionid`, and the SSID
+of its subsection to `subsectionid`.
 
 =
 JSON_value *Registries::resource_from_textual_id(inbuild_registry *R, text_stream *id,
@@ -596,7 +596,7 @@ JSON_value *Registries::resource_from_textual_id(inbuild_registry *R, text_strea
 	return NULL;
 }
 
-@ Similarly for sections, with a |SID|.
+@ Similarly for sections, with a `SID`.
 
 The "mark" for a section is 1, 2, 3, ...
 
@@ -624,7 +624,7 @@ JSON_value *Registries::section_from_textual_id(inbuild_registry *R, text_stream
 	return NULL;
 }
 
-@ And subsections, with a |SSID|:
+@ And subsections, with a `SSID`:
 
 The "mark" for a subsection is 1.1, 1.2, 1.3, ..., 2.1, 2.2, ...
 
@@ -667,10 +667,10 @@ on the launcher panels. There's nothing interesting about those files except tha
 they may need platform-specific CSS in order to display properly in Dark Mode,
 use congenial fonts, and so on.
 
-We preprocess from |F| to |T|, except that we look to see if there's a platform
-variant of the file |F| first: for example, if |F| is |Fruits/bananas.html|, and
-the platform is |wii|, then we look for |Fruits/bananas-wii.html| and use that
-instead. (If not, we just use |F|.) In practice, for example, this allows the
+We preprocess from `F` to `T`, except that we look to see if there's a platform
+variant of the file `F` first: for example, if `F` is `Fruits/bananas.html`, and
+the platform is `wii`, then we look for `Fruits/bananas-wii.html` and use that
+instead. (If not, we just use `F`.) In practice, for example, this allows the
 file in the apps which lists keyboard shortcuts to vary with platform.
 
 =

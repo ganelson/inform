@@ -7,7 +7,7 @@ As this section of code opens, we are looking at the parse tree for the body
 of a rule or phrase definition. A request has been made to compile (a version of)
 this into an Inter function; the stack frame for that has been sorted out, and
 the function begun. Now we must compile the actual code to go into the function;
-the test group |:invocations| exercises all of this.
+the test group `:invocations` exercises all of this.
 
 Here is a typical example rule, taken from the Standard Rules:
 = (text as Inform 7)
@@ -36,12 +36,12 @@ IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 				CODE_BLOCK_NT'say "[The actor] [wait]." ( b )'
 					INVOCATION_LIST_SAY_NT'"[The actor] [wait]." ( b )'
 =
-This diagram has been simplified to remove the child nodes of the |INVOCATION_LIST_NT|
-and |INVOCATION_LIST_SAY_NT| nodes; the point is to show the structure of the code
+This diagram has been simplified to remove the child nodes of the `INVOCATION_LIST_NT`
+and `INVOCATION_LIST_SAY_NT` nodes; the point is to show the structure of the code
 blocks here.
 
 We work recursively down through these blocks. Note that the entire definition
-always hangs from a single top-level |CODE_BLOCK_NT|.
+always hangs from a single top-level `CODE_BLOCK_NT`.
 
 =
 void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body,
@@ -57,7 +57,7 @@ void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node
 @ See //words: Nonterminals// for an explanation of what it means for a nonterminal
 such as <s-value-uncached> to be "multiplicitous": briefly, though, it causes
 <s-value-uncached> to return all possible interpretations of the text as a list
-of nodes joined by |->next_alternative|, rather than returning just the single
+of nodes joined by `->next_alternative`, rather than returning just the single
 most "likely" interpretation.
 
 =
@@ -98,7 +98,7 @@ int CompileBlocksAndLines::compiling_single_line_block(void) {
 }
 
 @h Individual lines of code.
-So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
+So, then, this is called on each child node of a `CODE_BLOCK_NT` in turn:
 
 =
 int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton,
@@ -286,16 +286,16 @@ is false:
 		EmitCode::up();
 	EmitCode::up();
 
-@ Switches, like |switch| in C, offer code to execute in different cases
+@ Switches, like `switch` in C, offer code to execute in different cases
 depending on the "switch value". How efficiently this can be done depends
 on the kind of that value.
 
 The Inter VM offers an efficient way to provide switches for single-word
-values, using |SWITCH_BIP|. But that only works if equality between two
-values |V1| and |V2| can be tested by |V1 == V2|. For word-valued kinds
-like |K_number|, that's fine, but not for kinds whose values are stored
-in allocated blocks of memory, like |K_text|: |V1| and |V2| may be
-pointers to different blocks of data, so that |V1 != V2|, even though
+values, using `SWITCH_BIP`. But that only works if equality between two
+values `V1` and `V2` can be tested by `V1 == V2`. For word-valued kinds
+like `K_number`, that's fine, but not for kinds whose values are stored
+in allocated blocks of memory, like `K_text`: `V1` and `V2` may be
+pointers to different blocks of data, so that `V1 != V2`, even though
 both blocks might hold the word "doubloon" so that the values are in fact
 equal.
 
@@ -394,10 +394,10 @@ one is the "non-pointery" case.
 		}
 	}
 =	
-We begin by ensuring that the function has a scratch local variable called |sw_v|,
-and store the switch value in it. We need not use |CopyPV| to make an
-independent copy, since |sw_v| will be read-only: we can just copy the address of
-the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster.
+We begin by ensuring that the function has a scratch local variable called `sw_v`,
+and store the switch value in it. We need not use `CopyPV` to make an
+independent copy, since `sw_v` will be read-only: we can just copy the address of
+the data into `sw_v` with a single `STORE_BIP` instruction, which is much faster.
 
 @<Begin a pointery switch@> =
 	sw_lv = LocalVariables::add_switch_value(K_value);
@@ -408,8 +408,8 @@ the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
 	EmitCode::up();
 
-@ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
-of |downs| is how many times we have called |Produce::down|.
+@ Now we handle the switch case for what to do when `sw_v` is `case_spec`. The count
+of `downs` is how many times we have called `Produce::down`.
 
 @<Handle a pointery case@> =
 	int final_flag = FALSE;
@@ -446,8 +446,8 @@ of |downs| is how many times we have called |Produce::down|.
 	while (downs-- > 0) EmitCode::up();
 	CodeBlocks::close_code_block();
 
-@ And now the more efficient case, using Inter's |SWITCH_BIP|, |CASE_BIP| and
-|DEFAULT_BIP| instructions.
+@ And now the more efficient case, using Inter's `SWITCH_BIP`, `CASE_BIP` and
+`DEFAULT_BIP` instructions.
 
 @<Begin a non-pointery switch@> =
 	EmitCode::inv(SWITCH_BIP);

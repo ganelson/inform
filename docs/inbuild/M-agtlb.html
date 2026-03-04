@@ -76,37 +76,26 @@ area. But Inbuild understands the necessary concepts, at least.)</p>
 <p>The LOP is recorded on the Library Card index entry for an Inform project,
 and is also included in the iFiction record of a released story.</p>
 </div>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
-
-<blockquote>
-    <p>"Why Didn't They Ask Evans?" by Agatha Christie</p>
-</blockquote>
-
-<blockquote>
-    <p>"Le Port des brumes" by Georges Simenon (in French)</p>
-</blockquote>
-
-<blockquote>
-    <p>"Le Port des brumes" by Georges Simenon (en français)</p>
-</blockquote>
-
 <div class="lsmarkdown">
-<p>Inbuild recognises the language of play by looking at the opening, or
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Inbuild recognises the language of play by looking at the opening, or
 &quot;bibliographic&quot;, sentence of an Inform project. For many projects this
 consists of a title and perhaps an author, like so:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>&quot;Why Didn't They Ask Evans?&quot; by Agatha Christie</p>
+</blockquote>
 <p>But it can optionally add a bracketed note giving the language:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>&quot;Le Port des brumes&quot; by Georges Simenon (in French)</p>
+</blockquote>
 <p>This bracketed note can take two forms. If it begins &quot;in&quot;, then the rest must
 be the English form of the name of a language -- in this instance, &quot;French&quot;.
 This must be a language for which Inbuild can find a language bundle (see below).
 The LOP will be French, and the LOS will be English.</p>
 <p>If the note does not begin &quot;in&quot;, then it must be text recognised by a language
 bundle visible to Inbuild (see below). For example:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>&quot;Le Port des brumes&quot; by Georges Simenon (en français)</p>
+</blockquote>
 <p>This time the LOP and LOS are both French. Inbuild was able to determine that
 because the French language bundle picked up on the phrase &quot;en français&quot;, which
 Inbuild itself does not recognise.</p>

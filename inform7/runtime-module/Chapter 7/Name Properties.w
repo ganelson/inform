@@ -3,8 +3,8 @@
 Small arrays of dictionary words which are values of the name property for objects.
 
 @ In the runtime command parser, the names of objects are parsed as nouns using
-the values of two properties: |name|, a simple array of dictionary words, and
-|parse_name|, a GPR function. These properties can be assigned either to single
+the values of two properties: `name`, a simple array of dictionary words, and
+`parse_name`, a GPR function. These properties can be assigned either to single
 instances of kinds of object, or to the kinds themselves, so we store their
 inames in data attached to an inference subject.
 
@@ -29,7 +29,7 @@ parsing_compilation_data Name::new_compilation_data(inference_subject *subj) {
 	return pcd;
 }
 
-@ A single package holds the |name| and/or |parse_name| of a single subject.
+@ A single package holds the `name` and/or `parse_name` of a single subject.
 
 =
 package_request *Name::package(inference_subject *subj) {
@@ -53,7 +53,7 @@ inter_name *Name::get_parse_name_fn_iname(inference_subject *subj) {
 	return PARSING_DATA_FOR_SUBJ(subj)->compilation_data.parse_name_fn_iname;
 }
 
-@ Note that a |name| is never given to a kind: only to an instance. This is
+@ Note that a `name` is never given to a kind: only to an instance. This is
 unlike customary practice when writing Inform 6 code, and is one of the few
 ways in which I7-generated code does not mimic I6 practice in command parsing.[1]
 
@@ -61,7 +61,7 @@ We take special care to ensure that something called "your ..." in the source te
 -- "your nose", say -- is altered to "my ..." for purposes of parsing during play.
 
 [1] This is because we do not want to imitate the unusual feature of I6 which
-makes |name| an "additive" property, i.e., in which arrays accumulate as objects
+makes `name` an "additive" property, i.e., in which arrays accumulate as objects
 inherit from classes. The concept of additive properties does not exist in Inter.
 
 =

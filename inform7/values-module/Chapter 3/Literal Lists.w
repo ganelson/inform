@@ -4,7 +4,7 @@ Parsing and vetting the kinds of literal lists written in braces.
 
 @ Literal lists in Inform are written in braces: for example,
 
->> let L be {2, 12, 13};
+> let L be {2, 12, 13};
 
 Here "{2, 12, 13}" is parsed to an rvalue specification. Various syntactic
 things can go wrong with those commas and braces, which must be detected, and
@@ -67,7 +67,7 @@ typedef struct llist_entry {
 	CLASS_DEFINITION
 } llist_entry;
 
-@ These structures are built incrementally, adding one |llist_entry| at a time.
+@ These structures are built incrementally, adding one `llist_entry` at a time.
 They begin with a call to:
 
 =

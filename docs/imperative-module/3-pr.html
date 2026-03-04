@@ -64,19 +64,13 @@ function togglePopup(material_id) {
 variant forms depending on the kinds of their arguments. Each of those forms
 is compiled as a different function at runtime.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> For example, given the
 definition:</p>
-</div>
 <blockquote>
-    <p>To judge (V - a value) against (W - a value): ...</p>
+<p>To judge (V - a value) against (W - a value): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the invocation:</p>
-</div>
 <blockquote>
-    <p>judge 2 against "two";</p>
+<p>judge 2 against &quot;two&quot;;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>would result in a request to compile a version of &quot;to judge... against...&quot;
 with the kind <code>phrase (number, text) -&gt; nothing</code>.</p>
 <p>If the kind involves variables, the caller must also supply the current

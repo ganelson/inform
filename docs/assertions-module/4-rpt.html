@@ -162,12 +162,9 @@ variable can be set to shadow a spcific instance in this way.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Representation of single adjectives.</b>  Individual adjective nodes are made as follows. Note that we append noun
 details to the nodes so that sentences like this one...</p>
-</div>
 <blockquote>
-    <p>Scenery is usually fixed in place.</p>
+<p>Scenery is usually fixed in place.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...can work; here &quot;scenery&quot;, though an adjective, is effectively a common
 noun in disguise. (It's a deficiency of English that a surprising number of
 common objects, which ought to have count nouns, in fact have mass nouns --
@@ -334,7 +331,7 @@ refine them.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ALLOW_CREATION</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* create an object with this name if that looks sensible */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MANDATE_CREATION</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* always create an object with this name, except for "it" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MANDATE_CREATION</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* always create an object with this name, except for &quot;it&quot; */</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b> </p>
 
@@ -786,12 +783,9 @@ recognised in an assertion, because it's not useful to talk about individual
 objects in particular states when setting up the initial state -- the kettle
 either starts out as heating, or it doesn't. Moreover, we don't want to
 misread a line like:</p>
-</div>
 <blockquote>
-    <p>Heating Kettle is a scene.</p>
+<p>Heating Kettle is a scene.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(also a sentence from &quot;Goat-Cheese and Sage Chicken&quot;). Because of this and
 similar ambiguities, we ignore the S-parser's recommendation of reading
 adjective(s) plus proper noun as a reference to that noun in a special state.</p>
@@ -818,23 +812,16 @@ performed on the tree in the light of what we can now see.</p>
 <p>&quot;And surgery&quot; is a fiddly operation to correct the parse tree after
 resolution of all the nouns in a phrase which involves both &quot;and&quot; and
 &quot;with&quot; in a particular way. There's no problem with either of these:</p>
-</div>
 <blockquote>
-    <p>In the Pitch are a bat and ball with weight 10.</p>
+<p>In the Pitch are a bat and ball with weight 10.</p>
 </blockquote>
-
 <blockquote>
-    <p>In the Pitch is a sweater with score for finding 5 and description "White wool."</p>
+<p>In the Pitch is a sweater with score for finding 5 and description &quot;White wool.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>neither of which is altered by and surgery. The difficulty arises with</p>
-</div>
 <blockquote>
-    <p>In the Pitch is an openable and open door with description "The Hut door."</p>
+<p>In the Pitch is an openable and open door with description &quot;The Hut door.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which, we notice, has exactly the same grammatical structure as the first of
 the two sentences above, yet a very different meaning, since &quot;openable&quot; is a
 property whereas &quot;bat&quot; was an object. We perform surgery on:</p>
@@ -883,12 +870,9 @@ on the back of an envelope. Change at your peril.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  &quot;With surgery&quot; is a less traumatic operation, motivated by sentences like:</p>
-</div>
 <blockquote>
-    <p>In the Pitch is an open container with description "The box of stumps and bails."</p>
+<p>In the Pitch is an open container with description &quot;The box of stumps and bails.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The initial parse tree for such a sentence will have two nested <code>WITH_NT</code>
 clauses, which is arguably correct -- &quot;a (container with property open)
 with description ...&quot; -- but which is inconvenient for our implementation
@@ -931,11 +915,10 @@ terms of the tree,</p>
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Un-WITH.</b>  We may subsequently learn that what appeared to be a property setting was
 actually some other noun phrase containing the word &quot;with&quot; -- a particular
 issue for sentences like:</p>
-</div>
 <blockquote>
-    <p>The agreeing with policy action has an object called the hat.</p>
+<p>The agreeing with policy action has an object called the hat.</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::un_with</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Refiner::un_with</span></span>:<br/><a href="4-rpt.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">WITH_NT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)) {</span>

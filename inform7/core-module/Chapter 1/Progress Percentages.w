@@ -14,10 +14,10 @@ not cause an early halt. Within each stage, we have a reasonable measure
 of how far we have got: what proportion of the phrases have been compiled,
 for instance, tells us how far "generating code" has got. The result is
 that (if the relevant command line setting has been set, so that
-|show_progress_indicator| is true) Inform prints about thirty lines like this
-one to |stderr|:
+`show_progress_indicator` is true) Inform prints about thirty lines like this
+one to `stderr`:
 
-|++ 32% (Binding rulebooks)|
+`++ 32% (Binding rulebooks)`
 
 The Inform application can intercept and parse these lines to display a
 progress bar with a rubric beneath it.

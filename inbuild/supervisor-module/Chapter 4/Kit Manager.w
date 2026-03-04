@@ -4,11 +4,11 @@ Claiming and creating copies of the kit genre: used for kits of precompiled
 Inter code.
 
 @h Genre definition.
-The |kit_genre| can be summarised as follows. Kits consist of directories,
-containing metadata in |D/kit_metadata.json|, but which are also valid Inweb
+The `kit_genre` can be summarised as follows. Kits consist of directories,
+containing metadata in `D/kit_metadata.json`, but which are also valid Inweb
 webs of Inform 6 source text. They are recognised by having directory names
-ending in |Kit|, and by having a metadata file in place. They are stored in
-nests, in |N/Inter/Title-vVersion|. Their build graphs are quite extensive,
+ending in `Kit`, and by having a metadata file in place. They are stored in
+nests, in `N/Inter/Title-vVersion`. Their build graphs are quite extensive,
 with build edges to Inter binaries for each architecture with which they
 are compatible, and use edges to extensions or other kits as laid out in
 the metadata file.
@@ -28,7 +28,7 @@ void KitManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *wor
 	WRITE("%S", work->title);
 }
 
-@ Kits live in the |Inter| subdirectory of a nest:
+@ Kits live in the `Inter` subdirectory of a nest:
 
 =
 pathname *KitManager::path_within_nest(inbuild_nest *N) {
@@ -36,7 +36,7 @@ pathname *KitManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Inter");
 }
 
-@ Kit copies are annotated with a structure called an |inform_kit|,
+@ Kit copies are annotated with a structure called an `inform_kit`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -68,13 +68,13 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P, inbuild_nest 
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A kit needs to be a directory whose name ends in |Kit|, perhaps with a semver
+A kit needs to be a directory whose name ends in `Kit`, perhaps with a semver
 appended to it, and which contains a valid metadata file.
 
 =
@@ -87,8 +87,8 @@ void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	}
 }
 
-@ So, for example, given |Architecture32Kit-v10_1_0-beta+6V20| this returns
-17, the length of the actual name part |Architecture32Kit|.
+@ So, for example, given `Architecture32Kit-v10_1_0-beta+6V20` this returns
+17, the length of the actual name part `Architecture32Kit`.
 
 =
 int KitManager::name_len(text_stream *arg) {
@@ -144,7 +144,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 
 @h Copying.
 Now the task is to copy a kit into place in a nest. Since a kit is a directory,
-we need to |rsync| it.
+we need to `rsync` it.
 
 =
 pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {

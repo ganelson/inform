@@ -67,10 +67,10 @@ gender, but it seems unlikely that there's any need.
 
 If the 128K limit on references ever becomes problematic, which seems very
 unlikely, we might compromise on the number of cases; or we might simply
-change |lcon_ti| to a wider integer type. (It needs to have value copy
+change `lcon_ti` to a wider integer type. (It needs to have value copy
 semantics.) If so, though, Preform results will also need to be widened,
-because numerous Preform nonterminals in //linguistics// return |lcon_ti|
-values, and at present Preform return values are |int|.
+because numerous Preform nonterminals in //linguistics// return `lcon_ti`
+values, and at present Preform return values are `int`.
 
 @d lcon_ti int
 
@@ -234,7 +234,7 @@ sum of these can represent a set of things we're interested in:
 @d TENSE_LCW  32
 @d SENSE_LCW  64
 
-@ And |desiderata| in the following function is exactly that sort of set.
+@ And `desiderata` in the following function is exactly that sort of set.
 
 =
 void Lcon::write(OUTPUT_STREAM, lcon_ti l, int desiderata) {
@@ -245,8 +245,8 @@ void Lcon::write(OUTPUT_STREAM, lcon_ti l, int desiderata) {
 		}
 }
 
-@ The parameter |axis| in the following must, on the other hand, be a pure power
-of 2, that is, it must be a single |*_LCW| value.
+@ The parameter `axis` in the following must, on the other hand, be a pure power
+of 2, that is, it must be a single `*_LCW` value.
 
 =
 void Lcon::write_value_on_axis(OUTPUT_STREAM, int axis, int v) {
@@ -291,14 +291,14 @@ int Lcon::same_but_for_value_on_axis(int axis, lcon_ti A, lcon_ti B) {
 }
 
 @h Writing sets.
-Suppose we have a list of |lcon_ti| constants and want to print out their
+Suppose we have a list of `lcon_ti` constants and want to print out their
 grammatical attributes. If we do that in the obvious way, by calling
 //Lcon::write// on each of the constants in turn, we tend to get a list
 of tiresome length. We want to abbreviate so that, e.g.,
 = (text)
 	1p s + 1p p + 2p s + 2p p + 3p s + 3p p
 =
-becomes just |1p/2p/3p s/p|.
+becomes just `1p/2p/3p s/p`.
 
 Doing this is surprisingly non-trivial: an optimal solution means finding
 the minimal number of disjoint 7-dimensional cuboids whose union is the
@@ -338,7 +338,7 @@ void Lcon::write_set(OUTPUT_STREAM, lcon_ti *set, int set_size, int desiderata) 
 @ Note that there is always at least one cuboid containing the item $i$ --
 the $1\times 1\times 1\times 1\times 1\times 1\times 1$ cuboid containing
 just that one point. So the following certainly finds something. The
-|elongated_sides| value accumulates the set of axis directions in which
+`elongated_sides` value accumulates the set of axis directions in which
 the cuboid is longer than 1.
 
 @<Find the most volumetric cuboid containing this form@> =
@@ -371,11 +371,11 @@ which expands it the most. We stop when no further expansion is possible.
 		}
 	} while (max_elongation > 0);
 
-@ We start with the current cuboid. The |enlarged| array will be the same as
-the |cuboid_number| array except that some additional points |x| for which
-|cuboid_number[x]| is $-1$ -- i.e., points not yet placed in any cuboid --
-will have |enlarged[x]| set to |cuboid| -- i.e., will be placed in the current
-cuboid. In effect, |enlarged| is a speculative next version of |cuboid_number|.
+@ We start with the current cuboid. The `enlarged` array will be the same as
+the `cuboid_number` array except that some additional points `x` for which
+`cuboid_number[x]` is $-1$ -- i.e., points not yet placed in any cuboid --
+will have `enlarged[x]` set to `cuboid` -- i.e., will be placed in the current
+cuboid. In effect, `enlarged` is a speculative next version of `cuboid_number`.
 
 We first find the "variations" in the $d$ direction: that is, $d$ coordinates
 of points which are either $i$ itself or are unplaced points whose other
@@ -428,7 +428,7 @@ in the cuboid in the same way. If we can't, the attempt fails.
 @ And finally, but also not quite trivially, printing out the cuboid. We
 handle the elongated sides differently from the unelongated ones, which
 are relegated to the //Lcon::write// call at the end. Note that this prints
-nothing if |remainder| is zero.
+nothing if `remainder` is zero.
 
 @<Write the resulting cuboid out@> =
 	int unelongated_sides = desiderata;

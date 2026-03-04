@@ -20,9 +20,9 @@ under a single umbrella:
 typedef struct index_lexicon_entry {
 	struct text_stream *lemma;
 	int part_of_speech; /* one of those above */
-	char *category; /* textual description of said, e.g., |"adjective"| */
+	char *category; /* textual description of said, e.g., `"adjective"` */
 	struct general_pointer entry_refers_to; /* depending on which part of speech */
-	char *gloss_note; /* gloss on the definition, or |NULL| if none is provided */
+	char *gloss_note; /* gloss on the definition, or `NULL` if none is provided */
 	struct inter_package *lex_package;
 	int link_to; /* word number in source text */
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */

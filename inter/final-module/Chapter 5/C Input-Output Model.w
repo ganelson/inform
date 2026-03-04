@@ -21,7 +21,7 @@ void CInputOutputModel::end(code_generation *gen) {
 or writing files. Inter can do this in one of two ways: either
 
 - With one of the following primitives, or
-- With an assembly-language opcode, and in particular |@glk|.
+- With an assembly-language opcode, and in particular `@glk`.
 
 =
 int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -72,8 +72,8 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 	return FALSE;
 }
 
-@ See //C Literals// for the implementation of |i7_print_dword|: it funnels
-through to |i7_print_char|, and so do all of these:
+@ See //C Literals// for the implementation of `i7_print_dword`: it funnels
+through to `i7_print_char`, and so do all of these:
 
 = (text to inform7_clib.h)
 void i7_print_C_string(i7process_t *proc, char *c_string);
@@ -105,7 +105,7 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 }
 =
 
-@ Which in turn uses the |@glk| opcode:
+@ Which in turn uses the `@glk` opcode:
 
 = (text to inform7_clib.h)
 void i7_print_char(i7process_t *proc, i7word_t x);
@@ -123,7 +123,7 @@ void i7_print_char(i7process_t *proc, i7word_t x) {
 =
 
 @ At this point, then, all of our I/O needs will be handled if we can just
-define two functions: |i7_styling|, for setting the font style, and |i7_opcode_glk|.
+define two functions: `i7_styling`, for setting the font style, and `i7_opcode_glk`.
 So we're nearly done, right? Right?
 
 But in fact we route both of these functions through hooks which the user can
@@ -149,9 +149,9 @@ void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t vararg
 }
 =
 
-@ What makes this more burdensome is that |@glk| is not so much a single opcode
+@ What makes this more burdensome is that `@glk` is not so much a single opcode
 as an entire instruction set: it is an compendium of over 120 disparate operations.
-Indeed, the |glk_api_selector| argument to |i7_opcode_glk| chooses which one is
+Indeed, the `glk_api_selector` argument to `i7_opcode_glk` chooses which one is
 being used. For convenience, we define a set of names for them all -- which does
 not imply any commitment to implement them all.
 
@@ -282,10 +282,10 @@ not imply any commitment to implement them all.
 =
 
 A few other constants will also be useful. These are the window IDs for the
-three Glk windows used by the standard Inform 7 kits: |I7_BODY_TEXT_ID| is
-where text is regularly printed; |I7_STATUS_TEXT_ID| is for the "status line"
+three Glk windows used by the standard Inform 7 kits: `I7_BODY_TEXT_ID` is
+where text is regularly printed; `I7_STATUS_TEXT_ID` is for the "status line"
 at the top of a traditional interactive fiction display, but can simply be
-ignored for non-IF purposes; and |I7_BOX_TEXT_ID| is where box quotations
+ignored for non-IF purposes; and `I7_BOX_TEXT_ID` is where box quotations
 would be displayed over the top of text, though C projects probably should
 not use this, and the default Glk implementation here ignores it.
 

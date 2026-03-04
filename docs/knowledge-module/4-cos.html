@@ -63,12 +63,9 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Condition here is meant in the sense of &quot;What condition is this in?&quot;, not
 the usual computer-science sense of &quot;Is this true or false?&quot;. Here a subject
 is in one of a finite number of possible states, as declared by a sentence like:</p>
-</div>
 <blockquote>
-    <p>The cask can be wedged open, bolted closed or stoved in.</p>
+<p>The cask can be wedged open, bolted closed or stoved in.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>A property called the &quot;cask condition&quot; is created, whose value must be one of
 these three named possibilities; and this is also the name of a new kind,
 which is an enumeration of which these are the only three legal values.</p>
@@ -78,7 +75,7 @@ which is an enumeration of which these are the only three legal values.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">condition_of_subject</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">condition_of</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is it a condition of an object? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_anonymously_named</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if so, is it named just "... condition"? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_anonymously_named</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if so, is it named just &quot;... condition&quot;? */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">condition_of_subject</span><span class="plain-syntax">;</span>
 

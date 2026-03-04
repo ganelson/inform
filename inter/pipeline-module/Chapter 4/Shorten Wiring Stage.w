@@ -10,7 +10,7 @@ void ShortenWiringStage::create_pipeline_stage(void) {
 }
 
 @ In practice, linking errors can occur when the source text refers to a function
-which doesn't exist in any kit: if the user has mistyped |ExmapleKitFunction|, say,
+which doesn't exist in any kit: if the user has mistyped `ExmapleKitFunction`, say,
 then the plug would never find a socket with a matching name. We want to catch
 and report these errors efficiently, so we keep the bad names in both a dictionary
 (for quick lookup) and a list (for reporting).
@@ -18,7 +18,7 @@ and report these errors efficiently, so we keep the bad names in both a dictiona
 =
 typedef struct plug_inspection_state {
 	struct dictionary *bad_plugs;
-	struct linked_list *bad_plug_names; /* of |text_stream| */
+	struct linked_list *bad_plug_names; /* of `text_stream` */
 } plug_inspection_state;
 
 int ShortenWiringStage::run(pipeline_step *step) {
@@ -52,8 +52,8 @@ which does not connect to any socket. It is only an error if a symbol is trying
 to connect to this plug. So we make a traverse of the tree to look for such symbols.
 
 Note that we also take the opportunity to simplify chains of equations down to just
-the minimum. For example, if we have |S1 -> S2 -> plug -> socket -> T1 -> T2 -> T3|,
-we simplify just to |S1 -> T3|.
+the minimum. For example, if we have `S1 -> S2 -> plug -> socket -> T1 -> T2 -> T3`,
+we simplify just to `S1 -> T3`.
 
 =
 void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
@@ -82,7 +82,7 @@ void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_stat
 are each wired to sockets. Removing the plugs first then leaves the sockets
 with no incoming connections either, and so the sockets can go too.
 
-The result is not necessarily a completely empty |connectors| module, because
+The result is not necessarily a completely empty `connectors` module, because
 of the possibility of a function which has been replaced and thus is effectively
 not part of the program any longer, but still has trailing plugs. There will
 however be no sockets.

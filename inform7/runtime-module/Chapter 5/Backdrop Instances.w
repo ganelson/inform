@@ -15,8 +15,8 @@ inter_name *RTBackdropInstances::found_in_val(instance *I, int many) {
 }
 
 @h Compilation.
-We add a |found_in| function to test whether the given backdrop is found in
-the current |location| or not.
+We add a `found_in` function to test whether the given backdrop is found in
+the current `location` or not.
 
 =
 void RTBackdropInstances::compile_extra(instance *I) {

@@ -55,15 +55,15 @@ suppose we have an Inter function which arises from a kit function reading like 
 		...
 	];
 =
-Now in practice this function may always be called as |HelloThere("Aloha!")| or
-similar, with the local variable |greeting| being an argument, and the other two
-locals |x| and |y| being used only internally. But Inter does not distinguish between
+Now in practice this function may always be called as `HelloThere("Aloha!")` or
+similar, with the local variable `greeting` being an argument, and the other two
+locals `x` and `y` being used only internally. But Inter does not distinguish between
 arguments and private locals; and indeed it permits the same function to be called
-with differing numbers of arguments. |HelloThere("Bonjour!", 31)| is a legal call,
-and results in |x| initially being 31 rather than 0.
+with differing numbers of arguments. `HelloThere("Bonjour!", 31)` is a legal call,
+and results in `x` initially being 31 rather than 0.
 
 Because of this, our C analogue must also be callable with a variable number of
-arguments. Now, of course, C does have a crude mechanism for this (used for |printf|
+arguments. Now, of course, C does have a crude mechanism for this (used for `printf`
 and similar), but it's nowhere near flexible enough to handle what we need.
 Instead we declare our C function like so:
 = (text as Inform 6)
@@ -72,14 +72,14 @@ Instead we declare our C function like so:
 		...
 	}
 =
-And we then make calls like |i7_fn_HelloThere(proc, X, 0, 0)| or
-|i7_fn_HelloThere(proc, X, Y, 0)| to simulate calling this with one or two
+And we then make calls like `i7_fn_HelloThere(proc, X, 0, 0)` or
+`i7_fn_HelloThere(proc, X, Y, 0)` to simulate calling this with one or two
 arguments respectively. Because unsupplied arguments are filled in as 0, we achieve
 the Inter convention that any local variables not used as call arguments are set
 to 0 at the start of a function. While this generates C code which does not look
 especially pretty, it works efficiently in practice.
 
-We give the return type as |i7word_t|. In Inter, there is no such thing as a void
+We give the return type as `i7word_t`. In Inter, there is no such thing as a void
 function: all functions return something, even if that something is meaningless
 and is then thrown away.
 
@@ -130,7 +130,7 @@ void CFunctionModel::declare_function_constant(code_generation *gen, vanilla_fun
 
 @h Function calls.
 First, the straightforward and most common case: calling a function whose identity
-is known at run-time, and is passed to us as |vf|.
+is known at run-time, and is passed to us as `vf`.
 
 =
 void CFunctionModel::invoke_function(code_generator *gtr, code_generation *gen,
@@ -161,18 +161,18 @@ by Inform 7), use a stack-based calling mechanism instead. For example:
     ...
 ];
 =
-The significant thing here is that the first local variable is called |_vararg_count|.
+The significant thing here is that the first local variable is called `_vararg_count`.
 The Inform 6 compiler reacts to that by using a different function call mechanism;
-the function call |whatever(x, y, z)| will then result in |x|, |y|, |z| being pushed
-onto the stack, while execution in the function begins with |_vararg_count| equal
-to 3 (the number of things pushed), and |ret| equal to 0.
+the function call `whatever(x, y, z)` will then result in `x`, `y`, `z` being pushed
+onto the stack, while execution in the function begins with `_vararg_count` equal
+to 3 (the number of things pushed), and `ret` equal to 0.
 
-Note that the arguments must be pushed in reverse order -- |z|, |y|, |x| -- in
-order to ensure that the first one, |x|, is at the top of the stack when execution
+Note that the arguments must be pushed in reverse order -- `z`, `y`, `x` -- in
+order to ensure that the first one, `x`, is at the top of the stack when execution
 of the function begins.
 
 But of course a C compiler will not automatically do that just because the first
-local happens to be called |_vararg_count|, so we must simulate the effect here.
+local happens to be called `_vararg_count`, so we must simulate the effect here.
 
 In practice, the maximum number of variable arguments needed is seldom more than
 about 3 and never more than 10 in I7 usage, so the maximum here is not at all
@@ -195,7 +195,7 @@ restrictive.
 
 @ Now the harder case: calling a function whose identity is not known at compile
 time, but which is identified only as a runtime value which will be one of the
-numbers defined above. This is done with a function called |i7_gen_call|, and
+numbers defined above. This is done with a function called `i7_gen_call`, and
 that is what we must now compile:
 
 = (text to inform7_clib.h)
@@ -218,7 +218,7 @@ But we can't do that because in the C standard there is no safe way to cast or
 store those pointer types in a way which would safely be a union of the possible
 function types. All of the things which probably work on most architectures are
 formally "undefined behavior" in C99; we cannot, for example, assume that function
-pointers have the same size (in the |sizeof| sense) as other pointers, or even that
+pointers have the same size (in the `sizeof` sense) as other pointers, or even that
 a pointer to a function of three arguments has the same size as a pointer to a
 function of two. (Almost certainly it does: but the C99 standard is pretty clear
 that you take your life into your own hands making these casual assumptions.)
@@ -226,7 +226,7 @@ that you take your life into your own hands making these casual assumptions.)
 On the brighter side, though, modern C compilers are good at compiling switch
 statements with easy-to-index case numbers in an efficient way: so what we cannot
 legally express in source code will quite likely be what it compiles anyway,
-and it is unlikely that |i7_gen_call| will be slow.
+and it is unlikely that `i7_gen_call` will be slow.
 
 =
 void CFunctionModel::write_gen_call(code_generation *gen) {
@@ -364,10 +364,10 @@ int CFunctionModel::inside_function(code_generation *gen) {
 	return FALSE;
 }
 
-@ Labels can be placed in C code with the notation |LabelName:|, but note that
+@ Labels can be placed in C code with the notation `LabelName:`, but note that
 in C it is a syntax error for a label to occur at the end of a block, e.g.,
-|while (1) { ...; EndOfLoop: }| is a syntax error. This can be put right with
-an empty statement, i.e., a semicolon: |while (1) { ...; EndOfLoop: ; }|
+`while (1) { ...; EndOfLoop: }` is a syntax error. This can be put right with
+an empty statement, i.e., a semicolon: `while (1) { ...; EndOfLoop: ; }`
 And in case that is what we need here, we always place an empty statement after
 a label.
 
@@ -381,9 +381,9 @@ void CFunctionModel::place_label(code_generator *gtr, code_generation *gen,
 	WRITE(": ;\n", label_name);
 }
 
-@ Labels are not really "evaluated" in C: |goto| destinations are not values.
+@ Labels are not really "evaluated" in C: `goto` destinations are not values.
 Evaluation in this sense just means compiling the name used a sort of argument
-to the |goto| statement.
+to the `goto` statement.
 
 Note that label names, whose scope is confined to the function in which they
 occur, are unmangled. This is safe because label names have their own namespace
@@ -401,14 +401,14 @@ void CFunctionModel::evaluate_label(code_generator *gtr, code_generation *gen,
 @h Outward-bound function calls.
 "Outward" here means "when a function compiled from Inter makes a call to a C
 function from the world outside, i.e., which wasn't compiled from Inter". This
-is done with the |!externalcall| primitive: see below.
+is done with the `!externalcall` primitive: see below.
 
 In order to make the linking work, we need to ensure that our code declares
 the external function's name before use. But we should do this only for those
 functions we actually need to call, and only once for each of them. So we keep
 a dictionary of those already declared.
 
-Note that all external identifiers begin with |external__|, which is 10 characters
+Note that all external identifiers begin with `external__`, which is 10 characters
 long.
 
 =
@@ -515,8 +515,8 @@ Most function calls are made explicitly: see //CFunctionModel::invoke_function//
 above. But the Inter primitives below offer a way to call functions whose identities
 are not known at compile time, or which are not even part of the Inter program.
 
-The following primitives all simply call functions |i7_call_0|, and so on -- see
-below for their definitions -- except for |!externalcall|.
+The following primitives all simply call functions `i7_call_0`, and so on -- see
+below for their definitions -- except for `!externalcall`.
 
 =
 int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -580,8 +580,8 @@ int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_t
 		internal_error("unimplemented form of !externalcall");
 	}
 
-@ The following functions implement the above. |i7_call_N| provides a general
-way to call an Inter function with |N| arguments, up to 5.
+@ The following functions implement the above. `i7_call_N` provides a general
+way to call an Inter function with `N` arguments, up to 5.
 
 = (text to inform7_clib.h)
 i7word_t i7_call_0(i7process_t *proc, i7word_t id);
@@ -594,7 +594,7 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7wo
 	i7word_t v4, i7word_t v5);
 =
 
-But these are not really different from each other: they all simply call |i7_gen_call|,
+But these are not really different from each other: they all simply call `i7_gen_call`,
 the function we compiled laboriously in //CFunctionModel::write_gen_call// above,
 to do the actual business.
 
@@ -633,12 +633,12 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2,
 }
 =
 
-@ The following functions implement the above. |i7_mcall_N| provides a general
-way to make a "message call" to an Inter function with |N| arguments, up to 3.
+@ The following functions implement the above. `i7_mcall_N` provides a general
+way to make a "message call" to an Inter function with `N` arguments, up to 3.
 Message calls are really the same as regular function calls, except that the
-function ID is read from a property of an object, and except that the |self|
+function ID is read from a property of an object, and except that the `self`
 variable has to be set to that object when the function is running (and restored
-back to its previous value afterwards). Again, we use |i7_gen_call| to do the
+back to its previous value afterwards). Again, we use `i7_gen_call` to do the
 actual work.
 
 = (text to inform7_clib.h)

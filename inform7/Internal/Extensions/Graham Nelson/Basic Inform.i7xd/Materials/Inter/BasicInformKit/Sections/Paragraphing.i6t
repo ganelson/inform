@@ -4,8 +4,8 @@ To manage the line skips which space paragraphs out.
 
 @h Paragraph Control.
 Ah, yes: the paragraph breaking algorithm. In {\it \TeX: The Program},
-Donald Knuth writes at section 768: "It's sort of a miracle whenever |\halign|
-and |\valign| work, because they cut across so many of the control structures
+Donald Knuth writes at section 768: "It's sort of a miracle whenever `\halign`
+and `\valign` work, because they cut across so many of the control structures
 of \TeX." It's sort of a miracle whenever Inform 7's paragraph breaking
 system works, too. Most users probably imagine that it's implemented by
 having I7 look at where the cursor currently is (at the start of a line or
@@ -17,11 +17,11 @@ where a spurious extra skipped line appears in a paragraph break, or
 where, conversely, no line is skipped at all -- have been the least
 welcome in the Inform bugs database.
 
-The basic method is to set |say__p|, the paragraph flag, when we print any
+The basic method is to set `say__p`, the paragraph flag, when we print any
 matter; every so often we reach a "divide paragraph" point -- for instance
 when one rule has finished and before another is about to start -- and at
-those positions we look for |say__p|, and print a skipped line (and clear
-|say__p| again) if we find it. Thus:
+those positions we look for `say__p`, and print a skipped line (and clear
+`say__p` again) if we find it. Thus:
 = (text)
 	> WAIT
 	The clock ticks ominously.  ...first rule
@@ -125,7 +125,7 @@ nothing without very careful testing.
 @h Tracing.
 Uncomment this line and rebuild the kit to enable tracing of what the algorithm
 below is doing. (This constant should not be used anywhere except in this file,
-where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+where `#Ifdef` on it will have the expected effect: elsewhere, it might not.)
 
 =
 !Constant LKTRACE_SPACING;
@@ -133,28 +133,28 @@ where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
 @h State.
 The current state is stored in a combination of two global variables:
 
--	|say__p|, the "say paragraph" flag, which is set if a paragraph break
+-	`say__p`, the "say paragraph" flag, which is set if a paragraph break
 	needs to be printed before the next text can begin;
 
--	|say__pc|, originally named as the "paragraph completed" flag, but
+-	`say__pc`, originally named as the "paragraph completed" flag, but
 	which is now a bitmap:
 
-	- |PARA_COMPLETED| is set if a standard paragraph break has been made
+	- `PARA_COMPLETED` is set if a standard paragraph break has been made
 	since the last time the flag was cleared;
-	- |PARA_PROMPTSKIP| is set to indicate that the current printing position
+	- `PARA_PROMPTSKIP` is set to indicate that the current printing position
 	does not follow a skipped line, and that further material is expected which
 	will run on from the previous paragraph, but that if no further material turns
 	up then a skipped line would be needed before the next prompt;
-	- |PARA_SUPPRESSPROMPTSKIP| is set to indicate that, despite |PARA_PROMPTSKIP|
+	- `PARA_SUPPRESSPROMPTSKIP` is set to indicate that, despite `PARA_PROMPTSKIP`
 	being set, no skipped line is needed before the prompt after all;
-	- |PARA_NORULEBOOKBREAKS| suppresses divide paragraph points in between
+	- `PARA_NORULEBOOKBREAKS` suppresses divide paragraph points in between
 	rules in rulebooks; it treats all rulebooks, and in particular action rulebooks,
 	the way activity rulebooks are treated. (The flag is used for short periods
 	only and never across turn boundaries, prompts and so on.)
-	- |PARA_CONTENTEXPECTED| is set after a paragraph division as a signal
-	that if any contents looks likely to be printed soon then |say__p| needs
+	- `PARA_CONTENTEXPECTED` is set after a paragraph division as a signal
+	that if any contents looks likely to be printed soon then `say__p` needs
 	to be set, because a successor paragraph will then have started. This
-	is checked by calling |ParaContent()| -- while it's slow to have to call
+	is checked by calling `ParaContent()` -- while it's slow to have to call
 	this routine so often, that's better than compiling inline code with the
 	same effect, because minimising compiled code size is more important, and
 	speed is never a big deal when printing.
@@ -162,12 +162,12 @@ The current state is stored in a combination of two global variables:
 Not all printing is to the screen: sometimes the output is to a file, or to
 memory, and in that case we want to start the switched output at a clear
 paragraphing state and then go back to the screen afterwards without any
-sign of change. The correct way to do this is to push the |say__p| and
-|say__pc| variables onto the VM stack and call |ClearParagraphing()| before
+sign of change. The correct way to do this is to push the `say__p` and
+`say__pc` variables onto the VM stack and call `ClearParagraphing()` before
 starting to print to the new stream, and then pull the variables back again
 before resuming printing to the old stream.
 
-In no other case should any code alter |say__pc| except via the routines
+In no other case should any code alter `say__pc` except via the routines
 below.
 
 =
@@ -239,7 +239,7 @@ below.
 ];
 
 @h Say Number.
-The global variable |say__n| is set to the numerical value of any quantity
+The global variable `say__n` is set to the numerical value of any quantity
 printed, and this is used for the text substitution "[s]", so that
 "You have been awake for [turn count] turn[s]." will expand correctly.
 

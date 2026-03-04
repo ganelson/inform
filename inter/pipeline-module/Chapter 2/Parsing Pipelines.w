@@ -9,7 +9,7 @@ pointers to trees being worked on.
 
 =
 typedef struct inter_pipeline {
-	struct linked_list *steps; /* of |pipeline_step| */
+	struct linked_list *steps; /* of `pipeline_step` */
 	struct dictionary *variables;
 	int erroneous; /* a syntax error occurred when parsing this */
 	struct pipeline_ephemera ephemera; /* temporary storage when running */
@@ -62,7 +62,7 @@ pipeline_step *ParsingPipelines::new_step(inter_pipeline *pipeline) {
 }
 
 @ And a //pipeline_stage// is simply a choice of what to do. For example,
-|eliminate-redundant-labels| is a pipeline stage. This would need to be
+`eliminate-redundant-labels` is a pipeline stage. This would need to be
 combined with details of what tree to apply to in order to become a step.
 
 @e NO_STAGE_ARG from 1
@@ -78,7 +78,7 @@ combined with details of what tree to apply to in order to become a step.
 typedef struct pipeline_stage {
 	struct text_stream *stage_name;
 	int (*execute)(void *);
-	int stage_arg; /* one of the |*_ARG| values above */
+	int stage_arg; /* one of the `*_ARG` values above */
 	int takes_tree;
 	CLASS_DEFINITION
 } pipeline_stage;
@@ -165,8 +165,8 @@ void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instruc
 
 @ Instructions are mostly steps, but:
 
-- A line beginning with an |!| is a comment,
-- |run pipeline X| means to incorporate pipeline |X| here.
+- A line beginning with an `!` is a comment,
+- `run pipeline X` means to incorporate pipeline `X` here.
 
 =
 void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *T,
@@ -207,7 +207,7 @@ void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *
 	Regexp::dispose_of(&mr);
 }
 
-@ Finally, an individual textual description |S| of a step is turned into a
+@ Finally, an individual textual description `S` of a step is turned into a
 //pipeline_step//.
 
 For documentation on the syntax here, see //inter: Pipelines and Stages//.
@@ -309,7 +309,7 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 	}
 
 @ A textual argument beginning with an asterisk means "expand to the value of
-this variable", which is required to exist unless |allow_unknown| is set.
+this variable", which is required to exist unless `allow_unknown` is set.
 If it is, then an empty text results as the argument.
 
 =
@@ -364,7 +364,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 @h Starting a variables dictionary.
 Note that the above ways to create a pipeline all expect a dictionary of variable
 names and their values to exist. These dictionaries are typically very small,
-and by convention the main variable is |*out|, the leafname to write output to.
+and by convention the main variable is `*out`, the leafname to write output to.
 So the following utility is convenient for getting started.
 
 =

@@ -17,7 +17,7 @@ the words "open" and "closed" are just as good as each other. One might
 talk equally about "the closed property" as about "the open property".
 
 We therefore implement these as two //property// instances, each of the
-either-or type. For each one, |negation| points to the other. We call
+either-or type. For each one, `negation` points to the other. We call
 this a "pair". It's not required that either-or properties come in pairs;
 sometimes an author simply says that something "can be P" rather than "can be
 P or Q".
@@ -28,7 +28,7 @@ Each either-or property has the following small block of data attached:
 =
 typedef struct either_or_property_data {
 	struct property *negation; /* see above: the other, if it's one of a pair */
-	int is_default; /* |TRUE| if this is a negation and was declared second */
+	int is_default; /* `TRUE` if this is a negation and was declared second */
 	struct parse_node *where_negated; /* the sentence making these antonyms */
 	struct adjective *as_adjective; /* if it is adjectivally used */
 	#ifdef IF_MODULE
@@ -50,8 +50,8 @@ either_or_property_data *EitherOrProperties::new_eo_data(property *prn) {
 }
 
 @h Requesting new named properties.
-The following is called to find an existing property called |W|, or create
-a new one if necessary, and give the subject |subj| permission to have it:
+The following is called to find an existing property called `W`, or create
+a new one if necessary, and give the subject `subj` permission to have it:
 
 =
 property *EitherOrProperties::obtain(wording W, inference_subject *subj) {

@@ -24,18 +24,18 @@ some new node types:
 
 @ These nodes are annotated with the following:
 
-@e verbal_certainty_ANNOT        /* |int|: certainty level if known */
-@e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
-@e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e verb_ANNOT                    /* |verb_usage|: what's being done here */
-@e noun_ANNOT                    /* |noun_usage|: what's being done here */
-@e article_ANNOT                 /* |article_usage|: what's being done here */
-@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
-@e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
-@e special_meaning_ANNOT         /* |special_meaning_holder|: to give a verb a non-standard meaning */
-@e occurrence_ANNOT              /* |time_period|: any stipulation on occurrence */
-@e relationship_ANNOT            /* |binary_predicate|: for RELATIONSHIP nodes */
+@e verbal_certainty_ANNOT        /* `int`: certainty level if known */
+@e sentence_is_existential_ANNOT /* `int`: such as "there is a man" */
+@e linguistic_error_here_ANNOT   /* `int`: one of the errors occurred here */
+@e verb_ANNOT                    /* `verb_usage`: what's being done here */
+@e noun_ANNOT                    /* `noun_usage`: what's being done here */
+@e article_ANNOT                 /* `article_usage`: what's being done here */
+@e pronoun_ANNOT                 /* `pronoun_usage`: what's being done here */
+@e preposition_ANNOT             /* `preposition`: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT      /* `preposition`: which further preposition, if any, qualifies it */
+@e special_meaning_ANNOT         /* `special_meaning_holder`: to give a verb a non-standard meaning */
+@e occurrence_ANNOT              /* `time_period`: any stipulation on occurrence */
+@e relationship_ANNOT            /* `binary_predicate`: for RELATIONSHIP nodes */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
@@ -149,7 +149,7 @@ void Diagrams::write_relationship_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE(" {meaning: %S}", Node::get_relationship(p)->debugging_log_name);
 }
 
-@ The |linguistic_error_here_ANNOT| annotation is for any errors we find:
+@ The `linguistic_error_here_ANNOT` annotation is for any errors we find:
 
 @e TwoLikelihoods_LINERROR from 1
 
@@ -230,8 +230,8 @@ parse_node *Diagrams::new_arity2(node_type_t t, wording W, parse_node *A, parse_
 
 @ And those are then used to make the following.
 
-Note that if the variable |preform_lookahead_mode| is set, then all these
-functions return |NULL|: this optimisation prevents us from creating millions
+Note that if the variable `preform_lookahead_mode` is set, then all these
+functions return `NULL`: this optimisation prevents us from creating millions
 of useless nodes when all that's happening is that the sentence parser is
 looking ahead speculatively.[1]
 

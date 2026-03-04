@@ -24,8 +24,8 @@ typedef struct documentation_ref {
 	int fragment_length; /* Number of bytes of fragment */
 	int sr_usage_count;
 	int ext_usage_count;
-	inchar32_t *chapter_reference; /* Or |NULL| if no chapter name supplied */
-	inchar32_t *section_reference; /* Or |NULL| if no section name supplied */
+	inchar32_t *chapter_reference; /* Or `NULL` if no chapter name supplied */
+	inchar32_t *section_reference; /* Or `NULL` if no section name supplied */
 	CLASS_DEFINITION
 } documentation_ref;
 
@@ -111,10 +111,10 @@ void DocReferences::read_xrefs_helper(text_stream *line,
 
 @ The following routine is used to verify that a given text is, or is not,
 a valid documentation reference symbol. (For instance, we might look up
-|kind_vehicle| to see if any section of documentation has been flagged
+`kind_vehicle` to see if any section of documentation has been flagged
 as giving information on vehicles.) If our speculative link symbol exists,
 we return the leafname for this documentation page, without filename
-extension (say |doc24|); if it does not exist, we return NULL.
+extension (say `doc24`); if it does not exist, we return NULL.
 
 =
 int DocReferences::validate_if_possible(text_stream *temp) {
@@ -252,7 +252,7 @@ void DocReferences::link_to_S(OUTPUT_STREAM, text_stream *fn, int full) {
 }
 
 @h Fragments.
-These are short pieces of documentation, which |indoc| has copied into a special
+These are short pieces of documentation, which `indoc` has copied into a special
 file so that we can paste them into the index at appropriate places. Note that
 if the file can't be found, or contains nothing germane, we fail safe by doing
 nothing at all -- not issuing any internal errors.

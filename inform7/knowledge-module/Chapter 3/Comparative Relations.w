@@ -25,7 +25,7 @@ void ComparativeRelations::start(void) {
 When an adjective is defined so that it performs an inequality comparison
 of a property value, like so:
 
->> Definition: A woman is tall if her height is 68 or more.
+> Definition: A woman is tall if her height is 68 or more.
 
 ...Inform automatically generates a comparative form (here "taller than").
 This is where our comparative relations come from, but the work is done in
@@ -42,7 +42,7 @@ created and attached to it:
 =
 typedef struct comparative_bp_data {
 	struct property *comparative_property; /* (if right way) if a comparative adjective */
-	int comparison_sign; /* ...and |+1| or |-1| according to sign of definition */
+	int comparison_sign; /* ...and `+1` or `-1` according to sign of definition */
 	CLASS_DEFINITION
 } comparative_bp_data;
 

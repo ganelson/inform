@@ -84,9 +84,9 @@ int ConfigureIndexMap::type_of_parameter(int index_of_parameter) {
 	return initial_global_map_scope.values[index_of_parameter].parameter_data_type;
 }
 
-@ A little dynamic initialisation is needed here, because |I"whatever"| constants
-are not in fact legal in constant context in C. So those |L"whatever"| values,
-which are legal, are converted to to |I"whatever"| values here:
+@ A little dynamic initialisation is needed here, because `I"whatever"` constants
+are not in fact legal in constant context in C. So those `L"whatever"` values,
+which are legal, are converted to to `I"whatever"` values here:
 
 =
 map_parameter_scope ConfigureIndexMap::global_settings(void) {
@@ -148,8 +148,8 @@ int ConfigureIndexMap::get_map_variable_index_forgivingly(text_stream *name,
 }
 
 @ The following sets a parameter to a given value (the string value if that's
-non-|NULL|, the number value otherwise), for a particular scope: this is
-slightly wastefully specified either as a |map_parameter_scope| object,
+non-`NULL`, the number value otherwise), for a particular scope: this is
+slightly wastefully specified either as a `map_parameter_scope` object,
 or as a single room, or as a single region, or as a kind of room or region.
 If all are null, then the global scope is used.
 

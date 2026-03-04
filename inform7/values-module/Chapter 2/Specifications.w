@@ -66,7 +66,7 @@ int Specifications::is_phrasal(parse_node *spec) {
 }
 
 @ We say that a specification is "kind-like" if it's one of those which could
-result from |Specifications::from_kind|: for example, the description "numbers"
+result from `Specifications::from_kind`: for example, the description "numbers"
 is kind-like, but "even numbers" is not.
 
 =
@@ -270,7 +270,7 @@ or even just "a door", even though the latter is linguistically simpler.
 	if ((I1) && (I2 == NULL)) return 1;
 	if ((I1 == NULL) && (I2)) return -1;
 
-@ Suppose both specifications exactly describe objects, |I1| and |I2|, and
+@ Suppose both specifications exactly describe objects, `I1` and `I2`, and
 all other considerations are equal. It's not quite true that one object is as
 good as another, because a region can be thought of as a set of rooms.
 (Without the following criterion, rules such as "After waiting in Russia"

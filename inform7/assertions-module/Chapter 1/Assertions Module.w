@@ -8,7 +8,7 @@ which use this module:
 
 @d ASSERTIONS_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e ASSEMBLIES_DA
 @e ASSERTIONS_DA

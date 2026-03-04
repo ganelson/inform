@@ -39,8 +39,8 @@ exactly matches "going action", but "going" does not.
 words all of which are found in the meaning tested. Thus "red door" and
 "red" are each subset matches for "ornate red door with brass handle".
 - In parametrised parsing, arbitrary (non-empty) text is allowed to
-match against |#| gaps in the token list. Thus "award 5 points" is a
-parametrised match for "award |#| points".
+match against `#` gaps in the token list. Thus "award 5 points" is a
+parametrised match for "award `#` points".
 - In maximal parsing, we find the longest possible initial match, allowing
 it even if it does reach to the end of the excerpt, and we return a unique
 finding, not a list of possibilities.
@@ -66,12 +66,12 @@ vocabulary_entry *word_to_suppress_in_phrases = NULL;
 
 @ As input, we supply not just the excerpt but also a context; or, to put it
 another way, a filter on which excerpt meanings to look at. This must be a
-bitmap made up from meaning codes, such as |TABLE_MC + TABLE_COLUMN_MC|,
+bitmap made up from meaning codes, such as `TABLE_MC + TABLE_COLUMN_MC`,
 which would check for tables and table columns simultaneously.
 
 However, there is one restriction on this. Recall that there are four
 parsing modes, and that different modes are used for different meaning
-codes. The |mc_bitmap| context is required not to mix MCs with different
+codes. The `mc_bitmap` context is required not to mix MCs with different
 parsing modes.
 
 =
@@ -178,7 +178,7 @@ which have a meaning code among those we are looking for:
 Exact matching is just what it sounds like: the match must be word
 for word. Because of that, the excerpt meaning is guaranteed to be listed
 under the start list of the first word, if it matches (because there cannot
-be |#| tokens in the token list -- if there were, we would be in parametrised
+be `#` tokens in the token list -- if there were, we would be in parametrised
 parsing mode).
 
 @<Enter exact parsing mode@> =
@@ -484,7 +484,7 @@ abbreviated form of an object name like "Chamber 11".
 		}
 	}
 
-@ Inform uses the callback here simply to disallow inexact parsing of |NOUN_NT|
+@ Inform uses the callback here simply to disallow inexact parsing of `NOUN_NT`
 excerpts when the use option "unabbreviated object names" is set.
 
 =

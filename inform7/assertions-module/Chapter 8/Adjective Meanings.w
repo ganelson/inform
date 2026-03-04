@@ -79,16 +79,16 @@ applied to something, or to make it now true (or false), it does this by
 compiling code for the associated unary predicate -- see
 //The Adjectival Predicates//. What to compile depends on the meaning or
 meanings which might apply; if it's this meaning, then we will need an
-I6 schema to carry out one of three tasks, |TEST_ATOM_TASK|,
-|NOW_ATOM_TRUE_TASK|, or |NOW_ATOM_FALSE_TASK|.
+I6 schema to carry out one of three tasks, `TEST_ATOM_TASK`,
+`NOW_ATOM_TRUE_TASK`, or `NOW_ATOM_FALSE_TASK`.
 
 A meaning has one of these for each of the possible tasks:
 
 =
 typedef struct adjective_task_data {
-	int task_mode; /* one of the |*_TASKMODE| constants: see below */
-	struct i6_schema call_to_support_function; /* where |TRUE| */
-	struct i6_schema code_to_perform; /* where |TRUE| */
+	int task_mode; /* one of the `*_TASKMODE` constants: see below */
+	struct i6_schema call_to_support_function; /* where `TRUE` */
+	struct i6_schema code_to_perform; /* where `TRUE` */
 } adjective_task_data;
 
 void AdjectiveMeanings::initialise_task_data(adjective_task_data *atd) {
@@ -104,7 +104,7 @@ void AdjectiveMeanings::copy_task_data(adjective_task_data *to, adjective_task_d
 }
 
 @ These functions set up the task data for a new meaning. Note the transposition,
-so that a negated meaning has the |NOW_ATOM_TRUE_TASK| and |NOW_ATOM_FALSE_TASK|
+so that a negated meaning has the `NOW_ATOM_TRUE_TASK` and `NOW_ATOM_FALSE_TASK`
 switched around from the original.
 
 =
@@ -129,13 +129,13 @@ void AdjectiveMeanings::negate_task_data(adjective_meaning *am, adjective_meanin
 - compile direct inline code;
 - compile a function call to a function, which actually performs the task;
 
-Those strategies correspond to the three |*_TASKMODE| constants.
+Those strategies correspond to the three `*_TASKMODE` constants.
 
 By default, an adjective meaning is unable to perform any of the three tasks,
 and the creator of it has to call //AdjectiveMeanings::make_schema// to say
-otherwise. This puts us by default into |DIRECT_TASKMODE|, unless we're working
+otherwise. This puts us by default into `DIRECT_TASKMODE`, unless we're working
 in the world of objects where run-time typechecking will be needed -- in which
-case |VIA_SUPPORT_FUNCTION_TASKMODE|. But the creator can insist on the latter
+case `VIA_SUPPORT_FUNCTION_TASKMODE`. But the creator can insist on the latter
 anyway with a subsequent call to //AdjectiveMeanings::perform_task_via_function//.
 
 @e NO_TASKMODE from 1
@@ -228,26 +228,26 @@ adjective_meaning_family *AdjectiveMeanings::new_family(int N) {
 @ Families provide a number of methods to tweak how adjectives behave,
 and here goes. All of these methods are optional.
 
-|CLAIM_DEFINITION_SENTENCE_ADJM_MTID| is an opportunity to say that a
+`CLAIM_DEFINITION_SENTENCE_ADJM_MTID` is an opportunity to say that a
 definition in the source text is asking for this kind of adjective.
 Suppose the source has a line like so:
 
->> Definition: A ... (called ...) is ... if ...
+> Definition: A ... (called ...) is ... if ...
 
-In place of the ellipses are respectively |DNW| (domain wording), |CALLW|
-(the calling), |AW| (the adjective) and |CONW| (the condition). |sense| is
+In place of the ellipses are respectively `DNW` (domain wording), `CALLW`
+(the calling), `AW` (the adjective) and `CONW` (the condition). `sense` is
 either 1, meaning that "if" was used (the condition has positive sense);
 or -1, meaning that it was "unless" (a negative sense); or 0, meaning
 that instead of a condition, a rule was supplied.
 
 If the method is provided, it should look at these and decide if this is
-the sort of adjective it wants to make. If so, it should return |TRUE|
-and copy a pointer to the new adjective meaning into |result|. If not,
-it should return |FALSE|.
+the sort of adjective it wants to make. If so, it should return `TRUE`
+and copy a pointer to the new adjective meaning into `result`. If not,
+it should return `FALSE`.
 
 Of course, only one family can take the prize, and so the sequence in which
 the families are offered the chance to claim is significant. This sequence
-is ascending order of the family's |definition_claim_priority| field.
+is ascending order of the family's `definition_claim_priority` field.
 
 @e CLAIM_DEFINITION_SENTENCE_ADJM_MTID
 
@@ -277,12 +277,12 @@ adjective_meaning *AdjectiveMeanings::claim_definition(parse_node *q,
 @ By default, an adjective meaning cannot be asserted, that is, said to be
 true of something (an inference subject) in the model world. So if "fizzy"
 is a newly created adjective, the sentence "The drink is fizzy" would be
-rejected. But if the family for "fizzy" provides an |ASSERT_ADJM_MTID| method,
-it's a different matter. The method should either return |FALSE| to decline
-after all, or draw some inferences and then return |TRUE|.
+rejected. But if the family for "fizzy" provides an `ASSERT_ADJM_MTID` method,
+it's a different matter. The method should either return `FALSE` to decline
+after all, or draw some inferences and then return `TRUE`.
 
-|parity| is |TRUE| if the assertion claims the meaning |am| is true about the
-subject |subj|, and otherwise |FALSE|.
+`parity` is `TRUE` if the assertion claims the meaning `am` is true about the
+subject `subj`, and otherwise `FALSE`.
 
 @e ASSERT_ADJM_MTID
 
@@ -300,7 +300,7 @@ int AdjectiveMeanings::assert(adjective_meaning *am, inference_subject *subj,
 	return rv;
 }
 
-@ Next, |PREPARE_SCHEMAS_ADJM_MTID|. Just before code is about to be
+@ Next, `PREPARE_SCHEMAS_ADJM_MTID`. Just before code is about to be
 generated for the adjective to perform some task, this method is called.
 The idea is that this is an opportunity to compile a schema for the adjective
 at the last minute (as an alternative to having set the schemas up at
@@ -317,23 +317,23 @@ void AdjectiveMeanings::prepare_schemas(adjective_meaning *am, int task) {
 	am->schemas_prepared = TRUE;
 }
 
-@ |GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID| offers a way to bypass the usual code
+@ `GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID` offers a way to bypass the usual code
 generation process. It is called on only when //runtime: Adjectives// is
 compiling a support function -- and therefore it will never be called on if
 the adjective doesn't perform this task with a support function; see above.
 
-It is called twice, first with |emit_flag| set to |FALSE|; it should do nothing,
-but return |TRUE| to indicate that it wants to generate wacky code of its own.
-On the second call, |emit_flag| will be |TRUE|, and this time the method should
+It is called twice, first with `emit_flag` set to `FALSE`; it should do nothing,
+but return `TRUE` to indicate that it wants to generate wacky code of its own.
+On the second call, `emit_flag` will be `TRUE`, and this time the method should
 follow through on its earlier promise.
 
-If the method is not provided or returns |FALSE|, then the code will be generated
+If the method is not provided or returns `FALSE`, then the code will be generated
 from the schema in the normal way.
 
-As with schemas, |T| is the task to be performed.
+As with schemas, `T` is the task to be performed.
 
-If |emit_flag| is |TRUE|, then code should actually be generated, and within
-the given stack frame. If it is |FALSE|, the function should simply return
+If `emit_flag` is `TRUE`, then code should actually be generated, and within
+the given stack frame. If it is `FALSE`, the function should simply return
 whether it is able to do this or not.
 
 @e GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID
@@ -373,8 +373,8 @@ we are now trying to compile, and the result would be code which recursed
 forever.
 
 The stack frame for the support function has a single variable "it" as number 0,
-and we set |*1| to be this parameter. This is in fact the term we are performing
-the task on. |*2| is unset.
+and we set `*1` to be this parameter. This is in fact the term we are performing
+the task on. `*2` is unset.
 
 @<Use the I6 schema instead to compile the task, if one exists@> =
 	i6_schema *sch = AdjectiveMeanings::get_schema_without_call(am, T);
@@ -388,9 +388,9 @@ the task on. |*2| is unset.
 		return TRUE;
 	}
 
-@ At last, something simpler. |INDEX_ADJM_MTID|, if provided, should print
+@ At last, something simpler. `INDEX_ADJM_MTID`, if provided, should print
 a description suitable for use in the lexicon part of the index, and return
-|TRUE|. If not provided, or it returns |FALSE|, something sensible is done
+`TRUE`. If not provided, or it returns `FALSE`, something sensible is done
 instead; this is only an opportunity to improve the wording.
 
 Note that this is only called for the positive sense of an adjective meaning,

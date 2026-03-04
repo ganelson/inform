@@ -42,10 +42,10 @@ This structure of additional data is attached to each figure instance.
 =
 typedef struct internal_files_data {
 	struct wording name; /* text of name */
-	int unextended_filename; /* word number of text like |"ice extents.usgs"| */
+	int unextended_filename; /* word number of text like `"ice extents.usgs"` */
 	struct filename *local_filename; /* of where this file is, in Materials directory */
 	struct text_stream *inf_identifier; /* an Inter identifier */
-	int file_format; /* |INTERNAL_TEXT_FILE_NFSMF| or |INTERNAL_BINARY_FILE_NFSMF| */
+	int file_format; /* `INTERNAL_TEXT_FILE_NFSMF` or `INTERNAL_BINARY_FILE_NFSMF` */
 	struct instance *as_instance;
 	struct parse_node *where_created;
 	int resource_id;
@@ -98,8 +98,8 @@ int InternalFiles::files_new_named_instance_notify(instance *I) {
 @h Blurb and manifest.
 The i-files manifest is used by the implementation of Glulx within the Inform
 application to connect file ID numbers with filenames relative to the
-|.materials| folder for its project. (It's part of the XML manifest file
-created from |Figures.w|.)
+`.materials` folder for its project. (It's part of the XML manifest file
+created from `Figures.w`.)
 
 =
 void InternalFiles::write_files_manifest(OUTPUT_STREAM) {

@@ -4,17 +4,17 @@ Claiming and creating copies of the projectbundle genre: used for Inform 7
 projects as created by the GUI apps.
 
 @h Genre definition.
-The |project_bundle_genre| can be summarised as follows. Copies consist of
+The `project_bundle_genre` can be summarised as follows. Copies consist of
 directories, which are Inform project bundles: for example,
-|Counterfeit Monkey.inform| might be such a bundle. They are recognised by
-being directories and having names ending in |.inform|. They cannot be
+`Counterfeit Monkey.inform` might be such a bundle. They are recognised by
+being directories and having names ending in `.inform`. They cannot be
 stored in nests. Their build graphs are extensive, having "upstream" vertices
 representing possible ways to build or release them, and having numerous
 "downstream" vertices as well: build edges run out to the extensions, kits
 and language definitions that they need.
 
-Note that |project_bundle_genre| and |project_file_genre| are managed
-differently, but share the same annotation data structure |inform_project|.
+Note that `project_bundle_genre` and `project_file_genre` are managed
+differently, but share the same annotation data structure `inform_project`.
 However it is stored in the file system, a project is a project.
 
 =
@@ -32,7 +32,7 @@ void ProjectBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild
 	WRITE("%S", work->title);
 }
 
-@ Project copies are annotated with a structure called an |inform_project|,
+@ Project copies are annotated with a structure called an `inform_project`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -52,13 +52,13 @@ inbuild_copy *ProjectBundleManager::new_copy(text_stream *name, pathname *P) {
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A project needs to be a directory whose name ends in |.inform|.
+A project needs to be a directory whose name ends in `.inform`.
 
 =
 void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,

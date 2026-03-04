@@ -4,17 +4,17 @@ To compile the rules submodule for a compilation unit, which contains
 _rule packages.
 
 @h Compilation data.
-Each |rule| object contains this data.
+Each `rule` object contains this data.
 
 Everything here would be straightforward if all rules were declared with
-imperative code, as of course most of them are. In that case, |local_iname|
+imperative code, as of course most of them are. In that case, `local_iname`
 is the function to apply the rule, and the other inames here are all null.
 
 The difficulty arises when a rule is defined by an Inter function in some
 kit. That function wasn't compiled by us, and we need to mock something up
 to make it behave just as a regular rule would: in particular it needs to
 be able to print response texts, and to have applicability constraints.
-In these cases, |foreign_iname| is set and |local_iname| is null.
+In these cases, `foreign_iname` is set and `local_iname` is null.
 
 =
 typedef struct rule_compilation_data {
@@ -99,7 +99,7 @@ inter_name *RTRules::foreign_iname(rule *R) {
 @ If the author wants to place applicability constraints on a rule defined in
 a kit, like so:
 
->> The carrying requirements rule does nothing when eating the lollipop.
+> The carrying requirements rule does nothing when eating the lollipop.
 
 then how do we accommodate that? We cannot change the foreign function, so
 instead we route execution through a "shell function" to test those
@@ -134,7 +134,7 @@ in the kit might read like so:
 	...
 ];
 =
-This code is making calls to a function |MY_FOREIGN_RM| which does not exist
+This code is making calls to a function `MY_FOREIGN_RM` which does not exist
 in the kit; it's the handler function, which we will define here. But in order
 for the references in the kit to match up correctly, we must therefore make
 the handler available.
@@ -319,7 +319,7 @@ rules, but also as part of the "firing test" of rules defined by imperative
 code: see below.
 
 It is possible for a constraint to be, basically, "never fire this rule". If
-so, the function here returns |TRUE|. In that eventuality, the function call
+so, the function here returns `TRUE`. In that eventuality, the function call
 to the rule need never be compiled.
 
 =
@@ -405,9 +405,9 @@ looks like this:
 		fail 1
 	}
 =
-Everything before the |...| is "head", and everything after is the "tail".
+Everything before the `...` is "head", and everything after is the "tail".
 The return statement isn't necessarily reached, because even if the firing
-condition holds, the |...| code may decide to return in some other way.
+condition holds, the `...` code may decide to return in some other way.
 It provides only a default to cover rules which don't specify an outcome.
 
 =

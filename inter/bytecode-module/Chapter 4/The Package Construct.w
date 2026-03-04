@@ -22,7 +22,7 @@ void PackageInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |package| instruction is laid out with the
+In bytecode, the frame of a `package` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d DEFN_PACKAGE_IFLD    (DATA_IFLD + 0)
@@ -31,8 +31,8 @@ compulsory words -- see //Inter Nodes// -- followed by:
 @d SYMBOLS_PACKAGE_IFLD (DATA_IFLD + 3)
 @d PID_PACKAGE_IFLD     (DATA_IFLD + 4)
 
-@ If you try to create uniquely-named subpackages all called |bag| inside the
-same package, you'll get |bag|, then |bag_1|, |bag_2|, and so on.
+@ If you try to create uniquely-named subpackages all called `bag` inside the
+same package, you'll get `bag`, then `bag_1`, `bag_2`, and so on.
 
 =
 inter_error_message *PackageInstruction::new(inter_bookmark *IBM,
@@ -184,7 +184,7 @@ void PackageInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_no
 	WRITE("%S %S", InterPackage::name(pack), InterSymbol::identifier(ptype_name));
 }
 
-@ With the addendum of writing out the pseudo-constructs |plug| and |socket|
+@ With the addendum of writing out the pseudo-constructs `plug` and `socket`
 to ensure that any in the symbols table are recorded in the textual output:
 
 =

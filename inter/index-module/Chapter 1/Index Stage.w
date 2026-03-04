@@ -12,14 +12,14 @@ void IndexStage::create_pipeline_stage(void) {
 		NO_STAGE_ARG, FALSE);
 }
 
-@ The implementation here needs an |inform_project| structure to work from,
+@ The implementation here needs an `inform_project` structure to work from,
 and that exists only in the //supervisor// module -- which is not a part of
-the Inter stand-alone tool. So running |inter| at the command line does not
+the Inter stand-alone tool. So running `inter` at the command line does not
 allow the indexer to do anything.
 
 Moreover, and in a sneaky fashion, updating the extensions documentation and
 generating an EPS map are also sometimes part of the indexing process, depending
-on the command-line settings used when invoking |inform7|.
+on the command-line settings used when invoking `inform7`.
 
 @d INDEX_REQUIRED_BIT 1
 @d EXTENSIONS_INDEX_REQUIRED_BIT 2

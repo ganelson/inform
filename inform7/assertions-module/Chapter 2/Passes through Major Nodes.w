@@ -68,11 +68,11 @@ void MajorNodes::traverse(int pass) {
 are made when the kinds of objects are set, and they're made by inserting
 appropriate sentences. For instance, given the generalisation:
 
->> Every room contains a vehicle.
+> Every room contains a vehicle.
 
 we would insert the following sentence into the tree:
 
->> Ballroom West contains a vehicle.
+> Ballroom West contains a vehicle.
 
 as soon as we discover that Ballroom West is a room. That works fine if we
 discover this fact during traverses 1 or 2, but sometimes the room-ness of
@@ -163,7 +163,7 @@ of imperative code.
 	if (global_pass_state.pass == 0)
 		SyntaxTree::traverse_run(p, ImperativeSubtrees::accept, IMPERATIVE_NT);
 
-@ |SENTENCE_NT| nodes are by far the most varied and difficult. In the pre-pass,
+@ `SENTENCE_NT` nodes are by far the most varied and difficult. In the pre-pass,
 we call //Classifying::sentence// to have them diagrammed, which determines
 whether they have special or regular meanings.
 
@@ -204,13 +204,13 @@ with one of the following task codes. They don't get the benefit of
 
 @ Regular meanings are more subtle: on pass 1, we "refine" them, which means
 identifying unparsed noun phrases. //Refiner::refine_coupling//
-returns |TRUE| if it succeeds in this.
+returns `TRUE` if it succeeds in this.
 
 After that, there are two cases: existential sentences (such as "there are
 two cases") and all others (such as "regular meanings are more subtle").
 
 The trickiest form is "There is a container with carrying capacity 30", say,
-which equates |DEFECTIVE_NOUN_NT| with |WITH_NT|. This is somehow both cases
+which equates `DEFECTIVE_NOUN_NT` with `WITH_NT`. This is somehow both cases
 at once, and we have to perform both an existential assertion and a coupling.
 
 @<Act on regular meaning@> =
@@ -251,7 +251,7 @@ void MajorNodes::extra_sentence(parse_node *new) {
 	if (global_pass_state.pass >= 0) Classifying::sentence(new);
 }
 
-@ |TRACE_NT| nodes result from asterisked sentences; this is a debugging feature of
+@ `TRACE_NT` nodes result from asterisked sentences; this is a debugging feature of
 Inform. An asterisk on its own toggles logging of work on sentences.
 
 =

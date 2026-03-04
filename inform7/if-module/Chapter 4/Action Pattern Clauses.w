@@ -4,14 +4,14 @@ Pattern-matches on individual nouns in an action are called clauses.
 
 @h Clause IDs.
 Clauses come in types, each with their own ID. Some are hard-wired into
-the compiler: |IN_THE_PRESENCE_OF_AP_CLAUSE|, for example. Others arise
+the compiler: `IN_THE_PRESENCE_OF_AP_CLAUSE`, for example. Others arise
 from Inform source text adding optional clauses to actions which are based
 on matching action variables: see //Action Variables//.
 
 The set of clauses in an //action_pattern// is stored as a linked list
 of //ap_clause// objects. Clauses must be listed in increasing ID order,
 and cannot contain two clauses with the same ID. The ID numbers will either
-be one of the |*_AP_CLAUSE| enumerated values, which are clauses where the
+be one of the `*_AP_CLAUSE` enumerated values, which are clauses where the
 Inform compiler has to do something special involving them, or else will
 be determined by //APClauses::clause_ID_for_action_variable// for matching
 action variable clauses.
@@ -26,7 +26,7 @@ action variable clauses.
 @e TAIL_AP_CLAUSE
 
 @ There is no significance to the IDs returned by this function except that
-they must all be different from each other and from all of the |*_AP_CLAUSE|
+they must all be different from each other and from all of the `*_AP_CLAUSE`
 values.
 
 =
@@ -63,22 +63,22 @@ A single clause is an instance of:
 =
 typedef struct ap_clause {
 	int clause_ID;
-	struct shared_variable *stv_to_match; /* can be |NULL| for some built-in clause IDs */
+	struct shared_variable *stv_to_match; /* can be `NULL` for some built-in clause IDs */
 	struct parse_node *clause_spec; /* what the pattern says about this value */
 	int clause_options; /* a bitmap of flags: see below */
 	struct ap_clause *next; /* in the linked list of clauses for an action pattern */
 	CLASS_DEFINITION
 } ap_clause;
 
-@ This loop conveniently runs through the clauses for |ap|:
+@ This loop conveniently runs through the clauses for `ap`:
 
 @d LOOP_OVER_AP_CLAUSES(var, ap)
 	for (ap_clause *var = (ap)?(ap->ap_clauses):NULL; var; var = var->next)
 
 @ The list is stored in increasing order of clause ID. The only way to add new
-clauses is with the following, which finds clause |C| if it exists, and if not
-either returns |NULL| or creates clause |C| (inserting at the correct list
-position), depending on whether |make| is set.
+clauses is with the following, which finds clause `C` if it exists, and if not
+either returns `NULL` or creates clause `C` (inserting at the correct list
+position), depending on whether `make` is set.
 
 =
 ap_clause *APClauses::find_clause(action_pattern *ap, int C, int make) {
@@ -124,7 +124,7 @@ ap_clause *APClauses::ensure_clause(action_pattern *ap, int C) {
 }
 
 @ Each clause contains a specification. Note that not providing a clause is
-almost the same thing as providing one with specification |NULL|. But only
+almost the same thing as providing one with specification `NULL`. But only
 almost, because there could also be options set on it.
 
 =
@@ -208,7 +208,7 @@ it can be used.
 
 First, the following is for action patterns like "someone taking the medallion".
 Here the requirement on the actor is not ${\it person}(c_a)$ but instead forces
-$c_a$ not to be the player. The principled thing might be to set the |clause_spec|
+$c_a$ not to be the player. The principled thing might be to set the `clause_spec`
 to the proposition ${\it person}(c_a)\land c_a\neq {\it player}$, but that would
 be annoying to test for. So we give it an option flag instead:
 
@@ -307,7 +307,7 @@ int APClauses::compare_specificity_of_av_clauses(action_pattern *ap1, action_pat
 
 @h Aspects.
 Clauses are divided into groups called "aspects", each of which has an ID
-in the |*_APCA| enumeration.
+in the `*_APCA` enumeration.
 
 @e PARAMETRIC_APCA from 0
 @e PRIMARY_APCA
@@ -335,7 +335,7 @@ int APClauses::aspect(ap_clause *apoc) {
 	return MISC_APCA;
 }
 
-@ How many clauses with aspect |A| does the pattern have?
+@ How many clauses with aspect `A` does the pattern have?
 
 =
 int APClauses::number_with_aspect(action_pattern *ap, int A) {

@@ -6,9 +6,9 @@ that is, how the rooms and doors connect up.
 @ One of the few early breaks with I6 practice was that I7 stores the
 map differently at run-time compared to earlier I6 games.
 
-The |Map_Storage| array consists only of the |exits| arrays written out
+The `Map_Storage` array consists only of the `exits` arrays written out
 one after another. It looks wasteful of memory, since it is almost always
-going to be filled mostly with |0| entries (meaning: no exit that way). But
+going to be filled mostly with `0` entries (meaning: no exit that way). But
 the memory needs to be there because map connections can be added dynamically
 at run-time, so we can't know now how many we will need.
 
@@ -52,7 +52,7 @@ int RTMap::compile_model_tables(void) {
 
 @ This may as well be here as anywhere else: it specifies how to read or
 change the map, by testing or asserting the "mapped D of" relation for a
-given direction D, which appears here in the guise of its instance |I|:
+given direction D, which appears here in the guise of its instance `I`:
 
 =
 void RTMap::set_map_schemas(binary_predicate *bp, instance *I) {

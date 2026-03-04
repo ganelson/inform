@@ -6,7 +6,7 @@ others with values.
 @h Introduction.
 Each differently-named property has a //property// instance. It can be
 had by multiple subjects -- usually kinds or instances -- which is why it
-has a list of |permissions| saying who can have it, and not just one subject;
+has a list of `permissions` saying who can have it, and not just one subject;
 but it is the same essential property whoever has it, and in particular has
 the same kind. A door and a scene could both have the property "style", but
 it would have to hold the same kind of value in each case.
@@ -24,9 +24,9 @@ typedef struct property {
 	int Inter_level_only; /* i.e., does not correspond to an I7 property */
 	struct parse_node *where_created;
 
-	struct linked_list *permissions; /* of |property_permission|: who can have this? */
+	struct linked_list *permissions; /* of `property_permission`: who can have this? */
 
-	/* exactly one of these must be non-|NULL|: */
+	/* exactly one of these must be non-`NULL`: */
 	struct either_or_property_data *either_or_data; /* for an either/or property */
 	struct value_property_data *value_data; /* for a value property */
 
@@ -366,8 +366,8 @@ possession_marker *Properties::get_possession_marker(property *prn) {
 	return &(prn->pom);
 }
 
-@ These are frequently used. As noted above, exactly one of |either_or_data|
-and |value_data| is |NULL|, so these are in fact antonyms:
+@ These are frequently used. As noted above, exactly one of `either_or_data`
+and `value_data` is `NULL`, so these are in fact antonyms:
 
 =
 int Properties::is_either_or(property *prn) {
@@ -402,7 +402,7 @@ void Properties::log_basic_pname(property *prn) {
 This is the function which is called by the assertion parser in response
 to sentences like:
 
->> The initial appearance property translates into Inter as "initial".
+> The initial appearance property translates into Inter as "initial".
 
 =
 void Properties::translates(wording W, parse_node *p2) {
@@ -442,15 +442,15 @@ void Properties::translates(wording W, parse_node *p2) {
 @ But there is a kick in the tail, which is that translation can reverse the
 run-time parity of an either/or property. The Standard Rules normally say:
 
->> The open property translates into Inter as "open".
+> The open property translates into Inter as "open".
 
-This means that information about openness is stored as |open| within the
-template; an open door has |open| set, for instance. If we had written:
+This means that information about openness is stored as `open` within the
+template; an open door has `open` set, for instance. If we had written:
 
->> The closed property translates into Inter as "open".
+> The closed property translates into Inter as "open".
 
-then the relevant data would still have been stored as |open|, but with the
-opposite sense; an open door would now be one with |open| cleared.[1]
+then the relevant data would still have been stored as `open`, but with the
+opposite sense; an open door would now be one with `open` cleared.[1]
 
 [1] Of course we'd never want to do something so confusing, but the facility
 exists because Inform 7 made a few either/or properties opposite in sense
@@ -507,8 +507,8 @@ void Properties::compile_inferred_value(value_holster *VH, inference_subject *in
 }
 
 @ Here we look for a specific subject's knowledge about our property, and if
-we find it, we compile it and return |TRUE|; if not we do nothing and return
-|FALSE|.
+we find it, we compile it and return `TRUE`; if not we do nothing and return
+`FALSE`.
 
 =
 int Properties::compile_property_value_inner(value_holster *VH, inference_subject *infs,
@@ -554,7 +554,7 @@ exactly as a property, allowing the same name to be used grammatically in
 two different contexts. We say that the kind and the property "coincide".
 In particular, this happens with conditions:
 
->> Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. The lantern has a brightness. The lantern is blazing.
+> Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. The lantern has a brightness. The lantern is blazing.
 
 Here "brightness" becomes the name of a new kind, but "brightness" also
 becomes the name of a property.

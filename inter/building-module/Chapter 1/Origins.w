@@ -3,7 +3,7 @@
 Keeping track of sources of code for an Inter tree.
 
 @ We need a quick way to turn a filename, which may be a longish text, into a
-symbol defined in a suitable |ORIGIN_IST| instruction at the top of the tree.
+symbol defined in a suitable `ORIGIN_IST` instruction at the top of the tree.
 This will be a dictionary, i.e., a hash:
 
 =
@@ -23,10 +23,10 @@ void Origins::clear_site_data(inter_tree *I) {
 }
 
 @ This gives us just one function: which returns the symbol for a filename,
-creating it as necessary. |-| by definition means "nowhere".
+creating it as necessary. `-` by definition means "nowhere".
 
 This function is almost always called in such a way that two consecutive
-non-null values of |fn| will be the same, so it makes sense to cache the
+non-null values of `fn` will be the same, so it makes sense to cache the
 most recent answer as a first line of defence, and then use a dictionary
 lookup if that fails.
 

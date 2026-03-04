@@ -68,7 +68,7 @@ inter_tree_node *Inode::new_node(inter_warehouse *warehouse, inter_tree *I,
 only per tree, and is called by //InterTree::new// anyway.
 
 The root node is meaningless, but in order that all nodes correspond to
-instructions, we make it a |NOP_IST|. This is not really part of the program,
+instructions, we make it a `NOP_IST`. This is not really part of the program,
 though.
 
 =
@@ -85,7 +85,7 @@ Words 0 and 1 have the same meaning for all instructions; everything from 2
 onwards is data whose meaning differs between instructions. (Indeed, some
 instructions have no data at all, and thus occupy only 2 words.)
 
-The ID is an enumeration of |*_IST|: it marks which instruction this is.
+The ID is an enumeration of `*_IST`: it marks which instruction this is.
 
 The level is the depth of this node in the tree, where the root node is 0,
 its children are level 1, their children level 2, and so on.
@@ -278,17 +278,17 @@ almost any length). But the preframe is of fixed size:
 @d PREFRAME_SKIP_AMOUNT 0
 @d PREFRAME_ORIGIN_AND_VFLAG 1
 
-@ |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
+@ `PREFRAME_SKIP_AMOUNT` is the offset (in words) to the next instruction.
 Since the preframe has fixed length, this is both the offset from one preframe
 to the next and also from one frame to the next.
 
-@ |PREFRAME_ORIGIN_AND_VFLAG| contains two unrelated pieces of data. One is bit 31,
+@ `PREFRAME_ORIGIN_AND_VFLAG` contains two unrelated pieces of data. One is bit 31,
 which is set if the instruction in the frame has been verified, and is otherwise
 clear.
 
 The other, in bits 0-30, allows the origin of the instruction, in source code,
 to be preserved: for example, to show that this came from line 14 of a file
-called |whatever.intert|. It is 0 if no origin is recorded; it is used only
+called `whatever.intert`. It is 0 if no origin is recorded; it is used only
 for better reporting of any errors which arise. For how the location is
 actually encoded in the word, see //The Warehouse//.
 
@@ -332,14 +332,14 @@ void Inode::set_preframe(inter_tree_node *F, int at, inter_ti V) {
 
 @ As noted above, the size of the frame varies from instruction to instruction.
 For most instructions, it's determined as soon as the inode is created -- for
-example, a |PROPERTYVALUE_IST| is always of a fixed length, and it's created
+example, a `PROPERTYVALUE_IST` is always of a fixed length, and it's created
 already being that length, so that it doesn't need to be extended.
 
 But just a few instructions are of variable length depending on what they are
-doing -- |CONSTANT_IST|, for example. Those are created at their minimum
+doing -- `CONSTANT_IST`, for example. Those are created at their minimum
 length and then extended as needed.
 
-Note that |by| is unsigned, so cannot be negative: the bytecode can extend
+Note that `by` is unsigned, so cannot be negative: the bytecode can extend
 but not contract.
 
 All of this extension happens only during the process of creating the

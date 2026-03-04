@@ -2,9 +2,9 @@
 
 To compile the main/synoptic/kinds submodule.
 
-@ Our inventory |inv| already contains a list |inv->kind_nodes| of all packages
-in the tree with type |_kind|; here is one for each base kind. Similarly for
-the list |inv->derived_kind_nodes|.
+@ Our inventory `inv` already contains a list `inv->kind_nodes` of all packages
+in the tree with type `_kind`; here is one for each base kind. Similarly for
+the list `inv->derived_kind_nodes`.
 
 =
 void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -20,7 +20,7 @@ void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	@<Define KINDHIERARCHY array@>;
 }
 
-@ Each base kind package contains a numeric constant with the symbol name |strong_id|.
+@ Each base kind package contains a numeric constant with the symbol name `strong_id`.
 We want to ensure that these ID numbers are contiguous from 2 and never duplicated,
 so we change the values of these constants accordingly. (From 2 because we want to
 avoid 0, and we want 1 always to mean "kind unknown".)
@@ -327,8 +327,8 @@ or higher is therefore that of a derived kind.
 	Synoptic::end_function(I, step, iname);
 
 @ This goes right back to a curious feature of Inform 1, in 1993. To enable
-the use of player's holdalls, we must declare a constant |RUCKSACK_CLASS| to
-tell some code in |WorldModelKit| to use possessions with this Inter class as
+the use of player's holdalls, we must declare a constant `RUCKSACK_CLASS` to
+tell some code in `WorldModelKit` to use possessions with this Inter class as
 the rucksack pro tem. This is all a bit of a hack, and isn't really fully
 general: only the player has the benefit of a "player's holdall" (hence the
 name), with other actors oblivious.
@@ -352,7 +352,7 @@ name), with other actors oblivious.
 the kinds of object: there are just two words per kind -- the class, then
 the instance count for its own kind. For instance, "door" is usually
 kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
-8 will be |K4_door|, and word 9 will be the number 2, meaning kind number 2,
+8 will be `K4_door`, and word 9 will be the number 2, meaning kind number 2,
 "thing". This tells us that a door is a kind of thing.
 
 @<Define KINDHIERARCHY array@> =

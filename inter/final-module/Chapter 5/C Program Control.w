@@ -145,9 +145,9 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	suppress_terminal_semicolon = TRUE;
 
 @ Inter permits multiple match values to be supplied for a single case in a
-|!switch| primitive: but C does not allow this for its keyword |case|, so we
+`!switch` primitive: but C does not allow this for its keyword `case`, so we
 have to recurse downwards through the possibilities and preface each one by
-|case:|. For example,
+`case:`. For example,
 = (text as Inter)
 	inv !switch
 		inv !alternativecase
@@ -155,7 +155,7 @@ have to recurse downwards through the possibilities and preface each one by
 			val K_number 7
 		...
 =
-becomes |case 3: case 7:|.
+becomes `case 3: case 7:`.
 
 @<Generate primitive for case@> =
 	CProgramControl::caser(gen,  InterTree::first_child(P));

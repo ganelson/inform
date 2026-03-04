@@ -117,7 +117,7 @@ The following conveniently loops through all valid resource IDs for a given tree
 			(InterPackage::tree(I->housed->stored_resources[n].resource_owner) == I))
 
 @ So what can a resource be? The following types are supported, and can be
-deduced by looking at what class is stored in the general pointer |res|; this
+deduced by looking at what class is stored in the general pointer `res`; this
 saves redundantly storing a type field in //inter_warehouse_resource//.
 
 @e TEXT_IRSRC from 1
@@ -291,20 +291,20 @@ In a typical //inform7// run, we reach about the 9th room, so that the address
 space amounts to around 2 million words.
 
 @ A single instruction will occupy a contiguous run of addresses, and will
-consist of a preframe (always |PREFRAME_SIZE| words) and then a frame (of
+consist of a preframe (always `PREFRAME_SIZE` words) and then a frame (of
 a variable size, though always at least 2 words). This will always lie
 inside a single room: this is why, if we ask for an instruction with a
 50000-word frame, we would force larger rooms to be created.
 
 The following represents where an instruction is stored. The address of the
-preframe will be |index| plus the sum of |room_usage| for previous rooms; the address
-of the frame will be |PREFRAME_SIZE| more than that, since the frame always
-immediately follows the preframe. |instruction| points to the first word of
-the frame, and the |extent| is the size of the frame, so the size of the whole
-instruction is |extent + PREFRAME_SIZE|.
+preframe will be `index` plus the sum of `room_usage` for previous rooms; the address
+of the frame will be `PREFRAME_SIZE` more than that, since the frame always
+immediately follows the preframe. `instruction` points to the first word of
+the frame, and the `extent` is the size of the frame, so the size of the whole
+instruction is `extent + PREFRAME_SIZE`.
 
-Note that |instruction| and |extent| are both in principle redundant in this
-structure. If you know |in_room| and |index| you know everything, because:
+Note that `instruction` and `extent` are both in principle redundant in this
+structure. If you know `in_room` and `index` you know everything, because:
 = (text as InC)
 	W.instruction == W.in_room->bytecode + W.index + PREFRAME_SIZE
 	W.extent == W.in_room->bytecode[W.index + PREFRAME_SKIP_AMOUNT] - PREFRAME_SIZE
@@ -321,8 +321,8 @@ typedef struct warehouse_floor_space {
 } warehouse_floor_space;
 
 @ We provide an API of just two functions to handle all this. Firstly,
-//InterWarehouse::make_floor_space// makes room for an instruction of |n| words.
-(This is the frame extent, and does not include the |PREFRAME_SIZE|.)
+//InterWarehouse::make_floor_space// makes room for an instruction of `n` words.
+(This is the frame extent, and does not include the `PREFRAME_SIZE`.)
 
 Note that this function always succeeds, because an internal error is thrown
 if the system is out of memory.
@@ -378,7 +378,7 @@ may only be called on the floor space for the most-recently creates instruction,
 so the floor space is guaranteed to be at the end of the space used in the
 current room.
 
-|by| cannot be negative (it is unsigned). The instruction therefore always
+`by` cannot be negative (it is unsigned). The instruction therefore always
 extends, not contracts. The values of the new words added are undefined:
 they will very likely be 0 but do not rely upon this.
 

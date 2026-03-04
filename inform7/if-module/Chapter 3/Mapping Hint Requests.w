@@ -45,7 +45,7 @@ int MappingHints::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 
 @ The subject noun phrase of sentences like this:
 
->> Index map with Chamber mapped north of Cave and EPS file.
+> Index map with Chamber mapped north of Cave and EPS file.
 
 is an articled list of subjects (in this case, two of them); each subject
 is parsed with the following grammar, which is almost a mini-language in
@@ -106,10 +106,13 @@ int MappingHints::setting(int N) {
 
 @ Now we parse the setting to be set. For example,
 
->> title-size of the first room
->> border-size of level 1
->> room-outline-thickness of the Taj Mahal
->> title-size
+> title-size of the first room
+
+> border-size of level 1
+
+> room-outline-thickness of the Taj Mahal
+
+> title-size
 
 =
 <map-setting> ::=
@@ -130,7 +133,7 @@ int MappingHints::setting(int N) {
 @ The map parameters all have one-word, sometimes hyphenated, names, such
 as the following:
 
->> vertical-spacing, monochrome, annotation-size
+> vertical-spacing, monochrome, annotation-size
 
 For now, at least, these are all in English only.
 
@@ -170,10 +173,10 @@ Never mind.
 	on |                     ==> { TRUE, - }
 	off                      ==> { FALSE, - }
 
-@ Map offsets have a cutesy notation: |10&-30|, for example, written as a
+@ Map offsets have a cutesy notation: `10&-30`, for example, written as a
 single word. The following nonterminal actually matches any single word
 (so that problems can be caught later, not now), returning either a valid
-offset or else the |ERRONEOUS_OFFSET_VALUE| sentinel.
+offset or else the `ERRONEOUS_OFFSET_VALUE` sentinel.
 
 =
 <map-offset> internal 1 {
@@ -553,7 +556,7 @@ void MappingHints::make_rubric(inchar32_t *annotation, int point_size, inchar32_
 The offset parameter $(x, y)$ is stored as the integer $10000y + x$. Except
 for the error value, we are required to have $-9999 \leq x, y \leq 9999$, and
 the syntax to specify this is two literal numbers divided by an ampersand.
-For instance, |28&-125| means $(28, -125)$ which is stored as $-1249972$.
+For instance, `28&-125` means $(28, -125)$ which is stored as $-1249972$.
 
 @d ERRONEOUS_OFFSET_VALUE 100000000
 

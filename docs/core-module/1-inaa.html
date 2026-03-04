@@ -20,6 +20,25 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+    options: {
+    	skipHtmlTags: {'[-]': ['pre']},
+    	processHtmlClass: 'mathjax_process'
+    },
+	loader: {load: ['[tex]/texhtml']},
+  	tex: {
+		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+    	packages: {'[+]': ['texhtml']},
+    	allowTexHTML: true
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
@@ -125,15 +144,15 @@ for compilation reasons, but will never be used:</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">DEFN_CONT_NT</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ALLOWED_NT</span> <span class="comment-syntax">/* "an animal is allowed to have a description" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ALLOWED_NT</span> <span class="comment-syntax">/* &quot;an animal is allowed to have a description&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EVERY_NT</span> <span class="comment-syntax">/* "every container" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EVERY_NT</span> <span class="comment-syntax">/* &quot;every container&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ADJECTIVE_NT</span> <span class="comment-syntax">/* "open" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ADJECTIVE_NT</span> <span class="comment-syntax">/* &quot;open&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PROPERTYCALLED_NT</span> <span class="comment-syntax">/* "a man has a number called age" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PROPERTYCALLED_NT</span> <span class="comment-syntax">/* &quot;a man has a number called age&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CREATED_NT</span> <span class="comment-syntax">/* "a vehicle called Sarah Jane's car" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CREATED_NT</span> <span class="comment-syntax">/* &quot;a vehicle called Sarah Jane's car&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create additional level 3 structural nodes</span><span class="named-paragraph-number">3.1</span></span> =</p>
 
@@ -175,7 +194,7 @@ for compilation reasons, but will never be used:</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LVALUE_LOCAL_CONTEXT_NT</span> <span class="comment-syntax">/* Argument which names a local */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONDITION_CONTEXT_NT</span> <span class="comment-syntax">/* Used for "now" conditions */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONDITION_CONTEXT_NT</span> <span class="comment-syntax">/* Used for &quot;now&quot; conditions */</span><span class="plain-syntax"> </span>
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the code nodes</span><span class="named-paragraph-number">3.2</span></span> =</p>
 
@@ -206,9 +225,9 @@ assignment.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">RVALUE_NCAT</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONSTANT_NT</span> <span class="comment-syntax">/* "7", "the can't lock a locked door rule", etc. */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CONSTANT_NT</span> <span class="comment-syntax">/* &quot;7&quot;, &quot;the can't lock a locked door rule&quot;, etc. */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span> <span class="comment-syntax">/* "holder of the black box" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span> <span class="comment-syntax">/* &quot;holder of the black box&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the rvalue nodes</span><span class="named-paragraph-number">3.3</span></span> =</p>
 
@@ -229,15 +248,15 @@ indicating an owner) is a mere rvalue.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LVALUE_NCAT</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOCAL_VARIABLE_NT</span> <span class="comment-syntax">/* "the running total", say */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOCAL_VARIABLE_NT</span> <span class="comment-syntax">/* &quot;the running total&quot;, say */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">NONLOCAL_VARIABLE_NT</span> <span class="comment-syntax">/* "the location" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">NONLOCAL_VARIABLE_NT</span> <span class="comment-syntax">/* &quot;the location&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PROPERTY_VALUE_NT</span> <span class="comment-syntax">/* "the carrying capacity of the cedarwood box" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PROPERTY_VALUE_NT</span> <span class="comment-syntax">/* &quot;the carrying capacity of the cedarwood box&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TABLE_ENTRY_NT</span> <span class="comment-syntax">/* "tonnage in row X of the Table of Corvettes" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TABLE_ENTRY_NT</span> <span class="comment-syntax">/* &quot;tonnage in row X of the Table of Corvettes&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LIST_ENTRY_NT</span> <span class="comment-syntax">/* "item 4 in U" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LIST_ENTRY_NT</span> <span class="comment-syntax">/* &quot;item 4 in U&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the lvalue nodes</span><span class="named-paragraph-number">3.4</span></span> =</p>
 
@@ -257,17 +276,17 @@ also makes it easier for us to manipulate the results.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">COND_NCAT</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_NOT_NT</span> <span class="comment-syntax">/* "not A" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_NOT_NT</span> <span class="comment-syntax">/* &quot;not A&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_TENSE_NT</span> <span class="comment-syntax">/* in the past, A */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_AND_NT</span> <span class="comment-syntax">/* "A and B" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_AND_NT</span> <span class="comment-syntax">/* &quot;A and B&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_OR_NT</span> <span class="comment-syntax">/* "A or B" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOGICAL_OR_NT</span> <span class="comment-syntax">/* &quot;A or B&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEST_PROPOSITION_NT</span> <span class="comment-syntax">/* if "the cat is on the mat" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEST_PROPOSITION_NT</span> <span class="comment-syntax">/* if &quot;the cat is on the mat&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEST_PHRASE_OPTION_NT</span> <span class="comment-syntax">/* "giving full details", say */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEST_PHRASE_OPTION_NT</span> <span class="comment-syntax">/* &quot;giving full details&quot;, say */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TEST_VALUE_NT</span> <span class="comment-syntax">/* when a value is used as a condition */</span><span class="plain-syntax"> </span>
 </pre>
@@ -386,7 +405,7 @@ is thrown if they do.</p>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The unit annotation is applied to every structural node, and indicates to
 which compilation unit the node belongs.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">unit_ANNOT</span> <span class="comment-syntax">/* |compilation_unit| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">unit_ANNOT</span> <span class="comment-syntax">/* <code>compilation_unit</code> */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">unit</span><span class="plain-syntax">, </span><span class="identifier-syntax">compilation_unit</span><span class="plain-syntax">)</span>
@@ -412,29 +431,29 @@ which compilation unit the node belongs.</p>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Annotations of Level 2 nodes.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">beat_defined_here_ANNOT</span> <span class="comment-syntax">/* |dialogue_beat|: for nodes of beat cues */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">beat_defined_here_ANNOT</span> <span class="comment-syntax">/* <code>dialogue_beat</code>: for nodes of beat cues */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">classified_ANNOT</span> <span class="comment-syntax">/* |int|: this sentence has been classified */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">classified_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this sentence has been classified */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">clears_pronouns_ANNOT</span> <span class="comment-syntax">/* |int|: this sentence erases the current value of "it" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">clears_pronouns_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this sentence erases the current value of &quot;it&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_beat_clause_ANNOT</span> <span class="comment-syntax">/* |int|: for clauses of dialogue cues introducing beats */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_beat_clause_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: for clauses of dialogue cues introducing beats */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_choice_clause_ANNOT</span> <span class="comment-syntax">/* |int|: for clauses of dialogue choice points */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_choice_clause_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: for clauses of dialogue choice points */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_line_clause_ANNOT</span> <span class="comment-syntax">/* |int|: for clauses of dialogue lines */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_line_clause_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: for clauses of dialogue lines */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">impdef_ANNOT</span> <span class="comment-syntax">/* |imperative_defn|: for blocks of imperative code */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">impdef_ANNOT</span> <span class="comment-syntax">/* <code>imperative_defn</code>: for blocks of imperative code */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">implicit_in_creation_of_ANNOT</span> <span class="comment-syntax">/* |inference_subject|: for assemblies */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">implicit_in_creation_of_ANNOT</span> <span class="comment-syntax">/* <code>inference_subject</code>: for assemblies */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">implicitness_count_ANNOT</span> <span class="comment-syntax">/* int: keeping track of recursive assemblies */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">interpretation_of_subject_ANNOT</span> <span class="comment-syntax">/* |inference_subject|: subject, during passes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">interpretation_of_subject_ANNOT</span> <span class="comment-syntax">/* <code>inference_subject</code>: subject, during passes */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">verb_problem_issued_ANNOT</span> <span class="comment-syntax">/* |int|: has a problem message about the primary verb been issued already? */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">verb_problem_issued_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: has a problem message about the primary verb been issued already? */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">you_can_ignore_ANNOT</span> <span class="comment-syntax">/* |int|: for assertions now drained of meaning */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">you_can_ignore_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: for assertions now drained of meaning */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">beat_defined_here</span><span class="plain-syntax">, </span><span class="identifier-syntax">dialogue_beat</span><span class="plain-syntax">)</span>
@@ -555,53 +574,53 @@ which compilation unit the node belongs.</p>
 </pre>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Annotations of Level 3 nodes.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">category_of_I6_translation_ANNOT</span> <span class="comment-syntax">/* int: what sort of "translates into I6" sentence this is */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">category_of_I6_translation_ANNOT</span> <span class="comment-syntax">/* int: what sort of &quot;translates into I6&quot; sentence this is */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">corresponding_kind_ANNOT</span> <span class="comment-syntax">/* |kind|: kind to which values of a literal pattern element correspond */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">corresponding_kind_ANNOT</span> <span class="comment-syntax">/* <code>kind</code>: kind to which values of a literal pattern element correspond */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">creation_proposition_ANNOT</span> <span class="comment-syntax">/* |pcalc_prop|: proposition which newly created value satisfies */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">creation_proposition_ANNOT</span> <span class="comment-syntax">/* <code>pcalc_prop</code>: proposition which newly created value satisfies */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">creation_site_ANNOT</span> <span class="comment-syntax">/* |int|: whether an instance was created from this node */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">creation_site_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: whether an instance was created from this node */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">defn_language_ANNOT</span> <span class="comment-syntax">/* |inform_language|: what language this definition is in */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">defn_language_ANNOT</span> <span class="comment-syntax">/* <code>inform_language</code>: what language this definition is in */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">evaluation_ANNOT</span> <span class="comment-syntax">/* |parse_node|: result of evaluating the text */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">evaluation_ANNOT</span> <span class="comment-syntax">/* <code>parse_node</code>: result of evaluating the text */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_gender_marker_ANNOT</span> <span class="comment-syntax">/* |int|: used by PROPER NOUN nodes for evident genders */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_gender_marker_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: used by PROPER NOUN nodes for evident genders */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_options_ANNOT</span> <span class="comment-syntax">/* |int|: options set for a literal pattern part */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_options_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: options set for a literal pattern part */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_min_ANNOT</span> <span class="comment-syntax">/* |int|: value offset for a literal pattern part */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_min_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: value offset for a literal pattern part */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_max_ANNOT</span> <span class="comment-syntax">/* |int|: maximum value for a literal pattern part */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_max_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: maximum value for a literal pattern part */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_digits_ANNOT</span> <span class="comment-syntax">/* |int|: word number of digits text for a literal pattern part */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_digits_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: word number of digits text for a literal pattern part */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_values_ANNOT</span> <span class="comment-syntax">/* |int|: word number of values text for a literal pattern part */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">lpe_values_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: word number of values text for a literal pattern part */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">multiplicity_ANNOT</span> <span class="comment-syntax">/* |int|: e.g., 5 for "five gold rings" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">multiplicity_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: e.g., 5 for &quot;five gold rings&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">new_relation_here_ANNOT</span> <span class="comment-syntax">/* |binary_predicate|: new relation as subject of "relates" sentence */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">new_relation_here_ANNOT</span> <span class="comment-syntax">/* <code>binary_predicate</code>: new relation as subject of &quot;relates&quot; sentence */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">nowhere_ANNOT</span> <span class="comment-syntax">/* |int|: used by the spatial feature to show this represents "nowhere" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">nowhere_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: used by the spatial feature to show this represents &quot;nowhere&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">predicate_ANNOT</span> <span class="comment-syntax">/* |unary_predicate|: which adjective is asserted */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">predicate_ANNOT</span> <span class="comment-syntax">/* <code>unary_predicate</code>: which adjective is asserted */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">quant_ANNOT</span> <span class="comment-syntax">/* |quantifier|: for quantified excerpts like "three baskets" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">quant_ANNOT</span> <span class="comment-syntax">/* <code>quantifier</code>: for quantified excerpts like &quot;three baskets&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">quantification_parameter_ANNOT</span> <span class="comment-syntax">/* |int|: e.g., 3 for "three baskets" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">quantification_parameter_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: e.g., 3 for &quot;three baskets&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">refined_ANNOT</span> <span class="comment-syntax">/* |int|: this subtree has had its nouns parsed */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">refined_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this subtree has had its nouns parsed */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">row_amendable_ANNOT</span> <span class="comment-syntax">/* int: a candidate row for a table amendment */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">rule_placement_sense_ANNOT</span> <span class="comment-syntax">/* |int|: are we listing a rule into something, or out of it? */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">rule_placement_sense_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: are we listing a rule into something, or out of it? */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">subject_ANNOT</span> <span class="comment-syntax">/* |inference_subject|: what this node describes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">subject_ANNOT</span> <span class="comment-syntax">/* <code>inference_subject</code>: what this node describes */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">table_cell_unspecified_ANNOT</span> <span class="comment-syntax">/* int: used to mark table entries as unset */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">turned_already_ANNOT</span> <span class="comment-syntax">/* |int|: aliasing like "player" to "yourself" performed already */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">turned_already_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: aliasing like &quot;player&quot; to &quot;yourself&quot; performed already */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">corresponding_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax">)</span>
@@ -814,53 +833,53 @@ which compilation unit the node belongs.</p>
 </pre>
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Annotations of code nodes.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">colon_block_command_ANNOT</span> <span class="comment-syntax">/* int: this COMMAND uses the ":" not begin/end syntax */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">colon_block_command_ANNOT</span> <span class="comment-syntax">/* int: this COMMAND uses the &quot;:&quot; not begin/end syntax */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">control_structure_used_ANNOT</span> <span class="comment-syntax">/* |control_structure_phrase|: for CODE BLOCK nodes only */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">control_structure_used_ANNOT</span> <span class="comment-syntax">/* <code>control_structure_phrase</code>: for CODE BLOCK nodes only */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">end_control_structure_used_ANNOT</span> <span class="comment-syntax">/* |control_structure_phrase|: for CODE BLOCK nodes only */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">end_control_structure_used_ANNOT</span> <span class="comment-syntax">/* <code>control_structure_phrase</code>: for CODE BLOCK nodes only */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">epistemological_status_ANNOT</span> <span class="comment-syntax">/* |int|: a bitmap of results from checking an ambiguous reading */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">epistemological_status_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: a bitmap of results from checking an ambiguous reading */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">from_text_substitution_ANNOT</span> <span class="comment-syntax">/* |int|: whether this is an implicit say invocation */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">from_text_substitution_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: whether this is an implicit say invocation */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">indentation_level_ANNOT</span> <span class="comment-syntax">/* |int|: level of Pythonesque indentation in code */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">indentation_level_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: level of Pythonesque indentation in code */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_of_new_variable_ANNOT</span> <span class="comment-syntax">/* |kind|: what if anything is returned */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_of_new_variable_ANNOT</span> <span class="comment-syntax">/* <code>kind</code>: what if anything is returned */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_required_by_context_ANNOT</span> <span class="comment-syntax">/* |kind|: what if anything is expected here */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_required_by_context_ANNOT</span> <span class="comment-syntax">/* <code>kind</code>: what if anything is expected here */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_resulting_ANNOT</span> <span class="comment-syntax">/* |kind|: what if anything is returned */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_resulting_ANNOT</span> <span class="comment-syntax">/* <code>kind</code>: what if anything is returned */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_variable_declarations_ANNOT</span> <span class="comment-syntax">/* |kind_variable_declaration|: and of these */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_variable_declarations_ANNOT</span> <span class="comment-syntax">/* <code>kind_variable_declaration</code>: and of these */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">modal_verb_ANNOT</span> <span class="comment-syntax">/* |verb_conjugation|: relevant only for that: e.g., "might" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">modal_verb_ANNOT</span> <span class="comment-syntax">/* <code>verb_conjugation</code>: relevant only for that: e.g., &quot;might&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_invoked_ANNOT</span> <span class="comment-syntax">/* |phrase|: the phrase believed to be invoked... */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_invoked_ANNOT</span> <span class="comment-syntax">/* <code>phrase</code>: the phrase believed to be invoked... */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_options_invoked_ANNOT</span> <span class="comment-syntax">/* |invocation_options|: details of any options used */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_options_invoked_ANNOT</span> <span class="comment-syntax">/* <code>invocation_options</code>: details of any options used */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">results_from_splitting_ANNOT</span> <span class="comment-syntax">/* |int|: node in a routine's parse tree from comma block notation */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">results_from_splitting_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: node in a routine's parse tree from comma block notation */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">say_adjective_ANNOT</span> <span class="comment-syntax">/* |adjective|: ...or the adjective to be agreed with by "say" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">say_adjective_ANNOT</span> <span class="comment-syntax">/* <code>adjective</code>: ...or the adjective to be agreed with by &quot;say&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">say_verb_ANNOT</span> <span class="comment-syntax">/* |verb_conjugation|: ...or the verb to be conjugated by "say" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">say_verb_ANNOT</span> <span class="comment-syntax">/* <code>verb_conjugation</code>: ...or the verb to be conjugated by &quot;say&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">say_verb_negated_ANNOT</span> <span class="comment-syntax">/* relevant only for that */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ssp_closing_segment_wn_ANNOT</span> <span class="comment-syntax">/* |int|: identifier for the last of these, or |-1| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ssp_closing_segment_wn_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: identifier for the last of these, or <code>-1</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ssp_segment_count_ANNOT</span> <span class="comment-syntax">/* |int|: number of subsequent complex-say phrases in stream */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ssp_segment_count_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: number of subsequent complex-say phrases in stream */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">suppress_newlines_ANNOT</span> <span class="comment-syntax">/* |int|: whether the next say term runs on */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">suppress_newlines_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: whether the next say term runs on */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_as_parsed_ANNOT</span> <span class="comment-syntax">/* |parse_node|: what if anything is returned */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_as_parsed_ANNOT</span> <span class="comment-syntax">/* <code>parse_node</code>: what if anything is returned */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_check_to_do_ANNOT</span> <span class="comment-syntax">/* |parse_node|: what if anything is returned */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_check_to_do_ANNOT</span> <span class="comment-syntax">/* <code>parse_node</code>: what if anything is returned */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_to_be_parsed_against_ANNOT</span> <span class="comment-syntax">/* |parse_node|: what if anything is returned */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">token_to_be_parsed_against_ANNOT</span> <span class="comment-syntax">/* <code>parse_node</code>: what if anything is returned */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">unproven_ANNOT</span> <span class="comment-syntax">/* |int|: this invocation needs run-time typechecking */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">unproven_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this invocation needs run-time typechecking */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">control_structure_used</span><span class="plain-syntax">, </span><span class="identifier-syntax">control_structure_phrase</span><span class="plain-syntax">)</span>
@@ -1099,81 +1118,81 @@ which compilation unit the node belongs.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">save_self_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">unproven_ANNOT</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* this annotation is declared in the //problems// module */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* this annotation is declared in the <a href="../problems-module/index.html" class="internal">problems</a> module */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_NCAT</span><span class="plain-syntax">, </span><span class="identifier-syntax">problem_falls_under_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Annotations of specification nodes.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">condition_tense_ANNOT</span> <span class="comment-syntax">/* |time_period|: for specification nodes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">condition_tense_ANNOT</span> <span class="comment-syntax">/* <code>time_period</code>: for specification nodes */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_activity_ANNOT</span> <span class="comment-syntax">/* |activity|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_activity_ANNOT</span> <span class="comment-syntax">/* <code>activity</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_binary_predicate_ANNOT</span> <span class="comment-syntax">/* |binary_predicate|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_binary_predicate_ANNOT</span> <span class="comment-syntax">/* <code>binary_predicate</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_constant_phrase_ANNOT</span> <span class="comment-syntax">/* |constant_phrase|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_constant_phrase_ANNOT</span> <span class="comment-syntax">/* <code>constant_phrase</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_enumeration_ANNOT</span> <span class="comment-syntax">/* |int|: which one from an enumerated kind */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_enumeration_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: which one from an enumerated kind */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_equation_ANNOT</span> <span class="comment-syntax">/* |equation|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_equation_ANNOT</span> <span class="comment-syntax">/* <code>equation</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_instance_ANNOT</span> <span class="comment-syntax">/* |instance|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_instance_ANNOT</span> <span class="comment-syntax">/* <code>instance</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_local_variable_ANNOT</span> <span class="comment-syntax">/* |local_variable|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_local_variable_ANNOT</span> <span class="comment-syntax">/* <code>local_variable</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_named_rulebook_outcome_ANNOT</span> <span class="comment-syntax">/* |named_rulebook_outcome|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_named_rulebook_outcome_ANNOT</span> <span class="comment-syntax">/* <code>named_rulebook_outcome</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_nonlocal_variable_ANNOT</span> <span class="comment-syntax">/* |nonlocal_variable|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_nonlocal_variable_ANNOT</span> <span class="comment-syntax">/* <code>nonlocal_variable</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_number_ANNOT</span> <span class="comment-syntax">/* |int|: which integer this is */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_number_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: which integer this is */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_property_ANNOT</span> <span class="comment-syntax">/* |property|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_property_ANNOT</span> <span class="comment-syntax">/* <code>property</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_rule_ANNOT</span> <span class="comment-syntax">/* |rule|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_rule_ANNOT</span> <span class="comment-syntax">/* <code>rule</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_rulebook_ANNOT</span> <span class="comment-syntax">/* |rulebook|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_rulebook_ANNOT</span> <span class="comment-syntax">/* <code>rulebook</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_table_ANNOT</span> <span class="comment-syntax">/* |table|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_table_ANNOT</span> <span class="comment-syntax">/* <code>table</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_table_column_ANNOT</span> <span class="comment-syntax">/* |table_column|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_table_column_ANNOT</span> <span class="comment-syntax">/* <code>table_column</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_text_ANNOT</span> <span class="comment-syntax">/* |text_stream|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_text_ANNOT</span> <span class="comment-syntax">/* <code>text_stream</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_use_option_ANNOT</span> <span class="comment-syntax">/* |use_option|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_use_option_ANNOT</span> <span class="comment-syntax">/* <code>use_option</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_verb_form_ANNOT</span> <span class="comment-syntax">/* |verb_form|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_verb_form_ANNOT</span> <span class="comment-syntax">/* <code>verb_form</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_version_number_ANNOT</span> <span class="comment-syntax">/* |semantic_version_number_holder|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_version_number_ANNOT</span> <span class="comment-syntax">/* <code>semantic_version_number_holder</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">converted_SN_ANNOT</span> <span class="comment-syntax">/* |int|: marking descriptions */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">converted_SN_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: marking descriptions */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_iname_ANNOT</span> <span class="comment-syntax">/* |inter_name|: is this value explicitly an iname? */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_iname_ANNOT</span> <span class="comment-syntax">/* <code>inter_name</code>: is this value explicitly an iname? */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_literal_ANNOT</span> <span class="comment-syntax">/* |int|: my value is an explicit integer or text */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">explicit_literal_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: my value is an explicit integer or text */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">is_phrase_option_ANNOT</span> <span class="comment-syntax">/* |int|: this unparsed text is a phrase option */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">is_phrase_option_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this unparsed text is a phrase option */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_of_value_ANNOT</span> <span class="comment-syntax">/* |kind|: for specification nodes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">kind_of_value_ANNOT</span> <span class="comment-syntax">/* <code>kind</code>: for specification nodes */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">nothing_object_ANNOT</span> <span class="comment-syntax">/* |int|: this represents |nothing| at run-time */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">nothing_object_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this represents <code>nothing</code> at run-time */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_option_ANNOT</span> <span class="comment-syntax">/* |int|: $2^i$ where $i$ is the option number, $0\leq i&lt;16$ */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">phrase_option_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: \INWEBMATH(2^i\INWEBMATH) where \INWEBMATH(i\INWEBMATH) is the option number, \INWEBMATH(0\leq i&lt;16\INWEBMATH) */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">property_name_used_as_noun_ANNOT</span> <span class="comment-syntax">/* |int|: in ambiguous cases such as "open" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">property_name_used_as_noun_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: in ambiguous cases such as &quot;open&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">proposition_ANNOT</span> <span class="comment-syntax">/* |pcalc_prop|: for specification nodes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">proposition_ANNOT</span> <span class="comment-syntax">/* <code>pcalc_prop</code>: for specification nodes */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">record_as_self_ANNOT</span> <span class="comment-syntax">/* |int|: record recipient as |self| when writing this */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">record_as_self_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: record recipient as <code>self</code> when writing this */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">response_code_ANNOT</span> <span class="comment-syntax">/* |int|: for responses only */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">response_code_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: for responses only */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">save_self_ANNOT</span> <span class="comment-syntax">/* |int|: this invocation must save and preserve |self| at run-time */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">save_self_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this invocation must save and preserve <code>self</code> at run-time */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">self_object_ANNOT</span> <span class="comment-syntax">/* |int|: this represents |self| at run-time */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">self_object_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: this represents <code>self</code> at run-time */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">tense_marker_ANNOT</span> <span class="comment-syntax">/* |grammatical_usage|: for specification nodes */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">tense_marker_ANNOT</span> <span class="comment-syntax">/* <code>grammatical_usage</code>: for specification nodes */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">text_unescaped_ANNOT</span> <span class="comment-syntax">/* |int|: flag used only for literal texts */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">text_unescaped_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: flag used only for literal texts */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_activity</span><span class="plain-syntax">, </span><span class="identifier-syntax">activity</span><span class="plain-syntax">)</span>

@@ -63,12 +63,9 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. A noun is more than a lexical cluster.</b>  Consider the line:</p>
-</div>
 <blockquote>
-    <p>A mammal is a kind of animal.</p>
+<p>A mammal is a kind of animal.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Inform generates a new noun from this line: &quot;mammal&quot;. This may well occur
 in a variety of inflected forms (though in English, there will be just two:
 &quot;mammal&quot; and &quot;mammals&quot;). That set of forms is gathered into a <code>lexical_cluster</code>
@@ -82,12 +79,9 @@ contains the lexical cluster to define its syntax, but it also has semantics att
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  From a linguistic point of view, the class of nouns can be divided into two
 subclasses: common nouns and proper nouns. &quot;Mammal&quot; is a common noun, whereas
 a sentence such as:</p>
-</div>
 <blockquote>
-    <p>A carved oak table is here.</p>
+<p>A carved oak table is here.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...creates a proper noun, &quot;carved oak table&quot;. Nouns are not used only to
 refer to the model world of some interactive fiction, though: Inform uses
 common nouns for kinds of value, such as &quot;number&quot;, and proper nouns for
@@ -116,7 +110,7 @@ feminine accusative plural&quot;.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">noun</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexical_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">names</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun_subclass</span><span class="plain-syntax">; </span><span class="comment-syntax">/* either |COMMON_NOUN| or |PROPER_NOUN| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun_subclass</span><span class="plain-syntax">; </span><span class="comment-syntax">/* either <code>COMMON_NOUN</code> or <code>PROPER_NOUN</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">registration_category</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>

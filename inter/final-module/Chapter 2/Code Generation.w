@@ -60,14 +60,14 @@ typedef struct code_generation {
 
 	int true_action_count;
 	int fake_action_count;
-	struct linked_list *actions; /* of |text_stream| */
+	struct linked_list *actions; /* of `text_stream` */
 	int dictionary_resolution;
 	int dword_count;
-	struct linked_list *words; /* of |vanilla_dword| */
-	struct dictionary *dword_dictionary; /* of |vanilla_dword| */
+	struct linked_list *words; /* of `vanilla_dword` */
+	struct dictionary *dword_dictionary; /* of `vanilla_dword` */
 	int verb_count;
-	struct linked_list *verbs; /* of |vanilla_dword| */
-	struct linked_list *verb_grammar; /* of |text_stream| */
+	struct linked_list *verbs; /* of `vanilla_dword` */
+	struct linked_list *verb_grammar; /* of `text_stream` */
 	struct dictionary *long_words; /* which might push past dictionary resolution */
 	struct dictionary *warned_about_words; /* which might push past dictionary resolution */
 
@@ -228,7 +228,7 @@ int CodeGen::md_number(const inter_symbol *owner_name, text_stream *key) {
 
 @h Ad hoc generation.
 This module would be more elegant if the following function did not exist. But
-it is a consequence of the |(+| ... |+)| feature of Inform, which plunges
+it is a consequence of the `(+` ... `+)` feature of Inform, which plunges
 right through all kinds of conceptual barriers better left unplunged-through.
 Happily, it's both limited and little-used. The task is to turn a single Inter
 value-pair into the text of an expression which will represent it at run-time.
@@ -236,13 +236,13 @@ value-pair into the text of an expression which will represent it at run-time.
 This is called by Inform 7 during a drastically earlier phase of compilation,
 long before the //final// module would otherwise be involved, and there's no
 question of performing a full generation of an entire Inter tree. So we make
-a sort of mock-generation object, the |ad_hoc_generation|, just for the purpose
+a sort of mock-generation object, the `ad_hoc_generation`, just for the purpose
 of this function call. We could make a new mock object every time, because there
 aren't such a lot of calls to this function, but instead we make just one and
 re-use it.
 
 The mock generator makes no use of segmentation (see below) except for the
-single temporary segment, which is set to |OUT|.
+single temporary segment, which is set to `OUT`.
 
 =
 code_generation *ad_hoc_generation = NULL;
@@ -267,9 +267,9 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM, inter_pair val, ta
 }
 
 @h Literal text modes.
-There are three of these. |PRINTING_LTM| is used when text is needed only
-immediately as an operand for, say, |!print| and will therefore never be a
-value at runtime; |BOX_LTM| for "quotation box" text; |REGULAR_LTM| for
+There are three of these. `PRINTING_LTM` is used when text is needed only
+immediately as an operand for, say, `!print` and will therefore never be a
+value at runtime; `BOX_LTM` for "quotation box" text; `REGULAR_LTM` for
 everything else.
 
 @d REGULAR_LTM 0
@@ -289,7 +289,7 @@ of "segments" which can be appended to in any order, and which are then put
 together in a logical order at the end.
 
 Segments are identified by ID numbers counting up from 0, 1, 2, ...: but
-ID number 0 is |no_I7CGS|, reserved to mean "not a segment".
+ID number 0 is `no_I7CGS`, reserved to mean "not a segment".
 
 A segment is itself internally stratified into numbered "layers", and these
 are used to help generators cope with more nuanced ordering issues -- e.g.,
@@ -337,13 +337,13 @@ void CodeGen::ensure_layer(generated_segment *seg, int layer) {
 }
 
 @ Each generation has its own copy of every possible numbered segment, though
-by default those are |NULL|.
+by default those are `NULL`.
 
 =
 typedef struct segmentation_data {
 	struct generated_segment *segments[NO_DEFINED_I7CGS_VALUES];
-	struct linked_list *segment_sequence; /* of |generated_segment| */
-	struct linked_list *additional_segment_sequence; /* of |generated_segment| */
+	struct linked_list *segment_sequence; /* of `generated_segment` */
+	struct linked_list *additional_segment_sequence; /* of `generated_segment` */
 	struct text_stream *temporarily_diverted_to;
 	int temporarily_diverted; /* to the temporary segment */
 	struct segmentation_pos pos;
@@ -491,7 +491,7 @@ void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
 		InterSymbol::clear_transient_flags(S);
 }
 
-@ In particular the |TRAVERSE_MARK_ISYMF| flag is sometimes convenient to use.
+@ In particular the `TRAVERSE_MARK_ISYMF` flag is sometimes convenient to use.
 
 =
 int CodeGen::marked(inter_symbol *symb_name) {
@@ -507,7 +507,7 @@ void CodeGen::unmark(inter_symbol *symb_name) {
 }
 
 @h Value pairs.
-We will very often need to compile an expression from a pair |val1|, |val2|
+We will very often need to compile an expression from a pair `val1`, `val2`
 extracted from some Inter instruction.
 
 =

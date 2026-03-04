@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -21,7 +21,7 @@ The linguistics module aims to provide Preform grammar capable to taking a
 verb phrase of natural language and parsing it into a "diagram" somewhat like
 the ones students draw in school grammar classes. For example,
 
->> most of the heavy bricks have been on top of the wall
+> most of the heavy bricks have been on top of the wall
 
 becomes a "diagram" -- a fragment of the tree provided by the //syntax//
 module -- showing the linguistic structure of the sentence.
@@ -73,7 +73,7 @@ the section //Verb Meanings//. Even there, though, the user will have to find
 her own way to define what verbs actually mean.
 
 [3] For example, the determiner "all of" has a fixed meaning defined here
-as the //quantifier// object |for_all_quantifier|; and the cardinal "six"
+as the //quantifier// object `for_all_quantifier`; and the cardinal "six"
 always means 6.
 
 @ This module is designed to work closely with the //inflections// module,
@@ -189,7 +189,7 @@ interacting subject phrases rather than a subject and an object.[1]
 
 The user creates the stock of adjectives by calling //Verbs::new_verb// or
 //Verbs::new_operator_verb//. (Operator verbs are mathematical operators
-such as |<=|, which can be added to the stock as if they were regular verbs,
+such as `<=`, which can be added to the stock as if they were regular verbs,
 but which do not conjugate or have tenses.)
 
 Each verb has a list of //verb_form// objects, one for each "form" it takes.

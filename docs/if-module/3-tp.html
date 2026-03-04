@@ -143,7 +143,7 @@ and so do the second pair.</p>
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* object in which play begins: e.g., a barber's chair */</span>
 
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">player_character_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the player character object used in this run */</span>
-<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I_yourself</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the default player character object, |selfobj| in I6 */</span>
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I_yourself</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the default player character object, <code>selfobj</code> in I6 */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The &quot;yourself&quot; instance is special in being tied, or &quot;aliased&quot;, to the
@@ -177,12 +177,9 @@ have been created, they are aliased together. This is a form of tacit pointer
 dereferencing, though authors probably don't think of it that way. A normal
 object variable is like a pointer to an object, rather than an object itself,
 and so the following doesn't make sense:</p>
-</div>
 <blockquote>
-    <p>The top prize is an object that varies. The top prize is in the desk drawer.</p>
+<p>The top prize is an object that varies. The top prize is in the desk drawer.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Clearly something goes in the desk drawer, but it's quite ambiguous what: the
 problem is that &quot;top prize&quot; describes some object, but it's not clear which.
 (Inform generally disallows this even if the source text explicitly gives a
@@ -191,12 +188,9 @@ encouraged always to describe the player object that way, and often don't
 realise that it's a variable at all -- and most of the time it never changes
 its value, of course, but simply remains equal to &quot;yourself&quot; throughout play.
 So we want to allow this sort of thing:</p>
-</div>
 <blockquote>
-    <p>The player is in the Cage.</p>
+<p>The player is in the Cage.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>even though it has exactly the same problem as the top prize. We get around
 this by treating &quot;player&quot;, in assertions, as if it were its own initial
 value (&quot;yourself&quot;) -- in effect, we silently dereference it. This is
@@ -212,12 +206,9 @@ aliasing.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP4">&#167;4</a> and <a href="3-tp.html#SP7">&#167;7</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  We also, though, want to look out for this sort of thing:</p>
-</div>
 <blockquote>
-    <p>The player is Lord Collingwood.</p>
+<p>The player is Lord Collingwood.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>because an assertion like this causes <code>player_character_object</code> to diverge from
 <code>I_yourself</code>; here of course it becomes the Lord Collingwood object.</p>
 </div>
@@ -242,12 +233,9 @@ it isn't in the model world; and two, we've just aliased &quot;player&quot; to i
 <p>Bodysnatching allows one object (the &quot;snatcher&quot;) to take over the life of
 another (the &quot;victim&quot;), so that inferences made about the victim are diverted
 to the snatcher. Thus if the source text reads:</p>
-</div>
 <blockquote>
-    <p>The player is Lord Collingwood. The player carries a spyglass.</p>
+<p>The player is Lord Collingwood. The player carries a spyglass.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the second sentence goes through two transformations: first, because of
 aliasing, Inform decides to draw an inference about &quot;yourself&quot;, rather
 than complaining that &quot;player&quot; is indefinite; and second, because of

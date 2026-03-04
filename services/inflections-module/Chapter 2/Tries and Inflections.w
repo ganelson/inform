@@ -13,9 +13,9 @@ int Inflect::suffix(OUTPUT_STREAM, match_avinue *T, text_stream *from) {
 	return Inflect::follow_suffix_instruction(OUT, from, result);
 }
 
-@ The //foundation// code returns a |result| which may be null, if no match
+@ The //foundation// code returns a `result` which may be null, if no match
 was found. In that event, we leave the text unchanged, just as if the result
-had been |0| -- meaning "change nothing".
+had been `0` -- meaning "change nothing".
 
 =
 int Inflect::follow_suffix_instruction(OUTPUT_STREAM, text_stream *from,
@@ -32,10 +32,10 @@ int Inflect::follow_suffix_instruction(OUTPUT_STREAM, text_stream *from,
 @ In general the result either has an initial digit, in which case it removes
 that many terminal letters, or does not, in which case it removes all the
 letters (and thus the result text replaces the original entirely).
-The special character |+| after a digit means "duplicate the last character";
+The special character `+` after a digit means "duplicate the last character";
 in other contexts it means "break words here".
 
-For example, the result |3ize| tells us to strike out the last 3 characters and
+For example, the result `3ize` tells us to strike out the last 3 characters and
 add "ize".
 
 @<Modify the original according to the instruction@> =
@@ -60,7 +60,7 @@ add "ize".
 @h General tries.
 Here we take a word assemblage and apply suffix inflection to the first word
 alone, preserving the rest: for example, "make the tea" might become "making
-the tea". However, if the result of this inflection contains any |+| signs,
+the tea". However, if the result of this inflection contains any `+` signs,
 those once again become word boundaries.
 
 =

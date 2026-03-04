@@ -26,7 +26,7 @@ bp_family *BinaryPredicateFamilies::new(void) {
 	return f;
 }
 
-@ |STOCK_BPF_MTID| is for stocking up on relations. Stage 1 happens very early
+@ `STOCK_BPF_MTID` is for stocking up on relations. Stage 1 happens very early
 in Inform's run, and allows built-in essentials such as equality to be created.
 Stage 2 is later on, when the world model is complete but before code is compiled,
 and gives an opportunity to make, say, one relation for every value property.
@@ -116,7 +116,7 @@ i6_schema *BinaryPredicateFamilies::get_schema(int task, binary_predicate *bp,
 	return asch->schema;
 }
 
-@ This allows BPs to print a name for themselves other than their |relation_name|
+@ This allows BPs to print a name for themselves other than their `relation_name`
 fields, when they are mentioned in problem messages.
 
 @e DESCRIBE_FOR_PROBLEMS_BPF_MTID

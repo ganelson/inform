@@ -4,13 +4,13 @@ Claiming and creating copies of the extension genre: used for Inform 7
 extensions.
 
 @h Genre definition.
-The |extension_genre| can be summarised as follows. Copies consist of single
-files. These are recognised by having the filename extension |.i7x|. They are
-stored in nests, in |N/Extensions/Author/Title-vVersion.i7x|. Their build
+The `extension_genre` can be summarised as follows. Copies consist of single
+files. These are recognised by having the filename extension `.i7x`. They are
+stored in nests, in `N/Extensions/Author/Title-vVersion.i7x`. Their build
 graphs are a single vertex with no build edges, but with use edges to any
 further extensions which they Include.
 
-It may seem surprising that we do not provide a |GENRE_CONSTRUCT_GRAPH_MTID|
+It may seem surprising that we do not provide a `GENRE_CONSTRUCT_GRAPH_MTID`
 method. This is for efficiency reasons: we don't want to read and parse the
 source text of every extension we ever see, and that's what would be needed
 to make the graphs of every such extension. Instead we build out the graph
@@ -42,7 +42,7 @@ pathname *ExtensionManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Extensions");
 }
 
-@ Extension copies are annotated with a structure called an |inform_extension|,
+@ Extension copies are annotated with a structure called an `inform_extension`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -76,13 +76,13 @@ inbuild_copy *ExtensionManager::new_copy(filename *F, inbuild_nest *N) {
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-An extension, for us, needs to be a file with extension |i7x|, but it needs
+An extension, for us, needs to be a file with extension `i7x`, but it needs
 also to scan properly -- which means the top line of the file has to be right.
 So we'll open it and look.
 
@@ -108,16 +108,16 @@ requirements.
 For efficiency's sake, since the nest could contain many hundreds of
 extensions, we narrow down to the author's subfolder if a specific
 author is required. We cannot safely assume that the author's name specified
-in |req| has the same casing as in the subfolder name, so we go about this
+in `req` has the same casing as in the subfolder name, so we go about this
 cautiously for the sake of case-sensitive file systems.
 
 Nobody should any longer be storing extension files without the file
-extension |.i7x|. This was allowed in the early days of Inform 7, and early
+extension `.i7x`. This was allowed in the early days of Inform 7, and early
 drafts of inblorb allowed it too, but this caused problems with emacs backup
-files (with filenames ending |~|) being picked up instead of the extension
-files they were backing up. So inblorb now recognises only |.i7x| files as
+files (with filenames ending `~`) being picked up instead of the extension
+files they were backing up. So inblorb now recognises only `.i7x` files as
 extensions. Similarly, another bad emacs habit is to write hidden symlinks,
-with leafnames beginning |.|, so we reject those too.
+with leafnames beginning `.`, so we reject those too.
 
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,

@@ -21,7 +21,7 @@ DECLARE_CLASS(target_vm)
 DECLARE_CLASS(compatibility_specification)
 DECLARE_CLASS(compiler_feature)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 void ArchModule::start(void) {

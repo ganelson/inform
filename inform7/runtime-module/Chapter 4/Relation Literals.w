@@ -7,10 +7,10 @@ value.
 = (text as Inform 7)
 	let Q be a relation of numbers;
 =
-sets up |Q| to be a new empty relation -- one in which, as yet, no number is
+sets up `Q` to be a new empty relation -- one in which, as yet, no number is
 related to any other.
 
-The following function compiles an array ready to be |Q|, with some initial
+The following function compiles an array ready to be `Q`, with some initial
 capacity in it to absorb relationships forged at runtime. This is the default
 value of kinds using the "relation of K to U" constructor.
 

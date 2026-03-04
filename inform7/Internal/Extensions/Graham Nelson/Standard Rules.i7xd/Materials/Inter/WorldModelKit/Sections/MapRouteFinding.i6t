@@ -69,7 +69,7 @@ search depends on three things, any of which may change:
 - (b) which subset of doors we are allowing ourselves to use; and
 - (c) the current map connections between rooms.
 
-We keep track of (c) by watching for calls to |SignalMapChange()| from the
+We keep track of (c) by watching for calls to `SignalMapChange()` from the
 routines in "WorldModel.i6t" which alter the map. (a) and (b), however,
 require tracking from call to call what the current subset of rooms and
 doors is. (It is not sufficient to remember the criteria used last time
@@ -78,8 +78,8 @@ criteria produce a different outcome. For instance, searching through
 lighted rooms and using unlocked doors will produce a different result
 if a door has been locked or unlocked since last time, or if a room has
 become lighted or not.) We store the set of applicable rooms and doors
-by enumerating them in the property |room_index| and by the flags in the
-|DoorRoutingViable| array respectively.
+by enumerating them in the property `room_index` and by the flags in the
+`DoorRoutingViable` array respectively.
 
 =
 Array DoorRoutingViable -> NUM_DOORS+1;
@@ -128,17 +128,17 @@ Global last_filter; Global last_use_doors;
 	}
 ];
 
-@ When this code became part of |WorldModelKit|, and thus needed to be linked
+@ When this code became part of `WorldModelKit`, and thus needed to be linked
 at the Inter level rather than mixed in as raw I6 code as in the pre-2020 days,
 the mechanism for selecting the route-finding algorithm needed to change.
-Previously, if the constant |FAST_ROUTE_FINDING| was defined, the matrix
-|FW_Matrix| and its functions would be compiled, and otherwise the functions
-with names beginning |Slow...| would be compiled.
+Previously, if the constant `FAST_ROUTE_FINDING` was defined, the matrix
+`FW_Matrix` and its functions would be compiled, and otherwise the functions
+with names beginning `Slow...` would be compiled.
 
-To avoid having to make two different linkable binaries of |WorldModelKit|,
+To avoid having to make two different linkable binaries of `WorldModelKit`,
 one in which fast route finding is used and one in which it isn't, we now
 instead compile the functions either way (they are not large) and the Inform
-compiler defines the constant |FWMATRIX_SIZE| to be 2 for slow route-finding
+compiler defines the constant `FWMATRIX_SIZE` to be 2 for slow route-finding
 (wasting only a negligible number of words for an unused array) and $R^2$,
 where $R$ is the number of rooms, for fast route-finding.
 
@@ -278,12 +278,12 @@ where, because few routes need to be found and because of the shape of the
 map, the "slow" algorithm will outperform the "fast" one: this is why
 the user is allowed to control which algorithm is used.
 
-For each room $R_z$, the property |vector| stores the direction object of
+For each room $R_z$, the property `vector` stores the direction object of
 the way to go to its parent room in the tree rooted at $R_y$. Thus if the
 algorithm succeeds in finding a route from $R_x$ to $R_y$ then we generate
-the route by starting at $R_x$ and repeatedly going in the |vector| direction
+the route by starting at $R_x$ and repeatedly going in the `vector` direction
 from where we currently stand until we reach $R_y$. Since every room needs
-a |vector| value, this requires $n$ words of storage. (The |vector| values
+a `vector` value, this requires $n$ words of storage. (The `vector` values
 store only enough of the minimal spanning tree to go upwards through the
 tree, but that's the only way we need to traverse it.)
 
@@ -300,8 +300,8 @@ explored the component of the map from which the destination can be reached,
 and the origin isn't in it, so we can return "no".
 
 To prove the correctness of this, we show inductively that after round $n$
-we have set the |vector| for every room having a shortest path to $R_y$ of
-length $n$, and that every |vector| points to a room having a |vector| in
+we have set the `vector` for every room having a shortest path to $R_y$ of
+length $n$, and that every `vector` points to a room having a `vector` in
 the direction of the shortest path from there to $R_y$.
 
 =

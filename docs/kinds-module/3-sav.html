@@ -86,12 +86,9 @@ arithmetic. In general for each named unit \INWEBMATH(U\INWEBMATH) (fundamental 
 is a positive integer \INWEBMATH(k_U\INWEBMATH) such that the true value \INWEBMATH(v\INWEBMATH) is stored at run-time
 as the I6 integer \INWEBMATH(k_U v\INWEBMATH). We call this the scaled value.</p>
 <p>For example, if the text reads:</p>
-</div>
 <blockquote>
-    <p>Force is a kind of value. 1N specifies a force scaled up by 1000.</p>
+<p>Force is a kind of value. 1N specifies a force scaled up by 1000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then \INWEBMATH(k = 1000\INWEBMATH) and the value 1N will be stored at run-time as <code>1000</code>;
 forces can thus be calculated to a true value accuracy of at best 0.001N,
 stored at run-time as <code>1</code>.</p>
@@ -376,14 +373,14 @@ defined.</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">scaling_transformation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">use_integer_scaling</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or if not, use real */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">int_O</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the $O$ value described above, if integers used */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">int_M</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the $M$ value described above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">int_O</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the \INWEBMATH(O\INWEBMATH) value described above, if integers used */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">int_M</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the \INWEBMATH(M\INWEBMATH) value described above */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_O</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the $O$ value described above, if real numbers used */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_M</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the $M$ value described above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_O</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the \INWEBMATH(O\INWEBMATH) value described above, if real numbers used */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_M</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the \INWEBMATH(M\INWEBMATH) value described above */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* used only in the definition process */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scaling_mode</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |LP_SCALED_*| constants */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scaling_mode</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>LP_SCALED_*</code> constants */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">int_scalar</span><span class="plain-syntax">; </span><span class="comment-syntax">/* whichever of these is relevant according to the integer/real mode */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_scalar</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">scaling_transformation</span><span class="plain-syntax">;</span>
@@ -462,12 +459,9 @@ to increase the <code>M</code> values of everything else in the list.</p>
 <p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1. </b>  This is the easy case -- there's no list yet, and no benchmark yet. The <code>M</code>
 value will usually therefore be 1, unless the source text explicitly asked
 for it to be something else:</p>
-</div>
 <blockquote>
-    <p>1m specifies a length scaled at 10000.</p>
+<p>1m specifies a length scaled at 10000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in which case, of course, <code>M</code> is 10000. Since there's no benchmark yet, it
 must be a problem message if the unit is defined scaled up or down from the
 benchmark; and similarly if the new notation is claimed to be equivalent to
@@ -506,12 +500,9 @@ scalings (metric units such as mm, km, etc.) already have their <code>M</code> v
 <ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13">&#167;13</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_2_1" class="paragraph-anchor"></a><b>&#167;13.2.1. </b>  An equivalent unit exactly specifies its <code>M</code>-value. For example:</p>
-</div>
 <blockquote>
-    <p>1 pencil specifies a length equivalent to 18cm.</p>
+<p>1 pencil specifies a length equivalent to 18cm.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>What happens here is that &quot;18cm&quot; is parsed and turned not into 18, but into
 the &quot;1 cm&quot; scaling applied to 18, and that's the value in our scalar,
 which then becomes <code>M</code>.</p>

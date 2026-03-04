@@ -191,7 +191,7 @@ value for its return kind: for example, the empty text for <code>K_text</code>.<
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(0); </span><span class="comment-syntax">/* that is, "false" */</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(0); </span><span class="comment-syntax">/* that is, &quot;false&quot; */</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
@@ -206,14 +206,14 @@ value for its return kind: for example, the empty text for <code>K_text</code>.<
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* for inline definitions only: */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline_mor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* inline manner of return */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word number of inline definition, or |-1| if not inline */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word number of inline definition, or <code>-1</code> if not inline */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inline_front_schema</span><span class="plain-syntax">; </span><span class="comment-syntax">/* inline definition translated to inter, if possible */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inline_back_schema</span><span class="plain-syntax">; </span><span class="comment-syntax">/* inline definition translated to inter, if possible */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_defn_converted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has this been tried yet? */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* for non-inline definitions only: */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">requests_package</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label_namespaces</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |label_namespace| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label_namespaces</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>label_namespace</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compile_with_run_time_debugging</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the RULES command */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ph_iname</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or NULL for inline phrases */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">id_compilation_data</span><span class="plain-syntax">;</span>

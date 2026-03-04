@@ -86,12 +86,12 @@ section, which need offsets in the form <code>RRV_NAME</code>. (The discrepancy 
 to allow for the five-word block header.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_NAME</span><span class="plain-syntax">           </span><span class="identifier-syntax">RR_NAME</span><span class="plain-syntax">-5;        </span><span class="comment-syntax">! Packed string, e.g. "containment relation"</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_NAME</span><span class="plain-syntax">           </span><span class="identifier-syntax">RR_NAME</span><span class="plain-syntax">-5;        </span><span class="comment-syntax">! Packed string, e.g. &quot;containment relation&quot;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_PERMISSIONS</span><span class="plain-syntax">    </span><span class="identifier-syntax">RR_PERMISSIONS</span><span class="plain-syntax">-5; </span><span class="comment-syntax">! A bitmap of what operations this supports</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_STORAGE</span><span class="plain-syntax">        </span><span class="identifier-syntax">RR_STORAGE</span><span class="plain-syntax">-5;     </span><span class="comment-syntax">! Data location, depending on format</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_KIND</span><span class="plain-syntax">           </span><span class="identifier-syntax">RR_KIND</span><span class="plain-syntax">-5;        </span><span class="comment-syntax">! Strong kind ID of the relation</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_HANDLER</span><span class="plain-syntax">        </span><span class="identifier-syntax">RR_HANDLER</span><span class="plain-syntax">-5;     </span><span class="comment-syntax">! Routine to perform operations on this</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_DESCRIPTION</span><span class="plain-syntax">    </span><span class="identifier-syntax">RR_DESCRIPTION</span><span class="plain-syntax">-5; </span><span class="comment-syntax">! Packed string, e.g. "contains"</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_DESCRIPTION</span><span class="plain-syntax">    </span><span class="identifier-syntax">RR_DESCRIPTION</span><span class="plain-syntax">-5; </span><span class="comment-syntax">! Packed string, e.g. &quot;contains&quot;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_USED</span><span class="plain-syntax">           </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_FILLED</span><span class="plain-syntax">         </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_DATA_BASE</span><span class="plain-syntax">      </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
@@ -162,7 +162,7 @@ powers of two.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">MINUS_RRP_PERTURB_SHIFT</span><span class="plain-syntax"> </span><span class="constant-syntax">-5</span><span class="plain-syntax">;   </span><span class="comment-syntax">! affects the probe sequence</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_RESIZE_SMALL</span><span class="plain-syntax">  </span><span class="constant-syntax">4</span><span class="plain-syntax">;   </span><span class="comment-syntax">! resize factor for small tables</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_RESIZE_LARGE</span><span class="plain-syntax">  </span><span class="constant-syntax">2</span><span class="plain-syntax">;   </span><span class="comment-syntax">! resize factor for large tables</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_LARGE_IS</span><span class="plain-syntax">      </span><span class="constant-syntax">256</span><span class="plain-syntax">; </span><span class="comment-syntax">! how many entries make a table "large"?</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_LARGE_IS</span><span class="plain-syntax">      </span><span class="constant-syntax">256</span><span class="plain-syntax">; </span><span class="comment-syntax">! how many entries make a table &quot;large&quot;?</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_CROWDED_IS</span><span class="plain-syntax">    </span><span class="constant-syntax">2</span><span class="plain-syntax">;   </span><span class="comment-syntax">! when filled entries outnumber unfilled by _ to 1</span>
 </pre>
 <div class="lsmarkdown">
@@ -220,35 +220,25 @@ The necessary handler routine is <code>EmptyRelationHandler</code>.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Creation.</b> </p>
-
-<blockquote>
-    <p>let Q be a relation of objects to objects;</p>
-</blockquote>
-
-<blockquote>
-    <p>let Q be the containment relation;</p>
-</blockquote>
-
-<blockquote>
-    <p>let Q be a relation of numbers to numbers;</p>
-</blockquote>
-
-<blockquote>
-    <p>make Q relate 3 to 7;</p>
-</blockquote>
-
 <div class="lsmarkdown">
-<p>Something we have to be careful about is what we mean by copying, or indeed
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Creation.</b>  Something we have to be careful about is what we mean by copying, or indeed
 creating, a relation. For example, if we write</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>let Q be a relation of objects to objects;</p>
+</blockquote>
+<blockquote>
+<p>let Q be the containment relation;</p>
+</blockquote>
 <p>...we aren't literally asking for Q to be a duplicate copy of containment,
 which can then independently evolve -- we mean in some sense that Q is a
 pointer to the one and only containment relation. On the other hand, if we
 write</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>let Q be a relation of numbers to numbers;</p>
+</blockquote>
+<blockquote>
+<p>make Q relate 3 to 7;</p>
+</blockquote>
 <p>then the second line clearly expects Q to be its own relation, newly created.</p>
 <p>We cope with this at creation time. If we're invited to create a copy of an
 existing relation, we look to see if it is empty -- which we detect by its
@@ -780,7 +770,9 @@ are reversed. This implements one-to-various relations.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ReversedHashTableRelationHandler</span><span class="plain-syntax"> </span><span class="identifier-syntax">rel</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax">  </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax"> </span><span class="identifier-syntax">kx</span><span class="plain-syntax"> </span><span class="identifier-syntax">ky</span><span class="plain-syntax"> </span><span class="identifier-syntax">swap</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">! </span><span class="plain-syntax">  </span><span class="comment-syntax">print "ReversedHashTableRelationHandler ", rel, " ", task, " X=", X, " Y=", Y, "^";</span>
+<span class="comment-syntax">!	<pre><code>print &quot;ReversedHashTableRelationHandler &quot;, rel, &quot; &quot;, task, &quot; X=&quot;, X, &quot; Y=&quot;, Y, &quot;^&quot;;
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PVField</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_KIND</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kx</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KindConstructorTerm</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="identifier-syntax">ky</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KindConstructorTerm</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
@@ -1798,7 +1790,7 @@ and \INWEBMATH(Y\INWEBMATH) are the same kind of value.)</p>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TwoInOneDelete</span><span class="plain-syntax"> </span><span class="identifier-syntax">rel</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">kx</span><span class="plain-syntax"> </span><span class="identifier-syntax">ky</span><span class="plain-syntax"> </span><span class="identifier-syntax">ekflag</span><span class="plain-syntax"> </span><span class="identifier-syntax">both</span><span class="plain-syntax">  </span><span class="identifier-syntax">fl</span><span class="plain-syntax"> </span><span class="identifier-syntax">at2</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">!print "[2in1DEL at=", at, " (E=", PVField(rel, RRV_DATA_BASE + 4*at + 1), ") ekflag=", ekflag, " both=", both, "]^";</span>
+<span class="comment-syntax">!print &quot;[2in1DEL at=&quot;, at, &quot; (E=&quot;, PVField(rel, RRV_DATA_BASE + 4*at + 1), &quot;) ekflag=&quot;, ekflag, &quot; both=&quot;, both, &quot;]^&quot;;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">fl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PVField</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_DATA_BASE</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">*</span><span class="identifier-syntax">at</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ekflag</span><span class="plain-syntax"> == </span><span class="identifier-syntax">RRF_ENTKEYX</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">fl</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">RRF_HASY</span><span class="plain-syntax">) {</span>
@@ -1846,20 +1838,20 @@ and \INWEBMATH(Y\INWEBMATH) are the same kind of value.)</p>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TwoInOneLookUp</span><span class="plain-syntax"> </span><span class="identifier-syntax">rel</span><span class="plain-syntax"> </span><span class="identifier-syntax">ke</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax"> </span><span class="identifier-syntax">ekflag</span><span class="plain-syntax">  </span><span class="identifier-syntax">hashv</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">free</span><span class="plain-syntax"> </span><span class="identifier-syntax">mask</span><span class="plain-syntax"> </span><span class="identifier-syntax">perturb</span><span class="plain-syntax"> </span><span class="identifier-syntax">flags</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">!print "[2in1LU rel=", rel, " ke=", ke, " E=", E, " ekf=", ekflag, ": ";</span>
+<span class="comment-syntax">!print &quot;[2in1LU rel=&quot;, rel, &quot; ke=&quot;, ke, &quot; E=&quot;, E, &quot; ekf=&quot;, ekflag, &quot;: &quot;;</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! calculate a hash value for the key</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">hashv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HashKindValuePair</span><span class="plain-syntax">(</span><span class="identifier-syntax">ke</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! look in the first expected slot</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">mask</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PVField</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_STORAGE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">hashv</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">mask</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">!print "hv=", hashv, ", trying ", i;</span>
+<span class="comment-syntax">!print &quot;hv=&quot;, hashv, &quot;, trying &quot;, i;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">flags</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PVField</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_DATA_BASE</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">*</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="comment-syntax">!print " - not found]^";</span>
+<span class="comment-syntax">!print &quot; - not found]^&quot;;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">ekflag</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">TwoInOneEntryMatches</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">ke</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">)) {</span>
-<span class="comment-syntax">!print " - found]^";</span>
+<span class="comment-syntax">!print &quot; - found]^&quot;;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! not here, keep looking in sequence</span>
@@ -1870,15 +1862,15 @@ and \INWEBMATH(Y\INWEBMATH) are the same kind of value.)</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (::) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">hashv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">hashv</span><span class="plain-syntax">*5 + </span><span class="identifier-syntax">perturb</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">hashv</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">mask</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">!print ", ", i;</span>
+<span class="comment-syntax">!print &quot;, &quot;, i;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">flags</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PVField</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_DATA_BASE</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">*</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="comment-syntax">!print " - not found]^";</span>
+<span class="comment-syntax">!print &quot; - not found]^&quot;;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">free</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">free</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">ekflag</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">TwoInOneEntryMatches</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">ke</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">)) {</span>
-<span class="comment-syntax">!print " - found]^";</span>
+<span class="comment-syntax">!print &quot; - found]^&quot;;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">free</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">RRF_DELETED</span><span class="plain-syntax">)) </span><span class="identifier-syntax">free</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>

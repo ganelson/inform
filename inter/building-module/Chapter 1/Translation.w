@@ -11,7 +11,7 @@ the output is called "translation".
 Each //hierarchy_location// comes with a //name_translation//, which specifies
 how translation is to be done on the resource at this location. This might,
 for example, express the idea "when code-generating, give this resource an
-identifier name which is made by suffixing |_X| after the name of an
+identifier name which is made by suffixing `_X` after the name of an
 associated resource". Or more commonly, just "give this resource the same
 identifier name as its Inter symbol name".
 
@@ -81,7 +81,7 @@ name_translation Translation::to_uniqued(text_stream *S) {
 	return nt;
 }
 
-@ "Start with the original identifier, but then add |S| as a prefix."
+@ "Start with the original identifier, but then add `S` as a prefix."
 
 =
 name_translation Translation::prefix(text_stream *S) {
@@ -91,7 +91,7 @@ name_translation Translation::prefix(text_stream *S) {
 	return nt;
 }
 
-@ "Start with the original identifier, but then add |S| as a suffix."
+@ "Start with the original identifier, but then add `S` as a suffix."
 
 =
 name_translation Translation::suffix(text_stream *S) {
@@ -101,7 +101,7 @@ name_translation Translation::suffix(text_stream *S) {
 	return nt;
 }
 
-@ "Generate a series of translated names from |S| by adding sequence numbers,
+@ "Generate a series of translated names from `S` by adding sequence numbers,
 and never mind the original Inter identifier".
 
 =

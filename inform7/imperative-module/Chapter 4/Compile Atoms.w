@@ -120,7 +120,7 @@ before we can proceed.
 	if (bp_to_assert == NULL) bp_to_assert = bp;
 
 @ The action variables will exist only if the actions feature is active, and
-are just |actor|, |noun| and |second| at runtime:
+are just `actor`, `noun` and `second` at runtime:
 
 =
 int CompileAtoms::is_an_action_variable(parse_node *spec) {

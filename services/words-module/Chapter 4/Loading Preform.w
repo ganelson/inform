@@ -5,7 +5,7 @@ meta-language Preform.
 
 @h Reading Preform syntax from a file or text.
 The parser reads source text against a specific language only, if
-|primary_Preform_language| is set; or, if it isn't, from any language.
+`primary_Preform_language` is set; or, if it isn't, from any language.
 
 @default NATURAL_LANGUAGE_WORDS_TYPE void
 
@@ -57,8 +57,8 @@ The ideal tool with which to parse Preform definitions would be Preform, but
 then how would we define the grammar required? So we will have to do this
 by hand, and in particular, we have to define Preform's syntactic punctuation
 marks explicitly. These are, in effect, the reserved words of the Preform
-notational language. (Note the absence of the |==>| marker: that's stripped
-out by //inweb// and never reaches the |Syntax.preform| file.)
+notational language. (Note the absence of the `==>` marker: that's stripped
+out by //inweb// and never reaches the `Syntax.preform` file.)
 
 The bare letters K and L are snuck in here for convenience. They aren't
 actually used by anything in //words//, but are used for kind variables in
@@ -103,8 +103,8 @@ void LoadPreform::create_punctuation(void) {
 }
 
 @h Parsing Preform.
-The syntax of the |Syntax.preform| is, fortunately, very simple. At any given
-time, we are parsing definitions for a given natural language |L|: for example,
+The syntax of the `Syntax.preform` is, fortunately, very simple. At any given
+time, we are parsing definitions for a given natural language `L`: for example,
 English.
 
 Note that Preform can contain comments in square brackets; but that the Lexer
@@ -147,7 +147,7 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	current_natural_language = nl;
 	wn++;
 
-@ Internal declarations appear as single lines in |Syntax.preform|.
+@ Internal declarations appear as single lines in `Syntax.preform`.
 
 @<Parse an internal nonterminal declaration@> =
 	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
@@ -173,7 +173,7 @@ and could be rejected as such, but it does no harm.
 		PreformUtilities::production_error(nt, NULL,
 			"nonterminal internal in one definition and regular in another");
 	production_list *pl = LoadPreform::find_list_for_language(nt, current_natural_language);
-	wn += 2; /* advance past the ID word and the |::=| word */
+	wn += 2; /* advance past the ID word and the `::=` word */
 	int pc = 0;
 	while (TRUE) {
 		int x = wn;
@@ -261,7 +261,7 @@ part of them.
 
 //The Optimiser// calculates data on productions just as it does on nonterminals.
 For example, it can see that the above can only match a text if it has exactly
-3 words, so it sets both |pr_extremes.min_words| and |pr_extremes.max_words| to 3. For the meaning
+3 words, so it sets both `pr_extremes.min_words` and `pr_extremes.max_words` to 3. For the meaning
 of the remaining data, and for what "struts" are, see //The Optimiser//: it
 only confuses the picture here.
 
@@ -270,7 +270,7 @@ only confuses the picture here.
 =
 typedef struct production {
 	struct ptoken *first_pt; /* the linked list of ptokens */
-	int match_number; /* 0 for |/a/|, 1 for |/b/| and so on: see //About Preform// */
+	int match_number; /* 0 for `/a/`, 1 for `/b/` and so on: see //About Preform// */
 
 	int no_ranges; /* actually one more, since range 0 is reserved */
 
@@ -282,14 +282,14 @@ typedef struct production {
 } production;
 
 @ And at the bottom of God's great chain, the lowly ptoken. Even this can spawn
-another list, though: the token |fried/green/tomatoes| is a list of three ptokens
-joined by the |alternative_ptoken| links.
+another list, though: the token `fried/green/tomatoes` is a list of three ptokens
+joined by the `alternative_ptoken` links.
 
 There are really only three kinds of ptoken, wildcards, fixed words, and
 nonterminals, but it's fractionally quicker to differentiate the sorts of
 wildcard here, so we'll actually divide them into five. The remaining wildcard,
-the |......| form of |...|, is represented as |MULTIPLE_WILDCARD_PTC| but with
-the |balanced_wildcard| flag set.
+the `......` form of `...`, is represented as `MULTIPLE_WILDCARD_PTC` but with
+the `balanced_wildcard` flag set.
 
 @d SINGLE_WILDCARD_PTC 1
 @d MULTIPLE_WILDCARD_PTC 2
@@ -300,16 +300,16 @@ the |balanced_wildcard| flag set.
 =
 typedef struct ptoken {
 	/* How to parse text against this ptoken */
-	int ptoken_category; /* one of the |*_PTC| values */
-	int balanced_wildcard; /* for |MULTIPLE_WILDCARD_PTC| ptokens: brackets balanced? */
-	int negated_ptoken; /* the |^| modifier applies */
-	int disallow_unexpected_upper; /* the |_| modifier applies */
-	struct nonterminal *nt_pt; /* for |NONTERMINAL_PTC| ptokens */
-	struct vocabulary_entry *ve_pt; /* for |FIXED_WORD_PTC| ptokens */
+	int ptoken_category; /* one of the `*_PTC` values */
+	int balanced_wildcard; /* for `MULTIPLE_WILDCARD_PTC` ptokens: brackets balanced? */
+	int negated_ptoken; /* the `^` modifier applies */
+	int disallow_unexpected_upper; /* the `_` modifier applies */
+	struct nonterminal *nt_pt; /* for `NONTERMINAL_PTC` ptokens */
+	struct vocabulary_entry *ve_pt; /* for `FIXED_WORD_PTC` ptokens */
 	struct ptoken *alternative_ptoken; /* linked list of other vocabulary ptokens */
 
 	/* What results from a successful match against this ptoken */
-	int result_index; /* for |NONTERMINAL_PTC| ptokens: what result number, counting from 1? */
+	int result_index; /* for `NONTERMINAL_PTC` ptokens: what result number, counting from 1? */
 	int range_starts; /* 1, 2, 3, ... if word range 1, 2, 3, ... starts with this */
 	int range_ends; /* 1, 2, 3, ... if word range 1, 2, 3, ... ends with this */
 
@@ -320,18 +320,18 @@ typedef struct ptoken {
 	CLASS_DEFINITION
 } ptoken;
 
-@ Each ptoken has a |range_starts| and |range_ends| number. This is either -1,
+@ Each ptoken has a `range_starts` and `range_ends` number. This is either -1,
 or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production
 = (text as InC)
 	make ... from {rice ... onions} and peppers
 =
-the first |...| ptoken has start and end set to 1; |rice| has start 2; |onions|
-has end 2. Note that the second |...|, inside the braces, doesn't start or
+the first `...` ptoken has start and end set to 1; `rice` has start 2; `onions`
+has end 2. Note that the second `...`, inside the braces, doesn't start or
 end anything; it normally would, but the wider range consumes it.
 
 @h Reading productions.
-We read the wording |W| of a production for the nonterminal |nt|, with |pc|
+We read the wording `W` of a production for the nonterminal `nt`, with `pc`
 or "production count" being 0 for the first one defined, 1 for the second,
 and so on.
 
@@ -356,12 +356,12 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 = (text as Preform)
 	make ... from {rice ... onions/shallots} and peppers
 =
-into a sequence of ptokens, setting |head| to the first and |tail| to the last.
-This particular example will produce two word ranges: one for the initial |...|,
+into a sequence of ptokens, setting `head` to the first and `tail` to the last.
+This particular example will produce two word ranges: one for the initial `...`,
 one for the matter in the braces. Because of that, we need to keep track of
 whether we're in braces or not. (Braces cannot be nested.)
 
-The alternative |onions/shallots| is called a "slashed chain" in the code below.
+The alternative `onions/shallots` is called a "slashed chain" in the code below.
 
 @d OUTSIDE_PTBRACE 0
 @d ABOUT_TO_OPEN_PTBRACE 1
@@ -403,7 +403,7 @@ The alternative |onions/shallots| is called a "slashed chain" in the code below.
 			break;
 	}
 
-@ A bracing can be followed by |? N| to make it have the number |N|, rather
+@ A bracing can be followed by `? N` to make it have the number `N`, rather
 than the next number counting upwards; see //About Preform//.
 
 @<Set a word range to end here@> =
@@ -450,7 +450,7 @@ than the next number counting upwards; see //About Preform//.
 			break;
 	}
 
-@ A nonterminal can be followed by |? N| to make it have result number |N|,
+@ A nonterminal can be followed by `? N` to make it have result number `N`,
 rather than the next number counting upwards; see //About Preform//.
 
 @<Assign a result number@> =
@@ -483,9 +483,9 @@ rather than the next number counting upwards; see //About Preform//.
 			"too many tokens on production for nonterminal");
 	}
 
-@ Here we parse what is, to the Lexer, a single word (at word number |wn|),
+@ Here we parse what is, to the Lexer, a single word (at word number `wn`),
 but which might actually be a row of possibilities divided by slashes:
-for example, |onions/shallots|.
+for example, `onions/shallots`.
 
 =
 ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn,
@@ -498,8 +498,8 @@ ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn
 }
 
 @ Should we detect a slash used to indicate alternatives, we have to ask the
-Lexer to have another try, but with |/| as a word-breaking character this time.
-So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
+Lexer to have another try, but with `/` as a word-breaking character this time.
+So, for example, `AW` might then end up as `onions`, `/`, `shallots`.
 
 @<Expand the word range if the token text is slashed@> =
 	inchar32_t *p = Lexer::word_raw_text(wn);
@@ -512,7 +512,7 @@ So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
 	}
 	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, U"/", FALSE); /* break only at slashes */
 
-@ Intercept |/a/| to |/z/| and |/aa/| to |/zz/|, which don't make ptokens at
+@ Intercept `/a/` to `/z/` and `/aa/` to `/zz/`, which don't make ptokens at
 all, but simply change the production's match number.
 
 @<Look out for production match numbers@> =
@@ -528,7 +528,7 @@ all, but simply change the production's match number.
 	}
 
 @ And then we string together the ptokens made into a linked list with links
-provided by |->alternative_ptoken|, and return the head of this list.
+provided by `->alternative_ptoken`, and return the head of this list.
 
 @<Parse the word range into a linked list of alternative ptokens@> =
 	ptoken *alt = NULL;
@@ -539,7 +539,7 @@ provided by |->alternative_ptoken|, and return the head of this list.
 			ptoken *latest =
 				LoadPreform::new_ptoken(Lexer::word(Wordings::first_wn(AW)),
 					mode, nt, pr->match_number);
-			if (alt == NULL) pt = latest; /* thus making |pt| the head */
+			if (alt == NULL) pt = latest; /* thus making `pt` the head */
 			else alt->alternative_ptoken = latest;
 			alt = latest;
 		}
@@ -582,7 +582,7 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 
 @ If the text refers to a nonterminal which doesn't yet exist, then this
 creates it; that's how we deal with forward references. //Nonterminals::find//
-never returns |NULL|.
+never returns `NULL`.
 
 @<This word is a nonterminal name@> =
 	pt->nt_pt = Nonterminals::find(ve);

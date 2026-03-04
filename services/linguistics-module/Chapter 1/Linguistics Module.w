@@ -57,7 +57,7 @@ DECLARE_CLASS(pronoun_usage)
 DECLARE_CLASS(special_meaning_holder)
 DECLARE_CLASS(small_word_set)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e LINGUISTIC_STOCK_DA
 @e TIME_PERIODS_DA
@@ -94,7 +94,7 @@ void LinguisticsModule::end(void) {
 	REGISTER_WRITER('z', Nouns::log);
 
 @ Not all of our memory will be claimed in the form of structures: now and then
-we need to use the equivalent of traditional |malloc| and |calloc| routines.
+we need to use the equivalent of traditional `malloc` and `calloc` routines.
 
 @e STOCK_MREASON
 @e SWS_MREASON

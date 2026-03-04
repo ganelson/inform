@@ -43,7 +43,7 @@ DECLARE_CLASS(star_invention)
 DECLARE_CLASS(additional_property)
 DECLARE_CLASS(additional_property_set)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e KIND_CHANGES_DA
 @e KIND_CHECKING_DA
@@ -84,7 +84,7 @@ void KindsModule::set_internal_NTIs(void) {
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_KINDS_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_KINDS_CALLBACK`
 to some routine of her own, gazumping this one.
 
 @e DimensionRedundant_KINDERROR from 1

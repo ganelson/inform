@@ -2,10 +2,10 @@
 
 To compile the main/synoptic/multimedia submodule.
 
-@ Our inventory |inv| already contains a list |inv->figure_nodes| of all packages
-in the tree with type |_instance| which are of the kind |K_figure_name|, and
+@ Our inventory `inv` already contains a list `inv->figure_nodes` of all packages
+in the tree with type `_instance` which are of the kind `K_figure_name`, and
 similarly for sounds and files. (These do not have ID numbers here because they
-already have |instance_id| values by virtue of being instances. Resource ID
+already have `instance_id` values by virtue of being instances. Resource ID
 numbers are a little different, and are pooled between sounds and figures:
 these are assigned by the //inform7// compiler, not here.)
 

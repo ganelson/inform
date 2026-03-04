@@ -8,7 +8,7 @@ How we shall test it.
 parse_node_tree *syntax_tree = NULL;
 
 @h Minimal Preform grammar.
-Only |<dividing-sentence>| can ever match, since the others are wired to match
+Only `<dividing-sentence>` can ever match, since the others are wired to match
 any text but then fail.
 
 =

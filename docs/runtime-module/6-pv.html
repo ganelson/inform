@@ -185,12 +185,9 @@ ensures that we cannot compile the same property of the same subject twice.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  This is a rather annoying provision, like everything to do with Inter
 translation. But we don't want to hand the problem downstream to the code
 generator; we want to deal with it now. The issue arises with source text like:</p>
-</div>
 <blockquote>
-    <p>A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be mentioned.</p>
+<p>A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be mentioned.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;mentioned&quot; is implemented for objects as an attribute in Inter.</p>
 <p>That would make it impossible for the code-generator to store the property
 instead in a flat array, which is how it will want to handle properties of

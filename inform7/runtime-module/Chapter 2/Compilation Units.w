@@ -7,7 +7,7 @@ to is similarly divided up.
 The source text is divided up into "compilation units". Each extension is its
 own compilation unit, and so is the main source text. This demarcation is also
 reflected in the Inter hierarchy, where each different compilation unit has its
-own sub-hierarchy, a |module_request|.
+own sub-hierarchy, a `module_request`.
 
 =
 typedef struct compilation_unit {
@@ -29,7 +29,7 @@ module_request *CompilationUnits::to_module_package(compilation_unit *C) {
 }
 
 @ The main source text, and the extensions included, are exactly the level-0
-|HEADING_NT| nodes in the parse tree which correspond to files read in, so we
+`HEADING_NT` nodes in the parse tree which correspond to files read in, so we
 can find them easily enough. This is done very early in compilation: see
 //core: How To Compile//.
 
@@ -195,7 +195,7 @@ inter_name *CompilationUnits::extension_id(inform_extension *owner) {
 }
 
 @h What unit a node belongs to.
-We are going to need to determine, for any node |p|, which compilation unit it
+We are going to need to determine, for any node `p`, which compilation unit it
 belongs to. If there were a fast way to go up in the syntax tree, that would be
 easy -- we could simply run upward until we reach a level-0 heading. But the
 node links all run downwards. Instead, we'll annotate the nodes in a given unit.

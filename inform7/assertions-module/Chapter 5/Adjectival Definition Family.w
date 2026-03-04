@@ -23,7 +23,7 @@ Definition: A container is possessed by the Devil:
 	if its carrying capacity is 666, decide yes;
 	decide no.
 =
-To Inform this looks like three consecutive |IMPERATIVE_NT| nodes:
+To Inform this looks like three consecutive `IMPERATIVE_NT` nodes:
 = (text as Inform 7)
 Definition:
 	A container is roomy if its carrying capacity is greater than 10.
@@ -35,8 +35,8 @@ A container is possessed by the Devil:
 	decide no.
 =
 But we want to create just two //imperative_defn// objects, not three. So
-when the second |IMPERATIVE_NT| node is identified as belonging to us, we
-take the opportunity to change the type of the third node to |DEFN_CONT_NT|
+when the second `IMPERATIVE_NT` node is identified as belonging to us, we
+take the opportunity to change the type of the third node to `DEFN_CONT_NT`
 ("definition continuation"). That means it will not lead to an //imperative_defn//
 of its own.
 
@@ -234,8 +234,8 @@ int AdjectivalDefinitionFamily::vet_name(wording W) {
 typedef struct definition {
 	struct parse_node *definition_node; /* current sentence: where the word "Definition" is */
 	struct parse_node *node; /* where the actual definition is */
-	int format; /* |+1| to go by condition, |-1| to negate it, |0| to use routine */
-	struct wording condition_to_match; /* text of condition to match, if |+1| or |-1| */
+	int format; /* `+1` to go by condition, `-1` to negate it, `0` to use routine */
+	struct wording condition_to_match; /* text of condition to match, if `+1` or `-1` */
 	struct wording domain_calling; /* what if anything the term is called */
 	struct adjective_meaning *am_of_def; /* which adjective meaning */
 	CLASS_DEFINITION

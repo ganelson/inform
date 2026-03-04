@@ -3,7 +3,7 @@ Adjectival Definitions.
 All the built-in adjectives on Basic Inform, from even and odd (for numbers)
 to symmetric (for relations).
 
-@ See test case |BIP-Adjectives|.
+@ See test case `BIP-Adjectives`.
 
 Something to watch out for here is that the domain of an adjective with an
 intentionally broad kind has to be written in a way which considers covariance
@@ -53,7 +53,7 @@ Definition: a verb is meaningful rather than meaningless if I6 routine "VerbIsMe
 	says so (it has a meaning in Inform as a relation, rather than existing only to be
 	printed out).
 
-@ See test case |BIP-RelationAdjectives-G|.
+@ See test case `BIP-RelationAdjectives-G`.
 
 =
 Section 2 - Adjectives for Relations
@@ -88,7 +88,7 @@ Definition: a relation is empty rather than non-empty if I6 routine
 	"RELATION_TY_Empty" makes it so (it does not relate any values, that is,
 	R(x,y) is false for all x and y).
 
-@ See test case |BIP-RealAdjectives-G|.
+@ See test case `BIP-RealAdjectives-G`.
 
 =
 Section 3 - Adjectives for Real Numbers (not for Z-machine)

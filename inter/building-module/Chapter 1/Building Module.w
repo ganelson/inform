@@ -74,7 +74,7 @@ void BuildingModule::start(void) {
 	Writers::register_logger('X', Packaging::log);
 
 @h Initialising.
-The following is a component part of the |inter_tree| structure, and is comprised
+The following is a component part of the `inter_tree` structure, and is comprised
 of four subcomponents of its own. That makes a lot of working data, but none of
 it changes the meaning of an Inter tree: it exists as workspace needed by the
 functions in this module for constructing trees.

@@ -30,7 +30,7 @@ typedef struct release_instructions {
 	int solution_public; /* If released, will this be linked on a website? */
 	int source_public; /* If released, will this be linked on a website? */
 	int card_public; /* If released, will this be linked on a website? */
-	struct linked_list *aux_files; /* of |auxiliary_file| */
+	struct linked_list *aux_files; /* of `auxiliary_file` */
 	int cover_picture_number; /* ID for the cover art (usually 1) */
 	char *cover_art_format; /* such as "jpg" */
 	unsigned int width; /* in pixels */
@@ -105,7 +105,7 @@ void ReleaseInstructions::add_aux_file(release_instructions *rel,
 @h Release with sentences.
 A sentence like the following allows for a shopping list of release ingredients:
 
->> Release along with a public source text and a website.
+> Release along with a public source text and a website.
 
 The object noun phrase is an articled list, and each entry must match this.
 Most of the things in this list are "payloads", that is, individual items to

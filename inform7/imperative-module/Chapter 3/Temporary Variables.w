@@ -5,7 +5,7 @@ When the runtime code needs to borrow a global variable for a while.
 @ The "temporary global" is made available to runtime code for short periods
 of time, and can hold any value (i.e., are not constrained to have any fixed
 kind over the lifetime of the run). To obtain it, call one of these functions,
-where |K| is the kind it will have for the next little while:
+where `K` is the kind it will have for the next little while:
 
 =
 nonlocal_variable *TemporaryVariables::from_iname(inter_name *temp_iname, kind *K) {

@@ -53,7 +53,7 @@ inter_name *GoingPlugin::id(void) {
 	return going_action->compilation_data.variables_id;
 }
 
-@ We will need to handle five special AP clauses. Two have the existing |IN_APCA|
+@ We will need to handle five special AP clauses. Two have the existing `IN_APCA`
 aspect, and the other three share a new one.
 
 @e GOING_FROM_AP_CLAUSE
@@ -172,7 +172,7 @@ int GoingPlugin::parse_clause(action_name *an, anl_clause *c, int *bits) {
 }
 
 @ Options bits which we later pick up here, moving the irregular noun phrase
-into the |GOING_TO_AP_CLAUSE| instead, where we supply our own evaluation:
+into the `GOING_TO_AP_CLAUSE` instead, where we supply our own evaluation:
 
 =
 int GoingPlugin::act_on_options(anl_entry *entry, int entry_options, int *fail) {
@@ -281,7 +281,7 @@ int GoingPlugin::need_to_check_destination_exists(action_pattern *ap) {
 @ Specificity checking for the "going" action is quite complicated. We want to
 count "going from X" and "going in X" as being essentially the same requirement,
 giving neither clause priority over the other, which means some fiddly crossover
-code if |ap1| has one and |ap2| the other.
+code if `ap1` has one and `ap2` the other.
 
 =
 int GoingPlugin::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv,

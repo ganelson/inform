@@ -3,8 +3,8 @@
 Some additions to an _instance package for instances of the kind "backdrop".
 
 @h Compilation.
-We add a |found_in| function to test whether the given backdrop is found in
-the current |location| or not.
+We add a `found_in` function to test whether the given backdrop is found in
+the current `location` or not.
 
 =
 void RTScenes::compile_extra(instance *I) {
@@ -72,25 +72,25 @@ At runtime, we need to store information about the current state of each
 scene: whether it is currently playing or not, when the last change occurred,
 and so on. This data is stored in arrays which are indexed by scene ID number,
 a number at runtime which agrees with the allocation ID at compile-time for the
-|scene| structure: i.e, it counts upwards from 0 in creation order.
+`scene` structure: i.e, it counts upwards from 0 in creation order.
 
 The arrays are:
 
-- |scene_status-->X| is 0 if the scene is not playing, but may do so in future;
+- `scene_status-->X` is 0 if the scene is not playing, but may do so in future;
 1 if the scene is playing; or 2 if the scene is not playing and will never
 play again.
 
-- |scene_started-->X| is the value of |the_time| when the scene last started,
+- `scene_started-->X` is the value of `the_time` when the scene last started,
 or 0 if it has never started.
 
-- |scene_ended-->X| is the value of |the_time| when the scene last ended,
+- `scene_ended-->X` is the value of `the_time` when the scene last ended,
 or 0 if it has never ended. (The "starting" end does not count as ending
 for this purpose.)
 
-- |scene_endings-->X| is a bitmap recording which ends have been used,
+- `scene_endings-->X` is a bitmap recording which ends have been used,
 including bit 1 which records whether the scene has started.
 
-- |scene_latest_ending-->X| holds the end number of the most recent ending
+- `scene_latest_ending-->X` holds the end number of the most recent ending
 (or 0 if the scene has never ended).
 
 @h Scene change functions.
@@ -213,7 +213,7 @@ void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s) {
 
 	if (Dash::check_condition(S) == FALSE) return;
 
-@ If the condition holds, we set the change flag |ch| and abort the search
+@ If the condition holds, we set the change flag `ch` and abort the search
 through scenes by jumping past the run of tests. (We can't compile a break
 instruction because we're not compiling a loop.)
 
@@ -234,7 +234,7 @@ instruction because we're not compiling a loop.)
 		EmitCode::up();
 	EmitCode::up();
 
-@ If the condition holds, we set the change flag |ch| and abort the search
+@ If the condition holds, we set the change flag `ch` and abort the search
 through scenes by jumping past the run of tests. (We can't compile a break
 instruction because we're not compiling a loop.)
 
@@ -273,7 +273,7 @@ Code for that is generated here.
 
 Because one end can cause another, given anchoring, we must guard against
 compiler hangs when the source text calls for infinite recursion (since
-this would cause us to generate infinitely long code). So the |marker| flags
+this would cause us to generate infinitely long code). So the `marker` flags
 are used to mark which scenes have already been ended in code generated
 for this purpose.
 
@@ -475,14 +475,14 @@ end actually occurred.)
 		EmitCode::up();
 	EmitCode::up();
 
-@ In general, the marker count is used to ensure that |RTScenes::compile_scene_end_r|
+@ In general, the marker count is used to ensure that `RTScenes::compile_scene_end_r`
 never calls itself for a scene it has been called with before on this round.
 This prevents Inform locking up generating infinite amounts of code. However,
 one exception is allowed, in very limited circumstances. Suppose we want to
 make a scene recur, but only if it ends in a particular way. Then we might
 type:
 
->> Brisk Quadrille begins when Brisk Quadrille ends untidily.
+> Brisk Quadrille begins when Brisk Quadrille ends untidily.
 
 This is allowed; it's a case where the "tolerance" below is raised.
 

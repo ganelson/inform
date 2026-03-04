@@ -3,11 +3,11 @@
 To fulfill requests to include extensions, adding their material
 to the parse tree as needed, and removing INCLUDE nodes.
 
-@ Our main task here is to look through the syntax tree for |INCLUDE_NT|
+@ Our main task here is to look through the syntax tree for `INCLUDE_NT`
 nodes, which are requests to include an extension, and replace them with
 syntax trees for the extensions in question.
 
-This process is repeated until there are no |INCLUDE_NT| nodes left.
+This process is repeated until there are no `INCLUDE_NT` nodes left.
 In principle this could go on forever if A includes B which includes A, or
 some such, but we log each extension read in to ensure that nothing is
 read twice.
@@ -89,7 +89,7 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 		}
 	}
 
-@ Here we're at a HEADING node which is annotated |(see "source-file")|, and
+@ Here we're at a HEADING node which is annotated `(see "source-file")`, and
 we need to read that file in: it will be considered as the contents of the
 HEADING.
 
@@ -117,12 +117,12 @@ HEADING.
 		}
 	}
 
-@ Note that the opening words of the external file, here |TOPW|, must match
+@ Note that the opening words of the external file, here `TOPW`, must match
 exactly the heading which called for the file, except for the annotation in
 brackets. (It's to prevent that that we look for a round bracket at the
-start of |RESTW| as a sign that the user has accidentally included this.)
+start of `RESTW` as a sign that the user has accidentally included this.)
 
-Provided a match is made, the |TOPW| words are then thrown away. Their purpose
+Provided a match is made, the `TOPW` words are then thrown away. Their purpose
 was just to identify the file sensibly.
 
 @<Sentence-break the contents of S under the heading node@> =
@@ -192,7 +192,7 @@ inform_extension *Inclusions::fulfill_request_to_include_extension(parse_node *l
 We obtain the extension file structure corresponding to this: it may have
 no text at all (for instance if Inform could not open the file), or it may be
 one we have seen before, thanks to an earlier inclusion. Only when it
-provided genuinely new text will its |body_text_unbroken| flag be set,
+provided genuinely new text will its `body_text_unbroken` flag be set,
 and then we call the sentence-breaker to graft the new material on to the
 parse tree.
 
@@ -218,7 +218,7 @@ version permitted: in which case we need to record that the requirement has
 been tightened. That is, if we previously wanted version 2 of Pantomime
 Sausages by Mr Punch, and loaded it, but then read the sentence
 
->> Include version 3 of Pantomime Sausages by Mr Punch.
+> Include version 3 of Pantomime Sausages by Mr Punch.
 
 then we need to note that the version requirement on PS has been raised to 3.
 
@@ -315,9 +315,9 @@ semantic_version_number Inclusions::parse_version(int vwn) {
 	return V;
 }
 
-@ Because we tend to call |Inclusions::parse_version| repeatedly on
+@ Because we tend to call `Inclusions::parse_version` repeatedly on
 the same word, we want to recover tidily from this problem, and not report it
-over and over. We do this by altering the text to |1|, the lowest well-formed
+over and over. We do this by altering the text to `1`, the lowest well-formed
 version number text.
 
 @<Issue a problem message for a malformed version number@> =
@@ -346,7 +346,7 @@ use an extension which is marked as not working on the current VM.
 
 @ This parses the subject noun-phrase in the sentence
 
->> Version 3 of Pantomime Sausages by Mr Punch begins here.
+> Version 3 of Pantomime Sausages by Mr Punch begins here.
 
 =
 <begins-here-sentence-subject> ::=

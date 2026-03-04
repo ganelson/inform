@@ -9,8 +9,8 @@ step as needed. I think this works quite elegantly, but then every beetle is a
 gazelle in the eyes of its mother.
 
 The following function does everything except that the generator has already been
-sent the |BEGIN_GENERATION_MTID| method, and that the generator will subsequently
-be sent |END_GENERATION_MTID|: see //Generators::go//.
+sent the `BEGIN_GENERATION_MTID` method, and that the generator will subsequently
+be sent `END_GENERATION_MTID`: see //Generators::go//.
 
 =
 void Vanilla::go(code_generation *gen) {
@@ -75,7 +75,7 @@ Note that the general-traverse iteration above calls into this function, but
 that the function then recurses down through nodes. As a result, it sees pretty
 well the entire tree by the end.
 
-The current node is always called |P|, for reasons now forgotten.
+The current node is always called `P`, for reasons now forgotten.
 
 It is so often used recursively that the following abbreviation macros are helpful:
 
@@ -124,12 +124,12 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 	}
 }
 
-@ |splat| nodes are the joker in the pack. They copy material verbatim to the
+@ `splat` nodes are the joker in the pack. They copy material verbatim to the
 output, regardless of the language being generated. (In practice, of course, this
-means that the content of a |splat| must carefully have been pre-generated in
+means that the content of a `splat` must carefully have been pre-generated in
 the right format.) Inform uses such nodes as little as it possibly can.
 
-A wrinkle, though, is that the special |URL_SYMBOL_CHAR| is used to mark out
+A wrinkle, though, is that the special `URL_SYMBOL_CHAR` is used to mark out
 a URL for a symbol in the Inter tree: this is replaced with its properly
 generated name. So a splat is not quite generator-independent after all.
 

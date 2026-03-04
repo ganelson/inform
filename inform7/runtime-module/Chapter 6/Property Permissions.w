@@ -81,7 +81,7 @@ void RTPropertyPermissions::emit_permission(property *prn, inter_symbol *owner_s
 Some kinds of non-object are created by table, with the table columns holding the
 relevant property values. The following structure indicates which column of
 which table will store the property values at run-time, or else is left as
-|-1, 0| if the property values aren't living inside a table structure.
+`-1, 0` if the property values aren't living inside a table structure.
 
 =
 typedef struct property_permission_compilation_data {

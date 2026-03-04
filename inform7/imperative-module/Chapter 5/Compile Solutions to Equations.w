@@ -2,15 +2,15 @@
 
 To compile code to solve an equation involving numerical quantities.
 
-@ This section implements the |{-primitive-definition:solve-equation}|
+@ This section implements the `{-primitive-definition:solve-equation}`
 bracing for an inline invocation.
 
 Nothing here will entirely make sense without first having read
 //assertions: Equations//, but briefly: equations written in the source
-text have been turned into |equation| structures, and we are asked to solve
-the one held in |eqn|. It involves symbols (consider "F", "m" and "a" in the
-equation "F = ma"), each of which is an |equation_symbol|. And the structure
-of the equation has been turned into a tree where each node is an |equation_node|.
+text have been turned into `equation` structures, and we are asked to solve
+the one held in `eqn`. It involves symbols (consider "F", "m" and "a" in the
+equation "F = ma"), each of which is an `equation_symbol`. And the structure
+of the equation has been turned into a tree where each node is an `equation_node`.
 The leaves in this tree are symbols or values; the other nodes represent
 operations to perform.
 
@@ -39,7 +39,7 @@ void EquationSolver::compile_solution(wording W, equation *eqn) {
 
 @ With that dance out of the way, we can concentrate on the actual task.
 We have to compile code which assigns the correct value to the symbol
-specified by |W|, according to the equation |eqn|.
+specified by `W`, according to the equation `eqn`.
 
 =
 void EquationSolver::compile_solution_inner(wording W, equation *eqn) {
@@ -121,11 +121,11 @@ incorrect. Re-typechecking will recalculate these.
 
 @ Suppose we read a phrase such as
 
->> let PE be given by PE = mgh, where g = 9.801 m/ss;
+> let PE be given by PE = mgh, where g = 9.801 m/ss;
 
 We can only compile code to do this if we can identify values for the symbols.
 "g" is not a problem because a temporary assignment supplies this. For each
-symbol |ev| which isn't a constant, we must set |ev->local_map| to the
+symbol `ev` which isn't a constant, we must set `ev->local_map` to the
 corresponding local variable.
 
 @<Identify the symbols in the equation with local variables@> =
@@ -141,7 +141,7 @@ corresponding local variable.
 		}
 
 @ In the above example, finding "PE" should not be a problem: this
-is the |to_solve| symbol, and it must be a current local variable name
+is the `to_solve` symbol, and it must be a current local variable name
 since the "let" will have created it as such if it didn't already
 exist. But things can certainly go wrong with "m" and "h", which
 need to exist as local variables in the current stack frame.

@@ -9,7 +9,7 @@ is entirely up to the Glulx VM what it does when asked to look for a file.
 By convention, though, files for a project are stored in the same folder
 as the story file when out in the wild; when a project is developed within
 the Inform user interface, they are either (for preference) stored in a
-|Files| subfolder of the |Materials| folder for a project, or else stored
+`Files` subfolder of the `Materials` folder for a project, or else stored
 alongside the Inform project file.
 
 =
@@ -40,11 +40,11 @@ what we do is to set the first character of the file to an asterisk to
 mark it as complete and ready for reading, or to a hyphen to mark it as
 a work in progress.
 
-|FileIO_Ready| determines whether or not a file is ready to be read
+`FileIO_Ready` determines whether or not a file is ready to be read
 from: it has to exist on disc, and to be openable, and also to be ready
 in having this marker asterisk.
 
-|FileIO_MarkReady| changes the readiness state of a file, writing the
+`FileIO_MarkReady` changes the readiness state of a file, writing the
 asterisk or hyphen into the initial character as needed.
 
 =
@@ -184,7 +184,7 @@ asterisk or hyphen into the initial character as needed.
 
 @h Close File.
 Note that a call to the following, in write mode, must be followed by a
-|glk_stream_set_current()|, or else the next print statement will run into
+`glk_stream_set_current()`, or else the next print statement will run into
 Glk errors.
 
 =
@@ -234,8 +234,8 @@ Glk errors.
 
 @h Print Line.
 We read characters from the supplied file until the next newline
-character. (We allow for that to be encoded as either a single |0a| or a
-single |0d|.) Each character is printed, and at the end we print a newline.
+character. (We allow for that to be encoded as either a single `0a` or a
+single `0d`.) Each character is printed, and at the end we print a newline.
 
 =
 [ FileIO_PrintLine extf ch  struc;
@@ -252,8 +252,8 @@ single |0d|.) Each character is printed, and at the end we print a newline.
 
 @h Print Contents.
 Repeating this until the file runs out is equivalent to the Unix command
-|cat|, that is, it copies the stream of characters from the file to the
-output stream. (This might well be another file, just as with |cat|, in
+`cat`, that is, it copies the stream of characters from the file to the
+output stream. (This might well be another file, just as with `cat`, in
 which case we have a copy utility.)
 
 =
@@ -271,7 +271,7 @@ which case we have a copy utility.)
 
 @h Print Text.
 The following writes a given piece of text as the new content of the file,
-either as the whole file (if |append_flag| is false) or adding only to the
+either as the whole file (if `append_flag` is false) or adding only to the
 end (if true).
 
 =

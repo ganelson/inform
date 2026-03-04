@@ -4,9 +4,9 @@ Claiming and creating copies of the pipeline genre: used for pipelines of
 code-generation stages.
 
 @h Genre definition.
-The |pipeline_genre| can be summarised as follows. Copies consist of single
-files. These are recognised by having the filename extension |.interpipeline|.
-They are stored in nests, in |N/Pipelines/Title-vVersion.i7x|. Their build
+The `pipeline_genre` can be summarised as follows. Copies consist of single
+files. These are recognised by having the filename extension `.interpipeline`.
+They are stored in nests, in `N/Pipelines/Title-vVersion.i7x`. Their build
 graphs are single vertices with no build or use edges.
 
 = 
@@ -30,7 +30,7 @@ pathname *PipelineManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Pipelines");
 }
 
-@ Pipeline copies are annotated with a structure called an |inform_pipeline|,
+@ Pipeline copies are annotated with a structure called an `inform_pipeline`,
 which stores data about pipelines used by the Inform compiler.
 
 =
@@ -49,13 +49,13 @@ inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F,
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-An pipeline, for us, simply needs to be a file with extension |.interpipeline|.
+An pipeline, for us, simply needs to be a file with extension `.interpipeline`.
 
 =
 void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,

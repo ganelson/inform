@@ -113,9 +113,9 @@ are typechecked at run-time rather than compile-time in that domain.)
 	Problems::issue_problem_end();
 	return;
 
-@ The following assumes that the subtree |py| describes a value which the
-|prn| property of something will have; it issues problem messages if this
-would be impossible, returning |NULL|, or else silently returns the value.
+@ The following assumes that the subtree `py` describes a value which the
+`prn` property of something will have; it issues problem messages if this
+would be impossible, returning `NULL`, or else silently returns the value.
 It's used both above and by the tree-conversion code in the predicate
 calculus engine.
 

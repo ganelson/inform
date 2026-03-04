@@ -4,7 +4,7 @@ To compile the tables submodule for a compilation unit, which contains
 _table packages containing _table_column_usage subpackages.
 
 @h Compilation data for tables.
-Each |table| object contains this data:
+Each `table` object contains this data:
 
 =
 typedef struct table_compilation_data {
@@ -106,7 +106,7 @@ the table column number (so that two columns both called "price" in
 different tables will have the same identifying value heading their column
 tables), together with special bits set to indicate that exotic types of
 data are stored inside. Thus if T has C columns, the column tables are
-found at |T-->1|, |T-->2|, ..., |T-->C|.
+found at `T-->1`, `T-->2`, ..., `T-->C`.
 
 @<Compile the outer table array@> =
 	for (int j=0; j<t->no_columns; j++) {
@@ -119,9 +119,9 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	EmitArrays::end(save);
 	words_used += t->no_columns + 1;
 
-@ Each column table |C| has its identifying number and bitmap combined in
-|C-->1| (the ID occupies the lower bits), a pointer to its blanks storage
-in |C-->2|, and its actual data in |C-->3|, |C-->4|, ..., |C-->(R+2)|,
+@ Each column table `C` has its identifying number and bitmap combined in
+`C-->1` (the ID occupies the lower bits), a pointer to its blanks storage
+in `C-->2`, and its actual data in `C-->3`, `C-->4`, ..., `C-->(R+2)`,
 where R is the number of rows.
 
 The contents of a cell are not just its value but also an indication of
@@ -161,7 +161,7 @@ or not.
 
 @ In this part of the code we're carefully keeping track of how much blank
 array storage we need (perhaps none!), but not compiling it. The sole aim
-is to make sure |blanks_array_hwm| has the correct value at the beginning of
+is to make sure `blanks_array_hwm` has the correct value at the beginning of
 each column needing blank bits.
 
 @<Allocate one bit in the blanks array, if needed@> =
@@ -182,7 +182,7 @@ A weakness of this scheme occurs if column ID numbers ever grow large enough
 to collide with the bits used here: at present, that would need 412 different
 table column names, which is dangerously plausible. We should fix this.
 
-The following flags are also defined in |Tables.i6t| and must agree with
+The following flags are also defined in `Tables.i6t` and must agree with
 the values given there.
 
 @d TB_COLUMN_REAL			0x8000
@@ -224,7 +224,7 @@ the values given there.
 
 @ The cell can only contain a generic value in the case of column 1 of a table
 used to define new kinds; in this case it doesn't matter what we write, but
-|nothing| has the virtue of being typesafe.
+`nothing` has the virtue of being typesafe.
 
 @<Write a cell value for the initial contents of this cell@> =
 	current_sentence = cell;
@@ -250,19 +250,19 @@ used to define new kinds; in this case it doesn't matter what we write, but
 @ As we've noted, our storage for a cell is both the array value we write here
 and also a separate bit in the blanks array. In practice, though, it's inefficient
 to look up two parallel structures each time we want to access the cell. So a
-blank cell is represented as both the value |TABLE_NOVALUE|, chosen so that it
+blank cell is represented as both the value `TABLE_NOVALUE`, chosen so that it
 is very unlikely ever to occur as a genuine table value (currently it's the
-picturesque hexadecimal value |0xDEADCE11|), and also as a blank bit set in
+picturesque hexadecimal value `0xDEADCE11`), and also as a blank bit set in
 the blanks array. This makes a negative check -- that something is not blank
 -- very quick, since only in the very rare case when the value does coincide
-with |TABLE_NOVALUE| do we need to check the blanks array. A positive check
+with `TABLE_NOVALUE` do we need to check the blanks array. A positive check
 necessarily takes longer, but this cannot be helped.
 
-With some kinds it is possible to prove that |TABLE_NOVALUE| cannot be a legal
+With some kinds it is possible to prove that `TABLE_NOVALUE` cannot be a legal
 value, and then space in the blanks array isn't needed: this is when the
-|TB_COLUMN_NOBLANKBITS| flag is set. These kinds include all enumerated kinds
+`TB_COLUMN_NOBLANKBITS` flag is set. These kinds include all enumerated kinds
 and also object numbers. (The latter are enumerated in the Z-machine but not
-in Glulx: however, |TABLE_NOVALUE| is so large a number that it can never be
+in Glulx: however, `TABLE_NOVALUE` is so large a number that it can never be
 an object reference value in any story file smaller than 3.5 GB, and in
 practice I6 and I7 are not capable of generating story files above 2 GB in any
 case.)
@@ -341,9 +341,9 @@ case.)
 			(inter_ti) Wordings::first_wn(Node::get_text(t->where_used_to_define)));
 	}
 
-@ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its
+@ The issue here is whether the value `IMPROBABLE_VALUE` can, despite its
 improbability, be valid for this kind. If we can prove that it is not, we
-should return |FALSE|; if in any doubt, we must return |TRUE|.
+should return `FALSE`; if in any doubt, we must return `TRUE`.
 
 =
 int RTTables::requires_blanks_bitmap(kind *K) {
@@ -354,7 +354,7 @@ int RTTables::requires_blanks_bitmap(kind *K) {
 }
 
 @h Compilation data for table column usages.
-Each |table_column_usage| object contains this data:
+Each `table_column_usage` object contains this data:
 
 =
 typedef struct table_column_usage_compilation_data {

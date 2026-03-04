@@ -93,7 +93,7 @@ store the block stack in the only instance of a private structure.</p>
 <span class="plain-syntax">} </span><span class="type-syntax">block_stack</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">phrase_block</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_structure</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., "if" or "while" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_structure</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;if&quot; or &quot;while&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block_location</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where block begins */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">switch_val</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for a switch statement */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tail_schema</span><span class="plain-syntax">; </span><span class="comment-syntax">/* code to add when the block closes */</span>
@@ -186,12 +186,9 @@ somehow left on it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. The life of a block.</b>  So now let's follow what happens when a block is being compiled. Suppose
 we have:</p>
-</div>
 <blockquote>
-    <p>repeat through the Table of Odds:</p>
+<p>repeat through the Table of Odds:</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>When Inform begins to compile this invocation, it observes that the phrase
 being invoked is followed by a code block, and calls the following routine
 to warn us. (That doesn't mean the block is opening yet: the setup code

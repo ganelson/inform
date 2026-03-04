@@ -127,9 +127,9 @@ a pure power of 2, i.e., a single bit.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MISCELLANEOUS_MC</span> <span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a grab-bag of other possible nouns */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOUN_MC</span> <span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |upright chair| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOUN_MC</span> <span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>upright chair</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ADJECTIVE_MC</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |invisible| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ADJECTIVE_MC</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>invisible</code> */</span><span class="plain-syntax"> </span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Annotating words.</b>  Each word in the vocabulary collected up by <a href="../words-module/index.html" class="internal">words</a> will be annotated with
@@ -562,22 +562,16 @@ text substitutions need to distinguish (for instance) &quot;say [the X]&quot; fr
 <p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2. </b>  Because an open bracket fails <code>isupper</code>, the following looks at the first
 letter of the first word only if it's not a blank. If it finds upper case, as
 it would when reading the &quot;T&quot; in:</p>
-</div>
 <blockquote>
-    <p>To say The Portrait: ...</p>
+<p>To say The Portrait: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then it makes a new upper-case version of the word &quot;the&quot;, i.e., &quot;The&quot;,
 with a distinct lexical identity; and places this distinguished identity as
 the new first token. This ensures that we end up with a different token list
 from the one in:</p>
-</div>
 <blockquote>
-    <p>To say the Portrait: ...</p>
+<p>To say the Portrait: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(These are the only circumstances in which phrase parsing has any case
 sensitivity.)</p>
 </div>
@@ -597,12 +591,9 @@ sensitivity.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13">&#167;13</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_3" class="paragraph-anchor"></a><b>&#167;13.3. </b>  We read the text in something like:</p>
-</div>
 <blockquote>
-    <p>award (P - a number) points</p>
+<p>award (P - a number) points</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and transcribe it into the token list, collapsing bracketed parts into <code>#</code>
 tokens denoting gaps, to result in something like:</p>
 </div>

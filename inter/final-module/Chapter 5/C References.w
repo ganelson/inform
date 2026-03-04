@@ -30,8 +30,8 @@ primitive !setbit        ref val -> void
 primitive !clearbit      ref val -> void
 =
 Since C functions can have their return values freely ignored, we will in fact
-implement |!setbit| and |!clearbit| as if they too had the signature
-|ref val -> val|.
+implement `!setbit` and `!clearbit` as if they too had the signature
+`ref val -> val`.
 
 =
 int CReferences::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -52,10 +52,10 @@ int CReferences::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 }
 
 @ Some storage objects, like variables, can be generated to C code which works
-in either an lvalue or rvalue context. For example, the Inter variable |frog|
-generates just as the C variable |i7_mgl_frog|.[1] It's then fine to generate
-code like either |10 + i7_mgl_frog|, where it is used in a |val| context, or
-like |i7_mgl_frog++|, where it is used in a |ref| context.
+in either an lvalue or rvalue context. For example, the Inter variable `frog`
+generates just as the C variable `i7_mgl_frog`.[1] It's then fine to generate
+code like either `10 + i7_mgl_frog`, where it is used in a `val` context, or
+like `i7_mgl_frog++`, where it is used in a `ref` context.
 
 But other storage objects are not so lucky, and can only be written to by
 calling functions.

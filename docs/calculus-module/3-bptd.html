@@ -83,12 +83,9 @@ function togglePopup(material_id) {
 numerical less-than comparison applies to numbers, whereas containment
 applies to things. The two terms need not have the same domain: the
 &quot;wearing&quot; relation, as seen in</p>
-</div>
 <blockquote>
-    <p>Harry Smythe wears the tweed waistcoat.</p>
+<p>Harry Smythe wears the tweed waistcoat.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is a binary predicate \INWEBMATH(W(x_0, x_1)\INWEBMATH) such that \INWEBMATH(x_0\INWEBMATH) ranges across people
 and \INWEBMATH(x_1\INWEBMATH) ranges across things.</p>
 <p>It's therefore helpful to record requirements on any given term of a BP,
@@ -103,7 +100,7 @@ the ideas are exactly the same.<a href="#fnref:1" title="return to text"> &#x21A
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">bp_term_details</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">called_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "(called...)" name, if any exists */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">called_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;(called...)&quot; name, if any exists */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">TERM_DOMAIN_CALCULUS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">implies_infs</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the domain of values allowed */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">implies_kind</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the kind of these values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_of_other</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where one term can be deduced from the other */</span>
@@ -164,12 +161,9 @@ combination of \INWEBMATH(x\INWEBMATH) and \INWEBMATH(y\INWEBMATH). Those can ta
 difficult to perform any reasoning about them, because knowing that
 \INWEBMATH(B(x, y)\INWEBMATH) is true doesn't give you any information about \INWEBMATH(B(x, z)\INWEBMATH).
 For instance, the BP created by</p>
-</div>
 <blockquote>
-    <p>Suspicion relates various people to various people.</p>
+<p>Suspicion relates various people to various people.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is stored at run-time in a bitmap of \INWEBMATH(P^2\INWEBMATH) bits, where \INWEBMATH(P\INWEBMATH) is the number
 of people, and searching it (&quot;if anyone suspects Harry&quot;) requires
 exhaustive loops, which incur some speed overhead as well.</p>

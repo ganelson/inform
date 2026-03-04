@@ -7,7 +7,7 @@ and out, and no more.
 The code below is in no way a proper implementation of the Glk input/output
 system, which was developed as an interactive fiction standard by Andrew Plotkin,
 and which has served us well and will continue to do so. It is not even a full
-implementation of basic console I/O via Glk, for which see the |cheapglk|
+implementation of basic console I/O via Glk, for which see the `cheapglk`
 C library.
 
 Instead, our aim is to do the absolute minimum possible in simple self-contained
@@ -19,17 +19,17 @@ use of Glk would be constraining.
 In an attempt to have the best of both worlds, the code below is only the
 default Glk implementation for an Inform 7-via-C project, and the user can
 duck out of it by providing an implementation of her own. (Indeed, this could
-even be |cheapglk|, as mentioned above.)
+even be `cheapglk`, as mentioned above.)
 
-This section of code therefore defines just two functions, |i7_default_stylist|
-and |i7_default_glk|, plus their supporting code -- which turns out to be quite
+This section of code therefore defines just two functions, `i7_default_stylist`
+and `i7_default_glk`, plus their supporting code -- which turns out to be quite
 a lot, but there are only those two points of entry.
 
 @h The Glk handler.
-The |@glk selector varargc s1| opcode performs some I/O function indexed by the
-|selector| value, taking some number of arguments which have been placed on the
-stack: |varargc| is the number of these, which may be anything from 0 to 5.
-Some functions return a value which is stored in |s1|, others do not; as with
+The `@glk selector varargc s1` opcode performs some I/O function indexed by the
+`selector` value, taking some number of arguments which have been placed on the
+stack: `varargc` is the number of these, which may be anything from 0 to 5.
+Some functions return a value which is stored in `s1`, others do not; as with
 all assembly store operands, though, supplying 0 as the store location causes
 no store to take place.
 
@@ -144,7 +144,7 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 
 @h Gestalt.
 The following is overdone, really: the standard Inform kits ask only about
-|i7_gestalt_Unicode|, |i7_gestalt_Sound| and |i7_gestalt_Graphics|.
+`i7_gestalt_Unicode`, `i7_gestalt_Sound` and `i7_gestalt_Graphics`.
 
 = (text to inform7_clib.h)
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g);
@@ -210,7 +210,7 @@ i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c) {
 
 @h Miniglk data.
 Each process needs to keep track of its own files, streams, windows and events,
-which are wrapped up in a |miniglk_data| structure as follows:
+which are wrapped up in a `miniglk_data` structure as follows:
 
 = (text to inform7_clib.h)
 #define I7_MINIGLK_LEAFNAME_LENGTH 128
@@ -297,8 +297,8 @@ void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk->no_line_events = 0;
 }
 
-@ Each process starts with two streams already open for text output: |stdout|
-and |stderr|, and the former is selected as current.
+@ Each process starts with two streams already open for text output: `stdout`
+and `stderr`, and the former is selected as current.
 
 = (text to inform7_clib.h)
 void i7_initialise_miniglk(i7process_t *proc);
@@ -422,7 +422,7 @@ int i7_mg_fgetc(i7process_t *proc, int id) {
 }
 =
 
-@ This allows us to implement |glk_fileref_create_by_name| and |glk_fileref_does_file_exist|.
+@ This allows us to implement `glk_fileref_create_by_name` and `glk_fileref_does_file_exist`.
 
 = (text to inform7_clib.h)
 i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
@@ -505,8 +505,8 @@ i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id) {
 }
 =
 
-@ This allows us to implement |glk_stream_open_memory| and its Unicode-text
-analogue |glk_stream_open_memory_uni|, and |glk_stream_open_file|.
+@ This allows us to implement `glk_stream_open_memory` and its Unicode-text
+analogue `glk_stream_open_memory_uni`, and `glk_stream_open_file`.
 
 = (text to inform7_clib.h)
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
@@ -554,7 +554,7 @@ i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	return id;
 }
 
-@ |glk_stream_set_position| and |glk_stream_get_position| are essentially for
+@ `glk_stream_set_position` and `glk_stream_get_position` are essentially for
 moving to the start or end of a file, at least for our purposes.
 
 = (text to inform7_clib.h)
@@ -597,8 +597,8 @@ i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id) {
 }
 =
 
-@ Each process has a current stream, and |glk_stream_get_current| and
-|glk_stream_set_current| give access to this.
+@ Each process has a current stream, and `glk_stream_get_current` and
+`glk_stream_set_current` give access to this.
 
 = (text to inform7_clib.h)
 i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
@@ -619,7 +619,7 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id) {
 =
 
 @ The thing which is "current" about the current stream is that this is where
-characters are written to. The following implements |glk_put_char_stream|.
+characters are written to. The following implements `glk_put_char_stream`.
 
 = (text to inform7_clib.h)
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c);
@@ -680,7 +680,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 }
 
 @ Note that the current stream is irrelevant to reading characters, where we
-have to specify exactly which stream is intended. Here's |glk_get_char_stream|:
+have to specify exactly which stream is intended. Here's `glk_get_char_stream`:
 
 = (text to inform7_clib.h)
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
@@ -696,7 +696,7 @@ i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	return 0;
 }
 
-@ And finally |glk_stream_close|, which is far from being an empty courtesy:
+@ And finally `glk_stream_close`, which is far from being an empty courtesy:
 we may have to close a file on disc, or we may have to copy a memory buffer into
 process memory.
 
@@ -805,7 +805,7 @@ i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
 
 @h Events.
 Pending events are stored in a ring buffer, where the valid pending events are
-those between the |rb_back| and |rb_front| markers, modulo |I7_MINIGLK_RING_BUFFER_SIZE|.
+those between the `rb_back` and `rb_front` markers, modulo `I7_MINIGLK_RING_BUFFER_SIZE`.
 (In practice, this is more than we need for the very simple use that the standard
 I7 kits make of events. Still, it does no harm.)
 
@@ -832,7 +832,7 @@ i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc) {
 }
 =
 
-@ That enables |glk_select|, an operation by which the caller can choose to
+@ That enables `glk_select`, an operation by which the caller can choose to
 pull an event from the buffer and (optionally) copy its data ihto process
 memory.
 
@@ -862,9 +862,9 @@ i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	return 0;
 }
 
-@ And also |glk_request_line_event|. This asks the process's sender function to
+@ And also `glk_request_line_event`. This asks the process's sender function to
 compose a command (terminated by 0 or a newline), then makes that it into a
-line event and pushes it to the event buffer. The caller can then use |glk_select|
+line event and pushes it to the event buffer. The caller can then use `glk_select`
 to find out what the command was.
 
 = (text to inform7_clib.h)
@@ -933,9 +933,9 @@ i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id
 This happens outside of miniglk. Glk does have a concept of text styles, but one
 which is difficult to marry to CSS-esque styles in the way we might want here.
 So we provide this additional styling functionality outside of the Glk specification.
-When |which| is 1, we're essentially emulating Inform 6's |font| statement; when
-it is 2, we're emulation |style|, though an enhanced version capable of more than
-the three built-in styles |bold|, |italic| and |reverse|.
+When `which` is 1, we're essentially emulating Inform 6's `font` statement; when
+it is 2, we're emulation `style`, though an enhanced version capable of more than
+the three built-in styles `bold`, `italic` and `reverse`.
 
 = (text to inform7_clib.c)
 i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,

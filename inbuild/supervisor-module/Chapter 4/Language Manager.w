@@ -4,10 +4,10 @@ Claiming and creating copies of the language genre: used for bundles of
 natural language metadata in the Inform 7 compiler.
 
 @h Genre definition.
-The |language_genre| can be summarised as follows. Language definitions
-consist of directories, containing metadata in |D/about.txt|. They are
+The `language_genre` can be summarised as follows. Language definitions
+consist of directories, containing metadata in `D/about.txt`. They are
 recognised by having this metadata file in place. They are stored in
-nests, in |N/Languages/Title-vVersion|. Their build graphs are single
+nests, in `N/Languages/Title-vVersion`. Their build graphs are single
 vertices with no build or use edges.
 
 =
@@ -24,7 +24,7 @@ void LanguageManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work
 	WRITE("%S", work->title);
 }
 
-@ Languages live in the |Inter| subdirectory of a nest:
+@ Languages live in the `Inter` subdirectory of a nest:
 
 =
 pathname *LanguageManager::path_within_nest(inbuild_nest *N) {
@@ -32,7 +32,7 @@ pathname *LanguageManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Languages");
 }
 
-@ Language copies are annotated with a structure called an |inform_language|,
+@ Language copies are annotated with a structure called an `inform_language`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -64,13 +64,13 @@ inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P, inbuild_
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A language needs to be a directory whose name ends in |Language|, and which contains
+A language needs to be a directory whose name ends in `Language`, and which contains
 a valid metadata file. The name should be in English text, without accents.
 
 =
@@ -125,7 +125,7 @@ void LanguageManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 
 @h Copying.
 Now the task is to copy a language into place in a nest. Since a language is a folder,
-we need to |rsync| it.
+we need to `rsync` it.
 
 =
 pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {

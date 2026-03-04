@@ -12,13 +12,13 @@ The model world is initially empty. It grows gradually as sentences are
 read in, or to be more accurate as they are traversed in the first major
 pass through assertions. For example, we reach:
 
->> Fifi is in the wicker basket.
+> Fifi is in the wicker basket.
 
-The two sides of the assertion are, respectively, |px|:
+The two sides of the assertion are, respectively, `px`:
 = (text)
 	node:PROPER_NOUN_NT  <fifi> (no article)
 =
-And |py|:
+And `py`:
 = (text)
 	node:RELATIONSHIP_NT  <in> (type:standard)
 	    node:PROPER_NOUN_NT  <wicker basket> (definite)
@@ -26,7 +26,7 @@ And |py|:
 The Creator is not alas a cultured gentleman with a white-pointed beard, a
 roll of architect's plans and a set square, perhaps played by an American
 character actor in a movie like "The Matrix". It's just a routine which
-returns either |TRUE| or |FALSE|, giving permission for reading of the
+returns either `TRUE` or `FALSE`, giving permission for reading of the
 sentence to continue; and it always grants this permission unless a problem
 message had to be issued during its work.
 
@@ -43,9 +43,9 @@ int Assertions::Creator::consult_the_creator(parse_node *px, parse_node *py) {
 	return TRUE;
 }
 
-@ This is the simpler case. Usually what goes on in the |px| side affects what
-creations we make in the |py| side and vice versa, but here there's no
-information on the |px| side, "there" being essentially a meaningless
+@ This is the simpler case. Usually what goes on in the `px` side affects what
+creations we make in the `py` side and vice versa, but here there's no
+information on the `px` side, "there" being essentially a meaningless
 placeholder in English, like the "it" in "it is raining".
 
 Note that only the most primitive "there is" sentences turn up here.
@@ -57,18 +57,18 @@ room."
 @<Perform creation duties on a "There is..." sentence@> =
 	Assertions::Creator::noun_creator(py, NULL, NULL);
 
-@ More generally we need to work out what |px| tells us about creations in |py|,
+@ More generally we need to work out what `px` tells us about creations in `py`,
 and vice versa. In particular, in terms of the kind of value involved. For
 example:
 
->> A man is in the Dining Room. Red is a colour.
+> A man is in the Dining Room. Red is a colour.
 
-In each case |px| describes something which will need to be created, but |py|
+In each case `px` describes something which will need to be created, but `py`
 tells us what kind it has: a colour in the second sentence here, but an object
 in the first. (We do not need to decide the kind of object here, and
 don't: it's sufficient to pin it down as far as "object".) The information
 about this kind of value sometimes comes from a particular node somewhere
-in |py|, which (if it exists) we'll call its "governing node".
+in `py`, which (if it exists) we'll call its "governing node".
 
 @<Perform creation duties on a copular sentence@> =
 	PluginCalls::creation(px, py);
@@ -82,15 +82,15 @@ in |py|, which (if it exists) we'll call its "governing node".
 makes unambiguous use of a relation which forces the kinds on each side. For
 example,
 
->> The ball is on the box.
+> The ball is on the box.
 
 uses the binary predicate supports, which requires its terms to be
 objects. (In fact it requires them to be a thing and a supporter, but we
 weaken those into just "object", since that's all we need to know for
 creation purposes.) The code we use here looks asymmetric since it searches
-|py| ahead of |px|, but in fact the two sides can't both contain a relation
+`py` ahead of `px`, but in fact the two sides can't both contain a relation
 without throwing a problem message (e.g., "In the trunk is on the table."),
-so the code here is completely symmetrical in |px| and |py|.
+so the code here is completely symmetrical in `px` and `py`.
 
 Containment is a slight exception because, for reasons to do with the
 ambiguity between direct and indirect containment, it does not force the
@@ -98,7 +98,7 @@ kind of its second term. So we do so on its behalf.
 
 The other way to find the kinds is to look at what the two sides explicitly say:
 
->> Green is a colour.
+> Green is a colour.
 
 @<Work out the kinds of value expressed by each side, and find their governing nodes@> =
 	binary_predicate *bp = Assertions::Creator::bp_of_subtree(py);
@@ -157,7 +157,7 @@ in the node's subject, so this case is easy.
 	*governing = p;
 	return KindSubjects::to_kind(Node::get_subject(p));
 
-@ Less surprisingly, "number that varies" and "number" return |K_number|.
+@ Less surprisingly, "number that varies" and "number" return `K_number`.
 
 @<Kinds of variable and of value produce the obvious kind as result@> =
 	if ((Specifications::is_new_variable_like(spec)) ||
@@ -191,7 +191,7 @@ in the node's subject, so this case is easy.
 	}
 
 
-@ And similarly "even number" returns |K_number|.
+@ And similarly "even number" returns `K_number`.
 
 @<Descriptions produce the kind of whatever's described@> =
 	if (Specifications::is_description(spec)) {
@@ -208,18 +208,20 @@ The creator is not compositional. What it does to the phrase "Miss Bianca",
 words with no meaning as yet, depends on the rest of the sentence, as these
 two alternatives show:
 
->> [1] Miss Bianca is an animal. [2] Miss Bianca is a number that varies.
+> Miss Bianca is an animal.
+
+> Miss Bianca is a number that varies.
 
 Nevertheless, the code has been structured to minimise the extent to which
-information moves across the tree rather than upwards. When |Assertions::Creator::noun_creator|
+information moves across the tree rather than upwards. When `Assertions::Creator::noun_creator`
 is applied to a given node, it is allowed access to that node and all its
 children, and can otherwise see only two pieces of information: the kind
 for any creation ("animal" or "number", above) and, in some cases, also
 a reference to which node in the tree determined this -- the "governor".
 
-We recurse downwards, looking only for |CALLED_NT| and |CREATED_NT| nodes,
-both of which are excised and replaced with |COMMON_NOUN_NT| or
-|PROPER_NOUN_NT| nodes as appropriate.
+We recurse downwards, looking only for `CALLED_NT` and `CREATED_NT` nodes,
+both of which are excised and replaced with `COMMON_NOUN_NT` or
+`PROPER_NOUN_NT` nodes as appropriate.
 
 =
 table *allow_tabular_definitions_from = NULL;
@@ -248,20 +250,20 @@ the whole point of them. Really they contain the whole language in miniature,
 because a "called" clause can specify not only the name but also its kind,
 some properties which it has, and so forth. For example:
 
->> There is a recurring scene called Expedited Banana Shipment.
+> There is a recurring scene called Expedited Banana Shipment.
 
 Thus the CALLED subtree sometimes has "local" information about what to
 make which overrides any information coming down from the tree above. This
 is important for sentences like:
 
->> A man called Peter is in the Dining Room.
+> A man called Peter is in the Dining Room.
 
 The tree above mandates that a creation in "A man called Peter" has to be
 an object, but we know locally that Peter must further have the kind "man".
 
 @<Perform creation on a CALLED node@> =
 	parse_node *what_to_make_node = p->down; /* e.g., "a man" */
-	parse_node *called_name_node = p->down->next; /* a |CREATED_NT| node, e.g., "Peter" */
+	parse_node *called_name_node = p->down->next; /* a `CREATED_NT` node, e.g., "Peter" */
 
 	if ((Node::get_type(what_to_make_node) != COMMON_NOUN_NT) &&
 		(Node::get_type(what_to_make_node) != WITH_NT)) {
@@ -278,8 +280,8 @@ an object, but we know locally that Peter must further have the kind "man".
 
 @ This is where we act on the miniature sentence implied by the CALLED
 subtree. We replace the subtree with a single node -- the result of creation
-on the |called_name_node| side -- but then apply to it any kind, proposition
-or adjectives specified in the |what_to_make_node| side.
+on the `called_name_node` side -- but then apply to it any kind, proposition
+or adjectives specified in the `what_to_make_node` side.
 
 @<Replace the CALLED subtree with the new creation, mutatis mutandis@> =
 	parse_node *p_sibling = p->next;
@@ -298,7 +300,7 @@ or adjectives specified in the |what_to_make_node| side.
 @ Ordinarily the use of the definite article doesn't tell us much, but
 consider the following two sentences:
 
->> There is a man called the Assessor. There is a man called Eric Eve.
+> There is a man called the Assessor. There is a man called Eric Eve.
 
 Clearly "Eric Eve" is a proper name, but "Assessor" is not; the use of
 "the" here was significant. (We only allow proper names for objects, which
@@ -315,7 +317,7 @@ is why the following only applies to those.)
 	}
 	#endif
 
-@ Note that even in this problem case, the |CALLED_NT| node is removed. It
+@ Note that even in this problem case, the `CALLED_NT` node is removed. It
 disappears from the tree entirely when the creator has finished work.
 
 @<Complain that nothing else can be called@> =
@@ -344,10 +346,10 @@ of grammatical gender for languages other than English.
 	m |
 	f
 
-@ That's it for callings; on to the main case, where we have a |CREATED_NT|
+@ That's it for callings; on to the main case, where we have a `CREATED_NT`
 node which invites us to make something of it. In every case it becomes one
-of |COMMON_NOUN_NT| (e.g., "Colour is a kind of value"); or |PROPER_NOUN_NT|
-(e.g., "Miss Bianca is an animal"). Thus every |CREATED_NT| node disappears
+of `COMMON_NOUN_NT` (e.g., "Colour is a kind of value"); or `PROPER_NOUN_NT`
+(e.g., "Miss Bianca is an animal"). Thus every `CREATED_NT` node disappears
 from the tree.
 
 @<Perform creation on a CREATED node@> =
@@ -514,24 +516,24 @@ it handles crashes correctly.
 		"else.");
 
 @ At this point we do something that might look odd: we check to see if the
-text of the |CREATED_NT| node is the name of an object already. That seems
-pointless, since |CREATED_NT| nodes are only made when a name is meaningless.
+text of the `CREATED_NT` node is the name of an object already. That seems
+pointless, since `CREATED_NT` nodes are only made when a name is meaningless.
 But that was a little while ago, before we started to make creations within
 the current sentence.
 
 This all hangs on the interpretation of sentences like so:
 
->> Malcolm believes Malcolm.
+> Malcolm believes Malcolm.
 
-which make the first mentions of "Malcolm". These are both |CREATED_NT|
+which make the first mentions of "Malcolm". These are both `CREATED_NT`
 nodes; the first causes "Malcolm" to be created; and then, when we reach
-the second one, we find that |recent_creation| points to it, so we do not
+the second one, we find that `recent_creation` points to it, so we do not
 need to make a second creation. The two Malcolms are, in fact, references
 to the same object.
 
 We do insist, however, on the names being given in exactly the same form.
 
->> Malcolm X believes Malcolm.
+> Malcolm X believes Malcolm.
 
 creates two different objects with different names, even though references
 to abbreviated forms of object names are normally allowed.
@@ -762,10 +764,10 @@ int Assertions::Creator::vet_name(wording W) {
 }
 
 @h Creations to instantiate.
-The |COMMON_NOUN_NT| node sometimes means to talk about things in general,
+The `COMMON_NOUN_NT` node sometimes means to talk about things in general,
 sometimes things in particular; consider the two sentences
 
->> A container is usually open. A container is in the Box Room.
+> A container is usually open. A container is in the Box Room.
 
 We cannot easily differentiate these meanings. We will only be able to do so
 by looking carefully at what the assertion does; studying the two sides of the
@@ -775,9 +777,9 @@ points in "Make Assertions", and not as part of the process above.
 Instantiation only ever creates objects, since values aren't allowed to be
 nameless.
 
-So: when it turns out that the |COMMON_NOUN_NT| is to be made into something nameless
+So: when it turns out that the `COMMON_NOUN_NT` is to be made into something nameless
 but tangible, as in the second sentence above, the following routine is used
-to transform it into a suitable |PROPER_NOUN_NT| referring to the newly created
+to transform it into a suitable `PROPER_NOUN_NT` referring to the newly created
 object.
 
 =
@@ -857,7 +859,7 @@ message says about performance, too.)
 	}
 
 @ For instance, "six vehicles" would make a binary tree here in which the
-intermediate nodes are |AND_NT| and the leaves |PROPER_NOUN_NT|, each referring
+intermediate nodes are `AND_NT` and the leaves `PROPER_NOUN_NT`, each referring
 to a different vehicle object.
 
 @<Construct a list subtree containing the right number of duplicates@> =
@@ -908,7 +910,7 @@ to a different vehicle object.
 
 @ The following is used only in assemblies, where the instance count is always
 1, and confects a name like "Cleopatra's nose" from an owner object, "Cleopatra",
-and an |COMMON_NOUN_NT| node, "nose".
+and an `COMMON_NOUN_NT` node, "nose".
 
 @<Confect a name for the new object, if that's the bag we're into@> =
 	inference_subject *owner = Node::get_implicit_in_creation_of(current_sentence);

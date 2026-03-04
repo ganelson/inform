@@ -3,15 +3,15 @@
 To compile code performing an arithmetic operation.
 
 @ This section provides a single function to compile Inter code to perform
-an arithmetic operation. It implements the |{-arithmetic-operation:X:Y}|
+an arithmetic operation. It implements the `{-arithmetic-operation:X:Y}`
 bracing when used in inline invocations, and is also needed for equation
 solving; see //Compile Solutions to Equations//. Because of that, the function
-is called either with |X| and |Y| set to values, or with |EX| and |EY| set to
-equation nodes, but not both. |eqn| is set only for the equations case; but
-in both cases |KX| and |KY| are the kinds of the arithmetic operands, and |op|
+is called either with `X` and `Y` set to values, or with `EX` and `EY` set to
+equation nodes, but not both. `eqn` is set only for the equations case; but
+in both cases `KX` and `KY` are the kinds of the arithmetic operands, and `op`
 is the operation number.
 
-For unary operations, |Y|, |EY| and |KY| will all be |NULL|.
+For unary operations, `Y`, `EY` and `KY` will all be `NULL`.
 
 What happens is straightforward enough, but we provide a fair range of different
 operations, and we have to manage scaling factors and whether the underlying
@@ -72,8 +72,8 @@ integer 3 is promoted to real.
 		}
 	}
 
-@ Making this optimisation ensures that if X or Y are literal |K_number| values
-then they will be converted to literal |K_real_number| values at compile time
+@ Making this optimisation ensures that if X or Y are literal `K_number` values
+then they will be converted to literal `K_real_number` values at compile time
 rather than at runtime, saving a function call in cases like
 = (text as Inform 7)
 	let the magic value be 4 + pi;
@@ -162,8 +162,8 @@ will always be small, partly because of the need for scaling to come out right.
 	}
 
 @ This is used in equation solving only; here we are evaluating a mathematical
-function like |log pi|, where |X| is the function (in this case |log|) and
-|Y| the value (in this case |pi|). Clearly a function cannot be promoted.
+function like `log pi`, where `X` is the function (in this case `log`) and
+`Y` the value (in this case `pi`). Clearly a function cannot be promoted.
 
 @<Emit implicit application@> =
 	oed_X.promote_me = FALSE;

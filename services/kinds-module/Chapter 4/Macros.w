@@ -8,7 +8,7 @@ Neptune supports named macros, though they are only lists of kind commands.
 
 =
 typedef struct kind_macro_definition {
-	struct text_stream *kind_macro_name; /* including the sharp, e.g., |"#UNIT"| */
+	struct text_stream *kind_macro_name; /* including the sharp, e.g., `"#UNIT"` */
 	int kind_macro_line_count;
 	struct single_kind_command kind_macro_line[MAX_KIND_MACRO_LENGTH];
 	CLASS_DEFINITION

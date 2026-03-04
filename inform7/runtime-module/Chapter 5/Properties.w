@@ -4,7 +4,7 @@ To compile the properties submodule for a compilation unit, which contains
 _property packages.
 
 @h Compilation data.
-Each |property| object contains this data, though in the case of a pair of
+Each `property` object contains this data, though in the case of a pair of
 negated either-or properties, only the un-negated case has a meaningful
 set of compilation data.
 
@@ -99,18 +99,18 @@ int RTProperties::can_be_compiled(property *prn) {
 }
 
 @ When we have a pair of either-or antonyms, as in "A person can be cheery or moody",
-we should store the state as either the |cheery| or the |moody| property. Clearly
+we should store the state as either the `cheery` or the `moody` property. Clearly
 either could equivalently be used: if a person is indeed in good spirits, we
-could represent this either by having a |cheery| property at runtime and storing
-|true| in it, or by having a |moody| one and storing |false| in that.
+could represent this either by having a `cheery` property at runtime and storing
+`true` in it, or by having a `moody` one and storing `false` in that.
 
 Calling the function //RTProperties::store_in_negation// establishes that the
-given property is the one we don't use. That is, if you want to use |cheery|,
-call this function on |moody|.
+given property is the one we don't use. That is, if you want to use `cheery`,
+call this function on `moody`.
 
 It may seem not to matter, but in fact we sometimes do need to have things one
 particular way around in order to make Inform 7 source text play nicely with
-already-compiled properties in kits. If the |moody| property is defined by a
+already-compiled properties in kits. If the `moody` property is defined by a
 kit, we'll have to use that one.
 
 =
@@ -291,7 +291,7 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 }
 
 @ Either-or properties work analogously. Note that unpossessed either/or properties
-can legally be "read" -- the result being by definition |false| -- and that the
+can legally be "read" -- the result being by definition `false` -- and that the
 WorldModelKit code makes use of this.
 
 =

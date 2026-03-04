@@ -60,8 +60,8 @@ These are the styles of text distinguished by the template layer, though
 they are not required to look different from each other on any given VM.
 The codes are independent of the VM targetted, though in fact they are
 equal to Glulx style numbers as conventionally used. (The Z-machine renders
-some as roman, some as bold, but for instance makes |HEADER_VMSTY| and
-|SUBHEADER_VMSTY| indistinguishable to the eye.) Glulx's system of styles
+some as roman, some as bold, but for instance makes `HEADER_VMSTY` and
+`SUBHEADER_VMSTY` indistinguishable to the eye.) Glulx's system of styles
 is one of its weakest points from an IF author's perspective, since it is
 all but impossible to achieve the text effects one might want -- boldface,
 for instance, or red text -- and text rendering is almost the only area
@@ -105,7 +105,7 @@ Constant WIN_STATUS  = 1;
 Constant WIN_MAIN    = 2;
 
 @h Function key codes.
-So that users of |VM_KeyChar()| don't need to be aware of platform differences,
+So that users of `VM_KeyChar()` don't need to be aware of platform differences,
 function key codes are mapped to these common codes.
 
 =
@@ -148,7 +148,7 @@ Constant PARA_NORULEBOOKBREAKS   = 8;
 Constant PARA_CONTENTEXPECTED    = 16;
 
 @h Descriptors in the Language of Play.
-The following constants are used in the |LanguageDescriptors| table found
+The following constants are used in the `LanguageDescriptors` table found
 in the definition of the language of play.
 
 =
@@ -159,7 +159,7 @@ Constant LIGHTED_PK   = $103;
 Constant UNLIGHTED_PK = $104;
 
 @h Auxiliary file structure.
-The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
+The I7 kind of value "auxiliary-file" is an `-->` array, holding a memory
 structure containing information about external files. The following
 constants specify memory offsets and values. Note the safety value stored
 as the first word of the structure: this helps protect the routines below
@@ -188,7 +188,7 @@ action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
 the following constants enumerate the possibilities.
 
-I6's |EACH_TURN_REASON|, |REACT_BEFORE_REASON| and |REACT_AFTER_REASON|
+I6's `EACH_TURN_REASON`, `REACT_BEFORE_REASON` and `REACT_AFTER_REASON`
 have been removed from this list as no longer meaningful; hence the lacuna
 in numbering.
 
@@ -203,7 +203,7 @@ Constant TESTSCOPE_REASON     = 6;
 Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
-The |*_TOKEN| constants must not be altered without modifying the I6 compiler
+The `*_TOKEN` constants must not be altered without modifying the I6 compiler
 to match (so, basically, they must not be altered at all).
 
 =
@@ -232,9 +232,9 @@ GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
 
-In Library 6/11, |GPR_NOUN| is defined as |$ff00|, but this would fail on
-Glulx: it needs to be |$ffffff00| on 32-bit virtual machines. It appears that
-|GPR_NOUN| to |GPR_CREATURE|, though documented in the old {\it Inform
+In Library 6/11, `GPR_NOUN` is defined as `$ff00`, but this would fail on
+Glulx: it needs to be `$ffffff00` on 32-bit virtual machines. It appears that
+`GPR_NOUN` to `GPR_CREATURE`, though documented in the old {\it Inform
 Translator's Manual}, were omitted when this was consolidated into the DM4,
 so that they effectively disappeared from view. But they might still be
 useful for implementing inflected forms of nouns, so we have retained them
@@ -246,7 +246,7 @@ Constant GPR_PREPOSITION    = 0;    ! Routines
 Constant GPR_NUMBER         = 1;
 Constant GPR_MULTIPLE       = 2;
 Constant GPR_REPARSE        = REPARSE_CODE;
-Constant GPR_NOUN           = -256; ! Reparse, but as |NOUN_TOKEN| this time
+Constant GPR_NOUN           = -256; ! Reparse, but as `NOUN_TOKEN` this time
 Constant GPR_HELD           = GPR_NOUN + 1; ! And so on
 Constant GPR_MULTI          = GPR_NOUN + 2;
 Constant GPR_MULTIHELD      = GPR_NOUN + 3;
@@ -289,7 +289,7 @@ Constant TWENTY_FOUR_HOURS = 1440;
 
 @h Empty Text.
 The I6 compiler does not optimise string compilation: if it needs to compile
-the (packed, read-only) string |"exemplum"| twice, it will compile two copies.
+the (packed, read-only) string `"exemplum"` twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
 string-sorting algorithms more efficient, we want direct numerical comparison
@@ -327,7 +327,7 @@ Many concepts in I6 correspond directly to their successors in I7, even if
 details may vary. (Value properties are a case in point.) Attributes are
 the opposite of this: indeed, no I6 concept is more fragmented in its I7
 equivalents. All but one of the old I6 library attributes are still used
-(the |general| attribute, for miscellaneous use, has been removed: it more
+(the `general` attribute, for miscellaneous use, has been removed: it more
 often invited abuse than use); and a few new attributes have been added.
 But they are used for a variety of purposes. Some do correspond exactly to
 either/or properties in I7, but others are a sort of signature for I7
@@ -382,11 +382,11 @@ Constant list_filter_permits = privately_named; ! another I7 listwriter convenie
 @h Template Properties.
 As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
-properties in I7 is breathtaking: in alphabetical order, |after|,
-|cant_go|, |daemon|, |each_turn|, |invent|, |life|, |number|, |orders|,
-|react_after|, |react_before|, |time_left|, |time_out|, |when_closed|,
-|when_off|, |when_on|, |when_open|. In May 2008, the direction properties
-|n_to|, |s_to|, |e_to|, ..., |out_to| joined the list of the missing.
+properties in I7 is breathtaking: in alphabetical order, `after`,
+`cant_go`, `daemon`, `each_turn`, `invent`, `life`, `number`, `orders`,
+`react_after`, `react_before`, `time_left`, `time_out`, `when_closed`,
+`when_off`, `when_on`, `when_open`. In May 2008, the direction properties
+`n_to`, `s_to`, `e_to`, ..., `out_to` joined the list of the missing.
 
 The losses are numerous because of the shift from I6's object orientation
 to I7's rule orientation: information about the behaviour of objects is no

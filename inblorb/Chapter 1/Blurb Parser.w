@@ -67,7 +67,7 @@ indexes into the syntaxes table below.
 @e website_COMMAND
 
 @ A single number specifying various possible combinations of operands. For
-example, |NT_OPS| means "number, text". Clearly the list below is not
+example, `NT_OPS` means "number, text". Clearly the list below is not
 exhaustive of the possibilities, but these are the only ones arising for
 Blurb commands.
 
@@ -89,16 +89,16 @@ Blurb commands.
 typedef struct blurb_command {
 	char *explicated; /* plain English form of the command */
 	inchar32_t *prototype; /* regular expression prototype */
-	int operands; /* one of the above |*_OPS| codes */
+	int operands; /* one of the above `*_OPS` codes */
 	int deprecated;
 } blurb_command;
 
 @ And here they all are. They are tested in the sequence given, and
-the sequence must exactly match the numbering of the |*_COMMAND|
+the sequence must exactly match the numbering of the `*_COMMAND`
 values above, since those are indexes into this table.
 
 In blurb syntax, a line whose first non-white-space character is an
-exclamation mark |!| is a comment, and is ignored. (This is the I6
+exclamation mark `!` is a comment, and is ignored. (This is the I6
 comment character, too.) It appears in the table as a command
 but, as we shall see, has no effect.
 
@@ -169,7 +169,7 @@ blurb_command syntaxes[] = {
 };
 
 @h Summary.
-For the |-help| information:
+For the `-help` information:
 
 =
 void Parser::summarise_blurb(void) {
@@ -209,9 +209,9 @@ void Parser::interpret_line(text_stream *command, text_file_position *tf, void *
 	Regexp::dispose_of(&mr);
 }
 
-@ Here we set |outcome| to the index in the syntaxes table of the line matched,
+@ Here we set `outcome` to the index in the syntaxes table of the line matched,
 or leave it as $-1$ if no match can be made. Text and number operands are
-copied in |text1|, |num1|, ..., accordingly.
+copied in `text1`, `num1`, ..., accordingly.
 
 @<Parse the command and set operands appropriately@> =
 	for (int t=0; syntaxes[t].prototype; t++)
@@ -343,15 +343,15 @@ has the assumption that the cover art is image number 1 built in.
 		default_cover_used = TRUE;
 	Placeholders::set_to(I"SMALLCOVER", text1, 0);
 
-@ Here, |text1| is the pathname of the Release folder. If we suppose that
+@ Here, `text1` is the pathname of the Release folder. If we suppose that
 Inblorb is being run from Inform, then this folder is a subfolder of the
 Materials folder for an I7 project. It follows that we can obtain the
 pathname to the Materials folder by trimming the leaf and the final separator.
-That makes the |MATERIALSFOLDERPATH| placeholder. We then set |MATERIALSFOLDER|
+That makes the `MATERIALSFOLDERPATH` placeholder. We then set `MATERIALSFOLDER`
 to the name of the Materials folder, e.g., "Spaceman Spiff Materials".
 
 However, we also need two variants on the pathname, one to be supplied to the
-Javascript function |openUrl| and one to |fileUrl|. For platform dependency
+Javascript function `openUrl` and one to `fileUrl`. For platform dependency
 reasons these need to be manipulated to deal with awkward characters.
 
 @<Make pathname placeholders in three different formats@> =
@@ -371,10 +371,10 @@ reasons these need to be manipulated to deal with awkward characters.
 		I"MATERIALSFOLDERPATHFILE",
 		I"MATERIALSFOLDERPATH");
 
-@ And here is that very "qualification" routine. The placeholder |original| contains
+@ And here is that very "qualification" routine. The placeholder `original` contains
 the pathname to a folder, a pathname which might contain spaces or backslashes,
 and which needs to be quoted as a literal Javascript string supplied to
-either the function |openUrl| or the function |fileUrl|. Depending on the
+either the function `openUrl` or the function `fileUrl`. Depending on the
 platform in use, this may entail escaping spaces or reversing slashes in the
 pathname in order to make versions for these two functions to use.
 

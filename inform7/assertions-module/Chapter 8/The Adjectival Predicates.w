@@ -68,7 +68,7 @@ int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 @ Next, asserting $adjective(t)$. We know that $t$ evaluates to a kind
 of value over which $adjective$ is defined, or the proposition would
 not have survived type-checking. But only some adjectives can be asserted;
-"open" can, but "visible" can't, for instance. |AdjectiveAmbiguity::assert| returns a
+"open" can, but "visible" can't, for instance. `AdjectiveAmbiguity::assert` returns a
 success flag.
 
 =

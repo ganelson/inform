@@ -31,7 +31,7 @@ wording PastParticiples::pasturise_wording(wording W) {
 
 @h The pasturising trie.
 This is the process of turning a present participle, like "turning", to
-a past participle, like "turned". Note that it returns |NULL| if it fails
+a past participle, like "turned". Note that it returns `NULL` if it fails
 to recognise the word in question as a present participle; this is needed
 above. It expects only a single word.
 

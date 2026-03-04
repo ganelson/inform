@@ -18,7 +18,7 @@ that is, which will include its code and be able to use it. As with any
 imported module,
 
 - The contents page of the parent's web must identify and locate the
-module: |Import: somepath/arch|
-- The parent must call |ArchModule::start()| just after it starts up, and
-|ArchModule::end()| just before it shuts down. (But just after, and just
+module: `Import: somepath/arch`
+- The parent must call `ArchModule::start()` just after it starts up, and
+`ArchModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)

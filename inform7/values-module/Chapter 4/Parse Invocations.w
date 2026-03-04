@@ -5,8 +5,10 @@ with help in putting invocations together.
 
 @h Introduction.
 "To..." phrases are defined with prototypes: for example, in
->> To add (new entry - K) to (L - list of values of kind K), if absent: ...
-the prototype is |add (new entry - K) to (L - list of values of kind K)|. In
+
+> To add (new entry - K) to (L - list of values of kind K), if absent: ...
+
+the prototype is `add (new entry - K) to (L - list of values of kind K)`. In
 this section we define three related functions: one to register the prototype
 with the excerpt parser, one to convert any textual match against that to an
 invocation subtree, and one to perform more detailed parsing on such a subtree
@@ -24,14 +26,14 @@ void ParseInvocations::register_excerpt(id_body *idb) {
 	else @<Register anything else@>;
 }
 
-@ Here the prototype is |say ...|, but we trim off the word "say", since it is
+@ Here the prototype is `say ...`, but we trim off the word "say", since it is
 not needed when the phrase is invoked in (for example) a text substitution.
 
 @<Register a say@> =
 	ParseInvocations::register_phrasal(SAY_PHRASE_MC, idb,
 		Wordings::trim_first_word(W));
 
-@ Note that control structures have prototypes such as |if (V - value) is begin|,
+@ Note that control structures have prototypes such as `if (V - value) is begin`,
 in which the keyword "begin" at the end is similarly not registered, since it
 is now no longer a compulsory part of the syntax.
 
@@ -50,8 +52,8 @@ is now no longer a compulsory part of the syntax.
 			break;
 	}
 
-@ All those possibilities result in a call to the following function, with |mc|
-set to the appropriate meaning code and |W| the registration text, perhaps
+@ All those possibilities result in a call to the following function, with `mc`
+set to the appropriate meaning code and `W` the registration text, perhaps
 trimmed a little. Surprisingly, though, this begins a recursion, since the function
 calls itself in order to provide for alternate wordings in prototypes:
 
@@ -146,9 +148,9 @@ the left and right hand sides of "deckchairs/loungers" the A and B forms.
 
 Note than a phrase with many slashed words will register a frightening number of
 possibilities -- for example,
-= (text as Inform 7)
->> To meld/blend/merge (O - object) onto/into/amongst/with (P - object) quickly/rapidly/pronto: ...
-=
+
+> To meld/blend/merge (O - object) onto/into/amongst/with (P - object) quickly/rapidly/pronto: ...
+
 will register 36 excerpts. But the hashing in the excerpts parser shouldn't
 make the result too slow, and in any case authors do not often do this.
 
@@ -174,7 +176,7 @@ make the result too slow, and in any case authors do not often do this.
 	if (Str::eq_wide_string(a_form, U"--")) Str::clear(a_form);
 	if (Str::eq_wide_string(b_form, U"--")) Str::clear(b_form);
 
-@ If we don't check this then hybrids like |To say/adjust (X - an object)| will
+@ If we don't check this then hybrids like `To say/adjust (X - an object)` will
 confuse two fundamentally different sorts of phrase. ("Say" is allowed after the
 first word, though.)
 
@@ -209,7 +211,7 @@ first word, though.)
 @h Converting excerpt parser results to invocation lists.
 Suppose, then, that the excerpt parser has identified a phrase which it
 thinks may be being invoked in some text. It will have given us this subtree
-as its preliminary findings |p|:
+as its preliminary findings `p`:
 = (text)
 	VOID_PHRASE_MC "add 17 to the list of small primes, if absent"
 	    UNKNOWN_NT "if absent" {is-phrase-option}
@@ -318,7 +320,7 @@ not even been looked at: we now have something like this --
 		RVALUE_CONTEXT_NT
 	   		UNKNOWN_NT "the list of small primes"
 =
-It is now time to look inside those |UNKNOWN_NT| nodes.
+It is now time to look inside those `UNKNOWN_NT` nodes.
 
 =
 void ParseInvocations::parse_within_inv(parse_node *inv) {
@@ -364,7 +366,7 @@ we expect here?" and "is this an equation?" respectively.
 		@<Parse any other token@>;
 
 @ This awkward manoeuvre just means that if the actions feature is active, and
-therefore |K_stored_action| exists, and if we need to be parsing something to
+therefore `K_stored_action` exists, and if we need to be parsing something to
 match that, then we need to parse action patterns in a different context from
 the usual one. (The syntax to describe the action used in "if taking a book"
 and "try taking a book" looks the same, but in fact the former allows much

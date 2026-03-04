@@ -30,12 +30,12 @@ time_t IncrementalBuild::timestamp(build_vertex *V) {
 	}
 }
 
-@ The following compares two times: it returns 1 if |t1| is later, -1 if
-|t2| is later, and 0 if they are identical.
+@ The following compares two times: it returns 1 if `t1` is later, -1 if
+`t2` is later, and 0 if they are identical.
 
-Note that we never apply the C standard library function |difftime| in
+Note that we never apply the C standard library function `difftime` in
 the case of the never-time, which we consider to be before all other times.
-(On most platforms it will be the C epoch of 1970, and |difftime| alone
+(On most platforms it will be the C epoch of 1970, and `difftime` alone
 would be fine, but we're being careful.)
 
 =
@@ -101,7 +101,7 @@ int IncrementalBuild::rebuild(OUTPUT_STREAM, build_vertex *V, build_methodology 
 		BUILD_DEPENDENCIES_MATTER_GB + IGNORE_TIMESTAMPS_GB, V, meth);
 }
 
-@ This is called when Inbuild's |-trace| switch is set at the command line.
+@ This is called when Inbuild's `-trace` switch is set at the command line.
 
 =
 int trace_ibg = FALSE;
@@ -111,8 +111,8 @@ void IncrementalBuild::enable_trace(void) {
 
 @ We want to be very sure that this recursion does not lock up, or perform
 unnecessary work by performing the same node twice. To do this we apply the
-|built| flag to a node when it has been built; but to make this is not left
-over from last time around, we only regard it when the |last_built_in_generation| count
+`built` flag to a node when it has been built; but to make this is not left
+over from last time around, we only regard it when the `last_built_in_generation` count
 for the node is set to the current "generation", a unique number incremented
 for each time we recurse.
 
@@ -149,15 +149,15 @@ int IncrementalBuild::recurse(OUTPUT_STREAM, text_stream *T, int gb, build_verte
 	return rv;
 }
 
-@ In everything which follows, |rv| (prosaically, this stands only for "return
-value") remains |TRUE| until the first active step fails, at which point no
+@ In everything which follows, `rv` (prosaically, this stands only for "return
+value") remains `TRUE` until the first active step fails, at which point no
 other active steps are ever taken, nor are any recursions made. In effect,
 the first failure halts the process.
 
 We are recursing depth-first, that is, we build the things needed to build
-|V| before we build |V| itself.
+`V` before we build `V` itself.
 
-A point of difference between this algorithm and |make| is that we do not
+A point of difference between this algorithm and `make` is that we do not
 halt with an error if a node has no way to be built. This is because the
 graphs are here are built by Inbuild itself, not by a possibly erroneous
 makefile whose author has forgotten something and whose intentions are not
@@ -179,7 +179,7 @@ needs no action taken.
 @ Suppose V needs W (for whatever reason), and that W can only be used with X.
 It follows that we will have to build X as well as W, since the process of
 building V is itself a use of W, and therefore of X. So we always enable the
-|USE_DEPENDENCIES_MATTER_GB| bit when recursing through an edge.
+`USE_DEPENDENCIES_MATTER_GB` bit when recursing through an edge.
 
 @<Build the build dependencies of the node@> =
 	int b = gb | USE_DEPENDENCIES_MATTER_GB;
@@ -200,7 +200,7 @@ building V is itself a use of W, and therefore of X. So we always enable the
 			rv = IncrementalBuild::recurse(OUT, T,
 				b | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
 
-@ Now for the node |V| itself.
+@ Now for the node `V` itself.
 
 @<Build the node itself, if necessary@> =
 	int needs_building = FALSE;
@@ -227,7 +227,7 @@ building V is itself a use of W, and therefore of X. So we always enable the
 	}
 
 @ This is where the incremental promise is finally kept. If the timestamp of
-|V| is definitely before later than that of everything it depends on, then
+`V` is definitely before later than that of everything it depends on, then
 it would be redundant to recreate it.
 
 Note that equal timestamps force rebuilding. File timestamping is quite coarse

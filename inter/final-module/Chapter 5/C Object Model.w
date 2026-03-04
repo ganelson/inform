@@ -26,7 +26,7 @@ typedef struct C_generation_object_model_data {
 	int property_id_counter;
 	struct C_property_owner *current_owner;
 	struct dictionary *declared_properties;
-	struct linked_list *declared_owners; /* of |C_property_owner| */
+	struct linked_list *declared_owners; /* of `C_property_owner` */
 	struct C_property_owner *compass_instance;
 	struct C_property_owner *direction_kind;
 	int value_ranges_needed;
@@ -74,20 +74,20 @@ kinds such as "number";
 - Constant text values -- note: this does not mean values of the I7 "text"
 kind, this means only text literals in Inter;
 - Functions;
-- 0, which is also the value of the non-object |nothing|.
+- 0, which is also the value of the non-object `nothing`.
 
 Note that there is no requirement for these ranges of value to be contiguous,
 or to exhaust the whole range of 32-bit values (and they do not). We provide
-a function |i7_metaclass| which returns |Class|, |Object|, |String|, |Routine|
+a function `i7_metaclass` which returns `Class`, `Object`, `String`, `Routine`
 or 0 in cases (a) to (e), or 0 for any values not fitting any of these: this
-function implements the |!metaclass| primitive.
+function implements the `!metaclass` primitive.
 
-@ In this C runtime, |nothing| will be 0, as is mandatory; |Class|, |Object|,
-|String| and |Routine| will be 1 to 4 respectively; values from 5 upwards will
+@ In this C runtime, `nothing` will be 0, as is mandatory; `Class`, `Object`,
+`String` and `Routine` will be 1 to 4 respectively; values from 5 upwards will
 be assigned to objects and classes as they arise -- note that these mix freely;
-string values will occupy a contiguous range |I7VAL_STRINGS_BASE| to
-|I7VAL_FUNCTIONS_BASE-1|; and function values will be in tha range
-|I7VAL_FUNCTIONS_BASE| to |0x7FFFFFFF|, though they will certainly not fill it.
+string values will occupy a contiguous range `I7VAL_STRINGS_BASE` to
+`I7VAL_FUNCTIONS_BASE-1`; and function values will be in tha range
+`I7VAL_FUNCTIONS_BASE` to `0x7FFFFFFF`, though they will certainly not fill it.
 
 =
 void CObjectModel::define_object_value_regions(code_generation *gen) {
@@ -109,7 +109,7 @@ void CObjectModel::define_object_value_regions(code_generation *gen) {
 	CodeGen::deselect(gen, saved);
 }
 
-@ Those decisions give us the following |i7_metaclass| function:
+@ Those decisions give us the following `i7_metaclass` function:
 
 = (text to inform7_clib.h)
 i7word_t i7_metaclass(i7process_t *proc, i7word_t id);
@@ -129,17 +129,17 @@ We use the term "property owner" to mean either a kind of object, or an instance
 of object. This is a little loose since instances of enumerated non-object kinds
 can also have properties, but those, as we'll later see, are stored quite differently.
 
-Each property owner has a unique ID number. The special ID 0 is reserved for |nothing|,
+Each property owner has a unique ID number. The special ID 0 is reserved for `nothing`,
 meaning the absence of such an owner, so we can only use 1 upwards; and as we've seen,
-1 to 4 are used for the four metaclasses |Class|, |Object|, |String| and |Routine|.
+1 to 4 are used for the four metaclasses `Class`, `Object`, `String` and `Routine`.
 After that, it's first come, first served.
 
 Each owner has a "class", which is always the name of another owner: except that
-the owner |Class| has the class name |Class|, i.e., itself.
+the owner `Class` has the class name `Class`, i.e., itself.
 
 Instances, though not of course classes, will also end up as part of an object
 containment tree; so we record the initial state of that three here. For classes,
-of course, |initial_parent|, |initial_sibling| and |initial_child| will remain |NULL|.
+of course, `initial_parent`, `initial_sibling` and `initial_child` will remain `NULL`.
 
 =
 typedef struct C_property_owner {
@@ -147,7 +147,7 @@ typedef struct C_property_owner {
 	int is_class;
 	struct text_stream *name;
 	struct text_stream *class;
-	struct linked_list *property_values; /* of |C_pv_pair| */
+	struct linked_list *property_values; /* of `C_pv_pair` */
 	struct C_property_owner *initial_parent;
 	struct C_property_owner *initial_sibling;
 	struct C_property_owner *initial_child;
@@ -171,9 +171,9 @@ C_property_owner *CObjectModel::new_owner(code_generation *gen, int id, text_str
 	return co;
 }
 
-@ The (constant) array |i7_class_of[id]| accepts any ID for a class or instance,
-and evaluates to the ID of its classname. So, for example, |i7_class_of[1] == 1|
-expresses that the classname of |Class| is |Class| itself. Here we compile
+@ The (constant) array `i7_class_of[id]` accepts any ID for a class or instance,
+and evaluates to the ID of its classname. So, for example, `i7_class_of[1] == 1`
+expresses that the classname of `Class` is `Class` itself. Here we compile
 a declaration for that array.
 
 =
@@ -189,10 +189,10 @@ void CObjectModel::compile_ofclass_array(code_generation *gen) {
 	CodeGen::deselect(gen, saved);
 }
 
-@ The existence of the |i7_class_of| array at runtime makes it possible to
-implement the primitive |!ofclass| reasonably efficiently. Note that it may need
+@ The existence of the `i7_class_of` array at runtime makes it possible to
+implement the primitive `!ofclass` reasonably efficiently. Note that it may need
 to recurse up the class hierarchy. If A is of class B whose superclass is C, then
-|i7_ofclass(A, B)| and |i7_ofclass(A, C)| are both true, as it |i7_ofclass(B, C)|.
+`i7_ofclass(A, B)` and `i7_ofclass(A, C)` are both true, as it `i7_ofclass(B, C)`.
 
 = (text to inform7_clib.h)
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
@@ -248,7 +248,7 @@ void i7_empty_object_tree(i7process_t *proc) {
 =
 
 @ And secondly, there is dynamic code (i.e. different for different compilations)
-to store the initial values as recorded in the |initial_*| fields:
+to store the initial values as recorded in the `initial_*` fields:
 
 =
 void CObjectModel::write_i7_initialise_object_tree(code_generation *gen) {
@@ -346,7 +346,7 @@ the runtime form of instances of Inform 7 objects. For example, the rooms,
 things and people of a work of interactive fiction would each be cases of (iii).
 
 Here is (i). After a typical IF run through Inform 7, this produces only
-two pseudo-objects, |Compass| and |thedark|.
+two pseudo-objects, `Compass` and `thedark`.
 
 =
 void CObjectModel::pseudo_object(code_generator *gtr, code_generation *gen, text_stream *obj_name) {
@@ -397,11 +397,11 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 	enumeration = owner->id;
 
 @ Whether it's from case (i), (ii) or (iii), we always end up here. Note that
-|acount| is negative only in cases (i) and (ii): if it is at least 0, then it
+`acount` is negative only in cases (i) and (ii): if it is at least 0, then it
 is the "arrow count", that is, its depth in the containment tree. (Calls are
 made here in a hierarchical depth-first traverse of the containment tree.)
 
-All direction objects have to be placed in the |Compass| pseudo-object.
+All direction objects have to be placed in the `Compass` pseudo-object.
 
 =
 C_property_owner *CObjectModel::new_runtime_object(code_generator *gtr, code_generation *gen,
@@ -657,9 +657,9 @@ void CObjectModel::gather_properties_into_array(code_generation *gen,
 }
 
 @ The import of this is that because every owner's super-owner's super-owner...
-and so on ends in |Class|, and because |Class| provides every either-or property,
+and so on ends in `Class`, and because `Class` provides every either-or property,
 it follows that every owner provides every either-or property. And in the absence
-of any more specific data, it will be initially |false|.
+of any more specific data, it will be initially `false`.
 
 This is not true of other properties, which have different runtime semantics.
 
@@ -762,9 +762,9 @@ enumeration.
 
 @h Primitives.
 The following primitives are all implemented by calling suitable C functions,
-which we will then need to write in |inform7_clib.h|.
+which we will then need to write in `inform7_clib.h`.
 
-For |i7_metaclass|, see //CObjectModel::define_object_value_regions// above.
+For `i7_metaclass`, see //CObjectModel::define_object_value_regions// above.
 
 =
 int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -853,8 +853,8 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 }
 =
 
-@ Now |i7_move|, which moves |obj| in the object tree so that it becomes the
-eldest child of |to|, unless |to| is zero, in which case it is removed from
+@ Now `i7_move`, which moves `obj` in the object tree so that it becomes the
+eldest child of `to`, unless `to` is zero, in which case it is removed from
 the tree.
 
 = (text to inform7_clib.h)
@@ -920,7 +920,7 @@ i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
 }
 =
 
-@ And the implementation of "is |obj1| directly a child of |obj2|?"
+@ And the implementation of "is `obj1` directly a child of `obj2`?"
 
 = (text to inform7_clib.h)
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
@@ -998,8 +998,8 @@ i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr,
 @h Reading, writing and changing general properties.
 And these are the exactly analogous functions which more generally read, write
 or change properties which can be held by either objects or enumerated instances --
-in other words, all properties. The additional kind argument |K| is then needed
-to distinguish these cases (since the |obj| values for different kinds may well
+in other words, all properties. The additional kind argument `K` is then needed
+to distinguish these cases (since the `obj` values for different kinds may well
 coincide).
 
 The functions themselves are simple enough, but there is a complication, which

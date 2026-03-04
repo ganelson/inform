@@ -3,7 +3,7 @@
 To load, optimise and throw problem messages related to Preform syntax.
 
 @h Reading Preform declarations from Syntax files.
-At present we do this only when |L| is English, but the infrastructure is general.
+At present we do this only when `L` is English, but the infrastructure is general.
 
 =
 int CorePreform::load(inform_language *L) {
@@ -16,7 +16,7 @@ int CorePreform::load(inform_language *L) {
 
 @h Converting Preform errors to problems.
 Errors in Preform syntax are generated in the //words// module, and are
-ordinarily issued in a low-level way, with terse lines printed to |STDERR|.
+ordinarily issued in a low-level way, with terse lines printed to `STDERR`.
 Providing the following allows us to give the Inform user a fuller message:
 
 @d PREFORM_ERROR_WORDS_CALLBACK CorePreform::preform_error
@@ -109,7 +109,7 @@ void CorePreform::set_core_internal_NTIs(void) {
 @ Later on, the //words// module calls the following function to mark that a
 match to the given nonterminal must contain only words with certain NTI bits:
 for example, a match to <k-kind> has to contain words with either the <article>
-bit or the <k-kind> bit set, which as we see above is |COMMON_NOUN_RES_NT_BIT|.
+bit or the <k-kind> bit set, which as we see above is `COMMON_NOUN_RES_NT_BIT`.
 
 @d MORE_PREFORM_OPTIMISER_WORDS_CALLBACK CorePreform::set_core_internal_requirements
 

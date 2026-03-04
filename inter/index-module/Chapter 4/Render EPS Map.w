@@ -2,9 +2,9 @@
 
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
-@ The test case |Index-MapEPS-ROTA| may be useful here: its output is a plain
+@ The test case `Index-MapEPS-ROTA` may be useful here: its output is a plain
 text file, but simply removing the top line (which contains the test case number)
-and then renaming it to have file extension |.eps| should make it a valid EPS
+and then renaming it to have file extension `.eps` should make it a valid EPS
 file, which can be opened in Ghostscript, Photoshop or similar.
 
 =
@@ -440,7 +440,7 @@ void RenderEPSMap::EPS_compile_header(OUTPUT_STREAM, int bounding_box_width,
 @h Circles and rectangles.
 In EPS files, there's an imaginary pen which traces out "paths". These begin
 whenever the pen moves to a new location, and then continue until they are
-closed (joined up back to the start position) with a |closepath| command.
+closed (joined up back to the start position) with a `closepath` command.
 
 =
 void RenderEPSMap::EPS_compile_circular_path(OUTPUT_STREAM, int x0, int y0, int radius) {
@@ -548,10 +548,10 @@ void RenderEPSMap::EPS_compile_text(OUTPUT_STREAM, text_stream *text, int x, int
 
 @h RGB colours.
 Inform internally stores colours as six hexadecimal digits, in traditional
-HTML way: |RRGGBB|, with each colour from 0 to 255. In EPS files, colours
+HTML way: `RRGGBB`, with each colour from 0 to 255. In EPS files, colours
 are written as triples of floating point numbers $0 \leq b \leq 1$.
 
-EPS uses reverse Polish notation, so the command here is: |R G B setrgbcolor|.
+EPS uses reverse Polish notation, so the command here is: `R G B setrgbcolor`.
 
 =
 void RenderEPSMap::EPS_compile_set_colour(OUTPUT_STREAM, text_stream *htmlcolour) {

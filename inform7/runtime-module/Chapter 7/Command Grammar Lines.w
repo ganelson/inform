@@ -3,7 +3,7 @@
 Compiling lines of command parser grammar.
 
 @h Compilation data.
-Each |cg_line| object contains this data, though except for the |suppress_compilation|
+Each `cg_line` object contains this data, though except for the `suppress_compilation`
 flag, most of it is rarely used:
 
 =
@@ -11,9 +11,9 @@ typedef struct cg_line_compilation_data {
 	struct package_request *metadata_package;
 	struct inter_name *xref_iname;
 	int suppress_compilation; /* has been compiled in a single grammar token already? */
-	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
+	struct inter_name *cond_token_iname; /* for its `Cond_Token_*` routine, if any */
 	int cond_token_compiled;
-	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
+	struct inter_name *mistake_iname; /* for its `Mistake_Token_*` routine, if any */
 	struct cg_line *next_with_action; /* used when indexing actions */
 	struct command_grammar *belongs_to_cg; /* similarly, used only in indexing */
 } cg_line_compilation_data;
@@ -34,11 +34,11 @@ cg_line_compilation_data RTCommandGrammarLines::new_compilation_data(cg_line *cg
 @ So this is where some lines in a command grammar's list are flagged to be
 suppressed.
 
-It's called when the |name| property array is being compiled, and what it
+It's called when the `name` property array is being compiled, and what it
 does is to notice when a line contains just a single word, and if so, compile
-that as an extra entry for the |name| array, then mark it to be skipped when
-a |parse_name| function is being compiled. Effectively, then, it moves this
-content from |parse_name| to |name|, an optimisation which is just a little
+that as an extra entry for the `name` array, then mark it to be skipped when
+a `parse_name` function is being compiled. Effectively, then, it moves this
+content from `parse_name` to `name`, an optimisation which is just a little
 faster for the command parser to deal with, and saves a few bytes at runtime.
 
 =
@@ -60,7 +60,7 @@ int RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
 }
 
 @ These inames are used only by two special forms of CG line: see below. For the
-great majority of lines, both will remain |NULL|.
+great majority of lines, both will remain `NULL`.
 
 =
 inter_name *RTCommandGrammarLines::get_cond_token_iname(cg_line *cgl) {
@@ -260,14 +260,14 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *kit, cg_line *cgl, int cg_i
 @h Mistaken grammar lines.
 "Mistaken" lines are command which can be matched, but only in order to
 print nicely worded rejections. A number of implementations were tried for
-this, for instance producing parser errors and setting |pe| to some high
+this, for instance producing parser errors and setting `pe` to some high
 value, but the method now used is for a mistaken line to produce a successful
-parse but result in the (fake) action |##MistakeAction|. The hard part is to
-send information to the processing function for that action, |MistakeActionSub|,
+parse but result in the (fake) action `##MistakeAction`. The hard part is to
+send information to the processing function for that action, `MistakeActionSub`,
 indicating what the mistake was, exactly. We do this by beginning the line
 with an additional token matching the empty text (and thus, always matching)
 but with the side-effect of setting a special global variable. Thus a mistaken
-line |act [thing]| comes out as something like:
+line `act [thing]` comes out as something like:
 = (text)
 * Mistake_Token_12 'act' noun -> MistakeAction
 =
@@ -332,9 +332,9 @@ int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *kit, cg_line *
 	return FALSE;
 }
 
-@ Because //CommandParserKit// needs to be able to discuss |MistakeAction|,
+@ Because //CommandParserKit// needs to be able to discuss `MistakeAction`,
 we need to compile this constant even if there are, in fact, no mistaken
-grammar lines; and since this is a fake action, it needs a |MistakeActionSub|
+grammar lines; and since this is a fake action, it needs a `MistakeActionSub`
 function to process it.
 
 =
@@ -410,7 +410,7 @@ Unlike the case of mistaken tokens, a conditional token can appear in any gramma
 not only in CG_IS_COMMAND grammar, so (a) we sometimes must compile code and not
 just an extra array entry, and (b) we must be careful about the unusual but not
 impossible case of the same grammar line being compiled twice, which can happen
-because of |parse_name| inheritance with CG_IS_SUBJECT grammars.
+because of `parse_name` inheritance with CG_IS_SUBJECT grammars.
 
 =
 void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *kit, cg_line *cgl,
@@ -486,7 +486,7 @@ void RTCommandGrammarLines::cond_agent(compilation_subtask *t) {
 
 @h Slash GPRs.
 These are functions which match exactly one of the tokens in the given range;
-so, for example, |fish/fowl/duck/drake| could be handled by a slash GPR.
+so, for example, `fish/fowl/duck/drake` could be handled by a slash GPR.
 
 =
 typedef struct slash_gpr {
@@ -528,7 +528,7 @@ void RTCommandGrammarLines::slash_GPR_agent(compilation_subtask *t) {
 This all looks festooned with complexity, but in fact it's almost the same as
 looping through the tokens in sequence and calling //RTCommandGrammarTokens::compile//
 on each in turn. The complications come from "slash classes", i.e., the ability
-to specify a disjunction like |A/B/C/D|: this looks like a range of 4 tokens.
+to specify a disjunction like `A/B/C/D`: this looks like a range of 4 tokens.
 
 =
 void RTCommandGrammarLines::compile_token_range(gpr_kit *kit,

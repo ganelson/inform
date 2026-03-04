@@ -26,8 +26,8 @@ Object mandrake_root
 	with potency 10,
 	has edible;
 =
-creates a VM-object |mandrake_root| of VM-class |Mandragora|, which has the
-VM-property |potency| set to 10, and the VM-attribute |edible| set.
+creates a VM-object `mandrake_root` of VM-class `Mandragora`, which has the
+VM-property `potency` set to 10, and the VM-attribute `edible` set.
 
 @h Property declarations.
 Here we must declare properties. Some will be stored in VM-properties, others
@@ -69,8 +69,8 @@ like so:
 =
 Note that at runtime VM-property and VM-attribute numbers may overlap -- so
 there is no way to tell from word 1 alone whether it is intended to be a
-VM-property number or a VM-attribute number. Indeed, |potency| might compile
-to the same number as |edible|. So word 0 is certainly necessary.
+VM-property number or a VM-attribute number. Indeed, `potency` might compile
+to the same number as `edible`. So word 0 is certainly necessary.
 
 =
 void I6TargetObjects::declare_property(code_generator *gtr, code_generation *gen,
@@ -167,7 +167,7 @@ to be frequently used.
 			store_in_VM_attribute = FALSE;
 	}
 
-@ Okay, declaration time. The I6 |Attribute| directive creates a VM-attribute.
+@ Okay, declaration time. The I6 `Attribute` directive creates a VM-attribute.
 We give it the property's "inner name": see //Vanilla Objects// for why.
 
 @<Declare a VM-attribute to store this in@> =
@@ -175,7 +175,7 @@ We give it the property's "inner name": see //Vanilla Objects// for why.
 	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", inner_name);
 	CodeGen::deselect(gen, saved);
 
-@ And the |Property| directive declares a VM-property.
+@ And the `Property` directive declares a VM-property.
 
 @<Declare a VM-property to store this in@> =
 	segmentation_pos saved = CodeGen::select(gen, properties_I7CGS);
@@ -184,7 +184,7 @@ We give it the property's "inner name": see //Vanilla Objects// for why.
 
 @ It may seem that nothing needs to be done in order to declare an undeclared
 VM-property: so why is there code here? In fact, old-time Inform 6 coders will
-recognise this situation. Suppose we have a property called |example|, and
+recognise this situation. Suppose we have a property called `example`, and
 we have some I6 code making reference to it:
 = (text as Inform 6)
 [ EnthuseOver p;
@@ -193,16 +193,16 @@ we have some I6 code making reference to it:
 ];
 =
 But now suppose that the I6 user has this code available but has, in fact,
-never actually given the |example| property to any object. That means it is
+never actually given the `example` property to any object. That means it is
 never implicitly declared as a VM-property; and so it does not exist as an
-identifier name, which leads to the |EnthuseOver| function failing to compile.
+identifier name, which leads to the `EnthuseOver` function failing to compile.
 We get around this with a trick called "stubbing the property": placing the
 following precautionary code at the end of the program --
 = (text as Inform 6)
 #ifndef example; Constant example = 0; #endif;
 =
-Now |example| exists. It's not a valid VM-property, so it will never be seen
-in the wild. |EnthuseOver| will never really enthuse, but won't throw syntax
+Now `example` exists. It's not a valid VM-property, so it will never be seen
+in the wild. `EnthuseOver` will never really enthuse, but won't throw syntax
 errors either.
 
 @<Store this in an undeclared VM-property@> =
@@ -214,8 +214,8 @@ errors either.
 @ Finally, the opening words of the metadata array. This is done in a rather
 odd-looking way because of yet another oddity in the I6 compiler whereby not all
 VM-property names can be used as array entries, whereas they can all be used
-as values of defined |Constant|s. (This in particular is true of the special
-property |name|.) So we define
+as values of defined `Constant`s. (This in particular is true of the special
+property `name`.) So we define
 = (text as Inform 6)
 Constant subterfuge_20 = example;
 Array P_edible --> 1 subterfuge_20 ...
@@ -322,7 +322,7 @@ equal to their enumeration numbers. So for e.g.
 = (text as Inform 7)
 Colour is a kind of value. Red, blue and green are colours.
 =
-...we would declare the constant |I_blue| as being equal to 2, Inform having
+...we would declare the constant `I_blue` as being equal to 2, Inform having
 enumerated these colours as 1, 2, 3.
 
 @<A value instance@> =
@@ -340,7 +340,7 @@ void I6TargetObjects::end_instance(code_generator *gtr, code_generation *gen,
 }
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
-name is intentionally made blank: we always use I6's |short_name| property
+name is intentionally made blank: we always use I6's `short_name` property
 instead. I7's spatial feature, if loaded (as it usually is), will have
 annotated the Inter symbol for the object with an "arrow count", that is,
 a measure of its spatial depth. This we translate into I6 arrow notation.
@@ -348,7 +348,7 @@ If the spatial feature wasn't loaded then we have no notion of containment,
 all arrow counts are 0, and we define a flat sequence of free-standing objects.
 
 One last oddball thing is that direction objects have to be compiled in I6
-as if they were spatially inside a special VM-object called |Compass|. This
+as if they were spatially inside a special VM-object called `Compass`. This
 doesn't really make much conceptual sense, and I7 dropped the idea -- it has no
 "compass".
 
@@ -383,8 +383,8 @@ void I6TargetObjects::VM_object_footer(code_generation *gen, segmentation_pos sa
 
 @ Pseudo-objects are directly turned into VM-objects, albeit "concealed" ones.
 This is used only for objects created in kits but which have no existence at
-the I7 level (hence "pseudo"). |Compass|, mentioned above, is one such; the
-other one used by the standard kits supplied with Inform is |thedark|. I urge
+the I7 level (hence "pseudo"). `Compass`, mentioned above, is one such; the
+other one used by the standard kits supplied with Inform is `thedark`. I urge
 people to create no further pseudo-objects.
 
 =
@@ -402,9 +402,9 @@ used for I6's inline property arrays, which look like this:
 	with name 'hoochie' 'coochie' 'band',
 =
 At the Inter level, this is represented by having the property value -- i.e.
-the pair |val1|, |val2| below -- refer to a constant list containing three
+the pair `val1`, `val2` below -- refer to a constant list containing three
 entries (the three dictionary words above). But if we compiled that directly,
-then an attempt to look up the property address |obj.&name| would return the
+then an attempt to look up the property address `obj.&name` would return the
 address of the address of the array, not the address of the array itself. So
 we must use the peculiar I6 syntax here to get the right outcome.
 
@@ -455,7 +455,7 @@ void I6TargetObjects::end_generation(code_generator *gtr, code_generation *gen) 
 }
 
 @ I6 compiles a thin layer veneer code in addition to the source code which is
-explicitly part of the program, and that code expects a function |DebugAttribute|
+explicitly part of the program, and that code expects a function `DebugAttribute`
 to exist somewhere in the program. Now in fact BasicInformKit does define such a
 function, but we want to cover ourselves against the possibility that not even
 BasicInformKit is part of the Inter tree. So:
@@ -468,7 +468,7 @@ BasicInformKit is part of the Inter tree. So:
 	WRITE("];\n");
 	CodeGen::deselect(gen, saved);
 
-@ Okay, so the array |value_ranges| gives the largest valid enumeration count for
+@ Okay, so the array `value_ranges` gives the largest valid enumeration count for
 each enumerative kind, and is indexed by weak kind ID.
 
 @<Compile the value_ranges array@> =
@@ -496,7 +496,7 @@ each enumerative kind, and is indexed by weak kind ID.
 	}
 	CodeGen::deselect(gen, saved);
 
-@ Similarly, the array |value_property_holders| gives the VM-object numbers for
+@ Similarly, the array `value_property_holders` gives the VM-object numbers for
 the value property holders for each enumerative kind.
 
 @<Compile the value_property_holders array@> =

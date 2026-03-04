@@ -138,29 +138,25 @@ folder is free to provide a replacement:</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Strange</span><span class="plain-syntax">.</span><span class="identifier-syntax">materials</span><span class="plain-syntax">/</span><span class="identifier-syntax">Pipelines</span><span class="plain-syntax">/</span><span class="identifier-syntax">compile</span><span class="plain-syntax">.</span><span class="identifier-syntax">interpipeline</span>
 </pre>
-<blockquote>
-    <p>Use inter pipeline "NAME".</p>
-</blockquote>
-
-<blockquote>
-    <p>Use inter pipeline "mypipeline".</p>
-</blockquote>
-
 <div class="lsmarkdown">
 <p>...and then this will be used instead when compiling <code>Strange.inform</code>.</p>
 <ol>
-<li>This sentence in Inform source text:</li>
-</ol>
-</div>
-<div class="lsmarkdown">
+<li>
+<p>This sentence in Inform source text:</p>
+<blockquote>
+<p>Use inter pipeline &quot;NAME&quot;.</p>
+</blockquote>
 <p>replaces the pipeline normally used for code generation with the one supplied.
 (That may very well cause the compiler not to produce viable code, of course.)
 The default Inter pipeline is called <code>compile</code>, and comes built-in. Named
 pipelines are stored alongside named extensions and other resources used by
 Inform; so for example you could write:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Use inter pipeline &quot;mypipeline&quot;.</p>
+</blockquote>
 <p>And then store the actual pipeline file as:</p>
+</li>
+</ol>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Example</span><span class="plain-syntax"> </span><span class="identifier-syntax">Work</span><span class="plain-syntax">.</span><span class="identifier-syntax">materials</span><span class="plain-syntax">/</span><span class="identifier-syntax">Pipelines</span><span class="plain-syntax">/</span><span class="identifier-syntax">mypipeline</span><span class="plain-syntax">.</span><span class="identifier-syntax">interpipeline</span>

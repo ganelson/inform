@@ -87,7 +87,7 @@ MathJax = {
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">adjective_compilation_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">adaptive_printing_fn_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">aph_package</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">held_inames</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* of |adjective_iname_holder| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">held_inames</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* of <code>adjective_iname_holder</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">index_wording</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">adjective_compilation_data</span><span class="plain-syntax">;</span>
 
@@ -286,19 +286,13 @@ exception is that it is bogusly given the kind &quot;number&quot; if the adjecti
 being defined only by I6 routines. This is done to avoid compiling very
 inefficient code from the Standard Rules. For instance, the SR reads, in
 slightly simplified form:</p>
-</div>
 <blockquote>
-    <p>Definition: a text is empty if I6 routine |"TEXT\_TY\_Empty"| says so.</p>
+<p>Definition: a text is empty if I6 routine <code>&quot;TEXT_TY_Empty&quot;</code> says so.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>rather than the more obvious:</p>
-</div>
 <blockquote>
-    <p>Definition: a text is empty if it is not |""|.</p>
+<p>Definition: a text is empty if it is not <code>&quot;&quot;</code>.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Both of these definitions work. But if the routine defining &quot;empty&quot; for text
 is allowed to act on a text variable, Inform needs to compile code which acts
 on block values held on the memory heap at run-time. That means it needs to

@@ -100,7 +100,7 @@ that it is unique among all variable sets in the executable.
 =
 typedef struct shared_variable_set {
 	struct inter_name *recognition_iname;
-	struct linked_list *variables; /* of |shared_variable| */
+	struct linked_list *variables; /* of `shared_variable` */
 	CLASS_DEFINITION
 } shared_variable_set;
 
@@ -129,7 +129,7 @@ int SharedVariables::size_of_largest_set(void) {
 	return size_of_largest_set;
 }
 
-@ Returns the first variable in the set whose matching text begins |W|. Note
+@ Returns the first variable in the set whose matching text begins `W`. Note
 that this requires the match text to be nonempty, so it can only return
 variables which have one.
 
@@ -148,7 +148,7 @@ These could hardly be simpler:
 
 =
 typedef struct shared_variable_access_list {
-	struct linked_list *sets; /* of |shared_variable_set| */
+	struct linked_list *sets; /* of `shared_variable_set` */
 	CLASS_DEFINITION
 } shared_variable_access_list;
 
@@ -172,7 +172,7 @@ void SharedVariables::add_set_to_access_list(shared_variable_access_list *access
 	}
 }
 
-@ This changes |access| to the union of |access| and |extras|:
+@ This changes `access` to the union of `access` and `extras`:
 
 =
 void SharedVariables::append_access_list(shared_variable_access_list *access,
@@ -183,7 +183,7 @@ void SharedVariables::append_access_list(shared_variable_access_list *access,
 			SharedVariables::add_set_to_access_list(access, set);
 }
 
-@ Returns the first shared variable of the given name |W| in any set in the
+@ Returns the first shared variable of the given name `W` in any set in the
 access list. This would be inefficient if access lists were ever large, or
 if individual sets were, but they are not. Giving each access list its own
 associative hash would make little or no saving of time, and would decrease

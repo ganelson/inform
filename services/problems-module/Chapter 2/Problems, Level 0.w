@@ -20,13 +20,13 @@ int crash_on_all_problems = FALSE;
 
 void ProblemSigils::exit(int code) {
 	if ((sigil_of_required_problem) && (sigil_of_required_problem_found == FALSE))
-		exit(0); /* so that the problem test case will fail in |intest| */
+		exit(0); /* so that the problem test case will fail in `intest` */
 	exit(code);
 }
 
 @ The following function has had an amusing evolution over the years. It does
 something nobody is ever supposed to do: deliberately crashes the process.
-At one time it executed |int x = 1/0;|, but compilers got wise to that, or
+At one time it executed `int x = 1/0;`, but compilers got wise to that, or
 else would detect that such an expression had no side effects and was not used.
 What we now do is to dereference a null pointer, while apparently trying to make
 use of the result.
@@ -43,14 +43,14 @@ void ProblemSigils::force_crash(void) {
 }
 
 @h Configuration.
-Inform calls this in response to its |-require-problem| command line switch:
+Inform calls this in response to its `-require-problem` command line switch:
 
 =
 void ProblemSigils::require(text_stream *sigil) {
 	sigil_of_required_problem = Str::duplicate(sigil);
 }
 
-@ And this in response to |-sigils|, which causes the sigil of any problem to
+@ And this in response to `-sigils`, which causes the sigil of any problem to
 be echoed to standard output (i.e., printed). Again, this is useful in testing.
 
 =
@@ -58,7 +58,7 @@ void ProblemSigils::echo_sigils(int state) {
 	echo_problem_message_sigils = state;
 }
 
-@ And this in response to |-crash-all|, an ugly expedient for working with
+@ And this in response to `-crash-all`, an ugly expedient for working with
 Inform in the debugger.
 
 =
@@ -68,27 +68,27 @@ void ProblemSigils::crash_on_problems(int state) {
 
 @h Sigils.
 Every problem message in Inform is identified by a sigil, a short alphanumeric
-symbol. The |_p_| notation is used to write these; this expands to the name in
+symbol. The `_p_` notation is used to write these; this expands to the name in
 double quotes followed by the source section and line number at which it is
 generated.
 
 @d _p_(sigil) #sigil, __FILE__, __LINE__
 
-@ That means that when a |_p_| argument is given to a function, it is actually
-a list of three arguments, matching the |SIGIL_ARGUMENTS| prototype. |SIGIL_ARGUMENTS|
+@ That means that when a `_p_` argument is given to a function, it is actually
+a list of three arguments, matching the `SIGIL_ARGUMENTS` prototype. `SIGIL_ARGUMENTS`
 appears as a pseudo-argument in the function prototypes of the many of the
 functions in this module as a result.
 
-Each such function should either |ACT_ON_SIGIL| itself or else pass over to
-another problem function, using |PASS_SIGIL| as the pseudo-argument.
+Each such function should either `ACT_ON_SIGIL` itself or else pass over to
+another problem function, using `PASS_SIGIL` as the pseudo-argument.
 
 @d SIGIL_ARGUMENTS char *sigil, char *file, int line
 @d PASS_SIGIL sigil, file, line
 
 @ We will maintain the following variables. The distinction is that the
 "unlinked" one holds the sigil of a message which is next up to be hyperlinked
-to documentation; |sigil_of_latest_unlinked_problem| is then emptied when this
-is done, whereas |sigil_of_latest_problem| keeps its value until the next
+to documentation; `sigil_of_latest_unlinked_problem` is then emptied when this
+is done, whereas `sigil_of_latest_problem` keeps its value until the next
 problem is issued.
 
 =

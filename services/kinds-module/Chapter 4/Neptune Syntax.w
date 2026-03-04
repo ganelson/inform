@@ -8,15 +8,15 @@ Each different operation is defined with a block like so:
 =
 typedef struct kind_command_definition {
 	char *text_of_command;
-	int opcode_number; /* one of the |*_KCC| values below */
-	int operand_type; /* one of the |*_KCA| values below */
+	int opcode_number; /* one of the `*_KCC` values below */
+	int operand_type; /* one of the `*_KCA` values below */
 	char *warning_if_used;
 } kind_command_definition;
 
 @ The operands have different types, and the possibilities are given here:
 
 @e NO_KCA from 0   /* there's no operand */
-@e BOOLEAN_KCA     /* must be |yes| or |no| */
+@e BOOLEAN_KCA     /* must be `yes` or `no` */
 @e CCM_KCA         /* a constant compilation method */
 @e TEXT_KCA        /* any text (no quotation marks or other delimiters are used) */
 @e VOCABULARY_KCA  /* any single word */
@@ -200,7 +200,7 @@ additional_property_set *additional_property_set_described = NULL;
 
 typedef struct additional_property_set {
 	struct text_stream *owner_name;
-	struct linked_list *properties; /* of |additional_property| */
+	struct linked_list *properties; /* of `additional_property` */
 	CLASS_DEFINITION
 } additional_property_set;
 

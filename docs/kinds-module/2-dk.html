@@ -75,7 +75,7 @@ are to <a href="2-knd.html#SP1" class="internal">kind</a>| structures.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  For speed, we parse some kind names as single words, and others as common
 nouns, which is slower:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">KIND_SLOW_MC</span> <span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |weight| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">KIND_SLOW_MC</span> <span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>weight</code> */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">KIND_FAST_MC</span> <span class="constant-syntax">0x01000000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* number, text, relation, rule, ... */</span>
 </pre>
@@ -83,12 +83,9 @@ nouns, which is slower:</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The K-grammar actually has two modes: normal, and phrase-token-mode. Normal
 mode is aptly named: it's almost always the one we're using. Phrase token
 mode is used only when parsing definitions of phrases, like so:</p>
-</div>
 <blockquote>
-    <p>To repeat with (LV - nonexisting K variable) running from (V1 - arithmetic value of kind K) to (V2 - K)</p>
+<p>To repeat with (LV - nonexisting K variable) running from (V1 - arithmetic value of kind K) to (V2 - K)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here the tokens &quot;nonexisting K variable&quot; and so on are parsed as
 specifications, but in such a way that any kinds mentioned are parsed in
 phrase-token-mode. The difference is that this enables them to refer to kind
@@ -113,7 +110,7 @@ only be allowed if K already existed.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And the following internal is in fact only &lt;k-kind&gt; but inside phrase
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And the following internal is in fact only <k-kind> but inside phrase
 token parsing mode; it's used when parsing the kind to be decided by a
 phrase (which, like phrase tokens, can involve the variables).</p>
 </div>
@@ -147,7 +144,7 @@ phrase tokens.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  So now we can begin properly. Every valid kind matches &lt;k-kind&gt;:</p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  So now we can begin properly. Every valid kind matches <k-kind>:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -530,7 +527,7 @@ checked for.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dk.html#SP14_1">&#167;14.1</a> (twice).</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Kinds of kind.</b>  This is actually just &lt;k-kind&gt; in disguise, but only lets the result through
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Kinds of kind.</b>  This is actually just <k-kind> in disguise, but only lets the result through
 if it's a kind of kind, like &quot;arithmetic value&quot;; something like &quot;number&quot;
 or &quot;list of texts&quot; will fail.</p>
 </div>

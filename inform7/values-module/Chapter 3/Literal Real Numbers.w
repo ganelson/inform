@@ -112,8 +112,8 @@ compiler by Andrew Plotkin, returns the
 //IEEE-754 single-precision encoding -> http://www.psc.edu/general/software/packages/ieee/ieee.php//
 of a floating-point number.
 
-If the magnitude is too large (beyond about |3.4e+38|), this returns plus or
-minus infinity; if the magnitude is too small (below about |1e-45|), this returns
+If the magnitude is too large (beyond about `3.4e+38`), this returns plus or
+minus infinity; if the magnitude is too small (below about `1e-45`), this returns
 a zero value. If any of the inputs are NaN, this returns NaN.
 
 =
@@ -224,7 +224,7 @@ void LiteralReals::wrong_notation(wording W) {
 	}
 }
 
-@ This upgrades a literal |K_number| to a literal |K_real_number| if necessary,
+@ This upgrades a literal `K_number` to a literal `K_real_number` if necessary,
 as it can be when performing arithmetic. Note that we do this not by running
 an integer-to-real conversion inside Inform, but just by re-parsing it in a
 real context: the result is therefore identical to what would have been parsed

@@ -104,7 +104,7 @@ This value will almost certainly be thrown away, but it seems clearest to make
 it 0 in all cases.
 
 Otherwise, if execution reaches the end of our function, we return the default
-value for its return kind: for example, the empty text for |K_text|.
+value for its return kind: for example, the empty text for `K_text`.
 
 @<Compile a terminal return statement@> =
 	EmitCode::inv(RETURN_BIP);
@@ -134,14 +134,14 @@ typedef struct id_compilation_data {
 
 	/* for inline definitions only: */
 	int inline_mor; /* inline manner of return */
-	int inline_wn; /* word number of inline definition, or |-1| if not inline */
+	int inline_wn; /* word number of inline definition, or `-1` if not inline */
 	struct inter_schema *inline_front_schema; /* inline definition translated to inter, if possible */
 	struct inter_schema *inline_back_schema; /* inline definition translated to inter, if possible */
 	int inter_defn_converted; /* has this been tried yet? */
 
 	/* for non-inline definitions only: */
 	struct package_request *requests_package;
-	struct linked_list *label_namespaces; /* of |label_namespace| */
+	struct linked_list *label_namespaces; /* of `label_namespace` */
 	int compile_with_run_time_debugging; /* in the RULES command */
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
 } id_compilation_data;
@@ -271,7 +271,7 @@ package_request *CompileImperativeDefn::requests_package(id_body *idb) {
 
 @h Preparing the stack frame.
 The stack frame needs to be made ready for compilation. The following
-is called immediately the |body| is created.
+is called immediately the `body` is created.
 
 =
 void CompileImperativeDefn::initialise_stack_frame(id_body *body) {
@@ -284,7 +284,7 @@ void CompileImperativeDefn::initialise_stack_frame(id_body *body) {
 
 @ However, //CompileImperativeDefn::set_up_stack_frame_for_compilation// is also
 called each time the definition is compiled: note that if a definition is being
-instantiated for multiple different kinds, |kind_in_this_compilation| will
+instantiated for multiple different kinds, `kind_in_this_compilation` will
 vary, and will not be the same as the one supplied in
 //CompileImperativeDefn::initialise_stack_frame//.
 

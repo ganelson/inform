@@ -3,7 +3,7 @@
 Special sentences for listing named rules in particular rulebooks.
 
 @ This section covers five forms of request to change the way rules are
-filed in rulebooks; the test group |:placement| exercises these.
+filed in rulebooks; the test group `:placement` exercises these.
 
 First, this handles the special meaning "X is listed in...":
 
@@ -87,11 +87,11 @@ int RulePlacement::substitutes_for_SMF(int task, parse_node *V, wording *NPs) {
 
 @ A sentence in the form:
 
->> The print fancy final score rule substitutes for the print final score rule.
+> The print fancy final score rule substitutes for the print final score rule.
 
 It also exists in a form with a condition attached:
 
->> The print fancy final score rule substitutes for the print final score rule when ...
+> The print fancy final score rule substitutes for the print final score rule when ...
 
 This optional tail is eventually required to match <spec-condition>,
 but that parsing is done later on. For now, we only parse for rules in both the
@@ -131,8 +131,9 @@ void RulePlacement::request_substitute(parse_node *p1, parse_node *p2, parse_nod
 
 @ A sentence in the form:
 
->> The print final score rule does nothing.
->> The print final score rule does nothing unless ....
+> The print final score rule does nothing.
+
+> The print final score rule does nothing unless ....
 
 is parsed similarly. The subject NP is an articled list, each entry of which
 must be a rule, and the optional condition is put aside for later, but must
@@ -232,7 +233,7 @@ void RulePlacement::constrain_effect(parse_node *p1, parse_node *p2, int sense) 
 @ Explicit listing sentences allow the source text to control which rulebook(s)
 a given rule appears in, and (within limits) where. A simple example:
 
->> The can't act in the dark rule is not listed in the visibility rules.
+> The can't act in the dark rule is not listed in the visibility rules.
 
 The subject noun phrase is an articled list, each entry of which must match:
 

@@ -8,11 +8,11 @@ void I6TargetVariables::create_generator(code_generator *gtr) {
 	METHOD_ADD(gtr, EVALUATE_VARIABLE_MTID, I6TargetVariables::evaluate_variable);
 }
 
-@ In an ideal world we would implement all Inter global variables using |Global|,
+@ In an ideal world we would implement all Inter global variables using `Global`,
 thus making them I6 global variables as well. But when I6 compiles to the Z-machine
 VM, there's an absolute limit of 240 globals, so we do not live in an ideal world.
-As a compromise, we make all the kit-declared variables use |Global| (for speed)
-and have all of the rest use entries in an array called |Global_Vars|, at the cost
+As a compromise, we make all the kit-declared variables use `Global` (for speed)
+and have all of the rest use entries in an array called `Global_Vars`, at the cost
 of a lookup whenever we read or write them.
 
 =
@@ -65,7 +65,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	CodeGen::deselect(gen, saved);
 
 @ And the following is called when we want to compile an lvalue or rvalue for
-the variable (lvalue in the case of |as_reference| being set).
+the variable (lvalue in the case of `as_reference` being set).
 
 =
 void I6TargetVariables::evaluate_variable(code_generator *gtr, code_generation *gen,

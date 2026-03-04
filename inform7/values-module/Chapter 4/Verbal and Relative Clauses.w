@@ -9,13 +9,18 @@ English is an SVO language, where the main parts of the sentence occur in the
 order subject, verb, object. The following grammar parses that crucial division,
 and note that it can be used either to form a complete sentence, where there
 is an active verb --
->> now the silver bars are in the Hall of Mists;
+
+> now the silver bars are in the Hall of Mists;
+
 or alternatively to make a more elaborate noun phrase, using a relative clause,
 where there is no active verb:
->> a woman who carries the silver bars;
+
+> a woman who carries the silver bars;
+
 We sometimes also have to deal with English's use of "there" as a meaningless
 placeholder to stand for a missing noun phrase:
->> there is an open door
+
+> there is an open door
 
 =
 <s-sentence> ::=
@@ -81,7 +86,7 @@ parse_node *SPVerb::marker(verb_usage *vu, preposition *prep, parse_node *np) {
 
 @ The following catches the "Y to Z" right-hand term of the universal relation,
 
->> X relates Y to Z
+> X relates Y to Z
 
 where Y and Z must somehow be folded into a single noun phrase. Conceptually it
 would be neatest to represent this as a combination kind, but that might lead
@@ -97,12 +102,12 @@ works.
 syntactically very similar to the case of a sentence. Sometimes the verb is
 explicit, as here:
 
->> a woman who does not carry an animal
+> a woman who does not carry an animal
 
 in which case "who", acting as a marker of the relative clause, is the
 only way this differs from a sentence; but sometimes it is implicit:
 
->> a woman not in the Hall of Mists
+> a woman not in the Hall of Mists
 
 In this case the verb is implicitly the copular verb "to be" and our
 grammar has to differ from the sentence grammar above.
@@ -243,8 +248,8 @@ pre-empting descriptions.)
 	Node::set_text(pn, W);
 
 @h Junction.
-At this point we need to join two subtrees, called |A| and |B|. |A| is the
-subject of the sentence phrase, |B| contains the verb marker and also the
+At this point we need to join two subtrees, called `A` and `B`. `A` is the
+subject of the sentence phrase, `B` contains the verb marker and also the
 object.
 
 =
@@ -300,7 +305,7 @@ parse_node *SPVerb::to_specification_inner(int SV_not_SN, wording W,
 }
 
 @ For instance, "if an open door" can contain a valid condition generating
-an SV-subtree: the implied subject is whatever is being discussed (the I6 |self|
+an SV-subtree: the implied subject is whatever is being discussed (the I6 `self`
 object, in practice) and the implied verb is "is", in the present tense.
 
 @<Reconstruct a bare description as a sentence with an implied absent subject@> =

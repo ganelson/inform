@@ -8,7 +8,7 @@ which use this module:
 
 @d HTML_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function; the
+@ Like all modules, this one must define a `start` and `end` function; the
 following have been thoroughly debugged and only rarely give trouble --
 
 @e DOC_FRAGMENT_MREASON

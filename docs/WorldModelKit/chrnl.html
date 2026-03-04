@@ -212,22 +212,8 @@ like <code>PAPR_41</code>, which returns true or false depending on whether the 
 is going on now. The word array <code>PastActionsI6Routines</code> then contains a
 null-terminated list of these routines.</p>
 </div>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Track Actions.</b> </p>
-
-<blockquote>
-    <p>Instead of taking the top hat less than three times...</p>
-</blockquote>
-
-<blockquote>
-    <p>Every turn jumping for three turns: say "A demon appears!"</p>
-</blockquote>
-
-<blockquote>
-    <p>Check requesting the pronoun meanings for the first time: ...</p>
-</blockquote>
-
 <div class="lsmarkdown">
-<p>The routine <code>TrackActions</code> then updates the two arrays, and is the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Track Actions.</b>  The routine <code>TrackActions</code> then updates the two arrays, and is the
 equivalent for past tense actions of <code>ChronologyPoint</code>. It's called
 twice for each in-world action: <code>TrackActions(false)</code> just as a new
 action is about to begin, and then <code>TrackActions(true)</code> just after it
@@ -282,8 +268,9 @@ of turns in which examining something was the action, because it wasn't the
 main action of the turn.</p>
 <p>A further complication is that we need to record the qualification, or not,
 even of silent actions, because testing rules like</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Instead of taking the top hat less than three times...</p>
+</blockquote>
 <p>works by checking that (a) we are currently taking the top hat, and (b) have
 done so fewer than three times before. (b) uses the turn count described
 above; but (a) cannot simply look to see if that count is positive, since
@@ -292,14 +279,16 @@ count; so we also record a flag to hold whether the action seems to be
 happening in this turn, silent or not.</p>
 <p>And a still further complication is that out-of-world actions should never
 affect counts of turns for in-world actions. Thus,</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Every turn jumping for three turns: say &quot;A demon appears!&quot;</p>
+</blockquote>
 <p>must not have the count to three broken by the player typing SAVE, which
 causes an out-of-world action but doesn't use a turn. The simplest way to
 deal with that would be to make <code>TrackActions</code> do nothing when <code>oow</code>
 is set, but then we would get rules like this wrong:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Check requesting the pronoun meanings for the first time: ...</p>
+</blockquote>
 <p>because it {\it does} make sense for OOW actions to have a count of how
 many times they've happened, even though they don't occur in simulated
 time. An OOW action can cause its own <code>ActionCurrentlyHappeningFlag</code>

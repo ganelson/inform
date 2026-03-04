@@ -99,7 +99,7 @@ vanilla_dword *VanillaIF::text_to_verb_dword(code_generation *gen, text_stream *
 	return dw;
 }
 
-@ And this function then compiles the |#dictionary_table| array, which is
+@ And this function then compiles the `#dictionary_table` array, which is
 really a concatenation of many arrays: a single word holding the length
 and then one mini-array for each dword, presented in alphabetical order.
 
@@ -174,9 +174,9 @@ void VanillaIF::byte_entry(code_generation *gen, int N) {
 }
 
 @h Actions table.
-We also need to make a metadata table called the |#actions_table| which
+We also need to make a metadata table called the `#actions_table` which
 gives, for each (true) action, a function to carry it out. The name of this
-function is always given with a |Sub| suffix: this once stood for subroutine,
+function is always given with a `Sub` suffix: this once stood for subroutine,
 and shows just how far back into the history of Inform 1 this all goes.
 
 (It is the absence of such a function which makes a fake action fake.)
@@ -219,12 +219,12 @@ void VanillaIF::verb_grammar(code_generator *gtr, code_generation *gen,
 	@<Add a record for this grammar to the table@>;
 }
 
-@ So the grammar is currently a list of values at the Inter node |P|. The
+@ So the grammar is currently a list of values at the Inter node `P`. The
 first few terms in the list give the verb command words (TAKE, GET, say);
 then come a series of 1 or more "grammar lines", each of which begins with
-a |VERB_DIRECTIVE_DIVIDER| symbol. A line ends with |VERB_DIRECTIVE_RESULT|
+a `VERB_DIRECTIVE_DIVIDER` symbol. A line ends with `VERB_DIRECTIVE_RESULT`
 followed by a token indicating the action resulting from the line; the
-|VERB_DIRECTIVE_REVERSE| token means that the action should be taken with
+`VERB_DIRECTIVE_REVERSE` token means that the action should be taken with
 its nouns exchanged.
 
 @<Find the resulting actions and reversal states for each grammar line@> =
@@ -291,8 +291,8 @@ its nouns exchanged.
 	}
 
 @ Was the previous token a slash? How about the next? (This is for command grammar
-like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not before,
-|'fowl'| has both, and |'chalk'| before but not after.
+like `'fish' / 'fowl' / 'chalk'`, where `'fish'` has a slash after but not before,
+`'fowl'` has both, and `'chalk'` before but not after.
 
 @<Add the slash before and slash after bits to token_metadata@> =
 	if (i > 0) {
@@ -448,7 +448,7 @@ inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	return NULL;
 }
 
-@ This looks at the opening of the verb grammar to check for the keyword |meta|:
+@ This looks at the opening of the verb grammar to check for the keyword `meta`:
 
 =
 int VanillaIF::is_verb_meta(inter_tree_node *P) {
@@ -465,7 +465,7 @@ int VanillaIF::is_verb_meta(inter_tree_node *P) {
 bytes or words into the growing grammar table. But Vanilla doesn't support
 arrays with a mixture of bytes and words -- its entries should all be of
 the same format. So we will break the words down into a sequence of 4 bytes,
-and have only a |BYTE_ARRAY_FORMAT| array in the end.
+and have only a `BYTE_ARRAY_FORMAT` array in the end.
 
 The above supplied some entries numerically, and others textually, so we
 need four functions in all.
@@ -501,7 +501,7 @@ void VanillaIF::grammar_byte_textual(code_generation *gen, text_stream *NT) {
 
 @ Finally, then, the following outputs the table itself. In fact there need to
 be two tables: first a table of addresses of each command verb's grammar table,
-called |#grammar_table|, and then each of those grammar tables in turn. I don't
+called `#grammar_table`, and then each of those grammar tables in turn. I don't
 think there is any reason they necessarily have to be contiguous in the way
 they are here, but that's what Inform 6 always did, and we're imitating Inform 6.
 

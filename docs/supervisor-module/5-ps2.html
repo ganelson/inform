@@ -69,13 +69,13 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stand_alone</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rather than being in a .inform project bundle */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">materials_nest</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |inbuild_nest| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>inbuild_nest</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">primary_source</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">primary_output</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source_vertices</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |build_vertex| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit_names_to_include</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |JSON_value| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kits_to_include</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |kit_dependency| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source_vertices</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>build_vertex</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit_names_to_include</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>JSON_value</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kits_to_include</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>kit_dependency</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_language_of_play</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language_of_play</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_language_of_syntax</span><span class="plain-syntax">;</span>
@@ -86,8 +86,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">build_vertex</span><span class="plain-syntax"> *</span><span class="identifier-syntax">blorbed_vertex</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">build_vertex</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chosen_build_target</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">extensions_included</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |inform_extension| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">activations</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |element_activation| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">extensions_included</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>inform_extension</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">activations</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>element_activation</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">fix_rng</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compile_for_release</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compile_only</span><span class="plain-syntax">;</span>
@@ -1412,12 +1412,9 @@ source file of the project.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ps2.html#SP38">&#167;38</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP38_1_1" class="paragraph-anchor"></a><b>&#167;38.1.1. </b>  A bibliographic sentence can optionally give a language, by use of &quot;(in ...)&quot;:</p>
-</div>
 <blockquote>
-    <p>"Bonjour Albertine" by Marcel Proust (in French)</p>
+<p>&quot;Bonjour Albertine&quot; by Marcel Proust (in French)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>If so, the following writes <code>&quot;Bonjour Albertine&quot; by Marcel Proust</code> to the
 text <code>bibliographic_sentence</code> and <code>in French</code> to the text <code>bracketed</code>. If not,
 the whole thing goes into <code>bibliographic_sentence</code> and <code>bracketed</code> is empty.</p>
@@ -1470,18 +1467,14 @@ the whole thing goes into <code>bibliographic_sentence</code> and <code>brackete
 <ul class="endnotetexts"><li>This code is used in <a href="5-ps2.html#SP38_1">&#167;38.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP38_1_2" class="paragraph-anchor"></a><b>&#167;38.1.2. </b>  The author is sometimes given outside of quotation marks:</p>
-</div>
 <blockquote>
-    <p>"The Large Scale Structure of Space-Time" by Lindsay Lohan</p>
+<p>&quot;The Large Scale Structure of Space-Time&quot; by Lindsay Lohan</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>But not always:</p>
-</div>
 <blockquote>
-    <p>"Greek Rural Postmen and Their Cancellation Numbers" by "will.i.am"</p>
+<p>&quot;Greek Rural Postmen and Their Cancellation Numbers&quot; by &quot;will.i.am&quot;</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The opening sentence is bibliographic, so scan it</span><span class="named-paragraph-number">38.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">

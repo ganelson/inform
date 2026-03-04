@@ -83,14 +83,12 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	DISCARD_TEXT(content)
 
 @ Inter supports four sorts of arrays, with behaviour as laid out in this 2x2 grid:
-= (text)
+
 			 | entries count 0, 1, 2,...	 | entry 0 is N, then entries count 1, 2, ..., N
--------------+-------------------------------+-----------------------------------------------
-byte entries | BYTE_ARRAY_FORMAT             | BUFFER_ARRAY_FORMAT
--------------+-------------------------------+-----------------------------------------------
-word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
--------------+-------------------------------+-----------------------------------------------
-=
+------------ | ----------------------------- | ----------------------------------------------
+byte entries | `BYTE_ARRAY_FORMAT`           | `BUFFER_ARRAY_FORMAT`
+word entries | `WORD_ARRAY_FORMAT`           | `TABLE_ARRAY_FORMAT`
+
 Note that if an array assimilated from a kit has exactly one purported entry, then
 in fact this should be interpreted as being that many blank entries. This number
 must however be carefully evaluated, as it may be another constant name rather
@@ -150,8 +148,8 @@ make use of the following convenient function for generating the value to which 
 constant name is given.
 
 Note that this assumes that the usual arithmetic operators and brackets can be
-used in the syntax for literal quantities: e.g., it may produce |(A + (3 * B))|
-for constants |A|, |B|. If the generator is for a language which doesn't allow
+used in the syntax for literal quantities: e.g., it may produce `(A + (3 * B))`
+for constants `A`, `B`. If the generator is for a language which doesn't allow
 that, it will have to make other arrangements.
 
 =
@@ -249,8 +247,8 @@ void VanillaConstants::declare_text_literals(code_generation *gen) {
 	}
 }
 
-@ Note that |Str::cmp| is a case-sensitive comparison, so |Zebra| will come
-before |armadillo|, for example, |Z| being before |a| in Unicode.
+@ Note that `Str::cmp` is a case-sensitive comparison, so `Zebra` will come
+before `armadillo`, for example, `Z` being before `a` in Unicode.
 
 =
 int VanillaConstants::compare_tlh(const void *elem1, const void *elem2) {
@@ -332,8 +330,8 @@ int VanillaConstants::character_digit_value(inchar32_t c) {
 	return 10;
 }
 
-@ And this returns 10 raised to the power |expo|, which is an integer. Andrew
-Plotkin refers to this as "cheap" because it avoids the C library |pow10|,
+@ And this returns 10 raised to the power `expo`, which is an integer. Andrew
+Plotkin refers to this as "cheap" because it avoids the C library `pow10`,
 which is awkward on some platforms.
 
 =

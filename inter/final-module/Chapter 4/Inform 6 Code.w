@@ -22,7 +22,7 @@ character can still be seen in the way functions are declared:
 	...
 ];
 =
-Here |local1|, |local2|, ..., |localn| are all of the local variables accessible
+Here `local1`, `local2`, ..., `localn` are all of the local variables accessible
 from the function; the earliest will be used as call parameters, all subsequent
 ones being initially zero.
 
@@ -62,8 +62,8 @@ specific features of the Z or Glulx virtual machines which do not meaningfully
 exist in any wider cross-platform way. Although this could all be done by having
 a slightly more elaborate linker and then including the code below in kits
 (as was indeed done during 2020), it's really better that the Inter tree not
-have to refer to eldritch Z-only symbols like |#largest_object| or Glulx-only
-symbols like |#g$self|.
+have to refer to eldritch Z-only symbols like `#largest_object` or Glulx-only
+symbols like `#g$self`.
 
 @<Inject code at the top of Main@> =
 	WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
@@ -121,7 +121,7 @@ be done except for a slight slowdown.
 At the suggestion of Adrian Welcker, the code below uses the new accelerated
 function numbers 8 to 13 in place of the previously valid 2 to 7, which are new
 in Glulx 3.1.3. This is a trade-off: it means they behave correctly if the
-Inform 6 constant |NUM_ATTR_BYTES| is altered -- in effect, it's getting around
+Inform 6 constant `NUM_ATTR_BYTES` is altered -- in effect, it's getting around
 a bug in the previous Glulx spec -- but on the other hand, these accelerated
 functions do not exist in earlier Glulx implementations. However, takeup of
 3.1.3 has been swift. (See Jira bug I7-2328 and I7-1162.)
@@ -153,7 +153,7 @@ functions do not exist in earlier Glulx implementations. However, takeup of
 	WRITE("rfalse;\n");
 
 @h Labels.
-Labels in Inform 6 are |jump| destinations, much as in C they are |goto| destinations.
+Labels in Inform 6 are `jump` destinations, much as in C they are `goto` destinations.
 A full stop indicates where they are positioned:
 = (text as Inform 6)
 	if (whatever) jump Catastrophe;
@@ -227,11 +227,11 @@ tree results from kit material; and if the author of such a kit tries to use an
 invalid opcode, then the result won't compile under I6, but none of that is our
 business here.
 
-The |@aread| opcode is a valid Z-machine opcode, but owing to the way I6 handles
+The `@aread` opcode is a valid Z-machine opcode, but owing to the way I6 handles
 the irreconcilable change in syntax for the same opcode in V3 and V4-5 of the
-Z-machine specification, there is no good way to assemble it using |@| notation
+Z-machine specification, there is no good way to assemble it using `@` notation
 unless we want to save the result. (See the Z-Machine Standards Document.)
-As a dodge, we use the Inform 6 statement |read X Y| instead.
+As a dodge, we use the Inform 6 statement `read X Y` instead.
 
 =
 void I6TargetCode::invoke_opcode(code_generator *gtr, code_generation *gen,
@@ -299,9 +299,9 @@ void I6TargetCode::invoke_primitive(code_generator *gtr, code_generation *gen,
 @ Mostly easy, because the Inter primitives here were so closely modelled on
 their Inform 6 analogues in the first place.
 
-For example, although |!alternative| is a very unusual linguistic feature --
-it allows alternatives in several conditions, e.g., |if (x == 1 or 2 or 3) ...| --
-it corresponds directly to the |or| keyword of Inform 6, so generating it is trivial.
+For example, although `!alternative` is a very unusual linguistic feature --
+it allows alternatives in several conditions, e.g., `if (x == 1 or 2 or 3) ...` --
+it corresponds directly to the `or` keyword of Inform 6, so generating it is trivial.
 
 @<Basic arithmetic and logical operations@> =
 	case PLUS_BIP:			WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
@@ -333,10 +333,10 @@ it corresponds directly to the |or| keyword of Inform 6, so generating it is tri
 	case RANDOM_BIP:        WRITE("random("); VNODE_1C; WRITE(")"); break;
 
 @ In general, Inform 6 is able to constant-fold, that is, to evaluate expressions
-between constants at compile time: for example, |5+6| will be compiled as |11|,
-not as code to add |5| to |6|. But in just a few contexts, notably as case values
-in |switch| statements, constants won't fold. This in particular affects unary
-minus, so that |(-(23))| is not syntactically valid as a switch case. So we
+between constants at compile time: for example, `5+6` will be compiled as `11`,
+not as code to add `5` to `6`. But in just a few contexts, notably as case values
+in `switch` statements, constants won't fold. This in particular affects unary
+minus, so that `(-(23))` is not syntactically valid as a switch case. So we
 omit the brackets for applications of unary minus which are simple enough to
 do so. (See Jira bug I7-2304.)
 
@@ -347,18 +347,18 @@ do so. (See Jira bug I7-2304.)
 		WRITE("(-("); VNODE_1C; WRITE("))");
 	}
 
-@ But the unfortunate |!ternarysequential a b c| needs some gymnastics. It
-would be trivial to generate to C with the serial comma operator: |(a, b, c)|
-evaluates |a|, then throws that away and evaluates |b|, then throws that away
-too and returns the value of |c|.
+@ But the unfortunate `!ternarysequential a b c` needs some gymnastics. It
+would be trivial to generate to C with the serial comma operator: `(a, b, c)`
+evaluates `a`, then throws that away and evaluates `b`, then throws that away
+too and returns the value of `c`.
 
 The same effect is annoyingly difficult to get out of the sometimes shaky I6
 compiler's expression parser. I6 does support the comma operator, so at first
-sight |(a, b, c)| ought to work in I6, too. And it does, right up to the point
+sight `(a, b, c)` ought to work in I6, too. And it does, right up to the point
 where some of the token values themselves include invocations of functions. It
 is a known infelicity of the I6 syntax analyser that it won't always allow the
 serial comma to be mixed in the same expression with the function argument
-comma: for example in the case |(a(b, c), d)|, where the first comma constructs
+comma: for example in the case `(a(b, c), d)`, where the first comma constructs
 a list of arguments and the second is the operator. (Many such expressions work
 fine in I6 -- but not all.)
 
@@ -412,13 +412,13 @@ for example, be a global variable, or a memory location.
 
 @ The easy case first: here, whatever the storage is (for example, a variable),
 it's one that we can simply treat as an lvalue in Inform 6 (for example, by giving
-its variable name). For example, the memory location |A-->3| can be assigned to,
-or can have |++| or |--| applied to it in I6.
+its variable name). For example, the memory location `A-->3` can be assigned to,
+or can have `++` or `--` applied to it in I6.
 
-Note that this case even includes some property values: if we can see that |P|
+Note that this case even includes some property values: if we can see that `P`
 is the explicit name of a property we are storing in a VM-property, then we can
-use |O.P| as an Inform 6 lvalue, and all is well, and we then end up with code
-such as |++(O.P)|.
+use `O.P` as an Inform 6 lvalue, and all is well, and we then end up with code
+such as `++(O.P)`.
 
 @<Alter some other storage@> =
 	switch (bip) {
@@ -433,15 +433,15 @@ such as |++(O.P)|.
 
 @ But not all property values can be written as Inform 6 lvalues. If the I7
 property P is being stored as a VM-attribute A, then there is no lvalue which
-expresses the value of A for an object O: instead one must use |give O A| to
-set it, |give O ~A| to unset it, and |(O has A)| to test it. And there will
+expresses the value of A for an object O: instead one must use `give O A` to
+set it, `give O ~A` to unset it, and `(O has A)` to test it. And there will
 also be cases where P cannot be identified at compile-time, so that we have no
 way to know whether it will be stored as a VM-attribute or not.
 
 To handle these two cases, then, we will compile an attempt to store or modify
-a property value either as a |give| statement -- if we can prove P is being
+a property value either as a `give` statement -- if we can prove P is being
 stored in a VM-attribute -- or else as a function call to a general-purpose
-function called |_final_change_property|.
+function called `_final_change_property`.
 
 @<Alter a property value@> =
 	inter_tree_node *VP = InterTree::second_child(P);
@@ -488,7 +488,7 @@ function called |_final_change_property|.
 
 @ Reading property values is easier. The general case, similarly, is to call a
 function for this, but an important optimisation collapses this to the use of
-the |has| or |.| operators in I6 where we can prove at compile-time that the
+the `has` or `.` operators in I6 where we can prove at compile-time that the
 property in question is stored as a VM-attribute (resp., a VM-property) of
 what is definitely a VM-object. This optimisation results in faster code.
 
@@ -522,9 +522,9 @@ what is definitely a VM-object. This optimisation results in faster code.
 		break;
 	}
 
-@ In the most general case of |!propertyvalue|, we will end up calling the function
-|_final_propertyvalue|. But we don't do so right away because, annoyingly, |!propertyvalue|
-can have |!alternative| children supplied. We might find this, for example:
+@ In the most general case of `!propertyvalue`, we will end up calling the function
+`_final_propertyvalue`. But we don't do so right away because, annoyingly, `!propertyvalue`
+can have `!alternative` children supplied. We might find this, for example:
 = (text as Inter)
 inv !if
 	inv !propertyvalue
@@ -533,14 +533,14 @@ inv !if
 		    val K_value P_sonorous
 		    val K_value P_muted
 =
-...arising from kit code such as |if (harmonium has sonorous or muted) ...|.
+...arising from kit code such as `if (harmonium has sonorous or muted) ...`.
 This only seldom arises, so perhaps we can be given for handling it less than
 optimally in all cases. We turn it into:
 = (text as Inform 6)
 	if (((or_tmp_var = harmonium) && (or_tmp_var has sonorous)) ||
 		(or_tmp_var has muted))
 =
-Note that |or_tmp_var| is used here so that the left operand, i.e., the object,
+Note that `or_tmp_var` is used here so that the left operand, i.e., the object,
 is evaluated only once -- in case there are side-effects of the evaluation.
 
 =
@@ -702,7 +702,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 @ In Inform 6, as in C, a function which returns a value can be called in a void
 context (in which case its return value is thrown away); the syntax for calling
 a void function is identical to that for calling a value-returning function, so
-we can treat |INDIRECT0V_BIP| as the same as |INDIRECT0_BIP|, and so on.
+we can treat `INDIRECT0V_BIP` as the same as `INDIRECT0_BIP`, and so on.
 
 @<Indirect function calls@> =
 	case INDIRECT0_BIP: case INDIRECT0V_BIP:
@@ -739,7 +739,7 @@ to send a message to a property stored in an attribute, or something like that.
 							VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE(")"); break;
 
 @ Note that the only styles permitted are those from the original Z-machine, which
-is about the level of technology of a 1970s teletype. The |!style| number must be
+is about the level of technology of a 1970s teletype. The `!style` number must be
 a constant 1, 2 or 3, or else plain roman is all you get.
 
 @<Textual output@> =
@@ -793,7 +793,7 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 	case METACLASS_BIP:     WRITE("metaclass("); VNODE_1C; WRITE(")"); break;
 
 @h Support code for property accesses.
-In the following, |prop_node| is a |VAL_IST| identifying the property being
+In the following, `prop_node` is a `VAL_IST` identifying the property being
 accessed: we return the "inner name" as text, if we can find one. This will only
 happen if the node evaluates to a named symbol which is the name of a property.
 See //Vanilla Objects// for more on inner names. 
@@ -815,16 +815,16 @@ text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *pro
 	}
 }
 
-@ |I6TargetCode::pval_case| applies to a |!propertyvalue| invocation node. That
+@ `I6TargetCode::pval_case` applies to a `!propertyvalue` invocation node. That
 has three children: the kind, the object/owner, and the property itself. We
 look at the node and try to see if it's one of the two easy cases which enable
 more efficient code to be compiled (see above): in fact, it almost always is.
 
-- We return |I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE| if the kind is definitely |OBJECT_TY|
+- We return `I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE` if the kind is definitely `OBJECT_TY`
 and the property is stored in a VM-attribute;
-- Or |I6G_CAN_PROVE_IS_OBJ_PROPERTY| if the kind is definitely |OBJECT_TY|
+- Or `I6G_CAN_PROVE_IS_OBJ_PROPERTY` if the kind is definitely `OBJECT_TY`
 and the property is stored in a VM-property;
-- Or |I6G_CANNOT_PROVE| if we don't know.
+- Or `I6G_CANNOT_PROVE` if we don't know.
 
 @d I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE 1
 @d I6G_CAN_PROVE_IS_PERHAPS_UNPOSSESSED_PROPERTY 2
@@ -867,15 +867,15 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 
 @h The final functions.
 The generator above compiled calls to a handful of functions with names in the
-form |_final_*|; so these functions must clearly be supplied. It might seem that
+form `_final_*`; so these functions must clearly be supplied. It might seem that
 they ought to be included in, say, BasicInformKit and not here. But:
 
 - They are needed only for Inform 6 usage, whereas BasicInformKit contains
 material used whatever the final code-generator;
 - They are written in genuine Inform 6 code, not kit code, which looks like
-I6 and is very similar to it but is not quite the same. In kit code, |O.P| means
-"the value of the property P for the object O", but where |P| is the metadata
-array for the property. In genuine Inform 6, |O.P| expects |P| to be the actual
+I6 and is very similar to it but is not quite the same. In kit code, `O.P` means
+"the value of the property P for the object O", but where `P` is the metadata
+array for the property. In genuine Inform 6, `O.P` expects `P` to be the actual
 VM-property. The following functions need the latter interpretation in order to work.
 
 =
@@ -892,9 +892,9 @@ void I6TargetCode::end_generation(code_generator *gtr, code_generation *gen) {
 }
 
 @ See //Inform 6 Objects// for the runtime contents of the array of property
-metadata |p|. The following is more or less a safe general-purpose wrapper for
-the Inform 6 operator |.|, used as an rvalue, in cases where we cannot prove
-it would be safe to use |.| directly:
+metadata `p`. The following is more or less a safe general-purpose wrapper for
+the Inform 6 operator `.`, used as an rvalue, in cases where we cannot prove
+it would be safe to use `.` directly:
 
 @<Most general implementation of !propertyvalue@> =
 	WRITE("#ifdef BASICINFORMKIT;\n");
@@ -913,7 +913,7 @@ it would be safe to use |.| directly:
 	WRITE("];\n");
 	WRITE("#endif;\n");
 
-@ Similarly, this is a safe wrapper for |provides|:
+@ Similarly, this is a safe wrapper for `provides`:
 
 @<Most general implementation of !propertyexists@> =
 	WRITE("#ifdef BASICINFORMKIT;\n");
@@ -943,7 +943,7 @@ it would be safe to use |.| directly:
 	WRITE("rfalse; ];\n");
 	WRITE("#endif;\n");
 
-@ And this for |.&|. Note that we always return 0 if the owner is not an object.
+@ And this for `.&`. Note that we always return 0 if the owner is not an object.
 
 @<Most general implementation of !propertyarray@> =
 	WRITE("#ifdef BASICINFORMKIT;\n");
@@ -955,7 +955,7 @@ it would be safe to use |.| directly:
 	WRITE("];\n");
 	WRITE("#endif;\n");
 
-@ And this for |.#|. Again, we always return 0 if the owner is not an object.
+@ And this for `.#`. Again, we always return 0 if the owner is not an object.
 
 @<Most general implementation of !propertylength@> =
 	WRITE("#ifdef BASICINFORMKIT;\n");
@@ -967,7 +967,7 @@ it would be safe to use |.| directly:
 	WRITE("];\n");
 	WRITE("#endif;\n");
 
-@ And this is a safe way to write to or otherwise alter |O.P|, laboriously
+@ And this is a safe way to write to or otherwise alter `O.P`, laboriously
 written out as seven functions. (Speed is more important than conciseness here.)
 
 @<Most general implementation of writing to a property@> =

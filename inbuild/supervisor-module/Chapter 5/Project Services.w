@@ -10,13 +10,13 @@ typedef struct inform_project {
 	struct inbuild_copy *as_copy;
 	int stand_alone; /* rather than being in a .inform project bundle */
 	struct inbuild_nest *materials_nest;
-	struct linked_list *search_list; /* of |inbuild_nest| */
+	struct linked_list *search_list; /* of `inbuild_nest` */
 	struct filename *primary_source;
 	struct filename *primary_output;
 	struct semantic_version_number version;
-	struct linked_list *source_vertices; /* of |build_vertex| */
-	struct linked_list *kit_names_to_include; /* of |JSON_value| */
-	struct linked_list *kits_to_include; /* of |kit_dependency| */
+	struct linked_list *source_vertices; /* of `build_vertex` */
+	struct linked_list *kit_names_to_include; /* of `JSON_value` */
+	struct linked_list *kits_to_include; /* of `kit_dependency` */
 	struct text_stream *name_of_language_of_play;
 	struct inform_language *language_of_play;
 	struct text_stream *name_of_language_of_syntax;
@@ -27,15 +27,15 @@ typedef struct inform_project {
 	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
 	struct parse_node_tree *syntax_tree;
-	struct linked_list *extensions_included; /* of |inform_extension| */
-	struct linked_list *activations; /* of |element_activation| */
+	struct linked_list *extensions_included; /* of `inform_extension` */
+	struct linked_list *activations; /* of `element_activation` */
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
 	CLASS_DEFINITION
 } inform_project;
 
-@ This is called as soon as a new copy |C| of the language genre is created.
+@ This is called as soon as a new copy `C` of the language genre is created.
 It doesn't actually do any scanning to speak of, in fact: we may eventually
 learn a lot about the project, but for now we simply initialise to bland
 placeholders.
@@ -179,7 +179,7 @@ void Projects::activation(inform_project *proj, text_stream *name, int act) {
 }
 
 @ The materials folder sits alongside the project and has the same name,
-but ending |.materials| instead of |.inform|.
+but ending `.materials` instead of `.inform`.
 
 =
 pathname *Projects::materialise_pathname(pathname *in, text_stream *leaf) {
@@ -224,9 +224,9 @@ void Projects::update_metadata(inform_project *proj, int write_legal,
 	}
 }
 
-@ Returns |TRUE| for a project arising from a single file, |FALSE| for a
-project in a |.inform| bundle. (Withing the UI apps, then, all projects return
-|FALSE| here; it's only command-line use of Inform which involves stand-alone files.)
+@ Returns `TRUE` for a project arising from a single file, `FALSE` for a
+project in a `.inform` bundle. (Withing the UI apps, then, all projects return
+`FALSE` here; it's only command-line use of Inform which involves stand-alone files.)
 
 =
 int Projects::stand_alone(inform_project *proj) {
@@ -337,7 +337,7 @@ filename *Projects::get_primary_source(inform_project *proj) {
 
 @ The following constructs the list of "source vertices" -- vertices in the
 build graph representing the source files -- on demand. The reason this isn't
-done automatically when the |proj| is created is that we needed to give time
+done automatically when the `proj` is created is that we needed to give time
 for someone to call //Projects::set_primary_source//, since that will affect
 the outcome.
 
@@ -359,7 +359,7 @@ linked_list *Projects::source(inform_project *proj) {
 	}
 
 @ If a bundle is found, then by default the source text within it is called
-|story.ni|. The |.ni| is an anachronism now, but at one time stood for
+`story.ni`. The `.ni` is an anachronism now, but at one time stood for
 "natural Inform", the working title for Inform 7 in the early 2000s.
 
 @<Fall back on the traditional choice@> =
@@ -373,7 +373,7 @@ linked_list *Projects::source(inform_project *proj) {
 	ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
 
 @ Further source files may become apparent when headings are read in the
-source text we already have, and which refer to specific files in the |Source|
+source text we already have, and which refer to specific files in the `Source`
 subdirectory of the materials directory; so those are added here. (This happens
 safely before the full graph for the project is made, so they do appear in
 that dependency graph.)
@@ -650,7 +650,7 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL, NULL);
 	}
 
-@ We perform this first with |parity| being |TRUE|, then |FALSE|.
+@ We perform this first with `parity` being `TRUE`, then `FALSE`.
 
 @<Perform if-this-then-that@> =
 	int changes_made = TRUE;
@@ -760,7 +760,7 @@ void Projects::activate_extension_elements(inform_project *project) {
 }
 
 @ And so is the question of whether the compiler is expected to compile a
-|Main| function, or whether one has already been included in one of the kits.
+`Main` function, or whether one has already been included in one of the kits.
 
 =
 int Projects::Main_defined(inform_project *project) {
@@ -903,7 +903,7 @@ void Projects::construct_graph(inform_project *proj) {
 }
 
 @ So the structure here is a simple chain of dependencies, but note that
-they are upstream of the project's vertex |V|, not downstream:
+they are upstream of the project's vertex `V`, not downstream:
 = (text)
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
 	            inblorb        inform6     inter (in inform7)  inform7
@@ -913,12 +913,12 @@ to the arrows: that is, these are built from right to left. For example,
 the story file is made before the blorb package is made. The make algorithm
 builds this list in a depth-first way, rapidly running downstream as it
 discovers things it must do, then slowly clawing back upstream, actually
-performing those tasks. In the diagram, below each arrow from |A --> B| is
-the tool needed to make |A| from |B|.
+performing those tasks. In the diagram, below each arrow from `A --> B` is
+the tool needed to make `A` from `B`.
 
-So where should it start? Not at |V|, the vertex representing the project
+So where should it start? Not at `V`, the vertex representing the project
 itself, but somewhere upstream. The code below looks at the project's
-compilation settings and sets |proj->chosen_build_target| to this start
+compilation settings and sets `proj->chosen_build_target` to this start
 position. In a simple //inform7// usage, we'll have:
 = (text)
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
@@ -990,7 +990,7 @@ for a release of a blorbed one.
 		inf_V->always_build_this = TRUE;
 	}
 
-@ The graph also extends downstream of |V|, representing the things we will
+@ The graph also extends downstream of `V`, representing the things we will
 need before we can run //inform7// on the project: and this is not a linear
 run of arrows at all, but fans considerably outwards -- to its languages,
 kits and extensions, and then to their dependencies in turn.
@@ -1023,7 +1023,7 @@ the project: that's because //Copies::get_source_text// has already done so.
 	if (L) Projects::graph_dependent_language(proj, V, L, FALSE);
 
 @ The point of these two functions is that if A uses B which uses C then we
-want the dependencies |A -> B -> C| rather than |A -> B| together with |A -> C|.
+want the dependencies `A -> B -> C` rather than `A -> B` together with `A -> C`.
 
 =
 void Projects::graph_dependent_kit(inform_project *proj,
@@ -1132,7 +1132,7 @@ void Projects::read_source_text_for(inform_project *proj) {
 @ Under the "Implied inclusions" heading come sentences to include the
 extensions required by kits but not explicitly asked for in source text,
 like Basic Inform or Standard Rules; and also any sentences in the
-|Options.txt| file, if the user has one.
+`Options.txt` file, if the user has one.
 
 @<First an implied super-heading for implied inclusions and the Options@> =
 	inclusions_heading = Node::new(HEADING_NT);
@@ -1253,11 +1253,11 @@ void Projects::scan_bibliographic_data(inform_project *proj) {
 
 @ A bibliographic sentence can optionally give a language, by use of "(in ...)":
 
->> "Bonjour Albertine" by Marcel Proust (in French)
+> "Bonjour Albertine" by Marcel Proust (in French)
 
-If so, the following writes |"Bonjour Albertine" by Marcel Proust| to the
-text |bibliographic_sentence| and |in French| to the text |bracketed|. If not,
-the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
+If so, the following writes `"Bonjour Albertine" by Marcel Proust` to the
+text `bibliographic_sentence` and `in French` to the text `bracketed`. If not,
+the whole thing goes into `bibliographic_sentence` and `bracketed` is empty.
 
 @<Capture the opening sentence and its bracketed part@> =
 	inchar32_t c;
@@ -1304,11 +1304,11 @@ the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
 
 @ The author is sometimes given outside of quotation marks:
 
->> "The Large Scale Structure of Space-Time" by Lindsay Lohan
+> "The Large Scale Structure of Space-Time" by Lindsay Lohan
 
 But not always:
 
->> "Greek Rural Postmen and Their Cancellation Numbers" by "will.i.am"
+> "Greek Rural Postmen and Their Cancellation Numbers" by "will.i.am"
 
 @<The opening sentence is bibliographic, so scan it@> =
 	match_results mr = Regexp::create_mr();

@@ -111,7 +111,7 @@ the (imaginary) computer doing that.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">my_vars</span><span class="plain-syntax">[10]; </span><span class="comment-syntax">/* the "my" variables 0 to 9 */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">my_vars</span><span class="plain-syntax">[10]; </span><span class="comment-syntax">/* the &quot;my&quot; variables 0 to 9 */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">csi_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure csi_state is accessed in 3/cb and here.</li></ul>
@@ -285,7 +285,7 @@ but roughly speaking each is either a command or a &quot;bracing&quot;.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CSIInline::from_schema_token</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CSIInline::from_schema_token</span></span>:<br/><a href="5-cii.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ist</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSIS_s</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">prim_cat</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg_L</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">csi_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSIS</span><span class="plain-syntax"> = (</span><span class="type-syntax">csi_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">CSIS_s</span><span class="plain-syntax">; </span><span class="comment-syntax">/* recover the "opaque state" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">csi_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSIS</span><span class="plain-syntax"> = (</span><span class="type-syntax">csi_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">CSIS_s</span><span class="plain-syntax">; </span><span class="comment-syntax">/* recover the &quot;opaque state&quot; */</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CSIS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">idb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CSIS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inv</span><span class="plain-syntax">;</span>
@@ -1413,23 +1413,17 @@ or when a block value is needed, or where we need to match against descriptions
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_5_2" class="paragraph-anchor"></a><b>&#167;6.5.2. </b>  Variables created by phrases are by default protected from being changed
 by other phrases. So that, for example, within:</p>
-</div>
 <blockquote>
-    <p>repeat with X running from 1 to 5:</p>
+<p>repeat with X running from 1 to 5:</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>it's a problem message to say something like &quot;let X be 7&quot;. This protection
 only extends to changes made at the I7 source text level, of course; our own
 I6 code can do anything it likes. Protection looks like a good idea,
 especially for loop counters like X, but of course it would make phrases
 like:</p>
-</div>
 <blockquote>
-    <p>let Y be 2;</p>
+<p>let Y be 2;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>unable to make variables, only constants. So the <code>{-unprotect:...}</code> command
 lifts the protection on the variable named:</p>
 </div>

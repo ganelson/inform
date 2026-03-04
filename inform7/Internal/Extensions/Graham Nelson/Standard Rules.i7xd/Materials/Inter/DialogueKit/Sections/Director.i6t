@@ -20,7 +20,7 @@ Global line_performance_count = 0;
 ];
 
 @h The live subject list.
-This is stored as a null-terminated array, capped at |DIALOGUE_MAX_LIVE_SUBJECTS|
+This is stored as a null-terminated array, capped at `DIALOGUE_MAX_LIVE_SUBJECTS`
 items.
 
 =
@@ -80,11 +80,11 @@ virtue of Inform lists, that is, their flexible size.
 ];
 
 @h Dialogue intervening.
-|DirectorIntervenes(subj, speaker)| tries to find a beat of dialogue we can perform
-which is relevant to the subject |subj|, and returns |true| if it did in fact
-perform something, or |false| if not (in which case it printed nothing).
-If |speaker| is not |nothing|, then prefer beats in which that person is the
-first to speak. (Note that |speaker| will often be the player.)
+`DirectorIntervenes(subj, speaker)` tries to find a beat of dialogue we can perform
+which is relevant to the subject `subj`, and returns `true` if it did in fact
+perform something, or `false` if not (in which case it printed nothing).
+If `speaker` is not `nothing`, then prefer beats in which that person is the
+first to speak. (Note that `speaker` will often be the player.)
 
 =
 [ DirectorIntervenes obj speaker fn db;

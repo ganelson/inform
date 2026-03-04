@@ -68,7 +68,7 @@ void TargetVMs::create(void) {
 
 @ The //target_vm// structure contains two arguably architectural doohickies:
 potential limits on the use of floating-point arithmetic or on local variables.
-These are indeed currently derived only from the choice of |architecture|, but
+These are indeed currently derived only from the choice of `architecture`, but
 we're keeping them here in case there is some day a need for a 32-bit format
 with integer-only arithmetic, say.
 
@@ -76,8 +76,8 @@ with integer-only arithmetic, say.
 typedef struct target_vm {
 	struct inter_architecture *architecture; /* such as 32d */
 	struct semantic_version_number version; /* such as 0.8.7 */
-	struct text_stream *transpiled_extension; /* such as |i6| */
-	struct text_stream *VM_unblorbed_extension; /* such as |z8| */
+	struct text_stream *transpiled_extension; /* such as `i6` */
+	struct text_stream *VM_unblorbed_extension; /* such as `z8` */
 	struct text_stream *VM_blorbed_extension; /* when blorbed up */
 	struct text_stream *VM_image; /* filename of image for icon used in the index */
 	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
@@ -86,7 +86,7 @@ typedef struct target_vm {
 	struct text_stream *full_format; /* e.g., "Inform6/32d/v3.1.2" */
 	int supports_floating_point;
 	int max_locals; /* upper limit on local variables per stack frame */
-	struct linked_list *format_options; /* of |text_stream| */
+	struct linked_list *format_options; /* of `text_stream` */
 	CLASS_DEFINITION
 } target_vm;
 
@@ -138,10 +138,10 @@ target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
 
 @ Plumbing is included here to add "options" to a VM's textual description. The
 idea is that these allow for the user to specify additional and VM-specific
-command-line options (using |-format|) which are then picked up by //final//.
-Thus, a request for |-format=C/32d/no-halt/stack=240| would cause a new variant of
-|C/32d| to be created which would have the (purely hypothetical) list of
-options |I"no-halt", I"stack=240"|. It is then up to the C final code generator
+command-line options (using `-format`) which are then picked up by //final//.
+Thus, a request for `-format=C/32d/no-halt/stack=240` would cause a new variant of
+`C/32d` to be created which would have the (purely hypothetical) list of
+options `I"no-halt", I"stack=240"`. It is then up to the C final code generator
 to understand what these mean, if indeed they mean anything.
 
 =
@@ -166,14 +166,14 @@ text_stream *TargetVMs::get_full_format_text(target_vm *VM) {
 }
 
 @ And now for reading. The following is used by //inbuild// when reading the
-command-line option |-format=T|: the text |T| is supplied as a parameter here.
+command-line option `-format=T`: the text `T` is supplied as a parameter here.
 
-Note however that it actually calls //TargetVMs::find_with_hint//. The |debug|
+Note however that it actually calls //TargetVMs::find_with_hint//. The `debug`
 hint, if set, says to make the architecture have debugging enabled or not according
-to this hint: thus |"C"| plus the hint |FALSE| will return the VM |C/32|, while
-|"C"| plus the hint |TRUE| will return the VM |C/32d|. The hint |NOT_APPLICABLE|
+to this hint: thus `"C"` plus the hint `FALSE` will return the VM `C/32`, while
+`"C"` plus the hint `TRUE` will return the VM `C/32d`. The hint `NOT_APPLICABLE`
 is ignored; and the hint is also ignored if the supplied text already definitely
-specifies debugging. Thus |"C/32d"| plus hint |FALSE| will return |C/32d|.
+specifies debugging. Thus `"C/32d"` plus hint `FALSE` will return `C/32d`.
 
 =
 target_vm *TargetVMs::find(text_stream *format) {
@@ -210,8 +210,8 @@ target_vm *TargetVMs::find_with_hint(text_stream *format, int debug) {
 	DISCARD_TEXT(criterion)
 
 @ The first criterion is the only compulsory one, and must be something like
-|Inform6| or |C|. After that, any criterion in the form of an architecture code,
-like |32d|, is interpreted as such; and any criterion opening with |v| plus a
+`Inform6` or `C`. After that, any criterion in the form of an architecture code,
+like `32d`, is interpreted as such; and any criterion opening with `v` plus a
 digit is read as a semantic version number. If any criteria are left after all
 that, they are considered options (see above).
 
@@ -243,9 +243,9 @@ that, they are considered options (see above).
 			result = VM;
 	if (result) return result;
 
-@ If we're given, say, |C/32d/no-pointer-nonsense| and we can't find that exact
-thing, but can find |C/32d|, then we construct a variant of it which does have
-the option |no-pointer-nonsense| and return that.
+@ If we're given, say, `C/32d/no-pointer-nonsense` and we can't find that exact
+thing, but can find `C/32d`, then we construct a variant of it which does have
+the option `no-pointer-nonsense` and return that.
 
 @<Try to find a VM which would be a match except for the options@> =
 	target_vm *result = NULL;
@@ -262,8 +262,8 @@ the option |no-pointer-nonsense| and return that.
 
 So next we try to deduce a VM from the given filename extension, which is the
 clumsy way that VMs used to be referred to on the //inform7// command line. For
-example, |-format=ulx| produces |Inform6/32| or |Inform6/32d| (depending on
-the |debug| hint).
+example, `-format=ulx` produces `Inform6/32` or `Inform6/32d` (depending on
+the `debug` hint).
 
 =
 @<Try to find a VM in the now-deprecated old notation@> =
@@ -288,8 +288,8 @@ the |debug| hint).
 	}
 
 @ Semantic version rules apply if the user supplies a format text with a given
-version requirement. If the user asks for |v3.1.0| and we've got |v3.1.2|,
-no problem: there's a match. But |v2.9.3| or |3.2.1| would not match.
+version requirement. If the user asks for `v3.1.0` and we've got `v3.1.2`,
+no problem: there's a match. But `v2.9.3` or `3.2.1` would not match.
 
 =
 int TargetVMs::versions_match(target_vm *VM, semantic_version_number wanted) {
@@ -379,7 +379,7 @@ int TargetVMs::allow_memory_setting(target_vm *VM, text_stream *setting) {
 
 @h File extension provisions.
 The normal or unblorbed file extension is just a hint for what would make a
-natural filename for our output: for example, |py| would be a natural choice
+natural filename for our output: for example, `py` would be a natural choice
 for a Python VN, if there were one.
 
 When releasing a blorbed story file, the file extension used depends on the
@@ -412,7 +412,7 @@ of bits, and where it's currently not possible to express a VM version number.
 
 It's also unclear what to write to this if we're compiling, say, an Inform 7
 source text into C: the Treaty of Babel is unclear on that. For now, we write
-|Inform7+C|.
+`Inform7+C`.
 
 =
 text_stream *TargetVMs::get_iFiction_format(target_vm *VM) {

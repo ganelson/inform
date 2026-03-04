@@ -55,7 +55,7 @@ combined with it. This is (initially) meaningless, but it always exists.
 
 Finally, note that the conjugation can be null. This is used only for
 what we'll call "operator verbs", where a mathematical operator is used
-instead of a word: for example, the |<=| sign is such a verb in Inform.
+instead of a word: for example, the `<=` sign is such a verb in Inform.
 
 =
 verb *copular_verb = NULL;
@@ -102,7 +102,7 @@ void Verbs::log_verb(OUTPUT_STREAM, void *vvi) {
 
 @h Operator Verbs.
 As noted above, these are tenseless verbs with no conjugation, represented
-only by symbols such as |<=|. As infix operators, they mimic SVO sentence
+only by symbols such as `<=`. As infix operators, they mimic SVO sentence
 structures.
 
 =
@@ -149,7 +149,7 @@ typedef struct verb_form {
 	struct verb *underlying_verb;
 	struct preposition *preposition;
 	struct preposition *second_clause_preposition;
-	int form_structures; /* bitmap of |*_FS_BIT| values */
+	int form_structures; /* bitmap of `*_FS_BIT` values */
 
 	struct word_assemblage infinitive_reference_text; /* e.g. "translate into" */
 	struct word_assemblage pos_reference_text; /* e.g. "translate into" */
@@ -211,8 +211,8 @@ Forms are stored in a linked list, and are uniquely identified by the triplet
 of verb and two prepositions.
 
 The base form is by definition the one where no prepositions are used. We could
-therefore find that base form by calling |Verbs::find_form(V, NULL, NULL)|,
-but instead we cache this result in |V->base_form| for speed: profiling shows
+therefore find that base form by calling `Verbs::find_form(V, NULL, NULL)`,
+but instead we cache this result in `V->base_form` for speed: profiling shows
 that Inform otherwise spends nearly 1% of its entire running time making that
 innocent-looking call.
 
@@ -272,7 +272,7 @@ void Verbs::add_form(verb *V, preposition *prep,
 	}
 
 @ The reference texts are just for convenience, really: they express the form
-in a canonical verbal form. For example, "translate into |+| as".
+in a canonical verbal form. For example, "translate into `+` as".
 
 @<Compose the reference texts for the new form@> =
 	verb_conjugation *vc = V->conjugation;
@@ -358,7 +358,7 @@ we overwrite that with the new (presumably meaningful) one.
 regular sense of a verb? The answer is that Inform generally gives a verb at
 most one regular sense.
 
-We cache the result in |vf->first_unspecial_meaning| for speed, because profiling
+We cache the result in `vf->first_unspecial_meaning` for speed, because profiling
 of //inform7// suggests this is worth it, but retain the uncached algorithm as
 well in case we suspect bugs in future.
 

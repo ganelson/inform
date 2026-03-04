@@ -2,14 +2,14 @@
 
 To compile the main/synoptic/rules and main/synoptic/rulebooks submodules.
 
-@ Our inventory |inv| already contains a list |inv->rulebook_nodes| of all packages
-in the tree with type |_rulebook|, and similarly for |inv->rule_nodes|.
+@ Our inventory `inv` already contains a list `inv->rulebook_nodes` of all packages
+in the tree with type `_rulebook`, and similarly for `inv->rule_nodes`.
 
 For reasons going back to the very cramped memory of the Z-machine VM, once
 Inform's main compilation target, the following code can run in "memory economy"
 mode, which diverts functionality from arrays to functions (giving up execution
 speed for reduced array memory usage). This is specified by the presence of the
-|^memory_economy| metadata symbol, left in the Inter tree by the //inform7//
+`^memory_economy` metadata symbol, left in the Inter tree by the //inform7//
 compiler.
 
 =
@@ -31,7 +31,7 @@ void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	@<Define RULEPRINTINGRULE function@>;
 }
 
-@ Each rulebook package contains a numeric constant with the symbol name |rulebook_id|.
+@ Each rulebook package contains a numeric constant with the symbol name `rulebook_id`.
 We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
 so we change the values of these constants accordingly.
 

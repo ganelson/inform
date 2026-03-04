@@ -155,9 +155,9 @@ int Kinds::Behaviour::is_an_enumeration(kind *K) {
 	return KindConstructors::is_an_enumeration(K->construct);
 }
 
-@ And here we perform the conversion to a unit. The return value is |TRUE|
+@ And here we perform the conversion to a unit. The return value is `TRUE`
 if the kind was already a unit or was successfully converted into one,
-|FALSE| if it's now too late.
+`FALSE` if it's now too late.
 
 =
 int Kinds::Behaviour::convert_to_unit(kind *K) {
@@ -243,7 +243,7 @@ int Kinds::Behaviour::forbid_assertion_creation(kind *K) {
 	return K->construct->forbid_assertion_creation;
 }
 
-@ The following returns the compilation method (a constant in the form |*_CCM|,
+@ The following returns the compilation method (a constant in the form `*_CCM`,
 defined in "Data Types.w") used when compiling an actual constant value
 specification of this kind: in other words, when compiling an I6
 value for a constant of this kind.
@@ -256,7 +256,7 @@ int Kinds::Behaviour::get_constant_compilation_method(kind *K) {
 
 @h (G) Performing arithmetic.
 Comparisons made by calling an I6 routine are slower in the VM than using the
-standard |<| or |>| operators for signed comparison, so we use them only if
+standard `<` or `>` operators for signed comparison, so we use them only if
 we have to.
 
 =
@@ -378,8 +378,8 @@ int Kinds::Behaviour::get_flexible_long_block_size(kind *K) {
 }
 
 @ And the following returns the name of an I6 routine to determine if two
-values of $K$ are different from each other; or |NULL| to say that it's
-sufficient to apply |~=| to the values.
+values of $K$ are different from each other; or `NULL` to say that it's
+sufficient to apply `~=` to the values.
 
 =
 text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {

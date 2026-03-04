@@ -15,7 +15,7 @@ int Rvalues::is_rvalue(parse_node *pn) {
 
 @h Named constants.
 Constant nodes can store references to many of the structures in this compiler:
-for example, each |table *| pointer in Inform corresponds to a constant node
+for example, each `table *` pointer in Inform corresponds to a constant node
 representing the name of that table.
 
 Dealing with these is very repetitive, and we use macros to define the
@@ -118,7 +118,7 @@ parse_node *Rvalues::from_instance(instance *I) {
 instance *Rvalues::to_instance(parse_node *spec) { 
 		CONV_TO(instance) }
 
-@ An instance of a subkind of |K_object| is called an "object":
+@ An instance of a subkind of `K_object` is called an "object":
 
 =
 int Rvalues::is_object(parse_node *spec) {
@@ -133,7 +133,7 @@ instance *Rvalues::to_object_instance(parse_node *spec) {
 	return NULL;
 }
 
-@ There are two pseudo-objects for which no pointers to |instance| can exist:
+@ There are two pseudo-objects for which no pointers to `instance` can exist:
 "self" and "nothing". These cause nothing but trouble and are marked out with
 special annotations.
 
@@ -206,7 +206,7 @@ int Rvalues::to_int(parse_node *spec) {
 
 @ Internally we represent parsed reals as unsigned integers holding their
 IEEE-754 representations; I don't sufficiently trust C's implementation
-of |float| to be consistent across all Inform's platforms to use that instead.
+of `float` to be consistent across all Inform's platforms to use that instead.
 
 =
 parse_node *Rvalues::from_IEEE_754(unsigned int n, wording W) {
@@ -596,7 +596,7 @@ worst case, then, is when we have a polymorphic phrase and typechecking
 hasn't yet sorted matters out -- in that event we return simply "value"
 as the kind, an extremely weak if certainly true answer.
 
-We resort to returning |NULL|, an unknown kind, only when the invocation list
+We resort to returning `NULL`, an unknown kind, only when the invocation list
 is empty. This should never happen except possibly after recovering from
 some problem message.
 

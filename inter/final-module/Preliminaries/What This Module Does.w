@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than just `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -24,7 +24,7 @@ of a program. We finally turn that into an Inform 6 program, or a C program,
 or some other concrete expression of that program.
 
 This module has a very simple interface to the rest of the tool chain: it
-simply provides a single Inter pipeline stage called |generate|. See
+simply provides a single Inter pipeline stage called `generate`. See
 //CodeGen::create_pipeline_stage//. When this stage is reached, the function
 //CodeGen::run_pipeline_stage// is run. This then creates a //code_generation//
 object, which holds all the temporary storage and configuration details for a

@@ -3,7 +3,7 @@
 Errors in setting up kinds and how they multiply are sometimes caught by the kinds
 module: this section collects and issues such errors as tidy Inform problems.
 
-@ The |:kinds| group of tests for //inform7// generates all of the problems
+@ The `:kinds` group of tests for //inform7// generates all of the problems
 below.
 
 @d PROBLEM_KINDS_CALLBACK KindsProblems::kinds_problem_handler

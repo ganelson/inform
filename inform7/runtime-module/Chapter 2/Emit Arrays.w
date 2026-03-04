@@ -15,8 +15,8 @@ second array can independently be started while the first is still going on,
 provided that the second is completed before the first is resumes.
 
 @h Begin.
-Call exactly one of these functions. In each case the kind |K| is only weakly
-enforced; it's fine to store arbitrary data with |K| being |NULL|.
+Call exactly one of these functions. In each case the kind `K` is only weakly
+enforced; it's fine to store arbitrary data with `K` being `NULL`.
 
 =
 packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
@@ -69,7 +69,7 @@ packaging_state EmitArrays::begin_inline(inter_name *name, kind *K) {
 
 @ Sum constants are not really arrays at all, but for difficult reasons to
 do with linking we store them as such for now. The idea is that we want a
-constant like |CONST1 + CONST2 + CONST3|, in circumstances where we don't
+constant like `CONST1 + CONST2 + CONST3`, in circumstances where we don't
 know those values right now -- they may be defined in external kits of Inter
 code. We therefore cannot fold those into a constant value yet.
 
@@ -150,7 +150,7 @@ typedef struct nascent_array {
 	CLASS_DEFINITION
 } nascent_array;
 
-lifo_stack *emission_array_stack = NULL; /* of |nascent_array| */
+lifo_stack *emission_array_stack = NULL; /* of `nascent_array` */
 
 nascent_array *EmitArrays::current(void) {
 	if (emission_array_stack)

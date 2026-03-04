@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than just `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -39,8 +39,8 @@ In the Inform family of tools, two languages have to be compiled: natural
 language by //inform7// and more conventional C-like code by //inter//.
 Having very different syntaxes, these have different ASTs:
 
-- For I7, a |parse_node_tree|, managed by the //syntax// module.
-- For Inter, an |inter_schema|, managed by the //building// module.
+- For I7, a `parse_node_tree`, managed by the //syntax// module.
+- For Inter, an `inter_schema`, managed by the //building// module.
 
 But these two compiler flows share the same IR -- an //inter_tree// provides the
 intermediate representation for both:[1]
@@ -129,19 +129,19 @@ package main _plain
 			inv !print
 				val "Hello, world.\n"
 =
-This is because |packagetype| and |primitive| instructions are optional in textual
-Inter. When we read |package Main _code|, for example, we deduce that a |_code|
+This is because `packagetype` and `primitive` instructions are optional in textual
+Inter. When we read `package Main _code`, for example, we deduce that a `_code`
 package type is needed, and so we automatically declare it if it is not there
-already; and similarly for any primitive like |!enableprinting|, provided that
+already; and similarly for any primitive like `!enableprinting`, provided that
 it is one of those in the standard set. (See //building: Inter Primitives//.)
 Nevertheless, those instructions are part of the program, which is why they
 are printed out when we write it back as textual Inter.
 
-|packagetype|, |primitive|, |package|, |code|, |inv| and so on are all examples
+`packagetype`, `primitive`, `package`, `code`, `inv` and so on are all examples
 of //Inter Constructs//. Each has its own textual syntax. Most constructs give
-rise to instructions -- for example, every line using the |val| construct
-results in a single |VAL_IST| instruction in the program -- but just a few
-"pseudo-constructs" such as |version| specify something else.
+rise to instructions -- for example, every line using the `val` construct
+results in a single `VAL_IST` instruction in the program -- but just a few
+"pseudo-constructs" such as `version` specify something else.
 
 So it is not true that lines in textual Inter correspond exactly to the
 instructions in a program, but it's very nearly true.
@@ -166,15 +166,15 @@ providing code or data, or both. In the case of "hello world":
 ....................................................
 =
 Each package has a name, and its location can be identified by a "URL". For
-example, |/main/BasicInformKit/properties| means "the package |properties|
-inside the package |BasicInformKit| inside the package |main|". Every package
-also as a "package type". (This is not the same thing as a data type.) |main|
-always has type |_plain|; any package holding a function body has type |_code|.
-All package types begin with an underscore |_|.
+example, `/main/BasicInformKit/properties` means "the package `properties`
+inside the package `BasicInformKit` inside the package `main`". Every package
+also as a "package type". (This is not the same thing as a data type.) `main`
+always has type `_plain`; any package holding a function body has type `_code`.
+All package types begin with an underscore `_`.
 
 Material at the root level is implemented as if it were in a special package
 called the "root package" (the dotted box around everything in the diagram),
-which has the empty name and thus the URL |/|. But this is not really a
+which has the empty name and thus the URL `/`. But this is not really a
 package, and follows different rules from all others.
 
 For the conventions on how the Inform tool-chain sets up this hierarchy of
@@ -184,15 +184,15 @@ simply provide infrastructure allowing pretty general hierarchies to be made.
 @h Data and types stored within bytecode.
 Each instruction occupies a sequence of words called bytecode,[1] called its
 "frame": see //Inter Nodes//. The opening word identifies which construct is
-used: for example, if this is |PACKAGE_IST| then the instruction is a |package|.
+used: for example, if this is `PACKAGE_IST` then the instruction is a `package`.
 What the remaining words mean depends on the construct, but here are some
 typical ingredients:
 
-- Many constructs -- |constant|, for example -- define a new symbol.
+- Many constructs -- `constant`, for example -- define a new symbol.
 If so, the symbol ID -- or SID -- will be stored in one of the words;
 this is the ID of the symbol in the //inter_symbols_table// belonging
 to the package containing the instruction. Some constructs also contain
-SIDs for other reasons: for example, |propertyvalue| needs to store the
+SIDs for other reasons: for example, `propertyvalue` needs to store the
 SID of the property whose value is being recorded.
 
 - Values in Inter occupy two consecutive words of bytecode, and these
@@ -202,10 +202,10 @@ are called "pairs": see //Inter Value Pairs//.
 
 With both values and types, we need to be able to express an enormous range
 of possibilities. This seems impossible. For example, how can we fit the list
-|{2, 3, 5, 7, 11, 13, 17, 19}| in two words, or the type |function int32 int2 -> void|
+`{2, 3, 5, 7, 11, 13, 17, 19}` in two words, or the type `function int32 int2 -> void`
 in just one?
 
-In both cases the solution is the same: to use |constant| or |typename| to
+In both cases the solution is the same: to use `constant` or `typename` to
 assign a symbol to anything complicated, and then refer to that symbol. For
 example, we can't have this:
 = (text as Inter)
@@ -229,8 +229,8 @@ compile into the final output. For example:
 	constant lucky_number = 7
 	constant ^special_constant = lucky_number
 =
-Here |lucky_number| can be used in the program whenever a value is needed. But
-|^special_constant|, whose name begins with the magic metadata caret |^|, cannot
+Here `lucky_number` can be used in the program whenever a value is needed. But
+`^special_constant`, whose name begins with the magic metadata caret `^`, cannot
 be used as a value. Instead, the idea is that it communicates something to the
 code-generation code in //pipeline// and //final// -- indicating the significance,
 purpose or origins of something in the program. (//inform7// produces a lot
@@ -243,9 +243,9 @@ Names of constants, packages, primitives and so on are all examples of "symbols"
 
 Packages provide //Symbols Tables//: in fact, each package has its own symbols
 table, recording symbols and their meanings within that package. For example,
-if a package |X| contains a definition of a constant called |pi|, then the
+if a package `X` contains a definition of a constant called `pi`, then the
 definition will occupy an Inter instruction inside the package, and the
-identifier name |pi| will be an //inter_symbol// recorded in its //inter_symbols_table//.
+identifier name `pi` will be an //inter_symbol// recorded in its //inter_symbols_table//.
 = (text as BoxArt)
     +-----------------+ 
     | Package X       | 
@@ -257,8 +257,8 @@ identifier name |pi| will be an //inter_symbol// recorded in its //inter_symbols
 =
 The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
-by Inter itself, such as the identities of primitives like |!add| or
-|!printnumber|. In some sense, they specify the kind of Inter tree we have,
+by Inter itself, such as the identities of primitives like `!add` or
+`!printnumber`. In some sense, they specify the kind of Inter tree we have,
 rather than anything about the program it represents. Material from that
 program -- a variable, say, or a function -- is not allowed at the root level.
 
@@ -284,7 +284,7 @@ will ignore the building site completely here: it's not our problem.
 
 - A "warehouse", which very much is our problem: see //The Warehouse//.
 This provides storage for strings, symbols tables and the like, assigning each
-one an ID number. Resource number 178, for example, might be a |text_stream|
+one an ID number. Resource number 178, for example, might be a `text_stream`
 which is the content of some text literal in a function, while 179 might be
 an //inter_symbols_table// belonging to some package.
 
@@ -308,10 +308,10 @@ For example, the tree might start out like this:
 		node2  -------------------------------> [.....]
 		node3  ---------------------------------------> [.........]
 =
-Here |node1| represents an instruction, with the details stored at bytecode
-locations 103 to 105; |node2| points to bytecode at 106 to 107, and so on.
+Here `node1` represents an instruction, with the details stored at bytecode
+locations 103 to 105; `node2` points to bytecode at 106 to 107, and so on.
 But then we could decide, when optimising code, that we want instructions
-|node2| and |node3| performed the other way round. Simple amendments to
+`node2` and `node3` performed the other way round. Simple amendments to
 the tree structure achieve this without needing to edit the bytecode:
 = (text as BoxArt)
 							...	102	103	104	105	106	107	108	109	...
@@ -319,7 +319,7 @@ the tree structure achieve this without needing to edit the bytecode:
 		node3  ---------------------------------------> [.........]
 		node2  -------------------------------> [.....]
 =
-Indeed, we could decide that the instruction at |node2| is redundant and cut it:
+Indeed, we could decide that the instruction at `node2` is redundant and cut it:
 = (text)
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
@@ -356,8 +356,8 @@ that they might as well all be independent programs, unable to see each other's
 variables, constants and functions.
 
 But that is not true because symbols in one package can be "wired" to symbols
-in another:[1] see //The Wiring//. We write |S ~~> T| if the symbol |S| is "wired to"
-|T|, and we understand this as meaning that |S| means whatever |T| does.
+in another:[1] see //The Wiring//. We write `S ~~> T` if the symbol `S` is "wired to"
+`T`, and we understand this as meaning that `S` means whatever `T` does.
 = (text as BoxArt)
     +-----------------+        +-------------------------------+
     | Package X       |        | Package Y                     |
@@ -367,17 +367,17 @@ in another:[1] see //The Wiring//. We write |S ~~> T| if the symbol |S| is "wire
                                | variable earth = 7            |
                                +-------------------------------+
 =
-In this example, the symbol |earth| in package |X| is undefined. Instead it is
-wired to a different symbol of the same name in package |Y|, which is defined
+In this example, the symbol `earth` in package `X` is undefined. Instead it is
+wired to a different symbol of the same name in package `Y`, which is defined
 as the name of a variable declared in that package. (The names do not have to
 be the same, but they often are.)
 
-Wiring is directional: |S ~~> T| very definitely does not mean that |T ~~> S|,
-and indeed circuits are forbidden, because |S1 ~~> S2 ~~> ... ~~> S1| would
+Wiring is directional: `S ~~> T` very definitely does not mean that `T ~~> S`,
+and indeed circuits are forbidden, because `S1 ~~> S2 ~~> ... ~~> S1` would
 create a circular definition. To change metaphor for a moment, it's as if, on
-looking up |S| in the index of a book, we found the entry "|S|, see |T|": we
-then have to look up |T| to find, say, "|T|, 125", and turn to page 125. It
-would be no good to find instead "|T|, see |S|".
+looking up `S` in the index of a book, we found the entry "`S`, see `T`": we
+then have to look up `T` to find, say, "`T`, 125", and turn to page 125. It
+would be no good to find instead "`T`, see `S`".
 
 [1] There are fleeting exceptional cases when a symbol can be wired to another
 symbol in the same package, but those occur only with sockets and plugs in the
@@ -399,8 +399,8 @@ imports from and exports to the other.
 =
 It would be chaotic[1] to allow random symbols in packages all over each tree
 to be wired directly to symbols in the other. Instead, every tree has a sort
-of embassy package |/main/connectors| (a package called |connectors| which is
-a subpackage of |main|) which acts as an intermediary.
+of embassy package `/main/connectors` (a package called `connectors` which is
+a subpackage of `main`) which acts as an intermediary.
 = (text as BoxArt)
     ...............................       ..................................
     .  Main tree                  .       .  BasicInformKit tree           .
@@ -446,7 +446,7 @@ diagram is also a little simplified, but the idea is right. We start with:
     .........................         .........................
 =
 where all of the substantive content of the BasicInformKit tree is in its
-package |/main/BasicInformKit|. Transmigration simply moves that package,
+package `/main/BasicInformKit`. Transmigration simply moves that package,
 the result being:
 = (text)
     .........................         .........................
@@ -466,8 +466,8 @@ main tree, its plugs looking for meanings in that tree can now be connected
 to sockets in it; and conversely, plugs in the main tree hoping to connect
 to meanings in BasicInformKit can now connect to the relevant sockets.
 
-There are conventions on what goes in the |main| package of each tree: see
-//building: Large-Scale Structure// for more on that. (The |architectural|
+There are conventions on what goes in the `main` package of each tree: see
+//building: Large-Scale Structure// for more on that. (The `architectural`
 package in each tree just makes some definitions establishing the size of
 integers, and so on, and for these two trees whose definitions will just be
 duplicates of each other.)

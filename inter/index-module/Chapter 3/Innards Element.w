@@ -121,8 +121,8 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("p");
 
 @ Use options can be set in three general ways, and the following function
-answers the question "was this option set in this way?". |E| is meaningless
-except for |EXTENSION_UO_ORIGIN|, when we are testing whether it was set in |E|.
+answers the question "was this option set in this way?". `E` is meaningless
+except for `EXTENSION_UO_ORIGIN`, when we are testing whether it was set in `E`.
 
 @d MAIN_TEXT_UO_ORIGIN 1
 @d OPTIONS_FILE_UO_ORIGIN 2

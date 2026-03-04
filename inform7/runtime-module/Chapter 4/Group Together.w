@@ -10,7 +10,7 @@ are compiled within the user's enclosure.
 	group coins together as "filthy lucre";
 =
 At the Inter level, the different groupings of an object are stored in a text
-property called |list_together|.[1] That's fine for the |"filthy lucre"| case,
+property called `list_together`.[1] That's fine for the `"filthy lucre"` case,
 but for the other two usages we will have to make a text substitution, in order
 to have a valid value here. It's those substitutions which concern us here:
 = (text)

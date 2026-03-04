@@ -12,12 +12,12 @@ actually subdivide a little further, because we also want to break up
 rule "sentences" into their subordinate clauses. Thus, going on
 punctuation, we recognise rules as having the following model:
 
->> Preamble: phrase 1; phrase 2; ...; phrase N.
+> Preamble: phrase 1; phrase 2; ...; phrase N.
 
 It is even, in certain limited circumstances, possible that a comma can
 divide a sentence:
 
->> Instead of eating, say "You really aren't hungry just now."
+> Instead of eating, say "You really aren't hungry just now."
 
 This means that context is important even here, where it might have been
 expected that all we needed to do was to spot the punctuation marks.
@@ -42,7 +42,7 @@ in Preform grammar functions.
 =
 typedef struct syntax_fsm_state {
 	source_file *sf; /* reading from this source file */
-	int ext_pos; /* one of the |*_EXTENSION_POS| values: where we are in an extension */
+	int ext_pos; /* one of the `*_EXTENSION_POS` values: where we are in an extension */
 	int skipping_material_at_level;
 	int main_source_start_wn;
 	node_type_t nt;
@@ -57,7 +57,7 @@ typedef struct syntax_fsm_state {
 syntax_fsm_state the_one_and_only;
 syntax_fsm_state *sfsm = &the_one_and_only;
 
-@ Note that a reset zeroes everything out except the |main_source_start_wn|;
+@ Note that a reset zeroes everything out except the `main_source_start_wn`;
 that's because we reset each time we begin a round of sentence-breaking, and
 there may be many such rounds on the same Inform project, but there's only
 one source text start position.
@@ -100,7 +100,7 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 @e MisbracketedDialogueClause_SYNERROR
 
 @ Now for the function itself. We break into bite-sized chunks, each of which is
-despatched to the |Sentences::make_node| function with a note of the punctuation
+despatched to the `Sentences::make_node` function with a note of the punctuation
 which was used to end it.
 
 =
@@ -182,7 +182,7 @@ that forgiveness is provided by the loop arrangement below.
 We also avoid the need for empty sentences, because it is not possible
 for the code below to detect them: thus
 
->> say "Look behind you!";;;;; now the Wug is in the Cave
+> say "Look behind you!";;;;; now the Wug is in the Cave
 
 is broken as two sentences, not six sentences of which four are empty.
 Perhaps we ought to be stricter, and reject more of these dubious forms,
@@ -281,7 +281,7 @@ before and the word after the current position.
 @ Inform authors habitually use the punctuation in quoted text to end
 sentences, just as other writers of English do. The text
 
->> "Look out!" The explosion shattered the calm of the hillside.
+> "Look out!" The explosion shattered the calm of the hillside.
 
 is certainly intended as two sentences, not one.
 
@@ -289,7 +289,7 @@ An exception is made for table declarations, because a table needs to be formed 
 one long sentence, and it clearly does not abide by the ordinary punctuation
 rules of English. The point is that in the random line of table entries...
 
->> "Of cabbages and kings."\qquad Walrus\qquad "Carroll"
+> "Of cabbages and kings."\qquad Walrus\qquad "Carroll"
 
 ...the full stop after "kings" has no significance: the semantics of the
 table would be no different if it were not there.
@@ -304,18 +304,18 @@ table would be no different if it were not there.
 	}
 
 @h Making sentence nodes.
-At this point we have established that |Sentences::make_node| is called
+At this point we have established that `Sentences::make_node` is called
 sequentially for every divided-off sentence in the original source text.
 But we need a little machinery to skip past sentences which are being
 excluded for one reason or another.
 
 The design of Inform deliberately excludes conditional compilation in the
-traditional C sense of |#ifdef| and |#endif|. This takes us too far from
+traditional C sense of `#ifdef` and `#endif`. This takes us too far from
 what natural language would do, faced with the same basic issue. A book, or
 a government form, would more naturally have a heading making clear that
 the section beneath it is not universal in application. This is what Inform
 does, too: it parses a heading to decide whether to skip the material,
-and if so, the state |sfsm->skipping_material_at_level| is set to the
+and if so, the state `sfsm->skipping_material_at_level` is set to the
 level of the heading in question. We then skip all subsequent sentences
 until reaching the next heading of the same or higher status, or until
 reaching the "... ends here." sentence (if we are reading an extension),
@@ -377,10 +377,10 @@ is declared as if it were a super-heading in the text.
 		sfsm->ext_pos = PAST_CARING_EXTENSION_POS; /* to avoid multiply issuing this */
 	}
 
-@ The client must define a Preform nonterminal called |<dividing-sentence>|
+@ The client must define a Preform nonterminal called `<dividing-sentence>`
 which returns either a heading level number (1 to 10, with 1 the most
-important), or |-1| to mean that the sentence begins an extension, or
-|-2| that it ends one.
+important), or `-1` to mean that the sentence begins an extension, or
+`-2` that it ends one.
 
 @<Detect a dividing sentence@> =
 	if (<dividing-sentence>(W)) {
@@ -407,7 +407,7 @@ important), or |-1| to mean that the sentence begins an extension, or
 	}
 
 @ We have already looked to see if the sentence could be a heading, and set
-the variable |heading_level| to be its ranking in the hierarchy (with 1,
+the variable `heading_level` to be its ranking in the hierarchy (with 1,
 for "volume", the highest). But we also want to check that the heading
 does not have a line break in, because this is almost certainly a mistake
 by the designer, and likely to be a difficult one to understand: so we
@@ -470,27 +470,27 @@ Sentences are classified by their node types, the main identification
 attached to each unit in the tree.
 
 - "Nonstructural sentences", which will be subject to further parsing
-work, have node type |SENTENCE_NT| (and so will "regular sentences").
+work, have node type `SENTENCE_NT` (and so will "regular sentences").
 Anything we cannot place into categories (b) or (c) below will go here.
 
 - "Sentences making up rules". These are sequences of sentences in which
 a preamble (ending with a colon, or in certain cases a comma) of node type
-|IMPERATIVE_NT| is followed by a sequence of phrases (ending with semicolons until
+`IMPERATIVE_NT` is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
-|INVOCATION_LIST_NT|. For instance, the following produces three nodes:
+`INVOCATION_LIST_NT`. For instance, the following produces three nodes:
 
->> To look upwards: say "Look out!"; something else.
+> To look upwards: say "Look out!"; something else.
 
 - "Structural sentences". These demarcate the text, call for other text
-or unusual matter to be included, etc.: the types in question are |TRACE_NT|,
-|HEADING_NT|, |INCLUDE_NT|, |INFORM6CODE_NT|, |BEGINHERE_NT|, |ENDHERE_NT|,
-|TABLE_NT|, |EQUATION_NT| and |BIBLIOGRAPHIC_NT|.
+or unusual matter to be included, etc.: the types in question are `TRACE_NT`,
+`HEADING_NT`, `INCLUDE_NT`, `INFORM6CODE_NT`, `BEGINHERE_NT`, `ENDHERE_NT`,
+`TABLE_NT`, `EQUATION_NT` and `BIBLIOGRAPHIC_NT`.
 
 @ The second sentence in the source text is construed as containing
 bibliographic data if it begins with a quoted piece of text, perhaps with
 substitutions. For instance,
 
->> "A Dream of Fair to Middling Women" by Samuel Beckett
+> "A Dream of Fair to Middling Women" by Samuel Beckett
 
 This sentence is at the position matched by <if-start-of-source-text>.
 (It may not be the first sentence read, because implied extension inclusion
@@ -546,7 +546,7 @@ not trigger this rule. We need this exception because such lists of
 alternatives often occur in rule preambles, where it's the third comma
 which divides rule from preamble:
 
->> Instead of pushing, dropping, or taking the talisman, say "It is cursed."
+> Instead of pushing, dropping, or taking the talisman, say "It is cursed."
 
 The following is used to detect "or" in such lists.
 
@@ -562,8 +562,8 @@ The following is used to detect "or" in such lists.
 		@<Look for a comma and split the sentence at it, unless in serial list@>;
 
 @ In such sentences a comma is read as if it were a colon. (The text up to the
-comma will then be given a |IMPERATIVE_NT| node and the text beyond the comma
-will make a |INVOCATION_LIST_NT| node.)
+comma will then be given a `IMPERATIVE_NT` node and the text beyond the comma
+will make a `INVOCATION_LIST_NT` node.)
 
 @<Look for a comma and split the sentence at it, unless in serial list@> =
 	int earliest_comma_position = Wordings::first_wn(W);
@@ -585,7 +585,7 @@ will make a |INVOCATION_LIST_NT| node.)
 		earliest_comma_position = Wordings::first_wn(BW);
 	}
 
-@ At this point we know that the text |W| will make one and only
+@ At this point we know that the text `W` will make one and only
 one sentence node in the parse tree, so we may as well create and SyntaxTree::graft it
 now. There are a number of special cases with variant node types, but the
 commonest outcome is a SENTENCE node, so that's what we shall assume for now.
@@ -598,20 +598,20 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.
 @ Rules are sequences of phrases with a preamble in front, which we detect by
 its terminating colon. For instance:
 
->> To look upwards: say "Look out!"; something else.
+> To look upwards: say "Look out!"; something else.
 
 (which arrives at this routine as three separate "sentences") will produce
-nodes with type |IMPERATIVE_NT|, |INVOCATION_LIST_NT| and |INVOCATION_LIST_NT| respectively.
+nodes with type `IMPERATIVE_NT`, `INVOCATION_LIST_NT` and `INVOCATION_LIST_NT` respectively.
 
 This paragraph of code might look as if it should only be used in assertion
 mode, not in rule mode, because how can a rule preamble legally occur in
 the middle of another rule? But in fact it can, in two ways. One is the
 officially sanctioned way to make a definition with a complex phrase:
 
->> Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.
+> Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.
 
-This produces four nodes: |IMPERATIVE_NT|, |IMPERATIVE_NT|, |INVOCATION_LIST_NT| and
-|INVOCATION_LIST_NT| respectively.
+This produces four nodes: `IMPERATIVE_NT`, `IMPERATIVE_NT`, `INVOCATION_LIST_NT` and
+`INVOCATION_LIST_NT` respectively.
 
 The other arises somewhat less officially when people treat phrases as
 if they were C (or Inform 6) statements, always to be terminated with
@@ -719,7 +719,7 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 		@<This is a dialogue choice@>;
 	@<Otherwise this has to be a dialogue line@>;
 
-@ Here we are trying to match |(Cue notes.)|.
+@ Here we are trying to match `(Cue notes.)`.
 
 @<This is a dialogue cue@> =
 	wording CW = Wordings::new(Wordings::first_wn(W)+1, Wordings::last_wn(W)-1);
@@ -767,7 +767,7 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 		Sentences::add_dialogue_clauses(CW, T, new);
 	return;
 
-@ Here we are trying to match |Speaker (notes): "Speech."|.
+@ Here we are trying to match `Speaker (notes): "Speech."`.
 
 @<Otherwise this has to be a dialogue line@> =
 	int colon_at = -1;
@@ -868,9 +868,9 @@ but we trim away the best we can for the sake of reporting a good problem.
 
 @ This is shared by both cues and lines, each of which can have multiple
 clauses in brackets. Punctuation divides these only outside of brackets, so
-|(hello, there), (and. here.)| divides only at the central comma, and results
-in two |DIALOGUE_CLAUSE_NT| nodes: one for |hello, there| and the other for
-|and. here|.
+`(hello, there), (and. here.)` divides only at the central comma, and results
+in two `DIALOGUE_CLAUSE_NT` nodes: one for `hello, there` and the other for
+`and. here`.
 
 =
 void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node *new) {
@@ -911,7 +911,7 @@ void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node 
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_SYNTAX_CALLBACK`
 to some routine of her own, gazumping this one.
 
 =

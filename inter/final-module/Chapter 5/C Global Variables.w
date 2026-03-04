@@ -37,7 +37,7 @@ void CGlobals::end(code_generation *gen) {
 }
 
 @ We will assign the global variables unique index numbers 0, 1, 2, ..., with
-the special variable |self| given index 0. Note that |self| always exists,
+the special variable `self` given index 0. Note that `self` always exists,
 but has no Inter declaration node.
 
 =
@@ -120,7 +120,7 @@ void CGlobals::define_header_constant_for_variable(code_generation *gen, text_st
 	CodeGen::deselect(gen, saved);
 }
 
-@ Within a process |proc|, the current value of variable |i| is |proc->state.variables[i]|.
+@ Within a process `proc`, the current value of variable `i` is `proc->state.variables[i]`.
 
 =
 void CGlobals::evaluate_variable(code_generator *gtr, code_generation *gen,

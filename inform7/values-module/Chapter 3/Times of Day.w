@@ -29,7 +29,7 @@ command parser tokens "[a time]", recognising, say, "4:12 AM" and "[a
 time period]", for "3 HOURS".
 
 @ This section of code is a feature: that is, it can be deactivated, removing
-support for times of day from the Inform language. If so, |K_time| remains null.
+support for times of day from the Inform language. If so, `K_time` remains null.
 
 = (early code)
 kind *K_time = NULL;

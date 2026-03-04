@@ -7,10 +7,10 @@ report back to the user.
 The following variables record HTML and Javascript-related points where
 Inblorb needs to behave differently on the different platforms. The default
 values here aren't actually correct for any platform as they stand: in the
-|main| routine below, we set them as needed.
+`main` routine below, we set them as needed.
 
 =
-inchar32_t *FONT_TAG = U"size=2"; /* contents of a |<font>| tag */
+inchar32_t *FONT_TAG = U"size=2"; /* contents of a `<font>` tag */
 inchar32_t *JAVASCRIPT_PRELUDE = U"javascript:window.Project."; /* calling prefix */
 int escape_openUrl = FALSE, escape_fileUrl = FALSE;
 int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
@@ -20,7 +20,7 @@ int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 =
 int error_count = 0; /* number of error messages produced so far */
 
-int verbose_mode = FALSE; /* print diagnostics to |stdout| while running? */
+int verbose_mode = FALSE; /* print diagnostics to `stdout` while running? */
 int current_year_AD = 0; /* e.g., 2008 */
 
 int blorb_file_size = 0; /* size in bytes of the blorb file written */
@@ -33,14 +33,14 @@ int sound_resource_num = 3; /* current sound resource number we're working on */
 int picture_resource_num = 1; /* current picture resource number we're working on */
 int data_file_resource_num = 1; /* current data resource number we're working on */
 
-int use_css_code_styles = FALSE; /* use |<span class="X">| markings when setting code */
+int use_css_code_styles = FALSE; /* use `<span class="X">` markings when setting code */
 pathname *project_folder = NULL; /* pathname of I7 project folder, if any */
 pathname *release_folder = NULL; /* pathname of folder for website to write, if any */
 filename *status_template = NULL; /* filename of report HTML page template, if any */
 filename *status_file = NULL; /* filename of report HTML page to write, if any */
 int cover_exists = FALSE; /* an image is specified as cover art */
 int default_cover_used = FALSE; /* but it's only the default supplied by Inform */
-int cover_is_in_JPEG_format = TRUE; /* as opposed to |PNG| format */
+int cover_is_in_JPEG_format = TRUE; /* as opposed to `PNG` format */
 
 @h Main.
 Like most programs, this one parses command-line arguments, sets things up,
@@ -141,17 +141,17 @@ void Main::bareword(int id, text_stream *opt, void *state) {
 
 Inblorb generates quite a variety of HTML, for instance to create websites,
 but the tricky points below affect only one special page not browsed by
-the general public: the results page usually called |StatusCblorb.html|
-(though this depends on how the |status| command is used in the blurb).
+the general public: the results page usually called `StatusCblorb.html`
+(though this depends on how the `status` command is used in the blurb).
 The results page is intended only for viewing within the Inform user
 interface, and it expects to have two Javascript functions available,
-|openUrl| and |fileUrl|. The first opens a URL in the local operating
+`openUrl` and `fileUrl`. The first opens a URL in the local operating
 system's default web browser, the second opens a file (identified by a
-|file:...| URL) in the local operating system. These two URLs may need
+`file:...` URL) in the local operating system. These two URLs may need
 treatment to handle special characters:
 
-- "escaping", where spaces in the URL are escaped to |%2520|, which
-within a Javascript string literal produces |%20|, the standard way to
+- "escaping", where spaces in the URL are escaped to `%2520`, which
+within a Javascript string literal produces `%20`, the standard way to
 represent a space in a web URL;
 
 - "reversing slashes", where backslashes are converted to forward
@@ -161,7 +161,7 @@ since backslashes are escape characters in Javascript literals.
 @<Set platform-dependent HTML and Javascript variables@> =
 	#ifndef PLATFORM_WINDOWS
 		FONT_TAG = U"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2";
-		escape_openUrl = TRUE; /* we want |openUrl| to escape, and |fileUrl| not to */
+		escape_openUrl = TRUE; /* we want `openUrl` to escape, and `fileUrl` not to */
 	#endif
 	#ifdef PLATFORM_WINDOWS
 		reverse_slash_openUrl = TRUE; reverse_slash_fileUrl = TRUE;
@@ -198,8 +198,8 @@ void Main::initialise_time_variables(void) {
 
 @h Opening and closing banners.
 Note that Inblorb customarily prints informational messages with an initial
-|!|, so that the piped output from Inblorb could be used as an |Include|
-file in I6 code, where |!| is the comment character; that isn't in fact how
+`!`, so that the piped output from Inblorb could be used as an `Include`
+file in I6 code, where `!` is the comment character; that isn't in fact how
 I7 uses Inblorb, but it's traditional for blorbing programs to do this.
 
 =
@@ -233,7 +233,7 @@ void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
 }
 
 @ If it isn't apparent what these placeholders do, take a look at
-the template file called |CblorbModel.html| in the Inform application --
+the template file called `CblorbModel.html` in the Inform application --
 that's where they're used.
 
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =

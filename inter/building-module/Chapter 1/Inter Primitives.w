@@ -5,7 +5,7 @@ by the Inform tool-chain.
 
 @h The standard Inform 7 instruction set.
 Metadata on the primitives used by Inter in the Inform tool-set is stored as
-an array |standard_inform7_primitives| of the following records:
+an array `standard_inform7_primitives` of the following records:
 
 =
 typedef struct inform7_primitive {
@@ -135,9 +135,9 @@ there would have to be string comparisons.
 @e EXTERNALCALL_BIP
 
 @ And here is the array of metadata. It's tiresome to have to include the null
-fields here, which is done only because text_stream literals |I"like this"|
-cannot be compiled in a constant context by the |clang| C compiler. So the
-names and signatures of the primitives are compiled as |char *| literals instead,
+fields here, which is done only because text_stream literals `I"like this"`
+cannot be compiled in a constant context by the `clang` C compiler. So the
+names and signatures of the primitives are compiled as `char *` literals instead,
 and converted on first use at runtime.
 
 It is essential that the sequence of rows below is the same as the sequence of
@@ -260,8 +260,8 @@ inform7_primitive standard_inform7_primitives[] = {
 };
 
 @ The following must be called before the above array can be used. It checks
-that the numbering is right, and converts the names and signatures from |char *|
-to |text_stream *|.
+that the numbering is right, and converts the names and signatures from `char *`
+to `text_stream *`.
 
 =
 int standard_inform7_primitives_prepared = FALSE;
@@ -287,7 +287,7 @@ void Primitives::prepare_standard_set_array(void) {
 	}
 }
 
-@ We only care here abput the part of the signature before the |->|, but we go
+@ We only care here abput the part of the signature before the `->`, but we go
 ahead and perform a full sanity check on it anyway, just in case somebody some day
 amends the above table but gets it wrong. The time consumed by these checks
 is trivial, since this happens only once per run.
@@ -358,7 +358,7 @@ inter_ti Primitives::name_to_BIP(text_stream *name) {
 	return 0;
 }
 
-@ This is printed when //inter// is run with the |-primitives| switch.
+@ This is printed when //inter// is run with the `-primitives` switch.
 
 =
 void Primitives::show_primitives(OUTPUT_STREAM) {
@@ -451,9 +451,9 @@ int Primitives::is_BIP_for_void_indirect_call(inter_ti s) {
 }
 
 @h About the terms.
-For example, 0 for the signature |void -> val|, or 2 for |ref val -> val|.
+For example, 0 for the signature `void -> val`, or 2 for `ref val -> val`.
 
-The |*_XBIP| operations are treated as if they had the signature |val val -> void|.
+The `*_XBIP` operations are treated as if they had the signature `val val -> void`.
 
 =
 int Primitives::term_count(inter_ti BIP) {
@@ -463,9 +463,9 @@ int Primitives::term_count(inter_ti BIP) {
 }
 
 @ And this returns the primitive category for each term, counting from 0:
-this will be |VAL_PRIM_CAT|, |CODE_PRIM_CAT|, |REF_PRIM_CAT| or |LAB_PRIM_CAT|.
+this will be `VAL_PRIM_CAT`, `CODE_PRIM_CAT`, `REF_PRIM_CAT` or `LAB_PRIM_CAT`.
 
-Again, the |*_XBIP| operations are treated as if |val val -> void|.
+Again, the `*_XBIP` operations are treated as if `val val -> void`.
 
 =
 int Primitives::term_category(inter_ti BIP, int i) {
@@ -475,7 +475,7 @@ int Primitives::term_category(inter_ti BIP, int i) {
 	return standard_inform7_primitives[BIP - 1].term_categories[i];
 }
 
-@ Returns |TRUE| if any of those categories is a |CODE_PRIM_CAT|; note that
+@ Returns `TRUE` if any of those categories is a `CODE_PRIM_CAT`; note that
 this is cached for speed.
 
 =
@@ -488,7 +488,7 @@ int Primitives::takes_code_blocks(inter_ti BIP) {
 @h Primitives within a specific tree.
 So much for discussing the instruction set in the abstract: now we need code
 to handle its declaration in each Inter tree we make. Note that, for speed,
-each |inter_tree| structure contains the following index array inside it:
+each `inter_tree` structure contains the following index array inside it:
 
 =
 typedef struct site_primitives_data {
@@ -501,7 +501,7 @@ void Primitives::clear_site_data(inter_tree *I) {
 }
 
 @ That array will allow us to obtain almost instantly the Inter symbol for
-the primitive in |I| having any given BIP. We need to remember that primitives
+the primitive in `I` having any given BIP. We need to remember that primitives
 can come into being in two ways, though: either by us creating them here (see
 below), or by Inter code being read in from an external file. If the latter,
 the following function must be run to make sure the index is built:

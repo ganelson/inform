@@ -39,11 +39,11 @@ parse_node_tree *Diagramming::test_diagrams(text_stream *arg, int raw) {
 	if (raw == FALSE) Diagramming::parse_noun_phrases(syntax_tree->root_node);
 
 @ The work of the //words// and //syntax// modules means that we now have a
-rudimentary syntax tree, in which each sentence is just a single |SENTENCE_NT|
+rudimentary syntax tree, in which each sentence is just a single `SENTENCE_NT`
 node without children. We look for these, and apply <sentence>, the most
 powerful nonterminal from the //linguistics// module, to them. All being well
 (i.e., if any sentence structure can be found), this returns a subtree of
-further nodes, which we graft below the |SENTENCE_NT|.
+further nodes, which we graft below the `SENTENCE_NT`.
 
 =
 void Diagramming::diagram(parse_node *p) {
@@ -66,7 +66,7 @@ void Diagramming::diagram(parse_node *p) {
 }
 
 @ That sorts out the verbs and prepositions, but the noun phrases are not
-by default parsed: they are simply left as |UNPARSED_NOUN_NT| nodes.
+by default parsed: they are simply left as `UNPARSED_NOUN_NT` nodes.
 
 =
 void Diagramming::parse_noun_phrases(parse_node *p) {

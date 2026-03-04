@@ -4,22 +4,22 @@ How Inform extends and annotates the syntax tree.
 
 @h Nodes.
 The syntax tree is managed by the //syntax// services module, which defines the
-most basic node types, which are enumerated by constants in the form |*_NT|.
+most basic node types, which are enumerated by constants in the form `*_NT`.
 
 -	Structural nodes are used to break the source text down to the sentence
 	level, and are arranged in a hierarchy:
 
-	- Level 1 structural nodes, category |L1_NCAT|, are defined only in
+	- Level 1 structural nodes, category `L1_NCAT`, are defined only in
 	//syntax: Node Types//, and are basically headings.
-	- Level 2 structural nodes, category |L2_NCAT|, are defined both in
+	- Level 2 structural nodes, category `L2_NCAT`, are defined both in
 	//syntax: Node Types// and //supervisor: Source Text//. These are top-level
 	declarations and assertion sentences.
-	- Level 3 structural nodes, category |L3_NCAT|, are defined both in
+	- Level 3 structural nodes, category `L3_NCAT`, are defined both in
 	//linguistics: Diagrams// and below. These are clauses in sentences.
 
-- Code nodes, category |CODE_NCAT|, are defined only below. They occur only
+- Code nodes, category `CODE_NCAT`, are defined only below. They occur only
 inside imperative code (i.e. rules and phrase definitions), in subtrees headed
-by a level-2 |IMPERATIVE_NT| node, and they organise what is to be compiled.
+by a level-2 `IMPERATIVE_NT` node, and they organise what is to be compiled.
 
 - Specification nodes represent values or descriptions of values, and are
 defined only below. These occur frequently in the parse tree as children of
@@ -27,9 +27,9 @@ code nodes, but can also be used in detached form as a way to represent, say,
 the number 9, or a requirement for something. (See //values// for more.)
 Specifications come in three sorts:
 
-	- Rvalues, |RVALUE_NCAT|, such as numbers or texts.
-	- Lvalues, |LVALUE_NCAT|, such as variables.
-	- Conditions, |COND_NCAT|, representing the logical structure of conditions.
+	- Rvalues, `RVALUE_NCAT`, such as numbers or texts.
+	- Lvalues, `LVALUE_NCAT`, such as variables.
+	- Conditions, `COND_NCAT`, representing the logical structure of conditions.
 
 @ Further node types and annotations are created in //if: IF Module//. Just
 in case that is not being compiled, the following constant needs to exist
@@ -119,7 +119,7 @@ assignment.
 
 @ Lvalue nodes represent stored data at run-time, which means that they can
 be assigned to. (The traditional terms "lvalue" and "rvalue" refer to the left
-and right hand side of assignment statements written |A = B|.) For instance, a
+and right hand side of assignment statements written `A = B`.) For instance, a
 table entry qualifies as an lvalue because it can be both read and changed. To
 qualify as an lvalue, text must exactly specify the storage location referred
 to: "Table of Corvettes" only indicates a table, not an entry in a table, so
@@ -163,7 +163,7 @@ also makes it easier for us to manipulate the results.
 	NodeType::new(TEST_PHRASE_OPTION_NT, I"TEST_PHRASE_OPTION_NT", 			0, 0, 		COND_NCAT, 0);
 	NodeType::new(TEST_VALUE_NT, I"TEST_VALUE_NT", 							1, 1,		COND_NCAT, 0);
 
-@ Level 4 structural nodes can only be children of |IMPERATIVE_NT| nodes (level 2)
+@ Level 4 structural nodes can only be children of `IMPERATIVE_NT` nodes (level 2)
 or of each other, and their children are otherwise specifications.
 
 Specification nodes can only have each other as children.
@@ -195,7 +195,7 @@ void CoreSyntax::grant_parentage_permissions(void) {
 
 @ With one exception: when a phrase to decide a value (i.e., a function call)
 occurs, its children will be invocation list nodes. This needs to be an
-exception because it's an |RVALUE_NCAT| with a |CODE_NCAT| child, which
+exception because it's an `RVALUE_NCAT` with a `CODE_NCAT` child, which
 would ordinarily be forbidden.
 
 @d PARENTAGE_EXCEPTIONS_SYNTAX_CALLBACK CoreSyntax::parentage_exceptions
@@ -226,7 +226,7 @@ int CoreSyntax::immutable(node_type_t t) {
 	return FALSE;
 }
 
-@ This indicates that |current_sentence| can be set to the node in question.
+@ This indicates that `current_sentence` can be set to the node in question.
 
 @d IS_SENTENCE_NODE_SYNTAX_CALLBACK CoreSyntax::second_level
 
@@ -262,7 +262,7 @@ void CoreSyntax::grant_annotation_permissions(void) {
 @ The unit annotation is applied to every structural node, and indicates to
 which compilation unit the node belongs.
 
-@e unit_ANNOT /* |compilation_unit| */
+@e unit_ANNOT /* `compilation_unit` */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
@@ -286,18 +286,18 @@ void CoreSyntax::grant_unit_permissions(void) {
 
 @h Annotations of Level 2 nodes.
 
-@e beat_defined_here_ANNOT /* |dialogue_beat|: for nodes of beat cues */
-@e classified_ANNOT /* |int|: this sentence has been classified */
-@e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
-@e dialogue_beat_clause_ANNOT /* |int|: for clauses of dialogue cues introducing beats */
-@e dialogue_choice_clause_ANNOT /* |int|: for clauses of dialogue choice points */
-@e dialogue_line_clause_ANNOT /* |int|: for clauses of dialogue lines */
-@e impdef_ANNOT /* |imperative_defn|: for blocks of imperative code */
-@e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
+@e beat_defined_here_ANNOT /* `dialogue_beat`: for nodes of beat cues */
+@e classified_ANNOT /* `int`: this sentence has been classified */
+@e clears_pronouns_ANNOT /* `int`: this sentence erases the current value of "it" */
+@e dialogue_beat_clause_ANNOT /* `int`: for clauses of dialogue cues introducing beats */
+@e dialogue_choice_clause_ANNOT /* `int`: for clauses of dialogue choice points */
+@e dialogue_line_clause_ANNOT /* `int`: for clauses of dialogue lines */
+@e impdef_ANNOT /* `imperative_defn`: for blocks of imperative code */
+@e implicit_in_creation_of_ANNOT /* `inference_subject`: for assemblies */
 @e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
-@e interpretation_of_subject_ANNOT /* |inference_subject|: subject, during passes */
-@e verb_problem_issued_ANNOT /* |int|: has a problem message about the primary verb been issued already? */
-@e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
+@e interpretation_of_subject_ANNOT /* `inference_subject`: subject, during passes */
+@e verb_problem_issued_ANNOT /* `int`: has a problem message about the primary verb been issued already? */
+@e you_can_ignore_ANNOT /* `int`: for assertions now drained of meaning */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
@@ -415,29 +415,29 @@ void CoreSyntax::grant_L2_permissions(void) {
 @h Annotations of Level 3 nodes.
 
 @e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
-@e corresponding_kind_ANNOT /* |kind|: kind to which values of a literal pattern element correspond */
-@e creation_proposition_ANNOT /* |pcalc_prop|: proposition which newly created value satisfies */
-@e creation_site_ANNOT /* |int|: whether an instance was created from this node */
-@e defn_language_ANNOT /* |inform_language|: what language this definition is in */
-@e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
-@e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
-@e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
-@e lpe_min_ANNOT /* |int|: value offset for a literal pattern part */
-@e lpe_max_ANNOT /* |int|: maximum value for a literal pattern part */
-@e lpe_digits_ANNOT /* |int|: word number of digits text for a literal pattern part */
-@e lpe_values_ANNOT /* |int|: word number of values text for a literal pattern part */
-@e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
-@e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
-@e nowhere_ANNOT /* |int|: used by the spatial feature to show this represents "nowhere" */
-@e predicate_ANNOT /* |unary_predicate|: which adjective is asserted */
-@e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
-@e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
-@e refined_ANNOT /* |int|: this subtree has had its nouns parsed */
+@e corresponding_kind_ANNOT /* `kind`: kind to which values of a literal pattern element correspond */
+@e creation_proposition_ANNOT /* `pcalc_prop`: proposition which newly created value satisfies */
+@e creation_site_ANNOT /* `int`: whether an instance was created from this node */
+@e defn_language_ANNOT /* `inform_language`: what language this definition is in */
+@e evaluation_ANNOT /* `parse_node`: result of evaluating the text */
+@e explicit_gender_marker_ANNOT  /* `int`: used by PROPER NOUN nodes for evident genders */
+@e lpe_options_ANNOT /* `int`: options set for a literal pattern part */
+@e lpe_min_ANNOT /* `int`: value offset for a literal pattern part */
+@e lpe_max_ANNOT /* `int`: maximum value for a literal pattern part */
+@e lpe_digits_ANNOT /* `int`: word number of digits text for a literal pattern part */
+@e lpe_values_ANNOT /* `int`: word number of values text for a literal pattern part */
+@e multiplicity_ANNOT /* `int`: e.g., 5 for "five gold rings" */
+@e new_relation_here_ANNOT /* `binary_predicate`: new relation as subject of "relates" sentence */
+@e nowhere_ANNOT /* `int`: used by the spatial feature to show this represents "nowhere" */
+@e predicate_ANNOT /* `unary_predicate`: which adjective is asserted */
+@e quant_ANNOT /* `quantifier`: for quantified excerpts like "three baskets" */
+@e quantification_parameter_ANNOT /* `int`: e.g., 3 for "three baskets" */
+@e refined_ANNOT /* `int`: this subtree has had its nouns parsed */
 @e row_amendable_ANNOT /* int: a candidate row for a table amendment */
-@e rule_placement_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
-@e subject_ANNOT /* |inference_subject|: what this node describes */
+@e rule_placement_sense_ANNOT /* `int`: are we listing a rule into something, or out of it? */
+@e subject_ANNOT /* `inference_subject`: what this node describes */
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
-@e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
+@e turned_already_ANNOT /* `int`: aliasing like "player" to "yourself" performed already */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(corresponding_kind, kind)
@@ -647,29 +647,29 @@ void CoreSyntax::grant_L3_permissions(void) {
 @h Annotations of code nodes.
 
 @e colon_block_command_ANNOT /* int: this COMMAND uses the ":" not begin/end syntax */
-@e control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
-@e end_control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
-@e epistemological_status_ANNOT /* |int|: a bitmap of results from checking an ambiguous reading */
-@e from_text_substitution_ANNOT /* |int|: whether this is an implicit say invocation */
-@e indentation_level_ANNOT /* |int|: level of Pythonesque indentation in code */
-@e kind_of_new_variable_ANNOT /* |kind|: what if anything is returned */
-@e kind_required_by_context_ANNOT /* |kind|: what if anything is expected here */
-@e kind_resulting_ANNOT /* |kind|: what if anything is returned */
-@e kind_variable_declarations_ANNOT /* |kind_variable_declaration|: and of these */
-@e modal_verb_ANNOT /* |verb_conjugation|: relevant only for that: e.g., "might" */
-@e phrase_invoked_ANNOT /* |phrase|: the phrase believed to be invoked... */
-@e phrase_options_invoked_ANNOT /* |invocation_options|: details of any options used */
-@e results_from_splitting_ANNOT /* |int|: node in a routine's parse tree from comma block notation */
-@e say_adjective_ANNOT /* |adjective|: ...or the adjective to be agreed with by "say" */
-@e say_verb_ANNOT /* |verb_conjugation|: ...or the verb to be conjugated by "say" */
+@e control_structure_used_ANNOT /* `control_structure_phrase`: for CODE BLOCK nodes only */
+@e end_control_structure_used_ANNOT /* `control_structure_phrase`: for CODE BLOCK nodes only */
+@e epistemological_status_ANNOT /* `int`: a bitmap of results from checking an ambiguous reading */
+@e from_text_substitution_ANNOT /* `int`: whether this is an implicit say invocation */
+@e indentation_level_ANNOT /* `int`: level of Pythonesque indentation in code */
+@e kind_of_new_variable_ANNOT /* `kind`: what if anything is returned */
+@e kind_required_by_context_ANNOT /* `kind`: what if anything is expected here */
+@e kind_resulting_ANNOT /* `kind`: what if anything is returned */
+@e kind_variable_declarations_ANNOT /* `kind_variable_declaration`: and of these */
+@e modal_verb_ANNOT /* `verb_conjugation`: relevant only for that: e.g., "might" */
+@e phrase_invoked_ANNOT /* `phrase`: the phrase believed to be invoked... */
+@e phrase_options_invoked_ANNOT /* `invocation_options`: details of any options used */
+@e results_from_splitting_ANNOT /* `int`: node in a routine's parse tree from comma block notation */
+@e say_adjective_ANNOT /* `adjective`: ...or the adjective to be agreed with by "say" */
+@e say_verb_ANNOT /* `verb_conjugation`: ...or the verb to be conjugated by "say" */
 @e say_verb_negated_ANNOT /* relevant only for that */
-@e ssp_closing_segment_wn_ANNOT /* |int|: identifier for the last of these, or |-1| */
-@e ssp_segment_count_ANNOT /* |int|: number of subsequent complex-say phrases in stream */
-@e suppress_newlines_ANNOT /* |int|: whether the next say term runs on */
-@e token_as_parsed_ANNOT /* |parse_node|: what if anything is returned */
-@e token_check_to_do_ANNOT /* |parse_node|: what if anything is returned */
-@e token_to_be_parsed_against_ANNOT /* |parse_node|: what if anything is returned */
-@e unproven_ANNOT /* |int|: this invocation needs run-time typechecking */
+@e ssp_closing_segment_wn_ANNOT /* `int`: identifier for the last of these, or `-1` */
+@e ssp_segment_count_ANNOT /* `int`: number of subsequent complex-say phrases in stream */
+@e suppress_newlines_ANNOT /* `int`: whether the next say term runs on */
+@e token_as_parsed_ANNOT /* `parse_node`: what if anything is returned */
+@e token_check_to_do_ANNOT /* `parse_node`: what if anything is returned */
+@e token_to_be_parsed_against_ANNOT /* `parse_node`: what if anything is returned */
+@e unproven_ANNOT /* `int`: this invocation needs run-time typechecking */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
@@ -910,41 +910,41 @@ void CoreSyntax::grant_code_permissions(void) {
 
 @h Annotations of specification nodes.
 
-@e condition_tense_ANNOT /* |time_period|: for specification nodes */
-@e constant_activity_ANNOT /* |activity|: for constant values */
-@e constant_binary_predicate_ANNOT /* |binary_predicate|: for constant values */
-@e constant_constant_phrase_ANNOT /* |constant_phrase|: for constant values */
-@e constant_enumeration_ANNOT /* |int|: which one from an enumerated kind */
-@e constant_equation_ANNOT /* |equation|: for constant values */
-@e constant_instance_ANNOT /* |instance|: for constant values */
-@e constant_local_variable_ANNOT /* |local_variable|: for constant values */
-@e constant_named_rulebook_outcome_ANNOT /* |named_rulebook_outcome|: for constant values */
-@e constant_nonlocal_variable_ANNOT /* |nonlocal_variable|: for constant values */
-@e constant_number_ANNOT /* |int|: which integer this is */
-@e constant_property_ANNOT /* |property|: for constant values */
-@e constant_rule_ANNOT /* |rule|: for constant values */
-@e constant_rulebook_ANNOT /* |rulebook|: for constant values */
-@e constant_table_ANNOT /* |table|: for constant values */
-@e constant_table_column_ANNOT /* |table_column|: for constant values */
-@e constant_text_ANNOT /* |text_stream|: for constant values */
-@e constant_use_option_ANNOT /* |use_option|: for constant values */
-@e constant_verb_form_ANNOT /* |verb_form|: for constant values */
-@e constant_version_number_ANNOT /* |semantic_version_number_holder|: for constant values */
-@e converted_SN_ANNOT /* |int|: marking descriptions */
-@e explicit_iname_ANNOT /* |inter_name|: is this value explicitly an iname? */
-@e explicit_literal_ANNOT /* |int|: my value is an explicit integer or text */
-@e is_phrase_option_ANNOT /* |int|: this unparsed text is a phrase option */
-@e kind_of_value_ANNOT /* |kind|: for specification nodes */
-@e nothing_object_ANNOT /* |int|: this represents |nothing| at run-time */
-@e phrase_option_ANNOT /* |int|: $2^i$ where $i$ is the option number, $0\leq i<16$ */
-@e property_name_used_as_noun_ANNOT /* |int|: in ambiguous cases such as "open" */
-@e proposition_ANNOT /* |pcalc_prop|: for specification nodes */
-@e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
-@e response_code_ANNOT /* |int|: for responses only */
-@e save_self_ANNOT /* |int|: this invocation must save and preserve |self| at run-time */
-@e self_object_ANNOT /* |int|: this represents |self| at run-time */
-@e tense_marker_ANNOT /* |grammatical_usage|: for specification nodes */
-@e text_unescaped_ANNOT /* |int|: flag used only for literal texts */
+@e condition_tense_ANNOT /* `time_period`: for specification nodes */
+@e constant_activity_ANNOT /* `activity`: for constant values */
+@e constant_binary_predicate_ANNOT /* `binary_predicate`: for constant values */
+@e constant_constant_phrase_ANNOT /* `constant_phrase`: for constant values */
+@e constant_enumeration_ANNOT /* `int`: which one from an enumerated kind */
+@e constant_equation_ANNOT /* `equation`: for constant values */
+@e constant_instance_ANNOT /* `instance`: for constant values */
+@e constant_local_variable_ANNOT /* `local_variable`: for constant values */
+@e constant_named_rulebook_outcome_ANNOT /* `named_rulebook_outcome`: for constant values */
+@e constant_nonlocal_variable_ANNOT /* `nonlocal_variable`: for constant values */
+@e constant_number_ANNOT /* `int`: which integer this is */
+@e constant_property_ANNOT /* `property`: for constant values */
+@e constant_rule_ANNOT /* `rule`: for constant values */
+@e constant_rulebook_ANNOT /* `rulebook`: for constant values */
+@e constant_table_ANNOT /* `table`: for constant values */
+@e constant_table_column_ANNOT /* `table_column`: for constant values */
+@e constant_text_ANNOT /* `text_stream`: for constant values */
+@e constant_use_option_ANNOT /* `use_option`: for constant values */
+@e constant_verb_form_ANNOT /* `verb_form`: for constant values */
+@e constant_version_number_ANNOT /* `semantic_version_number_holder`: for constant values */
+@e converted_SN_ANNOT /* `int`: marking descriptions */
+@e explicit_iname_ANNOT /* `inter_name`: is this value explicitly an iname? */
+@e explicit_literal_ANNOT /* `int`: my value is an explicit integer or text */
+@e is_phrase_option_ANNOT /* `int`: this unparsed text is a phrase option */
+@e kind_of_value_ANNOT /* `kind`: for specification nodes */
+@e nothing_object_ANNOT /* `int`: this represents `nothing` at run-time */
+@e phrase_option_ANNOT /* `int`: $2^i$ where $i$ is the option number, $0\leq i<16$ */
+@e property_name_used_as_noun_ANNOT /* `int`: in ambiguous cases such as "open" */
+@e proposition_ANNOT /* `pcalc_prop`: for specification nodes */
+@e record_as_self_ANNOT /* `int`: record recipient as `self` when writing this */
+@e response_code_ANNOT /* `int`: for responses only */
+@e save_self_ANNOT /* `int`: this invocation must save and preserve `self` at run-time */
+@e self_object_ANNOT /* `int`: this represents `self` at run-time */
+@e tense_marker_ANNOT /* `grammatical_usage`: for specification nodes */
+@e text_unescaped_ANNOT /* `int`: flag used only for literal texts */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
@@ -972,7 +972,7 @@ DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 
 @ For tedious code-sequencing reasons, the annotation functions for
-|explicit_iname_ANNOT| are made in //building: Building Module//.
+`explicit_iname_ANNOT` are made in //building: Building Module//.
 
 =
 MAKE_ANNOTATION_FUNCTIONS(constant_activity, activity)

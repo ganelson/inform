@@ -6,7 +6,7 @@ with a given title, and/or version number.
 @h Creation.
 A requirement is, in effect, the criteria for performing a search. We can
 specify the title, and/or the author name, and/or the genre -- all given
-in the |work| field below, with those unspecified left blank -- and/or
+in the `work` field below, with those unspecified left blank -- and/or
 we can give a semantic version number range:
 
 =
@@ -73,7 +73,7 @@ inbuild_requirement *Requirements::from_text(text_stream *T,
 	return req;
 }
 
-@ Each clause must either be |all| or take the form |term=value|:
+@ Each clause must either be `all` or take the form `term=value`:
 
 =
 void Requirements::impose_clause(inbuild_requirement *req, text_stream *T,
@@ -164,7 +164,7 @@ void Requirements::write(OUTPUT_STREAM, inbuild_requirement *req) {
 
 @h Meeting requirements.
 Finally, we actually use these intricacies for something. Given an edition,
-we return |TRUE| if it meets the requirements and |FALSE| if it does not.
+we return `TRUE` if it meets the requirements and `FALSE` if it does not.
 
 Note that requirements are based on the edition, not on the copy. If one
 copy on file of Version 3.2 of Monkey Puzzle Trees by Capability Brown meets
@@ -187,8 +187,8 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 	return VersionNumberRanges::in_range(edition->version, req->version_range);
 }
 
-@ This is a very weak form of testing that requirement |A| is stronger than
-requirement |B| concerning the same work; it only catches the case where |B|
+@ This is a very weak form of testing that requirement `A` is stronger than
+requirement `B` concerning the same work; it only catches the case where `B`
 imposes no version constraints.
 
 =

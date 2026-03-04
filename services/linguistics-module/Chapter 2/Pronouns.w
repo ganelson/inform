@@ -319,7 +319,7 @@ feminine singular, feminine plural.
 	here here here here here here
 
 @h Unit testing.
-The //linguistics-test// test case |pronouns| calls this.
+The //linguistics-test// test case `pronouns` calls this.
 
 =
 void Pronouns::test(OUTPUT_STREAM) {

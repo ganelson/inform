@@ -20,25 +20,25 @@ general_pointer Lexicon::get_data(excerpt_meaning *em) {
 }
 
 @ Entries can be retrieved either the regular way, or in "maximal mode",
-which tries to parse a maximal-length initial portion of |W| rather than
+which tries to parse a maximal-length initial portion of `W` rather than
 necessarily the whole thing. For example, that mode might peel off the
-adjective "fixed in place" from wording |W| which was "fixed in place door".
-This is very much the exception: we almost always want to match the whole of |W|.
+adjective "fixed in place" from wording `W` which was "fixed in place door".
+This is very much the exception: we almost always want to match the whole of `W`.
 
 It might seem symmetrical that the return value should be an //excerpt_meaning//.
 But that wouldn't enable us to return multiple results in the (frequent) case
 of ambiguity. Instead, we need to return a list of possibilities, and we do
 that by returning fragment of syntax tree material, using the infrastructure
-from //syntax//. This will be a list of nodes joined by |->next_alternative| limks.
+from //syntax//. This will be a list of nodes joined by `->next_alternative` limks.
 
 This list of nodes is disposable -- even if it is a copy of something from the
 syntax tree, it is never the only copy. It can freely be ignored or changed.
-A return value of |NULL| means there were no results at all.
+A return value of `NULL` means there were no results at all.
 
-- If a meaning was registered in such a way that its |data| actually was a
+- If a meaning was registered in such a way that its `data` actually was a
 node from the syntax tree, then the result is a copy of that node.
 - If not then the result is a node with the meaning code as its node type,
-and the excerpt meaning can be recovered from it using |Node::get_meaning|.
+and the excerpt meaning can be recovered from it using `Node::get_meaning`.
 
 =
 parse_node *Lexicon::retrieve(unsigned int mc_bitmap, wording W) {

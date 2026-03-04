@@ -13,8 +13,8 @@ Inter tree doesn't contain this information.[2]
 [1] Unlike the C linking process, it is not symmetrical. One Inter tree is
 made by //inter//, and the others by //inter//, for one thing.
 
-[2] Just as a C-compiled binary may be made by linking |alpha.o|, |beta.o| and
-|gamma.o| together, but the fact that these are the three |*.o| files needed
+[2] Just as a C-compiled binary may be made by linking `alpha.o`, `beta.o` and
+`gamma.o` together, but the fact that these are the three `*.o` files needed
 to make the finished article is recorded only in the makefile for the program.
 It's a matter for the build process and not for the compiler.
 
@@ -36,7 +36,7 @@ attachment_instruction *LoadBinaryKitsStage::new_requirement(pathname *P, text_s
 }
 
 @ Linking begins with the following stage. Note that the list of requirements
-made by //supervisor// is now stored in |step->ephemera.requirements_list|.
+made by //supervisor// is now stored in `step->ephemera.requirements_list`.
 
 =
 void LoadBinaryKitsStage::create_pipeline_stage(void) {
@@ -116,18 +116,18 @@ regular users: it would be quite slow to read in.
 		@<Throw an error for the duplication@>;
 
 @ The following (unfortunately) has to do something subtle. We need the definition
-of |defn_name| to be the one in the main tree; that means |sidecar_end| has to have
-its present definition struck, i.e., removed entirely from the |sidecar| tree.
+of `defn_name` to be the one in the main tree; that means `sidecar_end` has to have
+its present definition struck, i.e., removed entirely from the `sidecar` tree.
 This may remove something as simple as a single constant definition, or as large
-as a huge package holding the body of a function. Then, |sidecar_end| has to
+as a huge package holding the body of a function. Then, `sidecar_end` has to
 be redefined as something in the main tree. But since transmigration has not yet
 happened, we can't just wire it there. We have to wire it to a plug with name
-|defn_tree| instead; and then after transmigration this will be connected to a
-socket in the main tree connecting to |rival_end|.
+`defn_tree` instead; and then after transmigration this will be connected to a
+socket in the main tree connecting to `rival_end`.
 
-But even that isn't quite enough. We can't allow the |connectors| package of
-|sidecar| to contain a socket name which is the same as a socket name in the
-|connectors| package of the main tree |I|. It might seem that we can just delete
+But even that isn't quite enough. We can't allow the `connectors` package of
+`sidecar` to contain a socket name which is the same as a socket name in the
+`connectors` package of the main tree `I`. It might seem that we can just delete
 the now-unwanted socket wired to the old definition; but we cannot, because other
 symbols in the same kit might already be wired to it. So we keep the old socket,
 but rename it with a name which will avoid name collisions, striking it out of
@@ -177,9 +177,9 @@ the symbols table dictionary.
 	PipelineErrors::error_with(step, "%S", E);
 	DISCARD_TEXT(E)
 
-@ The "attachment point" for the kit will be something like |/main/BasicInformKit|.
+@ The "attachment point" for the kit will be something like `/main/BasicInformKit`.
 (This point will be different for each different kit in the requirements list:
-others might include |/main/CommandParserKit|, and so on.) We take that package out
+others might include `/main/CommandParserKit`, and so on.) We take that package out
 of the sidecar and put it into the main tree.
 
 @<Migrate the bulk of the code from the sidecar to the main tree@> =
@@ -231,10 +231,10 @@ void LoadBinaryKitsStage::deal_with_original(pipeline_step *step, int keeping,
 	InterSymbol::strike_definition(S);
 
 @ This function determines whether a replacement should take place: if the
-symbol has been marked simple |+replacing| then the original location is set
-to the special value |_| meaning "from anywhere", whereas otherwise it must
-be a package name such as |BasicInformKit|, arising from an annotation like
-|+replacing(from BasicInformKit)|.
+symbol has been marked simple `+replacing` then the original location is set
+to the special value `_` meaning "from anywhere", whereas otherwise it must
+be a package name such as `BasicInformKit`, arising from an annotation like
+`+replacing(from BasicInformKit)`.
 
 =
 int LoadBinaryKitsStage::replaces(inter_symbol *X, inter_symbol *Y) {

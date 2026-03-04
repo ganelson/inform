@@ -5,7 +5,7 @@ scope, as in more traditional programming languages.
 
 @ During code compilation, we must keep track of statement blocks: those
 forming the body of "if", "while" or "repeat". The phrase as a whole does
-not count as a block as such, unlike in C. In the following example, |S|
+not count as a block as such, unlike in C. In the following example, `S`
 is the "scope level", i.e., the number of blocks currently open:
 = (text as Inform 7)
 To show what this means:
@@ -120,7 +120,7 @@ void CodeBlocks::end_code_blocks(void) {
 So now let's follow what happens when a block is being compiled. Suppose
 we have:
 
->> repeat through the Table of Odds:
+> repeat through the Table of Odds:
 
 When Inform begins to compile this invocation, it observes that the phrase
 being invoked is followed by a code block, and calls the following routine
@@ -139,7 +139,7 @@ void CodeBlocks::beginning_block_phrase(control_structure_phrase *csp) {
 
 @ In the case of a repeat through a Table, we need to create two loop
 variables. In addition to those, the loop we're compiling will inevitably
-change the two row selection variables (always called |ct_0| and |ct_1|),
+change the two row selection variables (always called `ct_0` and `ct_1`),
 so we need to protect their contents; we push them onto the stack before
 the loop begins, and pull them again when it finishes.
 

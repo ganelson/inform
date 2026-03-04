@@ -8,7 +8,7 @@ meta than most -- it's a nonterminal which matches against the name of any
 nonterminal. (This is used only to parse inclusion requests for the debugging
 log.)
 
-Note that we use the |internal 1| to signal that a correct match must have
+Note that we use the `internal 1` to signal that a correct match must have
 exactly one word.
 
 =
@@ -48,7 +48,7 @@ braces and brackets are correctly paired.
 @ Inform contains relatively few syntaxes where commas are actually required,
 though they can optionally be used in many lists, as here:
 
->> parma ham, camembert, grapes
+> parma ham, camembert, grapes
 
 But for when we only want to spot comma placements, this can be used. Note
 that the comma matches only if not in brackets.
@@ -101,7 +101,7 @@ for interpolations called "text substitutions".
 }
 
 @ For finicky technical reasons the easiest way to detect an empty piece
-of text |""| is to provide a nonterminal matching it:
+of text `""` is to provide a nonterminal matching it:
 
 =
 <empty-text> internal 1 {

@@ -6,7 +6,7 @@ are allowed to appear in the Inter hierarchy.
 @ As seen in //Hierarchy Locations//, each //hierarchy_location// and
 //hierarchy_attachment_point// stipulates something about where its resource
 (an iname, a package) can aopear in the hierarchy. For example, that might be
-"only in |/main/ingredients|", or "only in a package of type |_recipe|".
+"only in `/main/ingredients`", or "only in a package of type `_recipe`".
 
 A variety of stipulations can be made, and with memory consumption unimportant
 here, the following is really a union: almost all the fields will be left blank.
@@ -32,7 +32,7 @@ location_requirement LocationRequirements::blank(void) {
 	return req;
 }
 
-@ "You must put me in package |P|."
+@ "You must put me in package `P`."
 
 =
 location_requirement LocationRequirements::this_package(package_request *P) {
@@ -60,14 +60,14 @@ location_requirement LocationRequirements::any_enclosure(void) {
 	return req;
 }
 
-@ "You must put me in |/main/architectural|."
+@ "You must put me in `/main/architectural`."
 
 =
 location_requirement LocationRequirements::architectural_package(inter_tree *I) {
 	return LocationRequirements::this_package(LargeScale::architecture_request(I));
 }
 
-@ "You must put me in |/main/connectors|, as a plug."
+@ "You must put me in `/main/connectors`, as a plug."
 
 =
 location_requirement LocationRequirements::plug(void) {
@@ -76,7 +76,7 @@ location_requirement LocationRequirements::plug(void) {
 	return req;
 }
 
-@ "You must put me in a submodule, identified by |sid|, of some module." In
+@ "You must put me in a submodule, identified by `sid`, of some module." In
 practice, //inform7// uses this to place material in the module associated with
 the compilation unit where the material came from -- the source text, or a
 particular extension -- and this is why the term "local" is used.
@@ -88,8 +88,8 @@ location_requirement LocationRequirements::local_submodule(submodule_identity *s
 	return req;
 }
 
-@ "You must put me in a submodule, identified by |sid|, of the generic module."
-So, for example, in |/main/generic/properties|, where |properties| is the
+@ "You must put me in a submodule, identified by `sid`, of the generic module."
+So, for example, in `/main/generic/properties`, where `properties` is the
 submodule.
 
 =
@@ -100,7 +100,7 @@ location_requirement LocationRequirements::generic_submodule(inter_tree *I,
 	return req;
 }
 
-@ "You must put me in a submodule, identified by |sid|, of the synoptic module."
+@ "You must put me in a submodule, identified by `sid`, of the synoptic module."
 
 =
 location_requirement LocationRequirements::synoptic_submodule(inter_tree *I,
@@ -110,7 +110,7 @@ location_requirement LocationRequirements::synoptic_submodule(inter_tree *I,
 	return req;
 }
 
-@ "You must put me in a submodule, identified by |sid|, of the completion module."
+@ "You must put me in a submodule, identified by `sid`, of the completion module."
 
 =
 location_requirement LocationRequirements::completion_submodule(inter_tree *I,

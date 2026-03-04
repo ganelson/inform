@@ -28,7 +28,7 @@ void B(void) {
 }
 =
 Note that B can now read, but not write, the locals from A. The scratch array
-|lp| used here for storage is meaningless except for immediately before and
+`lp` used here for storage is meaningless except for immediately before and
 after the call to B, so we don't need to worry about multiple uses of local
 parking getting in each other's way.
 
@@ -116,7 +116,7 @@ local_parking_lot *LocalParking::new_lot(inter_name *iname) {
 }
 
 @ So, then, this returns the array to use for storage, ensuring that it has
-a capacity of at least |N|, and therefore has entries in the range |0 <= x < N|.
+a capacity of at least `N`, and therefore has entries in the range `0 <= x < N`.
 
 =
 inter_name *LocalParking::array(int N, local_parking_lot *lot) {

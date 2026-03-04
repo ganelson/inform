@@ -26,7 +26,7 @@ void NopInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |nop| instruction consists only of the two
+In bytecode, the frame of a `nop` instruction consists only of the two
 compulsory words -- see //Inter Nodes//.
 
 =
@@ -41,7 +41,7 @@ inter_error_message *NopInstruction::new(inter_bookmark *IBM, inter_ti level,
 }
 
 @h Writing to textual Inter syntax.
-The |nop| construct is not expressible in textual Inter, but can be printed out
+The `nop` construct is not expressible in textual Inter, but can be printed out
 all the same, purely so that a stack backtrace will show it.
 
 =

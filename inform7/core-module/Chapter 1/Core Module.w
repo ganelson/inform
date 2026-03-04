@@ -6,7 +6,7 @@ Setting up the use of this module.
 
 @d CORE_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function.
+@ Like all modules, this one must define a `start` and `end` function.
 
 Note that the "core" feature itself does nothing except to be a parent to the
 other two; it doesn't even have an activation function.
@@ -39,7 +39,7 @@ void CoreModule::start(void) {
 void CoreModule::end(void) {
 }
 
-@ The |%B| string escape prints the build number, lying about it when we
+@ The `%B` string escape prints the build number, lying about it when we
 want to produce predictable output for easier testing.
 
 =

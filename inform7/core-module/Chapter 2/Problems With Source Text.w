@@ -4,7 +4,7 @@ Errors with the source text, either lexical issues or major syntactic ones,
 are found when Inbuild reads the text in: what this section does is to collect
 and issue those errors as tidy Inform problem messages.
 
-@ To trigger all of the problems listed below, test with the |:inbuild|
+@ To trigger all of the problems listed below, test with the `:inbuild`
 group.
 
 =
@@ -642,7 +642,7 @@ void SourceProblems::inter_schema_errors(inter_schema *sch) {
 }
 
 @ And these are errors (mostly) from parsing the Inform 6-syntax content
-in |Include (- ... -)| insertions of low-level code:
+in `Include (- ... -)` insertions of low-level code:
 
 =
 text_stream *notified_kit_name = NULL;

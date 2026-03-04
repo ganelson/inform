@@ -10,9 +10,9 @@ and so on.
 
 =
 typedef struct i6_operator_metadata {
-	inter_ti BIP;          /* which may be a |*_XBIP| value */
+	inter_ti BIP;          /* which may be a `*_XBIP` value */
 	int precedence;        /* operators with higher precedence bind more tightly */
-	int prefix;            /* |TRUE| for prefix, |FALSE| for suffix, |NOT_APPLICABLE| for infix */
+	int prefix;            /* `TRUE` for prefix, `FALSE` for suffix, `NOT_APPLICABLE` for infix */
 	int right_associative; /* if same operator used twice at same precedence */
 	int arity;             /* how many operands the operator has: always 1 or 2 */
 	char *notation_c;      /* Inform 6 syntax for this operator */
@@ -76,8 +76,8 @@ i6_operator_metadata i6_operator_chart[] = {
 };
 
 @ The following must be called before the above array can be used. It checks
-that the numbering is right, and converts the names and signatures from |char *|
-to |text_stream *|.
+that the numbering is right, and converts the names and signatures from `char *`
+to `text_stream *`.
 
 =
 int inform6_operators_chart_prepared = FALSE;
@@ -108,7 +108,7 @@ void I6Operators::prepare_chart(void) {
 }
 
 @ This, again, is trickier than it looks because a valid input can be either a
-|*_BIP| code or a |*_XBIP| code:
+`*_BIP` code or a `*_XBIP` code:
 
 =
 i6_operator_metadata *I6Operators::operator_for_BIP(inter_ti BIP) {
@@ -131,7 +131,7 @@ text_stream *I6Operators::I6_notation_for(inter_ti BIP) {
 
 @ And the inverse of that function, from text to an operator, or 0 if none
 matches. Note that we return the earliest row in the above table, if more than
-one matches, and this matters for |++| and |--|, where the same notation is
+one matches, and this matters for `++` and `--`, where the same notation is
 used both for the prefix and postfix operators.
 
 =
@@ -144,7 +144,7 @@ inter_ti I6Operators::notation_to_BIP(text_stream *T) {
 	return 0;
 }
 
-@ The arity of the operator, always 1 or 2, unless the given |BIP| is not
+@ The arity of the operator, always 1 or 2, unless the given `BIP` is not
 an operator at all:
 
 =
@@ -155,9 +155,9 @@ int I6Operators::arity(inter_ti BIP) {
 
 @ Returns:
 
-- |TRUE| for a prefix operator, e.g., |++alpha|;
-- |FALSE| for a postfix operator, e.g., |alpha--|;
-- |NOT_APPLICABLE| for an infix operator, e.g., |alpha + beta|, or for
+- `TRUE` for a prefix operator, e.g., `++alpha`;
+- `FALSE` for a postfix operator, e.g., `alpha--`;
+- `NOT_APPLICABLE` for an infix operator, e.g., `alpha + beta`, or for
 something which is not an operator at all.
 
 =
@@ -177,7 +177,7 @@ int I6Operators::precedence(inter_ti BIP) {
 	return (md) ? (md->precedence) : UNPRECEDENTED_OPERATOR;
 }
 
-@ |TRUE| if the operator is right associative, |FALSE| if it is left associative;
+@ `TRUE` if the operator is right associative, `FALSE` if it is left associative;
 irrelevant, of course, for unary operators.
 
 =

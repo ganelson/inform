@@ -4,7 +4,7 @@ To compile the named_action_patterns submodule for a compilation unit, which con
 _named_action_pattern packages.
 
 @h Compilation data.
-Each |named_action_pattern| object contains this data:
+Each `named_action_pattern` object contains this data:
 
 =
 typedef struct nap_compilation_data {

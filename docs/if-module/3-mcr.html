@@ -98,8 +98,8 @@ at an earlier stage in Inform's run, so another two-step is needed:</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  When each direction is created, so are corresponding relations and
 prepositional uses: for example, &quot;northeast&quot; makes &quot;mapping northeast&quot;
 as a relation, and &quot;mapped northeast of&quot; as a prepositional usage.</p>
-<p>The rule is actually that production (a) in &lt;mapping-preposition-construction&gt;
-is used for all directions except those named in &lt;notable-directions&gt;,
+<p>The rule is actually that production (a) in <mapping-preposition-construction>
+is used for all directions except those named in <notable-directions>,
 where (b) is used. As a result, we make &quot;mapped inside&quot; and &quot;mapped
 outside&quot; instead of &quot;mapped inside of&quot; and &quot;mapped outside of.&quot; This
 is done to avoid ambiguities with the already-existing meanings of inside
@@ -107,21 +107,15 @@ and outside to do with spatial containment.</p>
 <p>The use of the word &quot;mapped&quot; may seem itself odd. Why define &quot;to be mapped
 east of&quot; rather than &quot;to be east of&quot;? After all, that seems to be what is
 used in assertions like:</p>
-</div>
 <blockquote>
-    <p>The Bakery is east of Pudding Lane.</p>
+<p>The Bakery is east of Pudding Lane.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In fact, the assertion parser reads sentences like that by looking out specially
 for direction names plus &quot;of&quot; -- so this is parsed without using the mapping
 predicate for &quot;east&quot;. But it cannot read:</p>
-</div>
 <blockquote>
-    <p>The Flour Cellar is below the Bakery.</p>
+<p>The Flour Cellar is below the Bakery.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>as a direction name plus &quot;of&quot;, since &quot;below&quot; is not the name of the direction
 &quot;down&quot;, and anyway there is no &quot;of&quot;.</p>
 </div>
@@ -159,7 +153,7 @@ is intentionally done very early on.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">MAX_WORDS_IN_DIRECTION</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::truncate</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="constant-syntax">MAX_WORDS_IN_DIRECTION</span><span class="plain-syntax">); </span><span class="comment-syntax">/* just truncate for now */</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">relname</span><span class="plain-syntax">) </span><span class="comment-syntax">/* for debugging log, e.g., "north-map" */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">relname</span><span class="plain-syntax">) </span><span class="comment-syntax">/* for debugging log, e.g., &quot;north-map&quot; */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">relname</span><span class="plain-syntax">, </span><span class="string-syntax">"%W-map"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">relname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">' '</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::put</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="character-syntax">'-'</span><span class="plain-syntax">);</span>

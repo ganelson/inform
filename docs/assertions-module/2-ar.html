@@ -68,20 +68,14 @@ hard to program a computer to understand &quot;it&quot; so that human users are
 happy with the result.</p>
 <p>But we try, just a little, by keeping track of the subject and object
 under discussion. Even this is tricky. Consider:</p>
-</div>
 <blockquote>
-    <p>The Pavilion is a room. East is the Cricket Square.</p>
+<p>The Pavilion is a room. East is the Cricket Square.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>East of where? Clearly of the current subject, the Pavilion (not
 the room kind). On the other hand,</p>
-</div>
 <blockquote>
-    <p>On the desk is a pencil. It has description "2B."</p>
+<p>On the desk is a pencil. It has description &quot;2B.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>&quot;It&quot; here is the pencil, not the desk. To disentangle such things,
 we keep track of two different running references: the current subject and
 the current object. English is an SVO language, so that in assertions of the
@@ -109,12 +103,9 @@ been a change of the topic discussed.</p>
 <p><code>Anaphora::change_discussion_topic</code> is called once at the end of
 processing each assertion during each pass.</p>
 <p>Note that we are careful to avoid changing the subject with sentences like:</p>
-</div>
 <blockquote>
-    <p>East is the Central Plaza.</p>
+<p>East is the Central Plaza.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where this does not have the subject &quot;east&quot;, but has instead an implicit
 subject carried over from previous sentences.</p>
 </div>
@@ -136,12 +127,9 @@ subject carried over from previous sentences.</p>
 of subject-verb inversion (&quot;in the bag is the ball&quot; not &quot;the ball is in the
 bag&quot;). We extract a subject from a relationship node on the left, but not on
 the right, and we don't extract an object from one. Consider:</p>
-</div>
 <blockquote>
-    <p>A billiards table is in the Gazebo. On it is a trophy cup.</p>
+<p>A billiards table is in the Gazebo. On it is a trophy cup.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>What does &quot;it&quot; mean, and why? A human reader goes for the billiards table at
 once, because it seems more likely as a supporter than the Gazebo, but that's
 not how Inform gets the same answer. It all hangs on &quot;billiards table&quot; being

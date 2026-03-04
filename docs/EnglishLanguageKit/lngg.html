@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -48,19 +53,19 @@
 
 <ul class="toc"><li><a href="lngg.html#SP1">&#167;1. Initialisation</a></li><li><a href="lngg.html#SP2">&#167;2. Identification</a></li><li><a href="lngg.html#SP3">&#167;3. Vocabulary</a></li><li><a href="lngg.html#SP4">&#167;4. Pronouns</a></li><li><a href="lngg.html#SP5">&#167;5. Descriptors</a></li><li><a href="lngg.html#SP6">&#167;6. Numbers</a></li><li><a href="lngg.html#SP7">&#167;7. Time</a></li><li><a href="lngg.html#SP8">&#167;8. Directions</a></li><li><a href="lngg.html#SP9">&#167;9. Translation</a></li><li><a href="lngg.html#SP10">&#167;10. Articles</a></li><li><a href="lngg.html#SP11">&#167;11. Commands</a></li><li><a href="lngg.html#SP12">&#167;12. Stubs</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Initialisation.</b>It used to be optional whether or not to include a function of this name in
-a language kit: it's now compulsory, even when (as now) it does nothing.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Initialisation.</b>  It used to be optional whether or not to include a function of this name in
+a language kit: it's now compulsory, even when (as now) it does nothing.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Identification.</b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Identification.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENGLISHLANGUAGEKIT</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Vocabulary.</b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Vocabulary.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax">     = </span><span class="character-syntax">'again'</span><span class="plain-syntax">;</span>
@@ -114,32 +119,48 @@ a language kit: it's now compulsory, even when (as now) it does nothing.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTART__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restart'</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTORE__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restore'</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Pronouns.</b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Pronouns.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguagePronouns</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
 
-<span class="plain-syntax">  </span><span class="comment-syntax">word        possible GNAs                   connected</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            to follow:                      to:</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            a     i</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            s  p  s  p</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            mfnmfnmfnmfn</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">! word        possible GNAs                   connected</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         to follow:                      to:
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         a     i
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         s  p  s  p
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         mfnmfnmfnmfn
+</code></pre>
+</span>
 
 <span class="plain-syntax">    </span><span class="character-syntax">'it'</span><span class="plain-syntax">      </span><span class="constant-syntax">$$001000111000</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'him'</span><span class="plain-syntax">     </span><span class="constant-syntax">$$100000000000</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'her'</span><span class="plain-syntax">     </span><span class="constant-syntax">$$010000000000</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'them'</span><span class="plain-syntax">    </span><span class="constant-syntax">$$000111000111</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Descriptors.</b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Descriptors.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageDescriptors</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
 
-<span class="plain-syntax">  </span><span class="comment-syntax">word        possible GNAs   descriptor      connected</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            to follow:      type:           to:</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            a     i</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            s  p  s  p</span>
-<span class="plain-syntax">  </span><span class="comment-syntax">            mfnmfnmfnmfn</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">! word        possible GNAs   descriptor      connected</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         to follow:      type:           to:
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         a     i
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         s  p  s  p
+</code></pre>
+</span>
+<span class="plain-syntax">  </span><span class="comment-syntax">!             <pre><code>         mfnmfnmfnmfn
+</code></pre>
+</span>
 
 <span class="plain-syntax">    </span><span class="character-syntax">'my'</span><span class="plain-syntax">      </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">POSSESS_PK</span><span class="plain-syntax">      </span><span class="constant-syntax">0</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'this'</span><span class="plain-syntax">    </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">POSSESS_PK</span><span class="plain-syntax">      </span><span class="constant-syntax">0</span>
@@ -158,7 +179,7 @@ a language kit: it's now compulsory, even when (as now) it does nothing.
 <span class="plain-syntax">    </span><span class="character-syntax">'lighted'</span><span class="plain-syntax"> </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">LIGHTED_PK</span><span class="plain-syntax">      </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'unlit'</span><span class="plain-syntax">   </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">UNLIGHTED_PK</span><span class="plain-syntax">    </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Numbers.</b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Numbers.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageNumbers</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -171,7 +192,7 @@ a language kit: it's now compulsory, even when (as now) it does nothing.
 <span class="plain-syntax">    </span><span class="character-syntax">'twenty-nine'</span><span class="plain-syntax"> </span><span class="constant-syntax">29</span><span class="plain-syntax"> </span><span class="character-syntax">'thirty'</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span>
 <span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Time.</b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Time.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageTimeOfDay</span><span class="plain-syntax"> </span><span class="identifier-syntax">hours</span><span class="plain-syntax"> </span><span class="identifier-syntax">mins</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -182,37 +203,35 @@ a language kit: it's now compulsory, even when (as now) it does nothing.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">hours</span><span class="plain-syntax">/12) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" pm"</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" am"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Directions.</b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Directions.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageDirection</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Translation.</b>These are all opportunities to meddle with the normal (Anglo-centric) running
-of things, which we will decline.
-</p>
-
-<p class="commentary">Until April 2023, it was optional for a kit to provide <span class="extract"><span class="extract-syntax">LanguageRefers</span></span> and
-<span class="extract"><span class="extract-syntax">LanguagePrintShortName</span></span>, but this is now compulsory.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Translation.</b>  These are all opportunities to meddle with the normal (Anglo-centric) running
+of things, which we will decline.</p>
+<p>Until April 2023, it was optional for a kit to provide <code>LanguageRefers</code> and
+<code>LanguagePrintShortName</code>, but this is now compulsory.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageToInformese</span><span class="plain-syntax">; ];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageRefers</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1; ];</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageRefers</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">-1</span><span class="plain-syntax">; ];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguagePrintShortName</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Articles.</b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Articles.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageAnimateGender</span><span class="plain-syntax">   = </span><span class="identifier-syntax">male</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageInanimateGender</span><span class="plain-syntax"> = </span><span class="identifier-syntax">neuter</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageContractionForms</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;     </span><span class="comment-syntax">English has two:</span>
-<span class="plain-syntax">                                           </span><span class="comment-syntax">0 = starting with a consonant</span>
-<span class="plain-syntax">                                           </span><span class="comment-syntax">1 = starting with a vowel</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageContractionForms</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;     </span><span class="comment-syntax">! English has two:</span>
+<span class="plain-syntax">                                           </span><span class="comment-syntax">! 0 = starting with a consonant</span>
+<span class="plain-syntax">                                           </span><span class="comment-syntax">! 1 = starting with a vowel</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageContraction</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
@@ -220,41 +239,45 @@ of things, which we will decline.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">text</span><span class="plain-syntax">-&gt;0;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">text</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">CHARSIZE</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! CHARSIZE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax"> == </span><span class="character-syntax">'a'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'e'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'i'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'o'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'u'</span>
 <span class="plain-syntax">           </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'A'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'E'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'I'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'O'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'U'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageArticles</span><span class="plain-syntax"> --&gt;</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageArticles</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt;</span>
 
-<span class="plain-syntax"> </span><span class="comment-syntax">  Contraction form 0:     Contraction form 1:</span>
-<span class="plain-syntax"> </span><span class="comment-syntax">  Cdef   Def    Indef     Cdef   Def    Indef</span>
+<span class="plain-syntax"> </span><span class="comment-syntax">!   Contraction form 0:     Contraction form 1:</span>
+<span class="plain-syntax"> </span><span class="comment-syntax">!   Cdef   Def    Indef     Cdef   Def    Indef</span>
 
-<span class="plain-syntax">     </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"a "</span><span class="plain-syntax">      </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"an "</span><span class="plain-syntax">          </span><span class="comment-syntax">Articles 0</span>
-<span class="plain-syntax">     </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"some "</span><span class="plain-syntax">   </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"some "</span><span class="plain-syntax">;       </span><span class="comment-syntax">Articles 1</span>
+<span class="plain-syntax">     </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"a "</span><span class="plain-syntax">      </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"an "</span><span class="plain-syntax">          </span><span class="comment-syntax">! Articles 0</span>
+<span class="plain-syntax">     </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"some "</span><span class="plain-syntax">   </span><span class="string-syntax">"The "</span><span class="plain-syntax"> </span><span class="string-syntax">"the "</span><span class="plain-syntax"> </span><span class="string-syntax">"some "</span><span class="plain-syntax">;       </span><span class="comment-syntax">! Articles 1</span>
 
-<span class="plain-syntax">                   </span><span class="comment-syntax">            a           i</span>
-<span class="plain-syntax">                   </span><span class="comment-syntax">            s     p     s     p</span>
-<span class="plain-syntax">                   </span><span class="comment-syntax">            m f n m f n m f n m f n</span>
+<span class="plain-syntax">                   </span><span class="comment-syntax">!             <pre><code>         a           i
+</code></pre>
+</span>
+<span class="plain-syntax">                   </span><span class="comment-syntax">!             <pre><code>         s     p     s     p
+</code></pre>
+</span>
+<span class="plain-syntax">                   </span><span class="comment-syntax">!             <pre><code>         m f n m f n m f n m f n
+</code></pre>
+</span>
 
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageGNAsToArticles</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageGNAsToArticles</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Commands.</b><span class="extract"><span class="extract-syntax">LanguageVerbLikesAdverb</span></span> is called by <span class="extract"><span class="extract-syntax">PrintCommand</span></span> when printing an <span class="extract"><span class="extract-syntax">UPTO_PE</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Commands.</b>  <code>LanguageVerbLikesAdverb</code> is called by <code>PrintCommand</code> when printing an <code>UPTO_PE</code>
 error or an inference message.  Words which are intransitive verbs, i.e.,
-which require a direction name as an adverb ("walk west"), not a noun
-("I only understood you as far as wanting to touch the ground"), should
-cause the routine to return <span class="extract"><span class="extract-syntax">true</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">LanguageVerbMayBeName</span></span> is called by <span class="extract"><span class="extract-syntax">NounDomain</span></span> when dealing with
-the player's reply to a "Which do you mean, the short stick or the
-long stick?" prompt from the parser. If the reply is another verb
+which require a direction name as an adverb (&quot;walk west&quot;), not a noun
+(&quot;I only understood you as far as wanting to touch the ground&quot;), should
+cause the routine to return <code>true</code>.</p>
+<p><code>LanguageVerbMayBeName</code> is called by <code>NounDomain</code> when dealing with
+the player's reply to a &quot;Which do you mean, the short stick or the
+long stick?&quot; prompt from the parser. If the reply is another verb
 (for example, LOOK) then then previous ambiguous command is discarded
 unless it is one of these words which could be both a verb and an
-adjective in a <span class="extract"><span class="extract-syntax">name</span></span> property.
-</p>
-
+adjective in a <code>name</code> property.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">) {</span>
@@ -280,10 +303,10 @@ adjective in a <span class="extract"><span class="extract-syntax">name</span></s
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Stubs.</b>To reduce the need for conditional compilation, we provide these stub
-routines:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Stubs.</b>  To reduce the need for conditional compilation, we provide these stub
+routines:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageIsVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>

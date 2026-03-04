@@ -668,7 +668,7 @@ void ExtensionIndex::find_used_extensions_r(build_vertex *V, int scan_count,
 
 @h Sorting criteria.
 The following give some sorting criteria, and are functions fit to be
-handed to |qsort|.
+handed to `qsort`.
 
 =
 int ExtensionIndex::compare_res_by_title(const void *res1, const void *res2) {

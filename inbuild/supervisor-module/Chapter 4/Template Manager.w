@@ -4,10 +4,10 @@ Claiming and creating copies of the template genre: used for website and
 interpreter templates when releasing an Inform project.
 
 @h Genre definition.
-The |template_genre| can be summarised as follows. Website templates
+The `template_genre` can be summarised as follows. Website templates
 are directories. They are recognised by containing either a metadata file
-called |(manifest).txt| or |index.html|, or both. They are stored in
-nests, in |N/Templates/Title-vVersion|. Their build graphs are single
+called `(manifest).txt` or `index.html`, or both. They are stored in
+nests, in `N/Templates/Title-vVersion`. Their build graphs are single
 vertices with no build or use edges.
 
 =
@@ -23,7 +23,7 @@ void TemplateManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work
 	WRITE("%S", work->title);
 }
 
-@ Templates live in the |Templates| subdirectory of a nest:
+@ Templates live in the `Templates` subdirectory of a nest:
 
 =
 pathname *TemplateManager::path_within_nest(inbuild_nest *N) {
@@ -31,7 +31,7 @@ pathname *TemplateManager::path_within_nest(inbuild_nest *N) {
 	return Pathnames::down(N->location, I"Templates");
 }
 
-@ Template copies are annotated with a structure called an |inform_template|,
+@ Template copies are annotated with a structure called an `inform_template`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -51,14 +51,14 @@ inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P, inbuild_
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
 Templates are slightly hard to recognise in isolation, but they contain
-either a manifest file, or else an |index.html|, so that will have to do.
+either a manifest file, or else an `index.html`, so that will have to do.
 
 =
 void TemplateManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
@@ -101,7 +101,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 
 @h Copying.
 Now the task is to copy a template into place in a nest. Since a template is
-a folder, we need to |rsync| it.
+a folder, we need to `rsync` it.
 
 =
 pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {

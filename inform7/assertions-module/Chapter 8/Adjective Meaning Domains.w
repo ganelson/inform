@@ -8,12 +8,12 @@ an adjective meaning is the set of values to which it can validly apply. For
 example, the meaning of "odd" for numbers has the set of all numbers as its
 domain, whereas the sense here:
 
->> Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
+> Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
 
 has only a single instance as domain -- Mrs Spong herself.
 
 We represent this as an inference subject, since that can represent either an
-instance or a base kind; but note also the |domain_kind| field. At first sight
+instance or a base kind; but note also the `domain_kind` field. At first sight
 this is redundant, but in fact it isn't, since it enables us to define
 adjectives on non-base kinds such as "lists of scenes".
 
@@ -232,7 +232,7 @@ can't be avoided.
 @ Finally, then, we can read what we currently believe the kind of the domain
 is with the following. Note that:
 
-- if the domain is undetermined, we return |NULL|;
+- if the domain is undetermined, we return `NULL`;
 - if the domain is a single instance, we return the kind of that instance.
 
 =

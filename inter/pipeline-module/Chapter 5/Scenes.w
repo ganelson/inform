@@ -2,9 +2,9 @@
 
 To compile the main/synoptic/scenes submodule.
 
-@ Our inventory |inv| already contains a list |inv->scene_nodes| of all packages
-in the tree with type |_instance| which are of the kind |K_scene|. (These do not
-have ID numbers here because they already have |instance_id| values by virtue
+@ Our inventory `inv` already contains a list `inv->scene_nodes` of all packages
+in the tree with type `_instance` which are of the kind `K_scene`. (These do not
+have ID numbers here because they already have `instance_id` values by virtue
 of being instances.)
 
 =
@@ -26,11 +26,11 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	}
 	Synoptic::end_function(I, step, iname);
 
-@ There is one argument, |chs|: the number of iterations so far. Iterations
+@ There is one argument, `chs`: the number of iterations so far. Iterations
 occur because each set of scene changes could change the circumstances in such
 a way that other scene changes are now required (through external conditions,
 not through anchors); we don't want this to lock up, so we will cap recursion.
-Within the function, a second local variable, |ch|, is a flag indicating
+Within the function, a second local variable, `ch`, is a flag indicating
 whether any change in status has or has not occurred.
 
 @d MAX_SCENE_CHANGE_ITERATION 20

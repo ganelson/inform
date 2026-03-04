@@ -9,7 +9,7 @@ stored linked list of //inter_tree_node//s.
 
 =
 typedef struct inter_node_list {
-	struct linked_list *the_nodes; /* of |inter_tree_node| */
+	struct linked_list *the_nodes; /* of `inter_tree_node` */
 	CLASS_DEFINITION
 } inter_node_list;
 
@@ -96,11 +96,11 @@ void InterNodeList::array_add(inter_node_array *NL, inter_tree_node *P) {
 	NL->list[NL->list_used++].node = P;
 }
 
-@ Note that this defers to the sorting method supplied in |cmp|; that might
-choose to use the |sort_key| value, or might not. |sort_key| is initialised to
+@ Note that this defers to the sorting method supplied in `cmp`; that might
+choose to use the `sort_key` value, or might not. `sort_key` is initialised to
 be the original position in the array, because that can then be used as a last
 resort to ensure that the sorting algorithm is stable; most implementations
-of |qsort| in the C standard library are variations on quicksort and are unstable.
+of `qsort` in the C standard library are variations on quicksort and are unstable.
 
 =
 void InterNodeList::array_sort(inter_node_array *NL,

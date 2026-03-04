@@ -6,9 +6,9 @@ Access to the keyboard and to textual windows.
 This is a mode in which the transcript of text in the main window is being
 written out to an external file.
 
-|VM_TranscriptIsOn| tests whether this mode is on. |VM_TranscriptOn| should
-be called only if it is off, and tries to turn it on, returning |true| or |false|
-according to whether or not it succeeds. |VM_TranscriptOff| should be called
+`VM_TranscriptIsOn` tests whether this mode is on. `VM_TranscriptOn` should
+be called only if it is off, and tries to turn it on, returning `true` or `false`
+according to whether or not it succeeds. `VM_TranscriptOff` should be called
 only if scripting is on.
 
 =
@@ -35,8 +35,8 @@ certain compile options are set, but they will be for the code which I7
 generates. Bit 6 is currently never written by I6; bit 5, marking singular
 nouns, is never used by this parser.
 
-(For speed reasons, reading of |DICTPAR1_NOUN| and |DICTPAR1_PREP| is done
-directly by |ParserKit| rather than by calling functions here.)
+(For speed reasons, reading of `DICTPAR1_NOUN` and `DICTPAR1_PREP` is done
+directly by `ParserKit` rather than by calling functions here.)
 
 =
 Constant #dict_par1 = 6;
@@ -115,13 +115,13 @@ the dictionary table, but mid-word) really do not matter.
 @h Keyboard Input.
 The VM must provide three routines for keyboard input:
 
-- |VM_KeyChar()| waits for a key to be pressed and then returns the
+- `VM_KeyChar()` waits for a key to be pressed and then returns the
 character chosen as a ZSCII character. Function keys are mapped to unicode
 characters so that Z-Machine and Glulxe key input can be handled the same.
-- |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
+- `VM_KeyDelay(N)` waits up to $N/10$ seconds for a key to be pressed,
 returning the ZSCII character if so, or 0 if not.
-- |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
-into the buffer |b|. If the |t| parser table is specified then it also parses it.
+- `VM_ReadKeyboard(b, t)` reads a whole newline-terminated command
+into the buffer `b`. If the `t` parser table is specified then it also parses it.
 
 There are elaborations to due with mouse clicks, but this isn't the place
 to document all of that.
@@ -180,19 +180,19 @@ needed by the rest of the template as routines for each VM.
 
 The Z-machine buffer and parse buffer formats are documented in the DM4.
 
-|VM_CopyBuffer(to, from)| copies one buffer into another.
+`VM_CopyBuffer(to, from)` copies one buffer into another.
 
-|VM_PrintBuffer(buf)| prints a buffer.
+`VM_PrintBuffer(buf)` prints a buffer.
 
-|VM_PrintToBuffer(buf, len, a, b, c)| prints something into a buffer.
+`VM_PrintToBuffer(buf, len, a, b, c)` prints something into a buffer.
 
-|VM_Tokenise(buff, parse_buff)| takes the text in the buffer |buff| and
-produces the corresponding data in the parse buffer |parse_buff| -- this is
+`VM_Tokenise(buff, parse_buff)` takes the text in the buffer `buff` and
+produces the corresponding data in the parse buffer `parse_buff` -- this is
 called tokenisation since the characters are divided into words: in traditional
 computing jargon, such clumps of characters treated syntactically as units
 are called tokens.
 
-|LTI_Insert| is documented in the DM4 and the |LTI| prefix stands for
+`LTI_Insert` is documented in the DM4 and the `LTI` prefix stands for
 "Language To Informese": it's used only by translations into non-English
 languages of play.
 
@@ -247,10 +247,10 @@ words to be recognised by tokenisation (above). In I6 for Z, a dictionary word
 value is represented at run-time by its record number in the dictionary,
 0, 1, 2, ..., in alphabetical order.
 
-|VM_InvalidDictionaryAddress(A)| tests whether |A| is a valid record address
+`VM_InvalidDictionaryAddress(A)` tests whether `A` is a valid record address
 in the dictionary data structure.
 
-|VM_DictionaryAddressToNumber(A)| and |VM_NumberToDictionaryAddress(N)|
+`VM_DictionaryAddressToNumber(A)` and `VM_NumberToDictionaryAddress(N)`
 convert between record numbers and dictionary addresses.
 
 =
@@ -266,7 +266,7 @@ convert between record numbers and dictionary addresses.
 
 @h Command Tables.
 The VM is also generated containing a data structure for the grammar
-produced by I6's |Verb| and |Extend| directives: this is essentially a
+produced by I6's `Verb` and `Extend` directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
 recognised by the parser.
@@ -284,7 +284,7 @@ recognised by the parser.
 ];
 
 @h Action functions.
-This looks up the address of a function like |TakeSub| from the table of
+This looks up the address of a function like `TakeSub` from the table of
 "action subroutines".
 
 =
@@ -304,8 +304,8 @@ fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.
 
-Clearing all windows (|WIN_ALL| here) has the side-effect of collapsing the
-status line, so we need to ensure that |statuswin_cursize| is reduced to 0,
+Clearing all windows (`WIN_ALL` here) has the side-effect of collapsing the
+status line, so we need to ensure that `statuswin_cursize` is reduced to 0,
 in order to keep it accurate.
 
 =
@@ -344,7 +344,7 @@ colours have been set.
 The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
 
-|VM_MainWindow()| switches printing back from another window, usually the
+`VM_MainWindow()` switches printing back from another window, usually the
 status line, to the main window. Note that the Z-machine implementation
 emulates the Glulx model of window rather than text colours.
 
@@ -364,12 +364,12 @@ to become the equivalent of an old-fashioned VT220 terminal, with menus
 and grids and mazes displayed lovingly in character graphics, or it can
 close up to invisibility.
 
-|VM_StatusLineHeight(n)| sets the status line to have a height of |n| lines
+`VM_StatusLineHeight(n)` sets the status line to have a height of `n` lines
 of type. (The width of the status line is always the width of the whole
 screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
-|VM_MoveCursorInStatusLine(line, column)| switches printing to the status line,
+`VM_MoveCursorInStatusLine(line, column)` switches printing to the status line,
 positioning the "cursor" -- the position at which printing will begin --
 at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from

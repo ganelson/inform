@@ -9,7 +9,7 @@ on whether the text can now be written as plain ASCII or not. Rather, it has
 to do with whether certain "difficult" characters are expressed as their literal
 character codes, or with a sequence of "escape characters".
 
-For example, in some situations |can[']t| means "can't"; and sometimes
+For example, in some situations `can[']t` means "can't"; and sometimes
 "[unicode 65]mazonia" means "Amazonia". The functions here allow the escaping
 conventions to be applied or removed.
 
@@ -18,15 +18,15 @@ using an encoding scheme to mask characters we don't want to appear. The
 scheme is expressed as a bitmap of features, each o which can be off or on.
 
 @d CT_CAPITALISE 1 /* capitalise first letter of text */
-@d CT_EXPAND_APOSTROPHES 2 /* sometimes regard |'| as |"| */
-@d CT_RECOGNISE_APOSTROPHE_SUBSTITUTION 4 /* recognise |[']| as a literal |'| */
-@d CT_RECOGNISE_UNICODE_SUBSTITUTION 8 /* recognise |[unicode N]| as a literal char */
-@d CT_DEQUOTE 16 /* ignore initial and terminal |"| pair, e.g., render |"fish"| as |fish| */
-@d CT_FOR_ARRAY 32 /* force use of |@{xx}| form not |@@ddd| */
-@d CT_BOX_QUOTATION 64 /* format line breaks into text for an I6 |box| statement */
+@d CT_EXPAND_APOSTROPHES 2 /* sometimes regard `'` as `"` */
+@d CT_RECOGNISE_APOSTROPHE_SUBSTITUTION 4 /* recognise `[']` as a literal `'` */
+@d CT_RECOGNISE_UNICODE_SUBSTITUTION 8 /* recognise `[unicode N]` as a literal char */
+@d CT_DEQUOTE 16 /* ignore initial and terminal `"` pair, e.g., render `"fish"` as `fish` */
+@d CT_FOR_ARRAY 32 /* force use of `@{xx}` form not `@@ddd` */
+@d CT_BOX_QUOTATION 64 /* format line breaks into text for an I6 `box` statement */
 @d CT_RAW 128 /* ignore everything except capitalisation and dequoting */
 @d CT_I6 256 /* ignore everything except capitalisation and dequoting */
-@d CT_EXPAND_APOSTROPHES_RAWLY 512 /* sometimes regard |'| as |"| */
+@d CT_EXPAND_APOSTROPHES_RAWLY 512 /* sometimes regard `'` as `"` */
 
 =
 void TranscodeText::from_wide_string(OUTPUT_STREAM, inchar32_t *p, int options) {
@@ -97,7 +97,7 @@ void TranscodeText::from_wide_string(OUTPUT_STREAM, inchar32_t *p, int options) 
 	}
 }
 
-@ This much simpler encoder is used when emitting text in a |say "Whatever"|
+@ This much simpler encoder is used when emitting text in a `say "Whatever"`
 phrase invocation:
 
 =

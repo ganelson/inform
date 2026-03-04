@@ -46,12 +46,12 @@ void ExtensionWebsite::update(inform_project *proj) {
 
 @ The top-level index page is at this filename.
 
-The distinction between these two calls is that |ExtensionWebsite::index_page_filename|
-returns just the filename, and produces |NULL| only if there is no materials folder,
+The distinction between these two calls is that `ExtensionWebsite::index_page_filename`
+returns just the filename, and produces `NULL` only if there is no materials folder,
 which certainly means we wouldn't want to be writing documentation to it;
-but |ExtensionWebsite::cut_way_for_index_page| cuts its way through the file-system
+but `ExtensionWebsite::cut_way_for_index_page` cuts its way through the file-system
 with a machete in order to ensure that its parent directory will indeed exist.
-That returns |NULL| if this fails because e.g. the file system objects.
+That returns `NULL` if this fails because e.g. the file system objects.
 
 =
 filename *ExtensionWebsite::index_page_filename(inform_project *proj) {
@@ -68,7 +68,7 @@ filename *ExtensionWebsite::cut_way_for_index_page(inform_project *proj) {
 	return Filenames::in(P, I"Extensions.html");
 }
 
-@ And this finds, or if |use_machete| is set, also makes way for, the directory
+@ And this finds, or if `use_machete` is set, also makes way for, the directory
 in which our mini-website is to be built.
 
 =
@@ -90,7 +90,7 @@ pathname *ExtensionWebsite::path_to_site(inform_project *proj, int relative, int
 }
 
 @ And similarly for pages which hold individual extension documentation. Note
-that if |eg_number| is positive, it should be 1, 2, 3, ... up to the number of
+that if `eg_number` is positive, it should be 1, 2, 3, ... up to the number of
 examples provided in the extension.
 
 =

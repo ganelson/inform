@@ -66,11 +66,11 @@ function togglePopup(material_id) {
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PUNCTUATION_GRP</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* used in the construction of other kinds only */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROTOCOL_GRP</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* such as |arithmetic value| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROTOCOL_GRP</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* such as <code>arithmetic value</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">BASE_CONSTRUCTOR_GRP</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* such as |number| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">BASE_CONSTRUCTOR_GRP</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* such as <code>number</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROPER_CONSTRUCTOR_GRP</span> <span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax">/* with positive arity, such as "list of ..." */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROPER_CONSTRUCTOR_GRP</span> <span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax">/* with positive arity, such as &quot;list of ...&quot; */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Besides all the properties of kinds used in this module, Inform also needs
@@ -93,12 +93,12 @@ set by commands in Neptune files, others set by calls from Inform.</p>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* B: constructing kinds */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">constructor_arity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 for base, 1 for unary, 2 for binary */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">variance</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* must be |COVARIANT| or |CONTRAVARIANT| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">variance</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* must be <code>COVARIANT</code> or <code>CONTRAVARIANT</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tupling</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* extent to which tupling is permitted */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cached_kind</span><span class="plain-syntax">; </span><span class="comment-syntax">/* cached result of |Kinds::base_construction| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cached_kind</span><span class="plain-syntax">; </span><span class="comment-syntax">/* cached result of <code>Kinds::base_construction</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* C: compatibility with other kinds */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">superkind_set_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where it says, e.g., "A rabbit is a kind of animal" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">superkind_set_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where it says, e.g., &quot;A rabbit is a kind of animal&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_constructor_casting_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_casting_rule</span><span class="plain-syntax">; </span><span class="comment-syntax">/* list of these */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_constructor_instance_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_instance_rule</span><span class="plain-syntax">; </span><span class="comment-syntax">/* list of these */</span>
 
@@ -106,7 +106,7 @@ set by commands in Neptune files, others set by calls from Inform.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ways_to_write_literals</span><span class="plain-syntax">; </span><span class="comment-syntax">/* list of ways to write this */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">named_values_created_with_table</span><span class="plain-syntax">; </span><span class="comment-syntax">/* alternatively... */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_free_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to make distinguishable instances of this kind */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant_compilation_method</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_CCM| values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant_compilation_method</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_CCM</code> values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">forbid_assertion_creation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* an enumeration which cannot be explicitly created? */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* E: knowledge about values of this kind */</span>
@@ -161,7 +161,7 @@ set by commands in Neptune files, others set by calls from Inform.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">long_block_size_function</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">serialise_function</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unserialise_function</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arithmetic_schemas</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_OPERATION_VALUES</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* of |arithmetic_schema| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arithmetic_schemas</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_OPERATION_VALUES</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* of <code>arithmetic_schema</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">arithmetic_modulus</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* L: indexing and documentation */</span>
@@ -169,7 +169,7 @@ set by commands in Neptune files, others set by calls from Inform.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_default_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* and its description in the Kinds index */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_maximum_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_minimum_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index_priority</span><span class="plain-syntax">; </span><span class="comment-syntax">/* from 1 (highest) to |LOWEST_INDEX_PRIORITY| (lowest) */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index_priority</span><span class="plain-syntax">; </span><span class="comment-syntax">/* from 1 (highest) to <code>LOWEST_INDEX_PRIORITY</code> (lowest) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">linguistic</span><span class="plain-syntax">; </span><span class="comment-syntax">/* divide off as having linguistics content */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">indexed_grey_if_empty</span><span class="plain-syntax">; </span><span class="comment-syntax">/* shaded grey in the Kinds index */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">documentation_reference</span><span class="plain-syntax">; </span><span class="comment-syntax">/* documentation symbol, if any */</span>
@@ -233,7 +233,7 @@ There aren't actually many possibilities.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NO_TUPLING</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a single kind */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ALLOW_NOTHING_TUPLING</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a single kind, or "nothing" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ALLOW_NOTHING_TUPLING</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a single kind, or &quot;nothing&quot; */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ARBITRARY_TUPLING</span> <span class="constant-syntax">10000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a list of kinds of any length */</span>
 </pre>
@@ -244,7 +244,7 @@ There aren't actually many possibilities.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LITERAL_CCM</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a numerical annotation decides the value */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_CONSTANT_CCM</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* an |instance| annotation decides the value */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_CONSTANT_CCM</span> <span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* an <code>instance</code> annotation decides the value */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SPECIAL_CCM</span> <span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax">/* special code specific to the kind of value is needed */</span>
 </pre>
@@ -276,18 +276,14 @@ base kinds, not proper constructors.</p>
 <p>Here <code>super</code> will be the super-constructor, the one which this will construct
 subkinds of. In practice this will be <code>NULL</code> when <code>CON_VALUE</code> is created, and
 then <code>CON_VALUE</code> for kinds like &quot;number&quot; or this one:</p>
-</div>
 <blockquote>
-    <p>Weight is a kind of value.</p>
+<p>Weight is a kind of value.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>but will be the constructor for &quot;door&quot; for kinds like this one:</p>
-</div>
 <blockquote>
-    <p>Portal is a kind of door.</p>
+<p>Portal is a kind of door.</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="function-syntax">KindConstructors::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">KindConstructors::new</span></span>:<br/>Kinds - <a href="2-knd.html#SP23">&#167;23</a><br/>Neptune Syntax - <a href="4-ns.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">super</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">initialisation_macro</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">group</span><span class="plain-syntax">) {</span>
@@ -438,12 +434,9 @@ we apply any defaults set in Neptune files.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-kc2.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2. </b>  However, if we create our constructor as a subkind, like so:</p>
-</div>
 <blockquote>
-    <p>A turtle is a kind of animal.</p>
+<p>A turtle is a kind of animal.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then we copy the entire &quot;animal&quot; constructor to initialise the &quot;turtle&quot; one.</p>
 <p>Note that the weak ID number is one of the things copied; this is deliberate.
 It means that all kinds of object share the same weak ID as &quot;object&quot;.</p>
@@ -459,7 +452,7 @@ It means that all kinds of object share the same weak ID as &quot;object&quot;.<
 <span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_structure</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">prev_structure</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cached_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* otherwise the superkind's cache is used by mistake */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_identifier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">(); </span><span class="comment-syntax">/* otherwise this will be called |OBJECT_TY| by mistake */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_identifier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">(); </span><span class="comment-syntax">/* otherwise this will be called <code>OBJECT_TY</code> by mistake */</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-kc2.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">

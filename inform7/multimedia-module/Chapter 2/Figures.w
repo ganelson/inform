@@ -141,7 +141,7 @@ void Figures::register_figure(wording W, wording FN) {
 kind *K_figure_name = NULL;
 
 @ This is created by an Inter kit early in Inform's run; the function below
-detects that this has happened, and sets |K_figure_name| to point to it.
+detects that this has happened, and sets `K_figure_name` to point to it.
 
 =
 int Figures::figures_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {

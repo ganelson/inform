@@ -2,8 +2,8 @@
 
 The skill of turning source text into Inter code.
 
-@ This skill can be performed externally with a shell command to |inform7|, or,
-if we are running inside |inform7| anyway, internally with a function call.
+@ This skill can be performed externally with a shell command to `inform7`, or,
+if we are running inside `inform7` anyway, internally with a function call.
 
 =
 build_skill *compile_using_inform7_skill = NULL;

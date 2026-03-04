@@ -3,13 +3,13 @@
 Some properties can be referred to in the player's commands.
 
 @ "Visible" properties can be used to describe an object: for example, if
-colour is a visible property of a car, then an individual instance of |K_car|
+colour is a visible property of a car, then an individual instance of `K_car`
 can be referred to by the player as GREEN CAR if and only if that instance has
 the colour value "green".
 
 Properly speaking it is not the property itself which is visible, but the
 combination of property and its owner. So we record visibility by attaching
-the following blob of data to a |property_permission|:
+the following blob of data to a `property_permission`:
 
 @d NO_VISIBILITY_LEVEL 0
 @d REFERRING_TO_VISIBILITY_LEVEL 1
@@ -17,7 +17,7 @@ the following blob of data to a |property_permission|:
 
 =
 typedef struct parsing_pp_data {
-	int visibility_level_in_parser; /* one of the |*_VISIBILITY_LEVEL| values above */
+	int visibility_level_in_parser; /* one of the `*_VISIBILITY_LEVEL` values above */
 	struct wording visibility_condition; /* (at least if...?) */
 	struct parse_node *visibility_sentence; /* where this is specified */
 	CLASS_DEFINITION
@@ -37,7 +37,7 @@ int Visibility::new_permission_notify(property_permission *new_pp) {
 }
 
 @ The following function sets the visibility level and condition for a given
-property and owner, returning |FALSE| if the owner cannot in fact have that
+property and owner, returning `FALSE` if the owner cannot in fact have that
 property. There's a little dance here because perhaps we want to set visibility
 for "open" when its negation "closed" has the permission, or vice versa.
 
@@ -58,7 +58,7 @@ int Visibility::set(property *pr, inference_subject *subj, int level, wording WH
 	return FALSE;
 }
 
-@ Does the property owner |subj| have any visible properties?
+@ Does the property owner `subj` have any visible properties?
 
 =
 int Visibility::any_property_visible_to_subject(inference_subject *subj,

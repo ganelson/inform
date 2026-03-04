@@ -10,7 +10,7 @@ Extensions are also works: for example, Epistemology by Eric Eve is a work.
 
 Works are identified by the pair of title and author name, each of which is an
 ISO Latin-1 string limited in length, with certain bad-news characters
-excluded (such as |/| and |:|) so that they can be used directly in filenames.
+excluded (such as `/` and `:`) so that they can be used directly in filenames.
 However, we will not want to compare these by string comparison: so we
 hash-code the combination for speed. The following structure holds a
 combination of the textual names and the hash code:
@@ -65,7 +65,7 @@ inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_strea
 }
 
 @ We hash-code all works on arrival, using the X 30011 algorithm, on the text
-of the pseudo-pathname |Author/Title|. The result is an integer between 0 and
+of the pseudo-pathname `Author/Title`. The result is an integer between 0 and
 the following constant minus 1.
 
 @d WORK_HASH_CODING_BASE 499 /* this is coprime to 30011 */
@@ -146,8 +146,8 @@ void Works::write_link_to_HTML_file(OUTPUT_STREAM, inbuild_work *work) {
 	HTML_CLOSE("a");
 }
 
-@ The Inbuild module provides the |%X| escape sequence for printing names of
-works. (The X used to stand for Extension.) |%<X| provides an abbreviated form.
+@ The Inbuild module provides the `%X` escape sequence for printing names of
+works. (The X used to stand for Extension.) `%<X` provides an abbreviated form.
 
 =
 void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
@@ -173,13 +173,13 @@ void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 
 @h Identification.
 Two works with different hash codes definitely identify different works;
-if the code is the same, we must use |Str::eq| on the actual title and author
+if the code is the same, we must use `Str::eq` on the actual title and author
 name.
 
 (Note that this is not a lexicographic function suitable for sorting
 works into alphabetical order: it cannot be, since the hash code is not
 order-preserving. To emphasise this we return true or false rather than a
-|strcmp|-style delta value.)
+`strcmp`-style delta value.)
 
 =
 int Works::match(inbuild_work *w1, inbuild_work *w2) {
@@ -226,7 +226,7 @@ int Works::is_basic_inform(inbuild_work *work) {
 
 @h Documentation links.
 This is where HTML links to extension documentation are created; the URL for
-each extension's page is generated from its |inbuild_work|.
+each extension's page is generated from its `inbuild_work`.
 
 =
 void Works::begin_extension_link(OUTPUT_STREAM, inbuild_work *work, text_stream *rubric) {

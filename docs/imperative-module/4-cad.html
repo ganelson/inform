@@ -20,25 +20,6 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-MathJax = {
-    options: {
-    	skipHtmlTags: {'[-]': ['pre']},
-    	processHtmlClass: 'mathjax_process'
-    },
-	loader: {load: ['[tex]/texhtml']},
-  	tex: {
-		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
-    	packages: {'[+]': ['texhtml']},
-    	allowTexHTML: true
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
@@ -121,7 +102,7 @@ rather than waste space giving each <code>pcalc_term</code> a pointer to it:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Within any given proposition, the cinders are numbered 0, 1, 2, ...; these
 numbers are recorded in the <code>cinder</code> field of the relevant <code>pcalc_term</code> structure.
-A term with <code>cinder</code> set to \INWEBMATH(-1\INWEBMATH) is not a cinder.</p>
+A term with <code>cinder</code> set to -1 is not a cinder.</p>
 <p>Here we count the cinders in a proposition, but compile nothing and change nothing:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

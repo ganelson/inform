@@ -3,9 +3,9 @@
 The command-line interface for the Inform 7 compiler tool.
 
 @ On some platforms the core Inform compiler is a separate command-line tool,
-so that execution should begin with |main()|, as in all C programs. But some
+so that execution should begin with `main()`, as in all C programs. But some
 Inform UI applications need to compile it into the body of a larger program:
-those should define the symbol |SUPPRESS_MAIN| and call |Main::deputy|
+those should define the symbol `SUPPRESS_MAIN` and call `Main::deputy`
 when they want I7 to run.
 
 @d PROGRAM_NAME "inform7"
@@ -57,8 +57,8 @@ int Main::deputy(int argc, char *argv[]) {
 
 @ We need to make sure that internal errors, though they should never happen,
 are reported as problem messages (fed to our HTML problems report) rather than
-simply causing an abrupt exit with only a plain text error written to |stderr|.
-See the |problems| module for more.
+simply causing an abrupt exit with only a plain text error written to `stderr`.
+See the `problems` module for more.
 
 @<Start up@> =
     @<Start up the modules@>;
@@ -117,7 +117,7 @@ isn't set up to allow more, so this error is not easy to generate.
 @ //supervisor// supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success
 message, which is displayed in the Inform app when a compilation has finished).
-This folder will usually be the |Build| subfolder of the project folder,
+This folder will usually be the `Build` subfolder of the project folder,
 but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
@@ -256,7 +256,7 @@ void Main::log_task_syntax_summary(void) {
 @h Command line processing.
 The bulk of the command-line options are both registered and processed by
 //supervisor// rather than here: in particular, every switch ever used by the
-Inform UI apps is really a command to //supervisor// not to |inform7|.
+Inform UI apps is really a command to //supervisor// not to `inform7`.
 
 =
 int Main::read_command_line(int argc, char *argv[]) {
@@ -278,8 +278,8 @@ int Main::read_command_line(int argc, char *argv[]) {
 	return (sub != NO_CLSUB)?TRUE:FALSE;
 }
 
-@ What remains here are just some eldritch options for testing the |inform7|
-compiler via Delia scripts in |intest|.
+@ What remains here are just some eldritch options for testing the `inform7`
+compiler via Delia scripts in `intest`.
 
 @e INFORM_TESTING_CLSG
 
@@ -330,8 +330,8 @@ compiler via Delia scripts in |intest|.
 		U"how much inbuild should explain: lowest is 0 (default), highest is 3");
 	CommandLine::end_group();
 
-@ Three of the five options here actually configure the |problems| module
-rather than |core|.
+@ Three of the five options here actually configure the `problems` module
+rather than `core`.
 
 =
 void Main::switch(int id, int val, text_stream *arg, void *state) {

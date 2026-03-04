@@ -14,7 +14,7 @@ Each different architecture is represented by one of these:
 
 =
 typedef struct inter_architecture {
-	struct text_stream *shorthand; /* such as |32d| */
+	struct text_stream *shorthand; /* such as `32d` */
 	int sixteen_bit;
 	int debug_enabled;
 	CLASS_DEFINITION
@@ -64,7 +64,7 @@ filename *Architectures::canonical_textual(pathname *P, inter_architecture *A) {
 }
 
 @h Shorthand.
-These functions turn an architecture into a text like |16d| and back again:
+These functions turn an architecture into a text like `16d` and back again:
 
 =
 text_stream *Architectures::to_codename(inter_architecture *A) {

@@ -36,7 +36,7 @@ void Templates::new_path(pathname *P) {
 @ The following searches for a named file in a named template, returning
 the template path which holds the template if it exists. This might look a
 pretty odd thing to do -- weren't we looking for the file itself? But the
-answer is that |Templates::seek_file| is really used to detect
+answer is that `Templates::seek_file` is really used to detect
 the presence of templates, not of files.
 
 =
@@ -84,7 +84,7 @@ template *Templates::find_file(text_stream *name) {
 			return t;
 
 @h Searching for template files.
-If we can't find the file |name| in the template specified, we try looking
+If we can't find the file `name` in the template specified, we try looking
 inside "Standard" instead (if we can find a template of that name).
 
 =

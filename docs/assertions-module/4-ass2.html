@@ -93,12 +93,9 @@ data structure.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Generalisations are essentially fragments of parse tree stored for later use.
 They handle sentences like</p>
-</div>
 <blockquote>
-    <p>In every container is a coin.</p>
+<p>In every container is a coin.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which are done by recognising the prototype part (&quot;in every container&quot;) in
 the parse tree and grafting on a duplicate of the assembly part (&quot;a coin&quot;)
 in place of the <code>EVERY_NT</code> subtree (&quot;every container&quot;). Sometimes the EVERY
@@ -111,7 +108,7 @@ generalisations which apply to it.</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">look_for</span><span class="plain-syntax">; </span><span class="comment-syntax">/* prototype situation to look for */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">what_to_make</span><span class="plain-syntax">; </span><span class="comment-syntax">/* subtree for what to assemble */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substitute_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* position under |look_for| of the EVERY node */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substitute_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* position under <code>look_for</code> of the EVERY node */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in list of generalisations about kind */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">generalisation</span><span class="plain-syntax">;</span>
@@ -139,8 +136,8 @@ each inference subject:</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">assemblies_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">generalisation_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* kinds only: assembly instructions, if any */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">application</span><span class="plain-syntax"> *</span><span class="identifier-syntax">applications_so_far</span><span class="plain-syntax">; </span><span class="comment-syntax">/* instances only: progress */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">named_after</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name derived from another: e.g. "Jane's nose" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">named_after_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text of the derived part, e.g. "nose" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">named_after</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name derived from another: e.g. &quot;Jane's nose&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">named_after_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text of the derived part, e.g. &quot;nose&quot; */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">assemblies_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure assemblies_data is private to this section.</li></ul>
@@ -181,19 +178,13 @@ each inference subject:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. New generalisations.</b>  Here a new generalisation is made. The <code>look_for</code> subtree contains the
 <code>EVERY_NT</code> node, but it might be either at the top, as here:</p>
-</div>
 <blockquote>
-    <p>Every container is in the Lumber Room.</p>
+<p>Every container is in the Lumber Room.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>or the first child of a <code>RELATIONSHIP_NT</code> node, as here:</p>
-</div>
 <blockquote>
-    <p>In every container is a vehicle.</p>
+<p>In every container is a vehicle.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In the second case the <code>what_to_make</code> subtree is an <code>COMMON_NOUN_NT</code>, and in the
 first it's a <code>RELATIONSHIP_NT</code> subtree.</p>
 </div>
@@ -426,7 +417,7 @@ we actually do is to insert new sentences after the current one.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">, </span><span class="identifier-syntax">implicitness_count_ANNOT</span><span class="plain-syntax">) + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">new_sentence</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">));</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* temporarily make the |EVERY_NT| node refer to the specific new |infs|: */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* temporarily make the <code>EVERY_NT</code> node refer to the specific new <code>infs</code>: */</span>
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP1" class="function-link"><span class="function-syntax">Refiner::give_subject_to_noun</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">g</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">substitute_at</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* make the new sentence an assertion: */</span>
@@ -437,7 +428,7 @@ we actually do is to insert new sentences after the current one.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::copy_subtree</span><span class="plain-syntax">(</span><span class="identifier-syntax">g</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">what_to_make</span><span class="plain-syntax">, </span><span class="identifier-syntax">new_sentence</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_sentence</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* restore the |EVERY_NT| node, now that the tree containing it has been copied: */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* restore the <code>EVERY_NT</code> node, now that the tree containing it has been copied: */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">g</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">substitute_at</span><span class="plain-syntax">, </span><span class="identifier-syntax">EVERY_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">g</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">substitute_at</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs_k</span><span class="plain-syntax">);</span>
 

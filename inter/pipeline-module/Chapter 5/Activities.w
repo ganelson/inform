@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/activities submodule.
 
-@ Our inventory |inv| already contains a list |inv->activity_nodes| of all packages
-in the tree with type |_activity|.
+@ Our inventory `inv` already contains a list `inv->activity_nodes` of all packages
+in the tree with type `_activity`.
 
 =
 void SynopticActivities::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -15,7 +15,7 @@ void SynopticActivities::compile(inter_tree *I, pipeline_step *step, tree_invent
 	@<Define ACTIVITY_FLAGS array@>;
 }
 
-@ Each activity package contains a numeric constant with the symbol name |activity_id|.
+@ Each activity package contains a numeric constant with the symbol name `activity_id`.
 We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
 so we change the values of these constants accordingly.
 

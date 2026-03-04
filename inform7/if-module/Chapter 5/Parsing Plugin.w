@@ -76,7 +76,7 @@ int ParsingPlugin::new_subject_notify(inference_subject *subj) {
 	return FALSE;
 }
 
-@ We make use of a new kind of rvalue in this feature: |K_understanding|. This
+@ We make use of a new kind of rvalue in this feature: `K_understanding`. This
 is created in //kinds: Familiar Kinds//, not here, but we do have to provide
 the following functions to handle its constant rvalues. These correspond to
 //command_grammar// objects, so comparing them, and producing rvalues, is easy:
@@ -145,7 +145,7 @@ int ParsingPlugin::new_variable_notify(nonlocal_variable *var) {
 	return FALSE;
 }
 
-@ The Inter-level property |name| provides words by which to recognise an
+@ The Inter-level property `name` provides words by which to recognise an
 object in the command parser. It doesn't correspond to any I7-level property,
 and is in that sense (okay, ironically) "nameless".
 
@@ -160,10 +160,10 @@ property *ParsingPlugin::name_property(void) {
 	return P_name;
 }
 
-@ At model completion time, we need to give every object instance the |name|
-property and also any |parse_name| routine it may need; and we similarly
-define |parse_name| routines for kinds of objects. Note that kinds never
-get the |name| property.
+@ At model completion time, we need to give every object instance the `name`
+property and also any `parse_name` routine it may need; and we similarly
+define `parse_name` routines for kinds of objects. Note that kinds never
+get the `name` property.
 
 =
 int ParsingPlugin::complete_model(int stage) {
@@ -187,7 +187,7 @@ int ParsingPlugin::complete_model(int stage) {
 	return FALSE;
 }
 
-@ Values for the |name| property are actually small arrays of dictionary words.
+@ Values for the `name` property are actually small arrays of dictionary words.
 
 @<Assert the Inter name property@> =
 	if (Naming::object_is_privately_named(I) == FALSE) {
@@ -218,7 +218,7 @@ where grammar has specified a need. (By default, this will not happen.)
 
 @ Finally, this feature needs just one new annotation for the parse tree:
 
-@e constant_command_grammar_ANNOT /* |command_grammar|: for constant values */
+@e constant_command_grammar_ANNOT /* `command_grammar`: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(constant_command_grammar, command_grammar)

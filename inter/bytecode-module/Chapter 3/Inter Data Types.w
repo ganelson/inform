@@ -7,10 +7,10 @@ Abstractly, an Inter type is a combination of a "constructor" and 0 or more
 "operand types", the number depending on which constructor is used. If this
 is 0, type is a "base" constructor.
 
-Constructors are identified textually by keywords, such as |int32|, and also
-by "constructor ID" numbers, such as |INT32_ITCONC|. This one is a base;
-whereas |list|, for example, is not -- |list of int32| is a valid type, with
-1 type operand, but |list| alone is not sufficient to specify a type.
+Constructors are identified textually by keywords, such as `int32`, and also
+by "constructor ID" numbers, such as `INT32_ITCONC`. This one is a base;
+whereas `list`, for example, is not -- `list of int32` is a valid type, with
+1 type operand, but `list` alone is not sufficient to specify a type.
 
 @ These are the constructor IDs. Note that changing any of these values would
 invalidate existing Inter binary files, necessitating a bump of //The Inter Version//.
@@ -144,23 +144,23 @@ inter_type_constructor *InterTypes::constructor_from_name(text_stream *name) {
 
 @h Simple types and type names.
 We need to represent types very economically in terms of memory. In principle,
-the set of abstract types is infinite (consider for example |int32|, |list of int32|,
-|list of list of int32|, ...), so there is no limit to the memory which might
+the set of abstract types is infinite (consider for example `int32`, `list of int32`,
+`list of list of int32`, ...), so there is no limit to the memory which might
 be required.
 
 We use the following representations, starting with the most concise:
 
-(1) A "TID", or type ID, is a single |inter_ti| value, often stored as a field
-in the bytecode for some instruction. For example, a |VARIABLE_IST| instruction
+(1) A "TID", or type ID, is a single `inter_ti` value, often stored as a field
+in the bytecode for some instruction. For example, a `VARIABLE_IST` instruction
 includes a field holding the TID of its variable's type. This can only represent
 simple descriptions (see below), and you need to know what package a TID
 came from (i.e., what symbols table was in use there) to unravel it.
 
 (2) An //inter_type// is a lightweight structure intended for passing around
 the functions in this section. It can also only represent simple descriptions -- in
-fact, TIDs and |inter_type|s can faithfully be converted back and forth -- but
+fact, TIDs and `inter_type`s can faithfully be converted back and forth -- but
 has the advantage that you don't need any package context to understand it.
-Arguably this should be called |inter_simple_type_description|, but this is the
+Arguably this should be called `inter_simple_type_description`, but this is the
 one we use most often, so brevity is good.
 
 (3) An //inter_semisimple_type_description// is a much larger structure used only
@@ -171,7 +171,7 @@ set of semi-simple type descriptions.
 The following definitions look circular, but are not:[1]
 
 - A "simple type description" is either a constructor for which all type
-operands are |unchecked|, such as |int32| or |list of unchecked|, or else a
+operands are `unchecked`, such as `int32` or `list of unchecked`, or else a
 "type name".
 
 - A "semi-simple type description" is either a constructor for which all
@@ -180,22 +180,22 @@ type operands are simple, or else a "type name".
 - A "type name" is a name defined with a specific semi-simple type description.
 
 [1] Because the hierarchy of definitions of type names must be well-founded.
-You cannot define |K_apple| to equal |K_pear| and vice versa. Each type name
+You cannot define `K_apple` to equal `K_pear` and vice versa. Each type name
 must be defined in terms of a finite number of simple types, once all type
 name substitution has been performed, and no type name can ever lead back to
 itself.
 
 @ By using type names we can (indirectly) represent any abstract type using
-any of the representations above. For example, |list of list of int32| is neither
+any of the representations above. For example, `list of list of int32` is neither
 simple nor semi-simple, but we can get to it by:
 
-- Defining |K_list_of_int32| as a type name for |list of int32|, which is
+- Defining `K_list_of_int32` as a type name for `list of int32`, which is
 semi-simple.
 
-- Defining |K_list_of_list_of_int32| as a type name for |list of K_list_of_int32|,
+- Defining `K_list_of_list_of_int32` as a type name for `list of K_list_of_int32`,
 which is semi-simple.
 
-And we now have |K_list_of_list_of_int32|, which is simple since it is a bare
+And we now have `K_list_of_list_of_int32`, which is simple since it is a bare
 type name, and so can be stored in an //inter_type// or a TID.
 
 @ So, then, this holds any simple type description:
@@ -245,9 +245,9 @@ inter_ti InterTypes::constructor_code(inter_type type) {
 	return InterTypes::constructor(type)->constructor_ID;
 }
 
-@ In some ways the most useful simple type is |unchecked|. This declares that
+@ In some ways the most useful simple type is `unchecked`. This declares that
 all type-checking rules are waived for the data being described. A program
-in which all data is |unchecked| is a program with no type-checking at all.
+in which all data is `unchecked` is a program with no type-checking at all.
 
 =
 inter_type InterTypes::unchecked(void) {
@@ -261,7 +261,7 @@ int InterTypes::is_unchecked(inter_type type) {
 
 @ Access to the arity and operands depends on whether there's a typename or not:
 only with a typename can we have an arity other than the default (e.g. a
-|FUNCTION_ITCONC| with arity 5) or operands other than |unchecked|.
+`FUNCTION_ITCONC` with arity 5) or operands other than `unchecked`.
 
 =
 int InterTypes::arity_is_possible(inter_type type, int arity) {
@@ -659,8 +659,8 @@ inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location
 
 @h Writing to text.
 We offer two functions here so that it's possible to force a typename to print
-its full definition out: otherwise printing the typename |K_whatever| would
-just print that name, |K_whatever|.
+its full definition out: otherwise printing the typename `K_whatever` would
+just print that name, `K_whatever`.
 
 =
 void InterTypes::write_type(OUTPUT_STREAM, inter_type type) {
@@ -758,10 +758,10 @@ int InterTypes::unsigned_literal_is_in_range(long long int N, inter_type type) {
 	return TRUE;
 }
 
-@ This is what matters: whether we allow a value of type |A| to be used where
-a value of type |B| is expected.
+@ This is what matters: whether we allow a value of type `A` to be used where
+a value of type `B` is expected.
 
-Anything can be used as |unchecked|, and |unchecked| can be used as anything.
+Anything can be used as `unchecked`, and `unchecked` can be used as anything.
 
 Otherwise, they must both be base types, or both constructed: and then we
 split into four cases as to whether they are the same or different.
@@ -787,7 +787,7 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	}
 }
 
-@ This expresses that |int2 <= int8 <= int16 <= int32|.
+@ This expresses that `int2 <= int8 <= int16 <= int32`.
 
 @<Different base@> =
 	switch (A_itc->constructor_ID) {
@@ -826,9 +826,9 @@ enumerated type for "thing", for example.
 	@<Throw type mismatch error@>;
 
 @ If the same proper constructor is used, the question is then whether the
-operands match. For example, |list of int2| can be used as |list of int32|
-but not vice versa: that's a covariant operand. But |function int2 -> text|
-cannot be used as |function int32 -> text|, it's the other way around: that
+operands match. For example, `list of int2` can be used as `list of int32`
+but not vice versa: that's a covariant operand. But `function int2 -> text`
+cannot be used as `function int32 -> text`, it's the other way around: that
 is an example of contravariance. In the simple type system of Inter, only
 function arguments are contravariant.
 
@@ -891,7 +891,7 @@ function arguments are contravariant.
 	return InterErrors::plain(err, eloc);
 
 @h The type of a defined symbol.
-Note that a typename can be used as a value, and that if so, its type is |unchecked|.
+Note that a typename can be used as a value, and that if so, its type is `unchecked`.
 
 =
 inter_type InterTypes::of_symbol(inter_symbol *symb) {

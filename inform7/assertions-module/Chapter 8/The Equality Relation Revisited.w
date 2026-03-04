@@ -144,13 +144,14 @@ int EqualityDetails::assert_empty(bp_family *self, binary_predicate *bp,
 
 @h Compilation.
 Since we are compiling to I6, which is itself a C-level programming
-language, it looks at first as if we can compile is into |==| when
-testing equality and |=| when asserting it: thus
+language, it looks at first as if we can compile is into `==` when
+testing equality and `=` when asserting it: thus
 
->> now the score is 10;
->> if the score is 10, ...
+> now the score is 10;
 
-would compile to |score = 10;| and |if (score == 10) ...| respectively.
+> if the score is 10, ...
+
+would compile to `score = 10;` and `if (score == 10) ...` respectively.
 
 But there are three problems with this simplistic approach to "A is B".
 
@@ -228,7 +229,7 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 
 @ So here is the exceptional case (a) mentioned above. Suppose we have:
 
->> if the lantern is bright, ...
+> if the lantern is bright, ...
 
 where "bright" is one value of "luminance", which is both a kind of value
 and also a property. We then want to test if the luminance property of the
@@ -300,8 +301,8 @@ lantern is bright".
 		}
 	}
 
-@ Rather than just returning |FALSE| for a generic problem message, we issue
-one that's more helpfully specific and return |TRUE|.
+@ Rather than just returning `FALSE` for a generic problem message, we issue
+one that's more helpfully specific and return `TRUE`.
 
 @<Issue problem message for being unable to set equal@> =
 	if (Rvalues::to_instance(asch->pt0.constant)) {

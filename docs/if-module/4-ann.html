@@ -66,9 +66,9 @@ rules about that are gathered into this structure:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_naming_data</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_noun</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as "taking action" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">present_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as "dropping" or "removing it from" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">past_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as "dropped" or "removed it from" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_noun</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as &quot;taking action&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">present_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as &quot;dropping&quot; or &quot;removing it from&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">past_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as &quot;dropped&quot; or &quot;removed it from&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">it_optional</span><span class="plain-syntax">; </span><span class="comment-syntax">/* noun optional when describing the second noun? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">abbreviable</span><span class="plain-syntax">; </span><span class="comment-syntax">/* preposition optional after the first noun, if there's no second? */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">action_naming_data</span><span class="plain-syntax">;</span>
@@ -264,7 +264,7 @@ idea to use this when parsing action patterns.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  However, &lt;action-name&gt; can also be made to match an action name without
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  However, <action-name> can also be made to match an action name without
 a final preposition, if that preposition is on the following list. For
 example, it allows &quot;listening&quot; to match the listening to action; this is
 needed because of the almost unique status of &quot;listening&quot; in having an

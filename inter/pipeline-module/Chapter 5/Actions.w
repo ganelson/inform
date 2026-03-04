@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/actions submodule.
 
-@ Our inventory |inv| already contains a list |inv->action_nodes| of all packages
-in the tree with type |_action|.
+@ Our inventory `inv` already contains a list `inv->action_nodes` of all packages
+in the tree with type `_action`.
 
 =
 void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -18,7 +18,7 @@ void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory
 	@<Define DB_ACTION_DETAILS function@>;
 }
 
-@ Each action package contains a numeric constant with the symbol name |action_id|.
+@ Each action package contains a numeric constant with the symbol name `action_id`.
 We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
 so we change the values of these constants accordingly.
 

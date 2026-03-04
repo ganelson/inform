@@ -7,14 +7,14 @@ variant forms depending on the kinds of their arguments. Each of those forms
 is compiled as a different function at runtime.[1] For example, given the
 definition:
 
->> To judge (V - a value) against (W - a value): ...
+> To judge (V - a value) against (W - a value): ...
 
 the invocation:
 
->> judge 2 against "two";
+> judge 2 against "two";
 
 would result in a request to compile a version of "to judge... against..."
-with the kind |phrase (number, text) -> nothing|.
+with the kind `phrase (number, text) -> nothing`.
 
 If the kind involves variables, the caller must also supply the current
 values in force, so that there is no possible ambiguity in how we read K.
@@ -44,7 +44,7 @@ inter_name *PhraseRequests::complex_request(id_body *idb, kind *req_kind,
 To judge (V - a value) against (W - a value):
 	(- JudgeAgainst({V}, {W}); -)
 =
-We then assume that |JudgeAgainst| is provided by some kit of Inter code, and
+We then assume that `JudgeAgainst` is provided by some kit of Inter code, and
 can handle values of any kind which this may produce. So we return its iname,
 and do not make a request. If the definition is any more complex than this,
 we simply give in and throw a problem.

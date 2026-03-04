@@ -4,8 +4,8 @@ To decide whether letters are upper or lower case, and convert
 between the two.
 
 @h Char Is Of Case.
-The following decides whether a character |c| belongs to case |case|, where
-0 means lower case and 1 means upper. |c| is interpreted according to the
+The following decides whether a character `c` belongs to case `case`, where
+0 means lower case and 1 means upper. `c` is interpreted according to the
 character casing chart in "UnicodeData.i6t", which means, it will be
 ZSCII for the Z-machine and Unicode for Glulx.
 
@@ -37,7 +37,7 @@ ZSCII for the Z-machine and Unicode for Glulx.
 ];
 
 @h Char To Case.
-And the following converts character |c| to the desired case, or returns
+And the following converts character `c` to the desired case, or returns
 it unchanged if it is not a letter with variant casings.
 
 =

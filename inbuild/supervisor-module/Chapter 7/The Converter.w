@@ -4,7 +4,7 @@ To convert an extension from the traditional one-file format to the more
 modern directory-based format.
 
 @ In all paths through this function, we must write either good news or bad
-to |OUT|: bad news usually following from the file system refusing to create
+to `OUT`: bad news usually following from the file system refusing to create
 a text file or directory.
 
 =

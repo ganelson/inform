@@ -38,8 +38,8 @@ inter_error_message *VerifyingInter::instruction(inter_package *owner, inter_tre
 	}
 	
 @ Some instructions create new symbols, giving them definitions: for example,
-if |P| is |constant bakers_dozen = 13| then a new |bakers_dozen| symbol must
-be created and given the node |P| as its definition.
+if `P` is `constant bakers_dozen = 13` then a new `bakers_dozen` symbol must
+be created and given the node `P` as its definition.
 
 We create the symbol when we create the instruction. But the assignment of the
 instruction as the definition of the symbol happens only during verification.
@@ -91,8 +91,8 @@ own work (i.e. bugs in the code generating instructions), but also because raw
 bytecode read in by //Inter in Binary Files// is not trustworthy. There's less
 chance of garbage bytecode crashing the compiler if we take precautions.
 
-All that //InterInstruction::verify// does is to call the |CONSTRUCT_VERIFY_MTID|
-method for the construct of the instruction. So, for example, for |PROPERTY_IST|
+All that //InterInstruction::verify// does is to call the `CONSTRUCT_VERIFY_MTID`
+method for the construct of the instruction. So, for example, for `PROPERTY_IST`
 instructions this is done by //PropertyInstruction::verify//, and so on.
 
 @<Apply construct-specific checks@> =
@@ -103,8 +103,8 @@ convenient for those implementations to use the functions below for some common
 sorts of check.
 
 Firstly, this tests that a field in a bytecode instruction which purportedly
-holds a symbol ID, |SID|, actually does so: and that the symbol if defined
-is defined by a given |construct|. It can still be undefined (this allows for,
+holds a symbol ID, `SID`, actually does so: and that the symbol if defined
+is defined by a given `construct`. It can still be undefined (this allows for,
 e.g., the symbol to be wired to a plug for definition in some other compilation
 block, or for it not to be defined yet because the rest of the bytecode for
 the program has not yet been loaded); but it cannot be the wrong sort of thing.
@@ -178,8 +178,8 @@ inter_error_message *VerifyingInter::POID_field(inter_package *owner, inter_tree
 	return NULL;
 }
 
-@ Next, a field which purportedly holds a type constructor such as |INT32_ITCONC|
-or |FUNCTION_ITCONC|: see //Inter Data Types//.
+@ Next, a field which purportedly holds a type constructor such as `INT32_ITCONC`
+or `FUNCTION_ITCONC`: see //Inter Data Types//.
 
 =
 inter_error_message *VerifyingInter::constructor_field(inter_tree_node *P, int field) {

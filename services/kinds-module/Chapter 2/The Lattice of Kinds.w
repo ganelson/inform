@@ -9,7 +9,7 @@ it is true that:
 
 - $K \leq K$ -- reflexivity.
 - If $K\leq L$ and $L\leq M$ then $K\leq M$ -- transitivity.
-- |K_nil| $\leq K \leq$ |value| -- there are top and bottom elements.[2]
+- `K_nil` $\leq K \leq$ `value` -- there are top and bottom elements.[2]
 - If $K \leq L$ then a value of kind $K$ can always be substituted for a
 value of kind $L$ without modification -- the Liskov substitution principle.[3]
 - There is a join $K\lor L$ and a meet $K\land L$ such that
@@ -17,12 +17,12 @@ $K\land L\leq K, L\leq K\lor L$, where $K\lor L$ is minimal and $K\land L$
 maximal with that property.
 
 [1] Introducing kind variables complicates the picture, because whether or not
-|list of K| conforms to |list of arithmetic values| depends on the current
-value of |K| and therefore on the current context.
+`list of K` conforms to `list of arithmetic values` depends on the current
+value of `K` and therefore on the current context.
 
-[2] |K_nil| is a kind which exists only for kind-checking purposes, meaning
+[2] `K_nil` is a kind which exists only for kind-checking purposes, meaning
 "a member of the empty set". Clearly no value can ever have this. This
-differs from |K_void|, which means "the absence of a value". Neither can ever
+differs from `K_void`, which means "the absence of a value". Neither can ever
 be the kind of a variable, of course.
 
 [3] Also known as strong behavioural subtyping. This only applies to definite
@@ -30,9 +30,9 @@ kinds, because no value ever has an indefinite kind.
 
 @ In general there is no guarantee of antisymmetry, i.e., that $K\leq L$
 and $L\leq K$ must mean $K = L$, nor that $K\lor L$ or $K\land L$ are unique.
-We could imagine creating indefinite kinds |rhyming with lumber value| and
-|calculator value| such that |number| and |real number| would conform to both.
-If so, then either one of |rhyming with lumber value| and |calculator value|
+We could imagine creating indefinite kinds `rhyming with lumber value` and
+`calculator value` such that `number` and `real number` would conform to both.
+If so, then either one of `rhyming with lumber value` and `calculator value`
 could equally well serve as $K\lor L$. The set of kinds is therefore not
 formally a lattice.
 
@@ -46,7 +46,7 @@ following shows it in action.
  
 = (text from Figures/conformance.txt as REPL)
 
-@ The indefinite |arithmetic kind| used by Inform is a good example of what
+@ The indefinite `arithmetic kind` used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:
  
 = (text from Figures/av-conformance.txt as REPL)
@@ -75,15 +75,15 @@ See //Latticework::order_relation// for more.
 @d CONTRAVARIANT -1
 
 @h Lattice operations.
-Every $K$ other than |value|, |K_nil| and |K_void| has a minimal element $K^+$
+Every $K$ other than `value`, `K_nil` and `K_void` has a minimal element $K^+$
 such that $K\leq K^+$ but $K\neq K^+$: we call this the "superkind" of $K$.
 Assuming kinds form a lattice, this will be unique. The following function
-returns the superkind, or |NULL| for special cases which do not have one.
+returns the superkind, or `NULL` for special cases which do not have one.
 
 It is in this function that the basic conformance facts are expressed. We
 hard-code that for the built-in indefinite kinds, and give the client tool
 a chance to provide other conformances. For Inform, for example, the callback
-function is what tells us that the superkind of |man| is |person|.
+function is what tells us that the superkind of `man` is `person`.
 
 =
 kind *Latticework::super(kind *K) {
@@ -124,10 +124,10 @@ they pass through contravariant constructors.
 
 The main use of this for Inform is to handle literals such as:
 
->> { 1, 2.1415, "frog" }
+> { 1, 2.1415, "frog" }
 
 The kind of this is by definition the join of the kinds of the values in the
-list, which as it happens is |K_sayable_value| -- an indefinite kind, so that
+list, which as it happens is `K_sayable_value` -- an indefinite kind, so that
 such a list can't be constructed as data.
 
 =
@@ -171,8 +171,8 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 	}
 }
 
-@ This ensures that $K\land$ |K_nil| $ = $ |K_nil|, and that
-$K\lor$ |K_nil| $ = K$.
+@ This ensures that $K\land$ `K_nil` $ = $ `K_nil`, and that
+$K\lor$ `K_nil` $ = K$.
 
 @<Deal with nil@> =
 	if ((Kinds::eq(K1, K_nil))) return (direction > 0)?K2:K1;
@@ -181,7 +181,7 @@ $K\lor$ |K_nil| $ = K$.
 @ If one of $K_1$, $K_2$ uses floating-point and the other doesn't, then
 we promote the one which doesn't before taking the join. This is useful
 when inferring the kind of a constant list or column which mixes floating-point
-and integer literals; recall that |number| $\not\leq$ |real number|, so
+and integer literals; recall that `number` $\not\leq$ `real number`, so
 without this promotion there would be no way to join such kinds.
 
 @<Deal with floating-point promotions@> =
@@ -207,10 +207,10 @@ Conformance implies compatibility but not vice versa. For example:
 
 = (text from Figures/compatibility.txt as REPL)
 
-Note that |number| is compatible with |real number|. Run-time code will be
+Note that `number` is compatible with `real number`. Run-time code will be
 needed to convert the value, but the answer is "always". We also see that
-|device| is always compatible with |thing| -- every device is a thing --
-but also that |thing| is sometimes compatible with |device|. If we pass a
+`device` is always compatible with `thing` -- every device is a thing --
+but also that `thing` is sometimes compatible with `device`. If we pass a
 thing to a function expecting to see a device, run-time code can check whether
 the value passed is indeed a device, and reject the call with a run-time error
 if not.
@@ -219,7 +219,7 @@ if not.
 occurs when matching phrase prototypes. This is difficult because it involves
 kind variables:
 
->> To add (new entry - K) to (L - list of values of kind K) ...
+> To add (new entry - K) to (L - list of values of kind K) ...
 
 This matches "add 23 to U" if "L" is a list of numbers, but not if it
 is a list of times.
@@ -233,19 +233,19 @@ of A to Z in a single array.
 = (early code)
 kind *values_of_kind_variables[MAX_KIND_VARIABLES];
 
-@ In theory the kind-checker only needs to read the values of |A| to |Z|, not
-to write them. If |Q| is currently equal to |number|, then it should check
-kinds against |Q| exactly as if it were checking against |number|. It can
-indeed do this -- that's the |MATCH_KIND_VARIABLES_AS_VALUES| mode. It can
+@ In theory the kind-checker only needs to read the values of `A` to `Z`, not
+to write them. If `Q` is currently equal to `number`, then it should check
+kinds against `Q` exactly as if it were checking against `number`. It can
+indeed do this -- that's the `MATCH_KIND_VARIABLES_AS_VALUES` mode. It can
 also ignore the values of kind variables and treat them as names, so that
-|Q| matches only against |Q|, regardless of its current value; that's the
-|MATCH_KIND_VARIABLES_AS_SYMBOLS| mode. Or it can match anything
-against |Q|, which is |MATCH_KIND_VARIABLES_AS_UNIVERSAL| mode.
+`Q` matches only against `Q`, regardless of its current value; that's the
+`MATCH_KIND_VARIABLES_AS_SYMBOLS` mode. Or it can match anything
+against `Q`, which is `MATCH_KIND_VARIABLES_AS_UNIVERSAL` mode.
 
-More interestingly, the kind-checker can also set the values of |A| to |Z|.
+More interestingly, the kind-checker can also set the values of `A` to `Z`.
 This is convenient since checking their correctness is more or less the same
 thing as inferring what they seem to be in a given situation. So this is
-|MATCH_KIND_VARIABLES_INFERRING_VALUES| mode.
+`MATCH_KIND_VARIABLES_INFERRING_VALUES` mode.
 
 @d MATCH_KIND_VARIABLES_AS_SYMBOLS 0
 @d MATCH_KIND_VARIABLES_INFERRING_VALUES 1
@@ -260,12 +260,12 @@ sets the relevant entry in the above array but also creates a note that
 this has been done. (If a phrase is correctly matched by the specification
 matcher, a linked list of these notes is attached to the results: thus
 a match of "add 23 to U" in the example above would produce a successful
-result plus a note that |K| has to be |list of numbers|.)
+result plus a note that `K` has to be `list of numbers`.)
 
 =
 typedef struct kind_variable_declaration {
 	int kv_number; /* must be from 1 to 26 */
-	struct kind *kv_value; /* must be a definite non-|NULL| kind */
+	struct kind *kv_value; /* must be a definite non-`NULL` kind */
 	struct kind_variable_declaration *next;
 	CLASS_DEFINITION
 } kind_variable_declaration;
@@ -279,9 +279,9 @@ void Latticework::unpack_kvd(kind **vals, kind_variable_declaration *kvd) {
 }
 
 @h Common code.
-So the following routine tests conformance if |comp| is |FALSE|, returning
-|ALWAYS_MATCH| if and only if |from| $\leq$ |to| holds; and otherwise it tests
-compatibility, returning |ALWAYS_MATCH|, |SOMETIMES_MATCH| or |NEVER_MATCH|
+So the following routine tests conformance if `comp` is `FALSE`, returning
+`ALWAYS_MATCH` if and only if `from` $\leq$ `to` holds; and otherwise it tests
+compatibility, returning `ALWAYS_MATCH`, `SOMETIMES_MATCH` or `NEVER_MATCH`
 as appropriate.
 
 =
@@ -315,7 +315,7 @@ int Latticework::order_relation(kind *from, kind *to, int allow_casts) {
 	if (Kinds::eq(to, K_value)) return ALWAYS_MATCH;
 	if (Kinds::eq(from, K_nil)) return ALWAYS_MATCH;
 
-@ |NULL| as a kind means "unknown". It's compatible only with itself
+@ `NULL` as a kind means "unknown". It's compatible only with itself
 and, of course, "value".
 
 @<Deal separately with the special role of the unknown kind@> =
@@ -382,12 +382,12 @@ to 26 ("Z"), and that it is also possible to assign them a domain, or a
 "declaration". This marks that they are free to take on a value, within
 that domain. For example, in
 
->> To add (new entry - K) to (L - list of values of kind K) ...
+> To add (new entry - K) to (L - list of values of kind K) ...
 
-the first appearance of |K| will be an ordinary use of a kind variable,
-whereas the second has the declaration |value| -- meaning that it can
-become any kind matching |value|. (It could alternatively have had a
-more restrictive declaration like |arithmetic value|.)
+the first appearance of `K` will be an ordinary use of a kind variable,
+whereas the second has the declaration `value` -- meaning that it can
+become any kind matching `value`. (It could alternatively have had a
+more restrictive declaration like `arithmetic value`.)
 
 @<Deal separately with matches against kind variables@> =
 	switch(kind_checker_mode) {
@@ -407,22 +407,22 @@ more restrictive declaration like |arithmetic value|.)
 
 @ When the specification matcher works on matching text such as
 
->> add 23 to the scores list;
+> add 23 to the scores list;
 
 it works through the prototype:
 
->> To add (new entry - K) to (L - list of values of kind K) ...
+> To add (new entry - K) to (L - list of values of kind K) ...
 
 in two passes. On the first pass, it tries to match the tokens "23" and
-"scores list" against |K| and |list of values of kind K| respectively
-in |MATCH_KIND_VARIABLES_INFERRING_VALUES| mode; on the second pass, it
-does the same in |MATCH_KIND_VARIABLES_AS_VALUES| mode. In this example,
+"scores list" against `K` and `list of values of kind K` respectively
+in `MATCH_KIND_VARIABLES_INFERRING_VALUES` mode; on the second pass, it
+does the same in `MATCH_KIND_VARIABLES_AS_VALUES` mode. In this example,
 on the first pass we infer (from the kind of "scores list", which is
-indeed a list of numbers) that |K| must be |number|; on the second pass
-we verify that "23" is a |K|.
+indeed a list of numbers) that `K` must be `number`; on the second pass
+we verify that "23" is a `K`.
 
-The following shows what happens matching |values of kind K|, which is
-a declaration usage of the variable |K|.
+The following shows what happens matching `values of kind K`, which is
+a declaration usage of the variable `K`.
 
 @<Act on a declaration usage, where inference is allowed@> =
 	switch(kind_checker_mode) {
@@ -441,7 +441,7 @@ a declaration usage of the variable |K|.
 		case MATCH_KIND_VARIABLES_AS_VALUES: return ALWAYS_MATCH;
 	}
 
-@ Whereas this is what happens when matching just |K|. On the inference pass,
+@ Whereas this is what happens when matching just `K`. On the inference pass,
 we always make a match, which is legitimate because we know we are going to
 make a value-checking pass later.
 

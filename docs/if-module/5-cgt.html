@@ -72,11 +72,11 @@ object as follows:</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_of_token</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">grammar_token_code</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">what_token_describes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 or else one of the |*_GTC| values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">what_token_describes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 or else one of the <code>*_GTC</code> values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token_relation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun_filter_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">noun_filter</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defined_by</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slash_class</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in slashing: see //CGLines::slash// */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slash_class</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in slashing: see <a href="5-cgl.html#SP15" class="internal">CGLines::slash</a> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slash_dash_dash</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_token</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the list for a CG line */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -316,21 +316,21 @@ generating I6 code.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">UNDETERMINED_GTC</span> <span class="constant-syntax">0</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOUN_TOKEN_GTC</span> <span class="constant-syntax">-1</span><span class="plain-syntax">        </span><span class="comment-syntax">/* like I6 |noun| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOUN_TOKEN_GTC</span> <span class="constant-syntax">-1</span><span class="plain-syntax">        </span><span class="comment-syntax">/* like I6 <code>noun</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTI_TOKEN_GTC</span> <span class="constant-syntax">-2</span><span class="plain-syntax">       </span><span class="comment-syntax">/* like I6 |multi| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTI_TOKEN_GTC</span> <span class="constant-syntax">-2</span><span class="plain-syntax">       </span><span class="comment-syntax">/* like I6 <code>multi</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIINSIDE_TOKEN_GTC</span> <span class="constant-syntax">-3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* like I6 |multiinside| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIINSIDE_TOKEN_GTC</span> <span class="constant-syntax">-3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* like I6 <code>multiinside</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIHELD_TOKEN_GTC</span> <span class="constant-syntax">-4</span><span class="plain-syntax">   </span><span class="comment-syntax">/* like I6 |multiheld| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIHELD_TOKEN_GTC</span> <span class="constant-syntax">-4</span><span class="plain-syntax">   </span><span class="comment-syntax">/* like I6 <code>multiheld</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">HELD_TOKEN_GTC</span> <span class="constant-syntax">-5</span><span class="plain-syntax">        </span><span class="comment-syntax">/* like I6 |held| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">HELD_TOKEN_GTC</span> <span class="constant-syntax">-5</span><span class="plain-syntax">        </span><span class="comment-syntax">/* like I6 <code>held</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CREATURE_TOKEN_GTC</span> <span class="constant-syntax">-6</span><span class="plain-syntax">    </span><span class="comment-syntax">/* like I6 |creature| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CREATURE_TOKEN_GTC</span> <span class="constant-syntax">-6</span><span class="plain-syntax">    </span><span class="comment-syntax">/* like I6 <code>creature</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TOPIC_TOKEN_GTC</span> <span class="constant-syntax">-7</span><span class="plain-syntax">       </span><span class="comment-syntax">/* like I6 |topic| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TOPIC_TOKEN_GTC</span> <span class="constant-syntax">-7</span><span class="plain-syntax">       </span><span class="comment-syntax">/* like I6 <code>topic</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIEXCEPT_TOKEN_GTC</span> <span class="constant-syntax">-8</span><span class="plain-syntax"> </span><span class="comment-syntax">/* like I6 |multiexcept| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MULTIEXCEPT_TOKEN_GTC</span> <span class="constant-syntax">-8</span><span class="plain-syntax"> </span><span class="comment-syntax">/* like I6 <code>multiexcept</code> */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CGTokens::is_literal</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">CGTokens::is_literal</span></span>:<br/><a href="5-cgt.html#SP14">&#167;14</a>, <a href="5-cgt.html#SP16">&#167;16</a><br/>Understand Sentences - <a href="5-us.html#SP19_11">&#167;19.11</a><br/>Command Grammar Lines - <a href="5-cgl.html#SP14">&#167;14</a>, <a href="5-cgl.html#SP15_2">&#167;15.2</a>, <a href="5-cgl.html#SP16_2">&#167;16.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">) {</span>
@@ -397,7 +397,7 @@ expected.</p>
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Parsing nonliteral tokens.</b>  Unless a token is literal and in double-quotes, it will start out as having
 <code>UNDETERMINED_GTC</code> until we investigate what the words in it mean, which we
 will do with the following Preform grammar.</p>
-<p>Note that &lt;grammar-token&gt; always matches any text, even if it sometimes throws
+<p>Note that <grammar-token> always matches any text, even if it sometimes throws
 a problem message on the way. Its return integer is a valid GTC, and its
 return pointer is a (non-null) description of what the token matches.</p>
 </div>
@@ -592,11 +592,11 @@ that nobody complained about what might have been a controversial change.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Determining.</b>  To calculate a description of what is being described by a token, then, we
-call the following function, which delegates to &lt;grammar-token&gt; above.</p>
+call the following function, which delegates to <grammar-token> above.</p>
 <p>In the two cases <code>NAMED_TOKEN_GTC</code> and <code>RELATED_GTC</code> the pointer result is
 a temporary one telling us which named token, and which relation, respectively:
 we then convert those into the result. In all other cases, the <code>parse_node</code>
-pointer returned by &lt;grammar-token&gt; is the result.</p>
+pointer returned by <grammar-token> is the result.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">CGTokens::determine</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">CGTokens::determine</span></span>:<br/>Command Grammar Lines - <a href="5-cgl.html#SP16_1">&#167;16.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>

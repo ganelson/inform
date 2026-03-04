@@ -3,11 +3,11 @@
 Recording where fragments of text originally came from.
 
 @ Inter code sometimes needs to contain fragments of not-yet-parsed Inform 6
-syntax code, in the form of |SPLAT_IST| and |INSERT_IST| instructions. In order
+syntax code, in the form of `SPLAT_IST` and `INSERT_IST` instructions. In order
 for it to be possible to relate errors in those fragments to the original text
 files they came from, we need to record their "provenance".
 
-This is only a wrapper for saying something like "line 17 in |whatever.txt|".
+This is only a wrapper for saying something like "line 17 in `whatever.txt`".
 Line numbers count from 1 at the top of a text file.
 
 =

@@ -18,26 +18,26 @@ make data tables in formats which can be handled by the Inform 6 compiler.
 And that does have two maxima which cannot easily be avoided, so we need to
 respect those here as well.
 
-|MAX_ALIASED_COMMANDS| is harmless enough: it's the maximum number of command
+`MAX_ALIASED_COMMANDS` is harmless enough: it's the maximum number of command
 verbs which can be synonymous with a single other one, as for example if CONSUME
 were synonymous with EAT. Few command verbs need more than four or five, and
 many need none at all.
 
-|MAX_LINES_PER_GRAMMAR| is potentially more biting, since it puts a limit on
+`MAX_LINES_PER_GRAMMAR` is potentially more biting, since it puts a limit on
 the number of different command syntaxes which any one command verb can have.
-(It applies only to |CG_IS_COMMAND| grammars: the rest are unlimited.) Skilled
+(It applies only to `CG_IS_COMMAND` grammars: the rest are unlimited.) Skilled
 Inform 7 writers can get around this with named tokens, but still, in an ideal
 world we would not impose a limit here.
 
 @d MAX_ALIASED_COMMANDS 32
 @d MAX_LINES_PER_GRAMMAR 32
 
-@ Many of the fields here are relevant only when the CG takes a given |cg_is|
+@ Many of the fields here are relevant only when the CG takes a given `cg_is`
 form, so this is not as bloated a structure as it looks.
 
 =
 typedef struct command_grammar {
-	int cg_is; /* one of the |CG_IS_*| values above */
+	int cg_is; /* one of the `CG_IS_*` values above */
 	struct parse_node *where_cg_created; /* for problem message reports */
 
 	struct determination_type cg_type;
@@ -47,17 +47,17 @@ typedef struct command_grammar {
 	int slashed; /* slashing has been done */
 	int determined; /* determination has been done */
 
-	struct wording command; /* |CG_IS_COMMAND|: what command verb this belongs to */
+	struct wording command; /* `CG_IS_COMMAND`: what command verb this belongs to */
 	struct wording aliased_command[MAX_ALIASED_COMMANDS]; /* ...and other commands synonymous */
 	int no_aliased_commands; /* ...and how many of them there are */
 
-	struct wording token_name; /* |CG_IS_TOKEN|: name of this token */
+	struct wording token_name; /* `CG_IS_TOKEN`: name of this token */
 
-	struct inference_subject *subj_understood; /* |CG_IS_SUBJECT|: what this provides names for */
+	struct inference_subject *subj_understood; /* `CG_IS_SUBJECT`: what this provides names for */
 
-	struct kind *kind_understood; /* |CG_IS_VALUE|: for which type it names an instance of */
+	struct kind *kind_understood; /* `CG_IS_VALUE`: for which type it names an instance of */
 
-	struct property *prn_understood; /* |CG_IS_PROPERTY_NAME|: which prn this names */
+	struct property *prn_understood; /* `CG_IS_PROPERTY_NAME`: which prn this names */
 
 	struct cg_compilation_data compilation_data;
 	CLASS_DEFINITION
@@ -135,9 +135,9 @@ int CommandGrammars::cg_is_genuinely_verbal(command_grammar *cg) {
 	return FALSE;
 }
 
-@ Here we find the CG associated with command |W|, or return null if none
-exists (i.e. because no grammar has been created for it). Note that if |W| is
-the |EMPTY_WORDING|, then this function returns the "no verb verb".
+@ Here we find the CG associated with command `W`, or return null if none
+exists (i.e. because no grammar has been created for it). Note that if `W` is
+the `EMPTY_WORDING`, then this function returns the "no verb verb".
 
 =
 command_grammar *CommandGrammars::for_command_verb(wording W) {
@@ -157,7 +157,7 @@ command_grammar *CommandGrammars::for_command_verb(wording W) {
 }
 
 @ This does the same, but creating the CG if it does not already exist, so
-that it is guaranteed to return a non-|NULL| pointer:
+that it is guaranteed to return a non-`NULL` pointer:
 
 =
 command_grammar *CommandGrammars::for_command_verb_creating(wording W) {
@@ -284,7 +284,7 @@ void CommandGrammars::new_translated_token(wording W, parse_node *id) {
 Any inference subject can in theory be given a CG, used to parse unusual forms
 of its name. If the source reads:
 
->> Understand "frog" as the Brazilian leaping toad.
+> Understand "frog" as the Brazilian leaping toad.
 
 then "frog" is added to the CG for the toad's inference subject.
 
@@ -295,8 +295,8 @@ kinds.[1]
 [1] Because in our run-time representation, objects and kinds of objects have
 data which makes it convenient for them to provide their own "general parsing
 routines", whereas enumeration values do not. So to give exotic names to instances
-of non-object kinds we use |CG_IS_VALUE| instead. And in any case numbers or
-times of day are not inference subjects anyway, so we would need |CG_IS_VALUE|
+of non-object kinds we use `CG_IS_VALUE` instead. And in any case numbers or
+times of day are not inference subjects anyway, so we would need `CG_IS_VALUE`
 in any case for those.
 
 =
@@ -311,16 +311,16 @@ command_grammar *CommandGrammars::for_subject(inference_subject *subj) {
 
 @h The CG_IS_VALUE form.
 This is used to store names for, say, particular numbers, or enumeration
-values. The following examples both involve |CG_IS_VALUE| grammars:
+values. The following examples both involve `CG_IS_VALUE` grammars:
 = (text as Inform 7)
 Understand "deuce" as 2.
 Colour is a kind of value. Red, blue and green are colours.
 Understand "scarlet" as red.
 =
-Note however that a |CG_IS_VALUE| grammar is associated with a kind: unlike
-the case of |CG_IS_SUBJECT|, there isn't a different one for each individual
+Note however that a `CG_IS_VALUE` grammar is associated with a kind: unlike
+the case of `CG_IS_SUBJECT`, there isn't a different one for each individual
 value. There is just one grammar holding all possible fancy names for
-different numbers, for example; the |CG_IS_VALUE| grammar for |K_number|.
+different numbers, for example; the `CG_IS_VALUE` grammar for `K_number`.
 
 =
 command_grammar *CommandGrammars::for_kind(kind *K) {
@@ -416,7 +416,7 @@ void CommandGrammars::add_line(command_grammar *cg, cg_line *cgl) {
 }
 
 @ As noted above, some CGs are used to refer to objects or values: others not.
-This returns the kind if so, or |NULL| if not.
+This returns the kind if so, or `NULL` if not.
 
 =
 kind *CommandGrammars::get_kind_matched(command_grammar *cg) {
@@ -448,13 +448,13 @@ void CommandGrammars::prepare(void) {
 
 @ Determining is more involved, and is also recursive. What we are doing is
 trying to work values a CG can produce, in terms of what value it refers to --
-if any. For |CG_IS_COMMAND| grammars, for example, it will be |NULL|, but
-for |CG_IS_VALUE|, it might for example be a description meaning "any value
-with kind |K_number|.
+if any. For `CG_IS_COMMAND` grammars, for example, it will be `NULL`, but
+for `CG_IS_VALUE`, it might for example be a description meaning "any value
+with kind `K_number`.
 
 Determination is hierarchical. To determine a CG we determine each of its
 lines, and they in turn determine each of their tokens. But some of those tokens
-will themselves be defined by |CG_IS_TOKEN| grammars, and determining those
+will themselves be defined by `CG_IS_TOKEN` grammars, and determining those
 recurses back here.
 
 =
@@ -495,7 +495,7 @@ matches the single term of the determination type of each CGL in the list.
 	int first_flag = TRUE;
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
 		parse_node *spec_of_line = DeterminationTypes::get_single_term(&(cgl->cgl_type));
-		if (first_flag) { /* initially no expectations: |spec_union| is meaningless */
+		if (first_flag) { /* initially no expectations: `spec_union` is meaningless */
 			spec_union = spec_of_line; /* so we set it to the first result */
 			first_flag = FALSE;
 		} else {
@@ -504,11 +504,11 @@ matches the single term of the determination type of each CGL in the list.
 
 			if ((spec_union) && (spec_of_line)) {
 				if (Dash::compatible_with_description(spec_union, spec_of_line) == ALWAYS_MATCH) {
-					spec_union = spec_of_line; /* here |spec_of_line| was a wider type */
+					spec_union = spec_of_line; /* here `spec_of_line` was a wider type */
 					continue;
 				}
 				if (Dash::compatible_with_description(spec_of_line, spec_union) == ALWAYS_MATCH) {
-					continue; /* here |spec_union| was already wide enough */
+					continue; /* here `spec_union` was already wide enough */
 				}
 			}
 			@<It is now evident that the lines have incompatible determination types@>;
@@ -524,7 +524,7 @@ type) and "[things]" (single term determination type) can happily co-exist.
 
 CG_IS_VALUE and CG_IS_SUBJECT are also exceptions because they include grammars
 associated with kinds, in which different CGLs may describe different specific
-values of that kind. For example, the one for the kind |K_number| might have one
+values of that kind. For example, the one for the kind `K_number` might have one
 CGL describing the number 17, and another describing 22. There's no good way to
 take the union of those numbers.
 

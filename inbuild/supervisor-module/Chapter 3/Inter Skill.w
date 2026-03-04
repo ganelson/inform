@@ -4,8 +4,8 @@ The skills of kit building and of code generation from Inter.
 
 @h Creation.
 Note that code generation can only be done internally, and only in fact within
-the |inform7| compiler: this is because the Inter code which it generates from
-is being held in memory by |inform7|.
+the `inform7` compiler: this is because the Inter code which it generates from
+is being held in memory by `inform7`.
 
 =
 build_skill *build_kit_using_inter_skill = NULL;
@@ -41,10 +41,10 @@ int InterSkill::build_kit_via_shell(build_skill *skill, build_step *S,
 }
 
 @ Something to watch out for here is that, when running internally as part of
-|inform7|, we use the copy of the |build-kit| pipeline inside the installation
-of |inform7| (it will be in the internal nest). When we build kits from the
-command line using the |inter| tool, we use the |build-kit| pipeline supplied
-in the |inter| installation. But those two files are in fact the same, or
+`inform7`, we use the copy of the `build-kit` pipeline inside the installation
+of `inform7` (it will be in the internal nest). When we build kits from the
+command line using the `inter` tool, we use the `build-kit` pipeline supplied
+in the `inter` installation. But those two files are in fact the same, or
 should be, so the effect is the same.
 
 =
@@ -124,8 +124,8 @@ This can only be done internally, for reasons given above, and only when the
 //pipeline// module is present in the current executable (which in practice means:
 only inside //inform7//).
 
-Recall that the |inter_pipeline_name| is managed in Inbuild Control, but that
-it defaults to |compile|.
+Recall that the `inter_pipeline_name` is managed in Inbuild Control, but that
+it defaults to `compile`.
 
 =
 inform_project *interskill_associated_project = NULL;

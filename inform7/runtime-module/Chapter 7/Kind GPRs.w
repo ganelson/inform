@@ -172,12 +172,12 @@ For example, for a kind called "colour", it might match any of "burnt umber",
 	Functions::end(save);
 
 @ The second is not quite a standard GPR, because it takes a call parameter,
-|instance|. The GPR matches only the name of that one instance; thus, if called
-with |I_burnt_umber|, it would match only "burnt umber".
+`instance`. The GPR matches only the name of that one instance; thus, if called
+with `I_burnt_umber`, it would match only "burnt umber".
 
 Why is this needed? The answer is that whereas objects can have individual
-|parse_name| functions, allowing authors to customise the recognised names for
-them, instances of non-object enumerations do not have a |parse_name|. So this
+`parse_name` functions, allowing authors to customise the recognised names for
+them, instances of non-object enumerations do not have a `parse_name`. So this
 is the only way to allow, say, "Understand "sooty" as burnt umber." to work --
 the grammar holding "sooty" comes out only in the following function.
 

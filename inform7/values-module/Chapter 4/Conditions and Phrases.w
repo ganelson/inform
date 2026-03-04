@@ -32,11 +32,11 @@ and that they aren't the same as the "and" and "or" used a list dividers.
 
 @ Chronological restrictions include, for instance,
 
->> if the gate is open for the first time, ...
+> if the gate is open for the first time, ...
 
 where the condition is divided as
 
->> if the gate is open / for the first time
+> if the gate is open / for the first time
 
 and <s-cond-atomic> is used to parse the first half. While it's possible
 to express this in Preform grammar, the result doesn't run quickly, so the
@@ -67,7 +67,7 @@ following implements this as a hand-coded nonterminal instead.
 it only sometimes work by simply preceding the text with "not". Consider
 this, for instance:
 
->> if not we are carrying the torch, ...
+> if not we are carrying the torch, ...
 
 As a result, we can't handle negation in <s-cond-pure>, and have to
 work into the grammar below on a case by case basis. And where we do allow
@@ -78,16 +78,16 @@ begin with the word "not".
 As a condition, an action pattern is implicitly considered as a test of
 what the current action is:
 
->> if examining an open door, ...
+> if examining an open door, ...
 
 This wouldn't work so well for the past tense form:
 
->> if examined an open door, ...
+> if examined an open door, ...
 
 because it seems too clunky as neither quite active nor passive. Who examined
 the open door? So Inform uses the following version instead:
 
->> if we have examined an open door, ...
+> if we have examined an open door, ...
 
 thus adopting the "science we". Not very elegant, but the alternatives were
 difficult to parse. "We are" is allowed for consistency's sake, but does
@@ -162,7 +162,7 @@ The final clutch of nonterminals in the S-grammar handles individual commands,
 written in their semicolon-divided list in the body of a rule or "To..."
 definition. For instance, in the not very sensible rule:
 
->> Instead of jumping: now the score is 10; say "Greetings!" instead.
+> Instead of jumping: now the score is 10; say "Greetings!" instead.
 
 Inform will use <s-command> to parse the text of the two commands in the rule
 body. <s-command> parses the text with little attempt to judge whether the

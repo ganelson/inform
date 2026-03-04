@@ -15,7 +15,7 @@ stored here.
 =
 typedef struct inbuild_copy {
 	struct inbuild_edition *edition; /* what is this a copy of? */
-	struct pathname *location_if_path; /* exactly one of these must be non-|NULL| */
+	struct pathname *location_if_path; /* exactly one of these must be non-`NULL` */
 	struct filename *location_if_file;
 	struct inbuild_nest *nest_of_origin; /* note that copies do not always come from nests */
 
@@ -26,8 +26,8 @@ typedef struct inbuild_copy {
 	int source_text_read; /* have we attempted to read Inform source text from this? */
 	struct wording source_text; /* the source text we read, if so */
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
-	struct linked_list *errors_reading_source_text; /* of |copy_error| */
-	struct linked_list *warnings; /* of |copy_error| */
+	struct linked_list *errors_reading_source_text; /* of `copy_error` */
+	struct linked_list *warnings; /* of `copy_error` */
 	int last_scanned;
 	struct inbuild_licence *licence; /* optional licence declaration which seems to apply */
 	CLASS_DEFINITION
@@ -245,7 +245,7 @@ int Copies::cmp(const void *v1, const void *v2) {
 }
 
 @h Miscellaneous Inbuild commands.
-This function implements the command-line instruction to |-inspect|.
+This function implements the command-line instruction to `-inspect`.
 
 =
 void Copies::inspect(OUTPUT_STREAM, JSON_value *obj, inbuild_copy *C) {
@@ -315,8 +315,8 @@ void Copies::inspect(OUTPUT_STREAM, JSON_value *obj, inbuild_copy *C) {
 	}
 }
 
-@ And here are |-build| and |-rebuild|, though note that |Copies::build|
-is also called by the |core| module of the Inform 7 compiler to perform
+@ And here are `-build` and `-rebuild`, though note that `Copies::build`
+is also called by the `core` module of the Inform 7 compiler to perform
 its main task: building an Inform project.
 
 =
@@ -329,8 +329,8 @@ void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	IncrementalBuild::rebuild(OUT, V, BM);
 }
 
-@ Now in quick succession |-graph|, |-build-needs|, |-use-needs|, |-build-missing|,
-|-use-missing|:
+@ Now in quick succession `-graph`, `-build-needs`, `-use-needs`, `-build-missing`,
+`-use-missing`:
 
 =
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
@@ -347,7 +347,7 @@ void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 	if (N == 0) WRITE("Nothing is missing\n");
 }
 
-@ And here is |-archive| and |-archive-to N|:
+@ And here is `-archive` and `-archive-to N`:
 
 =
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
@@ -357,7 +357,7 @@ void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_meth
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);
 }
 
-@ Now lastly |-copy-to N| and |-sync-to N|:
+@ Now lastly `-copy-to N` and `-sync-to N`:
 
 =
 int Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
@@ -376,14 +376,14 @@ void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
 	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
 }
 
-@ And |-document|:
+@ And `-document`:
 
 =
 void Copies::document(inbuild_copy *C, pathname *dest, filename *sitemap) {
 	VOID_METHOD_CALL(C->edition->work->genre, GENRE_DOCUMENT_MTID, C, dest, sitemap);
 }
 
-@ And |-modernise|:
+@ And `-modernise`:
 
 =
 void Copies::modernise(OUTPUT_STREAM, inbuild_copy *C) {

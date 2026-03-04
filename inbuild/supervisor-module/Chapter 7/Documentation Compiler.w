@@ -3,7 +3,7 @@
 To compile documentation from the textual syntax in an extension into a tree.
 
 @ A single set of documentation, such as might be associated with a project,
-a tool or an extension or kit, is represented by a |compiled_documentation|
+a tool or an extension or kit, is represented by a `compiled_documentation`
 object. This section provides just three public functions, for the three
 ways to make one of these.
 
@@ -65,13 +65,13 @@ typedef struct compiled_documentation {
 	struct inform_extension *within_extension; /* if a kit inside an extension */
 
 	struct pathname *domain; /* where the documentation source is */
-	struct linked_list *source_files; /* of |cd_source_file| */
-	struct linked_list *layout_errors; /* of |cd_layout_error| */
-	struct linked_list *images; /* of |cd_image| */
+	struct linked_list *source_files; /* of `cd_source_file` */
+	struct linked_list *layout_errors; /* of `cd_layout_error` */
+	struct linked_list *images; /* of `cd_image` */
 	struct text_stream *images_URL;
 	int compiled_from_extension_scrap;
 
-	struct linked_list *volumes; /* of |cd_volume| */
+	struct linked_list *volumes; /* of `cd_volume` */
 	struct text_stream *contents_URL_pattern;
 	int duplex_contents_page;
 	struct text_stream *xrefs_file_pattern;
@@ -81,10 +81,10 @@ typedef struct compiled_documentation {
 	struct md_links_dictionary *link_references;
 	int empty;
 
-	struct linked_list *examples; /* of |IFM_example| */
+	struct linked_list *examples; /* of `IFM_example` */
 	struct text_stream *example_URL_pattern;
 	int examples_lettered; /* the alternative being, numbered */
-	struct linked_list *cases; /* of |satellite_test_case| */
+	struct linked_list *cases; /* of `satellite_test_case` */
 
 	int include_index[NO_CD_INDEXES];
 	struct text_stream *index_title[NO_CD_INDEXES];
@@ -117,7 +117,7 @@ typedef struct cd_volume {
 	struct text_stream *label;
 	struct text_stream *home_URL;
 	struct linked_list *source_files; /* Markdown source leafnames */
-	struct linked_list *pagesets; /* of |cd_pageset| */
+	struct linked_list *pagesets; /* of `cd_pageset` */
 	struct markdown_item *volume_item;
 	CLASS_DEFINITION
 } cd_volume;
@@ -648,7 +648,7 @@ cases, all of which are tested when an extension (say) is tested.
 =
 typedef struct satellite_test_case {
 	int is_example;
-	struct IFM_example *as_example; /* or |NULL| for a test case which is not an example */
+	struct IFM_example *as_example; /* or `NULL` for a test case which is not an example */
 	struct text_stream *owning_heading;
 	struct tree_node *owning_node;
 	struct compiled_documentation *owner;
@@ -656,7 +656,7 @@ typedef struct satellite_test_case {
 	struct filename *test_file;
 	struct filename *ideal_transcript;
 	struct text_stream *visible_documentation;
-	struct linked_list *example_errors; /* of |markdown_item| */
+	struct linked_list *example_errors; /* of `markdown_item` */
 	struct markdown_item *primary_placement;
 	struct markdown_item *secondary_placement;
 	CLASS_DEFINITION
@@ -686,8 +686,8 @@ satellite_test_case *DocumentationCompiler::new_satellite(compiled_documentation
 	return stc;
 }
 
-@ Satellites for a cd consist of examples in the |Examples| subdirectory and
-tests in the |Tests| one.
+@ Satellites for a cd consist of examples in the `Examples` subdirectory and
+tests in the `Tests` one.
 
 =
 int DocumentationCompiler::detect_satellites(compiled_documentation *cd) {
@@ -742,7 +742,7 @@ typedef struct example_scanning_state {
 	struct text_stream *subtitle;
 	struct text_stream *index;
 	struct text_stream *desc;
-	struct linked_list *errors; /* of |markdown_item| */
+	struct linked_list *errors; /* of `markdown_item` */
 	struct text_stream *scanning;
 	int past_header;
 } example_scanning_state;
@@ -975,7 +975,7 @@ void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md,
 		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number, lettered);
 }
 
-@ We are finally in a position to write |DocumentationCompiler::compile_inner|,
+@ We are finally in a position to write `DocumentationCompiler::compile_inner`,
 the function which all cd compilations funnel through.
 
 What makes this such a complicated dance is that we need to perform Phase I
@@ -1017,7 +1017,7 @@ void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
 }
 
 @ In addition to regular Phase I parsing of the content in the volumes, we
-want to insert |VOLUME_MIT| and |FILE_MIT| items into the tree to mark where
+want to insert `VOLUME_MIT` and `FILE_MIT` items into the tree to mark where
 new files and volumes begin.
 
 =

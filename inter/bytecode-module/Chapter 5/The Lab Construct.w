@@ -18,7 +18,7 @@ void LabInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |lab| instruction is laid out with the
+In bytecode, the frame of a `lab` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d LABEL_LAB_IFLD (DATA_IFLD + 0)
@@ -36,7 +36,7 @@ inter_error_message *LabInstruction::new(inter_bookmark *IBM, inter_symbol *labe
 }
 
 @ Verification consists only of sanity checks. Note that we do not make the
-customary call to //VerifyingInter::SID_field// on |LABEL_LAB_IFLD| for timing
+customary call to //VerifyingInter::SID_field// on `LABEL_LAB_IFLD` for timing
 reasons: it may refer to a symbol not yet defined.
 
 =
@@ -50,7 +50,7 @@ void LabInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_packa
 }
 
 @h Creating from textual Inter syntax.
-Note that a |lab| can occur either before or after the creation point for the
+Note that a `lab` can occur either before or after the creation point for the
 label it refers to; so if we have an unknown label name, we create it as a label
 in expectation that the position will be declared in a future instruction.
 

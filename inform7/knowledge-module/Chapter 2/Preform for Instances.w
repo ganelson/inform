@@ -5,7 +5,7 @@ Preform grammar to parse names of instances.
 @ When we create instances of a kind whose name coincides with a property
 used as a condition, as here:
 
->> A door can be ajar, sealed or wedged open.
+> A door can be ajar, sealed or wedged open.
 
 we will need "ajar" and so on to be (in most contexts) adjectives rather
 than nouns; so, even though they are instances, we do not add those to
@@ -42,7 +42,7 @@ void InstancesPreform::create_as_noun(instance *I, kind *K, wording W) {
 in two different ways, and here goes.
 
 Two versions are provided. As usual, the nonterminals beginning with "s-"
-return specification |parse_node| pointers; the ones without return |instance|
+return specification `parse_node` pointers; the ones without return `instance`
 pointers.
 
 =

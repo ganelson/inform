@@ -5,9 +5,9 @@ To compile the main/synoptic/chronology submodule.
 @ The purpose of all this is to keep track of the state of things so that it
 will be possible in future to ask questions concerning the past.
 
-Our inventory |inv| already contains a list |inv->action_history_condition_nodes|
-of all packages in the tree with type |_action_history_condition|, and similarly
-for |inv->past_tense_condition_nodes|.
+Our inventory `inv` already contains a list `inv->action_history_condition_nodes`
+of all packages in the tree with type `_action_history_condition`, and similarly
+for `inv->past_tense_condition_nodes`.
 
 =
 void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {

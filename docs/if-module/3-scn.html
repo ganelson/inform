@@ -84,7 +84,7 @@ met, or by virtue of having been anchored together.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  This feature needs one extra syntax tree annotation:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_scene_ANNOT</span> <span class="comment-syntax">/* |scene|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_scene_ANNOT</span> <span class="comment-syntax">/* <code>scene</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_scene</span><span class="plain-syntax">, </span><span class="type-syntax">scene</span><span class="plain-syntax">)</span>
@@ -199,7 +199,7 @@ scenes -- to express which, the <a href="3-scn.html#SP10" class="internal">scene
 <span class="plain-syntax">} </span><span class="type-syntax">scene</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">scene_end</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_names</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for ends 2, 3, ...: e.g. "badly" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_names</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for ends 2, 3, ...: e.g. &quot;badly&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">end_rulebook</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rules to apply then */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_beat</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_beat</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only for those scenes equated to beats */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">anchor_condition</span><span class="plain-syntax">;</span>
@@ -437,7 +437,7 @@ assertion sentences to create them:</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::begins_when_SMF</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Scenes::begins_when_SMF</span></span>:<br/><a href="3-scn.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The Ballroom Scene begins when..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The Ballroom Scene begins when...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -464,7 +464,7 @@ two noun phrases and sometimes three.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">O2W</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[2]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The Ballroom Scene ends when..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The Ballroom Scene ends when...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -497,16 +497,12 @@ Preform grammar below.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  Sentences giving scene boundaries have a simple form:</p>
-</div>
 <blockquote>
-    <p>The Ballroom Dance begins when the Hallway Greeting ends.</p>
+<p>The Ballroom Dance begins when the Hallway Greeting ends.</p>
 </blockquote>
-
 <blockquote>
-    <p>The Ballroom Dance ends dramatically when we have dropped the glass slipper.</p>
+<p>The Ballroom Dance ends dramatically when we have dropped the glass slipper.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The sentence has a subject noun phrase (here &quot;Ballroom Dance&quot;) and an
 object NP: &quot;the Hallway Greeting ends&quot; or &quot;we have dropped the glass
 slipper&quot; are the object NPs here. We will call the optional part,
@@ -633,12 +629,9 @@ never fails.</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  In a sentence like</p>
-</div>
 <blockquote>
-    <p>The Ballroom Dance begins when the Hallway Greeting ends.</p>
+<p>The Ballroom Dance begins when the Hallway Greeting ends.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>we will call &quot;the Ballroom Dance begins&quot; this end, and &quot;the Hallway Greeting
 ends&quot; the other end.</p>
 </div>

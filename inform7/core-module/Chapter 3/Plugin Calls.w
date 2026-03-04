@@ -43,16 +43,16 @@ Preform nonterminal to parse those names. Here it is:
 we will call "plugin rulebooks" -- there's a mixed metaphor here, but the idea
 is that they behave like Inform rulebooks. When a rulebook is called, the
 compiler works through each plug until one of them returns something other
-than |FALSE|.
+than `FALSE`.
 
 Features should add plugins in their activation functions, by calling
 //PluginCalls::plug//, which has an interestingly vague type. The next
 screenful of code looks like something of a workout for the C typechecker, but
-it compiles under |clang| without even the |-Wpedantic| warning, and honestly
+it compiles under `clang` without even the `-Wpedantic` warning, and honestly
 you're barely living as a C programmer if you never generate that one.
 
 =
-linked_list *plugin_rulebooks[NO_DEFINED_PLUG_VALUES+1]; /* of |void|, reprehensibly */
+linked_list *plugin_rulebooks[NO_DEFINED_PLUG_VALUES+1]; /* of `void`, reprehensibly */
 
 void PluginCalls::start(void) {
 	for (int i=0; i<=NO_DEFINED_PLUG_VALUES; i++)
@@ -102,18 +102,18 @@ Called from //Task::advance_stage_to//. This allows features to run additional
 production-line steps in compilation, and that is done mostly at the Inter
 generation stage, to add extra arrays or functions needed at runtime.
 For example, the mapping feature compiles an array to hold the map during
-stage |INTER1_CSEQ|.
+stage `INTER1_CSEQ`.
 
 Because the following is called at the end of every main stage of compilation
-except for |FINISHED_CSEQ|, it is called about 15 times in all, so it is
-essential to check |stage| and act only on the right occasion. |debugging| is
-|TRUE| if this is a debugging run.
+except for `FINISHED_CSEQ`, it is called about 15 times in all, so it is
+essential to check `stage` and act only on the right occasion. `debugging` is
+`TRUE` if this is a debugging run.
 
 A function attached to this plug should then ideally divide its work up into
-major subtasks and call each one with the |BENCH| macro, so that the time it
+major subtasks and call each one with the `BENCH` macro, so that the time it
 takes will (if appreciable) be included in the //inform7: Performance Metrics//.
 
-See //How To Compile// for the stages and their |*_CSEQ| numbers.
+See //How To Compile// for the stages and their `*_CSEQ` numbers.
 
 @e PRODUCTION_LINE_PLUG from 1
 
@@ -126,7 +126,7 @@ int PluginCalls::production_line(int stage, int debugging, stopwatch_timer *time
 Called from //assertions: Refine Parse Tree// to ask if this node is a noun
 phrase with special significance: for example, "below" is significant to the
 mapping feature. If so, the plugin should set the subject of the node to say
-what it refers to, and return |TRUE|.
+what it refers to, and return `TRUE`.
 
 @e ACT_ON_SPECIAL_NPS_PLUG
 
@@ -150,7 +150,7 @@ int PluginCalls::detect_bodysnatching(inference_subject *body, int *snatcher,
 @ Called from //assertions: Assertions// to see if any plugin wants to
 intepret a sentence its own way, either taking direct action or issuing a
 more nuanced problem message than the usual machinery would have issued.
-If so, the plugin should return |TRUE|, which both ensures that no other
+If so, the plugin should return `TRUE`, which both ensures that no other
 plugin intervenes, and also tells //assertions// not to proceed further
 with the sentence.
 
@@ -173,9 +173,9 @@ int PluginCalls::creation(parse_node *px, parse_node *py) {
 
 @ Called from //assertions: Assertions// when an unfamiliar node type appears
 where a property value might be expected. For example, the actions feature
-uses this to deal with setting a property to an |ACTION_NT| node. To
+uses this to deal with setting a property to an `ACTION_NT` node. To
 intervene, set the node specification using //assertions: Refine Parse Tree//
-and return |TRUE|; or return |FALSE| to let nature take its course.
+and return `TRUE`; or return `FALSE` to let nature take its course.
 
 @e UNUSUAL_PROPERTY_VALUE_PLUG
 
@@ -201,7 +201,7 @@ int PluginCalls::irregular_genitive(inference_subject *owner, text_stream *genit
 @ Called from //assertions: Booting Verbs// to give each plugin a chance to
 create any special sentence meanings it would like to. For example, the
 sounds feature defines a special form of assertion sentence this way. The
-plugin should always return |FALSE|, since otherwise it may gazump other
+plugin should always return `FALSE`, since otherwise it may gazump other
 plugins and cause them to stop working.
 
 @e MAKE_SPECIAL_MEANINGS_PLUG
@@ -214,7 +214,7 @@ int PluginCalls::make_special_meanings(void) {
 @ Called from //assertions: Assertions// when it seems that the author wants
 to create a property of something with a sentence like "A container has a
 number called security rating." A plugin can intervene and act on that,
-returning |TRUE| to stop the usual machinery. For example, the actions
+returning `TRUE` to stop the usual machinery. For example, the actions
 feature does this so that "The going action has a number called celerity"
 can be intercepted to create an action variable, not a property.
 
@@ -261,7 +261,7 @@ int PluginCalls::new_assertion_notify(parse_node *p) {
 
 @ Called from //assertions: The Equality Relation Revisited// when we have
 to decide if it's valid to ask or declare that two things are the same.
-Returning |TRUE| says that it is always valid; returning |FALSE| leaves
+Returning `TRUE` says that it is always valid; returning `FALSE` leaves
 it to the regular machinery. This plug can therefore only be used to permit
 additional usages, not to restrict existing ones.
 
@@ -305,9 +305,9 @@ int PluginCalls::new_rcd_notify(id_runtime_context_data *rcd) {
 @h Influencing values.
 Called from //values: Rvalues// to allow plugins to help decide whether values
 of the same kind would be equal if evaluated at runtime. For example, the
-scenes feature uses this to determine if two |K_scene| constants are equal.
-To make a decision, set |rv| to either |TRUE| or |FALSE| and return |TRUE|.
-To make no decision, return |FALSE|.
+scenes feature uses this to determine if two `K_scene` constants are equal.
+To make a decision, set `rv` to either `TRUE` or `FALSE` and return `TRUE`.
+To make no decision, return `FALSE`.
 
 @e COMPARE_CONSTANT_PLUG
 
@@ -340,10 +340,10 @@ int PluginCalls::compile_condition(value_holster *VH, parse_node *spec) {
 }
 
 @ Called from //values: Specifications// to ask if there is some reason why
-a rule about |I1| should be thought broader in scope than one about |I2|. This
+a rule about `I1` should be thought broader in scope than one about `I2`. This
 is used by the regions feature when one is a sub-region of the other. This is
-expected to behave as a |strcmp|-like sorting function, with a positive
-return value saying |I1| is broader, negative |I2|, or zero that they are equal.
+expected to behave as a `strcmp`-like sorting function, with a positive
+return value saying `I1` is broader, negative `I2`, or zero that they are equal.
 
 @e MORE_SPECIFIC_PLUG
 
@@ -392,7 +392,7 @@ int PluginCalls::create_inference_subjects(void) {
 
 @ Called from //knowledge: Indefinite Appearance// to ask the plugins what
 inferences, if any, to draw from a double-quoted text standing as an entire
-sentence. The |infs| is the subject which was being talked about at the time
+sentence. The `infs` is the subject which was being talked about at the time
 the text was quoted, and therefore presumably is what the text should describe.
 
 @e DEFAULT_APPEARANCE_PLUG
@@ -429,9 +429,9 @@ int PluginCalls::name_to_early_infs(wording W, inference_subject **infs) {
 @ Called from //knowledge: Kind Subjects// to warn plugins about a new kind,
 which in practice enables them to spot from the name that it is actually a kind
 they want to provide built-in support for: thus the actions feature reacts to
-the name "stored action", for example. |K| is the newcomer, |super| its super-kind,
-if any; |d| and |W| are alternate forms of that name -- |d| will be useful if the
-kind was created by a kit (such as "number"), |W| if it came from Inform 7
+the name "stored action", for example. `K` is the newcomer, `super` its super-kind,
+if any; `d` and `W` are alternate forms of that name -- `d` will be useful if the
+kind was created by a kit (such as "number"), `W` if it came from Inform 7
 source text (such as "container").
 
 @e NEW_BASE_KIND_NOTIFY_PLUG
@@ -525,7 +525,7 @@ int PluginCalls::set_kind_notify(instance *I, kind *k) {
 
 @ Called from //knowledge: Kind Subjects// when one kind of object is made a
 subkind of another, as for example when "container" is a made a subkind of
-"thing". The plugin should return |TRUE| if it wishes to forbid this,
+"thing". The plugin should return `TRUE` if it wishes to forbid this,
 and if so, it had better throw a problem message, or the user will be
 mystified.
 
@@ -545,8 +545,8 @@ automatically placed rules from one rulebook to another. The actions feature
 uses this to break up what would otherwise be unwieldy before and after
 rulebooks into smaller ones for each action.
 
-If making a diversion, the plugin should write the new rulebook into |new_owner|
-and return |TRUE|; and otherwise |FALSE|.
+If making a diversion, the plugin should write the new rulebook into `new_owner`
+and return `TRUE`; and otherwise `FALSE`.
 
 @e PLACE_RULE_PLUG
 
@@ -622,7 +622,7 @@ int PluginCalls::divert_AP_clause_ID(shared_variable *stv, int *id) {
 }
 
 @ Called from //if: Action Pattern Clauses// to ask plugins to print a helpful
-name for the debugging log for any new clause ID |C| which they have created.
+name for the debugging log for any new clause ID `C` which they have created.
 
 @e WRITE_AP_CLAUSE_ID_PLUG
 
@@ -631,9 +631,9 @@ int PluginCalls::write_AP_clause_ID(OUTPUT_STREAM, int C) {
 	PLUGINS_CALL(WRITE_AP_CLAUSE_ID_PLUG, OUT, C);
 }
 
-@ Called from //if: Action Pattern Clauses// to ask for the |*_APCA| aspect
-for the clause ID |C|, where |C| is a new clause ID created by the plugin. If
-this is not given, then the aspect will be |MISC_APCA|.
+@ Called from //if: Action Pattern Clauses// to ask for the `*_APCA` aspect
+for the clause ID `C`, where `C` is a new clause ID created by the plugin. If
+this is not given, then the aspect will be `MISC_APCA`.
 
 @e ASPECT_OF_AP_CLAUSE_ID_PLUG
 
@@ -648,11 +648,11 @@ in the plugin.
 
 If the plugin recognises the patterns as ways to describe an action it knows
 about, it can choose to take the decision, storing either 1 or -1 in
-|rv|, and returning |TRUE|. If it instead stores 0 in |rv|, it can also
-choose to set |ignore_in|, which tells the usual machinery not to judge on the
-basis of the |[in: ...]| clause in the pattern.
+`rv`, and returning `TRUE`. If it instead stores 0 in `rv`, it can also
+choose to set `ignore_in`, which tells the usual machinery not to judge on the
+basis of the `[in: ...]` clause in the pattern.
 
-If the plugin sees nothing relevant about the patterns, it should return |FALSE|
+If the plugin sees nothing relevant about the patterns, it should return `FALSE`
 to let the usual machinery take its course.
 
 @e COMPARE_AP_SPECIFICITY_PLUG
@@ -676,11 +676,11 @@ int PluginCalls::new_action_variable_clause(action_pattern *ap, ap_clause *apoc)
 @ Called from //if: Parse Clauses// to give plugins a chance to intervene in
 the normal process of evaluating the meaning of text in an action pattern
 clause: for example, in parsing "going nowhere", the going feature uses this
-to detect that the |NOUN_AP_CLAUSE|, with text "nowhere", should not be parsed
-normally. What it does it to set a bit in the bitmap |bits|, which it will pick
-up again and act upon when reacting to |ACT_ON_ANL_ENTRY_OPTIONS_PLUG|.
+to detect that the `NOUN_AP_CLAUSE`, with text "nowhere", should not be parsed
+normally. What it does it to set a bit in the bitmap `bits`, which it will pick
+up again and act upon when reacting to `ACT_ON_ANL_ENTRY_OPTIONS_PLUG`.
 
-If the plugin does not set a bit in |bits|, the normal machinery parses the
+If the plugin does not set a bit in `bits`, the normal machinery parses the
 text of the clause in the normal way.
 
 @e PARSE_AP_CLAUSE_PLUG
@@ -692,12 +692,12 @@ int PluginCalls::parse_AP_clause(action_name *an, anl_clause *c, int *bits) {
 
 @ Called from //if: Parse Clauses// to give plugins a chance to intervene in
 the type-checking process for a clause. Ordinarily, this would just check that
-the contents have the right kind: if matching an action variable of kind |K|
-then it must be a value compatible with |K| or a description of such.
+the contents have the right kind: if matching an action variable of kind `K`
+then it must be a value compatible with `K` or a description of such.
 
-By returning |TRUE|, a plugin can instead take responsibility for the decision
-itself, bypassing that. The |outcome| should then be set |TRUE| (it's valid)
-or |FALSE| (it isn't).
+By returning `TRUE`, a plugin can instead take responsibility for the decision
+itself, bypassing that. The `outcome` should then be set `TRUE` (it's valid)
+or `FALSE` (it isn't).
 
 @e VALIDATE_AP_CLAUSE_PLUG
 
@@ -707,7 +707,7 @@ int PluginCalls::validate_AP_clause(action_name *an, anl_clause *c, int *outcome
 }
 
 @ Called from //if: Parse Clauses// to deal with the options bitmap set
-previously by a |PARSE_AP_CLAUSE_PLUG| call: see above.
+previously by a `PARSE_AP_CLAUSE_PLUG` call: see above.
 
 @e ACT_ON_ANL_ENTRY_OPTIONS_PLUG
 
@@ -729,7 +729,7 @@ int PluginCalls::set_pattern_match_requirements(action_pattern *ap, int *cpm,
 }
 
 @ Called from //imperative: Matching Action Patterns// when compiling any additional
-requirements set by |SET_PATTERN_MATCH_REQUIREMENTS_PLUG|.
+requirements set by `SET_PATTERN_MATCH_REQUIREMENTS_PLUG`.
 
 @e COMPILE_PATTERN_MATCH_CLAUSE_PLUG
 

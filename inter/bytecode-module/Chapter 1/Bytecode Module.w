@@ -41,7 +41,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_symbol, 1024)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_tree_node, 8192)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_annotation, 8192)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 void BytecodeModule::start(void) {

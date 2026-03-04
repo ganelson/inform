@@ -19,7 +19,7 @@ property *ShortNames::cap_short_name_property(void) {
 }
 
 @ But in Basic Inform projects, that function may never be called, leaving
-|P_cap_short_name| null. This is a problem for code in //BasicInformKit//,
+`P_cap_short_name` null. This is a problem for code in //BasicInformKit//,
 which assumes that this name means something. So in that contingency we
 define it to be equivalent to regular short name, thus:
 
@@ -33,21 +33,21 @@ void ShortNames::compile_cap_short_name(void) {
 }
 
 @ Most of the time the short name property holds text, in a straightforward
-way: |"blue hat"|, say. But if the property belongs to an object created as
+way: `"blue hat"`, say. But if the property belongs to an object created as
 part of an assembly, then its name needs to contain that of the object it
-was assembled from: say |"Marianne's blue hat"|, where |"Marianne"| is the
+was assembled from: say `"Marianne's blue hat"`, where `"Marianne"` is the
 name of the owner.
 
-If, however, the short name for |"Marianne"| varies -- through the use of
+If, however, the short name for `"Marianne"` varies -- through the use of
 an activity -- then we want to respect that. So we don't give the name using
 static text, but as a dynamic function, which first prints Marianne's name
-through the usual apparatus, and then adds |"'s blue hat"| afterwards. That
+through the usual apparatus, and then adds `"'s blue hat"` afterwards. That
 way, if Marianne changes her name to Emilia, the result will be
-|"Emilia's blue hat"|.
+`"Emilia's blue hat"`.
 
 This function returns the name of the function to do this, and queues a compilation
-request for it. |capped| is |TRUE| if the function is to be used in a capitalised
-short name, and |FALSE| for regular.
+request for it. `capped` is `TRUE` if the function is to be used in a capitalised
+short name, and `FALSE` for regular.
 
 =
 typedef struct short_name_notice {

@@ -42,7 +42,7 @@ DECLARE_CLASS(template_path)
 
 @h Simple allocations.
 Not all of our memory will be claimed in the form of structures: now and then
-we need to use the equivalent of traditional |malloc| and |calloc| routines.
+we need to use the equivalent of traditional `malloc` and `calloc` routines.
 
 @e RDES_MREASON
 @e CHUNK_STORAGE_MREASON

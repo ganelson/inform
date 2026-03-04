@@ -55,7 +55,7 @@ fuller explanation.
 	}
 
 @h Actions.
-The |/main/synoptic/actions| submodule.
+The `/main/synoptic/actions` submodule.
 
 @e ACTIONCODING_HL
 @e ACTIONDATA_HL
@@ -74,7 +74,7 @@ The |/main/synoptic/actions| submodule.
 		SYN_FUNCT(DB_ACTION_DETAILS_HL,           I"DB_Action_Details_fn", I"DB_Action_Details")
 
 @h Activities.
-The |/main/synoptic/activities| submodule.
+The `/main/synoptic/activities` submodule.
 
 @e ACTIVITY_AFTER_RULEBOOKS_HL
 @e ACTIVITY_BEFORE_RULEBOOKS_HL
@@ -91,7 +91,7 @@ The |/main/synoptic/activities| submodule.
 		SYN_CONST(ACTIVITY_FLAGS_HL,              I"Activity_flags")
 
 @h Chronology.
-The |/main/synoptic/chronology| submodule.
+The `/main/synoptic/chronology` submodule.
 
 @e TIMEDEVENTSTABLE_HL
 @e TIMEDEVENTTIMESTABLE_HL
@@ -110,7 +110,7 @@ The |/main/synoptic/chronology| submodule.
 		SYN_FUNCT(TESTSINGLEPASTSTATE_HL,         I"test_fn", I"TestSinglePastState")
 
 @h Conjugations.
-The |/main/synoptic/conjugations| submodule.
+The `/main/synoptic/conjugations` submodule.
 
 @e TABLEOFVERBS_HL
 
@@ -119,7 +119,7 @@ The |/main/synoptic/conjugations| submodule.
 		SYN_CONST(TABLEOFVERBS_HL,                I"TableOfVerbs")
 
 @h Dialogue.
-The |/main/synoptic/dialogue| submodule.
+The `/main/synoptic/dialogue` submodule.
 
 @e DIALOGUEBEATS_HL
 @e DIALOGUELINES_HL
@@ -138,7 +138,7 @@ The |/main/synoptic/dialogue| submodule.
 		SYN_CONST(NO_DIALOGUE_CHOICES_HL,         I"NO_DIALOGUE_CHOICES")
 
 @h Extensions.
-The |/main/synoptic/extensions| submodule.
+The `/main/synoptic/extensions` submodule.
 
 @e SHOWEXTENSIONVERSIONS_HL
 @e SHOWFULLEXTENSIONVERSIONS_HL
@@ -151,7 +151,7 @@ The |/main/synoptic/extensions| submodule.
 		SYN_FUNCT(SHOWONEEXTENSION_HL,            I"showoneextension_fn", I"ShowOneExtension")
 
 @h Instances.
-The |/main/synoptic/instances| submodule.
+The `/main/synoptic/instances` submodule.
 
 @e SHOWMEINSTANCEDETAILS_HL
 
@@ -160,7 +160,7 @@ The |/main/synoptic/instances| submodule.
 		SYN_FUNCT(SHOWMEINSTANCEDETAILS_HL,       I"showmeinstancedetails_fn", I"ShowMeInstanceDetails")
 
 @h Kinds.
-The |/main/synoptic/kinds| submodule.
+The `/main/synoptic/kinds` submodule.
 
 @e DEFAULTVALUEFINDER_HL
 @e I7_KIND_NAME_HL
@@ -181,7 +181,7 @@ The |/main/synoptic/kinds| submodule.
 		SYN_CONST(KINDMETADATA_HL,                I"KindMetadata")
 
 @h Multimedia.
-The |/main/synoptic/multimedia| submodule.
+The `/main/synoptic/multimedia` submodule.
 
 @e RESOURCEIDSOFFIGURES_HL
 @e RESOURCEIDSOFSOUNDS_HL
@@ -200,7 +200,7 @@ The |/main/synoptic/multimedia| submodule.
 		SYN_CONST(TABLEOFINTERNALFILES_HL,        I"TableOfInternalFiles")
 
 @h Properties.
-The |/main/synoptic/properties| submodule.
+The `/main/synoptic/properties` submodule.
 
 @e CCOUNT_PROPERTY_HL
 
@@ -209,7 +209,7 @@ The |/main/synoptic/properties| submodule.
 		SYN_CONST(CCOUNT_PROPERTY_HL,             I"CCOUNT_PROPERTY")
 
 @h Relations.
-The |/main/synoptic/relations| submodule.
+The `/main/synoptic/relations` submodule.
 
 @e CREATEDYNAMICRELATIONS_HL
 @e CCOUNT_BINARY_PREDICATE_HL
@@ -224,7 +224,7 @@ The |/main/synoptic/relations| submodule.
 		SYN_FUNCT(RPROPERTY_HL,                   I"property_fn", I"RProperty")
 
 @h Rulebooks.
-The |/main/synoptic/rulebooks| submodule.
+The `/main/synoptic/rulebooks` submodule.
 
 @e NUMBER_RULEBOOKS_CREATED_HL
 @e RULEBOOK_VAR_CREATORS_HL
@@ -241,7 +241,7 @@ The |/main/synoptic/rulebooks| submodule.
 		SYN_CONST(RULEBOOKNAMES_HL,               I"RulebookNames")
 
 @h Rules.
-The |/main/synoptic/rules| and |/main/synoptic/responses| submodule.
+The `/main/synoptic/rules` and `/main/synoptic/responses` submodule.
 
 @e RULEPRINTINGRULE_HL
 
@@ -261,7 +261,7 @@ The |/main/synoptic/rules| and |/main/synoptic/responses| submodule.
 		SYN_FUNCT(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
 
 @h Scenes.
-The |/main/synoptic/scenes| submodule.
+The `/main/synoptic/scenes` submodule.
 
 @e SHOWSCENESTATUS_HL
 @e DETECTSCENECHANGE_HL
@@ -272,7 +272,7 @@ The |/main/synoptic/scenes| submodule.
 		SYN_FUNCT(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
 
 @h Tables.
-The |/main/synoptic/tables| submodule.
+The `/main/synoptic/tables` submodule.
 
 @e PRINT_TABLE_HL
 @e TABLEOFTABLES_HL
@@ -292,7 +292,7 @@ The |/main/synoptic/tables| submodule.
 		SYN_FUNCT(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
 
 @h Tests.
-The |/main/synoptic/tests| submodule.
+The `/main/synoptic/tests` submodule.
 
 @e TESTSCRIPTSUB_HL
 
@@ -301,7 +301,7 @@ The |/main/synoptic/tests| submodule.
 		SYN_FUNCT(TESTSCRIPTSUB_HL,               I"TestScriptSub_fn", I"TestScriptSub")
 
 @h Use options.
-The |/main/synoptic/use_options| submodule.
+The `/main/synoptic/use_options` submodule.
 
 @e NO_USE_OPTIONS_HL
 @e TESTUSEOPTION_HL

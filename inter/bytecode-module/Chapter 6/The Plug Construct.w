@@ -3,7 +3,7 @@
 Defining the symbol construct.
 
 @ This is a pseudo-construct: it looks like an instruction in textual Inter
-syntax, but specifies something else, and does not result in an |inter_tree_node|.
+syntax, but specifies something else, and does not result in an `inter_tree_node`.
 
 =
 void PlugInstruction::define_construct(void) {
@@ -22,7 +22,7 @@ void PlugInstruction::verify(inter_construct *IC, inter_tree_node *P,
 
 @ What it does is to specify a symbol which is a plug in the current tree:
 this results in an entry in the symbols table for the current package (which
-will always be |/main/connectors|, in fact) but not an instruction.
+will always be `/main/connectors`, in fact) but not an instruction.
 
 Surprisingly, this can actually result in a socket rather than a plug, but
 only in the case where the plug asks to wire to something existing in the current
@@ -64,7 +64,7 @@ void PlugInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 }
 
 @ The following writes a valid line of textual Inter to declare a plug or socket,
-appearing at level |N| in the hierarchy.
+appearing at level `N` in the hierarchy.
 
 =
 void PlugInstruction::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {

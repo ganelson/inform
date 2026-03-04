@@ -711,7 +711,7 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 	}
 }
 
-@ In the days of |indoc|, comments like these were used to show where inlined
+@ In the days of `indoc`, comments like these were used to show where inlined
 examples (i.e., examples rendered inside the body of sections of documentation
 rather than in their own individual HTML files) began. They're no longer
 needed because examples are no longer inlined.

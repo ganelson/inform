@@ -3,24 +3,24 @@ Tables
 To read, write, search and allocate rows in the Table data structure.
 
 @h Format.
-The I7 Table structure is not to be confused with the I6 |table| form of
+The I7 Table structure is not to be confused with the I6 `table` form of
 array: it is essentially a two-dimensional array which has some metadata
 at the top of each column.
 
-The run-time representation for a Table is the address |T| of an I6 |table|
-array: that is, |T-->0| holds the number of columns (which is at most 99)
-and |T-->i| is the address of column number |i|. Columns are therefore
-numbered from 1 to |T-->0|, but they are also identified by an ID number of
+The run-time representation for a Table is the address `T` of an I6 `table`
+array: that is, `T-->0` holds the number of columns (which is at most 99)
+and `T-->i` is the address of column number `i`. Columns are therefore
+numbered from 1 to `T-->0`, but they are also identified by an ID number of
 100 or more, with each different column name having its own ID number.
 (This is so that multiple tables can share columns with the same name, and
 correlate them: it also means that Inform's type-checking machinery can know
 the kind of value of a table entry from the name of the column alone.)
 
-Each column |C| is also a |table| array, with |C-->1| holding the unique
-ID number for the column's name, |C-->2| holding the blank entry flags
-offset and |C-->3| up to |C-->(C-->0)| holding the entries.
+Each column `C` is also a `table` array, with `C-->1` holding the unique
+ID number for the column's name, `C-->2` holding the blank entry flags
+offset and `C-->3` up to `C-->(C-->0)` holding the entries.
 
-|C-->1| also contains seven upper bit flags. These are also defined in
+`C-->1` also contains seven upper bit flags. These are also defined in
 "Tables.w" in the Inform source, and the values must agree.
 
 =
@@ -41,7 +41,7 @@ to, potentially, 99 -- or else by unique ID numbers associated with column
 names. For instance, if a table has a column called "liquid capacity",
 then all references to its "liquid capacity entry" are via the ID number
 associated with this column name, which will be $\geq 100$ and on the other
-hand $\leq$ |TB_COLUMN_NUMBER|. At present, this is only 511, so there can
+hand $\leq$ `TB_COLUMN_NUMBER`. At present, this is only 511, so there can
 be at most 411 different column names across all the tables present in the
 source text. (It is just about possible to imagine this being a problem on
 a very large work, so we will probably one day revise the above to make
@@ -64,7 +64,7 @@ nobody has got even close to it.)
 
 @h Number of Rows.
 The columns in a table can be assumed all to have the same height (i.e.,
-number of rows): thus the number of rows in |T| can be calculated by
+number of rows): thus the number of rows in `T` can be calculated by
 looking at column 1, thus...
 
 =
@@ -74,8 +74,8 @@ looking at column 1, thus...
 ];
 
 @h Blanks.
-Each table entry is stored in a single word in memory: indeed, column |C|
-row |R| is at address |(T-->C)-->(R+COL_HSIZE)|.
+Each table entry is stored in a single word in memory: indeed, column `C`
+row `R` is at address `(T-->C)-->(R+COL_HSIZE)`.
 
 But this is not sufficient storage in all cases, because each entry can be
 either a value or can be designated "blank". Since, for some columns at
@@ -104,24 +104,24 @@ also unlikely for even those kinds of value where it is legal. For
 instance, $-1$ would be impossible for enumerative kinds of value such as
 rulebooks and scenes, but it would be a poor choice for the dummy value
 because it occurs pretty often as an integer. Instead we use the constant
-|IMPROBABLE_VALUE|, whose value depends on the word size of the virtual
+`IMPROBABLE_VALUE`, whose value depends on the word size of the virtual
 machine, and which is declared in "Definitions.i6t".
 
 An entry is therefore blank if and only if either
 
-- its column has no blanks bitmap and the stored entry is |TABLE_NOVALUE|, or
+- its column has no blanks bitmap and the stored entry is `TABLE_NOVALUE`, or
 - its column does have a blanks bitmap, the blanks bit for this entry is set,
-and the stored entry is also |TABLE_NOVALUE|.
+and the stored entry is also `TABLE_NOVALUE`.
 
 To look up the blanks bitmap is a little slower than to access the stored
 entry directly. Most of the time, entries accessed will be non-blank: so it
 is efficient to have a system where we can quickly determine this. If we
-look at the entry and find that it is not |TABLE_NOVALUE|, then we know
-it is not a blank. If we find that it is |TABLE_NOVALUE|, on the other
+look at the entry and find that it is not `TABLE_NOVALUE`, then we know
+it is not a blank. If we find that it is `TABLE_NOVALUE`, on the other
 hand, then quite often the column has no blanks bitmap and again we have
 a quick answer: it's blank. Only if the column also has a blanks bitmap do
 we need to check that we haven't got a false negative. (The more improbable
-|TABLE_NOVALUE| is as a stored value, the rarer it is that we have to
+`TABLE_NOVALUE` is as a stored value, the rarer it is that we have to
 check the blanks bitmap for a non-blank entry.)
 
 =
@@ -155,11 +155,11 @@ Array CheckTableEntryIsNonBlank_LU
 
 @h Testing Blankness.
 The following routine is the one which checks that there is no false negative:
-it should be used when we know that the table entry is |TABLE_NOVALUE|
+it should be used when we know that the table entry is `TABLE_NOVALUE`
 and we need to check the blank bit, if there is one, to make sure the entry
 is indeed blank.
 
-The second word in the column table header, |C-->2|, holds the address of the
+The second word in the column table header, `C-->2`, holds the address of the
 blanks bitmap: this in turn contains one bit for each row, starting with the
 least significant bit of the first byte. If the table contains a number of
 rows which isn't a multiple of 8, the spare bits at the end of the last byte
@@ -181,16 +181,16 @@ practice.
 ];
 
 @h Force Entry Blank.
-We blank a table cell by storing |TABLE_NOVALUE| in its entry word and
+We blank a table cell by storing `TABLE_NOVALUE` in its entry word and
 also setting the relevant bit in the blanks bitmap, if there is one.
 
 We need to be careful if the column holds a kind of value where values are
 pointers to blocks of allocated memory, because if so then overwriting such
-a value might lead to a memory leak. So in such cases we call |DestroyPV|
+a value might lead to a memory leak. So in such cases we call `DestroyPV`
 to free the memory block. (Note that each memory block is pointed to by one
 and only one I7 value at any given time: we are using them as values, not
 pointers to values. So if this reference is deleted, it's by definition the
-only one.) |TABLE_NOVALUE| is chosen such that it cannot be an address
+only one.) `TABLE_NOVALUE` is chosen such that it cannot be an address
 of a memory block, which is convenient here. (The value 0 means "no memory
 block allocated yet".)
 
@@ -212,7 +212,7 @@ block allocated yet".)
 @h Force Entry Non-Blank.
 To unblank a cell, we need to clear the relevant bit in the bitmap. We then
 go on to write a new value in to the entry -- thus overwriting the
-|TABLE_NOVALUE| value -- but that isn't done here; the expectation is
+`TABLE_NOVALUE` value -- but that isn't done here; the expectation is
 that whoever calls this routine is just about to write a new entry anyway.
 
 The exception is again for columns holding a kind of value pointing to a
@@ -314,11 +314,11 @@ keeping the blanks bitmaps up to date when blank rows are moved down.
 ];
 
 @h Table Row Corresponding.
-|TableRowCorr(T, C, V)| returns the first row on which value |V| appears in
-column |C| of table |T|, or prints an error if it doesn't.
+`TableRowCorr(T, C, V)` returns the first row on which value `V` appears in
+column `C` of table `T`, or prints an error if it doesn't.
 
-|ExistsTableRowCorr(T, C, V)| returns the first row on which |V| appears in
-column |C| of table |T|, or 0 if |V| does not occur at all. If the column
+`ExistsTableRowCorr(T, C, V)` returns the first row on which `V` appears in
+column `C` of table `T`, or 0 if `V` does not occur at all. If the column
 is a topic, then we match the entry as a snippet against the value as a
 general parsing routine.
 
@@ -375,13 +375,13 @@ general parsing routine.
 ];
 
 @h Table Look Up Corresponding Row.
-|TableLookUpCorr(T, C1, C2, V)| finds the first row on which value |V|
-appears in column |C2|, and returns the corresponding value in |C1|, or
-prints an error if the value |V| cannot be found or has no corresponding
-value in |C1|.
+`TableLookUpCorr(T, C1, C2, V)` finds the first row on which value `V`
+appears in column `C2`, and returns the corresponding value in `C1`, or
+prints an error if the value `V` cannot be found or has no corresponding
+value in `C1`.
 
-|ExistsTableLookUpCorr(T, C1, C2, V)| returns |true| if the operation
-|TableLookUpCorr(T, C1, C2, V)| can be done, |false| otherwise.
+`ExistsTableLookUpCorr(T, C1, C2, V)` returns `true` if the operation
+`TableLookUpCorr(T, C1, C2, V)` can be done, `false` otherwise.
 
 =
 [ TableLookUpCorr tab col1 col2 lookup_value write_flag write_value cola1 cola2 i j v f;
@@ -448,11 +448,11 @@ value in |C1|.
 ];
 
 @h Table Look Up Entry.
-|TableLookUpEntry(T, C, R)| returns the value at column |C|, row |R|, printing
+`TableLookUpEntry(T, C, R)` returns the value at column `C`, row `R`, printing
 an error if that doesn't exist.
 
-|ExistsTableLookUpEntry(T, C, R)| returns true if a value exists at column
-|C|, row |R|, false otherwise.
+`ExistsTableLookUpEntry(T, C, R)` returns true if a value exists at column
+`C`, row `R`, false otherwise.
 
 =
 [ TableLookUpEntry tab col index write_flag write_value v;
@@ -504,17 +504,17 @@ an error if that doesn't exist.
 ];
 
 @h Blank Rows.
-|TableRowIsBlank(T, R)| returns true if row |R| of table |T| is blank. (|R|
+`TableRowIsBlank(T, R)` returns true if row `R` of table `T` is blank. (`R`
 must be a legal row number.)
 
-|TableBlankOutRow(T, R)| fills row |R| of table |T| with blanks. (|R| must be
+`TableBlankOutRow(T, R)` fills row `R` of table `T` with blanks. (`R` must be
 a legal row number.)
 
-|TableBlankRows(T)| returns the number of blank rows in |T|.
+`TableBlankRows(T)` returns the number of blank rows in `T`.
 
-|TableFilledRows(T)| returns the number of non-blank rows in |T|.
+`TableFilledRows(T)` returns the number of non-blank rows in `T`.
 
-|TableBlankRow(T)| finds the first blank row in |T|.
+`TableBlankRow(T)` finds the first blank row in `T`.
 
 =
 [ TableRowIsBlank tab j k;
@@ -573,7 +573,7 @@ a legal row number.)
 ];
 
 @h Random Row.
-|TableRandomRow(T)| chooses a random non-blank row in |T|.
+`TableRandomRow(T)` chooses a random non-blank row in `T`.
 
 =
 [ TableRandomRow tab i j k;
@@ -594,7 +594,7 @@ a legal row number.)
 ];
 
 @h Swap Rows.
-|TableSwapRows(T, R1, R2)| exchanges rows |R1| and |R2|.
+`TableSwapRows(T, R1, R2)` exchanges rows `R1` and `R2`.
 
 =
 [ TableSwapRows tab i j k l v1 v2;
@@ -611,7 +611,7 @@ a legal row number.)
 ];
 
 @h Compare Rows.
-|TableCompareRows(T, C, R1, R2, D)| returns:
+`TableCompareRows(T, C, R1, R2, D)` returns:
 
 - $+1$ if the entry at row R1 of column C is $>$ the entry at row R2,
 - 0 if they are equal, and
@@ -659,8 +659,8 @@ where other entries are not.
 	}
 ];
 
-@ |TableCompareRowsCustomCF(T, C, R1, R2, D)| is similar, but calls a custom
-comparison function, and so ignores the |C| parameter. The |D| parameter is
+@ `TableCompareRowsCustomCF(T, C, R1, R2, D)` is similar, but calls a custom
+comparison function, and so ignores the `C` parameter. The `D` parameter is
 also ignored at present.
 
 =
@@ -691,7 +691,7 @@ Global Table_Sort_cf;
 ];
 
 @h Shuffle.
-|TableShuffle(T)| sorts |T| into random row order.
+`TableShuffle(T)` sorts `T` into random row order.
 
 =
 [ TableShuffle tab i to;
@@ -701,20 +701,20 @@ Global Table_Sort_cf;
 ];
 
 @h Next Row.
-|TableNextRow(T, C, R, D)| is used when scanning through a table in order
-of the values in column |C|: ascending order if |D = 1|, descending if |D =
--1|. The current position is row |R| of column |C|, or |R = 0| if we have
+`TableNextRow(T, C, R, D)` is used when scanning through a table in order
+of the values in column `C`: ascending order if `D = 1`, descending if |D =
+-1`. The current position is row `R` of column `C`, or `R = 0| if we have
 not yet found the first row. The return value is the row number for the
 next value, or 0 if we are already at the final value. Note that if there
 are several equal values in the column, they will be run through in turn,
-in order of their physical row numbers - ascending if |D = 1|, descending
-if |D = -1|, so that using the routine with |D = -1| always produces the
-exact reverse ordering from using it with |D = 1| and the same parameters.
-Rows with blank entries in |C| are skipped.
+in order of their physical row numbers - ascending if `D = 1`, descending
+if `D = -1`, so that using the routine with `D = -1` always produces the
+exact reverse ordering from using it with `D = 1` and the same parameters.
+Rows with blank entries in `C` are skipped.
 = (text as Inform 6)
 	for (R=TableNextRow(T,C,0,D): R : R=TableNextRow(T,C,R,D)) ...
 =
-will perform a loop of valid row numbers in order of column |C|.
+will perform a loop of valid row numbers in order of column `C`.
 
 =
 [ TableNextRow tab col row dir i k val v dv min_dv min_at signed_arithmetic f blk z;

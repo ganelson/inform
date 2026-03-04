@@ -4,7 +4,7 @@ Testing and changing the fundamental spatial relations.
 
 @h The Core Tree.
 Whereas I6 traditionally has a simple object tree hierarchy for containment,
-support, carrying and so on, the I7 template also uses the |component_*|
+support, carrying and so on, the I7 template also uses the `component_*`
 properties to provide a second tree which defines the "part of" relation.
 These two trees interact in a subtle way, and it took a very long time to
 work out the simplest way to express this.
@@ -17,16 +17,16 @@ position as Y, and so the spatial location of X is determined by the position
 in the object tree of its core. (In effect, the spatial situation can be
 found by contracting together all nodes corresponding to objects which are
 parts of each other, but it would waste memory to construct such a tree:
-|CoreOfParentOfCoreOf| simulates what the |parent| operation would be in
+`CoreOfParentOfCoreOf` simulates what the `parent` operation would be in
 such a tree if it existed, wasting a little time instead.)
 
 The {\it holder} of an object is its component parent, if it is part of
 something, or its object-tree parent if it has one. It is illegal for both
-of these to be non-|nothing|, so this is unambiguous.
+of these to be non-`nothing`, so this is unambiguous.
 
-It is just possible for |HolderOf| to be called before the player has been
+It is just possible for `HolderOf` to be called before the player has been
 placed into the model world, in cases where Inform is checking a past tense
-condition in the opening pre-turn. We don't want to return |nothing| then
+condition in the opening pre-turn. We don't want to return `nothing` then
 because that would make it true that
 = (text as Inform 6)
 	HolderOf(player) == ContainerOf(player)
@@ -70,7 +70,7 @@ case.
 ];
 
 @h The holding relation.
-The following is essentially a wrapper for |MoveObject| used by the relation
+The following is essentially a wrapper for `MoveObject` used by the relation
 "holding".
 
 =
@@ -108,16 +108,16 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 ];
 
 @h Climbing the Core Tree.
-|LocationOf| returns the room in which an object can be found, or |nothing|
+`LocationOf` returns the room in which an object can be found, or `nothing`
 if it is out of play. Directions and regions are always out of play. Doors
 and backdrops can be in multiple places: if they are in the current location,
 then that's the answer; otherwise a two-sided door is in its "front side",
 and a backdrop in the earliest declared room which it's currently in.
-For a room, |LocationOf| is necessarily itself.
+For a room, `LocationOf` is necessarily itself.
 
-|CommonAncestor| finds the nearest object indirectly containing |o1| and
-|o2|, or returns |nothing| if there is no common ancestor. (This is a port
-of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
+`CommonAncestor` finds the nearest object indirectly containing `o1` and
+`o2`, or returns `nothing` if there is no common ancestor. (This is a port
+of `CommonAncestor` from the I6 library, adapted to work on the core tree.)
 
 =
 [ LocationOf o;
@@ -205,13 +205,13 @@ run-time when A is a room and B is a region, and when it isn't.
 
 For each A there is at most one B such that "A is in B" is true. Because of
 this we test the relation with a function of one variable which turns A into B,
-rather than a function of two variables returning true or false. |ContainerOf|
+rather than a function of two variables returning true or false. `ContainerOf`
 is that function.
 
 I7 frequently needs to compile loops over all A such that "A is in B". In
 simpler relations (such as the support relation below) it can do this efficiently
 by iterating through the object-tree children of B, but for containment we
-have to provide an iterator function |TestContainmentRange|, as otherwise we
+have to provide an iterator function `TestContainmentRange`, as otherwise we
 would get the wrong result when B is a region.
 
 =
@@ -309,11 +309,11 @@ Only people may carry, and something worn is not in this sense carried.
 ];
 
 @h Wearing Clothes.
-An object X is worn by a person P if and only if (i) the object tree |parent|
-of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
+An object X is worn by a person P if and only if (i) the object tree `parent`
+of X is P, and (ii) X has the `worn` attribute. In fact for I7 purposes we
 are careful to ensure that (ii) happens only when (i) does in any case:
 if X is moved in the object tree, or made a part of something, or removed
-from play, then |worn| is removed.
+from play, then `worn` is removed.
 
 =
 [ WearObject X P opt;
@@ -347,7 +347,7 @@ A person has something if and only if he either wears or carries it.
 ];
 
 @h Making Parts.
-Note that |MakePart| removes the part-to-be from the object tree before
+Note that `MakePart` removes the part-to-be from the object tree before
 attaching it: it cannot, of course, be the core of the resulting object.
 
 =
@@ -475,7 +475,7 @@ when moved.
 @h On Stage.
 The following implements the "on-stage" and "off-stage" adjectives
 provided by the Standard Rules. Here, as above, note that the I6 attribute
-|absent| marks a floating object (see below) which has been removed from
+`absent` marks a floating object (see below) which has been removed from
 play; in I7 only doors and backdrops are allowed to float, and only backdrops
 are allowed to be removed from play.
 
@@ -501,7 +501,7 @@ are allowed to be removed from play.
 
 @h Moving the Player.
 Note that the player object can only be moved by this routine: this allows
-us to maintain the invariant for |real_location| and |location| (for which,
+us to maintain the invariant for `real_location` and `location` (for which,
 see "Light.i6t") and to ensure that multiply-present objects can be
 witnessed where they need to be.
 
@@ -523,8 +523,8 @@ witnessed where they need to be.
 ];
 
 @h Move During Going.
-The following routine preserves the invariant for |real_location|, but gets
-|location| wrong since it doesn't adjust for light. Nor are floating objects
+The following routine preserves the invariant for `real_location`, but gets
+`location` wrong since it doesn't adjust for light. Nor are floating objects
 moved. It should be used only in the course of other operations which get
 the rest of this right. (I7 uses it only for the "going" action, where
 these various operations are each handled by different named rules to
@@ -540,7 +540,7 @@ increase the flexibility of the system.)
 ];
 
 @h Being Everywhere.
-The following is used as the |found_in| property for any backdrop which is
+The following is used as the `found_in` property for any backdrop which is
 "everywhere", that is, which is found in every room.
 
 =
@@ -558,22 +558,22 @@ The following is used as the |found_in| property for any backdrop which is
 ];
 
 @h Changing the Player.
-It is very important that nobody simply change the value of the |player|
+It is very important that nobody simply change the value of the `player`
 variable, because so much else must be updated when the identity of the
-player changes: the light situation, floating objects, the |real_location|
+player changes: the light situation, floating objects, the `real_location`
 and so on. Because of this, the Inform compiler contains code which compiles
-an assertion of the proposition "is(|player|, $X$)" into a function call
-|ChangePlayer(X)| rather than a variable assignment |player = X|. So we
+an assertion of the proposition "is(`player`, $X$)" into a function call
+`ChangePlayer(X)` rather than a variable assignment `player = X`. So we
 cannot catch out the system by writing "now the player is Mr Henderson".
 
-We must ensure that if |player| is initially X, is changed to Y, and is then
+We must ensure that if `player` is initially X, is changed to Y, and is then
 changed back to X, that both X and Y end exactly as they began -- hence the
-flummery below with using |remove_proper| to ensure that |proper| is left
+flummery below with using `remove_proper` to ensure that `proper` is left
 with the correct value. Note that:
 
-- at any given time exactly one person has the I6 |concealed| attribute: the
+- at any given time exactly one person has the I6 `concealed` attribute: the
 current player;
-- the |selfobj| is the default initial value of |player|, and because it has
+- the `selfobj` is the default initial value of `player`, and because it has
 as its actual printed name "yourself", we need to override this when
 something else takes over as player: we change to "your former self", in
 fact. No such device is needed for other people being changed from because
@@ -649,11 +649,11 @@ or absence of backdrops much affects what non-player characters do.
 All the same, the scheme is not logically defensible, and this is why we
 do not allow the user to create new categories of floating objects in I7.
 
-The I6 implementation of |MoveFloatingObjects| acted on the |location|
-rather than the |real_location|, which (a) meant that multiply-present objects
-could include |thedark| -- the generic Darkness place -- as one possible
+The I6 implementation of `MoveFloatingObjects` acted on the `location`
+rather than the `real_location`, which (a) meant that multiply-present objects
+could include `thedark` -- the generic Darkness place -- as one possible
 location, but (b) assumed that the only sense by which the player could
-witness an object was sight. In I7, |thedark| is not a valid room, and we
+witness an object was sight. In I7, `thedark` is not a valid room, and we
 are a bit more careful about the senses.
 
 =
@@ -742,19 +742,19 @@ that this routine also works for two-sided doors, despite its name.
 ];
 
 @h Map Connections.
-|MapConnection| returns the room which is in the given direction (as an object)
+`MapConnection` returns the room which is in the given direction (as an object)
 from the given room: it is used, among other things, to test the "mapped east
 of" and similar relations. (The same relations are asserted true with
-|AssertMapConnection| and false with |AssertMapUnconnection|.)
+`AssertMapConnection` and false with `AssertMapUnconnection`.)
 
-|RoomOrDoorFrom| returns either the room or door which is in the given
+`RoomOrDoorFrom` returns either the room or door which is in the given
 direction, and is thus simpler (since it doesn't have to investigate what
 is through such a door).
 
 Both routines return values which are type-safe in I7 provided the kind of
 value they are assigned to is "object": neither returns any specific kind
-of object without fail. (|MapConnection| is always either a door or |nothing|,
-but |nothing| is not a typesafe value for "door".)
+of object without fail. (`MapConnection` is always either a door or `nothing`,
+but `nothing` is not a typesafe value for "door".)
 
 Note that map connections via doors are immutable.
 
@@ -855,9 +855,9 @@ doors.
 This tests whether an object with a definite physical location is in a
 given region. (For a two-sided door which straddles regions, the front side
 is what counts; for a backdrop, a direction or another region, the answer
-is always no.) We rely on the fact that every room object has a |map_region|
+is always no.) We rely on the fact that every room object has a `map_region`
 property which is the smallest region containing it, if any does, and
-|nothing| otherwise; region objects are then in the object tree such that
+`nothing` otherwise; region objects are then in the object tree such that
 parenthood corresponds to spatial containment. (Note that in I7, a region
 must either completely contain another region, or else have no overlap with it.)
 
@@ -919,14 +919,14 @@ There are two sorts of door: one-sided and two-sided.
 
 A two-sided door is in two rooms at once: one is called the front side, the
 other the back side. The front side is the one declared first in the source.
-Note that a one-sided door is also an I6 object of class |K4_door|, and
-then the front side is the room holding it, while the back side is |nothing|.
+Note that a one-sided door is also an I6 object of class `K4_door`, and
+then the front side is the room holding it, while the back side is `nothing`.
 
-The |door_to| property calculates the room which the door leads to; that
+The `door_to` property calculates the room which the door leads to; that
 of course depends on which side of it the player is standing. Similarly,
-|door_dir| calculates the direction it leads in. Unlike the I6 setup, where
-|door_dir| returned the direction property (|n_to|, |s_to|, etc.), here in
-I7's template it returns the direction object (|n_obj|, |s_obj|, etc.)
+`door_dir` calculates the direction it leads in. Unlike the I6 setup, where
+`door_dir` returned the direction property (`n_to`, `s_to`, etc.), here in
+I7's template it returns the direction object (`n_obj`, `s_obj`, etc.)
 
 =
 [ FrontSideOfDoor D; if (~~(D ofclass K4_door)) rfalse;
@@ -960,7 +960,7 @@ I7's template it returns the direction object (|n_obj|, |s_obj|, etc.)
 ];
 
 @h Visibility Relation.
-We use |TestScope| to decide whether there is a line of sight from A to B;
+We use `TestScope` to decide whether there is a line of sight from A to B;
 it's a relation which cannot be asserted true or false.
 
 =
@@ -990,7 +990,7 @@ light to see by.
 ];
 
 @h Touchability Relation.
-We use |ObjectIsUntouchable| to decide whether there is physical access from
+We use `ObjectIsUntouchable` to decide whether there is physical access from
 A to B; it's a relation which cannot be asserted true or false.
 
 =

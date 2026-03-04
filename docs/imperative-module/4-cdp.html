@@ -516,13 +516,13 @@ give them all a capacity of 27.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">r_stack_data</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax">;                </span><span class="comment-syntax">/* what task are we performing? A |*_DEFER| value */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">;                </span><span class="comment-syntax">/* |TRUE| if we want a match, |FALSE| if we want no match */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax">;                </span><span class="comment-syntax">/* what task are we performing? A <code>*_DEFER</code> value */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">;                </span><span class="comment-syntax">/* <code>TRUE</code> if we want a match, <code>FALSE</code> if we want no match */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">r_stack_data</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">q_stack_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax">;  </span><span class="comment-syntax">/* which quantifier */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;             </span><span class="comment-syntax">/* its parameter, e.g., 9 for "more than nine" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;             </span><span class="comment-syntax">/* its parameter, e.g., 9 for &quot;more than nine&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C_stack_level</span><span class="plain-syntax">;         </span><span class="comment-syntax">/* at the point this occurs */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_stack_level</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">existential</span><span class="plain-syntax">;           </span><span class="comment-syntax">/* just one solution is needed */</span>
@@ -551,7 +551,7 @@ give them all a capacity of 27.</p>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cdp.html#SP3_6_1_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the proposition into a search algorithm</span></span><span class="named-paragraph-number">3.6.1.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q_sp</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-cdp.html#SP3_6_1_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Pop the Q-stack</span></span><span class="named-paragraph-number">3.6.1.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C_sp</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-cdp.html#SP3_6_1_1_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Pop the C-stack</span></span><span class="named-paragraph-number">3.6.1.1.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/* we are now at the magic match point |M| in the search code */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* we are now at the magic match point <code>M</code> in the search code */</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cdp.html#SP3_6_1_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Pop the R-stack</span></span><span class="named-paragraph-number">3.6.1.1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L_sp</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-cdp.html#SP3_6_1_1_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Pop the L-stack</span></span><span class="named-paragraph-number">3.6.1.1.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* we have now finished compiling the search code */</span>
@@ -990,12 +990,9 @@ multiple solutions. See test case <code>CountInnerExistential</code>.</p>
 transcribe that to the stash of callings for the benefit of the code
 calling this proposition function. Each time we discover that a term \INWEBMATH(t\INWEBMATH) is
 to be given a name, we stack it up. These are not always variables:</p>
-</div>
 <blockquote>
-    <p>if a person (called the dupe) is in a dark room (called the lair), ...</p>
+<p>if a person (called the dupe) is in a dark room (called the lair), ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>gives names to \INWEBMATH(x\INWEBMATH) (&quot;dupe&quot;) and \INWEBMATH(f_{\it in}(x)\INWEBMATH) (&quot;lair&quot;), because
 simplification has eliminated the variable \INWEBMATH(y\INWEBMATH) which appears to be being
 given a name.</p>
@@ -1019,12 +1016,9 @@ the values of any variables called in that domain are recorded;</li>
 point <code>M</code>, that is, immediately before acting on a successful match.</li>
 </ul>
 <p>For example, when reading:</p>
-</div>
 <blockquote>
-    <p>if a person (called the dupe) is in a lighted room which is adjacent to exactly one dark room (called the lair), ...</p>
+<p>if a person (called the dupe) is in a lighted room which is adjacent to exactly one dark room (called the lair), ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the value of &quot;dupe&quot; is transferred just before <code>M</code>, but the value of &quot;lair&quot;
 is transferred as soon as a dark room is found. The code looks like this:</p>
 </div>

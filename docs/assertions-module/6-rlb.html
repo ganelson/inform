@@ -105,7 +105,7 @@ quaint idea of having enumerated ways in which they finish (see <a href="6-fao.h
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules_always_test_actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for action-tied check, carry out, report */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">automatically_generated</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rather than by explicit Inform 7 source text */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">runs_during_activities</span><span class="plain-syntax">; </span><span class="comment-syntax">/* allow "while..." clauses to name these */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">runs_during_activities</span><span class="plain-syntax">; </span><span class="comment-syntax">/* allow &quot;while...&quot; clauses to name these */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">shared_variable_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">my_variables</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rulebook variables owned here */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">shared_variable_access_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">accessible_variables</span><span class="plain-syntax">; </span><span class="comment-syntax">/* and which can be named here */</span>
@@ -309,7 +309,7 @@ or &quot;coordination rulebook&quot;:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rlb.html#SP2">&#167;2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  It can also subsequently be given a further or &quot;alternative&quot; name, and that
-too becomes a proper noun, but is not run through &lt;rulebook-name-construction&gt;
+too becomes a proper noun, but is not run through <rulebook-name-construction>
 to make still further variants. So the rulebook has at most four different
 names, one more than cats have.</p>
 </div>
@@ -665,20 +665,16 @@ user in beta-testing.)</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Rule stems.</b>  The voracious nonterminal &lt;rulebook-stem&gt; finds the &quot;stem&quot; of a rule, that is,
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Rule stems.</b>  The voracious nonterminal <rulebook-stem> finds the &quot;stem&quot; of a rule, that is,
 the part which identifies which rulebook it will go into. For example, in;</p>
-</div>
 <blockquote>
-    <p>Before printing the name of the peach: ...</p>
+<p>Before printing the name of the peach: ...</p>
 </blockquote>
-
 <blockquote>
-    <p>Instead of eating: ...</p>
+<p>Instead of eating: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the stems are &quot;before printing the name&quot; and &quot;instead&quot;.</p>
-<p>The results are, however, too complicated to return from &lt;rulebook-stem&gt;; since
+<p>The results are, however, too complicated to return from <rulebook-stem>; since
 it is not used recursively, we store the results in <code>parsed_rm</code> on success.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -688,8 +684,8 @@ it is not used recursively, we store the results in <code>parsed_rm</code> on su
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_length</span><span class="plain-syntax">; </span><span class="comment-syntax">/* number of words in matched text */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">advance_words</span><span class="plain-syntax">; </span><span class="comment-syntax">/* how far the nonterminal should advance */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tail_words</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for rulebook names split by scene start or end */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">article_used</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or |NULL| if none was */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">placement_requested</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_PLACEMENT| values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">article_used</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NULL</code> if none was */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">placement_requested</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_PLACEMENT</code> values */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">rulebook_match</span><span class="plain-syntax">;</span>
 
 <span class="type-syntax">rulebook_match</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax">;</span>
@@ -736,15 +732,12 @@ it is not used recursively, we store the results in <code>parsed_rm</code> on su
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  Suppose this is our rule:</p>
-</div>
 <blockquote>
-    <p>The first rule for printing the name of something: ...</p>
+<p>The first rule for printing the name of something: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the following grammar peels away the easier-to-read indications at the front. It
 notes the use of &quot;The&quot;, and the placement &quot;first&quot;; it throws away other verbiage so
-that &lt;rulebook-stem-name&gt; matches &quot;printing the name of something&quot;.</p>
+that <rulebook-stem-name> matches &quot;printing the name of something&quot;.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;rulebook-stem-inner&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>

@@ -17,7 +17,7 @@ function call, we perform this with macros.
 out on the original, raw, text, this will be case sensitive -- which is
 usually wrong for Inform purposes. On the treated text, however, we are
 comparing a case-normalised version of the original word, which is likely
-to be safely case insensitive comparison, provided that the content of |t|
+to be safely case insensitive comparison, provided that the content of `t`
 is also normalised.
 
 =
@@ -30,7 +30,7 @@ int Word::compare_raw_by_strcmp(int w, inchar32_t *t) {
 
 @h Correct use of text substitutions.
 If a "word" is going to be quoted literal text, then it has to use the
-characters |[| and |]| in a matched way, and without nesting them. The
+characters `[` and `]` in a matched way, and without nesting them. The
 following verifies that.
 
 These rules are quite strict. It could be argued that nested brackets should be
@@ -84,7 +84,7 @@ int Word::unexpectedly_upper_case(int wn) {
 	return FALSE;
 }
 
-@ Is the word at |wn| in single quotes? Count the number at the ends.
+@ Is the word at `wn` in single quotes? Count the number at the ends.
 
 =
 int Word::singly_quoted(int wn) {
@@ -96,7 +96,7 @@ int Word::singly_quoted(int wn) {
 	return qc;
 }
 
-@ Does the word at |wn| appear to be a piece of quoted text which, because
+@ Does the word at `wn` appear to be a piece of quoted text which, because
 it ends with punctuation, may also end the sentence which quotes it?
 
 =
@@ -147,26 +147,26 @@ We take a wide Unicode string and compile an I6 dictionary word constant
 to lodge the same text into the virtual machine's parsing dictionary.
 
 A legal I6 dictionary word can take several forms: it can be in single
-quotes, |'thus'|, but only if it is more than one character long, since
-|'t'| would be the character value of lower-case T instead. (Or it can be
-double-quoted |"so"|, but only in grammar or properties; this usage is
-deprecated and we avoid it.) Within the dictionary word, |^| is an escape
-character meaning a literal single quote, and the notation |@{xx}| is an
-escape meaning the character with hexadecimal value |xx|.
+quotes, `'thus'`, but only if it is more than one character long, since
+`'t'` would be the character value of lower-case T instead. (Or it can be
+double-quoted `"so"`, but only in grammar or properties; this usage is
+deprecated and we avoid it.) Within the dictionary word, `^` is an escape
+character meaning a literal single quote, and the notation `@{xx}` is an
+escape meaning the character with hexadecimal value `xx`.
 
 Optionally, a dictionary word can end with a pair of slashes and then,
 optionally again, markers to indicate that the word is (for instance) a
-plural: thus |'newts//p'|. Using no markers, as in |'toads//'|, makes a
+plural: thus `'newts//p'`. Using no markers, as in `'toads//'`, makes a
 word equivalent to that without a marker, but avoids the single-letter
 problem -- so the preferred modern way to write a single-character I6
-dictionary word is |'t//'|, and this is what the following routine does.
-(Note the exceptional case where the word consists only of a |'/'|: here
-we cannot write |'///'| because I6 reads this as |//| plus an invalid
-marker |/|, and throws an error. We escape the single |/| to avoid this.
-In all other cases there's no need to escape a |/|.)
+dictionary word is `'t//'`, and this is what the following routine does.
+(Note the exceptional case where the word consists only of a `'/'`: here
+we cannot write `'///'` because I6 reads this as `//` plus an invalid
+marker `/`, and throws an error. We escape the single `/` to avoid this.
+In all other cases there's no need to escape a `/`.)
 
-Dictionary words with a literal |~| in are, as it happens, not parsable
-by the Z-machine, but the code below -- employing the |@{7E}|
+Dictionary words with a literal `~` in are, as it happens, not parsable
+by the Z-machine, but the code below -- employing the `@{7E}`
 escape -- is in principle legal, and it does work on Glulx.
 
 Very long words can safely be truncated since the virtual machines do not

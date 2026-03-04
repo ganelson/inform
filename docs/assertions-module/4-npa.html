@@ -61,20 +61,14 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  The following handles sentences like</p>
-</div>
 <blockquote>
-    <p>A container has a number called rating.</p>
+<p>A container has a number called rating.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in which the &quot;number called rating&quot; construction is a <code>PROPERTYCALLED_NT</code>
 subtree, and also sentences like</p>
-</div>
 <blockquote>
-    <p>A fruit has a colour.</p>
+<p>A fruit has a colour.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in which there's only a leaf on the left-hand-side -- in fact an <code>PROPER_NOUN_NT</code>
 node, though of course it's not an object. This is most neatly handled with
 a recursive traverse of the left-hand subtree.</p>
@@ -169,11 +163,10 @@ automatically creates it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The following handles a second kind of recursion: using &quot;and&quot; to divide
 several property names, e.g., in</p>
-</div>
 <blockquote>
-    <p>A door has numbers called length and width.</p>
+<p>A door has numbers called length and width.</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyAssertions::recursively_call</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">NewPropertyAssertions::recursively_call</span></span>:<br/><a href="4-npa.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_ref</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn_ref</span><span class="plain-syntax">) {</span>

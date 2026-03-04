@@ -69,8 +69,8 @@ property_permission *PropertyPermissions::find(inference_subject *infs,
 
 @h Granting permission.
 This does nothing if permission already exists, simply returning the existing
-permission structure; but note the use of |allow_inheritance|. If this is
-set to |FALSE|, and we call for the "carrying capacity" property of the
+permission structure; but note the use of `allow_inheritance`. If this is
+set to `FALSE`, and we call for the "carrying capacity" property of the
 player (say), then we may create a new permission even though the player's
 kind ("person") already has one. This is intentional.[1]
 

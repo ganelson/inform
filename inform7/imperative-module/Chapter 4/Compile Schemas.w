@@ -4,12 +4,12 @@ Here we compile fragments of code from paraphrases written in Inform 6 notation,
 and use that ability to compile general predicate calculus terms.
 
 @ We provide the following functions as a sort of API for emitting schemas.
-Recall that an |i6_schema|, defined in //calculus: Compilation Schemas//,
+Recall that an `i6_schema`, defined in //calculus: Compilation Schemas//,
 is a basically textual prototype of a fragment of code.
 
 These functions really differ only in how the parameters are to be specified;
-typical schemas look like |X(*1, true) == *2|, say, where some values go
-in place of |*1| and |*2|. Those are the parameters, and they can be supplied
+typical schemas look like `X(*1, true) == *2`, say, where some values go
+in place of `*1` and `*2`. Those are the parameters, and they can be supplied
 in several different ways.
 
 =
@@ -59,8 +59,8 @@ void CompileSchemas::from_annotated_schema(annotated_i6_schema *asch) {
 
 @ And this is where the actual emission is done, though in fact the heavy
 lifting is all done in //building: Inter Schemas//. Essentially all we do is
-to call |EmitInterSchemas::emit|, with our compilation state -- such as it is --
-stored in an |i6s_emission_state|. It then calls our nominated function on
+to call `EmitInterSchemas::emit`, with our compilation state -- such as it is --
+stored in an `i6s_emission_state`. It then calls our nominated function on
 each component part of the scheme, in its parsed and dismantled form.
 
 In case we receive an untypechecked term (e.g., arising from a local variable
@@ -117,9 +117,9 @@ void CompileSchemas::from_schema_token(value_holster *VH,
 	else internal_error("unimplemented command in schema");
 }
 
-@ This deals with a |*1| or |*2| token, which are placeholders for the tokens:
-we substitute in |ems->ops_termwise[0]| or |ems->ops_termwise[1]| respectively.
-Here |this| is the term in question, and |other| the other of the two.
+@ This deals with a `*1` or `*2` token, which are placeholders for the tokens:
+we substitute in `ems->ops_termwise[0]` or `ems->ops_termwise[1]` respectively.
+Here `this` is the term in question, and `other` the other of the two.
 
 @<Perform substitution@> =
 	int N = t->constant_number;
@@ -142,7 +142,7 @@ Here |this| is the term in question, and |other| the other of the two.
 	rule_to_which_this_is_a_response = R;
 	response_marker_within_that_rule = M;
 
-@ This is for |*&|, which can only be used on the second term (i.e., term 1).
+@ This is for `*&`, which can only be used on the second term (i.e., term 1).
 If that is a combination of two values then we unpack those and compile them
 both, one after the other. 
 
@@ -231,7 +231,7 @@ void CompileSchemas::compile_term(pcalc_term pt, kind *K, int by_reference) {
 }
 
 @ Variables (in the predicate calculus sense) are compiled to Inter locals
-with the same names -- that is, they are called |x|, |y|, |z|, ... and so on.
+with the same names -- that is, they are called `x`, `y`, `z`, ... and so on.
 
 @<Compile variable term@> =
 	local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);
@@ -248,7 +248,7 @@ any use of a phrase to decide a value here, because this might not otherwise
 yet have been checked.
 
 Cindered constants resulting from a deferral (see //Cinders and Deferrals//)
-become |const_0|, |const_1|, ... These will only be valid inside a deferred
+become `const_0`, `const_1`, ... These will only be valid inside a deferred
 function, but that is fine because they cannot arise anywhere else.
 
 @<Compile constant term@> =

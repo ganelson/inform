@@ -4,7 +4,7 @@ Turning textual code written in Inform 6 syntax into a linked list of tokens.
 
 @ The following code was sketched out on a long night flight to Hong Kong, but
 there is otherwise nothing exotic about it. In as simple a way as possible, we
-take a text |from| and break it into Inform 6 tokens. What we return is not
+take a text `from` and break it into Inform 6 tokens. What we return is not
 literally a linked list, but it amounts to the same thing: a single node
 holding an unstructured run of tokens --
 = (text)
@@ -15,14 +15,14 @@ holding an unstructured run of tokens --
 		...
 =
 We follow the syntax of Inform 6, except that we have to look for three extra
-syntaxes: |{-braced-commands}|, |(+ Inform 7 interpolation +)|, and, if the
-abbreviated syntax is allowed, also some cryptic notations such as |*1|.
+syntaxes: `{-braced-commands}`, `(+ Inform 7 interpolation +)`, and, if the
+abbreviated syntax is allowed, also some cryptic notations such as `*1`.
 
 The following scanner is basically a finite state machine, and these are the
 states:
 
 @e NO_TOKSTATE from 1
-@e COMMENT_TOKSTATE  /* currently scanning... an I6 comment |! ...| */
+@e COMMENT_TOKSTATE  /* currently scanning... an I6 comment `! ...` */
 @e DQUOTED_TOKSTATE  /* ...double-quoted text */
 @e SQUOTED_TOKSTATE  /* ...single-quoted text */
 @e WHITE_TOKSTATE    /* ...whitespace */
@@ -138,7 +138,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	Str::clear(current_raw);
 	tokeniser_state = NO_TOKSTATE;
 
-@ Material in |(+ ... +)| notation is an interpolation of I7 source text.
+@ Material in `(+ ... +)` notation is an interpolation of I7 source text.
 
 @<Look for a possible Inform 7 fragment@> =
 	int save_pos = pos, accept = FALSE;
@@ -350,10 +350,10 @@ a bracing.
 	{some text}
 	{-annotation:some text}
 =
-We parse this with the command or annotation in |command|, the "some text"
-or operand in |bracing|, the property name (if given) in |extremal_property|,
-the direction of the |<| or |>| in |extremal_property_sign|, and the second,
-optional, operand in |operand2|.
+We parse this with the command or annotation in `command`, the "some text"
+or operand in `bracing`, the property name (if given) in `extremal_property`,
+the direction of the `<` or `>` in `extremal_property_sign`, and the second,
+optional, operand in `operand2`.
 
 @<Decompose the bracing@> =
 	TEMPORARY_TEXT(pname)
@@ -394,7 +394,7 @@ optional, operand in |operand2|.
 	}
 	DISCARD_TEXT(pname)
 
-@ In abbreviated prototypes, |*1| and |*2| are placeholders, but a number
+@ In abbreviated prototypes, `*1` and `*2` are placeholders, but a number
 of modifiers are allowed. See //calculus: Compilation Schemas//.
 
 @d GIVE_KIND_ID_ISSBM					1
@@ -553,7 +553,7 @@ the character after the initial dollar determines which:
 
 @ A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
-For example, we need to tokenise |x-1| as
+For example, we need to tokenise `x-1` as
 = (text)
 	x
 	-
@@ -587,11 +587,11 @@ This requires context, that is, remembering what the previous token was.
 	}
 
 @ In I6, operators made of non-alphanumeric characters can be up to three
-characters long, and we take the longest match: thus |-->| is a trigraph,
-not the monograph |-| followed by the digraph |->|.
+characters long, and we take the longest match: thus `-->` is a trigraph,
+not the monograph `-` followed by the digraph `->`.
 
-We treat the |@| sign as if it were alphanumeric for the sake of assembly
-language opcodes such as |@pull|.
+We treat the `@` sign as if it were alphanumeric for the sake of assembly
+language opcodes such as `@pull`.
 
 @<Break off here for operators@> =
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
@@ -648,7 +648,7 @@ language opcodes such as |@pull|.
 		continue;
 	}
 
-@ In this code, the new token is between character positions |x| and |y|
+@ In this code, the new token is between character positions `x` and `y`
 inclusive; we ignore an empty token.
 
 @<Break off a token@> =
@@ -797,10 +797,10 @@ but speed is not quite important enough to make it worthwhile.
 
 @ Inform 6 has a baroque set of not very self-consistent escape characters in
 its double-quoted text syntax: here we take a deep breath, and plunge in. The
-following converts |text| from I6 notation to a (composed) Unicode-encoded
+following converts `text` from I6 notation to a (composed) Unicode-encoded
 string, in which every character has its literal meaning.
 
-Note that the test case |schemas| of the //building-test// module exercises
+Note that the test case `schemas` of the //building-test// module exercises
 the following function.
 
 =
@@ -840,8 +840,8 @@ of it is deleted, and the newline replaced by a single space.
 	}
 
 @ I6 does not follow the C-like language convention of using backslash for
-string escapes. Instead |^| marks a forced newline and |~| marks a double-quotation
-mark. All other string escapes begin with |@|.
+string escapes. Instead `^` marks a forced newline and `~` marks a double-quotation
+mark. All other string escapes begin with `@`.
 
 @<De-escape raw into text@> =
 	for (int i=0; i<Str::len(raw); i++) {
@@ -868,7 +868,7 @@ mark. All other string escapes begin with |@|.
 @ This is not an I6 notation at all. If a character outside the range allowed
 by I6 in string literals is present in an I7 source text file -- for example,
 a capital Cyrillic ef -- then it is converted internally by the compiler to
-something like |[unicode 1060]|, with 1060 here being the decimal code point
+something like `[unicode 1060]`, with 1060 here being the decimal code point
 for the character.
 
 We will recognise this notation and translate it back into Unicode. The reason
@@ -895,12 +895,12 @@ a kit source file.
 		}
 	}
 
-@ There are three different forms for an |@|-escape. First, |@{....}| with
-hexadecimal digits inside the braces; then |@@...| with decimal digits; and
-otherwise |@..| for any of the set of legal digraphs listed below. The
-content represented by dots in these syntaxes we will store in |token|,
-and |skip| will count the total length of the escape, in raw characters.
-Thus for |@{2af4}| the |skip| count would be 7.
+@ There are three different forms for an `@`-escape. First, `@{....}` with
+hexadecimal digits inside the braces; then `@@...` with decimal digits; and
+otherwise `@..` for any of the set of legal digraphs listed below. The
+content represented by dots in these syntaxes we will store in `token`,
+and `skip` will count the total length of the escape, in raw characters.
+Thus for `@{2af4}` the `skip` count would be 7.
 
 @<Extract the escape token@> =
 	inchar32_t d = Str::get_at(raw, i+1);
@@ -1028,11 +1028,11 @@ in the DM4.
 		}
 	}
 
-@ Now for the digraphs. For example, |@'a| is an a-acute, while |@ss| is a
+@ Now for the digraphs. For example, `@'a` is an a-acute, while `@ss` is a
 German sharp s. Again, see the DM4 for the specification of these. A misprint
-in the DM4 means that one part of that manual says that |@cc| is the syntax
-for c-cedilla, and another says it is |@,c|. To be on the safe side, we
-recognise both. For similar reasons, we recognise both |@/o| and |@\o| as
+in the DM4 means that one part of that manual says that `@cc` is the syntax
+for c-cedilla, and another says it is `@,c`. To be on the safe side, we
+recognise both. For similar reasons, we recognise both `@/o` and `@\o` as
 a Scandinavian o-stroke.
 
 @<Expand TeX-style digraph@> =
@@ -1223,14 +1223,14 @@ int Tokenisation::hex_val(inchar32_t c) {
 }
 
 @ And similarly for single-quoted text notation, which shares some of the same
-conventions. In fact I6 for some reason does not support the |@@...| decimal
+conventions. In fact I6 for some reason does not support the `@@...` decimal
 notation within character or dictionary literals, throwing an error if it
 is used; but we'll recognise it anyway, for the sake of using the same code as
 is given above.
 
 The tricky thing here is that single-quoted literals are characters if they
-contain one character and do not have a |//| marker, but dictionary literals
-otherwise. We need to know which because |^| is an escape character for a
+contain one character and do not have a `//` marker, but dictionary literals
+otherwise. We need to know which because `^` is an escape character for a
 single quotation mark in a dictionary literal, but not a character literal.
 
 =

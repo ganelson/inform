@@ -14,7 +14,7 @@ I now slightly regret the existence of phrase options, but above all the
 comma-based syntax used for them, as here. Brackets would have been better;
 it makes phrase options impossible to use for text substitutions.
 
->> let R be the best route from X to Y, using doors;
+> let R be the best route from X to Y, using doors;
 
 I sometimes even regret the existence of phrase options, but it must be
 admitted that they are a clean way to interface to low-level Inform 6 code.
@@ -107,13 +107,13 @@ int PhraseOptions::parse(id_body *idb, wording W) {
 }
 
 @h Parsing phrase options in a declaration.
-The following is called with |W| set to just the part of a phrase prototype
+The following is called with `W` set to just the part of a phrase prototype
 containing its phrase options. In this example:
 = (text as Inform 7)
 To decide which object is best route from (R1 - object) to (R2 - object),
 	using doors or using even locked doors:
 =
-|W| would be "using doors or using even locked doors".
+`W` would be "using doors or using even locked doors".
 
 The syntax is just a list of names, but with the wrinkle that if the list is divided
 with "or" then the options are mutually exclusive, but with "and/or" they're not.
@@ -128,9 +128,9 @@ void PhraseOptions::parse_declared_options(id_options_data *phod, wording W) {
 	}
 }
 
-@ Note the following Preform grammar passes the return value |TRUE| up from
+@ Note the following Preform grammar passes the return value `TRUE` up from
 the final element of the list when the connective used for it was "and/or".
-Note also the rare use of the Preform literal marker in |\and/or| to show
+Note also the rare use of the Preform literal marker in `\and/or` to show
 that the slash between "and" and "or" is part of the word.
 
 =
@@ -157,18 +157,18 @@ that the slash between "and" and "or" is part of the word.
 At this point, we're looking at the text after the first comma in something
 like:
 
->> list the contents of the box, as a sentence, with newlines;
+> list the contents of the box, as a sentence, with newlines;
 
 The invocation has already been parsed enough that we know the options
 chosen are:
 
->> as a sentence, with newlines
+> as a sentence, with newlines
 
 and the following routine turns that into a bitmap with two bits set, one
 corresponding to each choice.
 
-We return |TRUE| or |FALSE| according to whether the options were valid or
-not, and the |silently| flag suppresses problem messages we would otherwise
+We return `TRUE` or `FALSE` according to whether the options were valid or
+not, and the `silently` flag suppresses problem messages we would otherwise
 produce.
 
 =

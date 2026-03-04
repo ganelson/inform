@@ -26,7 +26,7 @@ int SettingPropertyRelations::bp_sets_a_property(binary_predicate *bp) {
 }
 
 @h Initial stock.
-The case of |n| being 2 is when all properties have been created, making it
+The case of `n` being 2 is when all properties have been created, making it
 the perfect opportunity to go over all of the property-setting BPs:
 
 =
@@ -47,7 +47,7 @@ void SettingPropertyRelations::stock(bp_family *self, int n) {
 Relations like this lead to a timing problem, because we have to create the
 relation early enough that we can make sense of the sentences in the source
 text; but at that early time, the properties haven't been created yet. We
-therefore store the text (say, "weight") in |property_pending_text| and come
+therefore store the text (say, "weight") in `property_pending_text` and come
 back to it later.
 
 =
@@ -113,7 +113,7 @@ void SettingPropertyRelations::fix_property_bp(binary_predicate *bp) {
 
 @ When properties are named as part of relation definitions, for instance, like so:
 
->> The verb to weigh (it weighs, they weigh, it is weighing) implies the weight property.
+> The verb to weigh (it weighs, they weigh, it is weighing) implies the weight property.
 
 ...then its name (in this case "weight") is required to pass:
 

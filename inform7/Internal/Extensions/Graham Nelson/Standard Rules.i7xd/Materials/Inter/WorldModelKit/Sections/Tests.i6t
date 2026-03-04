@@ -9,7 +9,7 @@ as TEST, ACTIONS and PURLOIN.
 #Ifdef DEBUG;
 
 @h Abstract Command.
-The code below is compiled only if the symbol |DEBUG| is defined, which it
+The code below is compiled only if the symbol `DEBUG` is defined, which it
 always is for normal runs in the Inform user interface, but not for Release
 runs.
 
@@ -532,11 +532,11 @@ for "real" users, but it's probably worth keeping just the same.
 
 @h Grammar.
 In the old I6 parser, testing commands had their own scope hardwired in to the
-code: this worked by comparing the verb command word directly against |'scope'|
+code: this worked by comparing the verb command word directly against `'scope'`
 and the like. That would go wrong if the testing commands were translated into
 other languages, and was a crude design at best. The following scope token is
-better: using this token instead of |multi| provides a noun with universal
-scope (but restricted to I7 objects, so I6 pseudo-objects like |compass| are
+better: using this token instead of `multi` provides a noun with universal
+scope (but restricted to I7 objects, so I6 pseudo-objects like `compass` are
 not picked up) and able to accept multiple objects.
 
 =

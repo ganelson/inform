@@ -3,19 +3,19 @@
 To define how to compile a comparison of two values.
 
 @ For most word-value kinds, it's easy to compare two values to see if they are
-equal: all we need is the |==| operator. But for pointer-value kinds, that
+equal: all we need is the `==` operator. But for pointer-value kinds, that
 would simply tell us whether they point to the same block of data on the
 heap, whereas we need in fact to compare the blocks they point to. So the
 kind system makes it possible for each individual kind to decide how values
-should be compared, returning an I6 schema prototype to compare |*1| and |*2|.
+should be compared, returning an I6 schema prototype to compare `*1` and `*2`.
 
 What happens at run-time when we test to see if value V equals value W,
 or change storage object S so that it now contains value T, depends on the
 kind of values we are discussing. If there were only word-based values in
 Inform (as was the case until September 2007), there would be little to
-do here, as the comparison would simply compile to |V == W|, while the
-storage would be a matter of either |S = W;| or some more exotic case
-along the lines of |StorageRoutineWrite(S, W);|.
+do here, as the comparison would simply compile to `V == W`, while the
+storage would be a matter of either `S = W;` or some more exotic case
+along the lines of `StorageRoutineWrite(S, W);`.
 
 But once pointers to blocks are allowed, this becomes more interesting.
 Now the comparison needs to be a deep one, that is, we want to test whether

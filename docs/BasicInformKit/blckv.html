@@ -77,8 +77,9 @@ system, and thus is genuinely a &quot;block&quot; in the sense of the Flex
 documentation.</p>
 <p>It's possible to have several different short blocks each pointing to the
 same long block of underlying data: for example, the result of the I7 code</p>
-<p>let L1 be { 2, 3, 5, 7, 11 };
-let L2 be L1;</p>
+<pre><code>let L1 be { 2, 3, 5, 7, 11 };
+let L2 be L1;
+</code></pre>
 <p>is to create L1 and L2 as pointers to two different short blocks, but the
 two SBs each point to the same long block, which contains the data for the
 list 2, 3, 5, 7, 11. Note that this makes it very fast to copy L1's contents
@@ -113,7 +114,8 @@ occur later because the version of the value you're holding really
 belongs to somebody else and may be freed at any point.</p>
 <p>Finally, note that the I7 compiler also creates block values representing
 constants. For example, the source text</p>
-<p>let L1 be { 2, 3, 5, 7, 11 };</p>
+<pre><code>let L1 be { 2, 3, 5, 7, 11 };
+</code></pre>
 <p>causes a block value representing this list to be stored in memory. The
 long block for a constant needs to be immortal, since this memory must
 never be freed: it's therefore given a reference count of &quot;infinity&quot;.</p>

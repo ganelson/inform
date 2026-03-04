@@ -29,14 +29,14 @@ This verifies that the current story file is intact.
 Restart does what it says: restarts the program as if it had just loaded for
 the first time.
 
-|VM_Save()| attempts to save the current state of the program to a file, and
+`VM_Save()` attempts to save the current state of the program to a file, and
 returns 0 if this fails, 1 if this succeeds, or 2 if in fact a restore has
 just succeeded. (A successful restoration should resume execution where the
 save succeeded, but we want to distinguish those cases.)
 
-|VM_Restore()| pretends to return |true| or |false| according to whether or not
-it succeeds, but in fact it can only return |false| to indicate failure, because
-a successful restoration means that execution has transferred to |VM_Save|
+`VM_Restore()` pretends to return `true` or `false` according to whether or not
+it succeeds, but in fact it can only return `false` to indicate failure, because
+a successful restoration means that execution has transferred to `VM_Save`
 instead.
 
 =

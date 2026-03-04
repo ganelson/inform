@@ -31,7 +31,7 @@ int ActionRules::new_rcd(id_runtime_context_data *idrcd) {
 	return FALSE;
 }
 
-@ ...with the result that |arcd| is always null in the function below.
+@ ...with the result that `arcd` is always null in the function below.
 
 =
 void ActionRules::set_always_test_actor(id_runtime_context_data *idrcd) {
@@ -72,7 +72,7 @@ int ActionRules::get_marked_for_anyone(id_runtime_context_data *idrcd) {
 	return FALSE;
 }
 
-@ The following all make use the action pattern |idrcd->ap| in the RCD. This
+@ The following all make use the action pattern `idrcd->ap` in the RCD. This
 seems a little odd: why isn't it in the //actions_rcd_data//? The answer is
 that it needs to exist even when the actions feature is inactive, because it's
 still used for parsing predicates for non-action-based rulebooks.

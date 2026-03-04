@@ -18,7 +18,7 @@ typedef struct site_production_data {
 
 @ The bookmarks here are meaningless unless a function is being compiled, and
 then they will be given explicit values, so it really doesn't matter what they
-are initialised to. But to avoid any doubt, they will be set to the root of |I|,
+are initialised to. But to avoid any doubt, they will be set to the root of `I`,
 even though they will never be used in that state.
 
 =
@@ -40,7 +40,7 @@ one compilation activity, start another, and then resume the original.
 
 For //inform7//, this stack in fact never exceeds size 2, i.e., that first
 interruption is never interrupted. If we ever need that, we can simply raise
-|MAX_CIP_STACK_SIZE|.
+`MAX_CIP_STACK_SIZE`.
 
 Each CIP contains a further stack of "noted levels" -- where certain code
 blocks, belonging to loop and conditional constructs, are placed. (Every Inter
@@ -232,7 +232,7 @@ inter_bookmark *Produce::function_body_start_bookmark(inter_tree *I) {
 }
 
 @ The following creates a local symbol, suitable for a local variable or a
-label. Note that we return an |inter_symbol|, not an iname: inames can never
+label. Note that we return an `inter_symbol`, not an iname: inames can never
 refer to local resources like these.
 
 =
@@ -251,7 +251,7 @@ void Produce::end_function_body(inter_tree *I) {
 
 @ If the caller doesn't want to use the mechanism above, and wants to make her
 own damn packages, she can call the following: but should be careful to call
-twice, first to set to the new function's package, then to reset it to |NULL|.
+twice, first to set to the new function's package, then to reset it to `NULL`.
 
 =
 void Produce::set_function(inter_tree *I, inter_package *P) {
@@ -261,7 +261,7 @@ void Produce::set_function(inter_tree *I, inter_package *P) {
 @h Making material outside of functions.
 That's enough of keeping track of things: from here on, the code in this section
 will actually make some Inter. The lower-down APIs in //bytecode// only return
-an |inter_error_message| if something improper has been done; //inter// and
+an `inter_error_message` if something improper has been done; //inter// and
 //inform7//, when generating code on their own initiative, must never trigger
 Inter errors. So we will guard against them, reacting with an immediate
 internal error to halt the compiler if they occur.
@@ -305,7 +305,7 @@ void Produce::comment(inter_tree *I, text_stream *text) {
 	Produce::guard(CommentInstruction::new(IBM, text, NULL, Produce::baseline(IBM)));
 }
 
-@ Defining a constant with numerical value |val|:
+@ Defining a constant with numerical value `val`:
 
 =
 inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind *K,
@@ -320,7 +320,7 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	return con_iname;
 }
 
-@ Defining a constant equal to the value of an already-existing symbol |val_s|:
+@ Defining a constant equal to the value of an already-existing symbol `val_s`:
 
 =
 inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind *K,
@@ -352,8 +352,8 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	return P;
 }
 
-@ We make a new package and return it; but note the |+1| here -- the package
-is created at the level below that in |IBM|.
+@ We make a new package and return it; but note the `+1` here -- the package
+is created at the level below that in `IBM`.
 
 =
 inter_package *Produce::make_subpackage(inter_bookmark *IBM,
@@ -365,7 +365,7 @@ inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 }
 
 @h Making the code inside function bodies.
-We begin with invocations: usages of the |inv| instruction. This of course has
+We begin with invocations: usages of the `inv` instruction. This of course has
 three uses. First, primitives:
 
 =
@@ -456,7 +456,7 @@ void Produce::reference(inter_tree *I) {
 	Produce::guard(ReferenceInstruction::new(Produce::at(I), Produce::level(I), NULL));
 }
 
-@ The |val| instruction. First, we can take the value of something identified
+@ The `val` instruction. First, we can take the value of something identified
 by an iname:
 
 =
@@ -518,7 +518,7 @@ void Produce::val_dword(inter_tree *I, text_stream *S) {
 	Produce::val(I, K_value, InterValuePairs::from_singular_dword(Packaging::at(I), S));
 }
 
-@ The |ref| instruction is simpler. It makes no sense to have a storage reference
+@ The `ref` instruction is simpler. It makes no sense to have a storage reference
 to a constant, so we only ever need to refer to inames or their symbols:
 
 =
@@ -537,7 +537,7 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 		Produce::level(I), val, NULL));
 }
 
-@ |cast| may yet disappear from Inter: it doesn't really accomplish anything at
+@ `cast` may yet disappear from Inter: it doesn't really accomplish anything at
 present, and is more of a placeholder than anything else.
 
 =
@@ -573,7 +573,7 @@ inter_ti Produce::kind_to_TID(inter_bookmark *IBM, kind *K) {
 @ The following reserves a label, that is, declares that a given name will be
 that of a label in the function currently being constructed.
 
-Label names must begin with a |.|, and we enforce that here.
+Label names must begin with a `.`, and we enforce that here.
 
 =
 inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
@@ -598,7 +598,7 @@ void Produce::place_label(inter_tree *I, inter_symbol *lab_name) {
 	Produce::guard(LabelInstruction::new(Produce::at(I), lab_name, (inter_ti) Produce::level(I), NULL));
 }
 
-@ And here we make a |lab| instruction, suitable for a jump instruction to use.
+@ And here we make a `lab` instruction, suitable for a jump instruction to use.
 
 =
 void Produce::lab(inter_tree *I, inter_symbol *L) {

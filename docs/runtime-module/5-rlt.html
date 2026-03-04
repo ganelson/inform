@@ -532,7 +532,7 @@ as their meanings. See the test case <code>PronounVariation</code>.</p>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">ExplicitRelations::get_form_of_relation</span><span class="plain-syntax">(</span><span class="identifier-syntax">dbp</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">Relation_Implicit:</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Field 0 is not used */</span>
-<span class="plain-syntax">                </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(0); </span><span class="comment-syntax">/* which is not the same as |NULL|, unlike in C */</span>
+<span class="plain-syntax">                </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(0); </span><span class="comment-syntax">/* which is not the same as <code>NULL</code>, unlike in C */</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">Relation_OtoO:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">Relation_OtoV:</span>
@@ -1324,12 +1324,9 @@ This begins with a header of 8 words and is then followed by a bitmap.</p>
 <p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1. </b>  We calculate numbers \INWEBMATH(L\INWEBMATH) and \INWEBMATH(R\INWEBMATH), and index the items being related, so that
 the possible left values are indexed \INWEBMATH(0, 1, 2, ..., L-1\INWEBMATH) and the possible
 right values \INWEBMATH(0, 1, 2, ..., R-1\INWEBMATH). Note that in a relation such as</p>
-</div>
 <blockquote>
-    <p>Roominess relates various things to various containers.</p>
+<p>Roominess relates various things to various containers.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the same object (if a container) might be in both the left and right domains,
 and be indexed differently on each side: it might be thing number 11 but
 container number 6, for instance.</p>
@@ -1522,29 +1519,20 @@ domain. We count upwards from 0 (in order of creation).</p>
 \INWEBMATH(E(x, y)\INWEBMATH) if and only if \INWEBMATH(E(y, x)\INWEBMATH), and such that \INWEBMATH(E(x, y)\INWEBMATH) and \INWEBMATH(E(y, z)\INWEBMATH)
 together imply \INWEBMATH(E(x, z)\INWEBMATH): the properties of being reflexive, symmetric
 and transitive. The relation constructed by a sentence like</p>
-</div>
 <blockquote>
-    <p>Alliance relates people to each other in groups.</p>
+<p>Alliance relates people to each other in groups.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is to be an equivalence relation. This means we need to ensure first that
 the original state of the relation, resulting from assertions such as...</p>
-</div>
 <blockquote>
-    <p> The verb to be allied to implies the alliance relation. Louis is allied to Otto. Otto is allied to Helene.</p>
+<p>The verb to be allied to implies the alliance relation. Louis is allied to Otto. Otto is allied to Helene.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...satisfies the reflexive, symmetric and transitive properties; and then
 also that these properties are maintained at run-time when the situation
 changes as a result of executing phrases such as</p>
-</div>
 <blockquote>
-    <p>now Louis is allied to Gustav;</p>
+<p>now Louis is allied to Gustav;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We use the same solution both in the compiler and at run-time, which is to
 exploit an elementary theorem about ERs. Let \INWEBMATH(E\INWEBMATH) be an equivalence relation
 on the members of a set \INWEBMATH(S\INWEBMATH) (say, the set of people in Central Europe).
@@ -1600,12 +1588,9 @@ $$ p(P) = 12, p(S) = 23, p(R) = 25, p(D) = 26, p(O) = 31. $$</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  The A-parser has meanwhile been reading in facts about the helping relation:</p>
-</div>
 <blockquote>
-    <p>Sophie helps Ryan. Daisy helps Ryan. Owen helps the player.</p>
+<p>Sophie helps Ryan. Daisy helps Ryan. Owen helps the player.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>And it feeds these facts to us one at a time. It tells us that \INWEBMATH(A(S, R)\INWEBMATH)
 has to be true by calling the function below for the helping relation with
 the ID numbers of Sophie and Ryan as arguments. Sophie is currently in
@@ -1624,12 +1609,9 @@ As mentioned above, it might seem &quot;tidy&quot; to renumber these classes 1 a
 rather than 12 and 23, but there's really no need and we don't bother.</p>
 <p>Note that the A-parser does not allow negative assertions about equivalence
 relations to be made:</p>
-</div>
 <blockquote>
-    <p>Daisy does not help Ryan.</p>
+<p>Daisy does not help Ryan.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>While we could try to accommodate this (using the same method we use at
 run-time to handle &quot;now Daisy does not help Ryan&quot;), it would only invite
 users to set up these relations in a stylistically poor way.</p>
@@ -1992,7 +1974,7 @@ simply embed that condition as the Inter schema for &quot;test relation&quot;: i
 very well need local variables, the table row-choosing variables, etc., to
 evaluate. It has to be tested in its own context. So we generate a function
 which takes two parameters <code>t_0</code> and <code>t_1</code> and returns true or false according
-to whether or not \INWEBMATH(R(\hbox{\tt t_0}, \hbox{\tt t_1})\INWEBMATH).</p>
+to whether or not \INWEBMATH(R(`t_0`, `t_1`)\INWEBMATH).</p>
 <p>This is where those functions are compiled.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

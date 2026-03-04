@@ -5,7 +5,7 @@ Integer and floating-point calculations translated to C.
 @ Integer arithmetic is handled by the standard operators in C, so this is very
 easy, except that we want to fail gracefully in the case of division by zero:
 so if we're compiling a function, we do this with the functions implementing the
-opcodes |@div_r| and |@mod_r| instead.
+opcodes `@div_r` and `@mod_r` instead.
 
 =
 int CArithmetic::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -52,10 +52,10 @@ int CArithmetic::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 }
 
 @h add, sub, neg, mul, div, mod.
-Also the functions |i7_div| and |i7_mod|, which are just wrappers for their
+Also the functions `i7_div` and `i7_mod`, which are just wrappers for their
 opcodes but return values rather than copying to pointers.
 
-The implementations of |@div| and |@mod| are borrowed from the glulxe
+The implementations of `@div` and `@mod` are borrowed from the glulxe
 reference code, to be sure that we have the right sign conventions.
 
 = (text to inform7_clib.h)
@@ -137,7 +137,7 @@ i7word_t i7_mod(i7process_t *proc, i7word_t x, i7word_t y) {
 
 @h fadd, fsub, fmul, fdiv, fmod.
 The remaining opcodes are for floating-point arithmetic, and it all seems
-straightforward, since we just want to use standard C |float| arithmetic
+straightforward, since we just want to use standard C `float` arithmetic
 throughout, but the devil is in the details. The code below is heavily
 indebted to Andrew Plotkin.
 
@@ -303,7 +303,7 @@ void i7_opcode_atan(i7process_t *proc, i7word_t x, i7word_t *y) {
 @h jfeq. jfne, jfge, jflt, jisinf, jisnan.
 These are branch instructions of the kind which spook anybody who's never
 looked at how floating-point arithmetic is actually done. Once you stop
-thinking of a |float| as a number and start thinking of it as a sort of fuzzy
+thinking of a `float` as a number and start thinking of it as a sort of fuzzy
 uncertainty range all of this becomes more explicable, but still.
 
 = (text to inform7_clib.h)

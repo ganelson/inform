@@ -60,7 +60,7 @@ typedef struct command_index_entry {
 	CLASS_DEFINITION
 } command_index_entry;
 
-command_index_entry *sorted_command_index = NULL; /* in alphabetical order of |text| */
+command_index_entry *sorted_command_index = NULL; /* in alphabetical order of `text` */
 
 @ =
 void CommandsElement::make_test_entry(text_stream *t, linked_list *entries) {

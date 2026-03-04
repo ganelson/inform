@@ -218,15 +218,17 @@ examples provided in the extension.</p>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">details</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">IndexExtensions::document_in_detail</span><span class="plain-syntax">(</span><span class="identifier-syntax">details</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">/* </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">if (Str::len(details) &gt; 0) {
- </span><span class="plain-syntax">  </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_TAG("hr");
- </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">WRITE("defined these in the last run");
- </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_CLOSE("p");
- </span><span class="plain-syntax">  </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_OPEN("div");
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">WRITE("%S", details);
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_CLOSE("div");
-  </span><span class="plain-syntax">   </span><span class="comment-syntax">}
+<span class="comment-syntax">/*		<pre><code>	if (Str::len(details) &gt; 0) {
+		HTML_TAG(&quot;hr&quot;);
+		HTML_OPEN_WITH(&quot;p&quot;, &quot;class=\&quot;extensionsubheading\&quot;&quot;);
+		WRITE(&quot;defined these in the last run&quot;);
+		HTML_CLOSE(&quot;p&quot;);
+		HTML_OPEN(&quot;div&quot;);
+		WRITE(&quot;%S&quot;, details);
+		HTML_CLOSE(&quot;div&quot;);
+	}
+</code></pre>
+
 */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">genre</span><span class="plain-syntax"> == </span><span class="identifier-syntax">extension_bundle_genre</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="7-tm.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Add internals</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>

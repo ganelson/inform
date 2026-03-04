@@ -35,7 +35,7 @@ DECLARE_CLASS(C_pv_pair)
 DECLARE_CLASS(C_property_owner)
 DECLARE_CLASS(C_supported_opcode)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 void FinalModule::start(void) {

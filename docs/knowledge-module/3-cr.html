@@ -84,12 +84,9 @@ correspond exactly with properties.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Creation.</b>  When an adjective is defined so that it performs an inequality comparison
 of a property value, like so:</p>
-</div>
 <blockquote>
-    <p>Definition: A woman is tall if her height is 68 or more.</p>
+<p>Definition: A woman is tall if her height is 68 or more.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...Inform automatically generates a comparative form (here &quot;taller than&quot;).
 This is where our comparative relations come from, but the work is done in
 <a href="3-ma.html" class="internal">Measurement Adjectives</a>, not here.</p>
@@ -106,7 +103,7 @@ created and attached to it:</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">comparative_bp_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">comparative_property</span><span class="plain-syntax">; </span><span class="comment-syntax">/* (if right way) if a comparative adjective */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">comparison_sign</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...and |+1| or |-1| according to sign of definition */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">comparison_sign</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...and <code>+1</code> or <code>-1</code> according to sign of definition */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">comparative_bp_data</span><span class="plain-syntax">;</span>
 

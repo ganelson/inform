@@ -20,9 +20,9 @@ fairly short standard texts inside Inform, and quotations (direct or indirect)
 from the source text. The latter are inserted by the routines in this section,
 and they are the ones we should be wary of, since bizarre input might cause
 absurdly long quotations to be made. A quotation involves copying text from
-word |w1| to |w2|, so there are two dangers: copying a single very long word,
+word `w1` to `w2`, so there are two dangers: copying a single very long word,
 or copying too many of them. We protect against the first by using the
-|%<W| escape, which truncates long literals. We protect against the second
+`%<W` escape, which truncates long literals. We protect against the second
 overflow hazard by limiting the amount of text we are prepared to quote from
 any sentence in one go:
 
@@ -121,10 +121,10 @@ void ProblemBuffer::copy_file_reference(text_stream *file_ref, int line) {
 
 @ Once the error message is fully constructed, we will want to output it
 to a file: in fact, by default it will go in three directions, to
-|stderr|, to the debugging log and of course to the problems file. The main
+`stderr`, to the debugging log and of course to the problems file. The main
 thing is to word-wrap it, since it is likely to be a paragraph-sized
-chunk of text, not a single line. The unprintable |SOURCE_REF_CHAR| and
-|FORCE_NEW_PARA_CHAR| are simply filtered out for plain text output: for
+chunk of text, not a single line. The unprintable `SOURCE_REF_CHAR` and
+`FORCE_NEW_PARA_CHAR` are simply filtered out for plain text output: for
 HTML, they are dealt with elsewhere.
 
 @d PROBLEM_WORD_WRAP_WIDTH 80
@@ -132,7 +132,7 @@ HTML, they are dealt with elsewhere.
 =
 int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
-text_stream *problems_file = &problems_file_struct; /* As a |text_stream *| */
+text_stream *problems_file = &problems_file_struct; /* As a `text_stream *` */
 int problems_file_active = FALSE; /* Currently in use */
 int currently_issuing_a_warning = FALSE;
 
@@ -188,10 +188,10 @@ report at: we pick this out as the first source reference in the message.
 @ The plain text "may I draw your attention to the following paragraph"
 marker,
 
-|>--> Which looks like this.|
+`>--> Which looks like this.`
 
 is converted into a suitable CSS-styled HTML paragraph with hanging
-indentation. And similarly for |>++>|, used to mark continuations.
+indentation. And similarly for `>++>`, used to mark continuations.
 
 Note that in HTML, this always opens one paragraph tag.
 
@@ -237,7 +237,7 @@ Note that in HTML, this always opens one paragraph tag.
 
 @ The problem messages are put together (by Level 2 below) in a plain text
 way, but with a little formatting included: in particular, they contain
-HTML-style |<i>|, |<b>| and |<span>| tags, which the following code strips
+HTML-style `<i>`, `<b>` and `<span>` tags, which the following code strips
 out when writing to plain text format.
 
 @<In plain text mode, remove bold and italic HTML tags@> =
@@ -273,15 +273,15 @@ out when writing to plain text format.
 = (text)
 	XparaphraseXfilenameXnumberX
 =
-e.g., |Xmain textXsource/story.niX102|, where |X| is the unprintable
-|SOURCE_REF_CHAR|. The counter |i| is at the first |X|, and we must now
-convert this to something fit for printing to |stdout|, finishing up with |i|
-pointing to the last |X|.
+e.g., `Xmain textXsource/story.niX102`, where `X` is the unprintable
+`SOURCE_REF_CHAR`. The counter `i` is at the first `X`, and we must now
+convert this to something fit for printing to `stdout`, finishing up with `i`
+pointing to the last `X`.
 
-We always use the paraphrase, not the filename, on |stdout| because (i) that's
+We always use the paraphrase, not the filename, on `stdout` because (i) that's
 slightly easier to understand for the user, but more importantly (ii) it
 makes the output the same on all platforms when only main text and Standard
-Rules are referred to, and that simplifies |intest| and the Test Suite quite
+Rules are referred to, and that simplifies `intest` and the Test Suite quite
 a bit, because we don't have to worry about trivial differences between OS X
 and Windows caused by the slashes going the wrong way, and so on.
 
@@ -312,7 +312,7 @@ and Windows caused by the slashes going the wrong way, and so on.
 		else if ((c != SOURCE_REF_CHAR) && (c != FORCE_NEW_PARA_CHAR)) WRITE("%c", c);
 	}
 
-@ At this point, |l| is the position of the first non-whitespace character
+@ At this point, `l` is the position of the first non-whitespace character
 after the sequence of whitespace.
 
 @<In plain text mode, wrap the line or print a space as necessary@> =
@@ -355,9 +355,9 @@ void ProblemBuffer::output_problem_buffer(int indentation) {
 That gives us enough infrastructure to produce the final report. Note the use
 of error redirection to in order to put pseudo-problem messages -- actually
 informational -- into the report. In the case where the run was successful and
-there we no Problem messages, we have to be careful to reset |problem_count|
+there we no Problem messages, we have to be careful to reset `problem_count`
 -- it will have been increased by the issuing of these pseudo-problems, and we
-need it to remain 0 so that |main()| can finally return back to the operating
+need it to remain 0 so that `main()` can finally return back to the operating
 system without an error code.
 
 =

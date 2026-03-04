@@ -31,7 +31,7 @@ in
 $$ E = mc^2 $$
 we have three symbols: $E$, $m$ and $c$. (The 2 does not count.) There
 might be symbols called $m$ in any number of other equations; if so each
-instance has its own |equation_symbol| structure.
+instance has its own `equation_symbol` structure.
 
 =
 typedef struct equation_symbol {
@@ -52,11 +52,11 @@ constant "pi", for example. They're stored in this linked list:
 =
 equation_symbol *standard_equation_symbols = NULL;
 
-@ When parsed, the equation is stored as a tree of |equation_node| structures.
+@ When parsed, the equation is stored as a tree of `equation_node` structures.
 As usual, the leaves represent symbols or else constants not given symbol
 status (such as the 2 in $E = mc^2$); the non-leaf nodes represent operations,
 identified with the same codes as used in "Dimensions". Note
-that the equals sign |=| is itself considered an operation here.Thus:
+that the equals sign `=` is itself considered an operation here.Thus:
 = (text)
 	OPERATION_EQN =
 	    SYMBOL_EQN E
@@ -80,14 +80,14 @@ only. They are syntactic gimmicks, and are forbidden in the final tree.
 @d END_EQN 6 /* the end (left or right edge, really) of the equation */
 
 @ Another temporary trick in parsing is to distinguish between explicit
-multiplication, where the source text uses an asterisk |*|, and implicit,
+multiplication, where the source text uses an asterisk `*`, and implicit,
 as between $m$ and $c^2$ in $E = mc^2$. We distinguish these so that they
 can bind with different tightnesses, but both are represented just as
-|TIMES_OPERATION| nodes in the eventual tree.
+`TIMES_OPERATION` nodes in the eventual tree.
 
 Implicit function application is similarly used to represent the unwritten
-operation in |log pi| -- where the function |log| is being applied to the
-value |pi|.
+operation in `log pi` -- where the function `log` is being applied to the
+value `pi`.
 
 @d IMPLICIT_TIMES_OPERATION 100
 @d IMPLICIT_APPLICATION_OPERATION 101
@@ -98,8 +98,8 @@ value |pi|.
 
 =
 typedef struct equation_node {
-	int eqn_type; /* one of the |*_EQN| values */
-	int eqn_operation; /* one of the |*_OPERATION| values (see "Dimensions.w") */
+	int eqn_type; /* one of the `*_EQN` values */
+	int eqn_operation; /* one of the `*_OPERATION` values (see "Dimensions.w") */
 	int enode_arity; /* 0 for a leaf */
 	struct equation_node *enode_operands[MAX_EQN_ARITY]; /* the operands */
 	struct parse_node *leaf_constant; /* if e.g. "21" */
@@ -107,8 +107,8 @@ typedef struct equation_node {
 	struct generalised_kind gK_before; /* result of the node as it is */
 	struct generalised_kind gK_after; /* result of the node as we need it to be */
 	int enode_promotion; /* promote this from an integer to a real number? */
-	int rational_n; /* represents the rational number |n/m|... */
-	int rational_m; /* ...unless |m| is zero */
+	int rational_n; /* represents the rational number `n/m`... */
+	int rational_m; /* ...unless `m` is zero */
 	CLASS_DEFINITION
 } equation_node;
 
@@ -124,9 +124,9 @@ typedef struct equation_node {
 @ The above catches all of the named expressions written out in the
 source text, but not the ones written "inline", in phrases like
 
->> let F be given by F = ma;
+> let F be given by F = ma;
 
-Those equations are created by calling |Equations::new| direct from the
+Those equations are created by calling `Equations::new` direct from the
 S-parser: such equations are called "anonymous", as they have no name. But in
 either case, an equation begins here:
 
@@ -177,7 +177,7 @@ equation *Equations::new(wording W, int anonymous) {
 all the words up to the first line break occurring between words. (Compare
 the syntax for a table declaration.) This becomes the word range $(tw_1, tw_2)$.
 We know that this begins with the word "equation", or we wouldn't be here
-(because the sentence would not have been classed an |EQUATION_NT|).
+(because the sentence would not have been classed an `EQUATION_NT`).
 
 @<Issue PM_EquationMisnumbered problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EquationMisnumbered),
@@ -203,11 +203,11 @@ We know that this begins with the word "equation", or we wouldn't be here
 
 @ An equation can be referred to by its number, or by its name. Thus
 
->> Equation 64 - Distribution of Cheese
+> Equation 64 - Distribution of Cheese
 
 could be referred to elsewhere in the text by any of three names:
 
->> equation 64, Distribution of Cheese, Distribution of Cheese equation
+> equation 64, Distribution of Cheese, Distribution of Cheese equation
 
 =
 <equation-names-construction> ::=
@@ -268,7 +268,7 @@ void Equations::traverse_to_stock(void) {
 	}
 }
 
-@ And, as with creation, |Equations::examine| is called explicitly in the meaning
+@ And, as with creation, `Equations::examine` is called explicitly in the meaning
 list converter when an equation is found inline. So in all cases, we call the
 following before we need to use the equation, which runs a three-stage process:
 parsing the "where..." clause to declare the symbols, then parsing the equation,
@@ -290,7 +290,7 @@ void Equations::examine(equation *eqn) {
 Equations are allowed to end with a "where..." clause, explaining what
 the symbols in it mean. For example:
 
->> where F is a force, a = 9.801 m/ss, m1 and m2 are masses;
+> where F is a force, a = 9.801 m/ss, m1 and m2 are masses;
 
 At the earlier stages of parsing, we simply split the "where" text away
 using this:
@@ -331,7 +331,7 @@ int Equations::eqn_declare_symbols(equation *eqn) {
 @ But the following routine is also used with the "where" text supplied in
 a phrase like so:
 
->> let F be given by Newton's Second Law, where m = 101kg;
+> let F be given by Newton's Second Law, where m = 101kg;
 
 In this context the "where" text sets explicit values for symbols occurring
 in the equation; these are temporary settings only and will not change the
@@ -339,7 +339,7 @@ equation's behaviour elsewhere.
 
 So the following is called in either permanent mode, when it declares symbols
 for an equation, or temporary mode, when it gives them temporary assignments.
-It returns |TRUE| if all went well, or |FALSE| if problem messages had to be
+It returns `TRUE` if all went well, or `FALSE` if problem messages had to be
 issued.
 
 =
@@ -350,7 +350,7 @@ int eq_symbol_wn = -1;
 @ The following grammar is later used to parse the text after "where". For
 example:
 
->> F is a force, a = 9.801 m/ss, m1 and m2 are masses
+> F is a force, a = 9.801 m/ss, m1 and m2 are masses
 
 This is split into four clauses, of which the trickiest is the third, reading
 just "m1". This abbreviated form is allowed only in permanent declarations
@@ -465,12 +465,12 @@ ones; or to quasinumerical constants; or to global variables which contain
 quasinumerical values. The latter are included to make it easier for extensions
 to set up sets of equations for, say, gravity, defining
 
->> The acceleration due to gravity is an acceleration that varies.
+> The acceleration due to gravity is an acceleration that varies.
 
 and thus letting the extension's user decide how strong gravity is, but
 still using it in equations:
 
->> let F be given by Newton's Second Law, where a = the acceleration due to gravity;
+> let F be given by Newton's Second Law, where a = the acceleration due to gravity;
 
 @<Find the actual value, or kind of value, which the symbol is to match@> =
 	spec = NULL;
@@ -497,8 +497,8 @@ still using it in equations:
 		return FALSE;
 	}
 
-@ At this point we know the user means the variable named at word |wn|
-to have the temporary value |spec|, and we have to identify that as one
+@ At this point we know the user means the variable named at word `wn`
+to have the temporary value `spec`, and we have to identify that as one
 of the symbols:
 
 @<Assign the given value to this symbol on a temporary basis@> =
@@ -532,10 +532,10 @@ void Equations::eqn_remove_temp_variables(equation *eqn) {
 		}
 }
 
-@ As we saw, permanent symbol declarations cause |Equations::eqn_add_symbol| to be called.
+@ As we saw, permanent symbol declarations cause `Equations::eqn_add_symbol` to be called.
 But what about the symbols for an inline equation, like this one?
 
->> let F be given by F = ma;
+> let F be given by F = ma;
 
 These are not explicitly declared. What happens is that any local variable
 on the current stack frame, whose name could plausibly be that of a symbol,
@@ -617,7 +617,7 @@ equation_symbol *Equations::eqn_add_symbol(equation *eqn, wording W, kind *K, pa
 
 @ This is where the criterion for being a valid symbol name is expressed:
 it matches only a single word, and only if the lettering matches the regular
-expression |[A-Za-z]?{1,8}\d?{0,2}|.
+expression `[A-Za-z]?{1,8}\d?{0,2}`.
 
 =
 <valid-equation-symbol> internal {
@@ -670,7 +670,7 @@ equation_node *Equations::enode_new(int t) {
 }
 
 @ This is how we make the three kinds of enode permitted in the final compiled
-equation. (The other kinds can be created using |Equations::enode_new| directly.)
+equation. (The other kinds can be created using `Equations::enode_new` directly.)
 
 =
 equation_node *Equations::enode_new_op(int op) {
@@ -736,12 +736,12 @@ void Equations::log_equation_node_inner(equation_node *tok, int d) {
 
 @h Tokenising equations.
 We break up the word range $(w_1, w_2)$ into tokens of equation matter. Word
-boundaries divide tokens, but so do operators like |+|, and boundaries can
-also occur in runs of alphanumerics if we spot symbol names: thus |mv^21|
-will be divided into tokens |m|, |v|, |^|, |21|.
+boundaries divide tokens, but so do operators like `+`, and boundaries can
+also occur in runs of alphanumerics if we spot symbol names: thus `mv^21`
+will be divided into tokens `m`, `v`, `^`, `21`.
 
 The following routine sends each token in turn to the shift/reduce parser
-below, encoding each token as an enode. We return |NULL| if a problem message
+below, encoding each token as an enode. We return `NULL` if a problem message
 has to be issued, or else a pointer to the parsed tree if we succeed.
 
 @d MAX_ENODES_IN_EXPRESSION 100
@@ -758,7 +758,7 @@ equation_node *Equations::eqn_parse(equation *eqn) {
 	int wn = Wordings::first_wn(W), i = 0; inchar32_t *p = NULL;
 	while ((wn <= Wordings::last_wn(W)) || (p)) {
 		if (p == NULL) { i = 0; p = Lexer::word_raw_text(wn++); }
-		/* we are now at character |i| in string |p|, while |wn| is the next word */
+		/* we are now at character `i` in string `p`, while `wn` is the next word */
 
 		equation_node *token = NULL;
 		@<Break off a token from the current position@>;
@@ -789,8 +789,8 @@ equation_node *Equations::eqn_parse(equation *eqn) {
 
 @ Note that symbols are identified by recognition: without knowing the identities
 of the symbols, the syntax alone wouldn't tell us how to break them. We can only
-break |mc^2| as |m| followed by |c^2| if we know that |m| and |c| are symbols,
-rather than |mc|. (This is one reason why most programming languages don't
+break `mc^2` as `m` followed by `c^2` if we know that `m` and `c` are symbols,
+rather than `mc`. (This is one reason why most programming languages don't
 allow implicit multiplication.)
 
 @<Break off a symbol name as a token@> =
@@ -802,7 +802,7 @@ allow implicit multiplication.)
 		@<Look for this symbol name@>;
 	if (token == NULL)
 		for (j=1; (j<15) && (Characters::isalnum(p[i+j-1])) && (token == NULL); j++) {
-			/* copy the first |j| characters into a C string: */
+			/* copy the first `j` characters into a C string: */
 			Str::clear(text_of_symbol);
 			for (int k=0; k<j; k++) PUT_TO(text_of_symbol, p[i+k]);
 			/* try to identify this as one of the declared symbols: */
@@ -904,9 +904,9 @@ capacity; and so is the number 0 itself.
 	i++;
 
 @ So now we have our next token, and are ready to ship it. But if we
-detect an implicit multiplication, for instance between |m| and |c^2|
-in |E=mc^2|, we issue that as an |IMPLICIT_TIMES_OPERATION| enode in
-between; and in |log pi| we issue an |IMPLICIT_APPLICATION_OPERATION|.
+detect an implicit multiplication, for instance between `m` and `c^2`
+in `E=mc^2`, we issue that as an `IMPLICIT_TIMES_OPERATION` enode in
+between; and in `log pi` we issue an `IMPLICIT_APPLICATION_OPERATION`.
 
 @<Issue the token to the shift-reduce parser@> =
 	if (Equations::application_is_implied(previous_token, token)) {
@@ -977,7 +977,7 @@ The flow is therefore always forwards; tokens can't slosh back and forth
 between the stacks. On each iteration, at least one token makes progress,
 so if there are $N$ tokens of input (including both end marker tokens) then we
 take at worst $2N$ steps to finish. Each stack can't need more than $N$
-entries, and $N$ is bounded above by |MAX_ENODES_IN_EXPRESSION| plus 2
+entries, and $N$ is bounded above by `MAX_ENODES_IN_EXPRESSION` plus 2
 (allowing for the end markers). So:
 
 =
@@ -996,10 +996,10 @@ void Equations::log_sr_stacks(void) {
 }
 
 @ The start and finish are as follows. At the start, the emitter stack is
-empty and the SR stack contains an |END_EQN| token, which represents the
+empty and the SR stack contains an `END_EQN` token, which represents the
 left-hand end of the expression. (Another such token, this time representing the
 right-hand end, will be sent by the routines above at the end of the stream. So
-there will be two |END_EQN| tokens in play.)
+there will be two `END_EQN` tokens in play.)
 
 =
 void Equations::enode_sr_start(void) {
@@ -1024,15 +1024,15 @@ see the expression a little at a time, we collect possibilities of how to
 read it on the SR-stack, until we reach a point where it's possible to tell
 what was meant; we then reduce the SR-stack by taking the winning possibility
 off the top and moving it to the emitter stack. For instance, if we have
-read |4 + 5| then we don't know yet whether the |+| will add the 4 to the 5;
-if the next token is |+| or |END_EQN| then it will, but if the next token
-is |*| then it won't, because we're looking at something like |4 + 5 * 6|.
+read `4 + 5` then we don't know yet whether the `+` will add the 4 to the 5;
+if the next token is `+` or `END_EQN` then it will, but if the next token
+is `*` then it won't, because we're looking at something like `4 + 5 * 6`.
 
-If the next token is of lower precedence than |+| then we "reduce" --
+If the next token is of lower precedence than `+` then we "reduce" --
 telling the emitter about the addition, which we now understand -- but if
-it's higher, as with |*|, then we "shift", meaning, we postpone worrying
+it's higher, as with `*`, then we "shift", meaning, we postpone worrying
 about the addition and start worrying about the multiplication instead;
-our new problem, working out what |*| applies to, sits on top of the
+our new problem, working out what `*` applies to, sits on top of the
 addition problem on the SR-stack.
 
 =
@@ -1067,7 +1067,7 @@ token to be sent.
 @ The ASU book is a little vague about what happens if there is an underflow
 here, I think because it's possible to set up the grammar such that an
 underflow cannot occur. But I can see no obvious proof that it will never
-occur for us given syntactically incorrect input, so we will return |FALSE|
+occur for us given syntactically incorrect input, so we will return `FALSE`
 on an underflow to be safe.
 
 Note that we can never emit the bottom-most token on the SR stack: that's the
@@ -1083,7 +1083,7 @@ is 1, not 0.
 @ The key point is that if nodes arrive at the SR parser in their
 ordinary order of mathematical writing, then they "reduce" off the
 SR stack and onto the emitter stack in reverse Polish notation order.
-Thus the sequence |4 + 2 * 7| is emitted as |4 2 7 * +|. RPN has no
+Thus the sequence `4 + 2 * 7` is emitted as `4 2 7 * +`. RPN has no
 need of brackets to clarify the sequence of operation, and it's very
 easy to build a tree from.
 
@@ -1117,10 +1117,10 @@ int Equations::enode_emit(equation_node *tok) {
 @ All we need now is to decide the order of precedence of our tokens,
 though this isn't as simple as it looks, because they are not all
 symmetrical left-right. That's obviously true of things like an open
-bracket |(|, which affects the stuff to the left very differently from
-the stuff to the right. But it is also true of operators. |+| may be
+bracket `(`, which affects the stuff to the left very differently from
+the stuff to the right. But it is also true of operators. `+` may be
 associative mathematically, but in computing there's a difference
-between evaluating |a + (b+c)| and |(a+b) + c|.
+between evaluating `a + (b+c)` and `(a+b) + c`.
 
 All of this means there's no simple order relationship on the tokens,
 where $T<S$ if and only if $S>T$. We order them using a numerical score,
@@ -1146,13 +1146,13 @@ int Equations::enode_gt(equation_node *tok1, equation_node *tok2) {
 @ And here are those scorings. Note that for the binary operators, $f$
 scores are usually slightly higher than $g$ scores: that's what makes
 them left associative, that is, $a+b+c$ is read as $(a+b)+c$. The
-exception to this is raising to powers: |a^2^3| evaluates $a^8$, not
-$a^6$, because it is read as |a^(2^3)|.
+exception to this is raising to powers: `a^2^3` evaluates $a^8$, not
+$a^6$, because it is read as `a^(2^3)`.
 
 Implicit multiplication has higher precedence than explicit. This is
 actually to give it higher precedence than division (which has to have
 the same precedence as explicit multiplication), and is so that
-|ab/cd| evaluates $(ab)/(cd)$ rather than $a\cdot (b/c)\cdot d$.
+`ab/cd` evaluates $(ab)/(cd)$ rather than $a\cdot (b/c)\cdot d$.
 
 =
 int Equations::f_function(equation_node *tok) {
@@ -1202,8 +1202,8 @@ int Equations::g_function(equation_node *tok) {
 
 @h Typechecking equations.
 The SR parser can generate trees for any syntactically valid equation, but
-it may be something using |=| inappropriately or not at all. We rule that
-out first: we want the top node in the tree to be the unique |=| operator.
+it may be something using `=` inappropriately or not at all. We rule that
+out first: we want the top node in the tree to be the unique `=` operator.
 
 =
 int Equations::eqn_typecheck(equation *eqn) {
@@ -1233,7 +1233,7 @@ int Equations::eqn_typecheck(equation *eqn) {
 	return Equations::enode_typecheck(eqn, eqn->parsed_equation);
 }
 
-@ A recursive count of instances down the tree from |tok|:
+@ A recursive count of instances down the tree from `tok`:
 
 =
 int Equations::enode_count_equals(equation_node *tok) {
@@ -1255,7 +1255,7 @@ int Equations::enode_is_equals(equation_node *tok) {
 
 @ Now we come to the real typechecking. The following is called, depth-first,
 at each node in the equation; it has to assign a kind at every node, in such
-a way that all operations are dimensionally valid. We return |FALSE| if we
+a way that all operations are dimensionally valid. We return `FALSE` if we
 are obliged to issue a problem message.
 
 =
@@ -1549,19 +1549,19 @@ void Equations::demote_subequation(equation *eqn, equation_node *tok) {
 
 @h Rearrangement.
 We carry out only the simplest of operations, but it's surprising how often that's
-good enough: if it isn't, we simply return |FALSE|.
+good enough: if it isn't, we simply return `FALSE`.
 
 Everything we do will be reversible, which is important since we are
-changing the |parsed_equation| tree, and we don't want to be changing our
+changing the `parsed_equation` tree, and we don't want to be changing our
 view of what the equation means in the process. One thing that never changes
 is that the top node of the equation is always the unique "equal to" node
 in the tree.
 
-Suppose we are solving for |v|, which occurs in just one place in the equation.
-Either it's at the top level under the |=|, in which case we now have an
-explicit formula for |v|, or it's stuck underneath some operation node. We
+Suppose we are solving for `v`, which occurs in just one place in the equation.
+Either it's at the top level under the `=`, in which case we now have an
+explicit formula for `v`, or it's stuck underneath some operation node. We
 rearrange the tree to move this operation over to the other side, which
-allows |v| to make progress -- see below for a proof that this terminates.
+allows `v` to make progress -- see below for a proof that this terminates.
 
 =
 int Equations::eqn_rearrange(equation *eqn, equation_symbol *to_solve) {
@@ -1582,9 +1582,9 @@ int Equations::eqn_rearrange(equation *eqn, equation_symbol *to_solve) {
 	return TRUE;
 }
 
-@ We have no ability to gather terms, so the variable |v| we are solving for can only
-occur once in the formula. In Inform's idea of equations, |A = B| and |B = A|
-have the same meaning, so we'll place |v| on the left.
+@ We have no ability to gather terms, so the variable `v` we are solving for can only
+occur once in the formula. In Inform's idea of equations, `A = B` and `B = A`
+have the same meaning, so we'll place `v` on the left.
 
 @<Swap the two sides if necessary so that v occurs only once and on the left@> =
 	int lc = Equations::enode_count_var(eqn->parsed_equation->enode_operands[0], to_solve);
@@ -1599,18 +1599,18 @@ have the same meaning, so we'll place |v| on the left.
 
 @ The main loop above terminates because on each iteration, either
 
-- (i) the tree depth of |v| below |=| decreases by 1, or
-- (ii) the tree depth of |v| remains the same but the number of |MINUS_OPERATION| or
-|DIVIDE_OPERATION| nodes in the tree decreases by 1.
+- (i) the tree depth of `v` below `=` decreases by 1, or
+- (ii) the tree depth of `v` remains the same but the number of `MINUS_OPERATION` or
+`DIVIDE_OPERATION` nodes in the tree decreases by 1.
 
-Since at any given time there are a finite number of |MINUS_OPERATION| or
-|DIVIDE_OPERATION| nodes, case (ii) cannot repeat indefinitely, and we must
+Since at any given time there are a finite number of `MINUS_OPERATION` or
+`DIVIDE_OPERATION` nodes, case (ii) cannot repeat indefinitely, and we must
 therefore eventually fall into case (i); and then subsequently do so again,
-and so on; and so the tree depth of |v| will ultimately fall to 1, at which
+and so on; and so the tree depth of `v` will ultimately fall to 1, at which
 point it is at the top level as required and we break out of the loop.
 
 @ So the rearrangement moves have to make sure the "(i) or (ii)" property
-always holds. The simplest case to understand is |+|. Suppose we have:
+always holds. The simplest case to understand is `+`. Suppose we have:
 = (text)
 	=
 	    +
@@ -1620,7 +1620,7 @@ always holds. The simplest case to understand is |+|. Suppose we have:
 =
 representing $(V+E) = R$, where $V$ is the sub-equation containing
 $v$. ($E$ is an arbitrary sub-equation, and $R$ is the right hand
-side.) One of the two operands of |+| will be "promoted", moving
+side.) One of the two operands of `+` will be "promoted", moving
 upwards in the tree, and since we can choose to promote either $V$ or
 $E$, we'll choose $V$, thus obtaining:
 = (text)
@@ -1634,7 +1634,7 @@ that is, $V = (R - E)$. Since $V$ has moved upwards, so has the unique instance
 of $v$, and therefore the tree depth of $v$ has decreased by 1 -- property (i).
 Multiplication is similar, but turns into division on the right hand side.
 
-But now consider |-|. When we rearrange:
+But now consider `-`. When we rearrange:
 = (text)
 	=
 	    -
@@ -1642,7 +1642,7 @@ But now consider |-|. When we rearrange:
 	        V
 	    R
 =
-representing $(E-V) = R$ we no longer have a choice of which operand of |-|
+representing $(E-V) = R$ we no longer have a choice of which operand of `-`
 to promote: we have to promote the right operand, and that produces $E = (R+V)$.
 The tree depth of $v$ is not improved, and it's now over on the right hand
 side. The next iteration of the main loop will swap sides again so that we
@@ -1681,7 +1681,7 @@ we fail property (i) but achieve property (ii).
 
 @ Solving $x^v = y$ for $v$ requires logs, which are not in our scheme; and
 solving $v^n = y$ for non-constant $n$ is no better. So in either case we
-surrender by returning |FALSE|.
+surrender by returning `FALSE`.
 
 In fact, the only cases we can solve at present are $V^2 = y$ and $V^3 = y$.
 It would be easy to add solutions for $V^4 = y$, $V^6 = y$ and in general for
@@ -1749,9 +1749,9 @@ cube roots.
 		CompileValues::note_that_kind_is_used(K_real_number);
 	}
 
-@ Here we have something like |log x = y| and want to rewrite as |x = exp y|,
+@ Here we have something like `log x = y` and want to rewrite as `x = exp y`,
 which is only possible if we have an inverse available for our function --
-in this case, |exp| being the inverse of |log|. Thus:
+in this case, `exp` being the inverse of `log`. Thus:
 = (text)
 	=
 	    apply
@@ -1797,7 +1797,7 @@ so we always promote $V$ and achieve property (i). A square root is rearranged
 as a square, and a cube root as a cube. (It's important that everything we do
 is reversible -- we generate exactly those powers which we are able to undo
 again if necessary.) Unary minus is easier still -- we need only move it to
-the other side; thus $-V = R$ becomes $V=-R$, and |v| again rises.
+the other side; thus $-V = R$ becomes $V=-R$, and `v` again rises.
 
 @<Rearrange to move v upwards through this unary operator@> =
 	int op = old_LHS->eqn_operation;
@@ -1830,7 +1830,7 @@ the other side; thus $-V = R$ becomes $V=-R$, and |v| again rises.
 	}
 
 @ And that's the whole rearranger, except for the utility routine which
-counts instances of the magic variable |v| at or below a given point in the
+counts instances of the magic variable `v` at or below a given point in the
 equation tree.
 
 =

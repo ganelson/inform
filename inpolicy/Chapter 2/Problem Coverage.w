@@ -4,7 +4,7 @@ To see which problem messages have test cases and which are linked
 to the documentation.
 
 @h Observation.
-Problem messages are identified by their code-names, e.g., |PM_MisplacedFrom|;
+Problem messages are identified by their code-names, e.g., `PM_MisplacedFrom`;
 those names should be unique, but any number of problems can instead be
 marked with one of three special names.
 
@@ -14,9 +14,9 @@ set of Inform test cases.
 @d CASE_EXISTS_PCON    0x00000001 /* mentioned in test cases */
 @d DOC_MENTIONS_PCON   0x00000002 /* mentioned in documentation */
 @d CODE_MENTIONS_PCON  0x00000004 /* mentioned in source code */
-@d IMPOSSIBLE_PCON     0x00000008 /* this is |BelievedImpossible| */
-@d UNTESTABLE_PCON     0x00000010 /* this is |Untestable| */
-@d NAMELESS_PCON       0x00000020 /* this is |...| */
+@d IMPOSSIBLE_PCON     0x00000008 /* this is `BelievedImpossible` */
+@d UNTESTABLE_PCON     0x00000010 /* this is `Untestable` */
+@d NAMELESS_PCON       0x00000020 /* this is `...` */
 
 =
 typedef struct known_problem {
@@ -53,7 +53,7 @@ void Coverage::observe_problem(text_stream *name, int context) {
 
 @h Problems which have test cases.
 Here we ask Intest to produce a roster of all known test cases, then parse
-this back to look for cases whose names have the |PM_...| format. Those are
+this back to look for cases whose names have the `PM_...` format. Those are
 the problem message test cases, so we observe them.
 
 =

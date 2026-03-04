@@ -4,7 +4,7 @@ To make sure certain symbol names translate into globally unique target symbols.
 
 @ Inter frequently contains multiple symbols with different meanings but the
 same name: for example, the active part of a function package is referred to
-with the symbol |call|, so Inter trees tend to be full of symbols called that.
+with the symbol `call`, so Inter trees tend to be full of symbols called that.
 
 This overlap of names is not convenient when we eventually generate code from
 the Inter tree: we want different meanings to produce different "translated"
@@ -12,7 +12,7 @@ names. (Recall that a symbol has a "translated" name as well as its real name;
 the "translated" name is the identifier used for it in the code we generated.)
 
 So the following gives unique translated names to symbols marked with the
-|MAKE_NAME_UNIQUE_ISYMF| bit. So for example
+`MAKE_NAME_UNIQUE_ISYMF` bit. So for example
 = (text)
 	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
 	call		TRUE				    --
@@ -28,16 +28,16 @@ will become
 	example		FALSE				    --
 	call		FALSE				    call_U3
 =
-Only the translation changes, not the name itself, which remains |call|.
+Only the translation changes, not the name itself, which remains `call`.
 
-Note that this operation is done at the end of linking because these |call|
+Note that this operation is done at the end of linking because these `call`
 symbols (or whatever) may occur in multiple compilation units; it would be no
 good to uniquely number them within each kit, for example, because then each
-kit would have its own |call_U1|, causing a collision.
+kit would have its own `call_U1`, causing a collision.
 
-The same operation is performed on identifiers marked as |+private|, because
+The same operation is performed on identifiers marked as `+private`, because
 we might have a situation where two kits each contain a function called (say)
-|Start|, each of them private. When compiled, both functions must exist, and
+`Start`, each of them private. When compiled, both functions must exist, and
 must have different names.
 
 =
@@ -53,7 +53,7 @@ int MakeIdentifiersUniqueStage::run_pipeline_stage(pipeline_step *step) {
 	return TRUE;
 }
 
-@ The dictionary efficiently connects names such as |call| to an integer count
+@ The dictionary efficiently connects names such as `call` to an integer count
 for each one, but //foundation// does not provide dictionaries from texts to
 integers, only to structures allocated by the memory manager: so we must use
 the following.
@@ -64,9 +64,9 @@ typedef struct uniqueness_count {
 	CLASS_DEFINITION
 } uniqueness_count;
 
-@ Note that if |S| is equated to some other symbol, then its translated
+@ Note that if `S` is equated to some other symbol, then its translated
 name will never matter, because identifiers in the eventual code will come
-from the symbol |S| is equated to. So we needn't bother to have a unique
+from the symbol `S` is equated to. So we needn't bother to have a unique
 translation in that case.
 
 =

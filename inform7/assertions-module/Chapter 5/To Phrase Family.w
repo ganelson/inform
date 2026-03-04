@@ -10,7 +10,7 @@ To chime (N - a number) times:
 	repeat with C running from 1 to N:
 		say "The grandfather clock chimes [C in words]."
 =
-The preamble here is |To chime (N - a number) times|, and this is recognised
+The preamble here is `To chime (N - a number) times`, and this is recognised
 by its opening word "To".
 
 =
@@ -40,8 +40,8 @@ typedef struct to_family_data {
 	struct wording constant_name;
 	struct wording ph_documentation_symbol; /* the documentation reference, if any */
 	struct constant_phrase *as_constant;
-	int explicit_name_used_in_maths; /* if so, this flag means it's like |log()| or |sin()| */
-	struct wording explicit_name_for_inverse; /* e.g. |exp| for |log| */
+	int explicit_name_used_in_maths; /* if so, this flag means it's like `log()` or `sin()` */
+	struct wording explicit_name_for_inverse; /* e.g. `exp` for `log` */
 	int to_begin; /* used in Basic mode only: this is to be the main id_body */
 	struct imperative_defn *next_in_logical_order;
 	int sequence_count; /* within the logical order list, from 0 */
@@ -453,7 +453,7 @@ wording ToPhraseFamily::doc_ref(imperative_defn *id) {
 @ A few "To..." phrases have names, and can therefore be used as values in their
 own right, a functional-programming sort of device. For example:
 
->> To decide what number is double (N - a number) (this is doubling):
+> To decide what number is double (N - a number) (this is doubling):
 
 has the name "doubling". Such a name is recorded here:
 
@@ -513,7 +513,7 @@ kind *ToPhraseFamily::kind(constant_phrase *cphr) {
 	return cphr->cphr_kind;
 }
 
-@ And similarly for the |phrase| structure this name corresponds to.
+@ And similarly for the `phrase` structure this name corresponds to.
 
 =
 id_body *ToPhraseFamily::body_of_constant(constant_phrase *cphr) {

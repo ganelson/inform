@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/tables submodule.
 
-@ Our inventory |inv| already contains a list |inv->table_nodes| of all packages
-in the tree with type |_table|.
+@ Our inventory `inv` already contains a list `inv->table_nodes` of all packages
+in the tree with type `_table`.
 
 =
 void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -35,7 +35,7 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	@<Define RANKING_TABLE constant@>;
 }
 
-@ Each table package contains a numeric constant with the symbol name |table_id|.
+@ Each table package contains a numeric constant with the symbol name `table_id`.
 We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
 so we change the values of these constants accordingly.
 

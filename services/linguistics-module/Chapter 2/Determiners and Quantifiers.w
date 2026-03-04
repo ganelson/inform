@@ -11,10 +11,10 @@ statement is true: all of them, some of them, exactly six, and so on.
 When a quantifier is used, it "ranges over a domain". The domain is the
 set of cases. For instance, in:
 
->> if most of the doors are open, ...
+> if most of the doors are open, ...
 
 the "most of" text is parsed into a quantifier written in the debugging
-log as |Proportion>50%|, and the domain is the set of all doors. We then
+log as `Proportion>50%`, and the domain is the set of all doors. We then
 test the inner condition ("open") for the objects in the domain.
 
 Some quantifiers apply to a proportion of the domain, and the proportion is
@@ -33,11 +33,11 @@ of closed doors and not the number of open ones.
 
 @ These different ways to describe multiple outcomes are represented in Inform by
 //quantifier// structures. One exists for each different meaning supported
-by Inform -- |ForAll|, |Exists| and so forth -- except that some quantifiers
+by Inform -- `ForAll`, `Exists` and so forth -- except that some quantifiers
 take a numerical parameter, and a single //quantifier// structure represents
 the meaning for any value of this parameter. For instance, the cardinality
-quantifiers |Card=3| and |Card=17| are both represented by the same
-quantifier structure, whose pointer is called |exactly_quantifier| below.
+quantifiers `Card=3` and `Card=17` are both represented by the same
+quantifier structure, whose pointer is called `exactly_quantifier` below.
 This is the result of parsing "exactly three" doors or "exactly 17"
 containers, for instance, where the parameter is 3 or 17 respectively.
 
@@ -81,9 +81,9 @@ into a quantifier, but "all but three" rooms is.
 
 The same quantifier can have several different verbal forms. For instance,
 "each" container and "every" container mean the same thing: both
-apply the |ForAll| quantifier to containers. These different verbal forms
-are stored in the |determiner| structure, and each one points to the
-|quantifier| structure which is its meaning.
+apply the `ForAll` quantifier to containers. These different verbal forms
+are stored in the `determiner` structure, and each one points to the
+`quantifier` structure which is its meaning.
 
 =
 typedef struct determiner {
@@ -145,12 +145,12 @@ are dual to each other in that they are related by a sort of negation:
 "there does not exist an open door" means the same as "all doors are
 closed", and so on. Thus
 
-|Not ( ForAll x: P(x) )| is equivalent to |Exists x: Not(P(x))|
+`Not ( ForAll x: P(x) )` is equivalent to `Exists x: Not(P(x))`
 
 That isn't what we mean here. If $Q$ and $NQ$ are a quantifier and its
 negation in our sense, then:
 
-|Not ( Q x: P(x) )| is equivalent to |NQ x: P(x)|
+`Not ( Q x: P(x) )` is equivalent to `NQ x: P(x)`
 
 Why do we do this? There are several reasons. First, we are using a richer
 set of quantifiers than traditional logic provides, and most of these have
@@ -159,20 +159,20 @@ as well exploit that. Second, we are going to try to represent propositions
 using as much conjunction ("and") and as little disjunction ("or") as
 possible. Consider what effect de Morgan's laws have if we simplify:
 
-|Not ( ForAll x: closed(x) and locked(x) and lockable(x) )|
+`Not ( ForAll x: closed(x) and locked(x) and lockable(x) )`
 
 in the traditional way: we obtain
 
-|Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))|
+`Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))`
 
 which introduces disjunction ("or") in just the way we don't want. By
-simply regarding |NotAll| as a quantifier in its own right, we obtain
+simply regarding `NotAll` as a quantifier in its own right, we obtain
 something much easier to handle:
 
-|NotAll x: closed(x) and locked(x) and lockable(x)|
+`NotAll x: closed(x) and locked(x) and lockable(x)`
 
-This is why we will be creating quantifiers |NotAll| and |DoesNotExist| --
-the negations of |ForAll| and |ThereExists| -- even though they might seem
+This is why we will be creating quantifiers `NotAll` and `DoesNotExist` --
+the negations of `ForAll` and `ThereExists` -- even though they might seem
 puzzlingly redundant from a traditional logic point of view.
 
 =
@@ -195,22 +195,22 @@ void Quantifiers::log(OUTPUT_STREAM, quantifier *quant, int parameter) {
 When compiling code to test a proposition which includes a quantifier, we
 need to test the cases in the domain set to see how many of them qualify
 and how many do not. These counts are stored in local variables called
-|qcy_0|, |qcn_0| and so on: |qcn| means "quantifier count number" and is
-the size of the domain set, while |qcy| is the number of "yes" cases.
+`qcy_0`, `qcn_0` and so on: `qcn` means "quantifier count number" and is
+the size of the domain set, while `qcy` is the number of "yes" cases.
 Thus if the original source text read:
 
->> if most of the closed doors are locked, ...
+> if most of the closed doors are locked, ...
 
-|qcy_0| will be the number of closed doors which turned out to be locked
-and |qcn_0| the total number of closed doors. (The indices |_0|, |_1|, ...,
+`qcy_0` will be the number of closed doors which turned out to be locked
+and `qcn_0` the total number of closed doors. (The indices `_0`, `_1`, ...,
 are used because the same routine may have to compile code to test several
 quantifiers.)
 
 The following routine compiles an I6 condition to test whether the
 tallies are acceptable for the given quantifier. In the example above,
-the quantifier is |Proportion>50%|, and compiles to the test:
+the quantifier is `Proportion>50%`, and compiles to the test:
 
-|qcy_0 > 5*qcn_0/10|
+`qcy_0 > 5*qcn_0/10`
 
 (It looks a little wasteful to multiply by 5 and then divide by 10, but
 I6 will fold that out in eventual code generation. When the proportion is
@@ -283,7 +283,7 @@ true. Many quantifiers obstruct this, by introducing too much vagueness.
 For instance, "now three doors are open" is dangerously vague because it
 doesn't say which doors are to be made open; similarly "now most of the
 coins are in the box". On the other hand, "now all the coins are in the
-box" is fine, because there's no ambiguity. The |can_be_used_in_now| flag for
+box" is fine, because there's no ambiguity. The `can_be_used_in_now` flag for
 a quantifier shows whether it can be asserted in "now" like this.
 
 =
@@ -383,8 +383,8 @@ no text appears in front of the number "three".
 We run through the possible determiners in reverse creation order, choosing the
 first which matches. The following returns $-1$ if nothing was found, or
 else the first word number after the determiner words, and in that case
-it also writes a pointer to the quantifier meant to |*which_quant| and the
-parameter value to |*which_P|.
+it also writes a pointer to the quantifier meant to `*which_quant` and the
+parameter value to `*which_P`.
 
 (Reverse order is used really only to make sure "all but" and "all except"
 are tried before "all".)
@@ -413,12 +413,12 @@ int Quantifiers::parse_against_text(wording W, int *which_P, quantifier **which_
 @ We look for a determiner at the start of a noun phrase; this can sometimes
 be followed by a number. For example,
 
->> More than three doors
+> More than three doors
 
 matches "more than" from the selection above, then the number "three".
 It's legal to include "of the":
 
->> three of the doors are open
+> three of the doors are open
 
 but not "of" on its own: this reduces misunderstandings when objects have
 names like "three of clubs", meaning a single playing card.
@@ -431,7 +431,7 @@ names like "three of clubs", meaning a single playing card.
 
 @ English has an awkward ambiguity here: what does this mean?
 
->> no one
+> no one
 
 Inform would normally read this as the determiner "no" followed by the
 number "one", not realising that "one" is more likely to refer to a
@@ -448,8 +448,8 @@ from determiner parsing:
 @ We attempt to see if the word range begins with (or consists of) text which
 refers to the given determiner, returning the first word past this text and
 also (where appropriate) setting the number specified. For instance, for
-"at least three doors are open" and the |at_least_determiner| we would
-return the word "doors" and set |which_P| to 3.
+"at least three doors are open" and the `at_least_determiner` we would
+return the word "doors" and set `which_P` to 3.
 
 =
 wording Quantifiers::det_parse_against_text(wording W, determiner *det, int *which_P) {
@@ -490,27 +490,27 @@ void Quantifiers::make_built_in(void) {
 @ As discussed above, the two traditional quantifiers in logic are "for
 all" and "there exists", usually written in mathematical notation as
 $\forall$ and $\exists$, but we also need to create their negation
-quantifiers. So we end up with four: |ForAll|, |NotAll|, |Exists| and
-|DoesNotExist|.
+quantifiers. So we end up with four: `ForAll`, `NotAll`, `Exists` and
+`DoesNotExist`.
 
 The for-all quantifier can be used in assertions for a slightly oddball
 reason: it's how the source text makes assemblies. For instance,
 
->> A nose is part of every person.
+> A nose is part of every person.
 
-The "every" is parsed as a use of |ForAll|. Strictly speaking this
+The "every" is parsed as a use of `ForAll`. Strictly speaking this
 sentence should be read as creating a single nose which would be shared
-by all of the people. But the presence of a |ForAll| quantifier in an
+by all of the people. But the presence of a `ForAll` quantifier in an
 assertion causes the A-parser to interpret the sentence differently, and to
 create a fresh nose for each person. (There are some restrictions on the
-use of |ForAll| in this way, but they are enforced in the A-parser: our
-part here is simply to authorise |ForAll| in assertions.)
+use of `ForAll` in this way, but they are enforced in the A-parser: our
+part here is simply to authorise `ForAll` in assertions.)
 
 Something which English allows, but Inform does not, is the use of "all"
 in a way which also specifies a cardinality. For instance, the following
 condition:
 
->> if all six doors are open, ...
+> if all six doors are open, ...
 
 is an attempt to use a determiner which Inform does not possess -- "all"
 plus number. We don't allow this because if there happen to be eight doors,
@@ -553,7 +553,7 @@ thus "all but six" means there have to be exactly $S-6$ matching items,
 where $S$ is the total available. The only logical negation for this
 quantifier would be "other than $S-6$", which is too unnatural a
 construction to have any natural English paraphrase, so we do not make a
-|determiner *| structure pointing to it. But we create it in order that the
+`determiner *` structure pointing to it. But we create it in order that the
 built-in quantifiers all occur in negation pairs.
 
 @<Make complement comparison determiners@> =
@@ -599,11 +599,11 @@ The bare number determiner, as in "six doors are open", is perhaps a little
 ambiguous in English. We read it as "at least six doors are open", in
 distinction to "exactly six doors are open". This is why the at-least
 quantifier is allowed in assertions: the assertion sentence "Four coins are
-in the strongbox." is read as containing the |Card>=4| quantifier, not
-|Card=4| one. The advantage of this is that two assertions in a row, such
+in the strongbox." is read as containing the `Card>=4` quantifier, not
+`Card=4` one. The advantage of this is that two assertions in a row, such
 as
 
->> Four coins are in the strongbox. Two coins are in the strongbox.
+> Four coins are in the strongbox. Two coins are in the strongbox.
 
 can combine to put six coins in the strongbox, rather than having to be
 read as contradictory. (It may look improbable that anyone would ever

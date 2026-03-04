@@ -197,11 +197,11 @@ is called at the top level for each scene in turn which starts at the start
 of play (see above).
 
 A scene entry can be arrived at in three ways: through one of its ends, in
-which case |end| is the number (0 for begins, 1 for standard ends, and so on),
+which case `end` is the number (0 for begins, 1 for standard ends, and so on),
 or through being already active at the start of play, or through being covered
 in the index even though it never happens in play. This means we need two
-additional |end| numbers. They are only ever used at the top level, that is,
-on the initial call when |depth| is 0.
+additional `end` numbers. They are only ever used at the top level, that is,
+on the initial call when `depth` is 0.
 
 @d START_OF_PLAY_END -1
 @d NEVER_HAPPENS_END -2
@@ -255,7 +255,7 @@ void PlotElement::index_from_scene(OUTPUT_STREAM, simplified_scene *ssc, int dep
 
 @ And this is where the routine recurses, so that consequent scenes are
 tabulated underneath the present one, indented one step further in (since
-indentation is coupled to |depth|). First we recurse to scenes which end when
+indentation is coupled to `depth`). First we recurse to scenes which end when
 this one does; then to scenes which begin when this one ends.
 
 @<Indent to tabulate other scenes connected to the ends of this one@> =

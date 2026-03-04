@@ -4,13 +4,13 @@ To compile the activities submodule for a compilation unit, which contains
 _activity packages.
 
 @h Compilation data.
-Each |activity| object contains this data:
+Each `activity` object contains this data:
 
 =
 typedef struct activity_compilation_data {
 	int translated;
 	struct text_stream *translated_name;
-	struct package_request *av_package; /* its |_activity| package */
+	struct package_request *av_package; /* its `_activity` package */
 	struct inter_name *value_iname;     /* an identifier for a constant identifying this */
 	struct inter_name *translated_iname; /* an alias useful for linking purposes */
 	struct inter_name *variables_id;    /* ID for the shared variables set, if any */
@@ -108,10 +108,10 @@ void RTActivities::compile(void) {
 	}
 }
 
-@ So the following makes a single |_activity| package. As noted above, an activity
-compiles as a value to its |value_iname|, which will typically have a descriptive
-name such as |V_printing_short_title|. But this is equated below to another constant
-in the same package, always called |activity_id|. Those ID numbers must all be
+@ So the following makes a single `_activity` package. As noted above, an activity
+compiles as a value to its `value_iname`, which will typically have a descriptive
+name such as `V_printing_short_title`. But this is equated below to another constant
+in the same package, always called `activity_id`. Those ID numbers must all be
 distinct at runtime, and this is arranged during linking: for now, we simply
 write 0.
 

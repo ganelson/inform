@@ -10,14 +10,14 @@ each symbol in two ways:
 - With an array for rapid lookup by ID number.
 
 Note that symbol IDs are just unsigned integers, though always integers which
-exceed |SYMBOL_BASE_VAL|. They can be interpreted only in context of the
-symbols table they refer to: so, for example, the ID |0x40000005| will mean
+exceed `SYMBOL_BASE_VAL`. They can be interpreted only in context of the
+symbols table they refer to: so, for example, the ID `0x40000005` will mean
 one thing in one package and something else in another. Note: do not change the
-value of |SYMBOL_BASE_VAL| without considering the effect on the file
+value of `SYMBOL_BASE_VAL` without considering the effect on the file
 compression scheme in //Inter in Binary Files//.
 
 Some packages are very small. To save memory, the dictionary (a) is created
-only when the number of symbols reaches |NO_SYMBOLS_WORTH_A_DICTIONARY|; if
+only when the number of symbols reaches `NO_SYMBOLS_WORTH_A_DICTIONARY`; if
 there are fewer than that, it's quicker to perform name searches exhaustively
 anyway, so there's no real loss in speed.
 
@@ -59,7 +59,7 @@ inter_symbols_table *InterSymbolsTable::new(inter_ti resource_ID) {
 not merged into a single data structure for timing reasons (mainly in the
 harder case when loading binary Inter from a file).
 
-See //InterPackage::set_scope// for where |owning_package| is set. This
+See //InterPackage::set_scope// for where `owning_package` is set. This
 function is the inverse of //InterPackage::scope//:
 
 =
@@ -72,8 +72,8 @@ inter_package *InterSymbolsTable::package(inter_symbols_table *ST) {
 to be null, though this must be done with great care (if there are references
 to this symbol in Inter code anywhere, for example, trouble would follow).
 But this means the array may contain some nulls. The following macro loops
-through non-null symbols |S| in the table |T|; note that the second |for| "loop"
-executes once if |S| is non-null, and not at all if it is null.
+through non-null symbols `S` in the table `T`; note that the second `for` "loop"
+executes once if `S` is non-null, and not at all if it is null.
 
 @d LOOP_OVER_SYMBOLS_TABLE(S, T)
 	for (int i=0; i<(T?(T->symbol_array_size):0); i++)
@@ -82,18 +82,18 @@ executes once if |S| is non-null, and not at all if it is null.
 @ The following private-to-us function is an all-purpose way to access symbols
 in a table by name.
 
-If a symbol called |name| exists, we return it; or, if |wire_following| is set,
+If a symbol called `name` exists, we return it; or, if `wire_following` is set,
 we follow the wiring to the symbol at the end of the cable -- this is what the
-|name| actually means; the name doesn't really have a local meaning within the
+`name` actually means; the name doesn't really have a local meaning within the
 package, in this case. (Note that the result is then a symbol outside the table
 being searched, and therefore belonging to a different package to the one we
 started in.)
 
-If no such symbol exists, but |create| is set, we then create it. If |ID| is
+If no such symbol exists, but `create` is set, we then create it. If `ID` is
 zero, we give it the next free symbol ID within the table; otherwise we give
-it exactly the id |ID|. This is needed when loading binary Inter from a file,
+it exactly the id `ID`. This is needed when loading binary Inter from a file,
 and we need to make sure that we use the same IDs as those expected by that
-binary code. In that situation, we keep nudging |T->next_free_symbol_ID| upwards
+binary code. In that situation, we keep nudging `T->next_free_symbol_ID` upwards
 as required to ensure that it ends up being equal to 1 more than the highest
 symbol ID defined.
 
@@ -203,7 +203,7 @@ int InterSymbolsTable::unname(inter_symbols_table *T, text_stream *name) {
 Variations on the above then provide an API for looking up the meaning of names
 within a symbols table.
 
-First: what if anything does |name| mean? Return |NULL| if nothing.
+First: what if anything does `name` mean? Return `NULL` if nothing.
 
 This is wire-following: that is, if the answer is a symbol wired to another symbol
 elsewhere in the tree, then we return that other symbol.
@@ -325,10 +325,10 @@ symbols table, that's easy. Suppose we have this example:
     | 3: further      |
     +-----------------+
 =
-Then if we want the ID of symbol |plugh| in package |P|, we just return 3,
+Then if we want the ID of symbol `plugh` in package `P`, we just return 3,
 its symbol ID within the table.
 
-Here, if |P| is null then we use the root package, and therefore the global
+Here, if `P` is null then we use the root package, and therefore the global
 symbols table.
 
 =
@@ -349,7 +349,7 @@ inter_ti InterSymbolsTable::id_from_global_symbol(inter_tree *I, inter_symbol *S
 }
 
 @ However, things become more interesting if we do not know that the symbol
-|S| belongs to |P|. Suppose:
+`S` belongs to `P`. Suppose:
 = (text)
     +-----------------+    +-----------------+
     | Package P       |    | Package SP      |
@@ -359,8 +359,8 @@ inter_ti InterSymbolsTable::id_from_global_symbol(inter_tree *I, inter_symbol *S
     | 2: further      |    |                 |
     +-----------------+    +-----------------+
 =
-and suppose we again want the ID for |plugh| within package |P|. The only way
-to do this is to create a new symbol in |P| and wire it to |plugh|:
+and suppose we again want the ID for `plugh` within package `P`. The only way
+to do this is to create a new symbol in `P` and wire it to `plugh`:
 = (text)
     +-----------------+
     | Package P       |
@@ -371,21 +371,21 @@ to do this is to create a new symbol in |P| and wire it to |plugh|:
     | 3: plugh ~~~~~~~~~~~~~~> 1: plugh      |
     +-----------------+    +-----------------+
 =
-We can then return 3 as the ID of |plugh| within |P|. 
+We can then return 3 as the ID of `plugh` within `P`. 
 
-Note that there are now two symbols named |plugh|, one in each package. But the
-new one in |P| is a sort of reference only: it is wired to the old one in |SP|.
-To see what the new |plugh| means, one must follow the wiring to the old |plugh|.
+Note that there are now two symbols named `plugh`, one in each package. But the
+new one in `P` is a sort of reference only: it is wired to the old one in `SP`.
+To see what the new `plugh` means, one must follow the wiring to the old `plugh`.
 But this is no real burden, because:
 
-- A name-search by //InterSymbolsTable::symbol_from_name// on |"plugh"| within
-the package |P| finds the new |plugh| symbol but then follows the wiring to
-the old |plugh| in |SP|, and returns that; and
+- A name-search by //InterSymbolsTable::symbol_from_name// on `"plugh"` within
+the package `P` finds the new `plugh` symbol but then follows the wiring to
+the old `plugh` in `SP`, and returns that; and
 
-- So does ID lookup by //InterSymbolsTable::symbol_from_ID// on ID 3 within |P|.
+- So does ID lookup by //InterSymbolsTable::symbol_from_ID// on ID 3 within `P`.
 
 In effect, once the following function has been used, everything will work just
-as if the symbol were in |P| after all.
+as if the symbol were in `P` after all.
 
 Finally, note that this awkward case:
 = (text)
@@ -397,8 +397,8 @@ Finally, note that this awkward case:
     | 2: further      |    |                 |
     +-----------------+    +-----------------+
 =
-also needs to be handled: i.e., where package |P| already contains a different
-and unrelated symbol coincidentally called |"plugh"|. In that case, we end up with:
+also needs to be handled: i.e., where package `P` already contains a different
+and unrelated symbol coincidentally called `"plugh"`. In that case, we end up with:
 = (text)
     +-----------------+
     | Package P       |
@@ -409,8 +409,8 @@ and unrelated symbol coincidentally called |"plugh"|. In that case, we end up wi
     | 3: plugh_1 ~~~~~~~~~~~~> 1: plugh      |
     +-----------------+    +-----------------+
 =
-This time, the reference symbol has been named |"plugh_1"| to avoid a name
-collision with the original |plugh| in package |P|.
+This time, the reference symbol has been named `"plugh_1"` to avoid a name
+collision with the original `plugh` in package `P`.
 
 =
 inter_ti InterSymbolsTable::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
@@ -430,7 +430,7 @@ inter_ti InterSymbolsTable::id_from_symbol_in_table(inter_symbols_table *P_table
 
 @ Because global symbols are visible everywhere, we never need local IDs for
 them on a package-by-package basis, so it is an error to call this function if
-|S| is a global.
+`S` is a global.
 
 @<We need an ID to a faraway symbol@> =
 	LOGIF(INTER_SYMBOLS,
@@ -459,11 +459,11 @@ inter_ti InterSymbolsTable::id_at_bookmark(inter_bookmark *IBM,
 
 @h URL-style symbol names.
 We saw in //InterPackage::write_URL// that every package can be identified
-uniquely by a URL, so that, say, |/main/example/whatever| means the package
-|whatever| in the package |example| in the package |main| at the root of the tree.
+uniquely by a URL, so that, say, `/main/example/whatever` means the package
+`whatever` in the package `example` in the package `main` at the root of the tree.
 
-As a result, symbols can also have unique URLs: |/main/example/whatever/plugh|
-means the symbol called |plugh| which is in that package.
+As a result, symbols can also have unique URLs: `/main/example/whatever/plugh`
+means the symbol called `plugh` which is in that package.
 
 This is not really two different conventions. The URL for a package is the same
 as the URL for the symbol of that package's name, so really we can think of URLs
@@ -488,11 +488,11 @@ void InterSymbolsTable::write_symbol_URL(OUTPUT_STREAM, inter_symbol *S) {
 
 @ Conversely, we parse a URL and locate the symbol it describes.
 
-All URLs here are absolute. If no initial |/| occurs, the URL is assumed to be
-a global name: so |/global_name| and |global_name| both mean the same thing,
-i.e., the symbol named |global_name| in the root package. However, |this/that|
-means a symbol named |this/that| (which cannot ever exist), not a symbol named
-|that| in a package named |this|.
+All URLs here are absolute. If no initial `/` occurs, the URL is assumed to be
+a global name: so `/global_name` and `global_name` both mean the same thing,
+i.e., the symbol named `global_name` in the root package. However, `this/that`
+means a symbol named `this/that` (which cannot ever exist), not a symbol named
+`that` in a package named `this`.
 
 =
 inter_symbol *InterSymbolsTable::URL_to_symbol(inter_tree *I, text_stream *URL) {
@@ -516,7 +516,7 @@ inter_symbol *InterSymbolsTable::URL_to_symbol(inter_tree *I, text_stream *URL) 
 	return InterSymbolsTable::symbol_from_name(InterTree::global_scope(I), URL);
 }
 
-@ This variation creates a wired symbol in |T| to the given URL if there is
+@ This variation creates a wired symbol in `T` to the given URL if there is
 currently nothing at that URL; it is used when reading in textual Inter files,
 as a way of handling forward references.
 
@@ -544,13 +544,13 @@ inter_symbol *InterSymbolsTable::wire_to_URL(inter_tree *I, text_stream *URL,
 }
 
 @h Striking out symbols.
-This is a desperation measure. The tree may be full of references to |S| made
-by its ID: those IDs will then fail to resolve if the array entry for |S| has
-been struck out to |NULL|, and the result could be horribly inconsistent.
+This is a desperation measure. The tree may be full of references to `S` made
+by its ID: those IDs will then fail to resolve if the array entry for `S` has
+been struck out to `NULL`, and the result could be horribly inconsistent.
 So the function should be used only with great care.
 
 Note that the name is not removed from the dictionary (if the table has one).
-This means that textual lookups on it might still return |S|: so, again, do
+This means that textual lookups on it might still return `S`: so, again, do
 not use the function if that is able to cause problems.
 
 =

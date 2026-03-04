@@ -174,8 +174,8 @@ int Node::no_children(parse_node *pn) {
 @h Detection of subnodes.
 This is needed when producing problem messages: we may need to work up from
 an arbitrary leaf to the main sentence branch containing it. At any rate,
-given a node |PN|, we want to know if another node |to_find| lies beneath
-it. (This will never be called when |PN| is the root, and from all other
+given a node `PN`, we want to know if another node `to_find` lies beneath
+it. (This will never be called when `PN` is the root, and from all other
 nodes it will certainly run quickly, since the tree is otherwise neither
 wide nor deep.)
 
@@ -192,12 +192,12 @@ int Node::contains(parse_node *PN, parse_node *to_find) {
 @h The word range beneath a given node.
 Any given node may be the root of a subtree concerning the structure of
 a given contiguous range of words in the original source text. The
-"left edge" of a node |PN| is the least-numbered word considered by any
-node at or below |PN| in the tree; the "right edge" is the highest-numbered
+"left edge" of a node `PN` is the least-numbered word considered by any
+node at or below `PN` in the tree; the "right edge" is the highest-numbered
 word similarly considered.
 
 The left edge is calculated by taking the minimum value of the word number
-for |PN| and the left edges of its children, except that $-1$ is not counted.
+for `PN` and the left edges of its children, except that $-1$ is not counted.
 (A left edge of $-1$ means no source text is here.)
 
 =
@@ -212,7 +212,7 @@ int Node::left_edge_of(parse_node *PN) {
 }
 
 @ Symmetrically, the right edge is found by taking the maximum word number
-for |PN| and the right edges of its children.
+for `PN` and the right edges of its children.
 
 =
 int Node::right_edge_of(parse_node *PN) {
@@ -265,7 +265,7 @@ void Node::log_subtree(OUTPUT_STREAM, void *vpn) {
 }
 
 @ Either way, we recurse as follows, being careful not to make recursive calls
-to pursue |next| links, since otherwise a source text with more than 100,000
+to pursue `next` links, since otherwise a source text with more than 100,000
 sentences or so will exceed the typical stack size Inform has to run in.
 
 =
@@ -314,10 +314,10 @@ void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num,
 	}
 }
 
-@ When the first alternative is called, |Node::log_subtree_recursively|
+@ When the first alternative is called, `Node::log_subtree_recursively`
 has arguments 0 and 0 for the possibility. The following code finds out the
-correct value for |of|, setting this possibility to be |[1/of]|. When we later
-iterate through other alternatives, we pass on correct values of |num| and |of|,
+correct value for `of`, setting this possibility to be `[1/of]`. When we later
+iterate through other alternatives, we pass on correct values of `num` and `of`,
 so that this code won't be used again on the same horizontal list of possibilities.
 
 @<Calculate num and of such that this is [num/of] if they aren't already supplied@> =

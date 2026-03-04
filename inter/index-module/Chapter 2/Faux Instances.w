@@ -16,7 +16,7 @@ typedef struct faux_instance {
 	struct text_stream *printed_name;
 	struct text_stream *abbrev;
 	int direction_index;
-	struct linked_list *backdrop_presences; /* of |faux_instance| */
+	struct linked_list *backdrop_presences; /* of `faux_instance` */
 	struct faux_instance *region_enclosing;
 	struct faux_instance *next_room_in_submap;
 	struct faux_instance *opposite_direction;
@@ -34,7 +34,7 @@ typedef struct faux_instance {
 } faux_instance;
 
 @ The following function creates a basic //faux_instance// corresponding to
-the package |pack|, but one in which none of the cross-references to other
+the package `pack`, but one in which none of the cross-references to other
 FIs are present: those can only be made once all of the basic FIs have been
 created.
 
@@ -132,11 +132,11 @@ we may need to keep multiple sets of faux instances, one for each tree. So:
 typedef struct faux_instance_set {
 	int no_direction_fi;
 	int no_room_fi;
-	struct linked_list *instances; /* of |faux_instance| */
+	struct linked_list *instances; /* of `faux_instance` */
 	struct faux_instance *start_faux_instance;
 	struct faux_instance *faux_yourself;
 	struct faux_instance *faux_benchmark;
-	struct linked_list *rubrics; /* of |rubric_holder| */
+	struct linked_list *rubrics; /* of `rubric_holder` */
 	CLASS_DEFINITION
 } faux_instance_set;
 
@@ -261,10 +261,10 @@ void FauxInstances::make_faux(index_session *session) {
 	I->fimd.map_connection_b = FauxInstances::xref(faux_set, I->package, I"^side_b");
 
 @ When the Inter package for one instance wants to refer to another one, say
-with the key |other|, it does so by having a symbol |other| defined as the
+with the key `other`, it does so by having a symbol `other` defined as the
 instance value of the other instance: so we first extract the symbol by looking
-|key| up in the first instance's package; then we can find the other instance
-package simply by finding the container-package for where |S| is defined.
+`key` up in the first instance's package; then we can find the other instance
+package simply by finding the container-package for where `S` is defined.
 It is then a simple if not especially quick task to find which //faux_instance//
 was made from that package.
 
@@ -291,8 +291,8 @@ Mapping hints arise from sentences like "Index with X mapped east of Y", or
 some other helpful tip: these are compiled fairly directly into Inter packages,
 and this is where we decode those packages and make use of them.
 
-This is done in two passes. |pass| 1 occurs when a new faux set of instances is
-being made; |pass| 2 only after the spatial grid layout has been calculated,
+This is done in two passes. `pass` 1 occurs when a new faux set of instances is
+being made; `pass` 2 only after the spatial grid layout has been calculated,
 and only if needed.
 
 =
@@ -355,14 +355,14 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 	SpatialMap::lock_exit_in_place(from, dir->direction_index, to, session);
 
 @ Most map parameters (e.g. setting room colours or font sizes) can be set
-immediately, i.e., on |pass| 1:
+immediately, i.e., on `pass` 1:
 
 @<Decode a hint setting EPS map parameters@> =
 	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val, session);
 
 @ ...but not those hints applying to a specific level of the map (e.g., level 4),
 since we do not initially know what level any given room actually lives on: that
-can only be known once the spatial grid has been found, i.e., on |pass| 2.
+can only be known once the spatial grid has been found, i.e., on `pass` 2.
 
 @<Decode a hint setting EPS map parameters relating to levels@> =
 	map_parameter_scope *scope = NULL;

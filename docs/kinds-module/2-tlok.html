@@ -243,12 +243,9 @@ function is what tells us that the superkind of <code>man</code> is <code>person
 to us except as a way of calculating joins: the two are dual to each other as
 they pass through contravariant constructors.</p>
 <p>The main use of this for Inform is to handle literals such as:</p>
-</div>
 <blockquote>
-    <p>{ 1, 2.1415, "frog" }</p>
+<p>{ 1, 2.1415, &quot;frog&quot; }</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The kind of this is by definition the join of the kinds of the values in the
 list, which as it happens is <code>K_sayable_value</code> -- an indefinite kind, so that
 such a list can't be constructed as data.</p>
@@ -374,12 +371,9 @@ if not.</p>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Kind checking can happen for many reasons, but the most difficult case
 occurs when matching phrase prototypes. This is difficult because it involves
 kind variables:</p>
-</div>
 <blockquote>
-    <p>To add (new entry - K) to (L - list of values of kind K) ...</p>
+<p>To add (new entry - K) to (L - list of values of kind K) ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This matches &quot;add 23 to U&quot; if &quot;L&quot; is a list of numbers, but not if it
 is a list of times.</p>
 <p>Since kind variables can be changed only when matching phrase prototypes,
@@ -427,7 +421,7 @@ result plus a note that <code>K</code> has to be <code>list of numbers</code>.)<
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_variable_declaration</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kv_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* must be from 1 to 26 */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kv_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* must be a definite non-|NULL| kind */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kv_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* must be a definite non-<code>NULL</code> kind */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_variable_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">kind_variable_declaration</span><span class="plain-syntax">;</span>
@@ -564,12 +558,9 @@ and, of course, &quot;value&quot;.</p>
 to 26 (&quot;Z&quot;), and that it is also possible to assign them a domain, or a
 &quot;declaration&quot;. This marks that they are free to take on a value, within
 that domain. For example, in</p>
-</div>
 <blockquote>
-    <p>To add (new entry - K) to (L - list of values of kind K) ...</p>
+<p>To add (new entry - K) to (L - list of values of kind K) ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the first appearance of <code>K</code> will be an ordinary use of a kind variable,
 whereas the second has the declaration <code>value</code> -- meaning that it can
 become any kind matching <code>value</code>. (It could alternatively have had a
@@ -596,19 +587,13 @@ more restrictive declaration like <code>arithmetic value</code>.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tlok.html#SP13">&#167;13</a> (twice).</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_5_1" class="paragraph-anchor"></a><b>&#167;13.5.1. </b>  When the specification matcher works on matching text such as</p>
-</div>
 <blockquote>
-    <p>add 23 to the scores list;</p>
+<p>add 23 to the scores list;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>it works through the prototype:</p>
-</div>
 <blockquote>
-    <p>To add (new entry - K) to (L - list of values of kind K) ...</p>
+<p>To add (new entry - K) to (L - list of values of kind K) ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in two passes. On the first pass, it tries to match the tokens &quot;23&quot; and
 &quot;scores list&quot; against <code>K</code> and <code>list of values of kind K</code> respectively
 in <code>MATCH_KIND_VARIABLES_INFERRING_VALUES</code> mode; on the second pass, it

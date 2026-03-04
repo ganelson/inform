@@ -14,7 +14,7 @@ void ExtensionInstaller::set_filename(filename *F) {
 }
 
 text_stream inbuild_report_file_struct; /* The actual report file */
-text_stream *inbuild_report_file = NULL; /* As a |text_stream *| */
+text_stream *inbuild_report_file = NULL; /* As a `text_stream *` */
 
 text_stream *ExtensionInstaller::begin(text_stream *title, text_stream *subtitle) {
 	if (inbuild_report_HTML == NULL) return NULL;
@@ -40,10 +40,10 @@ void ExtensionInstaller::end(void) {
 }
 
 @h The installer.
-This works in two stages. First it is called with |confirmed| false,
+This works in two stages. First it is called with `confirmed` false,
 and it produces an HTML report on the feasibility of making the installation,
 with a clickable Confirm button. Then, assuming the user does click that button,
-the Installer is called again, with |confirmed| true. It takes action and also
+the Installer is called again, with `confirmed` true. It takes action and also
 produces a second report.
 
 =
@@ -791,10 +791,10 @@ void ExtensionInstaller::close_test_link(OUTPUT_STREAM, inform_project *proj,
 }
 
 @h The moderniser.
-This works in two stages. First it is called with |confirmed| false,
+This works in two stages. First it is called with `confirmed` false,
 and it produces an HTML report on the feasibility of making the installation,
 with a clickable Confirm button. Then, assuming the user does click that button,
-the Installer is called again, with |confirmed| true. It takes action and also
+the Installer is called again, with `confirmed` true. It takes action and also
 produces a second report.
 
 =

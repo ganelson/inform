@@ -19,15 +19,15 @@ Global MStack_Top = 0; ! Topmost word currently used
 
 @h Create Frame.
 A frame is created by calling the following function with two arguments:
-|creator|, a function which initialises a block of variables, and an
+`creator`, a function which initialises a block of variables, and an
 ID number identifying the owner.
 
-The |creator| function is called with the address at which to initialise
+The `creator` function is called with the address at which to initialise
 the variables as its first argument, and the value 1 as the second
 argument. (The idea is that the same function can be used later to
 deallocate the variables, and then the second argument will be $-1$.)
-The |creator| function returns the extent of the block of memory it has
-used, in words. Thus is required to be strictly less than |MAX_MSTACK_FRAME|
+The `creator` function returns the extent of the block of memory it has
+used, in words. Thus is required to be strictly less than `MAX_MSTACK_FRAME`
 minus 1.
 
 =
@@ -79,7 +79,7 @@ is destroyed.
 @h Seek Frame.
 We return the position on the M-stack of the most recently created frame
 with the given ID number (see above), or 0 if no such frame exists; the
-size is stored in the global variable |MStack_Frame_Extent|. (Because word 0
+size is stored in the global variable `MStack_Frame_Extent`. (Because word 0
 on the stack is used as a sentinel -- all frames are placed above it -- no frame
 can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
 
@@ -125,7 +125,7 @@ the M-stack, in the topmost block with the given ID number (since "room gone
 to", for instance, always means its value in the most current going action
 of those now under way). Typechecking in the compiler should mean that it is
 impossible to produce either error message below: Inform will only compile valid
-uses of |MstVO| ("M-stack variable offset") where the seek succeeds and
+uses of `MstVO` ("M-stack variable offset") where the seek succeeds and
 the offset is within range.
 
 =

@@ -4,7 +4,7 @@ To compile the rulebooks submodule for a compilation unit, which contains
 _rulebook and _outcome packages.
 
 @h Compilation data.
-Each |rulebook| object contains this data:
+Each `rulebook` object contains this data:
 
 =
 typedef struct rulebook_compilation_data {
@@ -14,7 +14,7 @@ typedef struct rulebook_compilation_data {
 	struct inter_name *rb_id_iname;
 	struct inter_name *rb_translated_iname;
 	struct inter_name *vars_creator_fn_iname;
-	struct linked_list *placement_list; /* of |parse_node| */
+	struct linked_list *placement_list; /* of `parse_node` */
 	struct parse_node *where_declared;
 } rulebook_compilation_data;
 
@@ -517,7 +517,7 @@ void RTRulebooks::rule_comment(rule *R, int index, int from) {
 }
 
 @h Rulebook outcomes at runtime.
-Each |named_rulebook_outcome| object contains this data:
+Each `named_rulebook_outcome` object contains this data:
 
 =
 typedef struct nro_compilation_data {

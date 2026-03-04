@@ -5,7 +5,7 @@ meaning, thus purging the tree of all raw I6 syntax entirely.
 
 @h Basic idea.
 Assimilation is a multi-stage process, but really this stage is the heart of it.
-We expect that |resolve-conditional-compilation| has already run, so that the
+We expect that `resolve-conditional-compilation` has already run, so that the
 splats in the tree represent directives which all have definite effect. With
 the conditional compilation splats gone, we are left with these:
 = (text)
@@ -14,7 +14,7 @@ FAKEACTION_PLM    GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM
 ROUTINE_PLM       STUB_PLM          VERB_PLM          ORIGSOURCE_PLM
 =
 And we must turn those into splatless Inter code with the same effect. In some
-cases, notably |ROUTINE_PLM| which contains an entire Inform 6-notation
+cases, notably `ROUTINE_PLM` which contains an entire Inform 6-notation
 function definition, that is quite a lot of work.
 
 =
@@ -24,9 +24,9 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 
 @ We divide the task up into three traverses:
 
-- |PROPERTY_PLM|, |ATTRIBUTE_PLM|, |ROUTINE_PLM|, |STUB_PLM|;
-- |DEFAULT_PLM|, |CONSTANT_PLM|, |FAKEACTION_PLM|, |OBJECT_PLM|, |VERB_PLM|, |ARRAY_PLM|;
-- |GLOBAL_PLM|.
+- `PROPERTY_PLM`, `ATTRIBUTE_PLM`, `ROUTINE_PLM`, `STUB_PLM`;
+- `DEFAULT_PLM`, `CONSTANT_PLM`, `FAKEACTION_PLM`, `OBJECT_PLM`, `VERB_PLM`, `ARRAY_PLM`;
+- `GLOBAL_PLM`.
 
 =
 int CompileSplatsStage::run(pipeline_step *step) {
@@ -52,7 +52,7 @@ typedef struct compile_splats_state {
 	struct pipeline_step *from_step;
 	int no_assimilated_actions;
 	int no_assimilated_directives;
-	struct linked_list *function_bodies_to_compile; /* of |function_body_request| */
+	struct linked_list *function_bodies_to_compile; /* of `function_body_request` */
 } compile_splats_state;
 
 @<Initialise the CS state@> =
@@ -141,7 +141,7 @@ Note that the #OrigSource directive (with hash sign) is also valid
 within a function body. We will handle that case later; see //building: Emitting Inter Schemas//.
 
 This is not yet useful. It converts a top-level #Origsource directive
-to a top-level |PROVENANCE_IST| node, but it doesn't put it anywhere
+to a top-level `PROVENANCE_IST` node, but it doesn't put it anywhere
 meaningful; the node just winds up tacked onto the end of the kit.
 
 @<Assimilate origsource directive@> =	
@@ -190,7 +190,7 @@ something with a given identifier name, and sometimes supply a value. For exampl
 	Object Compass "compass";
 =
 The following finds the identifier as the second token, i.e., after the directive
-keyword |Constant| or similar. Note that an |Object| declaration does not
+keyword `Constant` or similar. Note that an `Object` declaration does not
 meaningfully have a value, even though a third token is present.
 
 @<Parse text of splat for identifier and value@> =
@@ -219,8 +219,8 @@ meaningfully have a value, even though a third token is present.
 	}
 	Str::trim_all_white_space_at_end(raw_identifier);
 
-@ The following finds |"STRING" NUMBER|, or |"STRING"|, or nothing.
-(In its pocketses.) This is needed for the |OrigSource| directive.
+@ The following finds `"STRING" NUMBER`, or `"STRING"`, or nothing.
+(In its pocketses.) This is needed for the `OrigSource` directive.
 In I6 that directive can accept a second number, but we won't
 worry about that here.
 
@@ -242,8 +242,8 @@ worry about that here.
 	}
 
 @ An eccentricity of Inform 6 syntax is that fake action names ought to be given
-in the form |Fake_Action ##Bake|, but are not. The constant created by |Fake_Action Bake|
-is nevertheless |##Bake|, so we take care of that here.
+in the form `Fake_Action ##Bake`, but are not. The constant created by `Fake_Action Bake`
+is nevertheless `##Bake`, so we take care of that here.
 
 @<Insert sharps in front of fake action identifiers@> =
 	if (directive == FAKEACTION_PLM) {
@@ -263,7 +263,7 @@ is essentially equivalent to
 	#Endif;
 =
 So this is a piece of conditional compilation in disguise, and should perhaps
-have been removed from the tree by the |resolve-conditional-compilation| stage. 
+have been removed from the tree by the `resolve-conditional-compilation` stage. 
 But in fact it's easier to handle it here.
 
 @<Perhaps compile something from this splat@> =
@@ -297,9 +297,9 @@ the result, declare a symbol for it, and then define that symbol.
 	
 	@<Make a definition for made_s@>;
 
-@ So, for example, |Constant Vanilla_Pod = 1;| might result in the symbol
-|Vanilla_Pod| being created and defined with a |CONSTANT_IST| Inter node,
-all inside the package |/main/HypotheticalKit/constants/Vanilla_Pod_con|.
+@ So, for example, `Constant Vanilla_Pod = 1;` might result in the symbol
+`Vanilla_Pod` being created and defined with a `CONSTANT_IST` Inter node,
+all inside the package `/main/HypotheticalKit/constants/Vanilla_Pod_con`.
 
 Which frankly looks over-engineered for a simple constant, but some of these
 definitions are not so simple.
@@ -353,7 +353,7 @@ not already there.
 	InterBookmark::move_into_package(&content_at, subpackage);
 	DISCARD_TEXT(subpackage_name)
 
-@ Now we declare |made_s| as a symbol inside this package.
+@ Now we declare `made_s` as a symbol inside this package.
 
 @<Declare the Inter symbol for what we will shortly make@> =	
 	made_s = CompileSplatsStage::make_socketed_symbol(&content_at, identifier);
@@ -470,9 +470,9 @@ not already there.
 		no_assimilated_array_entries, val_pile, B, NULL));
 	Regexp::dispose_of(&mr);
 
-@ At this point |value| is |table 2 (-56) 17 "hey, I am typeless" ' '|. We want
+@ At this point `value` is `table 2 (-56) 17 "hey, I am typeless" ' '`. We want
 first to work out which of the several array formats this is, then the contents
-|2 (-56) 17 "hey, I am typeless" ' '|.
+`2 (-56) 17 "hey, I am typeless" ' '`.
 
 @<Work out the format of the array and the string of contents@> =
 	if (directive == ARRAY_PLM) {
@@ -585,15 +585,15 @@ see why other kits would, either.
 		@<Add value to the entry pile@>;
 	}
 
-@ In command grammar introduced by |Verb|, the tokens |*| and |/| can occur
+@ In command grammar introduced by `Verb`, the tokens `*` and `/` can occur
 without having any arithmetic meaning, so they must not be rejected. That's
 really why we treat this case as different, though we also treat keywords
-occurring after |->| markers as being action names, and introduce |##|s to
+occurring after `->` markers as being action names, and introduce `##`s to
 their names. Thus in:
 = (text as Inform 6)
 	Verb 'do' * 'something' -> Do;
 =
-the action name |Do| is converted automatically to |##Do|, the actual identifier
+the action name `Do` is converted automatically to `##Do`, the actual identifier
 for the action.
 
 @<Compile the string of command grammar contents into the pile of values@> =
@@ -630,15 +630,15 @@ for the action.
 		DISCARD_TEXT(value)
 	}
 
-@ So here |value| is something like |##ScriptOn|, an action name. Maybe that has
+@ So here `value` is something like `##ScriptOn`, an action name. Maybe that has
 already been defined in the kit currently being compiled, in which case a socket
 for it already exists; but maybe not, in which case we have to create the
-action. This will be a package at, say, |/main/HypotheticalKit/actions/assim_action_1|
+action. This will be a package at, say, `/main/HypotheticalKit/actions/assim_action_1`
 with three things in it:
 
-- an ID, |action_id|;
-- the action name, |##ScriptOn|;
-- the function to carry out the action, |ScriptOnSub|.
+- an ID, `action_id`;
+- the action name, `##ScriptOn`;
+- the function to carry out the action, `ScriptOnSub`.
 
 @<Ensure that a socket exists for this action name@> =
 	if (Wiring::find_socket(I, value) == NULL) {
@@ -662,10 +662,10 @@ with three things in it:
 	action_package = Produce::make_subpackage(IBM, an, ptype);
 	DISCARD_TEXT(an)
 
-@ Each action package has to contain an |action_id| symbol, which will eventually
+@ Each action package has to contain an `action_id` symbol, which will eventually
 be defined as a unique ID for the action. But those unique IDs can only be
 assigned at link time -- at this stage we cannot know what other actions exist
-in other compilation units. So we create |action_id| equal just to 0 for now.
+in other compilation units. So we create `action_id` equal just to 0 for now.
 
 @<Make an action_id symbol in the action package@> =
 	inter_symbol *action_id_s = InterSymbolsTable::create_with_unique_name(
@@ -691,9 +691,9 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 		InterTypes::unchecked(), InterValuePairs::symbolic(IBM, action_s), B, NULL));
 
 @ The Inter convention is that an action package should contain a function
-to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact
+to carry it out; for `##ScriptOn`, this would be called `ScriptOnSub`. In fact
 we don't actually define it here! We assume it has already been compiled, and
-that we can therefore simply create the function name |ScriptOnSub| here,
+that we can therefore simply create the function name `ScriptOnSub` here,
 equating it to a function definition elsewhere.
 
 @<Make a symbol equated to the function carrying out the action@> =
@@ -794,11 +794,11 @@ in this section.
 			line_offset++;
 
 @ Another of Inform 6's shabby notations for conditional compilation in disguise
-is the |Stub| directive, which looks like so:
+is the `Stub` directive, which looks like so:
 = (text as Inform 6)
 	Stub Example 2;
 =
-This means "if no |Example| routine exists, create one now, and give it two
+This means "if no `Example` routine exists, create one now, and give it two
 local variables". Such a stub routine contains no code, so it doesn't matter
 what these variables are called, of course. We rewrite so that it's as if the
 kit code had written:
@@ -829,16 +829,16 @@ supported only to avoid throwing errors.
 
 @ Function packages have a standardised shape in Inter, and though this is a
 matter of convention rather than a requirement, we will follow it here. So
-our |Example| function would be called at |/main/HypotheticalKit/functions/Example_fn/call|.
+our `Example` function would be called at `/main/HypotheticalKit/functions/Example_fn/call`.
 The following makes two packages:
 
-- The "outer package", |/main/HypotheticalKit/functions/Example_fn|, which
+- The "outer package", `/main/HypotheticalKit/functions/Example_fn`, which
 holds all resources other than code needed by the function; and within it
 
-- The "inner package", |/main/HypotheticalKit/functions/Example_fn/Example|,
+- The "inner package", `/main/HypotheticalKit/functions/Example_fn/Example`,
 which contains the actual code.
 
-These have package types |_function| and |_code| respectively.
+These have package types `_function` and `_code` respectively.
 
 @<Turn this into a function package@> =
 	inter_bookmark content_at = CompileSplatsStage::make_submodule(I, step, I"functions", P);
@@ -989,7 +989,7 @@ Some convenient Inter utilities.
 First, we make a symbol, and also install a socket to it. This essentially
 means that it will be visible to code outside of the current kit, making it a
 function, variable or constant which can be called or accessed from other
-kits or from the main program. (Compare C, where a function declared as |static|
+kits or from the main program. (Compare C, where a function declared as `static`
 is visible only inside the current compilation unit; one declared without that
 keyword can be linked to.)
 
@@ -1008,18 +1008,18 @@ inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM,
 	return new_symbol;
 }
 
-@ Syppose we are assimilating |HypotheticalKit|, and we want to make sure that
-the package |/main/HypotheticalKit/whatevers| exists. Here |/main/HypotheticalKit|
-is a package of type |_module|, and |/main/HypotheticalKit/whatevers| should be
-a |_submodule|. Then we call this function, with |name| set to "whatevers".
+@ Syppose we are assimilating `HypotheticalKit`, and we want to make sure that
+the package `/main/HypotheticalKit/whatevers` exists. Here `/main/HypotheticalKit`
+is a package of type `_module`, and `/main/HypotheticalKit/whatevers` should be
+a `_submodule`. Then we call this function, with `name` set to "whatevers".
 The return value is a bookmark to where we can write new code in the submodule.
 
 Note that if the submodule already exists, there is nothing to create, and so
 we simply return a bookmark at the end of the existing submodule.
 
 The function tries to fail safe in the remote contingency that the package type
-|_submodule| does not exist in the current tree. But if the tree has been
-properly initialised with the |new| stage, then it will. Similarly, it will
+`_submodule` does not exist in the current tree. But if the tree has been
+properly initialised with the `new` stage, then it will. Similarly, it will
 fail safe if an assimilation package has not been set -- but this is very
 unlikely to happen: see above.
 
@@ -1045,11 +1045,11 @@ inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *
 
 @h Inform 6 expressions in constant context.
 The following takes the text of a constant written in Inform 6 syntax, and
-stored in |S|, and compiles it to an Inter bytecode value pair. The meaning of
+stored in `S`, and compiles it to an Inter bytecode value pair. The meaning of
 these depends on the package they will end up living in, so that must be supplied
-as |pack|.
+as `pack`.
 
-The flag |Verbal| is set if the expression came from a |Verb| directive, i.e.,
+The flag `Verbal` is set if the expression came from a `Verb` directive, i.e.,
 from command parser grammar: slightly different syntax applies there.
 
 =
@@ -1227,13 +1227,13 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 		return InterValuePairs::symbolic(IBM, symb);
 	}
 
-@ At this point, maybe the reason we haven't yet recognised the constant |S| is
-that it's a computation like |6 + MAX_WEEBLES*4|. This is quite legal in Inform 6,
+@ At this point, maybe the reason we haven't yet recognised the constant `S` is
+that it's a computation like `6 + MAX_WEEBLES*4`. This is quite legal in Inform 6,
 and the compiler performs constant-folding to evaluate them: so that's what we will
 emulate now. In practice, we are only going to understand fairly simple computations,
 but that will be enough for the kits normally used with Inform.
 
-We do this by parsing |S| into a schema, whose tree will look roughly like this:
+We do this by parsing `S` into a schema, whose tree will look roughly like this:
 = (text)
 	PLUS_BIP
 		6
@@ -1243,8 +1243,8 @@ We do this by parsing |S| into a schema, whose tree will look roughly like this:
 =
 We then recurse down through this tree, constructing an Inter symbol for a
 constant which evaluates to the result of each operation. Here, then, we
-first define |Computed_Constant_Value_1| as the multiplication, then define
-|Computed_Constant_Value_2| as the addition, and that is what we use as our
+first define `Computed_Constant_Value_1` as the multiplication, then define
+`Computed_Constant_Value_2` as the addition, and that is what we use as our
 answer. Since we recurse depth-first, the subsidiary results are always made
 before they are needed.
 
@@ -1377,12 +1377,12 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 	return result_s;
 
 @ This is the harder case by far, despite the brevity of the following code.
-Here we run into, say, |MAX_ELEPHANTS|, some identifier which clearly refers
+Here we run into, say, `MAX_ELEPHANTS`, some identifier which clearly refers
 to something defined elsewhere. If it has already been defined in the kit
 being compiled, then there's a socket of that name already, and we can use
-that as the answer; similarly if it's an architectural constant such as |WORDSIZE|.
+that as the answer; similarly if it's an architectural constant such as `WORDSIZE`.
 Otherwise we must assume it will be declared either later or in another
-compilation unit, so we create a plug called |MAX_ELEPHANTS| and let the
+compilation unit, so we create a plug called `MAX_ELEPHANTS` and let the
 linker stage worry about what it means later on.
 
 @<This leaf is a symbol name@> =
@@ -1446,7 +1446,7 @@ int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark 
 
 @ ...Playing back through those requests here. Note that we turn the entire
 contents of the function -- which can be very large, for example in the Inform
-kit |CommandParserKit| -- as a single gigantic Inter schema |sch|.
+kit `CommandParserKit` -- as a single gigantic Inter schema `sch`.
 
 =
 int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_state *css,
@@ -1472,7 +1472,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	return errors_occurred;
 }
 
-@ And then we emit Inter code equivalent to |sch|:
+@ And then we emit Inter code equivalent to `sch`:
 
 @<Compile this function body@> =
 	Produce::set_function(I, req->block_package);

@@ -13,7 +13,7 @@ fit into an Inter value.
 - When an array name is compiled, its runtime value must be its address.
 - When an Inter value is stored in byte-accessible memory, it occupies either
 2 or 4 consecutive bytes, with the little end first. The result is called a
-"word". (For C, always 4, which is always |sizeof(i7word_t)|.) Conversion between
+"word". (For C, always 4, which is always `sizeof(i7word_t)`.) Conversion between
 a word stored in memory and an Inter value must be faithful in both directions.
 - Words can be stored at any byte position, and not only at (say) multiples
 of 2 or 4.
@@ -40,9 +40,9 @@ void CMemoryModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(memdata.entry_count) = 0;
 }
 
-@ For a given process |proc|, the current contents of byte-addressable memory will
-be an array called |proc->state.memory|; here, we will compile a single static array
-|i7_initial_memory| holding the initial contents of this memory, so that a new
+@ For a given process `proc`, the current contents of byte-addressable memory will
+be an array called `proc->state.memory`; here, we will compile a single static array
+`i7_initial_memory` holding the initial contents of this memory, so that a new
 process can be initialised from that.
 
 The first 64 bytes of memory are reserved for the "header". We don't write those
@@ -90,7 +90,7 @@ int CMemoryModel::begin_array(code_generator *gtr, code_generation *gen,
 		@<Declare this array in concert with the usual Vanilla algorithm@>;
 }
 
-@ Command-grammar arrays are handled differently: note the return value |FALSE|,
+@ Command-grammar arrays are handled differently: note the return value `FALSE`,
 which tells Vanilla not to call us again about this array.
 
 @<Short-circuit the usual Vanilla algorithm by compiling the whole array now@> =
@@ -116,7 +116,7 @@ which tells Vanilla not to call us again about this array.
 		case TABLE_ARRAY_FORMAT: format_name = I"table"; break;
 	}
 
-@ Crucially, the array names are |#define| constants declared up near the top
+@ Crucially, the array names are `#define` constants declared up near the top
 of the source code: they are not variables with pointer types, or something
 like that. This means they can legally be used as values elsewhere in memory,
 or as initial values of variables, and so on.
@@ -136,8 +136,8 @@ because they too are defined constants, equal to their IDs: see //C Object Model
 			(inter_ti) C_GEN_DATA(memdata.himem));
 	CodeGen::deselect(gen, saved);
 
-@ Of course, right now we don't know |N|, the extent of the array. So we will
-refer to this with a constant like |i7_mgl_myarray__xt| (XT meaning "extent"),
+@ Of course, right now we don't know `N`, the extent of the array. So we will
+refer to this with a constant like `i7_mgl_myarray__xt` (XT meaning "extent"),
 which we will retrospectively predefine when the array ends.
 
 @<Place the extent entry N at index 0@> =
@@ -166,10 +166,10 @@ void CMemoryModel::array_entry(code_generator *gtr, code_generation *gen,
 	WRITE("    (i7byte_t) %S, /* %d */\n", entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 1;
 
-@ Note that |I7BYTE_0| and so on are macros and not functions (see below): they
+@ Note that `I7BYTE_0` and so on are macros and not functions (see below): they
 use only arithmetic operations which can be constant-folded by the C compiler,
-and therefore if |X| is a valid constant-context expression in C then so is
-|I7BYTE_0(X)|.
+and therefore if `X` is a valid constant-context expression in C then so is
+`I7BYTE_0(X)`.
 
 @<This is a word entry@> =
 	WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S), /* %d */\n",
@@ -221,17 +221,17 @@ int CMemoryModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 }
 
 @ So, then, time to write some more of the C library. We are going to need to
-define the macros |I7BYTE_0| to |I7BYTE_3|, and also the functions |i7_read_word|
-and |i7_read_byte|, used just above. But we start with the function which resets
+define the macros `I7BYTE_0` to `I7BYTE_3`, and also the functions `i7_read_word`
+and `i7_read_byte`, used just above. But we start with the function which resets
 memory to its initial state when a process begins, and with the stack empty.
 
 Note that we fill in ten bytes of the 64-byte header block of memory:
 
-- The Release number as a big-endian 16-bit value at |0x34-0x35|;
-- The Serial code as six ASCII characters (in practice digits) at |0x36-0x3B|.
+- The Release number as a big-endian 16-bit value at `0x34-0x35`;
+- The Serial code as six ASCII characters (in practice digits) at `0x36-0x3B`.
 
 We carefully defined those two constants, if they exist, before the inclusion point of
-the C library in order that the conditional compilations in |i7_initialise_memory_and_stack|
+the C library in order that the conditional compilations in `i7_initialise_memory_and_stack`
 will work correctly. See //CNamespace::declare_constant//.
 
 The rest of the header area remains all zeros.
@@ -277,11 +277,11 @@ void i7_initialise_memory_and_stack(i7process_t *proc) {
 }
 =
 
-@ The array |proc->state.memory| is of |i7byte_t| values, so it's easy to read
+@ The array `proc->state.memory` is of `i7byte_t` values, so it's easy to read
 and write bytes. Words are more challenging since we need to pack and unpack them.
 
-The |i7_read_word| function reads a word which is in word entry |array_index| (counting
-0, 1, 2, ...) in the array which begins at the byte address |array_address|.
+The `i7_read_word` function reads a word which is in word entry `array_index` (counting
+0, 1, 2, ...) in the array which begins at the byte address `array_address`.
 
 We can also read "short words", that is, 16-bit values.
 
@@ -367,9 +367,9 @@ void CMemoryModel::word_to_byte(code_generator *gtr, code_generation *gen,
 }
 
 @ The seven primitive operations on storage need to be implemented for byte
-and word lookups by the following pair of functions. Note that if |way| is
-|i7_lvalue_SET| then |i7_change_byte| is equivalent to |i7_write_byte| and
-|i7_change_word| to |i7_write_word|, except that they return the value as set.
+and word lookups by the following pair of functions. Note that if `way` is
+`i7_lvalue_SET` then `i7_change_byte` is equivalent to `i7_write_byte` and
+`i7_change_word` to `i7_write_word`, except that they return the value as set.
 
 = (text to inform7_clib.h)
 i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way);
@@ -453,10 +453,10 @@ UNDO command works; snapshots are taken once each turn.)
 
 Taking a snapshot, or restoring the state from an existing snapshot, inevitably
 means making a copy of state data. This has to be a deep copy, because the
-|i7state_t| structure is really just a collection of pointers to arrays in
+`i7state_t` structure is really just a collection of pointers to arrays in
 memory; copying only the pointers would not be good enough.
 
-For the same reason, an |i7state_t| cannot simply be discarded without causing
+For the same reason, an `i7state_t` cannot simply be discarded without causing
 a memory leak, so we provide a destructor function.
 
 = (text to inform7_clib.h)
@@ -522,7 +522,7 @@ void i7_destroy_latest_snapshot(i7process_t *proc) {
 
 @ To take a snapshot, we copy the process's current state in the next free
 slot in the ring buffer of snapshots held by the process; the net effect is
-that it stores the most recent |I7_MAX_SNAPSHOTS| snapshots, silently discarding
+that it stores the most recent `I7_MAX_SNAPSHOTS` snapshots, silently discarding
 any older ones, but without leaking memory.
 
 = (text to inform7_clib.h)
@@ -542,7 +542,7 @@ void i7_save_snapshot(i7process_t *proc) {
 }
 =
 
-@ The function |i7_has_snapshot| tests whether the process has at least one
+@ The function `i7_has_snapshot` tests whether the process has at least one
 valid snapshot to revert to:
 
 = (text to inform7_clib.h)
@@ -559,7 +559,7 @@ int i7_has_snapshot(i7process_t *proc) {
 }
 =
 
-And |i7_restore_snapshot| restores the state of the process to that of the
+And `i7_restore_snapshot` restores the state of the process to that of the
 most recent snapshot, winding backwards through the ring buffer, so that it's
 then possible to restore again to go back another step, and so on:
 

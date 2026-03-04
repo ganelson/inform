@@ -96,7 +96,7 @@ When we search for copies, we do so by looking through nests in a list. The
 following builds such lists, removing duplicates -- where duplicates are
 shown up by having the same textual form of pathname. (This is not foolproof
 by any means: Unix is replete with ways to describe the same directory, thanks
-to simlinks, |~| and so on. But in the circumstances arising inside Inbuild,
+to simlinks, `~` and so on. But in the circumstances arising inside Inbuild,
 it will do. In any case, having duplicates would not actually matter: it
 would just produce search results which were more copious than needed.)
 

@@ -85,7 +85,7 @@ And each <a href="6-rb.html#SP1" class="internal">booking</a> records which of t
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">booking</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule_being_booked</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what appears on this page */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">placement</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_PLACEMENT| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">placement</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_PLACEMENT</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">place_automatically</span><span class="plain-syntax">; </span><span class="comment-syntax">/* should this be inserted automatically? */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">booking_commentary</span><span class="plain-syntax"> </span><span class="identifier-syntax">commentary</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only for indexing and code comments */</span>
@@ -139,12 +139,9 @@ And each <a href="6-rb.html#SP1" class="internal">booking</a> records which of t
 been put into a binder (i.e., into the <a href="6-bl.html#SP1" class="internal">booking_list</a> of a rulebook); the
 process of putting it into such a list is called &quot;placement&quot;.</p>
 <p>Most rules declare a single rulebook to belong to in their definitions:</p>
-</div>
 <blockquote>
-    <p>Before eating something: ...</p>
+<p>Before eating something: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This nameless rule is to go into the &quot;before eating&quot; rulebook. When Inform
 reads this, it creates a booking, but does not immediately place this into
 the rulebook; instead, the booking is marked for automatic placement later on.</p>

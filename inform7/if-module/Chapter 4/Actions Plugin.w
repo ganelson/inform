@@ -3,7 +3,7 @@
 A feature for actions, by which animate characters change the world model.
 
 @ Support for actions is contained in the "actions" feature, which occupies this
-entire chapter. The test group |:actions| may be helpful in trouble-shooting here.
+entire chapter. The test group `:actions` may be helpful in trouble-shooting here.
 
 It may be helpful to distinguish these ideas right from the outset:
 
@@ -12,15 +12,15 @@ impulse by a person in the model world to effect some change within it: for
 example, "Henry taking the brick". Here Henry is the "actor", and the brick is
 "the noun". Actions can be "stored" so that they are values in their own
 right; thus, a variable could be set to the value "Henry taking the brick",
-and this would have kind |K_stored_action|. Inside the compiler they are
+and this would have kind `K_stored_action`. Inside the compiler they are
 represented by //explicit_action// objects.
 - An "action name" -- not an ideal thing to call it, but traditional -- is the
 type of action involved, taken in isolation: for example, "taking". These can
-also be values at run-time, they have kind |K_action_name|, and they are
+also be values at run-time, they have kind `K_action_name`, and they are
 represented in the compiler by //action_name// objections.
 - An "action pattern" is a textual description which matches some actions but
 not others, and can be vague or specific: for example, "wearing or examining
-something". Action patterns become values of the kind |K_description_of_action|.
+something". Action patterns become values of the kind `K_description_of_action`.
 They can also be aggregated into "named action patterns", which characterise
 behaviour; see //action_pattern// and //named_action_pattern//.
 - A "past action pattern", which can never in any way be a value, is a
@@ -64,13 +64,13 @@ int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *se
 	return FALSE;
 }
 
-@ Though |K_action_name| is very like an enumeration kind, its possible values,
+@ Though `K_action_name` is very like an enumeration kind, its possible values,
 which correspond to //action_name// objects, are not strictly speaking instances
 in the Inform world model. (Because they do not have properties: see //Action Variables//
 for what they have instead.)
 
 The "waiting" action is sacred, because it is the default value for
-|K_action_name| values: waiting is the zero of actions.
+`K_action_name` values: waiting is the zero of actions.
 
 = (early code)
 action_name *waiting_action = NULL;
@@ -99,7 +99,7 @@ action_name *ActionsPlugin::default_action_name(void) {
 	return waiting_action;
 }
 
-@ And because |K_action_name| values have no properties, they cannot store
+@ And because `K_action_name` values have no properties, they cannot store
 a "specification" text as one, and have to make their own arrangements:
 
 =
@@ -147,8 +147,9 @@ int ActionsPlugin::complete_model(int stage) {
 with the special meaning "X is an action...", which creates new action names.
 These can be quite complicated:
 
->> Inserting it into is an action applying to two things.
->> Verifying the story file is an action out of world and applying to nothing.
+> Inserting it into is an action applying to two things.
+
+> Verifying the story file is an action out of world and applying to nothing.
 
 =
 int ActionsPlugin::make_special_meanings(void) {
@@ -242,7 +243,7 @@ to be created.
 which are allowed but not required to be delimited as a list, and which can
 inconveniently contain the word "and"; not only that, but note that in
 
->> applying to one thing and one number
+> applying to one thing and one number
 
 the initial text "applying to one thing" would be valid as it stands.
 

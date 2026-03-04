@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -19,25 +19,25 @@ For more, see //foundation: A Brief Guide to Foundation//.
 @h A symbols table for natural language.
 This module provides an analogue to the "symbols table" used in a compiler for
 a conventional language. For example, in a C compiler, identifiers such as
-|int|, |x| or |printf| might all be entries in such a table, and any new name
+`int`, `x` or `printf` might all be entries in such a table, and any new name
 can rapidly be checked to see if it matches one already known.
 
 In natural language we have "excerpts", that is, contiguous runs of words,
 rather than identifiers. But we must similarly remember their meanings.
 Examples might include:
 
->> american dialect, say close bracket, player's command, open, Hall of Mirrors
+> american dialect, say close bracket, player's command, open, Hall of Mirrors
 
 Conventional symbols table algorithms depend on the fact that identifiers are
 relatively long sequences of letters (often 8 or more units) drawn from a
 small alphabet (say, the 37 letters, digits and the underscore). But Inform
 has short symbols (typically 1 to 3 units) drawn from a huge alphabet (say,
 5,000 different words found in the source text). Inform also allows for
-flexibility in matching: the excerpt meaning |give # bone|, for example, must
+flexibility in matching: the excerpt meaning `give # bone`, for example, must
 match "give a dog a bone" or "give me the thigh bone".
 
 We also need to parse in ways which a conventional compiler does not. If C has
-registered the identifier |pink_martini|, it never needs to notice |martini| as
+registered the identifier `pink_martini`, it never needs to notice `martini` as
 being related to it. But when Inform registers "pink martini" as the name of an
 instance, it then has to spot that either "pink" or "martini" alone might also
 refer to the same object.
@@ -53,9 +53,9 @@ which is found in //lexicon: Lexicon//.
 The lexicon is stored using //excerpt_meaning// objects, in //Excerpt Meanings//.
 Entries are added with //Lexicon::register// and retrieved with //Lexicon::retrieve//.
 
-In either case the user must supply a "meaning code", such as |TABLE_MC|, giving
+In either case the user must supply a "meaning code", such as `TABLE_MC`, giving
 a very loose idea of the context; we will use that both to make lookups faster,
-to provide separate namespaces (one can search for just |TABLE_MC| meanings,
+to provide separate namespaces (one can search for just `TABLE_MC` meanings,
 for example), and to control the style of parsing done.
 See //lexicon: How To Include This Module//.
 
@@ -81,17 +81,17 @@ meaning -- for example, to say just "Gandalf" but mean the same wizard.
 
 @ Secondly, recall that each vocabulary entry has a field 32 bits wide for
 a bitmap, of which only 6 bits were used in the lexer. (See //words: Vocabulary//.)
-For example, cardinal numbers had the |NUMBER_MC| bit set.
+For example, cardinal numbers had the `NUMBER_MC` bit set.
 
 We're now going to use the other 26 bits. The idea is that if a meaning is
-registered for the name of, say, a table, then the |TABLE_MC| bit would be
+registered for the name of, say, a table, then the `TABLE_MC` bit would be
 set for each of the words in that name. For example, if "table of tides" is
-such a name, then each if the words |table|, |of| and |tides| picks up the
-|TABLE_MC| bit.
+such a name, then each if the words `table`, `of` and `tides` picks up the
+`TABLE_MC` bit.
 
 What we gain by this is that if we are ever testing some words in the source
 text to see if they might be the name of a table, we can immediately reject,
-say, "green table" because the word |green| does not have the |TABLE_MC| bit.
+say, "green table" because the word `green` does not have the `TABLE_MC` bit.
 
 For more on this, and for complications arising to do with case sensitivity,
 see //ExcerptMeanings::hash_code_from_token_list//.

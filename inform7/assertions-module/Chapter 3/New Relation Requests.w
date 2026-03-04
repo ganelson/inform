@@ -4,13 +4,13 @@ Special sentences for creating new relations.
 
 @ The following reads sentences like:
 
->> Acquaintance relates people to each other.
+> Acquaintance relates people to each other.
 
 Note that we take at least minimal action on this as soon as we detect it,
 in the pre-pass: this is important because it may affect the classification
 of subsequent sentences, which also happens in the pre-pass.
 
-The |:relations| set of test cases may be useful when tweaking the code below.
+The `:relations` set of test cases may be useful when tweaking the code below.
 
 =
 <new-relation-sentence-subject> ::=
@@ -75,7 +75,7 @@ typedef struct relation_request {
 typedef struct relation_request_term {
 	struct kind *domain;
 	struct wording CALLW; /* "calling" name */
-	int unique; /* |TRUE| for one, |FALSE| for various, |NOT_APPLICABLE| if not yet known */
+	int unique; /* `TRUE` for one, `FALSE` for various, `NOT_APPLICABLE` if not yet known */
 } relation_request_term;
 
 @ Syntax on the left (term 0) and right (term 1) slightly differs. The integer
@@ -123,7 +123,7 @@ result is a bitmap of these:
 	RR.symmetric = FALSE;
 	RR.equivalence = FALSE;
 	wording TW[2];
-	int bitmap[2]; /* bitmap of the |*_RBIT| values */
+	int bitmap[2]; /* bitmap of the `*_RBIT` values */
 
 	@<Parse left and right object phrases@>;
 	@<Find term multiplicities and use of fast route-finding@>;
@@ -229,13 +229,13 @@ But that only makes sense if there is indeed some uniqueness involved,
 because otherwise it is unclear what the name refers to. Who is "the
 greeter of the Queen of Sheba" given the following definition?
 
->> Acquaintance relates various people (called the greeter) to various people.
+> Acquaintance relates various people (called the greeter) to various people.
 
 Because of that, callings are only allowed in certain circumstances. An
 exception is made -- that is, they are always allowed -- where the relation
 tests a given condition, because then the names identify the terms, e.g.,
 
->> Divisibility relates a number (called N) to a number (called M) when the remainder after dividing M by N is 0.
+> Divisibility relates a number (called N) to a number (called M) when the remainder after dividing M by N is 0.
 
 Here the names "N" and "M" unambiguously refer to the terms being tested
 at this moment, and have no currency beyond that context.
@@ -468,7 +468,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 @ Callings are used to give names to the terms on each side of the relation,
 e.g.,
 
->> Lock-fitting relates one thing (called the matching key) to various things.
+> Lock-fitting relates one thing (called the matching key) to various things.
 
 @<Detect callings for the terms of the relation@> =
 	if ((Wordings::nonempty(RR->terms[0].CALLW)) || (Wordings::nonempty(RR->terms[1].CALLW)))
@@ -543,7 +543,7 @@ to be used, if any; and any fields which are specific to the form in
 question. Anyway, there are eight possible forms of explicit BP, so
 here are eight paragraphs creating them.
 
-@ The |Relation_OtoO| case, or one to one: "R relates one K to one K".
+@ The `Relation_OtoO` case, or one to one: "R relates one K to one K".
 
 Such a relation consumes run-time storage of $5D$ bytes on the Z-machine
 and $14D$ bytes on Glulx, where $D$ is the size of the domain...
@@ -561,7 +561,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 			storage_kind, i6_prn_name);
 	}
 
-@ The |Relation_OtoV| case, or one to various: "R relates one K to various K".
+@ The `Relation_OtoV` case, or one to various: "R relates one K to various K".
 
 @<Complete as a one-to-various BP@> =
 	ED->form_of_relation = Relation_OtoV;
@@ -576,7 +576,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 			storage_kind, i6_prn_name);
 	}
 
-@ The |Relation_VtoO| case, or various to one: "R relates various K to one K".
+@ The `Relation_VtoO` case, or various to one: "R relates various K to one K".
 
 @<Complete as a various-to-one BP@> =
 	ED->form_of_relation = Relation_VtoO;
@@ -591,7 +591,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 			storage_kind, i6_prn_name);
 	}
 
-@ The |Relation_VtoV| case, or various to various: "R relates various K to
+@ The `Relation_VtoV` case, or various to various: "R relates various K to
 various K".
 
 @<Complete as an asymmetric various-to-various BP@> =
@@ -603,7 +603,7 @@ various K".
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,false))",
 		RTRelations::iname(bp));
 
-@ The |Relation_Sym_OtoO| case, or symmetric one to one: "R relates one K to
+@ The `Relation_Sym_OtoO` case, or symmetric one to one: "R relates one K to
 another".
 
 @<Complete as a symmetric one-to-one BP@> =
@@ -619,7 +619,7 @@ another".
 			storage_kind, i6_prn_name);
 	}
 
-@ The |Relation_Sym_VtoV| case, or symmetric various to various: "R relates K
+@ The `Relation_Sym_VtoV` case, or symmetric various to various: "R relates K
 to each other".
 
 @<Complete as a symmetric various-to-various BP@> =
@@ -631,7 +631,7 @@ to each other".
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,true))",
 		RTRelations::iname(bp));
 
-@ The |Relation_Equiv| case, or equivalence relation: "R relates K to each
+@ The `Relation_Equiv` case, or equivalence relation: "R relates K to each
 other in groups".
 
 @<Complete as an equivalence-relation BP@> =
@@ -669,13 +669,13 @@ condition)".
 	bp->family_specific = STORE_POINTER_by_function_bp_data(D);
 
 @ The left- and right- local variables above provide us with convenient
-aliases for the entries which will end up in the |bp_term_details|
+aliases for the entries which will end up in the `bp_term_details`
 structures attached to the BP: this is where we put them back.
 
 For the meaning of functions $f_0$ and $f_1$, see "Binary Predicates.w".
 The idea here is this: suppose we have a relation of objects where the only
 true outcomes have the form $B(f_0(y), y)$. At run-time we store the
-identity of the counterpart object $f_0(y)$ in the |prn| property of the
+identity of the counterpart object $f_0(y)$ in the `prn` property of the
 original object $y$.
 
 And we similarly construct an $f_1$ function if the only true outcomes

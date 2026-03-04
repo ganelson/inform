@@ -24,8 +24,8 @@ action_name_list *ActionNameLists::new_list(anl_entry *first, int state) {
 
 @ The "negation state" of a list is one of three possibilities, not two. The
 difference is that "doing something other than examining the box", for example,
-is |ANL_NEGATED_LISTWISE|, whereas "doing something other than examining to the
-box" is |ANL_NEGATED_ITEMWISE|. Note that the state is set irrevocably when the
+is `ANL_NEGATED_LISTWISE`, whereas "doing something other than examining to the
+box" is `ANL_NEGATED_ITEMWISE`. Note that the state is set irrevocably when the
 list is created.
 
 @d ANL_POSITIVE 1
@@ -200,9 +200,9 @@ int ActionNameLists::precedes(anl_entry *e1, anl_entry *e2) {
 
 @ These lists are never long, so we don't need to worry about running time here.
 
-On entry |main_list| begins a linked list in which each entry //ActionNameLists::precedes//
-the next; while |new_list| can be in any sequence, but must be disjoint from the
-|main_list|, i.e., have no entries in common.
+On entry `main_list` begins a linked list in which each entry //ActionNameLists::precedes//
+the next; while `new_list` can be in any sequence, but must be disjoint from the
+`main_list`, i.e., have no entries in common.
 
 On exit the return value heads a linked list in which each entry precedes the
 next, and which includes exactly the members of the two lists passed to it.
@@ -260,7 +260,7 @@ int ActionNameLists::nonempty(action_name_list *list) {
 }
 
 @ If an action list is a wrapper for a single named action pattern, the
-following function returns that NAP. Anything more complicated, |NULL|.
+following function returns that NAP. Anything more complicated, `NULL`.
 
 =
 named_action_pattern *ActionNameLists::is_single_NAP(action_name_list *list) {
@@ -273,7 +273,7 @@ named_action_pattern *ActionNameLists::is_single_NAP(action_name_list *list) {
 
 @ The //anl_item// material is the actual content we are trying to get at.
 Like life, items are a mixture of naps and actions. At most one of these
-fields is non-|NULL|. If they are both |NULL|, this represents "doing
+fields is non-`NULL`. If they are both `NULL`, this represents "doing
 anything" -- a completely unrestricted action.
 
 =
@@ -338,7 +338,7 @@ action_name *ActionNameLists::action(anl_entry *entry) {
 	return NULL;
 }
 
-@ A given action |an| falls within the context of this list if it appears
+@ A given action `an` falls within the context of this list if it appears
 positively in the list, or negatively by not falling into a category excluded
 by it; for example, "examining" falls within "examining something", and also
 within "doing something other than looking at something" (a case of itemwise
@@ -491,7 +491,7 @@ anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C,
 @ This truncates a clause so that it stops just before the given word number.
 For example, "croquet in the gardens" might be truncated to just "croquet".
 Here, if the text should become empty as a result then the clause is deleted
-from the list. This is important since it removes temporary |TAIL_AP_CLAUSE|
+from the list. This is important since it removes temporary `TAIL_AP_CLAUSE`
 clauses if they successfully convert into more permanent ones.
 
 =
@@ -511,7 +511,7 @@ void ActionNameLists::truncate_clause(anl_entry *entry, int C, int wn) {
 }
 
 @ Up to two "nouns" can be added to an entry; the first to be added is put
-into the |NOUN_AP_CLAUSE| clause, and the second to |SECOND_AP_CLAUSE|.
+into the `NOUN_AP_CLAUSE` clause, and the second to `SECOND_AP_CLAUSE`.
 
 =
 anl_entry *ActionNameLists::add_noun(anl_entry *entry, wording W) {
@@ -685,11 +685,11 @@ this might match, for example, "doing something other than waiting", or
 "dropping the box". We make no effort to understand the words which are not
 part of the action: "dropping the box" is just "dropping (two words)" here.
 
-Note that it works in either |IS_TENSE| or |HASBEEN_TENSE|, and that |sense|
-is set to |FALSE| (if it is supplied) when the text had a negative sense --
-something other than something -- or |TRUE| for a positive one.
+Note that it works in either `IS_TENSE` or `HASBEEN_TENSE`, and that `sense`
+is set to `FALSE` (if it is supplied) when the text had a negative sense --
+something other than something -- or `TRUE` for a positive one.
 
-The test group |:actions| is helpful in catching errors here.
+The test group `:actions` is helpful in catching errors here.
 
 @ =
 int anl_parsing_tense = IS_TENSE;
@@ -787,10 +787,10 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 	return FALSE;
 }
 
-@ Here |TW| is the "tail wording", that is, any text left over after the name
+@ Here `TW` is the "tail wording", that is, any text left over after the name
 itself. So, for "irreverent behaviour in the presence of the Bishop", the
-|nap| may be the "irreverent behaviour", and |TW| the text "in the presence
-of the Bishop". We put that temporarily into the |TAIL_AP_CLAUSE|, and then
+`nap` may be the "irreverent behaviour", and `TW` the text "in the presence
+of the Bishop". We put that temporarily into the `TAIL_AP_CLAUSE`, and then
 ramify what had been a single-entry list so that it may now have multiple
 entries -- for example, "irreverent behaviour [in: the presence of the Bishop]"
 or "irreverent behaviour [in-presence: the Bishop]".
@@ -821,7 +821,7 @@ out an actual choice of action.
 @ The following makes a list of results before ramification.
 
 For example, for the text "looking or taking inventory in the presence of Hans
-in the Laboratory", we get the following set of |results|:
+in the Laboratory", we get the following set of `results`:
 = (text)
 (1). +2 taking inventory [tail: in the presence of hans in the laboratory]
 (2). +2 taking [noun: inventory in the presence of hans in the laboratory]
@@ -846,9 +846,9 @@ in the Laboratory", we get the following set of |results|:
 	ActionNameLists::clear_item_data(trial_entry, an);
 	ActionNameLists::clear_parsing_data(trial_entry, W);
 
-@ Here |XW| will be the wording of the action name, say "removing it from";
-we try to fit |W| to this, say "removing a heavy thing from something in the
-Dining Room"; and if we cannot, we run away to the label |NoMatch|, which is
+@ Here `XW` will be the wording of the action name, say "removing it from";
+we try to fit `W` to this, say "removing a heavy thing from something in the
+Dining Room"; and if we cannot, we run away to the label `NoMatch`, which is
 inelegant, but there's no elegant way to break out of nested loops in C.
 
 @<Make the trial entry fit this action, if possible, leaving remaining text in RW@> =
@@ -891,10 +891,10 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 @ For example, in "looking or taking inventory in the presence of Hans
 in the Laboratory", after finding "taking inventory" as a possible action,
 we are left with "in the presence of Hans in the Laboratory". These have to
-be stored into |TAIL_AP_CLAUSE|, since they cannot be part of any noun --
+be stored into `TAIL_AP_CLAUSE`, since they cannot be part of any noun --
 because taking inventory doesn't have a noun. But when finding "taking",
 the remaining words "inventory in the presence of Hans in the Laboratory"
-have to go into |NOUN_AP_CLAUSE| -- the taking action does have a noun.
+have to go into `NOUN_AP_CLAUSE` -- the taking action does have a noun.
 
 @<Transfer remaining words to a trailing clause@> =
 	if (Wordings::nonempty(RW)) {
@@ -932,7 +932,7 @@ becomes the ramified set
 (6). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (7). +0 looking
 =
-Note that the |TAIL_AP_CLAUSE| clauses, which were just temporary holders
+Note that the `TAIL_AP_CLAUSE` clauses, which were just temporary holders
 for leftover text, have gone entirely. Had it been impossible to break them
 into legal subclauses, they would have caused the result to be struck out
 altogether. For example, this:
@@ -949,7 +949,7 @@ a sequence of subclauses.
 
 Ramification thus consists of a sudden increase in the number of possible
 readings, which we call an explosion, followed by a cull of anything which
-still has a |TAIL_AP_CLAUSE|.
+still has a `TAIL_AP_CLAUSE`.
 
 =
 anl_entry *ActionNameLists::ramify(anl_entry *results) {
@@ -968,7 +968,7 @@ anl_entry *ActionNameLists::ramify(anl_entry *results) {
 	return results;
 }
 
-@ And here is the explosion part. |tc| here identifies what the trailing clause
+@ And here is the explosion part. `tc` here identifies what the trailing clause
 actually is:
 
 =
@@ -1077,8 +1077,8 @@ are divergence points:
 }
 
 @ Finally the actual business of splitting our original entry into two, one
-(called |X| here) in which a new clause appears at the point of divergence,
-and one (called |Y|) where it does not.
+(called `X` here) in which a new clause appears at the point of divergence,
+and one (called `Y`) where it does not.
 
 The order is important here because this is why when there are multiple
 readings of clauses in the ramified list, the readings with more clauses

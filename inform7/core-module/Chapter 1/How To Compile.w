@@ -62,7 +62,7 @@ int Sequence::carry_out(int debugging) {
 }
 
 @ This macro carries out a step at what we think of as "benches" in the
-production line: hence the name |BENCH|. Continuing the analogy, there is an
+production line: hence the name `BENCH`. Continuing the analogy, there is an
 ongoing time and motion study: any step which takes more than 1 centisecond of
 CPU time is reported to the debugging log. That isn't necessarily a sign of
 something wrong: a few of these steps are always going to take serious
@@ -184,7 +184,7 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 
-@ See //Internal Test Cases// for an explanation of the alarming-looking |exit|
+@ See //Internal Test Cases// for an explanation of the alarming-looking `exit`
 here, which only happens when special runs are made for compiler testing.
 
 @<Run any internal tests@> =
@@ -363,14 +363,14 @@ compilation_subtask *Sequence::new_subtask(void (*agent)(struct compilation_subt
 @ Each call to //Sequence::undertake_queued_tasks// works methodically through
 the queue until everything is done.
 
-The queue is a linked list of |compilation_subtask| objects in between |first_task|
-and |last_task|. (The queue is empty if and only if both are |NULL|.) The queue
+The queue is a linked list of `compilation_subtask` objects in between `first_task`
+and `last_task`. (The queue is empty if and only if both are `NULL`.) The queue
 only grows, and never has items removed.
 
-A marker called |last_task_undetaken| shows how much progress we have made in
-completing the tasks queued: so, when this is equal to |last_task|, there is
-nothing to do. Another marker called |current_task| is set only when a task
-is under way, and is |NULL| at all other times.
+A marker called `last_task_undetaken` shows how much progress we have made in
+completing the tasks queued: so, when this is equal to `last_task`, there is
+nothing to do. Another marker called `current_task` is set only when a task
+is under way, and is `NULL` at all other times.
 
 =
 compilation_subtask *first_task = NULL, *last_task = NULL, *last_task_undetaken = NULL;
@@ -396,12 +396,12 @@ void Sequence::queue_at(void (*agent)(struct compilation_subtask *),
 
 @ New entries are inserted in the queue at two write positions:
 
-* after the |last_task|, i.e., at the back, if no task is currently going on; or
-* after the |current_horizon| marker, i.e., after the current task finishes.
+* after the `last_task`, i.e., at the back, if no task is currently going on; or
+* after the `current_horizon` marker, i.e., after the current task finishes.
 
 In the case where we are currently in the middle of what was the last task
 when it started, these two positions will be the same, so we sometimes need
-to advance |last_task| even when |current_horizon| is set.
+to advance `last_task` even when `current_horizon` is set.
 
 @<Queue the task@> =
 	t->caused_by = current_task;
@@ -434,7 +434,7 @@ void Sequence::allow_no_further_queued_tasks(void) {
 	task_queue_is_closed = TRUE;
 }
 
-@ So here is where the work is done, and the |last_task_undetaken| advances:
+@ So here is where the work is done, and the `last_task_undetaken` advances:
 
 =
 void Sequence::undertake_queued_tasks(void) {

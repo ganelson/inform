@@ -4,7 +4,7 @@ Access to external files.
 
 @h API.
 The 16-bit architecture does not allow for any external file I/O at all,
-so these functions essentially refuse to do anything. Note that |FileIO_GetC|
+so these functions essentially refuse to do anything. Note that `FileIO_GetC`
 returns end-of-file at all times, thus treating all files as if empty.
 
 =

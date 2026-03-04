@@ -236,16 +236,12 @@ setting a global variable.</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Compilation.</b>  Since we are compiling to I6, which is itself a C-level programming
 language, it looks at first as if we can compile is into <code>==</code> when
 testing equality and <code>=</code> when asserting it: thus</p>
-</div>
 <blockquote>
-    <p>now the score is 10;</p>
+<p>now the score is 10;</p>
 </blockquote>
-
 <blockquote>
-    <p>if the score is 10, ...</p>
+<p>if the score is 10, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>would compile to <code>score = 10;</code> and <code>if (score == 10) ...</code> respectively.</p>
 <p>But there are three problems with this simplistic approach to &quot;A is B&quot;.</p>
 <p>(a) Sometimes &quot;now A is B&quot; must set a property of A, which does not
@@ -319,12 +315,9 @@ of both A and B.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>  So here is the exceptional case (a) mentioned above. Suppose we have:</p>
-</div>
 <blockquote>
-    <p>if the lantern is bright, ...</p>
+<p>if the lantern is bright, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;bright&quot; is one value of &quot;luminance&quot;, which is both a kind of value
 and also a property. We then want to test if the luminance property of the
 lantern equals the constant value &quot;bright&quot;; and similarly for &quot;now the

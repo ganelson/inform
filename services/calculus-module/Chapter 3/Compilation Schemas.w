@@ -12,23 +12,23 @@ Code in the Inform compiler is generated largely from "schemas", which are
 small model pieces of code used with variations in different settings. There
 are two different data structures for these:
 
-- An |i6_schema| uses textual notation based on the syntax of the C-like
+- An `i6_schema` uses textual notation based on the syntax of the C-like
 language Inform 6; to be used, this must be converted to
-- An |inter_schema|, which is a partly compiled form of the same, and
+- An `inter_schema`, which is a partly compiled form of the same, and
 has a tree structure closer to the final Inter code.
 
 For inter schemas and how the conversion of (a) to (b) is done, see the
 Inform compiler source at //building: Inter Schemas//. If this calculus
-module is used outside of Inform, of course, no |inter_schema| will exist.
+module is used outside of Inform, of course, no `inter_schema` will exist.
 
-A simple example of an |i6_schema| might use the notation |*1 == *2|; this
+A simple example of an `i6_schema` might use the notation `*1 == *2`; this
 will ultimately compile to a test that two quantities are numerically equal.
-As this example shows, |*| is an escape character. See //building: Parsing Inter Schemas//;
-|*1| is an example of what is called an "abbreviated command" there.
+As this example shows, `*` is an escape character. See //building: Parsing Inter Schemas//;
+`*1` is an example of what is called an "abbreviated command" there.
 
 @ The //i6_schema// structure is very simple, then. Schemas can be of unlimited
 length, but we want to be able to create and dispose of them quickly and to
-avoid unnecessary stream memory claims. So each |i6_schema| structure contains
+avoid unnecessary stream memory claims. So each `i6_schema` structure contains
 a fixed block of storage for the first few characters. (In fact, long ones are
 never needed in practice, but we must avoid any risk of buffer overrun for safety.)
 
@@ -47,7 +47,7 @@ typedef struct i6_schema {
 
 @h Annotated schemas.
 It is sometimes convenient to carry around a schema together with calculus
-terms for what will go into |*1| and |*2| when it is expanded, and with a
+terms for what will go into `*1` and `*2` when it is expanded, and with a
 few other contextual details. 
 
 =
@@ -74,20 +74,20 @@ annotated_i6_schema Calculus::Schemas::blank_asch(void) {
 
 @h Building schemas.
 When schemas are generated inside Inform, they often look as if they have an
-even more elaborate syntax, with escapes like |%s| in them. But this is because
-they are generated with the following |printf|-style function. Those |%| escapes
+even more elaborate syntax, with escapes like `%s` in them. But this is because
+they are generated with the following `printf`-style function. Those `%` escapes
 are expanded now, when the schema is created, and not later when code is generated
 from it. For example, the function call:
 = (text as InC)
 Calculus::Schemas::new("*1.%n = *2.%n", X, Y)
 =
-might produce a schema whose |prototype| text came out as
+might produce a schema whose `prototype` text came out as
 = (text)
 *1.x100 = *2.y62
 =
-...supposing that |x100| and |y62| were the Inter identifiers for whatever was
-referred to by the |inter_name| values |X| and |Y| supplied in the arguments.
-Here then is that |printf|-like function:
+...supposing that `x100` and `y62` were the Inter identifiers for whatever was
+referred to by the `inter_name` values `X` and `Y` supplied in the arguments.
+Here then is that `printf`-like function:
 
 =
 int unique_qi_counter = 0; /* quoted iname count */
@@ -149,14 +149,14 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 		}
 	}
 
-@ We recognise only a few escapes here: |%%|, a literal percentage sign; |%d|,
-an integer; |%s|, a C string; |%S|, a text stream; and three which are higher-level:
+@ We recognise only a few escapes here: `%%`, a literal percentage sign; `%d`,
+an integer; `%s`, a C string; `%S`, a text stream; and three which are higher-level:
 
-- |%k| takes a |kind| parameter and expands to its weak ID;
-- |%L| takes a |local_variable| and expands to its identifier;
-- |%n| takes an |inter_name|, which expands more cautiously in a way which
-stores the actual |inter_name| reference: it is possible for two different
-global values to have different |inter_name|s but the same identifier text,
+- `%k` takes a `kind` parameter and expands to its weak ID;
+- `%L` takes a `local_variable` and expands to its identifier;
+- `%n` takes an `inter_name`, which expands more cautiously in a way which
+stores the actual `inter_name` reference: it is possible for two different
+global values to have different `inter_name`s but the same identifier text,
 so it would not be safe to store only the textual identifier.
 
 @<Recognise schema-format escape sequences@> =

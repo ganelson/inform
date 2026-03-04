@@ -29,18 +29,18 @@ void Certainty::write(OUTPUT_STREAM, int level) {
 
 @ Certainty adverbs are found mainly in regular sentences:
 
->> A door is usually open.
+> A door is usually open.
 
 They are syntactically legal in existential sentences too, though in English
 this usually expresses emphasis rather than a measure of probability: consider
 "there certainly are men in the room". Inform allows this, in any case. In
 conditions, Inform is more picky. For example, in assertions one can write
 
->> A box is usually closed. (1)
+> A box is usually closed. (1)
 
 but in conditions one can't write
 
->> if a box is usually closed, ... (2)
+> if a box is usually closed, ... (2)
 
 This is because (1) is essentially a statement about the future, not the
 present or the past, whereas conditions like (2) must always be determinable at

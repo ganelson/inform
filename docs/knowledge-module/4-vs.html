@@ -142,12 +142,9 @@ again at model completion time. This looks wasteful -- why not typecheck them
 just the once, at completion time?</p>
 <p>The reason we don't is that the initial check produces more specific problem
 messages, earlier on. For example, if we have:</p>
-</div>
 <blockquote>
-    <p>The tally is a number that varies. The tally is the Entire Game.</p>
+<p>The tally is a number that varies. The tally is the Entire Game.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>At model-checking time we would detect this as a problematic comparison
 between &quot;tally&quot; and &quot;Entire Game&quot;, and the problem message will thus be
 slightly vague, and not make clear that Inform realises we were trying to set

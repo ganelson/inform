@@ -8,7 +8,7 @@ which use this module:
 
 @d RUNTIME_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e EMIT_ARRAY_MREASON
 @e PARTITION_MREASON

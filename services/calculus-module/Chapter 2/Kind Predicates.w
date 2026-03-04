@@ -2,7 +2,7 @@
 
 To define the predicates for membership of a kind.
 
-@ For every kind |K|, the //calculus// module provides a unary predicate |kind=K|,
+@ For every kind `K`, the //calculus// module provides a unary predicate `kind=K`,
 and these all belong to the family:
 
 = (early code)
@@ -100,7 +100,7 @@ void KindPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) 
 	*K = up->assert_kind;
 }
 
-@ The following functions express that (i) |kind=K| predicates can always be
+@ The following functions express that (i) `kind=K` predicates can always be
 determined at compile-time, and that (ii) they are always true. This is because
 the test is performed only after a proposition has been type-checked: and if
 it passed type-checking, then the kinds must all be okay.

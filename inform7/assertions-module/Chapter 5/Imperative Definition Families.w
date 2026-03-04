@@ -44,9 +44,9 @@ imperative_defn_family *ImperativeDefinitionFamilies::new(text_stream *name, int
 So, then, the rest of this section provides an API, in effect, for different
 users of imperative definitions to get their work done.
 
-|IDENTIFY_IMP_DEFN_MTID| is for deciding from the syntax of a preamble whether
+`IDENTIFY_IMP_DEFN_MTID` is for deciding from the syntax of a preamble whether
 this definition should belong to the family or not. The recipient should set
-|id->family| to itself if it wants the definition.
+`id->family` to itself if it wants the definition.
 
 @e IDENTIFY_IMP_DEFN_MTID
 
@@ -62,7 +62,7 @@ void ImperativeDefinitionFamilies::identify(imperative_defn *id) {
 }
 
 @h Assessment.
-|ASSESS_IMP_DEFN_MTID| is for parsing the preamble in more detail, later on.
+`ASSESS_IMP_DEFN_MTID` is for parsing the preamble in more detail, later on.
 At the start of assessment, this is called on each of the IDs belonging to the
 family in turn.
 
@@ -75,7 +75,7 @@ void ImperativeDefinitionFamilies::assess(imperative_defn *id) {
 	VOID_METHOD_CALL(id->family, ASSESS_IMP_DEFN_MTID, id);
 }
 
-@ |GIVEN_BODY_IMP_DEFN_MTID| is called on an ID just after |id->body_of_defn|
+@ `GIVEN_BODY_IMP_DEFN_MTID` is called on an ID just after `id->body_of_defn`
 has finally been created.
 
 @e GIVEN_BODY_IMP_DEFN_MTID
@@ -87,8 +87,8 @@ void ImperativeDefinitionFamilies::given_body(imperative_defn *id) {
 	VOID_METHOD_CALL(id->family, GIVEN_BODY_IMP_DEFN_MTID, id);
 }
 
-@ Next, |REGISTER_IMP_DEFN_MTID| is then called on the family when all of the
-|ASSESS_IMP_DEFN_MTID| calls have been made, and all the bodies created.
+@ Next, `REGISTER_IMP_DEFN_MTID` is then called on the family when all of the
+`ASSESS_IMP_DEFN_MTID` calls have been made, and all the bodies created.
 
 @e REGISTER_IMP_DEFN_MTID
 
@@ -99,7 +99,7 @@ void ImperativeDefinitionFamilies::register(imperative_defn_family *f) {
 	VOID_METHOD_CALL_WITHOUT_ARGUMENTS(f, REGISTER_IMP_DEFN_MTID);
 }
 
-@ A call to |TO_RCD_IMP_DEFN_MTID| is then made for each ID in turn, asking the
+@ A call to `TO_RCD_IMP_DEFN_MTID` is then made for each ID in turn, asking the
 family to give the body its runtime context data.
 
 @e TO_RCD_IMP_DEFN_MTID
@@ -117,7 +117,7 @@ id_runtime_context_data ImperativeDefinitionFamilies::to_phrcd(imperative_defn *
 	return phrcd;
 }
 
-@ Finally, |ASSESSMENT_COMPLETE_IMP_DEFN_MTID| is called on the family when
+@ Finally, `ASSESSMENT_COMPLETE_IMP_DEFN_MTID` is called on the family when
 everything has been assessed.
 
 @e ASSESSMENT_COMPLETE_IMP_DEFN_MTID
@@ -133,7 +133,7 @@ void ImperativeDefinitionFamilies::assessment_complete(imperative_defn_family *f
 The body of the definition can for the most part be any Inform 7 code, but
 there are a few restrictions which depend on what the definition family is.
  
-|ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID| should reply |TRUE| if phrases
+`ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID` should reply `TRUE` if phrases
 intended to end rules or rulebooks can be used in the body; by default, not.
 
 @e ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID
@@ -148,7 +148,7 @@ int ImperativeDefinitionFamilies::goes_in_rulebooks(imperative_defn *id) {
 	return rv;
 }
 
-@ |ALLOWS_EMPTY_IMP_DEFN_MTID| should reply |TRUE| if the body is allowed to
+@ `ALLOWS_EMPTY_IMP_DEFN_MTID` should reply `TRUE` if the body is allowed to
 be empty, that is, for there to be no code at all. This happens for some
 adjective definitions which wrap up in a single line. The default is no.
 
@@ -163,8 +163,8 @@ int ImperativeDefinitionFamilies::allows_empty(imperative_defn *id) {
 	return rv;
 }
 
-@ |ALLOWS_INLINE_IMP_DEFN_MTID| should reply |TRUE| if the definition body can
-be given as |(-| inline |-)| material. The default is no.
+@ `ALLOWS_INLINE_IMP_DEFN_MTID` should reply `TRUE` if the definition body can
+be given as `(-` inline `-)` material. The default is no.
 
 @e ALLOWS_INLINE_IMP_DEFN_MTID
 
@@ -178,7 +178,7 @@ int ImperativeDefinitionFamilies::allows_inline(imperative_defn *id) {
 }
 
 @h Compilation and indexing.
-|COMPILE_IMP_DEFN_MTID| is called to ask the family to perform its main round
+`COMPILE_IMP_DEFN_MTID` is called to ask the family to perform its main round
 of compilation for any resources it will need -- most obviously, of course,
 it may want to turn its definition bodies into Inter functions.
 
@@ -194,7 +194,7 @@ void ImperativeDefinitionFamilies::compile(imperative_defn_family *f,
 		total_phrases_compiled, total_phrases_to_compile);
 }
 
-@ |PHRASEBOOK_INDEX_IMP_DEFN_MTID| should reply |TRUE| if the definition should
+@ `PHRASEBOOK_INDEX_IMP_DEFN_MTID` should reply `TRUE` if the definition should
 go into the Phrasebook page of the index.
 
 @e PHRASEBOOK_INDEX_IMP_DEFN_MTID

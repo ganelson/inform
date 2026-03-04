@@ -5,12 +5,12 @@ a comprehensive API for the runtime and imperative modules to do that.
 
 @h The emission tree.
 The //bytecode// module can maintain multiple independent trees of Inter code
-in memory, so that most calls to //bytecode// or //building// take an |inter_tree|
+in memory, so that most calls to //bytecode// or //building// take an `inter_tree`
 pointer as their first function argument. But //runtime// and //imperative// work
 on just one single tree.
 
-Calling |LargeScale::begin_new_tree| makes a minimum of package types,
-creates the |main| package, and so on, but leaves the tree basically still empty.
+Calling `LargeScale::begin_new_tree` makes a minimum of package types,
+creates the `main` package, and so on, but leaves the tree basically still empty.
 
 =
 inter_tree *main_emission_tree = NULL;
@@ -55,7 +55,7 @@ packaging_state Emit::new_packaging_state(void) {
 @h Data as pairs of Inter bytes.
 A single data value is stored in Inter bytecode as two consecutive words:
 see //bytecode// for more on this. This means we sometimes deal with a doublet
-of |inter_ti| variables:
+of `inter_ti` variables:
 
 =
 void Emit::holster_iname(value_holster *VH, inter_name *iname) {
@@ -91,8 +91,8 @@ inter_pair Emit::stvp_inner(inter_symbol *S, inter_package *pack) {
 @h Kinds.
 Inter has a very simple, and non-binding, system of "typenames" -- a much simpler
 system than Inform's hierarchy of kinds. Here we create a typename corresponding
-to each kind whose data we will need to use in Inter. |super| is the superkind,
-if any; |constructor| is one of the codes defined in //bytecode: Inter Data Types//;
+to each kind whose data we will need to use in Inter. `super` is the superkind,
+if any; `constructor` is one of the codes defined in //bytecode: Inter Data Types//;
 the other three arguments are for kind constructors.
 
 @d MAX_KIND_ARITY 128

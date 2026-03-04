@@ -72,7 +72,7 @@ English it looks wasteful, since so many forms are the same, but for French
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">infinitive</span><span class="plain-syntax">; </span><span class="comment-syntax">/* not counting the "to", in English */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">infinitive</span><span class="plain-syntax">; </span><span class="comment-syntax">/* not counting the &quot;to&quot;, in English */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">past_participle</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">present_participle</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_tabulation</span><span class="plain-syntax"> </span><span class="identifier-syntax">tabulations</span><span class="plain-syntax">[</span><span class="constant-syntax">NO_KNOWN_VOICES</span><span class="plain-syntax">];</span>
@@ -83,8 +83,8 @@ English it looks wasteful, since so many forms are the same, but for French
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VC_COMPILATION_INFLECTIONS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_conjugation_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">auxiliary_only</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only as an auxiliary, e.g. the "have" in "I have gone" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_of_verb</span><span class="plain-syntax">; </span><span class="comment-syntax">/* defines an instance of kind "verb" at run-time */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">auxiliary_only</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only as an auxiliary, e.g. the &quot;have&quot; in &quot;I have gone&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_of_verb</span><span class="plain-syntax">; </span><span class="comment-syntax">/* defines an instance of kind &quot;verb&quot; at run-time */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax">;</span>
 
@@ -231,12 +231,9 @@ conjugation to another.</p>
 usual grammatical rules, which enables us to create new irregular verbs.
 For example, Inform will by default make the past participle &quot;blended&quot; out
 of the verb &quot;to blend&quot;, but a definition like</p>
-</div>
 <blockquote>
-    <p>To blend (I blend, he blends, it is blent) ...</p>
+<p>To blend (I blend, he blends, it is blent) ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>will cause &quot;blent&quot; to override &quot;blended&quot; in the <code>PAST_PARTICIPLE_FORM_TYPE</code>.
 (Philip Larkin's poem &quot;Church Going&quot; uses &quot;blent&quot;, but I've never seen
 anybody else try this one on.)</p>
@@ -956,11 +953,10 @@ as <code>pattern</code>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Testing.</b>  Similarly, the following helps translators by giving them unit tests for their
 conjugations:</p>
-</div>
 <blockquote>
-    <p>Test verb (internal) with appuyer.</p>
+<p>Test verb (internal) with appuyer.</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Conjugation::test</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vc</span><span class="plain-syntax"> = </span><a href="3-vc.html#SP6" class="function-link"><span class="function-syntax">Conjugation::conjugate</span></a><span class="plain-syntax">(</span>

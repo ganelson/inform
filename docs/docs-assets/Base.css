@@ -142,6 +142,7 @@ pre.definitions {
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 10px;
+	margin-bottom: 3px;
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }
@@ -303,6 +304,16 @@ div.lsmarkdown pre code {
 	border-radius: 0px;
 	background-color: transparent;
 	padding: 0px;
+}
+
+span.comment-syntax code {
+	font-size: 15px;
+	font-style: normal;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
 }
 
 div.lsmarkdown table {

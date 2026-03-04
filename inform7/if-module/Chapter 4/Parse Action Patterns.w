@@ -24,13 +24,13 @@ int pap_failure_reason; /* one of the above */
 The parser is not contextless, and in particular can run in several globally
 set modes:
 
-- When we |PERMIT_TRYING_OMISSION|, we allow "Ganatus going east" as well as the
+- When we `PERMIT_TRYING_OMISSION`, we allow "Ganatus going east" as well as the
 more cumbersome "Ganatus trying going east".
-- When we |FORBID_NONCONSTANT_ACTION_PARAMETERS|, we disallow the use of local
+- When we `FORBID_NONCONSTANT_ACTION_PARAMETERS`, we disallow the use of local
 or global variables in action patterns.
-- When |SCANNING_ANL_ONLY|, we do not perform a full parse, but only enough to
+- When `SCANNING_ANL_ONLY`, we do not perform a full parse, but only enough to
 get as far as the action name list.
-- When we |SUPPRESS_AP_PARSING|, the nonterminal <action-pattern-core> is
+- When we `SUPPRESS_AP_PARSING`, the nonterminal <action-pattern-core> is
 rigged always to fail.
 
 @d PERMIT_TRYING_OMISSION                1
@@ -76,7 +76,7 @@ void ParseActionPatterns::restore_mode(int saved) {
 	<s-type-expression-or-value>                           ==> { pass 1 }
 
 @ In addition, the AP parser runs in a current tense. At present, this is
-always either |IS_TENSE| or |HASBEEN_TENSE|, but we'll keep our options open:
+always either `IS_TENSE` or `HASBEEN_TENSE`, but we'll keep our options open:
 
 =
 int prevailing_ap_tense = IS_TENSE;
@@ -94,7 +94,7 @@ int ParseActionPatterns::current_tense(void) {
 
 @h Extracting only the action name list.
 This might seem redundant, since surely we could just parse the text to an AP
-in the ordinary way and then take its action list. But going into |SCANNING_ANL_ONLY|
+in the ordinary way and then take its action list. But going into `SCANNING_ANL_ONLY`
 mode enables us to ignore the text used as parameters; which means that we can
 get the list even if we are parsing early in Inform's run, when such text may
 still be incomprehensible.
@@ -117,7 +117,7 @@ action_name_list *ParseActionPatterns::list_of_actions_only(wording W, int *anyo
 @h Level One.
 This is where an action pattern is wrapped up as a test of a condition: see
 //Action Conditions// for more on this. The nonterminals here have no
-return code, and have return value set to the |parse_node| for the condition,
+return code, and have return value set to the `parse_node` for the condition,
 so that they can be used in the S-parser.
 
 There are two forms of this: the first is for contexts where the AP might
@@ -137,7 +137,7 @@ We reject the second option only by testing the actor to make sure it is a
 person: for something inanimate like the meter, it is not.
 
 [1] If that's too much of a stretch for the imagination, see the documentation
-example "Witnessed 2", test case |Witnessed|.
+example "Witnessed 2", test case `Witnessed`.
 
 =
 <s-action-pattern-as-value> internal {
@@ -259,7 +259,7 @@ Our aim here is to determine who will perform the action.
 
 @ Note that the three present-tense cases all allow the abbreviated form
 "Raffles taking a jewel" rather than the less likely to be ambiguous "Raffles
-trying taking a jewel". This is allowed only in |PERMIT_TRYING_OMISSION| mode,
+trying taking a jewel". This is allowed only in `PERMIT_TRYING_OMISSION` mode,
 and makes use of the following voracious nonterminal to match the actor's
 name -- here, just "Raffles".
 
@@ -269,7 +269,7 @@ which is not inside parentheses; but only if the resulting name matches
 match if the text is the name of an instance but the "-ing" word could also be
 read as part of that same name. For example, if we read the text
 
->> angry waiting man taking the fish
+> angry waiting man taking the fish
 
 where "angry waiting man" is the name of an individual person, then we don't
 break this after "angry" (with the action "waiting") even though "angry"
@@ -376,7 +376,7 @@ this one. Parsing this accurately is a fool's errand, and allowing this syntax
 in Inform was not a good idea, because the potential for confusion is too great.
 That said, it does enable, for example, the cool rule:
 
->> Instead of Raffles taking the box for the second time, try Bunny doing it.
+> Instead of Raffles taking the box for the second time, try Bunny doing it.
 
 =
 <ap-four-pronominal> ::=

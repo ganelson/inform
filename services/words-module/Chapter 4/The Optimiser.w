@@ -7,7 +7,7 @@ Preform grammar.
 Nonterminals, productions and even ptokens all have packets of precalculated
 optimisation data attached.
 
-To begin with, NTs. |nt_ntic| is the "NTI constraint", imposing conditions
+To begin with, NTs. `nt_ntic` is the "NTI constraint", imposing conditions
 which any matching range of words must conform to: see //Nonterminal Incidences//.
 
 =
@@ -53,8 +53,8 @@ so that position 1 is always the first word and position -1 is the last.
 
 But we don't know where "but not" will occur; it could be anywhere in the
 middle of the text. The ptokens for such words have position set to 0. A run
-of these ptokens, not counting wildcards like |...|, is called a "strut":
-here, then, |but not| is a strut. We can think of it as a partition which
+of these ptokens, not counting wildcards like `...`, is called a "strut":
+here, then, `but not` is a strut. We can think of it as a partition which
 can slide backwards and forwards. This strut has length 2, not because it
 contains two ptokens, but because it is always two words wide.
 
@@ -68,7 +68,7 @@ void Optimiser::initialise_production_data(production_optimisation_data *opt) {
 @h Ptoken optimisation data.
 A ptoken is marked with its position relative to the range matching its
 production (see above for positions); with the number of the strut it belongs
-to, if it does; and with a |ptoken_is_fast| flag, which is set if the token is
+to, if it does; and with a `ptoken_is_fast` flag, which is set if the token is
 a single fixed word at a known position which is not an endpoint of a bracing.
 That sounds a tall order, but in practice many ptokens are indeed fast.
 
@@ -115,7 +115,7 @@ void Optimiser::clear_requirement_and_extremes(nonterminal *nt) {
 
 @ Although it's not obvious from here, the following function is recursive,
 because it calls //NTI::calculate_constraint//, and that in turn needs all the
-nonterminals in the grammar for |nt| to have been optimised already -- to
+nonterminals in the grammar for `nt` to have been optimised already -- to
 ensure which, it calls //Optimiser::optimise_nonterminal//. A similar thing
 also happens in //LengthExtremes::calculate_for_nt//.
 
@@ -150,7 +150,7 @@ elastic (it always matches a single word). If the first ptoken is inelastic,
 we know it must match words 1 to $L_1$ of whatever text is to be matched,
 and we give it position 1; if the second is also inelastic, that will match
 $L_1+1$ to $L_2$, and it gets position $L_1+1$; and so on. As soon as we
-hit an elastic token -- a wildcard like |...|, for example -- this
+hit an elastic token -- a wildcard like `...`, for example -- this
 predictability stops, and we can only assign position 0, which means that
 we don't know.
 

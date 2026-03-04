@@ -25,7 +25,7 @@ DECLARE_CLASS(production_list)
 DECLARE_CLASS(production)
 DECLARE_CLASS(ptoken)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e LEXER_TEXT_MREASON
 @e LEXER_WORDS_MREASON
@@ -38,16 +38,16 @@ void WordsModule::start(void) {
 	Memory::reason_name(LEXER_TEXT_MREASON, "source text");
 	Memory::reason_name(LEXER_WORDS_MREASON, "source text details");
 
-	Writers::register_writer('A', &WordAssemblages::writer); /* |%A| = write word assemblage */
-	Writers::register_writer_I('N', &Lexer::writer);         /* |%N| = write word with this number */
-	Writers::register_writer('V', &Vocabulary::writer);      /* |%V| = write vocabulary entry */
-	Writers::register_writer_W('W', &Wordings::writer);      /* |%W| = write wording */
+	Writers::register_writer('A', &WordAssemblages::writer); /* `%A` = write word assemblage */
+	Writers::register_writer_I('N', &Lexer::writer);         /* `%N` = write word with this number */
+	Writers::register_writer('V', &Vocabulary::writer);      /* `%V` = write vocabulary entry */
+	Writers::register_writer_W('W', &Wordings::writer);      /* `%W` = write wording */
 
 	Log::declare_aspect(LEXICAL_OUTPUT_DA, U"lexical output", FALSE, FALSE);
 	Log::declare_aspect(VOCABULARY_DA, U"vocabulary", FALSE, FALSE);
 
-	Writers::register_logger('f', WordAssemblages::log); /* |$f| = log word assemblage */
-	Writers::register_logger('v', Vocabulary::log);      /* |$v| = log vocabulary entry */
+	Writers::register_logger('f', WordAssemblages::log); /* `$f` = log word assemblage */
+	Writers::register_logger('v', Vocabulary::log);      /* `$v` = log vocabulary entry */
 
 	Lexer::start();
 	Vocabulary::create_punctuation();

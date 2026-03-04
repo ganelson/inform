@@ -51,13 +51,13 @@ The use of the word "mapped" may seem itself odd. Why define "to be mapped
 east of" rather than "to be east of"? After all, that seems to be what is
 used in assertions like:
 
->> The Bakery is east of Pudding Lane.
+> The Bakery is east of Pudding Lane.
 
 In fact, the assertion parser reads sentences like that by looking out specially
 for direction names plus "of" -- so this is parsed without using the mapping
 predicate for "east". But it cannot read:
 
->> The Flour Cellar is below the Bakery.
+> The Flour Cellar is below the Bakery.
 
 as a direction name plus "of", since "below" is not the name of the direction
 "down", and anyway there is no "of".
@@ -124,7 +124,7 @@ is intentionally done very early on.
 	DISCARD_TEXT(relname)
 
 @ That was one step, and here's the second. At this point we have created the
-instance |I| for the direction, and given it the kind "direction". That
+instance `I` for the direction, and given it the kind "direction". That
 makes it possible to complete the details of the BP.
 
 =
@@ -171,7 +171,7 @@ int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 }
 
 @h Assertion.
-Note that the following will infer |IS_ROOM_INF| for any source of a map
+Note that the following will infer `IS_ROOM_INF` for any source of a map
 connection -- which will include doors. That doesn't matter, because the
 Spatial feature uses these inferences only for objects whose kind is not
 explicitly given in the source text; and doors must always be specified as

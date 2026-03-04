@@ -8,8 +8,8 @@ command intended not to play any part in actual play. What should we do about
 that? These two definitions in rival compilation units cannot claim the same
 command.
 
-The answer is that the duplicate is prefixed with a |!|, so that in this example
-PURLOIN would have the meaning in the source text, and |!PURLOIN| the meaning
+The answer is that the duplicate is prefixed with a `!`, so that in this example
+PURLOIN would have the meaning in the source text, and `!PURLOIN` the meaning
 in the kit. Note that preference is given to non-meta commands (i.e., those
 affecting the world model) over testing commands.
 

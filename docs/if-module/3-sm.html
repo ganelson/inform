@@ -318,7 +318,7 @@ carries, wears, supports or incorporates it.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">progenitor</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">progenitor_set_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">part_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this a component part of something else? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">here_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">/* was this declared simply as being "here"? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">here_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">/* was this declared simply as being &quot;here&quot;? */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* temporary storage needed when compiling spatial data to Inter */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">object_tree_parent</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in/on/worn by/carried by tree structure */</span>
@@ -498,12 +498,9 @@ being talked about will eventually turn out to be rooms. As a result, &quot;here
 needs delicate handling, and its own inference type.</p>
 <p>The fact that rooms cannot be &quot;here&quot; is useful, because it means Inform can
 with certainty read</p>
-</div>
 <blockquote>
-    <p>The washing machine is here. The shirt is in the machine.</p>
+<p>The washing machine is here. The shirt is in the machine.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>as creating a container called &quot;washing machine&quot;, not a room.</p>
 </div>
 <p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b> </p>
@@ -623,21 +620,15 @@ or perhaps it might be said that the real problem is that we choose to
 distinguish between rooms and containers on a world-modelling level -- when it
 could well be argued that they are linguistically the same thing.</p>
 <p>It means that Inform is often reading code such as:</p>
-</div>
 <blockquote>
-    <p>The croquet ball is in the Boxed Set.</p>
+<p>The croquet ball is in the Boxed Set.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and not being sure whether &quot;Boxed Set&quot; is a container or a room.</p>
 <p>In the following determination, we use two sources of information. One is explicit
 data given by the source text or unambiguously implied in it, like so --</p>
-</div>
 <blockquote>
-    <p>The Boxed Set is a container. The spoon is on the low table.</p>
+<p>The Boxed Set is a container. The spoon is on the low table.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which tell us the Boxed Set is certainly a container and the table certainly
 a supporter. This information about an object is the &quot;designer choice&quot; about
 its kind.</p>

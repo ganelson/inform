@@ -18,7 +18,7 @@ void AssemblyInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |assembly| instruction is laid out with the
+In bytecode, the frame of an `assembly` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d WHICH_ASSEMBLY_IFLD (DATA_IFLD + 0)
@@ -35,7 +35,7 @@ inter_error_message *AssemblyInstruction::new(inter_bookmark *IBM, inter_ti whic
 	return NULL;
 }
 
-@ Verification consists only of sanity checks. Note that |WHICH_ASSEMBLY_IFLD|
+@ Verification consists only of sanity checks. Note that `WHICH_ASSEMBLY_IFLD`
 is required to be one of these:
 
 @e ASM_ARROW_ASMMARKER from 1

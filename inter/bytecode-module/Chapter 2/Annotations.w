@@ -9,7 +9,7 @@ an associated value. That value can be of three possible data types: boolean
 associated number), or textual (it's a text).
 
 Each annotation has a keyword used in textual Inter code: these by convention
-always begin with |__|.
+always begin with `__`.
 
 @e BOOLEAN_IATYPE from 1
 @e INTEGER_IATYPE
@@ -18,7 +18,7 @@ always begin with |__|.
 =
 typedef struct inter_annotation_form {
 	inter_ti annotation_ID;
-	int iatype; /* one of the |*_IATYPE| constants above */
+	int iatype; /* one of the `*_IATYPE` constants above */
 	struct text_stream *annotation_keyword;
 	CLASS_DEFINITION
 } inter_annotation_form;
@@ -26,7 +26,7 @@ typedef struct inter_annotation_form {
 @ We need rapid conversion between the annotation ID numbers, which range from
 0 upwards, to their corresponding //inter_annotation_form//s.
 
-Note that //SymbolAnnotation::declare// returns |FALSE| if two contradictory
+Note that //SymbolAnnotation::declare// returns `FALSE` if two contradictory
 definitions are made for the same ID. This is impossible when creating the
 canonical set (see below), but is used to detect errors when binary Inter is
 read in which had used an inconsistent set of annotations.
@@ -77,7 +77,7 @@ The set of annotations used by the Inform tool suite is as follows.
 @e REPLACING_IANN
 @e NAMESPACE_IANN
 
-@ The special annotation |__invalid|, with ID |INVALID_IANN|, is never given to
+@ The special annotation `__invalid`, with ID `INVALID_IANN`, is never given to
 any symbol: it's used to mean "do not make an annotation".
 
 =
@@ -101,7 +101,7 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", INTEGER_IATYPE);
 }
 
-@ This is printed when //inter// is run with the |-annotations| switch.
+@ This is printed when //inter// is run with the `-annotations` switch.
 
 =
 void SymbolAnnotation::show_annotations(OUTPUT_STREAM) {
@@ -151,7 +151,7 @@ void SymbolAnnotation::set(int iatype, inter_symbol *S, inter_annotation IA) {
 
 @h API for reading annotations.
 An important convention here is that the default value for a boolean annotation
-is |FALSE|, whereas for an integer it is -1.
+is `FALSE`, whereas for an integer it is -1.
 
 =
 int SymbolAnnotation::get_b(const inter_symbol *S, inter_ti ID) {
@@ -177,7 +177,7 @@ text_stream *SymbolAnnotation::get_t(inter_symbol *S, inter_tree *I, inter_ti ID
 
 @h Internal representation.
 We can express an annotation either with an //inter_annotation// structure or
-with a pair of |inter_ti| values:
+with a pair of `inter_ti` values:
 
 =
 typedef struct inter_annotation {
@@ -234,7 +234,7 @@ others in a linked list whose ordering has no meaning.
 =
 typedef struct inter_annotation_set {
 	int boolean_annotations;
-	struct linked_list *other_annotations; /* of |inter_annotation| */
+	struct linked_list *other_annotations; /* of `inter_annotation` */
 } inter_annotation_set;
 
 inter_annotation_set SymbolAnnotation::new_annotation_set(void) {
@@ -254,7 +254,7 @@ int SymbolAnnotation::nonempty(inter_annotation_set *set) {
 
 @ To write an annotation to a set. Note that it is legal to write an annotation
 which the set already has: in that case, the new value replaces the old one.
-So writing |__arrow_count=12| and then |__arrow_count=7| results in a value of 7.
+So writing `__arrow_count=12` and then `__arrow_count=7` results in a value of 7.
 
 =
 void SymbolAnnotation::write_to_set(int iatype, inter_annotation_set *set, inter_annotation A) {
@@ -285,8 +285,8 @@ void SymbolAnnotation::write_to_set(int iatype, inter_annotation_set *set, inter
 	}
 }
 
-@ To read an annotation. |found| is set to |TRUE| if the annotation exists for
-the set, and |FALSE| otherwise. Note that every set contains all of the boolean
+@ To read an annotation. `found` is set to `TRUE` if the annotation exists for
+the set, and `FALSE` otherwise. Note that every set contains all of the boolean
 annotations, since they are stored in a bitmap which is always present.
 
 =

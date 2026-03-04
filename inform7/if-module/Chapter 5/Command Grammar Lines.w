@@ -7,13 +7,15 @@ A CG line is a list of CG tokens to specify a textual pattern. For example,
 world model perhaps, or can be longer prototypes of commands to describe
 actions. There are many, many examples in //standard_rules: Command Grammar//,
 but for example in:
->> Understand "remove [things inside] from [something]" as removing it from.
+
+> Understand "remove [things inside] from [something]" as removing it from.
+
 ...the CG line "[things inside] from [something]" is added to the CG for the
 command verb REMOVE. This is a CG line with a //determination_type//
-expressing that it describes two |K_object| terms, the first perhaps being
-multiple and the second not; and with |resulting_action| set to the
+expressing that it describes two `K_object` terms, the first perhaps being
+multiple and the second not; and with `resulting_action` set to the
 removing it from action. That's a feature only seen in lines for
-|CG_IS_COMMAND| grammars, in fact.
+`CG_IS_COMMAND` grammars, in fact.
 
 =
 typedef struct cg_line {
@@ -25,17 +27,17 @@ typedef struct cg_line {
 	struct parse_node *where_grammar_specified; /* where found in source */
 	int original_text; /* the word number of the double-quoted grammar text... */
 	struct cg_token *tokens; /* ...which is parsed into this list of tokens */
-	int lexeme_count; /* number of lexemes, or |-1| if not yet counted */
+	int lexeme_count; /* number of lexemes, or `-1` if not yet counted */
 
 	struct determination_type cgl_type; /* only correct after determination occurs */
 	struct wording understand_when_text; /* match me only when this condition holds */
 	struct pcalc_prop *understand_when_prop; /* match me only when this proposition applies */
 
-	int pluralised; /* |CG_IS_SUBJECT|: refers in the plural */
+	int pluralised; /* `CG_IS_SUBJECT`: refers in the plural */
 
-	struct action_name *resulting_action; /* |CG_IS_COMMAND|: the action */
-	int reversed; /* |CG_IS_COMMAND|: the two values are in reverse order */
-	int mistaken; /* |CG_IS_COMMAND|: is this understood as a mistake? */
+	struct action_name *resulting_action; /* `CG_IS_COMMAND`: the action */
+	int reversed; /* `CG_IS_COMMAND`: the two values are in reverse order */
+	int mistaken; /* `CG_IS_COMMAND`: is this understood as a mistake? */
 	struct wording mistake_response_text; /* if so, reply thus */
 
 	struct cg_line_compilation_data compilation_data;
@@ -147,7 +149,7 @@ void CGLines::log(cg_line *cgl) {
 }
 
 @h Relevant only for CG_IS_VALUE lines.
-In |CG_IS_VALUE| grammars, the lines are ways to refer to a specific value
+In `CG_IS_VALUE` grammars, the lines are ways to refer to a specific value
 which is not an object, and we record which value the line refers to here.
 
 =
@@ -161,7 +163,7 @@ conditions are valid to specify this, with the notation "Understand ... as
 ... when ...". However, we want to protect new authors from mistakes
 like this:
 
->> Understand "mate" as Fred when asking Fred to do something: ...
+> Understand "mate" as Fred when asking Fred to do something: ...
 
 where the condition couldn't test anything useful because it's not yet
 known what the action will be.
@@ -208,7 +210,7 @@ parse_node *CGLines::get_understand_cond(cg_line *cgl) {
 }
 
 @ More subtly, a CGL might be given as a way to describe, say, "an open door".
-This will go into the CG associated with the kind |K_door|, but the line will
+This will go into the CG associated with the kind `K_door`, but the line will
 have the proposition ${\it open}(x)$ attached to it: the description then
 matches an object $x$ only when this proposition holds. (It must always be
 a proposition with a single free variable.)
@@ -239,9 +241,9 @@ void CGLines::set_mistake(cg_line *cgl, wording MW) {
 
 @h Single word optimisation.
 The grammars used to parse names of objects are normally compiled into
-|parse_name| routines. But the I6 parser also uses the |name| property,
-and it is advantageous to squeeze as much as possible into |name| and
-as little as possible into |parse_name|. The only possible candidates
+`parse_name` routines. But the I6 parser also uses the `name` property,
+and it is advantageous to squeeze as much as possible into `name` and
+as little as possible into `parse_name`. The only possible candidates
 for that are grammar lines consisting of single unconditional words, as
 detected by the following function:
 
@@ -283,7 +285,7 @@ This is a run of 10 CG tokens, three of them forward slashes which are actually
 markers to indicate disjunction: thus the three tokens "up / all" intend to
 match just one word of the player's command, which can be either UP or ALL.
 
-Slashing consolidates this line to 7 CG tokens, giving each one a |slash_class|
+Slashing consolidates this line to 7 CG tokens, giving each one a `slash_class`
 value to show which group it belongs to. 0 means that a token is not part of a
 slashed group; otherwise, the group number should be shared by all the tokens
 in the group, and should be different from that of other groups. Thus:
@@ -291,17 +293,17 @@ in the group, and should be different from that of other groups. Thus:
                      take up in all washing laundry linen
 slash_class          0    1  1  0   2       2       2
 =
-In addition, Inform allows the syntax |--| to mean the empty word, or rather,
+In addition, Inform allows the syntax `--` to mean the empty word, or rather,
 to mean that it is permissible for the player's command to miss this word out.
-If one option in a group is |--| then this does not get a token of its own,
-but instead results in the |slash_dash_dash| field to be set. For example,
+If one option in a group is `--` then this does not get a token of its own,
+but instead results in the `slash_dash_dash` field to be set. For example,
 consider "near --/the/that tree/shrub":
 = (text)
                        near  the  that  tree  shrub
 slash_class            0     1    1     2     2
 slash_dash_dash        FALSE TRUE FALSE FALSE FALSE
 =
-Note that |--| occurring on its own, outside of a run of slashes, has by
+Note that `--` occurring on its own, outside of a run of slashes, has by
 definition no effect, and disappears without trace in this process.
 
 @<Annotate the CG tokens with slash-class and slash-dash-dash@> =
@@ -436,7 +438,7 @@ void CGLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
 	}
 }
 
-@ The general sort bonus is $Rs_0 + s_1$, where $R$ is the |CGL_SCORE_TOKEN_RANGE|
+@ The general sort bonus is $Rs_0 + s_1$, where $R$ is the `CGL_SCORE_TOKEN_RANGE`
 and $s_0$, $s_1$ are the scores for the first and second tokens describing values,
 which are such that $0\leq s_i<R$; or if none of the $n$ tokens describes a value,
 the GSB is $R^2n$, which is guaranteed to be much larger.
@@ -490,7 +492,7 @@ parsing the player's command at run-time. For the exact sorting rules, see below
 		cgl->general_sort_bonus = CGL_SCORE_BUMP*nulls_count;
 
 @ This looks for a "[text]" token, which is the Inform syntax to mean one
-which parses to a |K_understanding| match.
+which parses to a `K_understanding` match.
 
 @<Text tokens contribute also to the understanding sort bonus@> =
 	if ((Specifications::is_kind_like(spec)) &&
@@ -637,7 +639,7 @@ least 2010, and will not change again.
 [1] Well... roughly. See //CommandParserKit: Parser// for the gory details.
 
 @ The code in //CGLines::cgl_determine// looked as if we would decide
-if line |L1| precedes |L2| by adding up their score bonuses, and letting the
+if line `L1` precedes `L2` by adding up their score bonuses, and letting the
 higher scorer go first. That is in fact nearly equivalent to the following,
 but not quite.
 
@@ -670,7 +672,7 @@ int CGLines::cg_line_must_precede(command_grammar *cg, cg_line *L1, cg_line *L2)
 to look at. The following guarantees that any line without "[text]" tokens
 always precedes any line with them: see the calculation of the USB above.
 
-Thus |"read chapter [text]"| precedes |"read [text]"| precedes |"read [something]"|.
+Thus `"read chapter [text]"` precedes `"read [text]"` precedes `"read [something]"`.
 
 @<Lower understanding penalties precede higher ones@> =
 	if (L1->understanding_sort_bonus > L2->understanding_sort_bonus) return TRUE;
@@ -682,13 +684,13 @@ CG_IS_COMMAND grammars have the opposite convention from all others?
 
 This arises because the command parser we use at run time works that way. The
 difference is that when the parser is working on an entire command -- thus,
-working through a |CG_IS_COMMAND| grammar -- it always knows how many words
+working through a `CG_IS_COMMAND` grammar -- it always knows how many words
 it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
 has to make sense of all of the words. It needs to consider the possibility
 "take [something]" before "take [something] from [something]" because there
 might be an object called "frog from aquarium".
 
-On the other hand, if it is parsing a |CG_IS_TOKEN| grammar, it is trying to
+On the other hand, if it is parsing a `CG_IS_TOKEN` grammar, it is trying to
 match as many words as possible from a stream of words that will probably then
 continue. It is therefore important to try to match WATERY CASCADE EFFECT
 before WATERY CASCADE when looking at text like WATERY CASCADE EFFECT
@@ -712,8 +714,8 @@ example provided by Eric Eve showed that although this was logically correct,
 the run-time command parser would try to auto-complete lengthy mistakes and
 thus fail to check subsequent commands.
 
-For this reason, |"look behind [something]"| as a mistake needs to be checked
-after |"look"|, or else the command parser will respond to LOOK by replying
+For this reason, `"look behind [something]"` as a mistake needs to be checked
+after `"look"`, or else the command parser will respond to LOOK by replying
 "What do you want to look behind?" -- and then saying that you are mistaken.
 
 @<Mistakes precede correct readings@> =
@@ -737,15 +739,15 @@ is worked out.
 
 @ By now the lines are extremely similar, but for example we might have
 "put [thing] in [container]" and "put [thing] in [thing]". The first must
-precede the second because |K_container| is a subkind of |K_thing|.
+precede the second because `K_container` is a subkind of `K_thing`.
 
 @<More specific determinations precede less specific ones@> =
 	int cs = DeterminationTypes::must_precede(&(L1->cgl_type), &(L2->cgl_type));
 	if (cs != NOT_APPLICABLE) return cs;
 
 @ The motivation for this one is similar to the case of "when" clauses for
-rules in rulebooks: it ensures that a match of |"draw [thing]"| when some
-condition holds beats a match of |"draw [thing]"| at any time, and this is
+rules in rulebooks: it ensures that a match of `"draw [thing]"` when some
+condition holds beats a match of `"draw [thing]"` at any time, and this is
 necessary under the strict superset principle.
 
 @<Conditional readings precede unconditional readings@> =
@@ -754,8 +756,8 @@ necessary under the strict superset principle.
 	if ((CGLines::conditional(L1) == FALSE) &&
 		(CGLines::conditional(L2))) return FALSE;
 
-@ Getting down to here looks difficult, given the number of things about |L1|
-and |L2| which have to match up -- same USB, GSB, number of lexemes,
+@ Getting down to here looks difficult, given the number of things about `L1`
+and `L2` which have to match up -- same USB, GSB, number of lexemes,
 number of resulting types, equivalent resulting types, same mistake and
 conditional status -- but in fact it isn't all that uncommon. Equivalent pairs
 produced by the Standard Rules include:

@@ -10,8 +10,8 @@ Each valued property has the following small block of data attached:
 typedef struct value_property_data {
 	struct kind *property_value_kind; /* if not either/or, what kind of value does it hold? */
 	struct binary_predicate *setting_bp; /* and which relation sets it? */
-	struct binary_predicate *relation_whose_state_this_stores; /* or |NULL| if it doesn't */
-	struct condition_of_subject *as_condition_of_subject; /* or |NULL| if it isn't one */
+	struct binary_predicate *relation_whose_state_this_stores; /* or `NULL` if it doesn't */
+	struct condition_of_subject *as_condition_of_subject; /* or `NULL` if it isn't one */
 	int name_coincides_with_kind; /* and is its name the same as that of a kind? */
 	CLASS_DEFINITION
 } value_property_data;
@@ -76,8 +76,8 @@ property *ValueProperties::obtain_within_kind(wording W, kind *K) {
 @h Requesting new nameless properties.
 Sometimes we will want a property which exists at run-time but which
 has no name or visible existence at the Inform source text level. For
-instance, the run-time code needs a property called |vector| in which to
-store partial results when finding routes through maps, but |vector| is
+instance, the run-time code needs a property called `vector` in which to
+store partial results when finding routes through maps, but `vector` is
 nameless in the source text, unrecorded in the Index, and generally invisible
 to the end user.
 

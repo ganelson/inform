@@ -91,7 +91,7 @@ typedef struct named_unary_predicate {
 }
 
 @h A sort of REPL.
-The following function reads a file whose name is in |arg|, feeds it into
+The following function reads a file whose name is in `arg`, feeds it into
 the lexer, builds a syntax tree of its sentences, and then walks through
 that tree, applying the Preform nonterminal <declaration-line> to each
 sentence. In effect, this is a read-evaluate-print loop.

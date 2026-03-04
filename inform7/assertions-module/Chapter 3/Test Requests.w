@@ -95,7 +95,7 @@ it can generate a range of possibilities.
 @ The object NP for a scenario is usually just a quoted script, but it can be
 more elaborate:
 
->> Test me with "x egg" in Timbuktu holding the egg.
+> Test me with "x egg" in Timbuktu holding the egg.
 
 =
 <test-sentence-object> ::=

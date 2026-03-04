@@ -10,7 +10,7 @@ failing to link to said files correctly.
 But it means every HTML page in the index has to embed its own CSS and
 Javascript, and this is done with a callback function which allows us to insert
 material into the head of an HTML page when it is opened for output. Note that
-the function acts only when the page was created with |state|, which will only
+the function acts only when the page was created with `state`, which will only
 happen when it was created by //index//.
 
 @d ADDITIONAL_SCRIPTING_HTML_CALLBACK IndexStyles::incorporate
@@ -131,8 +131,8 @@ page to a new state. This routine goes to state (1):
 	}
 	WRITE("	}\n");
 
-@ This routine goes to state (2), where the |id| is the ID of the content
-element -- |segment1|, |segment2|, ...
+@ This routine goes to state (2), where the `id` is the ID of the content
+element -- `segment1`, `segment2`, ...
 
 @<Write Javascript code for showing only one element on the page@> =
 	WRITE("function show_only_one_element(id) {\n");

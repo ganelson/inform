@@ -257,7 +257,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	Regexp::dispose_of(&mr);
 	ADD_TO_LINKED_LIST(ars, arithmetic_schema, con->arithmetic_schemas[op]);
 
-@ This is used for parsing the values of enumeration members in |instance|
+@ This is used for parsing the values of enumeration members in `instance`
 commands:
 
 =

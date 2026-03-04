@@ -5,7 +5,7 @@ insertions made using Inform 7's low-level features, or after reading the
 source code for a kit.
 
 @ These stages have more in common than first appears. Both convert I6T-syntax
-source code into a series of |SPLAT_IST| nodes in the Inter tree, with one
+source code into a series of `SPLAT_IST` nodes in the Inter tree, with one
 such node for each different directive in the I6T source.
 
 The T in "I6T" stands for "template", which in the 2010s was a mechanism for
@@ -21,7 +21,7 @@ void ParsingStages::create_pipeline_stage(void) {
 		NO_STAGE_ARG, FALSE);
 }
 
-@ The stage |load-kit-source K| takes the kit |K|, looks for its source code
+@ The stage `load-kit-source K` takes the kit `K`, looks for its source code
 (text files written in I6T syntax) and reads this in to the current Inter tree,
 placing the resulting nodes in a new top-level module. A typical kit may
 turn into anywhere from 50 to 2000 such nodes. Speed is not very important
@@ -46,8 +46,8 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 }
 
 @ So for example if we are reading the source for WorldModelKit, then the
-following creates the package |/main/WorldModelKit|, with package type |_module|.
-It's into this module that the resulting |SPLAT_IST| nodes will be put.
+following creates the package `/main/WorldModelKit`, with package type `_module`.
+It's into this module that the resulting `SPLAT_IST` nodes will be put.
 
 @<Create a module to hold the Inter read in from this kit@> =
 	inter_bookmark IBM = InterBookmark::at_end_of_this_package(main_package);
@@ -57,10 +57,10 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 		InterTypes::unchecked(), FALSE, module_name, 1, NULL, &module_pack));
 	step->pipeline->ephemera.assimilation_modules[step->tree_argument] = module_pack;
 
-@ The stage |parse-insertions| does the same thing, but on a much smaller scale,
-and reading raw I6T source code from |INSERT_IST| nodes in the Inter tree rather
+@ The stage `parse-insertions` does the same thing, but on a much smaller scale,
+and reading raw I6T source code from `INSERT_IST` nodes in the Inter tree rather
 than from an external file. Speed is not important here either, but only because
-there will only be a few |INSERT_IST| nodes to deal with, and with not much code
+there will only be a few `INSERT_IST` nodes to deal with, and with not much code
 in them. They arise from low-level Inform 7 features such as
 = (text as Inform 7)
 Include (-
@@ -70,7 +70,7 @@ Include (-
 -).
 =
 The //inform7// code does not contain a compiler from I6T down to Inter, so
-it can only leave us these unparsed fragments as |INSERT_IST| nodes. We take
+it can only leave us these unparsed fragments as `INSERT_IST` nodes. We take
 it from there.
 
 =
@@ -123,8 +123,8 @@ thrown by bad syntax in it, and
 - which file-system paths to look inside when reading from files rather
 than raw text in memory.
 
-For the latter, note that if a kit is in directory |K| then its source files are
-in |K/Sections|.
+For the latter, note that if a kit is in directory `K` then its source files are
+in `K/Sections`.
 
 @ =
 typedef struct rpi_docket_state {
@@ -206,7 +206,7 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 	}
 }
 
-@ We have similarly withdrawn the ability to write |(+| ... |+)| material
+@ We have similarly withdrawn the ability to write `(+` ... `+)` material
 in kit files:
 
 =
@@ -226,7 +226,7 @@ void ParsingStages::line_marker(text_stream *material, tangle_docket *docket) {
 
 @ We very much do not ignore the raw I6 code read in, though. When the reader
 gives us a chunk of this, we parse through it with a simple finite-state machine.
-This can be summarised as "divide the code up at |;| boundaries, sending each
+This can be summarised as "divide the code up at `;` boundaries, sending each
 piece in turn to //ParsingStages::splat//". But of course we do not want to
 react to semicolons in quoted text or comments, and in fact we also do not
 want to react to semicolons used as statement dividers inside I6 routines (i.e.,
@@ -332,10 +332,10 @@ void ParsingStages::receive_raw(text_stream *S, tangle_docket *docket) {
 }
 
 @ Each of those "splats", provided it is not entirely white space, becomes a
-|SPLAT_IST| node in the tree at the current insertion point recorded in the
+`SPLAT_IST` node in the tree at the current insertion point recorded in the
 state being carried in the docket.
 
-Note that this function empties the splat buffer |R| before exiting.
+Note that this function empties the splat buffer `R` before exiting.
 
 =
 void ParsingStages::splat(text_stream *R, tangle_docket *docket) {
@@ -375,8 +375,8 @@ void ParsingStages::splat(text_stream *R, tangle_docket *docket) {
 		Str::delete_n_characters(R, verdict);
 	}
 
-@ A |SPLAT_IST| node should record which sort of Inform 6 directive it contains,
-assuming we know that. We will recognise only the following set, and use |MYSTERY_PLM|
+@ A `SPLAT_IST` node should record which sort of Inform 6 directive it contains,
+assuming we know that. We will recognise only the following set, and use `MYSTERY_PLM`
 for anything else. If the splat doesn't appear to be a directive at all, we leave
 the directive type as 0.
 
@@ -449,7 +449,7 @@ the directive type as 0.
 	Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
 		F, lc, (inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
 
-@ So the following picks up |+namespace(Whatever)| annotations, which do not
+@ So the following picks up `+namespace(Whatever)` annotations, which do not
 apply to any directive.
 
 @<Respond to a change of namespace@> =
@@ -505,6 +505,6 @@ apply to any directive.
 	}
 
 @ And that's it: the result of these stages is just to break the I6T source they
-found up into individual directives, and put them into the tree as |SPLAT_IST| nodes.
+found up into individual directives, and put them into the tree as `SPLAT_IST` nodes.
 No effort has been made yet to see what directives they are. Subsequent stages
 will handle that.

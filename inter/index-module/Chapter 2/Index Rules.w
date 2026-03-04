@@ -7,10 +7,10 @@ The Inter hierarchy likely contains numerous rulebooks and activities, and we
 need to know which one is, for example, the "when play begins" rulebook. We don't
 want to recognise this by its name, since that might cause problems if the source
 language is not English. Instead, the Inform compiler marks certain special
-rulebook or activity packages with an |^index_id| metadatum: for example, this
-might be |"when_play_begins"|. Such markers are language-independent.
+rulebook or activity packages with an `^index_id` metadatum: for example, this
+might be `"when_play_begins"`. Such markers are language-independent.
 
-Given an inventory |inv| of the Inter hierarchy, then, the following functions
+Given an inventory `inv` of the Inter hierarchy, then, the following functions
 retrieve packages by marker text. This coild be done more efficiently with a
 dictionary, but it's not used often enough to make it worth the work.
 
@@ -70,9 +70,9 @@ rule_context IndexRules::no_rule_context(void) {
 }
 
 @ To implement this, we need to know if the premiss for a given rule contains
-explicit requirements matching the given context |rc|. This is something that
+explicit requirements matching the given context `rc`. This is something that
 only the compiler can know for sure, so the compiler has marked the rule package
-with |^action| and |^during| metadata to make it possible for us to decide now.
+with `^action` and `^during` metadata to make it possible for us to decide now.
 
 =
 int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack,
@@ -97,8 +97,8 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack
 	return TRUE;
 }
 
-@ A rulebook is "conceptually empty" with respect to a context |rc| if it contains
-no rules which fit |rc|:
+@ A rulebook is "conceptually empty" with respect to a context `rc` if it contains
+no rules which fit `rc`:
 
 =
 int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, rule_context rc) {
@@ -259,7 +259,7 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 of adjacent rules in a listing:
 
 @<Show a linkage icon@> =
-	text_stream *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
+	text_stream *icon_name = NULL; /* redundant assignment to appease `gcc -O2` */
 	if ((prev == NULL) ||
 		(Str::len(Metadata::optional_textual(prev, I"^tooltip")) == 0)) {
 		HTML::icon_with_tooltip(OUT, I"inform:/doc_images/rulenone.png",

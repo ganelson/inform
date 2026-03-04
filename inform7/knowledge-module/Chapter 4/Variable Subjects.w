@@ -4,7 +4,7 @@ The global variables family of inference subjects.
 
 @ Variables are subjects for one purpose only: so that their purported initial
 values can be declared and checked as being property values, of the special
-property |P_variable_initial_value|.
+property `P_variable_initial_value`.
 
 =
 inference_subject_family *nlv_family = NULL;
@@ -43,7 +43,7 @@ void VariableSubjects::get_name(inference_subject_family *family,
 }
 
 @ The initial value of a variable is stored as the value of the subject's
-property |P_variable_initial_value|. Attempts to store two different
+property `P_variable_initial_value`. Attempts to store two different
 values in the same variable are thus rejected as contradictory inferences
 about the same subject.
 
@@ -84,7 +84,7 @@ just the once, at completion time?
 The reason we don't is that the initial check produces more specific problem
 messages, earlier on. For example, if we have:
 
->> The tally is a number that varies. The tally is the Entire Game.
+> The tally is a number that varies. The tally is the Entire Game.
 
 At model-checking time we would detect this as a problematic comparison
 between "tally" and "Entire Game", and the problem message will thus be
@@ -180,7 +180,7 @@ void VariableSubjects::check_model(inference_subject_family *family,
 	}
 }
 
-@ If a variable is said to be the same as, say, |my_var| defined in some kit
+@ If a variable is said to be the same as, say, `my_var` defined in some kit
 of Inter code somewhere out of our reach, then it makes no sense to allow the
 source text to specify its initial value -- the initial value is whatever
 that faraway Inter code said it was.

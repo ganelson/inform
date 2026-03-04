@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -73,13 +73,13 @@ and prints the result.
 
 - A constant, corresponding to anything which can be evaluated to Inform --
 a number, a text, etc. -- and which has a definite kind.
-- One of 26 variables, which we print to the debugging log as |x|, |y|,
-|z|, |a|, |b|, |c|, ..., |w|.
+- One of 26 variables, which we print to the debugging log as `x`, `y`,
+`z`, `a`, `b`, `c`, ..., `w`.
 - A function $f$ applied to another term.[1]
 
 Note that if we have given values to the necessary variables, then any term
-can be evaluated to a value, and its kind determined. For example, if |x| is 7,
-then the terms |17|, |x| and |f(x)| evaluate to 17, 7 and $f(7)$ respectively.
+can be evaluated to a value, and its kind determined. For example, if `x` is 7,
+then the terms `17`, `x` and `f(x)` evaluate to 17, 7 and $f(7)$ respectively.
 
 2. An "atomic proposition" is any of the following:
 
@@ -115,32 +115,32 @@ but is achieved by combining two of its terms into an ordered pair.
 "at least 7" -- the parameter for that being 7.
 
 @ The implementation uses the term "atom" a little more loosely, to include
-four punctuation marks: |NOT<|, |NOT>|, |IN<|, |IN>|, which act like
+four punctuation marks: `NOT<`, `NOT>`, `IN<`, `IN>`, which act like
 opening and closing parentheses. These are considered atoms purely for
 convenience when building more complicated constructions -- they make no sense
 standing alone. Thus:
 
-- $\lnot P$ is implemented as |NOT< P NOT>|.
-- $Q v\in D: P$ is implemented as |Q IN< D IN>|.
+- $\lnot P$ is implemented as `NOT< P NOT>`.
+- $Q v\in D: P$ is implemented as `Q IN< D IN>`.
 
 Note that the domain $D$ of a quantifier is itself expressed as a proposition.
-Thus "for all numbers $n$" is implemented as |ForAll n IN< kind=number(n) IN>|.
+Thus "for all numbers $n$" is implemented as `ForAll n IN< kind=number(n) IN>`.
 
 In all other cases, adjacent atoms in a sequence are considered to be conjoined:
-i.e., |X Y| means $X\land Y$, the proposition which is true if $X$ and $Y$ are
-both true. To emphasise this, the textual notation uses the |^| sign. For
-example, |odd(n) ^ prime(n)| is the notation for two consecutive atoms |odd(n)|
-and |prime(n)|.
+i.e., `X Y` means $X\land Y$, the proposition which is true if $X$ and $Y$ are
+both true. To emphasise this, the textual notation uses the `^` sign. For
+example, `odd(n) ^ prime(n)` is the notation for two consecutive atoms `odd(n)`
+and `prime(n)`.
 
 @h Unary predicates.
 The //calculus// module aims to be agnostic about what unary predicates will
 exist. They are grouped into "families" -- see //Unary Predicate Families//
 for details -- which loosely group them by implementation. So, for example,
-Inform has a family of unary predicates in the form |calling='whatever'(x)|
-which assert that |x| represents something of a given name. But //calculus//
+Inform has a family of unary predicates in the form `calling='whatever'(x)`
+which assert that `x` represents something of a given name. But //calculus//
 is not concerned with the details. Only one family is built in:
 
-- For each kind $K$, there is a predicate |kind=K(t)|, which is true if $t$
+- For each kind $K$, there is a predicate `kind=K(t)`, which is true if $t$
 is of the kind $K$.
 
 New UPs can be constructed with //UnaryPredicates::new//.
@@ -153,7 +153,7 @@ module builds in only one family:
 
 - The equality predicate $=$, whose special meaning is used when simplifying
 propositions. See //The Equality Relation//. It is written with the special
-notation |(x == y)|, though this is just syntactic sugar.
+notation `(x == y)`, though this is just syntactic sugar.
 
 Binary predicates are of central importance to us because they allow complex
 sentences to be written which talk about more than one thing at a time,

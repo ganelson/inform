@@ -184,7 +184,7 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 				uo->name);
 	if (kc != 0) HTML_CLOSE("p");
 
-@ Finally, the utility routine which keeps count (hence |kc|) and displays
+@ Finally, the utility routine which keeps count (hence `kc`) and displays
 suitable lists, while entering each entry in turn into the extension
 dictionary.
 

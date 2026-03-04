@@ -40,9 +40,9 @@ list 2, 3, 5, 7, 11. Note that this makes it very fast to copy L1's contents
 into L2, because only L2's short block needs to change.
 
 The rules for customers who want to deal with values like this are much like
-the rules for allocating memory with Flex. Calling |BlkValueCreate|
+the rules for allocating memory with Flex. Calling `BlkValueCreate`
 creates a new value, but this must always, and only once, later be disposed
-of using |BlkValueFree|.
+of using `BlkValueFree`.
 
 So if the short blocks of L1 and L2 both point to the same long block of
 actual data, what happens when only one of them is freed? The answer is that
@@ -93,7 +93,7 @@ BV constants, but isn't otherwise used.
 
 - 1 to 255 means the short block has length 2 or more. The value is expected
 to be a bitmap in bits 4 to 8 together with a nonzero ID in bits 1 to 4.
-If the |BLK_BVBITMAP_LONGBLOCK| bit is set, a pointer to the long block
+If the `BLK_BVBITMAP_LONGBLOCK` bit is set, a pointer to the long block
 is stored in the second word of the short block.
 
 - Otherwise the short block has length 1 and contains only a pointer to
@@ -229,15 +229,15 @@ Though the customer thinks he's getting an array, in fact the storage in
 the LB is not necessarily contiguous, since it can span multiple Flex blocks.
 We abstract that with two routines to read and write entries.
 
-|BlkValueRead| takes two compulsory arguments and one optional one. Thus:
+`BlkValueRead` takes two compulsory arguments and one optional one. Thus:
 = (text as Inform 6)
 	BlkValueRead(bv, n)
 =
-reads the nth entry in the long block for |bv|, whereas
+reads the nth entry in the long block for `bv`, whereas
 = (text as Inform 6)
 	BlkValueRead(long_block, n, true)
 =
-read it from the given long block directly. |BlkValueWrite| is similar.
+read it from the given long block directly. `BlkValueWrite` is similar.
 
 =
 [ BlkValueRead from pos do_not_indirect;
@@ -497,7 +497,7 @@ To create a block value, call:
 = (text as Inform 6)
 	BlkValueCreate(kind)
 =
-where |K| is its (strong) kind ID. Optionally, call:
+where `K` is its (strong) kind ID. Optionally, call:
 = (text as Inform 6)
 	BlkValueCreate(K, short_block)
 =
@@ -535,7 +535,7 @@ unpleasant things at the I6 level.
 ];
 
 @h Short Block Allocation.
-As can be seen, if the |sb_address| is zero then we need to conjure up memory
+As can be seen, if the `sb_address` is zero then we need to conjure up memory
 from somewhere: we do this using Flex. That incurs a fair amount of overhead in
 time and memory, though. The SB data is stored in the data portion of the Flex
 block, which is why we get its address from by adding the data offset to the
@@ -566,7 +566,7 @@ a stack instead. This is a top-down stack, so the current stack frame
 starts out just after the end of the stack area in memory (and therefore
 points to an empty stack frame); it drops down as new frames are created.
 
-|BlkValueCreateOnStack| acts exactly like |BlkValueCreate|, but stores
+`BlkValueCreateOnStack` acts exactly like `BlkValueCreate`, but stores
 the short block at the given word offset in the current stack frame.
 (I7 compiles calls to these routines when compiling code to manage
 local variables.)
@@ -596,7 +596,7 @@ local variables.)
 ];
 
 @h Freeing.
-As noted above, every value returned by |BlkValueCreate| must later be
+As noted above, every value returned by `BlkValueCreate` must later be
 freed by calling the following routine exactly once:
 = (text as Inform 6)
 	BlkValueFree(value)
@@ -606,7 +606,7 @@ to be overwritten with a new value, it's essential to call this in order
 properly to dispose of the old value.
 
 As noted above, short blocks are sometimes created within Flex blocks on
-the heap, using |FlexAllocate|; and if this is one of those, we need to free
+the heap, using `FlexAllocate`; and if this is one of those, we need to free
 the relevant Flex block.
 
 =
@@ -650,7 +650,7 @@ for kinds to intervene.
 
 @ The surprising line in this function is the last one, to deal with the
 convention that a pointer value of 0 means the LB immediately follows the SB: if
-that's true in |from_bv|, it won't be true in |to_bv|, so we must correct it.
+that's true in `from_bv`, it won't be true in `to_bv`, so we must correct it.
 
 =
 [ BlkValueCopySB to_bv from_bv size i;
@@ -783,7 +783,7 @@ count 1, because then the data in the long block can freely be changed without
 corrupting other block values.
 
 If provided, a make-mutable function should either act on its own behalf and
-return |false|, or ask us to proceed by returning |true|.
+return `false`, or ask us to proceed by returning `true`.
 
 The way we do this is to create a temporary value to make a safe copy into; it
 would be unnecessarily slow to allocate the short block for this safe copy on
@@ -821,7 +821,7 @@ form of a cast, that is, a conversion of data from one kind to another:
 or at least, for some kinds of value we can.
 
 The cast function casts from the given value, with the given kind, into the
-existing block value |to_bv|. Note that the source value doesn't need to be a BV
+existing block value `to_bv`. Note that the source value doesn't need to be a BV
 itself. This mechanism is used, for example, to cast snippets to text.
 
 =
@@ -833,7 +833,7 @@ itself. This mechanism is used, for example, to cast snippets to text.
 
 @h Comparison.
 This looks at the data in the two BVs and returns 0 if they are equal, a positive
-number if |bv_right| is "greater than" |bv_left|, and a negative number if
+number if `bv_right` is "greater than" `bv_left`, and a negative number if
 not. The interpretation of "greater than" depends on the kind, but should be
 something which the user would find natural.
 

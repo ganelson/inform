@@ -21,38 +21,38 @@ as 5K in size, and that (b) it needs to include some special characters,
 escaped in a way which the app has to deal with correctly. This has proved
 a challenge because, historically, different Javascript implementations
 have handled escape characters in quoted text differently. (For instance, some
-allowing a double-quote |"| to appear as a literal in single-quoted text, others
-requiring |&quot;| to be used, and others not recognising HTML entities such as
-|&quot;| at all.)
+allowing a double-quote `"` to appear as a literal in single-quoted text, others
+requiring `&quot;` to be used, and others not recognising HTML entities such as
+`&quot;` at all.)
 
 To avoid this issue, Inform adopted a notation of its own in 2007. All
 Inform GUI apps have to follow this rule when reading the argument to
-|pasteCode|:
+`pasteCode`:
 
-Each instance of |[=0xHHHH=]| is replaced with the Unicode character whose
-hexadecimal code is |HHHH|; there will always be four digits, with leading
-zeros as needed, and |A| to |F| will be written in upper case. The only
-Unicode characters with codes below |0x0020| which must be handled are
-newline, |0x000A|, and tab, |0x0009|.
+Each instance of `[=0xHHHH=]` is replaced with the Unicode character whose
+hexadecimal code is `HHHH`; there will always be four digits, with leading
+zeros as needed, and `A` to `F` will be written in upper case. The only
+Unicode characters with codes below `0x0020` which must be handled are
+newline, `0x000A`, and tab, `0x0009`.
 
 And any Inform tool generating such an argument must use this notation
 to escape every instance of the following problematic characters:
 
-- every tab is escaped to |[=0x0009=]|;
-- every newline is escaped to |[=0x000A=]|;
-- every double quotation mark is escaped to |[=0x0022=]|;
-- every ampersand is escaped to |[=0x0026=]|;
-- every single quotation mark is escaped to |[=0x0027=]|;
-- every less than sign is escaped to |[=0x003C=]|;
-- every greater than sign is escaped to |[=0x003E=]|;
-- every backslash is escaped to |[=0x005C=]|.
+- every tab is escaped to `[=0x0009=]`;
+- every newline is escaped to `[=0x000A=]`;
+- every double quotation mark is escaped to `[=0x0022=]`;
+- every ampersand is escaped to `[=0x0026=]`;
+- every single quotation mark is escaped to `[=0x0027=]`;
+- every less than sign is escaped to `[=0x003C=]`;
+- every greater than sign is escaped to `[=0x003E=]`;
+- every backslash is escaped to `[=0x005C=]`.
 
 It may also choose to escape other character codes, as it prefers, but will
-never generate any codes below |0x0020| other than newline, |0x000A|, and tab,
-|0x0009|.
+never generate any codes below `0x0020` other than newline, `0x000A`, and tab,
+`0x0009`.
 
 The app can therefore assume that none of these problematic characters occur
-in raw form in the argument to |pasteCode|.
+in raw form in the argument to `pasteCode`.
 
 =
 void PasteButtons::put_code_char(OUTPUT_STREAM, inchar32_t c) {
@@ -70,7 +70,7 @@ void PasteButtons::put_code_char(OUTPUT_STREAM, inchar32_t c) {
 }
 
 @h Buttons.
-The button is simply an image with a link using the |javascript:| protocol
+The button is simply an image with a link using the `javascript:` protocol
 to call a suitable function.
 
 =
@@ -119,7 +119,7 @@ void PasteButtons::paste_ideograph(OUTPUT_STREAM) {
 from the lexer (as for instance when a portion of an extension is being
 typeset as documentation, with an example that can be pasted), or can
 be a C string: if the latter, then its encoding must be ISO Latin-1.
-The conversion to UTF-8 is performed in |PasteButtons::put_code_char| below.
+The conversion to UTF-8 is performed in `PasteButtons::put_code_char` below.
 
 =
 void PasteButtons::argument(OUTPUT_STREAM, int from, int to, text_stream *alt_stream) {
@@ -136,14 +136,14 @@ inverse function for the lexer, which converted raw source text to nicely
 packaged up words.
 
 See Lexer for details of how words are stored, and in particular for the
-|lw_break| character, which is |'\t'| when the word followed a tab, but is
-|'1'| to |'9'| when it followed a newline plus that many tabs. We need
+`lw_break` character, which is `'\t'` when the word followed a tab, but is
+`'1'` to `'9'` when it followed a newline plus that many tabs. We need
 this because lexing has otherwise removed whitespace from the source, and
 we need it back again if we're to paste a faithful Javascript representation:
 otherwise the tabs used as column-dividers in tables will not come through,
 for instance. Moreover, indentation from the left margin is used to make
 prettier pastes (which respect the layout of the original examples from
-which the paste has been made), and for that we need the |'1'| to |'9'|
+which the paste has been made), and for that we need the `'1'` to `'9'`
 possibilities.
 
 Note that we expect the material pasted to be indented at 1 tab stop from
@@ -188,7 +188,7 @@ stops or more.
 	PasteButtons::put_code_char(OUT, '\n');
 
 @ The lexer also broke words around punctuation marks, so that, for instance,
-"fish, finger" would have been lexed as |fish , finger| -- three words.
+"fish, finger" would have been lexed as `fish , finger` -- three words.
 But we want to restore the more natural spacing.
 
 @<Restore inter-word spaces unless this would be unnatural@> =
@@ -198,9 +198,9 @@ But we want to restore the more natural spacing.
 		&& (compare_word(i-1, OPENBRACKET_V)==FALSE))
 		PasteButtons::put_code_char(OUT, ' ');
 
-@ Finally, the lexer rendered a literal I6 inclusion in the form |(- self=2;|
-as a sequence of two lexical words: |(-| and then |self=2;|. In order
-to paste back safely, we must supplement this with the closure |-)| once
+@ Finally, the lexer rendered a literal I6 inclusion in the form `(- self=2;`
+as a sequence of two lexical words: `(-` and then `self=2;`. In order
+to paste back safely, we must supplement this with the closure `-)` once
 again:
 
 @<Insert a close-literal-I6 escape sequence if necessary@> =

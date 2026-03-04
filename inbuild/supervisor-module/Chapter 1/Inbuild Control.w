@@ -111,9 +111,9 @@ void Supervisor::start(void) {
 
 @h Configuration phase.
 Initially, then, we are in the configuration phase. When the parent defines
-its command-line options, we expect it to call |Supervisor::declare_options|
+its command-line options, we expect it to call `Supervisor::declare_options`
 so that we can define further options -- this provides the large set of
-common options found in both |inform7| and |inbuild|, our two possible parents.
+common options found in both `inform7` and `inbuild`, our two possible parents.
 
 =
 void Supervisor::declare_options(void) {
@@ -124,7 +124,7 @@ void Supervisor::declare_options(void) {
 }
 
 @ These options all predate the 2015-20 reworking of the compiler, and their
-names are a series of historical accidents. |-format| in particular works in
+names are a series of historical accidents. `-format` in particular works in
 a clunky sort of way and should perhaps be deprecated in favour of some
 better way to choose a virtual machine to compile to.
 
@@ -165,7 +165,7 @@ better way to choose a virtual machine to compile to.
 		U"make any source links refer to the source in extension example X");
 	CommandLine::end_group();
 
-@ Again, except for |-nest|, these go back to the mid-2010s.
+@ Again, except for `-nest`, these go back to the mid-2010s.
 
 @e INBUILD_RESOURCES_CLSG
 
@@ -189,8 +189,8 @@ better way to choose a virtual machine to compile to.
 		U"(an option now withdrawn)");
 	CommandLine::end_group();
 
-@ These are all new in 2020. They are not formally shared with the |inter| tool,
-but |-pipeline-file| and |-variable| have the same effect as they would there.
+@ These are all new in 2020. They are not formally shared with the `inter` tool,
+but `-pipeline-file` and `-variable` have the same effect as they would there.
 
 @e INBUILD_INTER_CLSG
 
@@ -232,10 +232,10 @@ void Supervisor::set_defaults(void) {
 	Supervisor::set_inter_pipeline(I"compile");
 }
 
-@ The pipeline name can be set not only here but also by |inform7| much
+@ The pipeline name can be set not only here but also by `inform7` much
 later on (way past the configuration stage), if it reads a sentence like:
 
->> Use inter pipeline "special".
+> Use inter pipeline "special".
 
 =
 text_stream *inter_pipeline_name = NULL;
@@ -306,7 +306,7 @@ int Supervisor::dash_internal_was_used(void) {
 }
 
 @ Note that the following has no effect unless the //pipeline// module is part
-of the parent. In practice, that will be true for |inform7| but not |inbuild|.
+of the parent. In practice, that will be true for `inform7` but not `inbuild`.
 
 @<Set a pipeline variable@> =
 	match_results mr = Regexp::create_mr();
@@ -337,12 +337,12 @@ From the "nested" phase, the final list of nests in the search path for
 finding kits, extensions and so on exists; from the "targeted" phase,
 the main Inform project (if there is one) exists as a possible build target.
 
-The parent should set |compile_only| if it just wants to make a basic,
-non-incremental compilation of any project. In practice, |inform7| wants
-that but |inbuild| does not.
+The parent should set `compile_only` if it just wants to make a basic,
+non-incremental compilation of any project. In practice, `inform7` wants
+that but `inbuild` does not.
 
-When this call returns to the parent, |inbuild| is in the Targeted phase,
-which continues until the parent calls |Supervisor::go_operational| (see below).
+When this call returns to the parent, `inbuild` is in the Targeted phase,
+which continues until the parent calls `Supervisor::go_operational` (see below).
 
 =
 int (*shared_preform_callback)(inform_language *);
@@ -368,8 +368,8 @@ void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	Supervisor::enter_phase(TARGETED_INBUILD_PHASE);
 }
 
-@ The VM to be used depends on the settings of all three of |-format|,
-|-release| and |-debug|, and those can be given in any order at the command
+@ The VM to be used depends on the settings of all three of `-format`,
+`-release` and `-debug`, and those can be given in any order at the command
 line, which is why we couldn't work this out earlier:
 
 @<Find the virtual machine@> =
@@ -395,11 +395,11 @@ void Supervisor::set_current_vm(target_vm *VM) {
 }
 
 @h The Graph Construction and Operational phases.
-|inbuild| is now in the Targeted phase, then, meaning that the parent has
-called |Supervisor::optioneering_complete| and has been making further
+`inbuild` is now in the Targeted phase, then, meaning that the parent has
+called `Supervisor::optioneering_complete` and has been making further
 preparations of its own. (For example, it could attach further kit
 dependencies to the shared project.) The parent has one further duty to
-perform: to call |Supervisor::go_operational|. After that, everything is ready
+perform: to call `Supervisor::go_operational`. After that, everything is ready
 for use.
 
 The brief "graph construction" phase is used to build out dependency graphs.
@@ -428,13 +428,13 @@ miscellaneous other files needed by Inform (see below).
 multiple projects can be stored.
 
 - Every project has its own private nest, in the form of its associated
-Materials folder. For example, in |Jane Eyre.inform| is a project, then
-alongside it is |Jane Eyre.materials| and this is a nest. The shared nest
+Materials folder. For example, in `Jane Eyre.inform` is a project, then
+alongside it is `Jane Eyre.materials` and this is a nest. The shared nest
 list contains no Materials folders; each individual project has its own
 search list of nests which contains its own Materials and then the shared
 list from there on.
 
-@ Inform customarily has exactly one |-internal| and one |-external| nest,
+@ Inform customarily has exactly one `-internal` and one `-external` nest,
 but in fact any number of each is allowed, including none. However, the
 first to be declared are used by the compiler as "the" internal and external
 nests, respectively.
@@ -577,10 +577,10 @@ int Supervisor::set_I7_source(filename *F) {
 	return TRUE;
 }
 
-@ If we are given a |-project| on the command line, we can then work out
+@ If we are given a `-project` on the command line, we can then work out
 where its Materials folder is, and therefore where any expert settings files
 would be. Note that the name of the expert settings file depends on the name
-of the parent, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
+of the parent, i.e., it will be `inform7-settings.txt` or `inbuild-settings.txt`
 depending on who's asking.
 
 =
@@ -606,10 +606,10 @@ int Supervisor::set_I7_bundle(pathname *P) {
 
 @ This is a deceptively simple-looking function, which took a lot of time
 to get right. The situation is that the parent tool may already have
-identified a copy |C| to be the main Inform project of this run, or it may not.
-If it has, we ignore |-project| but apply |-source| to change its source text
-location. If it hasn't, we create a project using |-project| if possible,
-|-source| if not, and in either case apply |-source| to the result.
+identified a copy `C` to be the main Inform project of this run, or it may not.
+If it has, we ignore `-project` but apply `-source` to change its source text
+location. If it hasn't, we create a project using `-project` if possible,
+`-source` if not, and in either case apply `-source` to the result.
 
 =
 inform_project *chosen_project = NULL;
@@ -617,8 +617,8 @@ inform_project *chosen_project = NULL;
 void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 
-	filename *F = NULL; /* result of |-source| at the command line */
-	pathname *P = NULL; /* result of |-project| at the command line */
+	filename *F = NULL; /* result of `-source` at the command line */
+	pathname *P = NULL; /* result of `-project` at the command line */
 	if (project_bundle_request) P = project_bundle_request;
 	if (project_file_request) F = project_file_request;
 	if (C) {

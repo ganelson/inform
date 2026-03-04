@@ -7,7 +7,7 @@ Parsing Inform 6-syntax annotation markers.
 =
 typedef struct I6_annotation {
 	struct text_stream *identifier;
-	struct linked_list *terms; /* of |I6_annotation_term| */
+	struct linked_list *terms; /* of `I6_annotation_term` */
 	struct I6_annotation *next;
 	CLASS_DEFINITION
 } I6_annotation;
@@ -28,12 +28,12 @@ I6_annotation *I6Annotations::new(void) {
 }
 
 @ Purely syntactic parsing is done with two calls. To see these exercised, try
-the |building-test| test case |annotations|.
+the `building-test` test case `annotations`.
 
-|I6Annotations::check| returns a character position |i| (counting from 0 at
+`I6Annotations::check` returns a character position `i` (counting from 0 at
 the start of the text) if it can find a syntactically valid set of annotations
-before |i|. Note that this can be the empty set. We return -1 if a purported
-annotation appears (i.e., because the first non-whitespace character is |+|)
+before `i`. Note that this can be the empty set. We return -1 if a purported
+annotation appears (i.e., because the first non-whitespace character is `+`)
 but what follows is not syntactically valid according to the rules in IE-0006.
 
 Note that we only check syntax, not semantics: all kinds of unknown annotations
@@ -44,8 +44,8 @@ int I6Annotations::check(text_stream *A) {
 	return I6Annotations::unpack(A, NULL, TRUE);
 }
 
-@ |I6Annotations::parse(A)| parses a complete annotation, including its opening
-|+| sign but with no junk at the end, into an |I6_annotation|. It returns |NULL|
+@ `I6Annotations::parse(A)` parses a complete annotation, including its opening
+`+` sign but with no junk at the end, into an `I6_annotation`. It returns `NULL`
 if a syntax error is reached.
 
 =
@@ -57,10 +57,10 @@ I6_annotation *I6Annotations::parse(text_stream *A) {
 
 @ Both use the same simple finite-state-machine parser.
 
-@d NONPLUSSED_I6ASTATE 0    /* waiting for the |+| sign */
-@d BEFORE_I6ASTATE 1        /* after the |+| sign, waiting for the identifier */
+@d NONPLUSSED_I6ASTATE 0    /* waiting for the `+` sign */
+@d BEFORE_I6ASTATE 1        /* after the `+` sign, waiting for the identifier */
 @d NAME_I6ASTATE 2          /* inside the identifier */
-@d AFTER_I6ASTATE 3         /* after the identifier, waiting for another |+| or bracketed data */
+@d AFTER_I6ASTATE 3         /* after the identifier, waiting for another `+` or bracketed data */
 @d QUOTED_I6ASTATE 4        /* inside quoted matter */
 
 =

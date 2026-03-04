@@ -66,17 +66,13 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Parsing.</b>  The following is called only on excerpts from the source where it is a
 fairly safe bet that a Unicode character is referred to. For example, when
 the player types either of these:</p>
-</div>
 <blockquote>
-    <p>"[unicode 321]odz Churchyard"</p>
+<p>&quot;[unicode 321]odz Churchyard&quot;</p>
 </blockquote>
-
 <blockquote>
-    <p>"[unicode Latin capital letter L with stroke]odz Churchyard"</p>
+<p>&quot;[unicode Latin capital letter L with stroke]odz Churchyard&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>...then the text after the word &quot;unicode&quot; is parsed by &lt;s-unicode-character&gt;.</p>
+<p>...then the text after the word &quot;unicode&quot; is parsed by <s-unicode-character>.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-unicode-character&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -194,8 +190,8 @@ of these:</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">unicode_point</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_point</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the range 0 to MAX_UNICODE_CODE_POINT - 1 */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. "RIGHT-FACING ARMENIAN ETERNITY SIGN" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">category</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_UNICODE_CAT| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. &quot;RIGHT-FACING ARMENIAN ETERNITY SIGN&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">category</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_UNICODE_CAT</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tolower</span><span class="plain-syntax">; </span><span class="comment-syntax">/* -1 if no mapping to lower case is available, or a code point */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">toupper</span><span class="plain-syntax">; </span><span class="comment-syntax">/* -1 if no mapping to upper case is available, or a code point */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">totitle</span><span class="plain-syntax">; </span><span class="comment-syntax">/* -1 if no mapping to title case is available, or a code point */</span>

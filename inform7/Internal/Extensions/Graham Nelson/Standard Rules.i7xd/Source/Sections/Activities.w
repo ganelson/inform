@@ -6,9 +6,9 @@ the locale description mechanism.
 @ These must not be created until the basic rulebooks are in place, because
 creating any activity automatically creates three rulebooks as well.
 
-The |srules| template expects the following activities to be created and in
-this order. (That is, the order here must exactly match that of the |*_ACT|
-constant definitions made in |Definitions.i6t|.) The activities are fairly
+The `srules` template expects the following activities to be created and in
+this order. (That is, the order here must exactly match that of the `*_ACT`
+constant definitions made in `Definitions.i6t`.) The activities are fairly
 completely described in the Inform documentation, so the only notes here
 concern implementation.
 
@@ -19,7 +19,7 @@ Part Four - Activities
 Responses are textual replies made by rules, and while one could imagine
 uses for them outside of an IF-like dialogue, they belong better in the
 Standard Rules (i.e., as an aspect of IF) than in the general-purpose
-language. So |STANDARD_RESPONSE_ISSUING_R| is in |srules|, not |basicinform|,
+language. So `STANDARD_RESPONSE_ISSUING_R` is in `srules`, not `basicinform`,
 and we define:
 
 =

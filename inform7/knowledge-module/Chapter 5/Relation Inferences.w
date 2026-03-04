@@ -22,7 +22,7 @@ change to Inform, which came in with dynamic relations between (say) numbers,
 and therefore the need to set up an initial state for those relations.
 
 The terms will either both be subjects, or both be values, so at all times
-exactly one of these pairs of pointers is |NULL|.
+exactly one of these pairs of pointers is `NULL`.
 
 =
 typedef struct relation_inference_data {

@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/verbs submodule.
 
-@ Our inventory |inv| already contains a list |inv->verb_form_nodes| of all packages
-in the tree with type |_verb_form|.
+@ Our inventory `inv` already contains a list `inv->verb_form_nodes` of all packages
+in the tree with type `_verb_form`.
 
 =
 void SynopticVerbs::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {

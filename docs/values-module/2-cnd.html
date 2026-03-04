@@ -99,12 +99,9 @@ which expresses that a condition holds at a different time from the present.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  <code>TEST_PHRASE_OPTION_NT</code> tests the use of a phrase option, and is the
 actual SP parsed for the second usage of the word &quot;thoroughly&quot; in
 the following example:</p>
-</div>
 <blockquote>
-    <p>To prognosticate, swiftly or thoroughly: ...; if thoroughly, ...</p>
+<p>To prognosticate, swiftly or thoroughly: ...; if thoroughly, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>It uses the SP's data field to refer to the option in question: its value is the
 bitmap value of the option, which will usually be \INWEBMATH(2^n\INWEBMATH) where the option
 is the \INWEBMATH(n\INWEBMATH)-th in the list for this phrase, counting upwards from 0.</p>
@@ -118,12 +115,9 @@ action is tested to see if it matches.</p>
 <code>self</code>, generally speaking) is tested to see if it matches. But in order to
 make definitions like this one work, we also need to treat descriptions as
 values:</p>
-</div>
 <blockquote>
-    <p>To decide which number is total (P - property) of (D - description):</p>
+<p>To decide which number is total (P - property) of (D - description):</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The way this is done is that type-checking a description (say, &quot;closed doors
 in lighted rooms&quot;) against the expectation of finding the kind constructor
 &quot;description of K&quot; forces Inform to convert it to a constant of that type,

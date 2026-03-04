@@ -15,8 +15,8 @@ will have become:
 		DIALOGUE_CLAUSE_NT "this is the phantom line"
 =
 Here we have a simple tree where the beat node has at least two child nodes:
-exactly one each of |DIALOGUE_SPEAKER_NT| and |DIALOGUE_SPEECH_NT|, and then
-any number of |DIALOGUE_CLAUSE_NT| nodes (including none at all).
+exactly one each of `DIALOGUE_SPEAKER_NT` and `DIALOGUE_SPEECH_NT`, and then
+any number of `DIALOGUE_CLAUSE_NT` nodes (including none at all).
 
 =
 dialogue_line *DialogueLines::new(parse_node *PN) {
@@ -47,7 +47,7 @@ typedef struct dialogue_line {
 	int interlocutor_is_player;
 	struct parse_node *interlocutor_description;
 	struct wording speech_text;
-	struct linked_list *mentioning; /* of |parse_node| */
+	struct linked_list *mentioning; /* of `parse_node` */
 	struct performance_style *how_performed;
 	struct dialogue_node *as_node;
 	struct dialogue_line_compilation_data compilation_data;
@@ -179,7 +179,7 @@ void DialogueLines::write_dlc(OUTPUT_STREAM, int c) {
 	}
 }
 
-@ Each line produces an instance of the kind |dialogue line|, using the name
+@ Each line produces an instance of the kind `dialogue line`, using the name
 given in its clauses if one was.
 
 @<Add the line to the world model@> =
@@ -354,6 +354,6 @@ void DialogueLines::apply_property_value(dialogue_line *dl, parse_node *val) {
 		Problems::issue_problem_end();
 	}
 
-@ So what remains to be done? The unparsed clauses remaining are |IF| and |UNLESS|,
-|BEFORE| and |AFTER|, and |NOW|: but all of those are essentially code rather
+@ So what remains to be done? The unparsed clauses remaining are `IF` and `UNLESS`,
+`BEFORE` and `AFTER`, and `NOW`: but all of those are essentially code rather
 than data, and we will parse those in //runtime: Dialogue Line Instances//.

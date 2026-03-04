@@ -8,7 +8,7 @@ We provide two functions to the rest of Inform. "Actorless" mode is the
 one less used: it means that we should not make assumptions about who the
 actor is in cases where no actor is specified. See below.
 
-The |:actions| test group may be useful here.
+The `:actions` test group may be useful here.
 
 =
 void RTActionPatterns::compile_pattern_match(action_pattern *ap) {
@@ -74,7 +74,7 @@ features to fall into range 2.
 When a pattern is written in a way which refers to the past -- "if we are examining
 the table for the third time", say -- we divert to the past-tense code, though
 in fact the underlying pattern -- "examining the table" -- will eventually come
-back here, shorn of its |duration| marker. Anyway, we get rid of that case first.
+back here, shorn of its `duration` marker. Anyway, we get rid of that case first.
 
 The strategy is to work out a list of clauses needed, and then compile them.
 
@@ -116,12 +116,12 @@ the same for any of the actions in the list.)
 		if (kind_of_second == NULL) kind_of_second = K_object;
 	}
 
-@ The macro |CPMC_NEEDED| is a shorthand within this function (and in plugin
+@ The macro `CPMC_NEEDED` is a shorthand within this function (and in plugin
 functions extending it) to specify that this particular pattern match will
-need the clause |C|, which should be one of the |*_CPMC| values. |A| is then
-the associated |ap_clause|: see //if: Action Pattern Clauses//.
+need the clause `C`, which should be one of the `*_CPMC` values. `A` is then
+the associated `ap_clause`: see //if: Action Pattern Clauses//.
 
-The |MAX_CPM_CLAUSES| is not currently possible to reach, since the same CPMC
+The `MAX_CPM_CLAUSES` is not currently possible to reach, since the same CPMC
 is never used twice when matching the same pattern, and there are nowhere near
 256 different CPMCs.
 
@@ -190,7 +190,7 @@ the actor. But we must make an exception for "the player riding the carriage".
 	if (APClauses::spec(ap, ACTOR_AP_CLAUSE))
 		CPMC_NEEDED(ACTOR_MATCHES_CPMC, NULL);
 
-@ It would do no harm to leave |test_requester| true, but would lead to a
+@ It would do no harm to leave `test_requester` true, but would lead to a
 redundant check being compiled.
 
 @<Require actor to be the player@> =
@@ -227,7 +227,7 @@ because this can be proved from the context; so we skip this test.
 @ In the case where no action is specified, but the noun is -- for example,
 "doing something with a container" -- we need to check that it is an object
 which is not "nothing". The slightly odd practice of the command parser is
-such that the way to do with is |(noun) && (noun == inp1)|.
+such that the way to do with is `(noun) && (noun == inp1)`.
 
 @<Test the noun@> =
 	if (APClauses::spec(ap, NOUN_AP_CLAUSE)) {
@@ -314,8 +314,8 @@ for by the source text:
 
 @h Compiling the tests.
 We group the tests into four "ranges": thus range 0 is all tests with CPMC number
-in the range |ACTOR_IS_PLAYER_CPMC <= N <= ACTOR_MATCHES_CPMC|, and so on.
-|count[R]| is the number of tests to perform in the range |R|.
+in the range `ACTOR_IS_PLAYER_CPMC <= N <= ACTOR_MATCHES_CPMC`, and so on.
+`count[R]` is the number of tests to perform in the range `R`.
 
 @d CPMC_RANGE(ix, F, T) {
 	ranges_from[ix] = F; ranges_to[ix] = T; count[ix] = 0;
@@ -343,7 +343,7 @@ in the range |ACTOR_IS_PLAYER_CPMC <= N <= ACTOR_MATCHES_CPMC|, and so on.
 	CompileConditions::end();
 
 @ This is the easier case: all four ranges of condition must be true, and so
-we compile code equivalent to |ACTION and ACTOR and DETAILS and WHEN|. We
+we compile code equivalent to `ACTION and ACTOR and DETAILS and WHEN`. We
 do it in that order for two reasons: firstly, wrong actions are the commonest
 reason actions fail to match, and the ACTION tests are quick, so it's efficient
 to test that first. (The ACTOR tests are also quick, but usually pass.) Secondly,
@@ -354,7 +354,7 @@ something quite slow to perform: so we check it only if we definitely need
 to know the result.
 
 Note that we must never compile nothing at all: if there are no clauses
-we still have to compile |true|, to ensure that every action will match. 
+we still have to compile `true`, to ensure that every action will match. 
 
 @<Listwise positive case@> =
 	int downs = 0;
@@ -397,13 +397,13 @@ we still have to compile |true|, to ensure that every action will match.
 examining the box", which matches any action except "examining the box". It
 might seem that this could be negated just as the negation of the positive
 case, but that overlooks the hidden clauses about who the actor is, whether
-the action is a request, and so on -- the |ACTOR_CPMCRANGE| -- and any
-condition supplied -- the |WHEN_CPMCRANGE|.
+the action is a request, and so on -- the `ACTOR_CPMCRANGE` -- and any
+condition supplied -- the `WHEN_CPMCRANGE`.
 
 For example, "doing something other than examining the box when the red door is
 open" matches "dropping the box" only if the door is open at the time.
 
-So this compiles as |ACTOR and (not (ACTION and DETAILS)) and WHEN|.
+So this compiles as `ACTOR and (not (ACTION and DETAILS)) and WHEN`.
 
 @<Listwise negated case@> =
 	if (count[ACTOR_CPMCRANGE] > 0) {
@@ -444,7 +444,7 @@ So this compiles as |ACTOR and (not (ACTION and DETAILS)) and WHEN|.
 	}
 	if (count[ACTOR_CPMCRANGE] > 0) EmitCode::up();
 
-@ So here we compile all the clauses in the range |range|. If no tests are needed
+@ So here we compile all the clauses in the range `range`. If no tests are needed
 then no code would be compiled, which is not in fact a valid condition; but
 this never happens, because the code above arranges that we never come here unless
 there is at least one test in the range to be performed.
@@ -553,7 +553,7 @@ and otherwise we do our own thing.
 @h The ACTION range of CPMCs.
 Just one of these, but it's a doozy. Note that an action name list is essentially
 a disjunction, i.e., a list of alternatives: "taking or dropping the box", for
-example, features an action name list with |C == 2|.
+example, features an action name list with `C == 2`.
 
 @<Compile ACTION_MATCHES_CPMC test@> =
 	action_name_list *head = ap->action_list;
@@ -591,14 +591,14 @@ example, features an action name list with |C == 2|.
 	}
 
 @h The DETAILS range of CPMCs.
-For the frankly oddball way that the runtime variables |noun|, |inp1| and
-|parsed_number| are juggled inside the parser, see //CommandParserKit//. Here
+For the frankly oddball way that the runtime variables `noun`, `inp1` and
+`parsed_number` are juggled inside the parser, see //CommandParserKit//. Here
 it's enough to know that
 
-- for EXAMINE BOX, |noun| and |inp1| would be the box, and |parsed_number|
+- for EXAMINE BOX, `noun` and `inp1` would be the box, and `parsed_number`
 would have no meaning, but
-- for TYPE 246, |inp1| would be 1, |parsed_number| would be 246, and |noun|
-would be |nothing|.
+- for TYPE 246, `inp1` would be 1, `parsed_number` would be 246, and `noun`
+would be `nothing`.
 
 @<Compile NOUN_EXISTS_CPMC test@> =
 	EmitCode::val_iname(K_object, Hierarchy::find(NOUN_HL));
@@ -619,8 +619,8 @@ would be |nothing|.
 		TemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
 		APClauses::spec(ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
 
-@ And similarly for the second noun, but with |second| and |inp2| in place of
-|noun| and |inp1|.
+@ And similarly for the second noun, but with `second` and `inp2` in place of
+`noun` and `inp1`.
 
 @<Compile SECOND_EXISTS_CPMC test@> =
 	EmitCode::val_iname(K_object, Hierarchy::find(SECOND_HL));
@@ -653,7 +653,7 @@ this test is sufficient:
 which is true if and only if the actor is somewhere in play. (In particular,
 an actor removed from the object tree because the character has, say, died,
 can never have a location. But such an actor cannot be acting anyway.) Note
-the side-effect of setting the |actor_location| variable...
+the side-effect of setting the `actor_location` variable...
 
 @<Compile ACTOR_IS_SOMEWHERE_CPMC test@> =
 	EmitCode::inv(STORE_BIP);
@@ -767,7 +767,7 @@ does not arise in genuine action patterns, is typeless at runtime: or rather,
 it has a different meaning depending on the activity currently being processed,
 and that means it is only typesafe within activity processing.
 
-That makes it tricky to represent with a |nonlocal_variable|, which in principle
+That makes it tricky to represent with a `nonlocal_variable`, which in principle
 has a single kind for its whole existence. So here we temporarily amend the kind
 of that variable to the kind we have deduced from the activity context.
 
@@ -786,8 +786,8 @@ of that variable to the kind we have deduced from the activity context.
 		apoc->clause_spec, K, APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT));
 
 @h The WHEN range of CPMCs.
-This test is always true (even if |actor| is 0), but is executed for its side-effect
-of setting the |self| pseudovariable, so that it will have the right contents when
+This test is always true (even if `actor` is 0), but is executed for its side-effect
+of setting the `self` pseudovariable, so that it will have the right contents when
 the WHEN condition is evaluated.
 
 @<Compile SET_SELF_TO_ACTOR_CPMC test@> =
@@ -831,10 +831,10 @@ The serious work is done here. Note that this function is also called from
 //runtime: Looping Over Scope//, because that essentially was a way to
 defer the same matching process into a helper function.
 
-The value |val| will in practice always be a local or global variable.
+The value `val` will in practice always be a local or global variable.
 
 If the match makes a calling, as in "an open door (called the way out)", the
-following compiles to the equivalent of |(way out = V, open-door(V))|; the first
+following compiles to the equivalent of `(way out = V, open-door(V))`; the first
 clause has side effect of setting the "way out" variable, the second actually
 performs the condition. It would then be unsafe to use the value of "way out"
 if the condition were false, but Inform manages the scope of this variable so
@@ -968,7 +968,7 @@ or the it in "asking Fred about it"; the second, "asking Fred about "scooby snac
 
 @ For some clauses, such as "going from R" or "in R", we want to allow for "R"
 to be allowed to be a region and not just a room. But only for certain clauses,
-so this is used only when the function was called with |adapt_region| set.
+so this is used only when the function was called with `adapt_region` set.
 
 @<Handle a regional containment test ad-hoc@> =
 	EmitCode::call(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));

@@ -7,17 +7,17 @@ Kinds are represented by pointers to trees made up of //kind// objects, like so:
 
 =
 typedef struct kind {
-	struct kind_constructor *construct; /* which can never be |NULL| */
-	int kind_variable_number; /* only used if construct is |CON_KIND_VARIABLE| */
-	struct unit_sequence *intermediate_result; /* only used if construct is |CON_INTERMEDIATE| */
-	struct kind *kc_args[MAX_KIND_CONSTRUCTION_ARITY]; /* used if arity positive, or for |CON_KIND_VARIABLE| */
+	struct kind_constructor *construct; /* which can never be `NULL` */
+	int kind_variable_number; /* only used if construct is `CON_KIND_VARIABLE` */
+	struct unit_sequence *intermediate_result; /* only used if construct is `CON_INTERMEDIATE` */
+	struct kind *kc_args[MAX_KIND_CONSTRUCTION_ARITY]; /* used if arity positive, or for `CON_KIND_VARIABLE` */
 } kind;
 
-@ Some kinds, like |number|, are atomic while others, like |relation of numbers to texts|,
+@ Some kinds, like `number`, are atomic while others, like `relation of numbers to texts`,
 are composite. Each //kind// object is formally a "construction" resulting from
 applying a //kind_constructor// to other kinds. Each different possible constructor
 has a fixed "arity", the number of other kinds it builds on. For example, to make
-the kind |relation of texts to lists of times|, we need four constructions in
+the kind `relation of texts to lists of times`, we need four constructions in
 a row:
 = (text)
 	(nothing) --> text
@@ -56,9 +56,9 @@ around that by using "punctuation nodes" in a kind tree. For example,
 				CON_VOID
 		number
 =
-represents |function (text, text) -> number|. Note two special constructors
-used here: |CON_TUPLE_ENTRY| and |CON_NIL|. These cannot occur in isolation.
-No Inform variable can have kind |CON_TUPLE_ENTRY|, for example.
+represents `function (text, text) -> number`. Note two special constructors
+used here: `CON_TUPLE_ENTRY` and `CON_NIL`. These cannot occur in isolation.
+No Inform variable can have kind `CON_TUPLE_ENTRY`, for example.
 
 @ We keep some statistics for tracking memory usage:
 
@@ -94,13 +94,13 @@ kind *Kinds::base_construction(kind_constructor *con) {
 	return K;
 }
 
-@ As noted above, |CON_INTERMEDIATE| is used to store intermediate results
+@ As noted above, `CON_INTERMEDIATE` is used to store intermediate results
 of calculations that are never accessible to outside source text, and have
 kinds which couldn't be represented there. For example, if we evaluate
 $$ E = mc^2 $$
 then we may have perfectly good kinds of value to store energy, mass and
 velocity, but have no kind of value for $c^2$, a velocity squared. Such
-evanescent kinds are given the special constructor |CON_INTERMEDIATE|.
+evanescent kinds are given the special constructor `CON_INTERMEDIATE`.
 These are needed relatively seldom and are not cached.
 
 =
@@ -116,7 +116,7 @@ kind *Kinds::intermediate_construction(unit_sequence *ik) {
 }
 
 @ The following constructs "formal variables", that is, placeholders for the
-kinds whose values will be stored in the kind variables |A| to |Z|.
+kinds whose values will be stored in the kind variables `A` to `Z`.
 
 =
 kind *Kinds::var_construction(int N, kind *declaration) {
@@ -175,8 +175,8 @@ following initialisation:
 
 @h Constructing kinds for functions.
 The following uses the above methods to put together the kind of a function,
-making use of the punctuation nodes |CON_TUPLE_ENTRY| and |CON_NIL|. Note
-that we use |K_nil| to represent the absence of a return kind (the "nothing"
+making use of the punctuation nodes `CON_TUPLE_ENTRY` and `CON_NIL`. Note
+that we use `K_nil` to represent the absence of a return kind (the "nothing"
 in a function to nothing). Note also that a function from X to Y, with just
 one argument, comes out as:
 = (text)
@@ -286,7 +286,7 @@ int Kinds::arity_of_constructor(kind *K) {
 	return 0;
 }
 
-@ Given, say, |list of numbers|, the following returns |number|:
+@ Given, say, `list of numbers`, the following returns `number`:
 
 =
 kind *Kinds::unary_construction_material(kind *K) {
@@ -326,11 +326,11 @@ to perform substitution to convert (say) "relation of K to list of K" to
 (say) "relation of numbers to list of numbers".
 
 However, in order to ensure that caches are never invalidated, we are careful
-never to alter a |kind| structure once it has been created; instead,
+never to alter a `kind` structure once it has been created; instead,
 we return a different structure imitating the shape of the original.
 
-We set the flag indicated by |changed| to |TRUE| if we make any change,
-assuming that it was originally |FALSE| before the first use of this function.
+We set the flag indicated by `changed` to `TRUE` if we make any change,
+assuming that it was originally `FALSE` before the first use of this function.
 
 =
 kind *Kinds::substitute(kind *K, kind **meanings, int *changed, int contra) {
@@ -377,8 +377,8 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 }
 
 @h Weakening.
-This operation corresponds to rounding kinds up to |W|: that is, any
-subkind of |W| is replaced by |W|.
+This operation corresponds to rounding kinds up to `W`: that is, any
+subkind of `W` is replaced by `W`.
 
 We do need to be careful over contravariance: the kind "object based rulebook
 producing a number" is stronger than "thing based rulebook producing a number",
@@ -437,9 +437,9 @@ Inform's whole stock of constructors comes from two routes: this one, from the
 source text, and another we shall see later, from the Kind Interpreter. The
 following is called in response to sentences like:
 
->> Texture is a kind of value. A musical instrument is a kind of thing.
+> Texture is a kind of value. A musical instrument is a kind of thing.
 
-The word range is the name ("texture", "musical instrument"), and |super|
+The word range is the name ("texture", "musical instrument"), and `super`
 is the super-kind ("value", "thing").
 
 =
@@ -546,9 +546,9 @@ void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 
 @h From context.
 Sometimes we need to know the current values of the 26 kind variables, A
-to Z: that depends on a much wider context than the |kinds| module can see,
-so we need the client to help us. |v| is in the range 1 to 26. Returning
-|NULL| means there is no current meaning; so if the client provides no
+to Z: that depends on a much wider context than the `kinds` module can see,
+so we need the client to help us. `v` is in the range 1 to 26. Returning
+`NULL` means there is no current meaning; so if the client provides no
 function to tell us, then all variables are permanently unset.
 
 =
@@ -564,7 +564,7 @@ kind *Kinds::variable_from_context(int v) {
 @h Equality.
 It may well happen that there are two different //kind// structures in memory
 which both mean (say) "list of texts", so we cannot simply test if two
-|kind *| pointers are equal when we want to ask if they represent the same
+`kind *` pointers are equal when we want to ask if they represent the same
 kind.
 
 The following determines whether or not two kinds are the same. Clearly
@@ -575,7 +575,7 @@ Most of the interesting cases are to do with unions (which Inform
 disallows as type unsafe) and records (which Inform supports only by its
 "combination" operator). For example, is "combination (number, text)"
 the same as "combination (text, number)"? One might also consider
-whether |->| (function mapping) ought to be an associative operation, as
+whether `->` (function mapping) ought to be an associative operation, as
 it would be in a language like Haskell which curried all functions.
 
 At any rate, for Inform the answer is no: every different sequence of kind

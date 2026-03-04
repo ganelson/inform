@@ -6,7 +6,7 @@ To manage placeholder variables.
 Placeholders are markers such as "[AUTHOR]", found in the template
 files for making web pages. ("AUTHOR" would be the name of this one; the use
 of capital letters is customary but not required.) Most of these can be set
-to arbitrary texts by use of the |placeholder| command in the blurb file, but
+to arbitrary texts by use of the `placeholder` command in the blurb file, but
 a few are "reserved":
 
 @d SOURCE_RPL 1
@@ -22,13 +22,13 @@ a few are "reserved":
 typedef struct placeholder {
 	struct text_stream *pl_name; /* such as "[AUTHOR]" */
 	struct text_stream *pl_contents; /* current value */
-	int reservation; /* one of the |*_RPL| values above, or 0 for unreserved */
+	int reservation; /* one of the `*_RPL` values above, or 0 for unreserved */
 	int locked; /* currently being expanded: locked to prevent mise-en-abyme */
 	CLASS_DEFINITION
 } placeholder;
 
 @h Initial values.
-The |BLURB| refers here to back-cover-style text, and not to the "blurb"
+The `BLURB` refers here to back-cover-style text, and not to the "blurb"
 file which we are acting on.
 
 =
@@ -93,7 +93,7 @@ void Placeholders::set_to_number(text_stream *var, int v) {
 @ And here we set a given placeholder to a given text value. If it doesn't
 already exist, it will be created. A reserved placeholder can then never again
 be set, and since it will have been set at creation time (above), it follows
-that a reserved placeholder cannot be set with the |placeholder| command of a
+that a reserved placeholder cannot be set with the `placeholder` command of a
 blurb file.
 
 =
@@ -168,8 +168,8 @@ void Placeholders::write(OUTPUT_STREAM, text_stream *var) {
 @ Note that the [BLURB] placeholder -- which holds the story description, and is
 like a back cover blurb for a book; the name is not related to the release
 instructions format -- may consist of multiple paragraphs. If so, then they
-will be divided by |<br/>|, since that's the XML convention. But we want to
-translate those breaks to |</p><p>|, closing an old paragraph and opening
+will be divided by `<br/>`, since that's the XML convention. But we want to
+translate those breaks to `</p><p>`, closing an old paragraph and opening
 a new one, because that will make the blurb text much easier to style
 with a CSS file. It follows that [BLURB] should always appear in templates
 within an HTML paragraph.

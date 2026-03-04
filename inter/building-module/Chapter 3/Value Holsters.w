@@ -11,24 +11,24 @@ systems generating bytecode, others still pouring our raw I6 as text.
 
 The //value_holster// was invented as a way to manage this. It allows the caller
 of a compilation function to ask for code to be made in a particular way: this
-is the |vhmode_wanted| field. These ways are:
+is the `vhmode_wanted` field. These ways are:
 
-- |INTER_VAL_VHMODE| -- generate Inter bytecode inside a function, producing a value
+- `INTER_VAL_VHMODE` -- generate Inter bytecode inside a function, producing a value
 
-- |INTER_VOID_VHMODE| -- generate Inter bytecode inside a function but in
+- `INTER_VOID_VHMODE` -- generate Inter bytecode inside a function but in
 void context, i.e., not producing a value
 
-- |INTER_DATA_VHMODE| -- encode a constant value as a pair of Inter values,
+- `INTER_DATA_VHMODE` -- encode a constant value as a pair of Inter values,
 for use in, say, an array entry.
 
 So much for what the caller wants. The compilation function, or subsystem, then
-does whatever it does, and sets |vhmode_provided| to the mode it actually compiled
+does whatever it does, and sets `vhmode_provided` to the mode it actually compiled
 in; the caller can then deal with the situation arising if it wasn't what was
 wanted. During 2017 this often meant that the function would write out some
-raw I6 syntax, and reply |INTER_TEXT_VHMODE| to signal this; the caller would
+raw I6 syntax, and reply `INTER_TEXT_VHMODE` to signal this; the caller would
 then turn this into Inter by wrapping it up as either a "splat" or a "glob".
 
-With the transition now complete, |INTER_TEXT_VHMODE| no longer exists. But
+With the transition now complete, `INTER_TEXT_VHMODE` no longer exists. But
 value holsters continue to be a useful device.
 
 @e INTER_DATA_VHMODE from 1
@@ -54,7 +54,7 @@ value_holster Holsters::new(int vhm) {
 }
 
 @ A compilation function can produce, as its output, a value in either
-|INTER_DATA_VHMODE| (where this is exactly what is wanted) or in |INTER_VAL_VHMODE|
+`INTER_DATA_VHMODE` (where this is exactly what is wanted) or in `INTER_VAL_VHMODE`
 (where it can easily be adapted).
 
 =
@@ -75,10 +75,10 @@ void Holsters::holster_pair(value_holster *vh, inter_pair val) {
 }
 
 @ And this is how the caller "unholsters" that value, after the function has
-returned. If we find |NO_VHMODE|, we convert that to |INTER_DATA_VHMODE| with
+returned. If we find `NO_VHMODE`, we convert that to `INTER_DATA_VHMODE` with
 the literal number value 0.
 
-On exit, the provided mode is always |INTER_DATA_VHMODE|.
+On exit, the provided mode is always `INTER_DATA_VHMODE`.
 
 A second or subsequent call on the same holster does nothing, except to return
 the same value pair, which is still stored in it. (In that sense, these aren't
@@ -105,12 +105,12 @@ inter_pair Holsters::unholster_to_pair(value_holster *vh) {
 	return vh->val;
 }
 
-@ If, on the other hand, the caller was asking for |INTER_VAL_VHMODE|, it
-should make use of the following. If we find |NO_VHMODE|, we compile a |val|
-producing the literal value 0; if we find |INTER_DATA_VHMODE|, we compile a
-|val| producing whatever value was holstered.
+@ If, on the other hand, the caller was asking for `INTER_VAL_VHMODE`, it
+should make use of the following. If we find `NO_VHMODE`, we compile a `val`
+producing the literal value 0; if we find `INTER_DATA_VHMODE`, we compile a
+`val` producing whatever value was holstered.
 
-On exit, the provided mode is always |INTER_VAL_VHMODE|.
+On exit, the provided mode is always `INTER_VAL_VHMODE`.
 
 A second or subsequent call on the same holster does nothing.
 

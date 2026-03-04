@@ -11,13 +11,13 @@ pathname *path_to_inter = NULL;
 
 pathname *kit_to_build = NULL;
 pathname *domain_path = NULL;
-linked_list *inter_file_list = NULL; /* of |filename| */
+linked_list *inter_file_list = NULL; /* of `filename` */
 filename *output_file = NULL;
 dictionary *pipeline_vars = NULL;
 filename *pipeline_as_file = NULL;
 text_stream *pipeline_as_text = NULL;
 pathname *internal_path = NULL;
-text_stream *output_format = NULL; /* for any |-o| output */
+text_stream *output_format = NULL; /* for any `-o` output */
 int tracing = FALSE;
 
 void Main::add_pipeline_variable(text_stream *name, text_stream *value) {
@@ -31,7 +31,7 @@ void Main::add_pipeline_variable_from_filename(text_stream *name, filename *F) {
 }
 
 @h Main routine.
-When Inter is called at the command line, it begins at |main|, like all C
+When Inter is called at the command line, it begins at `main`, like all C
 programs.
 
 Inter can do three different things: build a kit, run a pipeline of
@@ -229,10 +229,10 @@ void Main::add_file(int id, text_stream *arg, void *state) {
 	ADD_TO_LINKED_LIST(F, filename, inter_file_list);
 }
 
-@ The modules included in |inter| make use of the Inform 7 module |kinds|,
-but when we are using |inter| on its own, kinds have no meaning for us.
-We are required to create a |kind| type, in order for |kinds| to compile;
-but no instances of this kind will ever in fact exist. |K_value| is a
+@ The modules included in `inter` make use of the Inform 7 module `kinds`,
+but when we are using `inter` on its own, kinds have no meaning for us.
+We are required to create a `kind` type, in order for `kinds` to compile;
+but no instances of this kind will ever in fact exist. `K_value` is a
 global constant meaning "any kind at all", and that also must exist.
 
 = (early code)

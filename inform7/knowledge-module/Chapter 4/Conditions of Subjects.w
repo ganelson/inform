@@ -7,7 +7,7 @@ something.
 the usual computer-science sense of "Is this true or false?". Here a subject
 is in one of a finite number of possible states, as declared by a sentence like:
 
->> The cask can be wedged open, bolted closed or stoved in.
+> The cask can be wedged open, bolted closed or stoved in.
 
 A property called the "cask condition" is created, whose value must be one of
 these three named possibilities; and this is also the name of a new kind,
@@ -28,13 +28,13 @@ condition_of_subject *ConditionsOfSubjects::new(inference_subject *subj, int ano
 }
 
 @ And here we parse sentences like the example above. Despite the use of the
-word "or", the set of option names is a little |AND_NT| subtree, of which
-|set| is the head node. |subj| is the owner-to-be: in this example, the cask.
+word "or", the set of option names is a little `AND_NT` subtree, of which
+`set` is the head node. `subj` is the owner-to-be: in this example, the cask.
 If the condition is one which already exists, having been created similarly
-for something else, the wording of its name should be supplied in |cond_W|:
+for something else, the wording of its name should be supplied in `cond_W`:
 this should otherwise be the empty wording.
 
-On exit, |already| should be set to |TRUE| if the enumerative values existed
+On exit, `already` should be set to `TRUE` if the enumerative values existed
 already, i.e., if it was indeed a condition used before.
 
 =
@@ -56,7 +56,7 @@ property *ConditionsOfSubjects::parse(inference_subject *infs, wording cond_W,
 
 @ If one of the options is a value for an existing kind, then they all have
 to be, and of the same kind. Any option which is not has its wording put
-into |wrong_kind_opt_W|.
+into `wrong_kind_opt_W`.
 
 @<See if the options are all already values for some common kind@> =
 	for (parse_node *option = set; option;

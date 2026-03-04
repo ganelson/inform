@@ -108,7 +108,7 @@ ingratitude of some -- oh, all right.
 		ProgressBar::end_outcome();
 	}
 
-@ The success message needs to take different forms in |stdout| and in
+@ The success message needs to take different forms in `stdout` and in
 the Problems log file. In the latter, we write as though the subsequent
 conversion of Inform's output to a story file via Inform 6 had already been
 completed successfully -- this is because the Problems log is intended
@@ -117,7 +117,7 @@ an error page if I6 should fail. So although the Problems file contains
 an unwarranted claim, if not an actual falsehood, no human eye should see
 it unless and until it comes true.
 
-We don't want to make similar claims on |stdout|, where the user -- who
+We don't want to make similar claims on `stdout`, where the user -- who
 might well not be running in the Inform application, but only on the
 command line -- deserves the truth.
 
@@ -227,7 +227,7 @@ void UsingProblems::outcome_image_tail(OUTPUT_STREAM) {
 		}
 }
 
-@ This is a more elaborate form of the standard |StandardProblems::sentence_problem|,
+@ This is a more elaborate form of the standard `StandardProblems::sentence_problem`,
 used when an assertion sentence has gone wrong. Experience from the early
 builds of the Public Beta showed that many people tried syntaxes which
 Inform did not recognise, and which cause Inform to misread the primary

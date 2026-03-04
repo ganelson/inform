@@ -4,12 +4,12 @@ Scripts are nothing more than lists of build steps.
 
 @h Build scripts.
 Suppose the incremental build algorithm has decided it wants to build node
-|V| in the graph: it does so by calling |BuildScripts::execute| on the script
-attached to |V|. This is only a list of steps:
+`V` in the graph: it does so by calling `BuildScripts::execute` on the script
+attached to `V`. This is only a list of steps:
 
 =
 typedef struct build_script {
-	struct linked_list *steps; /* of |build_step| */
+	struct linked_list *steps; /* of `build_step` */
 	CLASS_DEFINITION
 } build_script;
 
@@ -29,8 +29,8 @@ int BuildScripts::script_length(build_script *BS) {
 }
 
 @ We execute the steps in sequence, of course. As soon as any step fails,
-returning |FALSE|, the script halts and returns |FALSE|. An empty script
-always succeeds and returns |TRUE|.
+returning `FALSE`, the script halts and returns `FALSE`. An empty script
+always succeeds and returns `TRUE`.
 
 =
 int BuildScripts::execute(build_vertex *V, build_script *BS, build_methodology *BM,

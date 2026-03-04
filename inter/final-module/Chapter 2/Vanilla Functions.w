@@ -28,20 +28,20 @@ void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *
 @ Each function has metadata as follows. Note that:
 
 - Phrase syntax will only exist for functions which originated in Inform 7
-source text; so for functions coming from kits, |phrase_syntax| will be empty
-and |formal_arity| will be 0.
+source text; so for functions coming from kits, `phrase_syntax` will be empty
+and `formal_arity` will be 0.
 
-- For I7 functions, |formal_arity| will be the number of arguments in the
+- For I7 functions, `formal_arity` will be the number of arguments in the
 phrase preamble.
 
-- For all functions, |max_arity| is the total number of local variables in
+- For all functions, `max_arity` is the total number of local variables in
 the function, and that is by definition the largest number of arguments which
 could possibly be passed to this function by a call. Note that it will always
-be true that |max_arity >= formal_arity|.
+be true that `max_arity >= formal_arity`.
 
 - Calling conventions for Inter functions are not entirely simple: see
 //C Function Model// for discussion of how they differ from regular C functions.
-In particular, any function with a local variable called |_vararg_count| is
+In particular, any function with a local variable called `_vararg_count` is
 called with a variable number of arguments, placed on the stack before the call,
 rather than with arguments placed into local variables in the usual way.
 
@@ -49,7 +49,7 @@ rather than with arguments placed into local variables in the usual way.
 typedef struct vanilla_function {
 	struct text_stream *identifier;
 	struct text_stream *phrase_syntax;
-	struct linked_list *locals; /* of |text_stream|, the names only */
+	struct linked_list *locals; /* of `text_stream`, the names only */
 	struct inter_tree_node *function_body;
 	int takes_variable_arguments;
 	int max_arity;
@@ -59,7 +59,7 @@ typedef struct vanilla_function {
 
 @ This produces a synopsis of the phrase syntax which can be used in an identifier.
 For example, for "To award (N - number) points to (P - person)", the following
-writes |award_X_points_to_X|:
+writes `award_X_points_to_X`:
 
 =
 void VanillaFunctions::syntax_synopsis(OUTPUT_STREAM, vanilla_function *vf) {
@@ -118,10 +118,10 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 @ This performs a local traverse of the body of the function to look for local
 variable declarations.
 
-Note that we look at |InterSymbol::identifier(local_s)| not |InterSymbol::trans(local_s)|
-when checking for |_vararg_count| because the translated name may have been mangled
+Note that we look at `InterSymbol::identifier(local_s)` not `InterSymbol::trans(local_s)`
+when checking for `_vararg_count` because the translated name may have been mangled
 in some way by the generator. (As indeed the C generator does, mangling this to
-|local__vararg_count|.)
+`local__vararg_count`.)
 
 =
 void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
@@ -135,7 +135,7 @@ void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	LOOP_THROUGH_INTER_CHILDREN(F, P) VanillaFunctions::seek_locals(gen, F, vf);
 }
 
-@ Note that a pointer to |vf| is cached with each function name symbol for speed:
+@ Note that a pointer to `vf` is cached with each function name symbol for speed:
 
 =
 void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *fn_s) {

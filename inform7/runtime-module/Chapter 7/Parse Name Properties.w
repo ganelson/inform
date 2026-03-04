@@ -3,27 +3,27 @@
 Functions which are values of the parse_name property for objects.
 
 @h Introduction.
-A |parse_name| property can belong to any instance of a kind of object, or to
-any kind of object, but not to |K_object| itself. Its value must be a GPR
+A `parse_name` property can belong to any instance of a kind of object, or to
+any kind of object, but not to `K_object` itself. Its value must be a GPR
 (see //General Parsing Routines//) which matches as many words as possible from
-the command parser's stream of words, beginning at word number |wn|.
+the command parser's stream of words, beginning at word number `wn`.
 
-The following returns the iname for the function to be used as the |parse_name|
-property of an inference subject |subj|, causing it to be compiled later; or
-else returns |NULL| is none is needed.
+The following returns the iname for the function to be used as the `parse_name`
+property of an inference subject `subj`, causing it to be compiled later; or
+else returns `NULL` is none is needed.
 
 The obvious reason it could be needed is if there is some syntax a player could
 type to refer to the subject. But in fact we also need to make a GPR as a
 "distinguisher" in a few cases where there is no such syntax, because of the
-way the runtime command parser uses |parse_name| functions to determine whether
+way the runtime command parser uses `parse_name` functions to determine whether
 two objects can be distinguished by anything the player types. Recall that some
 properties are "visible", in that the player can use them adjectically in
 commands: for instance, if colour is a visible property of a car, then it can be
 called "green car" if in fact its colour is green, and so on. The command parser
-therefore calls |parse_name| functions at runtime to ask about distinguishability
+therefore calls `parse_name` functions at runtime to ask about distinguishability
 as well as for parsing, so that's another reason we might need one.
 
-The test case |AwkwardParseNames| may be helpful here.
+The test case `AwkwardParseNames` may be helpful here.
 
 =
 inter_name *ParseName::compile_if_needed(inference_subject *subj) {
@@ -78,21 +78,21 @@ void ParseName::parser_agent(compilation_subtask *t) {
 @h The head.
 Either way, then, the head and the tail are mostly the same. Here is the head.
 
-Most of the function lives inside a loop making three passes, with |pass| running
+Most of the function lives inside a loop making three passes, with `pass` running
 from 1 to 3. In these passes, we will check:
 
-- (words in |name| property) (visible property names) (words in |name| property)
-(longer grammar) (words in |name| property)
-- (visible property names) (longer grammar) (words in |name| property)
-- (longer grammar) (words in |name| property)
+- (words in `name` property) (visible property names) (words in `name` property)
+(longer grammar) (words in `name` property)
+- (visible property names) (longer grammar) (words in `name` property)
+- (longer grammar) (words in `name` property)
 
 Whichever is the longest match over these three passes will be the one taken: 
 but note that a match of visible property names alone is rejected unless at least
 one property has been declared sufficient to identify the object all by itself.
 
 "Longer grammar" means grammar lines containing 2 or more words, since all
-single-fixed-word grammar lines for CGs destined to be |parse_name|s is stripped
-out and converted into the |name| property.
+single-fixed-word grammar lines for CGs destined to be `parse_name`s is stripped
+out and converted into the `name` property.
 
 =
 void ParseName::compile_head(gpr_kit *kit, inference_subject *subj, int there_is_grammar) {
@@ -147,10 +147,10 @@ void ParseName::compile_head(gpr_kit *kit, inference_subject *subj, int there_is
 	EmitCode::up();
 
 @ If the command parser is giving us the opportunity to say whether objects
-with this |parse_name| function are distinguishable, it will do that by
-having set |parser_action| to |##TheSame|. Here we return "make no decision"
+with this `parse_name` function are distinguishable, it will do that by
+having set `parser_action` to `##TheSame`. Here we return "make no decision"
 to that, which disclaims responsibility, and forces the command parser to look
-directly at the |name| properties of the objects instead.
+directly at the `name` properties of the objects instead.
 
 @<Quickly disclaim the distinguishability test if possible@> =
 	if ((there_is_grammar) &&
@@ -196,8 +196,8 @@ directly at the |name| properties of the objects instead.
 			@<Begin body of the indefinite loop@>;
 
 @<Begin body of the indefinite loop@> =
-	/* On pass 1 only, advance |wn| past name property words */
-	/* (but do not do this for |##TheSame|, when |wn| is undefined) */
+	/* On pass 1 only, advance `wn` past name property words */
+	/* (but do not do this for `##TheSame`, when `wn` is undefined) */
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		EmitCode::inv(AND_BIP);
@@ -328,7 +328,7 @@ directly at the |name| properties of the objects instead.
 	EmitCode::up();
 
 @h The middle.
-That concludes the head. The middle of the |parse_name| function is then made
+That concludes the head. The middle of the `parse_name` function is then made
 up of attempts to parse the grammar lines for this subject, one after another,
 until one of them works (if it ever does). That code is compiled in
 //Command Grammar Lines//, not here, but it calls the following function to
@@ -383,7 +383,7 @@ void ParseName::compile_tail(gpr_kit *kit) {
 	@<Return to the command parser@>;
 }
 
-@ The indefinite loop is iterated only by an explicit |CONTINUE_BIP| instruction.
+@ The indefinite loop is iterated only by an explicit `CONTINUE_BIP` instruction.
 If execution reaches the end of the loop body, the loop ends at once, because:
 
 @<End the body of the indefinite loop@> =
@@ -589,7 +589,7 @@ If execution reaches the end of the loop body, the loop ends at once, because:
 		EmitCode::val_symbol(K_value, kit->n_s);
 	EmitCode::up();
 
-@ We generate code suitable for inclusion in a |parse_name| routine which
+@ We generate code suitable for inclusion in a `parse_name` routine which
 either tests distinguishability then parses, or else just parses, the
 visible properties of a given subject (which may be a kind or instance).
 Sometimes we allow visibility to be inherited from a permission given
@@ -861,8 +861,8 @@ void ParseName::finish_distinguishing_visible_properties(gpr_kit *kit) {
 
 @h Parsing visible properties.
 Here, unlike in distinguishing visible properties, it is unambiguous that
-|self| refers to the object being parsed: there is therefore no need to
-alter the value of |self| to make any visibility condition work correctly.
+`self` refers to the object being parsed: there is therefore no need to
+alter the value of `self` to make any visibility condition work correctly.
 
 =
 void ParseName::begin_parsing_visible_properties(gpr_kit *kit) {

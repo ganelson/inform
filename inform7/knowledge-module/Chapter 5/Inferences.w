@@ -10,7 +10,7 @@ This is quite a lightweight structure:
 typedef struct inference {
 	struct inference_family *family; /* see above */
 	general_pointer data; /* details specific to the family */
-	int certainty; /* any |*_CE| value other than |UNKNOWN_CE| */
+	int certainty; /* any `*_CE` value other than `UNKNOWN_CE` */
 	struct parse_node *inferred_from; /* from what sentence was this drawn? */
 	int drawn_during_stage; /* or was this drawn during the model completion stage? */
 	int drawn_from_metadata; /* or from the project's metadata file? */
@@ -82,11 +82,11 @@ knowledge means that the inferences must be more likely to be true than false.
 		if (inf->family == type)
 
 @h Comparing inferences.
-The following function is a little like |strcmp|, the standard C routine
-for comparing strings. It compares two inferences |i1| and |i2| and returns
-a value useful for sorting algorithms: 0 if equal, positive if |i1 < i2|,
-negative if |i2 < i1|. This is a stable trichotomy; in particular,
-|Inferences::cmp(i1, i2) == -Inferences::cmp(i2, i1)|.
+The following function is a little like `strcmp`, the standard C routine
+for comparing strings. It compares two inferences `i1` and `i2` and returns
+a value useful for sorting algorithms: 0 if equal, positive if `i1 < i2`,
+negative if `i2 < i1`. This is a stable trichotomy; in particular,
+`Inferences::cmp(i1, i2) == -Inferences::cmp(i2, i1)`.
 
 With most sorting functions only the sign of the return value is significant,
 but here the magnitude matters as well. It will always be one of the following.
@@ -204,8 +204,8 @@ void Inferences::join_inference(inference *inf, inference_subject *infs) {
 	PluginCalls::inference_drawn(inf, infs);
 	return;
 
-@ For example, we would be here if |inf| said that the carrying capacity of
-the Canopus jar was 10, and |existing| said it was 12: these inferences concern
+@ For example, we would be here if `inf` said that the carrying capacity of
+the Canopus jar was 10, and `existing` said it was 12: these inferences concern
 the same basic fact, i.e., what the carrying capacity of the jar is.
 
 @<These relate to the same basic fact and one must exclude the other@> =
@@ -384,7 +384,7 @@ int Inferences::family_specific_cmp(inference *inf1, inference *inf2) {
 
 @ When a contradiction arises that requires a problem message, this method is
 called to give it the chance to issue a better-phrased one. If it does, it
-should return |TRUE|. If it does not exist, or returns |FALSE|, a generic
+should return `TRUE`. If it does not exist, or returns `FALSE`, a generic
 contradiction problem is generated as usual.
 
 @e EXPLAIN_CONTRADICTION_INF_MTID

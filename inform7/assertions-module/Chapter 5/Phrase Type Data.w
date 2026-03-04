@@ -20,7 +20,7 @@ Word sequence:             Token sequence:
 3  1
 4  order
 =
-The "word sequence" consists of five integers. Values below |MAX_TOKENS_PER_PHRASE|
+The "word sequence" consists of five integers. Values below `MAX_TOKENS_PER_PHRASE`
 mean that a token appears in that position; higher values are word numbers in
 the lexed source. (So a phrase prototype cannot appear in the first 10 words of
 the source text. Those words are always used on inclusion sentences anyway.)
@@ -39,8 +39,8 @@ typedef struct id_type_data {
 	struct id_type_token token_sequence[MAX_TOKENS_PER_PHRASE];
 	int no_tokens;
 
-	int manner_of_return; /* one of the |*_MOR| values */
-	struct kind *return_kind; /* |NULL| except in the |DECIDES_VALUE_MOR| case */
+	int manner_of_return; /* one of the `*_MOR` values */
+	struct kind *return_kind; /* `NULL` except in the `DECIDES_VALUE_MOR` case */
 
 	struct id_options_data options_data;
 
@@ -68,26 +68,26 @@ id_type_data IDTypeData::new(void) {
 @ The two tokens of our example phrase, then, are each stored in one of the
 following. Note that a token can match a value[1] as well as a kind, or can match
 an elaborate description. Because it can also stand for special constructs
-not representable with a |parse_node|, such as "name of a kind of enumerated
-value", the |construct| field is occasionally not |STANDARD_IDTC|.
+not representable with a `parse_node`, such as "name of a kind of enumerated
+value", the `construct` field is occasionally not `STANDARD_IDTC`.
 
 [1] The early design of Inform did not permit values as token specifications,
 but this lack was in fact reported as a bug -- always a sign that users considered
 it a natural thing to do.
 
 @d ERRONEOUS_IDTC       0 /* used only in parsing, never in an IDTT */
-@d STANDARD_IDTC        1 /* e.g., |12|, |number|, |open door| */
-@d NEW_LOCAL_IDTC       2 /* e.g., |nonexisting number variable| */
-@d OLD_LOCAL_IDTC       3 /* e.g., |existing number variable| */
-@d CONDITION_IDTC       4 /* e.g., |a condition| */
-@d STORAGE_IDTC         5 /* e.g., |storage| */
-@d TABLE_REF_IDTC       6 /* e.g., |table-reference| */
-@d KIND_NAME_IDTC       7 /* e.g., |name of kind| */
-@d VOID_IDTC            8 /* e.g., or in fact only, |phrase| */
+@d STANDARD_IDTC        1 /* e.g., `12`, `number`, `open door` */
+@d NEW_LOCAL_IDTC       2 /* e.g., `nonexisting number variable` */
+@d OLD_LOCAL_IDTC       3 /* e.g., `existing number variable` */
+@d CONDITION_IDTC       4 /* e.g., `a condition` */
+@d STORAGE_IDTC         5 /* e.g., `storage` */
+@d TABLE_REF_IDTC       6 /* e.g., `table-reference` */
+@d KIND_NAME_IDTC       7 /* e.g., `name of kind` */
+@d VOID_IDTC            8 /* e.g., or in fact only, `phrase` */
 
 =
 typedef struct id_type_token {
-	int construct; /* one of the |*_IDTC| values above */
+	int construct; /* one of the `*_IDTC` values above */
 	struct wording token_name; /* name */
 	struct parse_node *to_match; /* what we expect to find here */
 	struct kind *token_kind;
@@ -102,7 +102,7 @@ kind *IDTypeData::token_kind(id_type_data *idtd, int i) {
 	return idtd->token_sequence[i].token_kind;
 }
 
-@ It may seem redundant to store both |to_match| and |token_kind|. Surely
+@ It may seem redundant to store both `to_match` and `token_kind`. Surely
 the latter is always just the reduction to a kind of the former? But in fact
 not, because of the following function: if it performs a kind substitution
 of a kind into a kind variable, the two will no longer match exactly. See
@@ -121,12 +121,12 @@ void IDTypeData::substitute_spec(id_type_data *idtd, int i, kind **declarations)
 
 =
 typedef struct say_details {
-	int say_phrase; /* one of the three |*_SAY_PHRASE| values */
+	int say_phrase; /* one of the three `*_SAY_PHRASE` values */
 	int say_phrase_running_on; /* ignore implied newlines in previous invocation */
-	int say_phrase_stream_position; /* one of the |SSP_*| values above */
+	int say_phrase_stream_position; /* one of the `SSP_*` values above */
 	int say_phrase_stream_token_at; /* word number of say stream token name */
 	int say_phrase_stream_closing_token_at; /* ditto for choice of ending */
-	int say_control_structure; /* one of the four |*_SAY_CS| values below */
+	int say_control_structure; /* one of the four `*_SAY_CS` values below */
 } say_details;
 
 @ These are for "say control structures", as in "fish [if day is Friday]of
@@ -156,12 +156,12 @@ whistles and doodads which regular phrases don't.
 
 =
 typedef struct inline_details {
-	int invoked_inline_not_as_call; /* if |FALSE|, none of the rest applies */
+	int invoked_inline_not_as_call; /* if `FALSE`, none of the rest applies */
 
-	int let_phrase; /* one of the |*_LET_PHRASE| values below */
-	int assignment_phrase; /* |TRUE| if this has to be typechecked as an assignment */
-	int offset_assignment_phrase; /* |TRUE| if similarly, but as an increase/decrease */
-	int arithmetical_operation; /* |-1|, or one of the |*_OPERATION| constants */
+	int let_phrase; /* one of the `*_LET_PHRASE` values below */
+	int assignment_phrase; /* `TRUE` if this has to be typechecked as an assignment */
+	int offset_assignment_phrase; /* `TRUE` if similarly, but as an increase/decrease */
+	int arithmetical_operation; /* `-1`, or one of the `*_OPERATION` constants */
 
 	int block_follows; /* for inline phrases only: followed by a begin... end block? */
 	inchar32_t *only_in_loop; /* if not null, the phrase can only be used in this block */
@@ -169,21 +169,21 @@ typedef struct inline_details {
 
 @ Where:
 
-@d NOT_A_LET_PHRASE 0 /* needs to be 0 so that |let_phrase| can be a C condition */
+@d NOT_A_LET_PHRASE 0 /* needs to be 0 so that `let_phrase` can be a C condition */
 @d ASSIGNMENT_LET_PHRASE 1 /* the regular "let" */
 @d EQUATION_LET_PHRASE 2 /* "let" inviting Inform to solve an equation */
 
 @h Manner of return.
 The "manner of return" (MOR) is similar to the type of value returned by a
-function in a C-like language. Thus |DECIDES_NOTHING_MOR| is like being a void
-function in C, and |DECIDES_VALUE_MOR| like being a non-void one; |DECIDES_CONDITION_MOR|
+function in a C-like language. Thus `DECIDES_NOTHING_MOR` is like being a void
+function in C, and `DECIDES_VALUE_MOR` like being a non-void one; `DECIDES_CONDITION_MOR`
 is like being a function returning a truth state. The joker in the pack is
-|DECIDES_NOTHING_AND_RETURNS_MOR|, which has no analogue in C. It means that
+`DECIDES_NOTHING_AND_RETURNS_MOR`, which has no analogue in C. It means that
 invoking the phrase we are defining will cause an exit from the phrase which
-invokes it. If C implemented |return| as a function rather than an inbuilt
+invokes it. If C implemented `return` as a function rather than an inbuilt
 keyword, this would be its type.
 
-|DECIDES_NOTHING_AND_RETURNS_MOR| is possible (and meaningful) only for inline
+`DECIDES_NOTHING_AND_RETURNS_MOR` is possible (and meaningful) only for inline
 definitions.
 
 @d DONT_KNOW_MOR 1						/* but ask me later */
@@ -230,28 +230,29 @@ or "now"), but it might be tempting to think that for function-like phrases,
 at least, the kind tells you everything about when they apply. But this isn't
 true. Consider:
 
->> To barricade (D - a door): ...
->> To barricade (D - a closed door): ...
+> To barricade (D - a door): ...
 
-These both have the same kind, |phrase door -> nothing|, and that's reasonable
+> To barricade (D - a closed door): ...
+
+These both have the same kind, `phrase door -> nothing`, and that's reasonable
 because they're safe to use in the same circumstances. But they will apply
 in different circumstances at run-time.
 
 A further subtlety comes with phrases like:
 
->> To juxtapose (name of kind of value K) with (alpha - K) and (beta - K): ...
+> To juxtapose (name of kind of value K) with (alpha - K) and (beta - K): ...
 
 What's the kind of this? The eventual result of compiling this will be a
-function of kind |phrase (V, V) -> nothing|, where V is the particular kind
+function of kind `phrase (V, V) -> nothing`, where V is the particular kind
 it is used for. But this is not the kind of the definition itself, which
-clearly has three parameters. If we give it the kind |phrase (K, K) -> nothing|
-then Inform will infer the kind K from the parameters supplied as |alpha|
-and |beta| in any given invocation. For example, "juxtapose numbers with 12
-and 31" would then correctly infer that |K = number|. But in some subtle cases
+clearly has three parameters. If we give it the kind `phrase (K, K) -> nothing`
+then Inform will infer the kind K from the parameters supplied as `alpha`
+and `beta` in any given invocation. For example, "juxtapose numbers with 12
+and 31" would then correctly infer that `K = number`. But in some subtle cases
 of ambiguity it infers the wrong answer, and anyway, the idea is to take K
-from the kind explicitly named in the |name of kind of value K| parameter.
+from the kind explicitly named in the `name of kind of value K` parameter.
 So, internally, Inform regards the kind of this definition as
-|phrase (K, K, K) -> nothing|.
+`phrase (K, K, K) -> nothing`.
 
 =
 kind *IDTypeData::kind(id_type_data *idtd) {
@@ -353,8 +354,9 @@ int IDTypeData::comparison(id_type_data *phtd1, id_type_data *phtd2) {
 but the words may be different and/or the tokens in different places.
 We might for example be comparing these two:
 
->> To grab (the prize - an object) swiftly: ...
->> To grab at (the rosette - an object): ...
+> To grab (the prize - an object) swiftly: ...
+
+> To grab at (the rosette - an object): ...
 
 We use alphabetical order, placing "grab ZZZZZZ swiftly" after "grab at ZZZZZZ".
 
@@ -377,14 +379,16 @@ We use alphabetical order, placing "grab ZZZZZZ swiftly" after "grab at ZZZZZZ".
 @ Now our two phrases have identical wording, and tokens in the same positions,
 but may have different specifications for them. For example:
 
->> To grab at (the rosette - an object): ...
->> To grab at (the rosette - a thing on the table): ...
+> To grab at (the rosette - an object): ...
+
+> To grab at (the rosette - a thing on the table): ...
 
 We give priority to the second of these, because it's more specific. On
 the other hand these are simply incomparable:
 
->> To grab at (the rosette - an object): ...
->> To grab at (the prime - a number): ...
+> To grab at (the rosette - an object): ...
+
+> To grab at (the prime - a number): ...
 
 @<Finally try comparing the to-match specifications of the tokens@> =
 	int i, possibly_subschema = TRUE, possibly_superschema = TRUE;
@@ -400,8 +404,9 @@ the other hand these are simply incomparable:
 
 @ We need to watch out for this sort of thing:
 
->> To decide what number is my special value: decide on 4.
->> To decide what person is my special value: decide on the player.
+> To decide what number is my special value: decide on 4.
+
+> To decide what person is my special value: decide on the player.
 
 which makes "my special value" of a kind which can't be decided; but
 we can't just compare the return kinds, because that might pick up
@@ -413,11 +418,11 @@ false positives in the case of kind variables, etc.
 			(Kinds::Behaviour::definite(phtd1->return_kind))))
 		return CONFLICTED_PH;
 
-@ We delegate to |Specifications::compare_specificity| to decide what's more
+@ We delegate to `Specifications::compare_specificity` to decide what's more
 specific, but note that this routine can return 0 (meaning, equally
 specific) for two different reasons: because the specifications are basically
 the same as each other, or because they're completely different but have
-about the same complexity. The |wont_mix| flag is set in the latter case.
+about the same complexity. The `wont_mix` flag is set in the latter case.
 
 Because the test is made by seeing if one specification matches another, we
 also protect it from the special "nonexisting variable" tokens,
@@ -458,7 +463,7 @@ int IDTypeData::inline_type_data_comparison(id_type_data *phtd1, id_type_data *p
 
 @h Say phrases.
 
-@d NOT_A_SAY_PHRASE 0 /* needs to be 0 so that |sd.say_phrase| can be a C condition */
+@d NOT_A_SAY_PHRASE 0 /* needs to be 0 so that `sd.say_phrase` can be a C condition */
 @d A_MISCELLANEOUS_SAY_PHRASE 1
 @d THE_PRIMORDIAL_SAY_PHRASE 2
 
@@ -584,8 +589,8 @@ int IDTypeData::ssp_matches(id_type_data *idtd, int ssp_tok, int list_pos,
 }
 
 @h Inline phrases.
-On some platforms, notably Android, |inline| is a reserved word in some versions
-of |gcc|, so we need to be careful not to call any variables or structure members
+On some platforms, notably Android, `inline` is a reserved word in some versions
+of `gcc`, so we need to be careful not to call any variables or structure members
 by than name.
 
 @d NO_BLOCK_FOLLOWS 0 				/* this needs to be 0, to make if conditions work */
@@ -757,7 +762,7 @@ Javascript pasted form. One reason for this is to write entries in the
 Phrasebook Index, but another is to show what Inform was trying to do when
 issuing a Problem message: usually it has managed partially to match up the
 tokens in a phrase, and has a mostly-formed but incorrect invocation as
-a result. If such an invocation |inv| is supplied here, than the attempted
+a result. If such an invocation `inv` is supplied here, than the attempted
 match is shown.
 
 @d PASTE_PHRASE_FORMAT 1 /* in the insert-to-source text pasted by a button in the Index */

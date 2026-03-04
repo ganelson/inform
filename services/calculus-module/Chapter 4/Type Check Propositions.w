@@ -8,17 +8,17 @@ on the grounds that they violate type-checking requirements on relations --
 in this example, the equality relation.
 
 @ We can unambiguously find the kind of value of any constant $C$, so if a
-proposition's terms are all constant then type-checking is easy. ${\it is}(4, |score|)$
-good, ${\it is}(4, |"fish"|)$ bad. The subtlety comes in interpreting
+proposition's terms are all constant then type-checking is easy. ${\it is}(4, `score`)$
+good, ${\it is}(4, `"fish"`)$ bad. The subtlety comes in interpreting
 ${\it is}(4, x)$, where $x$ is a variable. Our calculus allows variables to
 range over many domains -- numbers, texts, scenes, objects, and so on.
 
 @h Problem reporting kit.
-The caller to |TypecheckPropositions::type_check| has to fill this form out first. Paperwork,
+The caller to `TypecheckPropositions::type_check` has to fill this form out first. Paperwork,
 what can you do, eh?
 
-@d DECLINE_TO_MATCH 1000 /* not one of the three legal |*_MATCH| values */
-@d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal |*_MATCH| values */
+@d DECLINE_TO_MATCH 1000 /* not one of the three legal `*_MATCH` values */
+@d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal `*_MATCH` values */
 
 =
 typedef struct tc_problem_kit {
@@ -51,7 +51,7 @@ tc_problem_kit TypecheckPropositions::tc_problem_logging(void) {
 }
 
 @h Type-checking whole propositions.
-This section provides a single routine to the rest of Inform: |TypecheckPropositions::type_check|.
+This section provides a single routine to the rest of Inform: `TypecheckPropositions::type_check`.
 We determine the kinds for all variables, then work through the proposition,
 ensuring that every predicate-like atom has terms which match at least one
 possible reading of the meaning of the atom.
@@ -97,14 +97,14 @@ Every specification compiled by Inform has to pass through type-checking.
 That includes the ones which occur as constants inside propositions, and this is
 where.
 
-The presence of an |UNKNOWN_NT| constant indicates something which failed to be
+The presence of an `UNKNOWN_NT` constant indicates something which failed to be
 recognised by the S-parser. That shouldn't happen, but we allow for it so that
 we can recover from an already reported problem.
 
 Perhaps surprisingly, we don't reject generic constants: this is so that
 sentences like
 
->> A thing usually weighs 10kg.
+> A thing usually weighs 10kg.
 
 ...can work -- here the generic constant for "thing" is treated as a noun,
 since it can be the subject of inferences all by itself. So it can legitimately
@@ -131,7 +131,7 @@ be a term in a proposition.
 		}
 	}
 
-@ If the proposition contains contradictory |KIND| atoms, it automatically fails
+@ If the proposition contains contradictory `KIND` atoms, it automatically fails
 type-checking, even if there is no implication that both apply at once. This
 throws out, for instance:
 = (text)
@@ -182,7 +182,7 @@ but it's a very subtle one, and we want to use it only when everything else
 variable (usually a free one). If so, it's assumed to be an object. For
 instance, if we define
 
->> Definition: a container is empty if the number of things in it is 0.
+> Definition: a container is empty if the number of things in it is 0.
 
 then we find that, say:
 = (text)
@@ -225,7 +225,7 @@ and can see the difference between "the bus is red" and "the fashionable hue
 is red", but it is defeated by cases where adjectives representing values are
 used about other values -- "the Communist Rally is red", where "Communist
 Rally" is a scene rather than an object, for instance. We first try requiring
-|Rally| to be a colour: when that fails, we see if the atom ${\it red}(|Rally|)$
+`Rally` to be a colour: when that fails, we see if the atom ${\it red}(`Rally`)$
 would work instead. If it would, we make the change within the proposition.
 
 @<A binary predicate is required to apply to terms of the right kinds@> =
@@ -393,7 +393,7 @@ int TypecheckPropositions::type_check_binary_predicate(pcalc_prop *pl, variable_
 
 @ Once again we treat any kind of object as just "object", but we do take
 note that some BPs -- like "is" -- specify no kinds at all, and so
-produce a |kinds_required| which is |NULL|.
+produce a `kinds_required` which is `NULL`.
 
 @<Work out what kinds we should have found@> =
 	for (int i=0; i<2; i++) {
@@ -467,7 +467,7 @@ void TypecheckPropositions::issue_kind_typecheck_error(kind *actually_find,
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_SYNTAX_CALLBACK`
 to some routine of her own, gazumping this one.
 
 @e BareKindVariable_CALCERROR from 1

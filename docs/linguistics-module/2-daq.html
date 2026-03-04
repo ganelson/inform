@@ -87,12 +87,9 @@ apply to many cases, and describes the quantity of cases for which the
 statement is true: all of them, some of them, exactly six, and so on.</p>
 <p>When a quantifier is used, it &quot;ranges over a domain&quot;. The domain is the
 set of cases. For instance, in:</p>
-</div>
 <blockquote>
-    <p>if most of the doors are open, ...</p>
+<p>if most of the doors are open, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the &quot;most of&quot; text is parsed into a quantifier written in the debugging
 log as <code>Proportion&gt;50%</code>, and the domain is the set of all doors. We then
 test the inner condition (&quot;open&quot;) for the objects in the domain.</p>
@@ -127,7 +124,7 @@ containers, for instance, where the parameter is 3 or 17 respectively.</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T_coefficient</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_complementary</span><span class="plain-syntax">; </span><span class="comment-syntax">/* tests the complement of the set, not the set of matches */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">can_be_used_in_now</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can be asserted true or false using "now" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">can_be_used_in_now</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can be asserted true or false using &quot;now&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">can_be_used_in_assertions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can be used in assertion sentences */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">negated_quant</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the logically converse determiner */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">log_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to be used in the debugging log when logging propositions */</span>
@@ -167,9 +164,9 @@ are stored in the <code>determiner</code> structure, and each one points to the
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">determiner</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allows_prefixed_not</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can the word "not" come before this? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allows_prefixed_not</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can the word &quot;not&quot; come before this? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_of_det</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which is allowed to be empty */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* does a number follow? (e.g. for "at least N" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* does a number follow? (e.g. for &quot;at least N&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quantifier_meant</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaning of this quantifier */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in the Phrasebook index lexicon */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
@@ -271,12 +268,9 @@ and how many do not. These counts are stored in local variables called
 <code>qcy_0</code>, <code>qcn_0</code> and so on: <code>qcn</code> means &quot;quantifier count number&quot; and is
 the size of the domain set, while <code>qcy</code> is the number of &quot;yes&quot; cases.
 Thus if the original source text read:</p>
-</div>
 <blockquote>
-    <p>if most of the closed doors are locked, ...</p>
+<p>if most of the closed doors are locked, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p><code>qcy_0</code> will be the number of closed doors which turned out to be locked
 and <code>qcn_0</code> the total number of closed doors. (The indices <code>_0</code>, <code>_1</code>, ...,
 are used because the same routine may have to compile code to test several
@@ -510,20 +504,14 @@ are tried before &quot;all&quot;.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  We look for a determiner at the start of a noun phrase; this can sometimes
 be followed by a number. For example,</p>
-</div>
 <blockquote>
-    <p>More than three doors</p>
+<p>More than three doors</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>matches &quot;more than&quot; from the selection above, then the number &quot;three&quot;.
 It's legal to include &quot;of the&quot;:</p>
-</div>
 <blockquote>
-    <p>three of the doors are open</p>
+<p>three of the doors are open</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>but not &quot;of&quot; on its own: this reduces misunderstandings when objects have
 names like &quot;three of clubs&quot;, meaning a single playing card.</p>
 </div>
@@ -536,12 +524,9 @@ names like &quot;three of clubs&quot;, meaning a single playing card.</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  English has an awkward ambiguity here: what does this mean?</p>
-</div>
 <blockquote>
-    <p>no one</p>
+<p>no one</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Inform would normally read this as the determiner &quot;no&quot; followed by the
 number &quot;one&quot;, not realising that &quot;one&quot; is more likely to refer to a
 kind (i.e., people and not things) rather than counting something. We want
@@ -605,12 +590,9 @@ quantifiers. So we end up with four: <code>ForAll</code>, <code>NotAll</code>, <
 <code>DoesNotExist</code>.</p>
 <p>The for-all quantifier can be used in assertions for a slightly oddball
 reason: it's how the source text makes assemblies. For instance,</p>
-</div>
 <blockquote>
-    <p>A nose is part of every person.</p>
+<p>A nose is part of every person.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The &quot;every&quot; is parsed as a use of <code>ForAll</code>. Strictly speaking this
 sentence should be read as creating a single nose which would be shared
 by all of the people. But the presence of a <code>ForAll</code> quantifier in an
@@ -621,12 +603,9 @@ part here is simply to authorise <code>ForAll</code> in assertions.)</p>
 <p>Something which English allows, but Inform does not, is the use of &quot;all&quot;
 in a way which also specifies a cardinality. For instance, the following
 condition:</p>
-</div>
 <blockquote>
-    <p>if all six doors are open, ...</p>
+<p>if all six doors are open, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is an attempt to use a determiner which Inform does not possess -- &quot;all&quot;
 plus number. We don't allow this because if there happen to be eight doors,
 say, the condition would be meaningless.</p>
@@ -726,12 +705,9 @@ quantifier is allowed in assertions: the assertion sentence &quot;Four coins are
 in the strongbox.&quot; is read as containing the <code>Card&gt;=4</code> quantifier, not
 <code>Card=4</code> one. The advantage of this is that two assertions in a row, such
 as</p>
-</div>
 <blockquote>
-    <p>Four coins are in the strongbox. Two coins are in the strongbox.</p>
+<p>Four coins are in the strongbox. Two coins are in the strongbox.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>can combine to put six coins in the strongbox, rather than having to be
 read as contradictory. (It may look improbable that anyone would ever
 write that, but of course the two assertions need not be adjacent in

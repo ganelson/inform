@@ -7,13 +7,13 @@ Each different genre of work managed by Inbuild is represented by an instance
 of the following structure. (At present, then, there are exactly seven
 instances of it: nothing the user can do at the command line can change
 that total.) A work unambiguously specifies what genre it has by means
-of a non-null pointer to |inbuild_genre|. Moreover, the rules for how Inbuild
+of a non-null pointer to `inbuild_genre`. Moreover, the rules for how Inbuild
 manages works of this genre are expressed by methods attached to the structure.
-For example, to copy a work, Inbuild calls the |GENRE_COPY_TO_NEST_MTID|
-method attached to its |inbuild_genre|.
+For example, to copy a work, Inbuild calls the `GENRE_COPY_TO_NEST_MTID`
+method attached to its `inbuild_genre`.
 
-Each genre has its own section of code: for example, |Kit Manager| defines
-the instance |kit_genre| and provides its method functions.
+Each genre has its own section of code: for example, `Kit Manager` defines
+the instance `kit_genre` and provides its method functions.
 
 =
 typedef struct inbuild_genre {
@@ -105,8 +105,8 @@ VOID_METHOD_TYPE(GENRE_WRITE_WORK_MTID,
 
 @ This looks at a textual file locator, which might be a pathname or a
 filename, to see if it might refer to a copy of a work of the given genre.
-If it does, an |inbuild_copy| is created, and the pointer |*C| is set to
-point to it. If not, no error is issued, and |*C| is left unchanged.
+If it does, an `inbuild_copy` is created, and the pointer `*C` is set to
+point to it. If not, no error is issued, and `*C` is left unchanged.
 
 Errors can, however, be produced if Inbuild is pretty sure that the object
 in the file system is intended to be such a copy, but is damaged in some way:
@@ -120,10 +120,10 @@ VOID_METHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID,
 	inbuild_genre *gen, inbuild_copy **C, text_stream *arg, text_stream *ext,
 	int directory_status)
 
-@ This searches the nest |N| for anything which (a) looks like a copy of a
+@ This searches the nest `N` for anything which (a) looks like a copy of a
 work of our genre, and (b) meets the given requirements. If a genre does
 not provide this method, then nothing of that genre can ever appear in
-|-matching| search results.
+`-matching` search results.
 
 @e GENRE_SEARCH_NEST_FOR_MTID
 
@@ -164,12 +164,12 @@ VOID_METHOD_TYPE(GENRE_CONSTRUCT_GRAPH_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 
 @ This method is called when a copy is about to be built or have its graph
-described, for example by |-graph|, |-build| and |-rebuild|. Nothing actually
+described, for example by `-graph`, `-build` and `-rebuild`. Nothing actually
 needs to be done, but if any work is needed before building can take place,
-now's the time; and the vertex to build from can be altered by setting |*V|.
+now's the time; and the vertex to build from can be altered by setting `*V`.
 (This is used to create upstream targets for Inform projects, such as the
-blorbed release version. It affects |-graph|, |-build| and |-rebuild| but
-is ignored for other inspection options such as |-use-missing|.)
+blorbed release version. It affects `-graph`, `-build` and `-rebuild` but
+is ignored for other inspection options such as `-use-missing`.)
 
 @e GENRE_BUILDING_SOON_MTID
 
@@ -177,9 +177,9 @@ is ignored for other inspection options such as |-use-missing|.)
 VOID_METHOD_TYPE(GENRE_BUILDING_SOON_MTID,
 	inbuild_genre *gen, inbuild_copy *C, build_vertex **V)
 
-@ This duplicates, or syncs, a copy |C| of a work in our genre, placing it
-at a canonical location inside the given nest |N|. In effect, it implements
-the Inbuild command-line options |-copy-to N| and |-sync-to N|.
+@ This duplicates, or syncs, a copy `C` of a work in our genre, placing it
+at a canonical location inside the given nest `N`. In effect, it implements
+the Inbuild command-line options `-copy-to N` and `-sync-to N`.
 
 @e GENRE_COPY_TO_NEST_MTID
 

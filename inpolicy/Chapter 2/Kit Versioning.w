@@ -2,7 +2,7 @@
 
 To ensure that the built-in kits share version numbers with the core compiler.
 
-@ This implements |-kit-versions|:
+@ This implements `-kit-versions`:
 
 =
 void KitVersioning::show_versions(void) {
@@ -15,7 +15,7 @@ void KitVersioning::show_versions(void) {
 	}
 }
 
-@ And |-sync-kit-versions|:
+@ And `-sync-kit-versions`:
 
 =
 void KitVersioning::sync_versions(void) {
@@ -64,11 +64,11 @@ void KitVersioning::show_version(pathname *P, text_stream *name, semantic_versio
 }
 
 @ The actual work, then, is done by this function, which returns the version
-number of the kit stored at the path |kit|; if |set_to| is other than null,
-the kit's version is changed to |set_to|, and this value returned. In both
+number of the kit stored at the path `kit`; if `set_to` is other than null,
+the kit's version is changed to `set_to`, and this value returned. In both
 cases, the kit's JSON metadata file is read in; in the second case, it is
 then written back out, modified to include the new version number. (Note
-that no file write occurs unless an actual change is needed: if |set_to|
+that no file write occurs unless an actual change is needed: if `set_to`
 is the same as the version it already has, there's no need to rewrite.)
 
 =
@@ -104,10 +104,10 @@ semantic_version_number KitVersioning::read_version(pathname *kit, semantic_vers
 	return V;
 }
 
-@ The following test used to be just |VersionNumbers::ne(set_to, V)|, but this,
+@ The following test used to be just `VersionNumbers::ne(set_to, V)`, but this,
 because it properly followed the semver standard, regarded them as equal if they
-differed only in the build code -- so |10.1.0-beta+6V20| would not be updated to
-|10.1.0-beta+6V44|, for example. We now force a sync if there is any textual
+differed only in the build code -- so `10.1.0-beta+6V20` would not be updated to
+`10.1.0-beta+6V44`, for example. We now force a sync if there is any textual
 difference at all.
 
 @<Decide whether to impose the new version@> =

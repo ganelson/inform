@@ -36,13 +36,13 @@ void RTPlayer::InitialSituation_define(int id, int val) {
 
 @ "Player" is set in an unusual way. That is, Inform does not compile
 
->> now the player is Mr Chasuble;
+> now the player is Mr Chasuble;
 
-to something like |player = O31_mr_chasuble|, as it would do for a typical
+to something like `player = O31_mr_chasuble`, as it would do for a typical
 variable. It's very important that code compiled by Inform 7 doesn't do
-this, because if executed it would break the invariants for |WorldModelKit|
+this, because if executed it would break the invariants for `WorldModelKit`
 variables about the current situation. The correct thing is always to call
-the function |ChangePlayer| instead:
+the function `ChangePlayer` instead:
 
 =
 void RTPlayer::player_schema(nonlocal_variable *nlv) {

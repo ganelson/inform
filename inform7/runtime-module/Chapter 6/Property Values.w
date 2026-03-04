@@ -111,7 +111,7 @@ int RTPropertyValues::visited_in_traverse(property *prn) {
 translation. But we don't want to hand the problem downstream to the code
 generator; we want to deal with it now. The issue arises with source text like:
 
->> A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be mentioned.
+> A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be mentioned.
 
 where "mentioned" is implemented for objects as an attribute in Inter.
 

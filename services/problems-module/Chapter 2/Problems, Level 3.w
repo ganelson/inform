@@ -73,7 +73,7 @@ void StandardProblems::internal_error_fn(void *T, char *p,
 }
 
 @ This second sort of internal error comes in two sub-versions, one using
-a |char *|, one a |text_stream *|.
+a `char *`, one a `text_stream *`.
 
 =
 void StandardProblems::internal_error_tu_fn(void *T, char *p,
@@ -148,7 +148,7 @@ void StandardProblems::nodal_check(parse_node_tree *T, parse_node *pn,
 }
 
 @ Nodal errors also turn up as the default clauses in switch statements which
-act on various selections of node types, and those use the |internal_error_on_node_type|
+act on various selections of node types, and those use the `internal_error_on_node_type`
 macro, which invokes the following:
 
 =

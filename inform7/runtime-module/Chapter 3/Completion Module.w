@@ -19,7 +19,7 @@ void CompletionModule::compile(void) {
 	@<Copyright licences@>;
 }
 
-@ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
+@ So, for example, these might be `10.1.0` and `10.1.0-alpha.1+6R84` respectively.
 
 @<Version number constant@> =
 	TEMPORARY_TEXT(vn)

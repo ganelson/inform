@@ -27,9 +27,9 @@ filename *IndexLocations::xml_headings_filename(void) {
 }
 
 @ And the following function determines the filename for a page in this
-mini-website. Filenames down in the |Details| area have the form |N_S| where
-|N| is an integer supplied and |S| the leafname; for instance, |21_A.html|
-provides details page number 21 about actions, derived from the leafname |A.html|.
+mini-website. Filenames down in the `Details` area have the form `N_S` where
+`N` is an integer supplied and `S` the leafname; for instance, `21_A.html`
+provides details page number 21 about actions, derived from the leafname `A.html`.
 
 =
 filename *IndexLocations::filename(text_stream *S, int N) {
@@ -45,7 +45,7 @@ filename *IndexLocations::filename(text_stream *S, int N) {
 }
 
 @ Within the Index is a deeper level, into the weeds as it were, called
-|Details|.
+`Details`.
 
 =
 pathname *IndexLocations::details_path(void) {

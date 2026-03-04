@@ -96,7 +96,7 @@ sense once kinds and instances exist.
 @h Translation into Unicode.
 The following sentence form is now deprecated:
 
->> leftwards harpoon with barb upwards translates into Unicode as 8636.
+> leftwards harpoon with barb upwards translates into Unicode as 8636.
 
 Until Inform 10.1, this equated a Unicode name to its code point value; see
 IE-0005 and //values: Unicode Literals// for what now happens instead.
@@ -309,7 +309,7 @@ int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *N
 @ The object noun phrase is usually just an I6 identifier in quotation marks,
 but it's also possible to list literal texts (for the benefit of rules).
 Following the optional "with" is an articled list, each entry of which
-will be required to pass |<extra-response>|.
+will be required to pass `<extra-response>`.
 
 =
 <translates-into-i6-sentence-object> ::=
@@ -351,7 +351,7 @@ will be required to pass |<extra-response>|.
 		return FALSE;
 	}
 
-@ If it turns out not to be, we simply set |valid| to false.
+@ If it turns out not to be, we simply set `valid` to false.
 
 @<Dequote it and see if it's valid@> =
 	int wn = Wordings::first_wn(Node::get_text(p2));
@@ -360,7 +360,7 @@ will be required to pass |<extra-response>|.
 	if (valid) valid = Identifiers::valid(Lexer::word_text(wn));
 
 @ In some cases, we act on pass 1, but in others pass 2, and in the case of
-|NOUN_I6TR|, later even than that. There are messy timing issues here.
+`NOUN_I6TR`, later even than that. There are messy timing issues here.
 
 @<Take action in pass 1 or 2 where possible@> =
 	switch(category) {
@@ -483,7 +483,7 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 	}
 }
 
-@ As noted above, |NOUN_I6TR| renamings happen much later on.
+@ As noted above, `NOUN_I6TR` renamings happen much later on.
 
 @<Act on late naming@> =
 	wording SP = Node::get_text(V->next);

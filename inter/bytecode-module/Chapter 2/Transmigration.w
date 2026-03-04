@@ -3,35 +3,35 @@
 The act of moving a package from one Inter tree to another.
 
 @ The design of Inter has all been leading up to this: how to move a body of
-material in one tree, the |migrant| package, into a different tree entirely,
-where it will become part of the |destination| package. Transmigration is
+material in one tree, the `migrant` package, into a different tree entirely,
+where it will become part of the `destination` package. Transmigration is
 how Inter merges material compiled at different times together. For example,
 when a Basic Inform project is compiled:
 
 - //inform7// compiles source text into tree 1 of Inter code.
 - //inter// loads a precompiled copy of BasicInformKit as tree 2.
-- The package |/main/BasicInformKit| in tree 2, really its entire substantive
-content, is transmigrated to |/main| in tree 1; it has become |/main/BasicInformKit|
+- The package `/main/BasicInformKit` in tree 2, really its entire substantive
+content, is transmigrated to `/main` in tree 1; it has become `/main/BasicInformKit`
 in tree 1. Tree 2 is left almost empty, and is discarded.
 - //inter// loads a precompiled copy of BasicInformKitExtras as tree 3.
-- A similar transmigration moves its content to become |/main/BasicInformKitExtras|
+- A similar transmigration moves its content to become `/main/BasicInformKitExtras`
 in tree 1, and the remains of tree 3 are discarded.
 
 @ Transmigration is a move, not a copy. The destination tree simply makes a node
-link to the subtree making up |migrant|: so, in principle, this is a fast process,
-but the devil is in the detail. The |migrant| matter may be full of references
+link to the subtree making up `migrant`: so, in principle, this is a fast process,
+but the devil is in the detail. The `migrant` matter may be full of references
 to other resources in the origin tree, and those have to be made good. Read
 //The Wiring// before tackling the algorithms below.
 
 Because the operation is a move and not a copy, the origin tree will probably
 be left with a gaping hole in it: its symbols may be wired to resources which
 are no longer there. It may be that the origin tree is going to be discarded
-anyway, so that this doesn't matter. If not, setting |tidy_origin| here will
+anyway, so that this doesn't matter. If not, setting `tidy_origin` here will
 spend some time and effort making it valid again.
 
-Note that the |/main| and |/main/connectors| packages of a tree cannot be
-transmigrated, and nor can the root package |/|. Anything else is fair game
-to be a |migrant| here.
+Note that the `/main` and `/main/connectors` packages of a tree cannot be
+transmigrated, and nor can the root package `/`. Anything else is fair game
+to be a `migrant` here.
 
 =
 typedef struct transmigration_details {
@@ -62,13 +62,13 @@ void Transmigration::move(inter_package *migrant, inter_package *destination,
 @ Both trees will have, at the root level, declarations of the Inter primitives
 and package types which they use. (See //building: Large-Scale Structure//.)
 Now, they will probably both declare exactly the same set of each: but just in
-case the |migrant| package uses primitives or package types not declared at
-the root of the |destination_tree|, we will need to declare those as extras,
-and we make the bookmarks |primitives_point| and |ptypes_point| to mark where
+case the `migrant` package uses primitives or package types not declared at
+the root of the `destination_tree`, we will need to declare those as extras,
+and we make the bookmarks `primitives_point` and `ptypes_point` to mark where
 such extra declarations would go.
 
-|deletion_point| and |insertion_point|, more straightforwardly, mark the
-position of the |migrant|'s head node in the origin tree before transmigration
+`deletion_point` and `insertion_point`, more straightforwardly, mark the
+position of the `migrant`'s head node in the origin tree before transmigration
 and in the destination tree afterwards.
 
 @<Initialise the transmigration details@> =
@@ -110,9 +110,9 @@ void Transmigration::comment(inter_bookmark *IBM, int level, text_stream *action
 
 @ This is the only point anywhere in the Inform tool chain where a node is moved
 between packages. What makes it tricky is that the symbol giving the name of the
-|migrant| package, which was in the original parent package's symbols table,
+`migrant` package, which was in the original parent package's symbols table,
 must be deleted. A new symbol with the same name must be created in the symbols
-table for the destination package, and the bytecode for the |package| instruction
+table for the destination package, and the bytecode for the `package` instruction
 at the node must be altered to conform with this. But when we are done, all is
 consistent again.
 
@@ -138,11 +138,11 @@ consistent again.
 @ That was the easy part. The migrant package is now inside the destination tree.
 Unfortunately:
 
-- |migrant| may contain symbols |S ~~> O| wired to symbols |O| still in the origin
-tree, because they lay outside |migrant|. This means the destination tree is now
+- `migrant` may contain symbols `S ~~> O` wired to symbols `O` still in the origin
+tree, because they lay outside `migrant`. This means the destination tree is now
 incorrect.
 
-- The origin tree may contain symbols |O ~~> S| wired to symbols |S| in the
+- The origin tree may contain symbols `O ~~> S` wired to symbols `S` in the
 migrant, which are therefore not in the origin tree any more. This means the origin
 tree is now incorrect.
 
@@ -152,7 +152,7 @@ tree is now incorrect.
 		InterTree::traverse(det.origin_tree, Transmigration::correct_origin, &det, NULL, 0);
 
 @ A further issue is that the original tree may have offered sockets for some
-of the definitions in |migrant|. For example, |migrant| might contain some
+of the definitions in `migrant`. For example, `migrant` might contain some
 useful function, which the origin tree was offering for linking. We want to
 make an equivalent socket in the destination tree for the same function.
 
@@ -180,7 +180,7 @@ to be socketed.
 
 @ The difficult case here is where the destination already has a socket of
 the same name. This would happen, for instance, if you transmigrated two kits
-in turn, and both of them provided a function called |OverlyEagerFn()|: the
+in turn, and both of them provided a function called `OverlyEagerFn()`: the
 first time, a socket would be made in the destination tree; but the second
 time we would find that a socket already existed.
 
@@ -217,17 +217,17 @@ existing socket here.)
 	DISCARD_TEXT(identifier)
 
 @ Okay, so now for the first cross-referencing fix. The following function traverses
-every node inside the |migrant| tree.
+every node inside the `migrant` tree.
 
 First, we amend any source file origin references in provenance instructions. For
-that to work, we need the instruction to have its original |P->tree| value,
+that to work, we need the instruction to have its original `P->tree` value,
 which records, for every node, the tree to which it belongs.
 
-But then we correct |P->tree|: the need to do this is why the traverse has to
-visit every node inside |migrant| (including its own head node). But we
-need to work out the |primitive| invoked first, because the interpretation of the
-bytecode in the invocation depends on |P->tree|, and will give a meaningful
-answer only if |P->tree| is still its original value.
+But then we correct `P->tree`: the need to do this is why the traverse has to
+visit every node inside `migrant` (including its own head node). But we
+need to work out the `primitive` invoked first, because the interpretation of the
+bytecode in the invocation depends on `P->tree`, and will give a meaningful
+answer only if `P->tree` is still its original value.
 
 But then there are only two cases of interest: primitive invocations, and package
 head nodes.
@@ -245,8 +245,8 @@ void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *st
 		@<This is the headnode of a subpackage of migrant@>;
 }
 
-@ Primitive invocations matter because, say, |inv !printnumber| in the migrant
-will contain a reference to the origin tree's definition of |!printnumber|; this
+@ Primitive invocations matter because, say, `inv !printnumber` in the migrant
+will contain a reference to the origin tree's definition of `!printnumber`; this
 must be converted to a reference to the destination's definition of the same thing.
 
 Note that we expect to perform this operation frequently -- there may be, say,
@@ -265,7 +265,7 @@ primitives round and around -- so we cache the results.
 		InvInstruction::write_primitive(det->destination_tree, P, equivalent_primitive);
 
 @ In the worst-case scenario, the destination might not even have a declaration
-of |!printnumber|. (Actually this is unlikely in practice, because we tend to make
+of `!printnumber`. (Actually this is unlikely in practice, because we tend to make
 the same set of primitive declarations in every tree.) In this case, we write a
 new declaration in the root package of the destination, duplicating the one in
 the root package of the origin.
@@ -327,7 +327,7 @@ to matching declarations in the destination.
 		NodePlacement::move_to_moving_bookmark(D, &(det->ptypes_point));
 	}
 
-@ Here |S| is some miscellaneous symbol in our subpackage of |migrant| -- it
+@ Here `S` is some miscellaneous symbol in our subpackage of `migrant` -- it
 can't be either a plug or a socket, since the connectors never migrate -- and
 there are three bad possibilities:
 
@@ -348,8 +348,8 @@ there are three bad possibilities:
 		}
 	}
 
-@ For example, |S| is wired to |WORDSIZE| in the origin tree, which is (let
-us say) a constant equal to 4. We wire it instead to |WORDSIZE| in the destination
+@ For example, `S` is wired to `WORDSIZE` in the origin tree, which is (let
+us say) a constant equal to 4. We wire it instead to `WORDSIZE` in the destination
 tree, which will also be equal to 4 because we only ever transmigrate between
 trees with the same Inter architecture.
 
@@ -362,12 +362,12 @@ trees with the same Inter architecture.
 	}
 	Wiring::wire_to(S, equivalent);					
 
-@ Here |S| is wired to a plug, and it must be a loose plug because |target| is
-the cable-end from |S|: if that cable ends in a plug, clearly the plug is not
-wired to a socket. That means it is wired to a name, |target ~~> "some_name"|.
-We wire |S| instead to a plug seeking |some_name| in the destination tree;
+@ Here `S` is wired to a plug, and it must be a loose plug because `target` is
+the cable-end from `S`: if that cable ends in a plug, clearly the plug is not
+wired to a socket. That means it is wired to a name, `target ~~> "some_name"`.
+We wire `S` instead to a plug seeking `some_name` in the destination tree;
 note that this may result in a new plug being made there, or may re-use an
-existing one already looking for (or indeed already having found) |"some_name"|.
+existing one already looking for (or indeed already having found) `"some_name"`.
 
 @<S is wired to a loose plug in the origin tree@> =
 	inter_symbol *equivalent = Transmigration::known_equivalent(target);
@@ -378,8 +378,8 @@ existing one already looking for (or indeed already having found) |"some_name"|.
 	}
 	Wiring::wire_to(S, equivalent);					
 
-@ Finally |S| may be wired to some ordinary symbol defined in the origin tree
-but outside of |migrant|. Well, that resource is now outside of the destination
+@ Finally `S` may be wired to some ordinary symbol defined in the origin tree
+but outside of `migrant`. Well, that resource is now outside of the destination
 tree: and this is exactly what plugs in the destination tree are for.
 
 @<S is wired to a miscellaneous symbol still in the origin tree@> =
@@ -393,11 +393,11 @@ tree: and this is exactly what plugs in the destination tree are for.
 @ Now time for the second sort of correction: references from the origin tree
 into the migrant. If we care about those, then we traverse so that the following 
 visits every node in the origin tree. Note that at this point the head node
-of |migrant| has been removed from the origin tree -- so this visitor can never
-visit anything inside |migrant|.
+of `migrant` has been removed from the origin tree -- so this visitor can never
+visit anything inside `migrant`.
 
-Note that we do not correct references from the origin tree's |/main/connectors|
-package, i.e., plugs and sockets wired to something in |migrant|; we handle
+Note that we do not correct references from the origin tree's `/main/connectors`
+package, i.e., plugs and sockets wired to something in `migrant`; we handle
 those separately (see above).
 
 =
@@ -417,7 +417,7 @@ void Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *sta
 	}
 }
 
-@ This is now symmetrical to the case above. |S| is wired to what is now a
+@ This is now symmetrical to the case above. `S` is wired to what is now a
 resource in a different tree, so it needs to be wired to a plug instead.
 
 @<S is wired to a symbol in the migrant@> =
@@ -456,10 +456,10 @@ void Transmigration::begin_cache_session(void) {
 	++current_transmigration_count;
 }
 
-@ This count is used only to see if the |cached_equivalent| symbol was set
+@ This count is used only to see if the `cached_equivalent` symbol was set
 during the current transmigration (rather than some previous one). Using this
 count is quicker, since it saves the time needed to walk through all existing
-symbols resetting the |cached_equivalent| fields to |NULL|.
+symbols resetting the `cached_equivalent` fields to `NULL`.
 
 =
 void Transmigration::learn_equivalent(inter_symbol *S, inter_symbol *V) {

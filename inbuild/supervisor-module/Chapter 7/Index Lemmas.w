@@ -36,10 +36,10 @@ be created later.)
 =
 typedef struct index_lemma {
 	struct categorised_term term; /* term of lemma */
-	struct linked_list *references; /* of |index_reference| */
-	struct linked_list *cross_references; /* of |index_cross_reference| */
+	struct linked_list *references; /* of `index_reference` */
+	struct linked_list *cross_references; /* of `index_cross_reference` */
 	struct text_stream *sorting_key; /* final reading order is alphabetic on this */
-	int lemma_source; /* one of the |*_LEMMASOURCE| constants */
+	int lemma_source; /* one of the `*_LEMMASOURCE` constants */
 	int categories_to_show; /* display the last N categories of the term (normally 1; 0 means skip this lemma entirely) */
 	CLASS_DEFINITION
 } index_lemma;
@@ -115,10 +115,10 @@ void IndexLemmas::scan_documentation(compiled_documentation *cd) {
 }
 
 @ The scanner works through the tree, tracking the currently enclosing volume,
-chapter or section heading, and example heading, in search of |INDEX_MARKER_MIT|
+chapter or section heading, and example heading, in search of `INDEX_MARKER_MIT`
 Markdown nodes. Note that the scan descends through examples only where they are
 underneath a subheading; that will be true for examples located in a section,
-but not for stand-alone ones, which do not have |INFORM_EXAMPLE_HEADING_MIT| nodes.
+but not for stand-alone ones, which do not have `INFORM_EXAMPLE_HEADING_MIT` nodes.
 
 =
 void IndexLemmas::scan_documentation_r(compiled_documentation *cd, markdown_item *md,
@@ -151,9 +151,9 @@ void IndexLemmas::scan_documentation_r(compiled_documentation *cd, markdown_item
 	}
 }
 
-@ Note that exactly one entry of source |EG_NAME_LEMMASOURCE| is made
+@ Note that exactly one entry of source `EG_NAME_LEMMASOURCE` is made
 per example, but that in addition a bonus entry can be made if the example
-file asks for it, of source |EG_ALT_LEMMASOURCE|.
+file asks for it, of source `EG_ALT_LEMMASOURCE`.
 
 @d BODY_LEMMASOURCE 0
 @d EG_NAME_LEMMASOURCE 1
@@ -166,9 +166,9 @@ void IndexLemmas::index_example_header(compiled_documentation *cd, cd_index_loca
 	IndexLemmas::make(cd, N, posn, NULL, lemma_source);
 }
 
-@ Every other entry will have source |BODY_LEMMASOURCE|, and will arise from an
-index-marker Markdown node, i.e., from a usage of |^{caret and braces}| in the
-documentation source. The node is |md|, and |posn| is where it lives.
+@ Every other entry will have source `BODY_LEMMASOURCE`, and will arise from an
+index-marker Markdown node, i.e., from a usage of `^{caret and braces}` in the
+documentation source. The node is `md`, and `posn` is where it lives.
 
 =
 void IndexLemmas::index_marker(compiled_documentation *cd, markdown_item *md,
@@ -190,7 +190,7 @@ void IndexLemmas::index_marker(compiled_documentation *cd, markdown_item *md,
 }
 
 @ Note that this is not a passive operation: we are modifying the stashed text
-inside the Markdown node. (And in some cases, |IndexTerms::parse_normalised_adjusting|
+inside the Markdown node. (And in some cases, `IndexTerms::parse_normalised_adjusting`
 modifies the plain node following it, too.)
 
 @<Parse the alphabetisation and see@> =

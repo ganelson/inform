@@ -35,8 +35,8 @@ void TokensElement::render(OUTPUT_STREAM, index_session *session) {
 }
 
 @ So, then, this function is sometimes called for the standard built-in tokens,
-in which case |special| is set, and sometimes for those created by source text,
-when |special| is null.
+in which case `special` is set, and sometimes for those created by source text,
+when `special` is null.
 
 =
 void TokensElement::token(OUTPUT_STREAM, inter_tree *I, char *special,

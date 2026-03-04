@@ -48,7 +48,7 @@ void RTMultimedia::compile_sounds(void) {
 	}
 }
 
-@ Files are made with the following agent, which makes a single |_external_file| package:
+@ Files are made with the following agent, which makes a single `_external_file` package:
 
 =
 void RTMultimedia::compilation_agent(compilation_subtask *t) {

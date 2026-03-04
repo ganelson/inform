@@ -8,7 +8,7 @@ noun phrases, with no contextual knowledge at all. In a sentence with only
 one plausible verb, this is not difficult: the verb in "Anna is a sailor"
 must be "is". But suppose we have:
 
->> The Fisher-Price carry cot is a container.
+> The Fisher-Price carry cot is a container.
 
 Is the verb "carry" or "is"? A human reader will more likely judge that a
 particular make of cot is being said to be a container (thus "is"), rather
@@ -85,7 +85,7 @@ int VerbPhrases::tracing(int A) {
 @ The following function is only recursive to at most one level. It's used either
 to parse a whole sentence, or is called from within itself to deal with the
 object phrase part of an existential sentence where the SP is defective.
-In the latter case, the call parameter |existential_OP_edge| will be the word
+In the latter case, the call parameter `existential_OP_edge` will be the word
 number of the last word which can be safely considered as a possible
 preposition.
 
@@ -134,7 +134,7 @@ are some example viability maps:
 
 The scoring system is:
 
-- Words definitely not part of a verb score 0 and are marked |--| above.
+- Words definitely not part of a verb score 0 and are marked `--` above.
 - Verb words outside brackets score 1, and inside brackets 2, except that
 - Words which are part of a negated verb other than "to be" score 3.
 
@@ -209,14 +209,14 @@ verb usage which might be part of a relative clause, in that it's preceded
 by a relative clause marker; on pass 2, should we ever get that far, this
 restriction is lifted. Thus for example in the sentence
 
->> A man who does not carry an octopus is happy.
+> A man who does not carry an octopus is happy.
 
 we would skip over the words of "does not carry" on pass 1 because they are
 preceded by "who". The reason we go on to pass 2 is not that relative clauses
 are ever allowed here: they aren't. It's that we might have misunderstood
 the relative clause marker. For example, in
 
->> Telling it that is gossipy behaviour.
+> Telling it that is gossipy behaviour.
 
 the "that" doesn't introduce a relative clause; "telling it that" is a
 well-formed noun phrase.
@@ -237,19 +237,19 @@ equal length, the earliest defined).
 						@<Seek verb usage at position pos@>;
 				}
 
-@ At this point |TW| is the tail of the wording: its first word is what we
+@ At this point `TW` is the tail of the wording: its first word is what we
 think might be the verb. For example, given
 
->> The coral snake is in the green bucket.
+> The coral snake is in the green bucket.
 
-we might have |TW| being "is in the green bucket".
+we might have `TW` being "is in the green bucket".
 
 @<Seek verb usage at position pos@> =
 	wording TW = Wordings::from(W, pos);
 	for (verb_usage *vu = tier->tier_contents; vu; vu = vu->next_within_tier)
 		@<Consider whether this usage is being made at this position@>;
 
-@ We must test whether our verb usage appears at the front of |TW|, though for
+@ We must test whether our verb usage appears at the front of `TW`, though for
 efficiency's sake we first test whether the verb has a meaning. (There are
 potentially a great many meaningless verbs, because of the way adaptive text
 is handled in Inform.)
@@ -274,7 +274,7 @@ is handled in Inform.)
 
 @ A further complication is that we will reject this usage if it occurs
 somewhere forbidden: for example, if a verb form is only allowed in an SVO
-configuration, we will ignore it if |TW| is the whole of |W|, because then the
+configuration, we will ignore it if `TW` is the whole of `W`, because then the
 verb would begin at the first word of the sentence. Conversely, if it is only
 allowed in an imperative VO configuration, it's required to be there.
 
@@ -291,8 +291,8 @@ flash cards".
 		if (pos > Wordings::first_wn(W)) break;
 	}		
 
-@ So now we know that the verb definitely appears. We form |ISW| as the
-wording for the subject phrase and |IOW| the object phrase. Adverbs of
+@ So now we know that the verb definitely appears. We form `ISW` as the
+wording for the subject phrase and `IOW` the object phrase. Adverbs of
 certainty are removed from these.
 
 @<Now we definitely have the verb usage at the front@> =
@@ -361,12 +361,12 @@ who is in the Dining Room" (note the additional "is"), it would.
 
 @ And that explains the following. If we have recursed on "There is a man
 who is in the Dining Room" then we are currently looking at "a man who is in
-the Dining Room", and have set the |SW| wording to "a man who". We want to
-trim away that "who" from the end of the |SW|.
+the Dining Room", and have set the `SW` wording to "a man who". We want to
+trim away that "who" from the end of the `SW`.
 
 @<If we have recursed in an existential sentence, trim any which@> =
 	if (existential_OP_edge > 0) /* i.e., if we have recursed */
-		if (<pre-verb-rc-marker>(SW)) { /* there is indeed a "which" at the end of |SW| */
+		if (<pre-verb-rc-marker>(SW)) { /* there is indeed a "which" at the end of `SW` */
 			SW = GET_RW(<pre-verb-rc-marker>, 1); /* so trim it off */
 		}
 
@@ -452,16 +452,16 @@ possible sense of the verb form (in this case "is" with no prepositions)
 is tried in turn: each one is asked, in effect, do you want this sentence?
 
 This is where, at last, special sentence meaning functions come into their
-own: they are called with the task |ACCEPT_SMFT| to see if they are willing
-to accept this sentence, whose noun phrases are stored in the |NPs| array.
-If they do want it, they should build the necessary diagram and return |TRUE|.
+own: they are called with the task `ACCEPT_SMFT` to see if they are willing
+to accept this sentence, whose noun phrases are stored in the `NPs` array.
+If they do want it, they should build the necessary diagram and return `TRUE`.
 
 For example, the special meaning of "to mean" occurring in:
 
->> Use American dialect means ...
+> Use American dialect means ...
 
 will only accept a subject phrase beginning with the word "use". The power to
-say no to |ACCEPT_SMFT| thus enables us to minimise confusions between special
+say no to `ACCEPT_SMFT` thus enables us to minimise confusions between special
 and regular meanings.
 
 If all the special meanings decline, we can fall back on a regular meaning,
@@ -498,7 +498,7 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording *NPs) 
 
 @ In effect, this is the sentence meaning function for all regular meanings.
 For example, "Darcy is proud" and "Darcy wears the hat" will both end up here.
-It is only ever called for task |ACCEPT_SMFT|, and it always accepts.
+It is only ever called for task `ACCEPT_SMFT`, and it always accepts.
 
 =
 int VerbPhrases::default_verb(int task, parse_node *V, verb_meaning *vm, wording *NPs) {
@@ -528,11 +528,11 @@ int VerbPhrases::default_verb(int task, parse_node *V, verb_meaning *vm, wording
 }
 
 @ See //About Sentence Diagrams//: the OP for a non-copular verb becomes a
-|RELATIONSHIP_NT| subtree, with relation reversed so that it is given from
+`RELATIONSHIP_NT` subtree, with relation reversed so that it is given from
 the point of view of the object, not the subject.
 
 For example, in "Darcy wears the hat", the OP "the hat" becomes a
-|RELATIONSHIP_NT| subtree with the relation "is worn by" -- from the hat's
+`RELATIONSHIP_NT` subtree with the relation "is worn by" -- from the hat's
 point of view, it is being worn.
 
 @<Insert a relationship subtree for the OP of a non-copular verb@> =
@@ -640,7 +640,7 @@ int VerbPhrases::allow_of_surgery(wording PW, wording OW) {
 
 @ "Location surgery" is needed to make sentences like the second one here work:
 
->> Anna is on the table and under the Ming Vase.
+> Anna is on the table and under the Ming Vase.
 
 It performs a transformation on the tree like so:
 
@@ -675,8 +675,8 @@ int VerbPhrases::perform_location_surgery(parse_node *p) {
 
 @h Called surgery.
 The following case is now, I believe, impossible, but once happened on phrases
-like "north of a room called the Hot and Cold Room" where a |CALLED_NT| and
-a |RELATIONSHIP_NT| had ended up the wrong way round. The code is retained
+like "north of a room called the Hot and Cold Room" where a `CALLED_NT` and
+a `RELATIONSHIP_NT` had ended up the wrong way round. The code is retained
 in case needed again in future.
 
 =

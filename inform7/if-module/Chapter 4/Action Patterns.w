@@ -38,13 +38,13 @@ parameter- rather than action-based rulebook.
 
 For example, the "reaching inside" rulebook in the Standard Rules applies to a
 single parameter object. When the author writes "Rule for reaching inside an
-open container", say, the applicability of this rule is an AP with |action_list|
-set to |NULL| but with |parameter_kind| set to |K_object|, and the tuple of
+open container", say, the applicability of this rule is an AP with `action_list`
+set to `NULL` but with `parameter_kind` set to `K_object`, and the tuple of
 clauses has just a single term: $({\it open}(c_p) \land{\it container}(c_p))$,
 where $c_p$ is the parameter variable.
 
 Such APs are called "parametric", and are actually the easiest to deal with
-by far. They have no |action_list|, no |duration|, and the tuple of clauses
+by far. They have no `action_list`, no `duration`, and the tuple of clauses
 is always just a single term. Non-parametric APs are said to be "action-based".
 
 @ All APs arise from parsing natural language text, and retain a memory
@@ -178,7 +178,7 @@ more specific than which others. For example, "taking the red fish" is more
 specific than "taking an animal" which is more specific than "taking or dropping
 a thing".
 
-This is a |strcmp|-like function for use in sorting algorithms.
+This is a `strcmp`-like function for use in sorting algorithms.
 
 =
 int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {

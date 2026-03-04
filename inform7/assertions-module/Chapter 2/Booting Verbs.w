@@ -12,7 +12,7 @@ by having a minimal "boot" program wired into the hardware.
 So too with Inform. The opening sentence of the Basic Inform extension, always
 the first sentence read in, is:
 
->> The verb to mean means the meaning relation.
+> The verb to mean means the meaning relation.
 
 (See //basic_inform: Preamble//.) But this is circular: if we have not yet
 defined "to mean", how can we recognise "means" as the verb, or know what it
@@ -29,13 +29,13 @@ void BootVerbs::make_built_in(void) {
 
 @ "Regular" meanings involve relations between two values: for example, carrying
 and numerical greater-than are both regular meanings, of the verbs "to carry"
-and |>| respectively.
+and `>` respectively.
 
 "Special" meanings are different. The noun phrases need not represent values,
 there need not be two of them, and the meaning can have internal significance
 to the Inform compiler. For example,
 
->> Black king chess piece translates into Unicode as 9818.
+> Black king chess piece translates into Unicode as 9818.
 
 is one of three special meanings of "to translate into". The //linguistics//
 module decides which if any is meant in a given case by calling the "special
@@ -59,7 +59,7 @@ As can be seen below, special meanings have priorities between 1 and 4. Note
 that "to mean" itself has both a special meaning (priority 3) and a regular
 meaning (priority 4). This is why the sentence:
 
->> The verb to mean means the meaning relation.
+> The verb to mean means the meaning relation.
 
 is not circular. It uses the special meaning of "mean" (priority 3) to create
 the regular one (4).

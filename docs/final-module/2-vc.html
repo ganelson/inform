@@ -156,16 +156,11 @@ in the tree:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6. </b>  Inter supports four sorts of arrays, with behaviour as laid out in this 2x2 grid:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">             | </span><span class="identifier-syntax">entries</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,...     | </span><span class="identifier-syntax">entry</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">then</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">N</span>
-<span class="constant-syntax">-</span><span class="plain-syntax">------------+-------------------------------+-----------------------------------------------</span>
-<span class="identifier-syntax">byte</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span><span class="plain-syntax"> | </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">             | </span><span class="constant-syntax">BUFFER_ARRAY_FORMAT</span>
-<span class="constant-syntax">-</span><span class="plain-syntax">------------+-------------------------------+-----------------------------------------------</span>
-<span class="identifier-syntax">word</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span><span class="plain-syntax"> | </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">             | </span><span class="constant-syntax">TABLE_ARRAY_FORMAT</span>
-<span class="constant-syntax">-</span><span class="plain-syntax">------------+-------------------------------+-----------------------------------------------</span>
-</pre>
-<div class="lsmarkdown">
+<pre><code>		 | entries count 0, 1, 2,...	 | entry 0 is N, then entries count 1, 2, ..., N
+</code></pre>
+<p>------------ | ----------------------------- | ----------------------------------------------
+byte entries | <code>BYTE_ARRAY_FORMAT</code>           | <code>BUFFER_ARRAY_FORMAT</code>
+word entries | <code>WORD_ARRAY_FORMAT</code>           | <code>TABLE_ARRAY_FORMAT</code></p>
 <p>Note that if an array assimilated from a kit has exactly one purported entry, then
 in fact this should be interpreted as being that many blank entries. This number
 must however be carefully evaluated, as it may be another constant name rather

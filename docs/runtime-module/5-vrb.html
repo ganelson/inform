@@ -82,7 +82,7 @@ of which the last is the default:</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* access as this Inter constant or global variable */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname_form</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* access as the Inter |nothing| constant */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* access as the Inter <code>nothing</code> constant */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing_form</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* access as this shared variable on the M-stack */</span>
@@ -295,7 +295,7 @@ example, <code>ChangePlayer(*2)</code> could be used in the above example.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nlv_name_translated</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has this been given storage as an I6 variable? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonlocal_variable_emission</span><span class="plain-syntax"> </span><span class="identifier-syntax">rvalue_nve</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonlocal_variable_emission</span><span class="plain-syntax"> </span><span class="identifier-syntax">lvalue_nve</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv_write_schema</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |NULL| for almost all variables */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv_write_schema</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>NULL</code> for almost all variables */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">var_is_initialisable_anyway</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaningful only if not stored in own iname */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">variable_compilation_data</span><span class="plain-syntax">;</span>
 
@@ -483,12 +483,9 @@ ways:</p>
 <p>If the variable has no known initial value, it is given the initial
 value for its kind where possible: but note that this may not be possible
 if the source text says something like</p>
-</div>
 <blockquote>
-    <p>Thickness is a kind of value. The carpet nap is a thickness that varies.</p>
+<p>Thickness is a kind of value. The carpet nap is a thickness that varies.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>without specifying any thicknesses. If that's so, the set of legal thickness
 values is empty, so the &quot;carpet nap&quot; variable cannot be created in a way
 which makes its kind safe.</p>

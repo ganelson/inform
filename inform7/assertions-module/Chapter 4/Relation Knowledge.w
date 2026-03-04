@@ -5,8 +5,8 @@ objects or values.
 
 @h Relationship nodes.
 Here we have a relationship between subtrees $T_X$ and $T_Y$, where $T_X$
-must be a list of values or objects (joined into an |AND_NT| tree), and
-$T_Y$ must be a |RELATIONSHIP_NT| subtree -- which is usually a node
+must be a list of values or objects (joined into an `AND_NT` tree), and
+$T_Y$ must be a `RELATIONSHIP_NT` subtree -- which is usually a node
 annotated with the predicate meant, and beneath that another list of
 objects or values, but there are two exceptional cases to take care of.
 
@@ -113,9 +113,9 @@ void Assertions::Relational::substitute_at_node(parse_node *p) {
 	Refiner::give_spec_to_noun(p, spec);
 }
 
-@ So the majority case above calls |Assertions::Relational::assert_relation_between_subtrees| to say
+@ So the majority case above calls `Assertions::Relational::assert_relation_between_subtrees` to say
 that subtrees $T_X$ and $T_Y$, where $T_X$ is a single value or object and
-$T_Y$ is a list of values or objects (joined into an |AND_NT| tree).
+$T_Y$ is a list of values or objects (joined into an `AND_NT` tree).
 
 =
 void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, binary_predicate *bp, parse_node *py) {

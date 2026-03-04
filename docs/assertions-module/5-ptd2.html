@@ -82,7 +82,7 @@ adjusted for an inline definition (if that's the kind of definition this is).</p
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ParsingIDTypeData::parse</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ParsingIDTypeData::parse</span></span>:<br/>To Phrase Family - <a href="5-tpf.html#SP7">&#167;7</a>, <a href="5-tpf.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">id_type_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this going to be a "say" phrase? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this going to be a &quot;say&quot; phrase? */</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">XW</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">XW</span><span class="plain-syntax"> = </span><a href="5-ptd2.html#SP3" class="function-link"><span class="function-syntax">ParsingIDTypeData::phtd_parse_return_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">XW</span><span class="plain-syntax">);        </span><span class="comment-syntax">/* trim return from the front */</span>
@@ -149,16 +149,13 @@ language altogether, but there we are; spilt milk.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Return data.</b>  As with C type declarations for functions, Inform phrase prototypes put their
 return kinds up at the front, not the back. So we'll parse that first.</p>
-<p>Note that &lt;k-kind-prototype&gt; parses &lt;k-kind&gt;, but in a mode which causes
+<p>Note that <k-kind-prototype> parses <k-kind>, but in a mode which causes
 the kind variables to be read as formal prototypes and not as their values.
 This allows for tricky definitions like:</p>
-</div>
 <blockquote>
-    <p>To decide which K is (name of kind of value K) which relates to (Y - L) by (R - relation of Ks to values of kind L)</p>
+<p>To decide which K is (name of kind of value K) which relates to (Y - L) by (R - relation of Ks to values of kind L)</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>where &lt;k-kind-prototype&gt; needs to recognise &quot;K&quot; even though the tokens
+<p>where <k-kind-prototype> needs to recognise &quot;K&quot; even though the tokens
 haven't yet been parsed, so that we don't yet know it will be meaningful.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DEC_RANN</span> <span class="constant-syntax">1</span>
@@ -322,7 +319,7 @@ the end off the wording given.</p>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;deprecated&gt;&gt;</span><span class="plain-syntax">) </span><a href="5-ptd.html#SP16" class="function-link"><span class="function-syntax">IDTypeData::deprecate_phrase</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">idtd</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">blk</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_BLOCK_FOLLOWS</span><span class="plain-syntax">, </span><span class="identifier-syntax">only_in</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "nothing unusual" defaults */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">blk</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_BLOCK_FOLLOWS</span><span class="plain-syntax">, </span><span class="identifier-syntax">only_in</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;nothing unusual&quot; defaults */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCK_ANN:</span><span class="plain-syntax">         </span><span class="identifier-syntax">blk</span><span class="plain-syntax"> = </span><span class="constant-syntax">MISCELLANEOUS_BLOCK_FOLLOWS</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONDITIONAL_ANN:</span><span class="plain-syntax">   </span><span class="identifier-syntax">blk</span><span class="plain-syntax"> = </span><span class="constant-syntax">CONDITIONAL_BLOCK_FOLLOWS</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -436,7 +433,7 @@ form the word and token sequences:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">registration_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">Wordings::last_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_to_add</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* redundant assignment to keep |gcc| happy */</span>
+<span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_to_add</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* redundant assignment to keep <code>gcc</code> happy */</span>
 <span class="plain-syntax">        </span><span class="function-syntax">&lt;phrase-definition-word-or-token&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::from</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT_APPLICABLE:</span><span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a problem message has been issued */</span>
@@ -592,23 +589,17 @@ form the word and token sequences:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2. </b>  This following process is much less mysterious than it sounds. Suppose we
 have the phrase:</p>
-</div>
 <blockquote>
-    <p>To add (purchase - K) to (shopping list - list of arithmetic values of kind K): ...</p>
+<p>To add (purchase - K) to (shopping list - list of arithmetic values of kind K): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This tells us that the matcher should accept any list of arithmetic values,
 and then set K equal to the kind of the entries, and require that the purchase
 agree. According to the <code>declarations</code> array already made, K is declared as a
 kind of &quot;arithmetic value&quot;. What the code in this paragraph does is to change
 the <code>to_match</code> specifications as if the phrase had read:</p>
-</div>
 <blockquote>
-    <p>To add (purchase - arithmetic value) to (shopping list - list of arithmetic values): ...</p>
+<p>To add (purchase - arithmetic value) to (shopping list - list of arithmetic values): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In other words, we substitute &quot;arithmetic value&quot; in place of K, and thus get
 rid of variables from the match specifications entirely. We can safely do
 this because the <code>token_kind</code> for these two tokens remain
@@ -652,12 +643,9 @@ lots of straightforward kinds, such as &quot;list of numbers&quot;, it returns 0
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1. </b>  We count how many times each variable appears. It should be given a domain
 in exactly one place: for example,</p>
-</div>
 <blockquote>
-    <p>To amaze (alpha - an arithmetic value of kind K) with (beta - an enumerated value of kind K): ...</p>
+<p>To amaze (alpha - an arithmetic value of kind K) with (beta - an enumerated value of kind K): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>produces the following problem, because the domain of K has been given twice.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">A kind variable has been found</span><span class="named-paragraph-number">10.1</span></span> =</p>
@@ -680,12 +668,9 @@ in exactly one place: for example,</p>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The syntax for the body of a phrase definition is that it's a sequence of
 fixed single words, which are not brackets, and bracketed token definitions,
 occurring in any quantity and any order. For example:</p>
-</div>
 <blockquote>
-    <p>begin the (A - activity on value of kind K) activity with (val - K)</p>
+<p>begin the (A - activity on value of kind K) activity with (val - K)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is a sequence of word, word, token, word, word, token.</p>
 <p>For implementation convenience, we write a grammar which splits off the next
 piece of the definition from the front of the text. In production (e), it's
@@ -850,7 +835,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ptd2.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  This nonterminal simply wraps &lt;k-kind-as-name-token&gt; up as a specification.</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  This nonterminal simply wraps <k-kind-as-name-token> up as a specification.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-kind-as-name-token&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>

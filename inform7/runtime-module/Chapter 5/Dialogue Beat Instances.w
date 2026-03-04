@@ -3,7 +3,7 @@
 To compile any dialogue details in the instances submodule.
 
 @h Compilation data for dialogue beats.
-Each |dialogue_beat| object contains this data:
+Each `dialogue_beat` object contains this data:
 
 =
 typedef struct dialogue_beat_compilation_data {

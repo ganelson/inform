@@ -22,7 +22,7 @@ typedef struct auxiliary_file {
 The format text is set to a lower-case version of the filename extension,
 and the URL to the filename itself; except when there is no extension, so
 that the auxiliary resource is a mini-website in a subfolder of the release
-website. In that case the format is |link| and the URL is to the index file
+website. In that case the format is `link` and the URL is to the index file
 in the subfolder.
 
 =
@@ -67,7 +67,7 @@ void Links::get_leafname_from_textual_filename(OUTPUT_STREAM, text_stream *filen
 }
 
 @h Linking.
-The list of links to auxiliary resources is written using |<li>...</li>|
+The list of links to auxiliary resources is written using `<li>...</li>`
 list entry tags, for convenience of CSS styling.
 
 =

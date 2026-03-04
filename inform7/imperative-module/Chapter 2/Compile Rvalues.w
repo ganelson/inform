@@ -199,12 +199,12 @@ names. The curiosity here is that it's legal to store the nameless negation
 of an either/or property in a "property" constant. This was purely so that
 the following ungainly syntax works:
 
->> change X to not P;
+> change X to not P;
 
 Which is now gone anyway, in favour of "now", where all this is handled
 better. The feature, if we can call it that, probably derives from the fact
-that Inform 6 allows an attribute |attr| can be negated in sense in several
-contexts by using a tilde: |~attr|.
+that Inform 6 allows an attribute `attr` can be negated in sense in several
+contexts by using a tilde: `~attr`.
 
 @<Compile property constants@> =
 	property *prn = Rvalues::to_property(value);
@@ -385,7 +385,7 @@ inter_pair CompileRvalues::compile_understanding(wording W) {
 
 @ Explicit actions can be compiled either as a "try" invocation or as the
 constant value of a stored action. Either way it calls the runtime function
-|TryAction|, for which see //WorldModelKit//; this function takes five
+`TryAction`, for which see //WorldModelKit//; this function takes five
 arguments, plus an optional sixth for where to store rather than process the
 action.
 
@@ -431,8 +431,8 @@ void CompileRvalues::compile_explicit_action(explicit_action *ea, int as_value) 
 }
 
 @ Which requires the following. Note that if the action expects to see a
-|K_understanding|, then we typecheck in a way which will not cause an unwanted
-silent cast to |K_text|; but type-safety is not violated.
+`K_understanding`, then we typecheck in a way which will not cause an unwanted
+silent cast to `K_text`; but type-safety is not violated.
 
 =
 void CompileRvalues::compile_ea_parameter(parse_node *term, kind *required_kind) {

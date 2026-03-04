@@ -4,7 +4,7 @@ CGs are list of CG lines, which are lists of CG tokens.
 
 @h Introduction.
 Until 2021, CG tokens were held as parse nodes in the syntax tree, with a
-special type |TOKEN_NT| and a set of annotations, but as cute as that was
+special type `TOKEN_NT` and a set of annotations, but as cute as that was
 it was also obfuscatory, and now each CG token corresponds to a //cg_token//
 object as follows:
 
@@ -12,7 +12,7 @@ object as follows:
 typedef struct cg_token {
 	struct wording text_of_token;
 	int grammar_token_code;
-	struct parse_node *what_token_describes; /* 0 or else one of the |*_GTC| values */
+	struct parse_node *what_token_describes; /* 0 or else one of the `*_GTC` values */
 	struct binary_predicate *token_relation;
 	struct noun_filter_token *noun_filter;
 	struct command_grammar *defined_by;
@@ -46,7 +46,7 @@ become commas:
 "drill" , something , "with" , something
 =
 In fact we use a different punctuation set from the lexer's default, because
-we want forward slashes to break words, so that we need |/| to be a punctuation
+we want forward slashes to break words, so that we need `/` to be a punctuation
 mark: thus "get away/off/out" becomes
 = (text)
 "get" "away" / "off" / "out"
@@ -190,8 +190,8 @@ cg_token *CGTokens::break_into_tokens_r(cg_token *list, wording W) {
 	return list;
 }
 
-@ If |list| represents the head of the list (and is |NULL| for an empty list),
-this adds |cgt| at the end and returns the new head.
+@ If `list` represents the head of the list (and is `NULL` for an empty list),
+this adds `cgt` at the end and returns the new head.
 
 =
 cg_token *CGTokens::add_to_list(cg_token *cgt, cg_token *list) {
@@ -213,8 +213,8 @@ wording CGTokens::text(cg_token *cgt) {
 
 @h The GTC.
 The GTC, or grammar token code, is a sort of type indicator for tokens. As
-produced by the tokeniser above, tokens initially have GTC either |UNDETERMINED_GTC|
-or |LITERAL_GTC|. Differentiation of non-literal tokens into other types happens
+produced by the tokeniser above, tokens initially have GTC either `UNDETERMINED_GTC`
+or `LITERAL_GTC`. Differentiation of non-literal tokens into other types happens
 in //CGTokens::determine//.
 
 Note that there are two sets of GTC values, one set positive, one negative. The
@@ -231,14 +231,14 @@ generating I6 code.
 
 @d UNDETERMINED_GTC 0
 
-@d NOUN_TOKEN_GTC -1        /* like I6 |noun| */
-@d MULTI_TOKEN_GTC -2       /* like I6 |multi| */
-@d MULTIINSIDE_TOKEN_GTC -3 /* like I6 |multiinside| */
-@d MULTIHELD_TOKEN_GTC -4   /* like I6 |multiheld| */
-@d HELD_TOKEN_GTC -5        /* like I6 |held| */
-@d CREATURE_TOKEN_GTC -6    /* like I6 |creature| */
-@d TOPIC_TOKEN_GTC -7       /* like I6 |topic| */
-@d MULTIEXCEPT_TOKEN_GTC -8 /* like I6 |multiexcept| */
+@d NOUN_TOKEN_GTC -1        /* like I6 `noun` */
+@d MULTI_TOKEN_GTC -2       /* like I6 `multi` */
+@d MULTIINSIDE_TOKEN_GTC -3 /* like I6 `multiinside` */
+@d MULTIHELD_TOKEN_GTC -4   /* like I6 `multiheld` */
+@d HELD_TOKEN_GTC -5        /* like I6 `held` */
+@d CREATURE_TOKEN_GTC -6    /* like I6 `creature` */
+@d TOPIC_TOKEN_GTC -7       /* like I6 `topic` */
+@d MULTIEXCEPT_TOKEN_GTC -8 /* like I6 `multiexcept` */
 
 =
 int CGTokens::is_literal(cg_token *cgt) {
@@ -257,7 +257,7 @@ int CGTokens::is_topic(cg_token *cgt) {
 }
 
 @ A multiple token is one which permits multiple matches in the run-time command
-parser: for instance, the player can type ALL where a |MULTI_TOKEN_GTC| is
+parser: for instance, the player can type ALL where a `MULTI_TOKEN_GTC` is
 expected.
 
 =
@@ -302,7 +302,7 @@ void CGTokens::log(cg_token *cgt) {
 
 @h Parsing nonliteral tokens.
 Unless a token is literal and in double-quotes, it will start out as having
-|UNDETERMINED_GTC| until we investigate what the words in it mean, which we
+`UNDETERMINED_GTC` until we investigate what the words in it mean, which we
 will do with the following Preform grammar.
 
 Note that <grammar-token> always matches any text, even if it sometimes throws
@@ -470,9 +470,9 @@ void CGTokens::incompatible_change_problem(char *token_tried, char *token_instea
 To calculate a description of what is being described by a token, then, we
 call the following function, which delegates to <grammar-token> above.
 
-In the two cases |NAMED_TOKEN_GTC| and |RELATED_GTC| the pointer result is
+In the two cases `NAMED_TOKEN_GTC` and `RELATED_GTC` the pointer result is
 a temporary one telling us which named token, and which relation, respectively:
-we then convert those into the result. In all other cases, the |parse_node|
+we then convert those into the result. In all other cases, the `parse_node`
 pointer returned by <grammar-token> is the result.
 
 =
@@ -521,7 +521,7 @@ parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 
 @ If the token determines an actual constant value -- as it can when it is a
 named token which always refers to a specific thing, for example -- it is
-possible for |result| not to be a description. Otherwise, though, it has to
+possible for `result` not to be a description. Otherwise, though, it has to
 be a description which is true or false for any given value, so:
 
 @<Make sure the result is a description with one free variable@> =
@@ -558,7 +558,7 @@ be a description which is true or false for any given value, so:
 @h Scoring.
 This score is needed when sorting CG lines in order of applicability: see the
 discussion at //CGLines::cgl_determine//. The function must return a value
-which is at least 0 but strictly less than |CGL_SCORE_TOKEN_RANGE|. The
+which is at least 0 but strictly less than `CGL_SCORE_TOKEN_RANGE`. The
 general idea is that higher scores cause tokens to take precedence over lower
 ones.
 
@@ -583,7 +583,7 @@ int CGTokens::score_bonus(cg_token *cgt) {
 
 @h Verification.
 This function checks that it's okay to compile the given token, and returns the
-kind of value produced, if any is, or |NULL| if it isn't. The kind returned is
+kind of value produced, if any is, or `NULL` if it isn't. The kind returned is
 not significant if a problem is generated.
 
 =

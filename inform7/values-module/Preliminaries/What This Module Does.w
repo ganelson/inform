@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than just `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -26,12 +26,12 @@ describing data in general, and this involves a wide range of concepts:
 literals, named constants, variables, conditions, descriptions and so on. 
 The umbrella term we will use is "specification", for want of anything better.
 
-Until around 2016, the Inform source had a C type called |type_specification|,
+Until around 2016, the Inform source had a C type called `type_specification`,
 since it had its origins in specifying the "type" of phrase tokens,[2] but "type
-specification" was never a happy phrase, and coding with |type_specification|
+specification" was never a happy phrase, and coding with `type_specification`
 was never really satisfactory. It has now been removed, and what we now call just
 "specifications" are stored directly as fragments of the parse tree: that is,
-as |parse_node| pointers. This new scheme removed complexity,[3] and is faster,
+as `parse_node` pointers. This new scheme removed complexity,[3] and is faster,
 while consuming less memory. There are demerits too,[4] but the die is cast.
 
 [1] Though, for example: are functions values? How about pointers to functions?
@@ -45,12 +45,12 @@ or descriptions as well as rvalues. The "type" of such a token must therefore
 be broader than simply a kind, because only values have kinds.
 
 [3] A fairly convoluted conversion layer of code once existed in order to
-turn pieces of parse tree into |type_specification| objects, but that entire
+turn pieces of parse tree into `type_specification` objects, but that entire
 layer has now gone, and all of its bugs and edge cases went with it.
 
-[4] The main demerit is that while all specifications are |parse_node|s, not
-all |parse_node|s are specifications -- chapter subheadings, for example. So
-the use of the |parse_node| type in source code does not communicate whether
+[4] The main demerit is that while all specifications are `parse_node`s, not
+all `parse_node`s are specifications -- chapter subheadings, for example. So
+the use of the `parse_node` type in source code does not communicate whether
 we're trying to work with specifications, or doing general parsing.
 
 @ Given that these disparate ideas are hard to unify, it might seem clearer
@@ -68,7 +68,7 @@ requirements inside the Inform source code.
 @h Taxonomy.
 Specifications fall into four categories: rvalues, lvalues, conditions and
 descriptions. Various functions, such as //Specifications::is_condition//,
-exist to determine whether a given |parse_node| is one of these.
+exist to determine whether a given `parse_node` is one of these.
 
 @ "Rvalues" specify pieces of data at run-time. Numbers, texts and instances
 are all examples of rvalues, but so are usages of phrases to decide
@@ -76,7 +76,7 @@ values (i.e., function calls). See //Rvalues//.
 
 These mostly come from parsing source text, but we can also manufacture them
 directly. If we need the number 17 as a constant, for example, we can call
-//Rvalues::from_int// to make a suitable |parse_node|, even if "17" is never
+//Rvalues::from_int// to make a suitable `parse_node`, even if "17" is never
 mentioned in the source text read in. And a wide range of other functions
 exist to make constant rvalues of all kinds: //Rvalues::from_Unicode//,
 for example.
@@ -85,29 +85,29 @@ for example.
 See //Lvalues//.
 
 Functions such as //Lvalues::new_LOCAL_VARIABLE// allow us to take
-a |local_variable| pointer and make an lvalue from it.
+a `local_variable` pointer and make an lvalue from it.
 
 These traditional computer-science terms, "lvalue" and "rvalue", are based
-on L for left, R for right, in an assignment operation like |v = 5|.
-Here |v| is on the left and is an l-value: it's a variable, that is, a named
-place to store data. The |5| is an r-value, and is the data which will be
-stored. Of course, |v| can also occur on the right, as in the assignment
-|w = v| where one variable is copied into another. But in this source code
-we would call |v| an lvalue wherever it appears -- we mean only that it has
+on L for left, R for right, in an assignment operation like `v = 5`.
+Here `v` is on the left and is an l-value: it's a variable, that is, a named
+place to store data. The `5` is an r-value, and is the data which will be
+stored. Of course, `v` can also occur on the right, as in the assignment
+`w = v` where one variable is copied into another. But in this source code
+we would call `v` an lvalue wherever it appears -- we mean only that it has
 the potential to be written to.[1]
 
 [1] We have to treat lvalues in this slightly unusual way because, contrary to
 C-like languages, we have no syntactic way to mark that the name of a variable
-means its value rather than its identity -- in C, this would be |name| versus
-|&name|, with the "pointer to" marker |&| distinguishing the cases. We must
-instead look to the context. Even C sometimes does that -- when C writes |v = 5|,
-it would arguably be more consistent to say something like |store(&v, 5)|.
+means its value rather than its identity -- in C, this would be `name` versus
+`&name`, with the "pointer to" marker `&` distinguishing the cases. We must
+instead look to the context. Even C sometimes does that -- when C writes `v = 5`,
+it would arguably be more consistent to say something like `store(&v, 5)`.
 
 @ "Conditions" express a state of being which might, or might not, be true:
 Inform allows these to be tested with "if" and brought about with "now".
 
 Whereas in C-like languages conditions are rvalues and vice versa --
-you can write |a = b == c|, or |if (7)| -- this often feels a little rum,
+you can write `a = b == c`, or `if (7)` -- this often feels a little rum,
 and in natural language even more so. In Inform, then, a condition is not an
 rvalue, and an rvalue is not a condition.
 
@@ -163,7 +163,7 @@ for details. But we will also want //Literal Lists// in braces, //Unicode Litera
 for character names, and //Times of Day//; and also user-defined notations
 for user-defined kinds. For example:
 
->> 16:9 specifies an aspect ratio.
+> 16:9 specifies an aspect ratio.
 
 would establish a new notation for the kind "aspect ratio", supposing that
 had already been created. See //Literal Patterns//.

@@ -8,7 +8,7 @@ which use this module:
 
 @d MULTIMEDIA_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function.
+@ Like all modules, this one must define a `start` and `end` function.
 
 Note that the "multimedia" feature itself does nothing except to be a parent
 to the other three; it doesn't even have an activation function.

@@ -5,7 +5,7 @@ or from the main source text file, and fed into the lexer.
 
 @h Source files.
 Each separate file of text read into the lexer has its identity docketed
-in a |source_file| structure, as follows.
+in a `source_file` structure, as follows.
 
 =
 typedef struct source_file {
@@ -75,8 +75,8 @@ other is in Lexical Writing Back.w: see Lexer.w for its obligations.
 
 We feed characters from an open file into the lexer, and continue until there
 is nothing left in it. Inform is used on operating systems which between them
-use all four of the sequences |0a|, |0d|, |0a0d| and |0d0a| to divide lines in
-text files, so each of these is converted to a single |'\n'|. Tabs are treated
+use all four of the sequences `0a`, `0d`, `0a0d` and `0d0a` to divide lines in
+text files, so each of these is converted to a single `'\n'`. Tabs are treated
 as if spaces in most contexts, but not when parsing formatted tables, for
 instance, so they are not similarly converted.
 
@@ -104,15 +104,15 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 			switch(cr) {
 				case '\x0a':
 					if (newline_char == '\x0d') {
-						newline_char = 0; continue; /* suppress |0x000A| when it follows |0x000D| */
+						newline_char = 0; continue; /* suppress `0x000A` when it follows `0x000D` */
 					}
-					newline_char = cr; cr = '\n'; /* and otherwise convert to |'\n'| */
+					newline_char = cr; cr = '\n'; /* and otherwise convert to `'\n'` */
 					break;
 				case '\x0d':
 					if (newline_char == '\x0a') {
-						newline_char = 0; continue; /* suppress |0x000D| when it follows |0x000A| */
+						newline_char = 0; continue; /* suppress `0x000D` when it follows `0x000A` */
 					}
-					newline_char = cr; cr = '\n'; /* and otherwise convert to |'\n'| */
+					newline_char = cr; cr = '\n'; /* and otherwise convert to `'\n'` */
 					break;
 				default:
 					newline_char = 0;
@@ -224,7 +224,7 @@ text_stream *TextFromFiles::torn_off_documentation(source_file *sf) {
 }
 
 @ Finally, we translate between the tiresomely many representations of
-files we seem to be stuck with. The method used by |TextFromFiles::filename_to_source_file|
+files we seem to be stuck with. The method used by `TextFromFiles::filename_to_source_file`
 looks vulnerable to case-insensitive filename issues, but isn't, because
 each filename is present in Inform in only one form.
 

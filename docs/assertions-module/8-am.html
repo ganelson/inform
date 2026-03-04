@@ -147,9 +147,9 @@ I6 schema to carry out one of three tasks, <code>TEST_ATOM_TASK</code>,
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">adjective_task_data</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_mode</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_TASKMODE| constants: see below */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">call_to_support_function</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where |TRUE| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_to_perform</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where |TRUE| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_mode</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_TASKMODE</code> constants: see below */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">call_to_support_function</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where <code>TRUE</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_to_perform</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where <code>TRUE</code> */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">adjective_task_data</span><span class="plain-syntax">;</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::initialise_task_data</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::initialise_task_data</span></span>:<br/><a href="8-am.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">adjective_task_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">atd</span><span class="plain-syntax">) {</span>
@@ -301,12 +301,9 @@ and here goes. All of these methods are optional.</p>
 <p><code>CLAIM_DEFINITION_SENTENCE_ADJM_MTID</code> is an opportunity to say that a
 definition in the source text is asking for this kind of adjective.
 Suppose the source has a line like so:</p>
-</div>
 <blockquote>
-    <p>Definition: A ... (called ...) is ... if ...</p>
+<p>Definition: A ... (called ...) is ... if ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In place of the ellipses are respectively <code>DNW</code> (domain wording), <code>CALLW</code>
 (the calling), <code>AW</code> (the adjective) and <code>CONW</code> (the condition). <code>sense</code> is
 either 1, meaning that &quot;if&quot; was used (the condition has positive sense);

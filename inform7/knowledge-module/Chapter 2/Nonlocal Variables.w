@@ -31,14 +31,14 @@ Nonlocal variables are stored in all kinds of ways at run-time. See
 and was too vague.
 
 [2] Does it really make sense to regard named constants as being conceptually
-closer to global variables than to literals such as |true| or |false|?
+closer to global variables than to literals such as `true` or `false`?
 
 =
 typedef struct nonlocal_variable {
 	struct wording name; /* text of the name */
 	struct kind *nlv_kind; /* what kind of value it holds */
 
-	struct shared_variable *scope; /* where it exists, or |NULL| for everywhere */
+	struct shared_variable *scope; /* where it exists, or `NULL` for everywhere */
 
 	struct inference_subject *as_subject; /* so that assertions can discuss it... */
 	struct inference_subject *alias_subject; /* ...or perhaps the thing it aliases */
@@ -144,7 +144,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *s
 
 @ This typically arises for timing reasons. At the time the variable has to be
 created, and given a kind, the kind of the initial value has not been fully
-determined. So |K| here will be something like |phrase value -> value|. If this
+determined. So `K` here will be something like `phrase value -> value`. If this
 case arose often enough it might be worth refactoring everything, but it's
 rarely occurring and has an easy workaround. So we will just give a fairly
 helpful problem message:
@@ -165,21 +165,21 @@ helpful problem message:
 
 @ Four oddball cases have special behaviour:
 
-- |Inter_nothing_VAR| is translated not to an Inter variable, but to the
-Inter constant |nothing|.
-- |temporary_global_VAR| is translated to an Inter global used as temporary
+- `Inter_nothing_VAR` is translated not to an Inter variable, but to the
+Inter constant `nothing`.
+- `temporary_global_VAR` is translated to an Inter global used as temporary
 storage space, and which has no fixed kind. An author cannot access this
 directly in source text.
-- |parameter_object_VAR| is translated to an Inter global used during the
+- `parameter_object_VAR` is translated to an Inter global used during the
 run of certain rulebooks, and which has no fixed kind. (This could have been
 handled as a rulebook variable, but having it as a global is more efficient.)
-- |command_prompt_VAR| is a quite ordinary Inform 7 variable, except that
+- `command_prompt_VAR` is a quite ordinary Inform 7 variable, except that
 it is compiled in an unusual way, to achieve backwards compatibility with
 the code in //CommandParserKit//, which dates back to the era of Inform 1 to 6.
 
 = (early code)
 nonlocal_variable *temporary_global_VAR = NULL;
-nonlocal_variable *Inter_nothing_VAR = NULL; /* the |nothing| constant */
+nonlocal_variable *Inter_nothing_VAR = NULL; /* the `nothing` constant */
 nonlocal_variable *command_prompt_VAR = NULL; /* the command prompt text */
 nonlocal_variable *parameter_object_VAR = NULL;
 

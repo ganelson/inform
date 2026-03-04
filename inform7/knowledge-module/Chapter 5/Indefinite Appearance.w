@@ -6,7 +6,7 @@ property.
 
 @ For instance:
 
->> The drapery is in the Crypt. "The drapery hangs, poignantly waiting to fall."
+> The drapery is in the Crypt. "The drapery hangs, poignantly waiting to fall."
 
 This text will probably become a property of the drapery, but which property
 depends on the drapery's kind. That means we can't decide until after the

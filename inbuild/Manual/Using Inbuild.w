@@ -9,10 +9,10 @@ together with a command-line interface to access its functions. Because
 it doesn't contain the middle or back ends of Inform 7, it cannot itself
 compile Inform projects. But it can issue shell commands which have
 this effect. When used that way, it's a little like the traditional Unix
-build tool |make|.
+build tool `make`.
 
-It can also be used in |make| scripts itself. Inbuild returns an exit code
-of 0 if successful, or else it throws errors to |stderr| and returns 1
+It can also be used in `make` scripts itself. Inbuild returns an exit code
+of 0 if successful, or else it throws errors to `stderr` and returns 1
 if unsuccessful.
 
 @h Installation.
@@ -21,14 +21,14 @@ system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Inbuild
 decides by the following set of rules:
 
-- If the user, at the command line, specified |-at P|, for some path
-|P|, then we use that.
+- If the user, at the command line, specified `-at P`, for some path
+`P`, then we use that.
 - Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-- Otherwise, if the environment variable |$INBUILD_PATH| exists and is
+- Otherwise, if the environment variable `$INBUILD_PATH` exists and is
 non-empty, we use that.
-- And if all else fails, we assume that the location is |inbuild|, with
+- And if all else fails, we assume that the location is `inbuild`, with
 respect to the current working directory.
 
 @h Basic concepts.
@@ -46,7 +46,7 @@ genre -- in this case, an Inform extension.
 
 @ Inbuild has a plethora of command-line options, but at its most basic, the
 user should specify what to do and then give a list of things to do it to.
-For example, here we run |-inspect| on a single copy, and get a one-line
+For example, here we run `-inspect` on a single copy, and get a one-line
 description of what it is:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
@@ -85,7 +85,7 @@ in order to be able to use A. The above example, then, tells us that we need
 Menus in order to use Basic Help Menu, and we need Basic Screen Effects in
 order to use Menus.
 
-@ Now suppose we have an Inform project called |Menu Time.inform|, whose
+@ Now suppose we have an Inform project called `Menu Time.inform`, whose
 source text is as follows:
 = (text as Inform 7)
 	Include Basic Help Menu by Emily Short.
@@ -97,7 +97,7 @@ Once again, we can inspect this:
 	$ inbuild/Tangled/inbuild -inspect 'Menu Time.inform'
 	projectbundle: Menu Time.inform at path Menu Time.inform
 =
-We can also use |-graph|, but the output from this is surprisingly long,
+We can also use `-graph`, but the output from this is surprisingly long,
 because an innocent-looking source text like the above depends on many other
 resources.
 = (text as ConsoleText)
@@ -113,35 +113,35 @@ resources.
 =
 ...and so on. What's going on here is that if the user wants to compile the
 source text, that will (by default) mean making a story file in Glulx format,
-called |output.ulx|, which sits inside the project bundle. So that is the top
+called `output.ulx`, which sits inside the project bundle. So that is the top
 node. Note that it is a "file node", not a "copy node", as we can see from the
-|f| not |c| in its node number. This means that |output.ulx| is not a kind of
+`f` not `c` in its node number. This means that `output.ulx` is not a kind of
 resource managed by Inbuild (like an extension, pr a project): it's just a
 plain old file.
 
-There's then a build arrow to another file called |auto.inf|. That's because
-in order to build |output.ulx|, we first need |auto.inf| to exist. This is
+There's then a build arrow to another file called `auto.inf`. That's because
+in order to build `output.ulx`, we first need `auto.inf` to exist. This is
 a file in Inform 6 format. Something unexpected then happens: a further arrow
-appears, and connects to another |auto.inf|. There aren't really two files
-here: this is a device to capture the fact that generating |auto.inf| is a
+appears, and connects to another `auto.inf`. There aren't really two files
+here: this is a device to capture the fact that generating `auto.inf` is a
 two-stage process, with the intermediate results between the two stages
 being held in memory rather than in a file. (These stages are, first,
 converting I7 source text to inter code, and then code-generating that
 inter code to I6.) Finally, though, we have a build arrow leading to the
-place we might have expected to start: the |Menu Time.inform| project.
+place we might have expected to start: the `Menu Time.inform` project.
 
 And that is where the graph branches outwards, because we need many
-different resources in order to build |Menu Time.inform|. We finally see
+different resources in order to build `Menu Time.inform`. We finally see
 that we need Basic Help Menu, and because that uses two other extensions
 in turn, we'll need both of those as well. We need the actual file which
-holds the source text inside the project bundle, |story.ni|. And then
+holds the source text inside the project bundle, `story.ni`. And then
 we need various build-in extensions and kits, the first of which is
-|BasicInformKit|, and that turns out to need lots of files to exist.
+`BasicInformKit`, and that turns out to need lots of files to exist.
 
-@ The full |-graph| is not always what we want to see. Often all we really
+@ The full `-graph` is not always what we want to see. Often all we really
 want to know is: what do I need to use, or to build, something?
 
-The command |-use-needs| applied to our example extension gives:
+The command `-use-needs` applied to our example extension gives:
 = (text as ConsoleText)
 	extension: Basic Help Menu by Emily Short
 	  extension: Menus by Emily Short v3
@@ -152,13 +152,13 @@ and applied to our example story gives just:
 	projectbundle: Menu Time.inform
 =
 That's because once Menu Time is built, nothing else is needed to use it.
-On the other hand, |-build-needs| has the opposite effect. Applied to the
+On the other hand, `-build-needs` has the opposite effect. Applied to the
 extension, we get:
 = (text as ConsoleText)
 	extension: Basic Help Menu by Emily Short
 =
 because extensions need no building, so certainly nothing else is needed
-to build them. But |-build-needs| on our story produces:
+to build them. But `-build-needs` on our story produces:
 = (text as ConsoleText)
 	projectbundle: Menu Time.inform
 	  extension: Basic Help Menu by Emily Short
@@ -193,23 +193,23 @@ comtain a line which includes another extension X. If so, then we use X on
 Glulx but not on other architectures. We can also flag material as being for
 release only, or for debugging only.
 
-Inbuild accepts the same command-line options as |inform7| does to specify
-these: |-debug| for debugging features, |-release| for a release run, and
-|-format=X| to select a virtual machine. (See the |inform7| documentation.)
+Inbuild accepts the same command-line options as `inform7` does to specify
+these: `-debug` for debugging features, `-release` for a release run, and
+`-format=X` to select a virtual machine. (See the `inform7` documentation.)
 
 @ Now suppose that the project asks for something impossible, with a line
 such as:
 
->> Include Xylophones by Jimmy Stewart.
+> Include Xylophones by Jimmy Stewart.
 
-No such extension exists. If we look at the graph, or the |-build-needs| list
+No such extension exists. If we look at the graph, or the `-build-needs` list
 for the project, we see that it includes:
 = (text as ConsoleText)
 	missing extension: Xylophones by Jimmy Stewart, any version will do
 =
 If we had instead written:
 
->> Include version 6.2 of Xylophones by Jimmy Stewart.
+> Include version 6.2 of Xylophones by Jimmy Stewart.
 
 we would see:
 = (text as ConsoleText)
@@ -220,12 +220,12 @@ version from 6.2 upwards, provided it still begins with a 6. This is a change
 over pre-2020 versions of Inform, and has been brought about by the adoption
 of the semantic version number standard.
 
-Inbuild can list missing resources with |-use-missing| and |-build-missing|
+Inbuild can list missing resources with `-use-missing` and `-build-missing`
 respectively. At present, it has no means of fetching missing resources from
 any central repository.
 
-@ Finally, |-build-locate| and |-use-locate| are identical to |-build-needs|
-and |-use-needs|, except that they print a list of the file system paths at
+@ Finally, `-build-locate` and `-use-locate` are identical to `-build-needs`
+and `-use-needs`, except that they print a list of the file system paths at
 which the relevant resources have been found. This can be useful if you're
 managing a complex mass of extensions, and aren't sure (say) which actual copy
 of Xylophones inbuild proposes to use, and from where.
@@ -235,7 +235,7 @@ The graph for a copy tells Inbuild not only what is necessary for a build,
 but also how to perform that build.
 
 As noted above, not everything needs building. Extensions do not, in particular,
-so running |-build| on one will do nothing. Kits do need building: what this
+so running `-build` on one will do nothing. Kits do need building: what this
 does is to "assimilate" the Inform 6-notation source files inside the kit into
 binary files of Inter, one for each possible architecture.
 
@@ -245,39 +245,39 @@ But building is mostly done with projects. If we run:
 =
 then Inbuild will first build everything needed to build the Example story
 file, including everything needed to use the things needed to build it, and
-so on; and then will build Example itself. As with the Unix utility |make|,
+so on; and then will build Example itself. As with the Unix utility `make`,
 this is an incremental process, and looks at the timestamps of files to see
 which steps are needed and which are not. If all the kits needed by Example
 are up to date, then the kits will not be rebuilt, and so on. If the same
 project is built twice in a row, and nothing about it has changed since
-the first time, the second |-build| does nothing.
+the first time, the second `-build` does nothing.
 
 Inbuild uses the graph to work out what needs to be done, and then issues
 a series of shell commands to other Inform tools. If any of those commands
 fail (returning a non-zero exit code) then the build process halts at once.
 
-As noted above, the |-release| switch tells Inbuild that we want to go all
+As noted above, the `-release` switch tells Inbuild that we want to go all
 the way to a release of the project, not just a build. This makes a more
 extensive graph, and is likely to mean that the final step followed by
-Inbuild is a call to |inblorb|, the releasing tool for Inform.
+Inbuild is a call to `inblorb`, the releasing tool for Inform.
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -release -build Example.inform
 =
-Using the |-rebuild| command performs a build in a way which isn't incremental:
+Using the `-rebuild` command performs a build in a way which isn't incremental:
 timestamps of files are ignored and everything is remade from scratch.
 
 @ It takes a certain trust to just let Inbuild rip, and if you don't feel that
-trust, adding the |-dry| switch causes shell commands to be printed out but
+trust, adding the `-dry` switch causes shell commands to be printed out but
 not actually executed -- a dry run. If you are debugging Inbuild, you may
-also want to look at the copious output produced when |-build-trace| is used.
-These are not commands: they simply modify the behaviour of |-build| and
-|-rebuild|.
+also want to look at the copious output produced when `-build-trace` is used.
+These are not commands: they simply modify the behaviour of `-build` and
+`-rebuild`.
 
 Inbuild uses a handful of standard Unix shell commands, but it also uses
-|inform7|, |inform6|, |inblorb| and |inter|. To do that, it needs to know
+`inform7`, `inform6`, `inblorb` and `inter`. To do that, it needs to know
 where they are installed. By default, Inbuild assumes they are in the same
-folder as Inbuild itself, side by side. If not, you can use |-tools P| to
-specify path |P| as the home of the other Intools.
+folder as Inbuild itself, side by side. If not, you can use `-tools P` to
+specify path `P` as the home of the other Intools.
 
 @h Specifying what to act on.
 In all of the examples above, Inbuild is given just one copy to act on.
@@ -287,26 +287,26 @@ copies to work on, one at a time, except that only one of those copies
 can be an Inform project. Multiple extensions, or kits, are fine.
 
 We can also tell Inbuild to work on everything it finds in a given directory
-|D| using |-contents-of D|:
+`D` using `-contents-of D`:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter
 	kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit
 	kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit
 	...
 =
-For compatibility with the |inform7| command line syntax, we can also specify
-the project target using |-project|:
+For compatibility with the `inform7` command line syntax, we can also specify
+the project target using `-project`:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -build -project Example.inform
 =
-But this is quite unnecessary: the effect is the same as if |-project| had
+But this is quite unnecessary: the effect is the same as if `-project` had
 been missed out.
 
 @ Listing filenames or pathnames of copies on the command line, or using the
-|-contents-of D| switch, is only possible if we know where in the file system
+`-contents-of D` switch, is only possible if we know where in the file system
 these copies are; and sometimes we do not.
 
-If we instead specify |-matching R|, where |R| is a list of requirements,
+If we instead specify `-matching R`, where `R` is a list of requirements,
 Inbuild will act on every copy it can find which matches that. For example,
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'
@@ -316,24 +316,24 @@ lists all the kits which Inbuild can see; and
 	$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'
 =
 lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
-specify are |title|, |author|, |genre| and |version|. Note that |version=5.1.1|
+specify are `title`, `author`, `genre` and `version`. Note that `version=5.1.1`
 would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
 again, this is following semver conventions. (Extensions giving their version
 numbers in the old-fashioned format "N/YYMMDD" are read as if N.0.YYMMDD, with
 the release date being treated as a patch number: see the Inform language
 documentation for examples.)
 
-To specify an explicit maximum and minimum version number, use |max| and |min|. For example:
+To specify an explicit maximum and minimum version number, use `max` and `min`. For example:
 = (text as ConsoleText)
 	-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'
 =
 @h Nests and searches.
-When searching with |-matching R|, or indeed when running Inform and needing
+When searching with `-matching R`, or indeed when running Inform and needing
 to find certain resources, Inbuild looks inside what are called "nests".
 
 A nest is a directory with structured subdirectories, which correspond to
 the genres of copies put into them. For example, in the standard distribution
-of Inform as a command-line tool, the path |inform7/Internal| is a nest:
+of Inform as a command-line tool, the path `inform7/Internal` is a nest:
 this contains the extensions, kits and so on which are built in to Inform
 when it's used as an app.
 
@@ -354,11 +354,11 @@ for the author's name. Thus:
 	Extensions/Emily Short/Locksmith.i7x
 =
 (In some early releases of Inform 7, it was legal for this file not to have
-the |.i7x| extension: but now it is compulsory.)
+the `.i7x` extension: but now it is compulsory.)
 
 As of 2020, nests can contain multiple versions of the same work. To do
-this, they should have a filename (or pathname) which ends with |-vN|, where
-|N| is semantic version number but with any dots replaced by underscores.
+this, they should have a filename (or pathname) which ends with `-vN`, where
+`N` is semantic version number but with any dots replaced by underscores.
 Thus, we can have e.g.:
 = (text)
 	Extensions/Emily Short/Locksmith-v3_2.i7x
@@ -366,15 +366,15 @@ Thus, we can have e.g.:
 =
 co-existing side by side. If the user asks to
 
->> Include Locksmith by Emily Short.
+> Include Locksmith by Emily Short.
 
-then version |4.0.0-prealpha.13| will be chosen, as the one with highest
+then version `4.0.0-prealpha.13` will be chosen, as the one with highest
 precedence in this nest (but see below for how Inbuild chooses between
 versions in the same nest). But if the user asks for
 
->> Include version 3 Locksmith by Emily Short.
+> Include version 3 Locksmith by Emily Short.
 
-then version |3.2| is the winner, as the highest-numbered extension in the
+then version `3.2` is the winner, as the highest-numbered extension in the
 nest with the right major version number (3).
 
 @ In most runs of the Inform compiler, three nests are used: the "internal"
@@ -385,11 +385,11 @@ folder for an Inform project, which is a nest all by itself.
 
 Inbuild looks for these as follows:
 
-- |-internal N| tells Inbuild the path |N| for the internal nest; if this
-is not given, the default is |inform7/Internal|.
-- |-external N| tells Inbuild the path |N| for the external nest; if this
+- `-internal N` tells Inbuild the path `N` for the internal nest; if this
+is not given, the default is `inform7/Internal`.
+- `-external N` tells Inbuild the path `N` for the external nest; if this
 is not given, the default depends on the host operating system. For example,
-on MacOS it will be |~/Library/Inform| (which is what the Inform GUI app
+on MacOS it will be `~/Library/Inform` (which is what the Inform GUI app
 uses too if it is not sandboxed: if it is indeed sandboxed, then it will
 have a deliberately obfuscated location which MacOS does not want tools
 like ours to access externally).
@@ -397,7 +397,7 @@ like ours to access externally).
 project Inbuild is working on; if it isn't working on a project, then this
 nest is of course not present.
 
-In addition, extra nests can be specified with |-nest N|.
+In addition, extra nests can be specified with `-nest N`.
 
 @ When Inbuild searches for some resource needed by Inform -- let's continue
 to use the Locksmith extension as an example -- it always has some range of
@@ -415,41 +415,41 @@ internal nest.
 - Otherwise, semantic version number rules are used to determine which
 copy had precedence.
 
-Suppose the Materials folder for our project contains |Locksmith-v3_2.i7x|,
-while the external folder contains |Locksmith-v3_3.i7x| and |Locksmith-v4.i7x|.
+Suppose the Materials folder for our project contains `Locksmith-v3_2.i7x`,
+while the external folder contains `Locksmith-v3_3.i7x` and `Locksmith-v4.i7x`.
 Then the sentence:
 
->> Include Locksmith by Emily Short.
+> Include Locksmith by Emily Short.
 
-would result in |Locksmith-v3_2.i7x| from Materials being used, even though
+would result in `Locksmith-v3_2.i7x` from Materials being used, even though
 there's a later version in the external area: Materials always wins. But
 
->> Include version 4 of Locksmith by Emily Short.
+> Include version 4 of Locksmith by Emily Short.
 
-would use |Locksmith-v4.i7x| from the external area, because the copy in the
+would use `Locksmith-v4.i7x` from the external area, because the copy in the
 Materials folder doesn't qualify.
 
 @h Copy, sync and archive.
 Clerical work is generally best done automatically, and Inbuild offers some
 useful filing commands.
 
-The command |-copy-to N| makes a duplicate copy in the nest |N|. For example:
+The command `-copy-to N` makes a duplicate copy in the nest `N`. For example:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
 	extension: Complex Listing by Emily Short v9 in directory junk.
 	$ inbuild/Tangled/inbuild -copy-to MyNest junk/Mystery.i7x
 	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing-v9.i7x'
 =
-Note that Inbuild replies to the |-copy-to N| command by executing a shell
+Note that Inbuild replies to the `-copy-to N` command by executing a shell
 command to copy what is, in this case, a single file. As when building, the
-|-dry| option puts Inbuild into dry-run mode, where it prints the commands it
+`-dry` option puts Inbuild into dry-run mode, where it prints the commands it
 would like to execute but doesn't execute them.
 
-The command |-sync-to N| is similar, but will overwrite any existing copy
-already in |N|, rather than producing an error if a collision occurs.
+The command `-sync-to N` is similar, but will overwrite any existing copy
+already in `N`, rather than producing an error if a collision occurs.
 
-@ If the version numbers are not wanted in the filenames which |-copy-to|
-and |-sync-to| write to, set |-no-versions-in-filenames|:
+@ If the version numbers are not wanted in the filenames which `-copy-to`
+and `-sync-to` write to, set `-no-versions-in-filenames`:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
 	extension: Complex Listing by Emily Short v9 in directory junk.
@@ -457,12 +457,12 @@ and |-sync-to| write to, set |-no-versions-in-filenames|:
 	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing.i7x'
 =
 
-@ The |-archive-to N| command performs |-sync-to N| on any resource needed
+@ The `-archive-to N` command performs `-sync-to N` on any resource needed
 to build the copy it is working on (with one exception, for technical reasons:
 the configuration file telling Inform how to use the English natural language).
 
 This is really only useful for Inform projects, and the abbreviated form
-|-archive| performs |-archive-to| to the Materials folder for a project.
+`-archive` performs `-archive-to` to the Materials folder for a project.
 The net effect of this is that all extensions needed to build a story file
 are gathered, with their correct versions, into the Materials folder; this
 means that if the project and its Materials are moved to a different user's

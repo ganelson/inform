@@ -144,7 +144,7 @@ are or are not different.
 
 @h Printing.
 We share some code here with the routines originally written for the ACTIONS
-testing command. (The |DB| in |DB_Action| stands for "debugging".) When
+testing command. (The `DB` in `DB_Action` stands for "debugging".) When
 printing a topic, it prints the relevant words from the player's command:
 so if our stored action is one which contains an entry 5, then we have to
 temporarily adopt this as the player's command, and restore the old player's
@@ -230,7 +230,7 @@ or second noun.
 Extracting the noun or second noun from an action is a delicate business
 because simply returning the values in entries 1 and 2 would not be type-safe;
 it would fail to be an object if the stored action did not apply to objects.
-So the following returns |nothing| if requested to produce noun or second
+So the following returns `nothing` if requested to produce noun or second
 noun for such an action.
 
 =
@@ -247,7 +247,7 @@ noun for such an action.
 @h Pattern Matching.
 In order to apply an action pattern such as "doing something with the kazoo"
 to a stored action, it needs to be the current action, because the code which
-compiles conditions like this looks at the |action|, |noun|, ..., variables.
+compiles conditions like this looks at the `action`, `noun`, ..., variables.
 We don't want to do anything as disruptive as temporarily starting the stored
 action and then halting it again, so instead we simply "adopt" it, saving
 the slate of action variables and setting them from the stored action: almost
@@ -256,7 +256,7 @@ it again, restoring the stored values. Since the action pattern cannot itself
 refer to a stored action, the following code won't be nested, and we don't
 need to worry about stacking up saved copies of the action variables.
 
-|SAT_Tmp-->0| stores the outcome of the condition, and is set in code
+`SAT_Tmp-->0` stores the outcome of the condition, and is set in code
 compiled by Inform.
 
 =

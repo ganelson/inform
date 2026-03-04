@@ -68,19 +68,13 @@ when tweaking the code below.</p>
 <p>The first point to note is that &quot;X specifies Y&quot; sentences have two different
 uses, but that both are covered below. First, they create literal patterns,
 and the syntax for that can be quite involved:</p>
-</div>
 <blockquote>
-    <p>1 tonne (in metric units, in tonnes, singular) specifies a mass scaled up by 1000.</p>
+<p>1 tonne (in metric units, in tonnes, singular) specifies a mass scaled up by 1000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Second, they can gives dimensional instructions about kinds:</p>
-</div>
 <blockquote>
-    <p>A length times a length specifies an area.</p>
+<p>A length times a length specifies an area.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This is a slightly unhappy ambiguity, but the potential for confusion is low.
 Nobody who defines a literal pattern with the word &quot;times&quot; in can expect good
 results anyway, given that &quot;times&quot; will usually be interpreted as
@@ -103,7 +97,7 @@ and this causes no trouble.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span><span class="plain-syntax"> </span><span class="comment-syntax">/* "10'23 specifies a running time." */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span><span class="plain-syntax"> </span><span class="comment-syntax">/* &quot;10'23 specifies a running time.&quot; */</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;np-alternative-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">)) {</span>
@@ -133,10 +127,10 @@ sends that to <a href="../values-module/3-lp.html" class="internal">Literal Patt
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">lp_specification</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_wording</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the actual notation, e.g., "2 tonnes" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_wording</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the actual notation, e.g., &quot;2 tonnes&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_specified</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what kind this sentence specifies */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scaled_dir</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |LP_SCALED_*| constants above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scaled_dir</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>LP_SCALED_*</code> constants above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scale_factor</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">scale_factor_as_double</span><span class="plain-syntax">;</span>
 
@@ -149,8 +143,8 @@ sends that to <a href="../values-module/3-lp.html" class="internal">Literal Patt
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_base</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">uses_real_arithmetic</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_options</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a bitmap of the |*_LPN| values */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">notation_groups</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "in metric units", and so on */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_options</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a bitmap of the <code>*_LPN</code> values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">notation_groups</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;in metric units&quot;, and so on */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">part_np_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">lp_specification</span><span class="plain-syntax">;</span>
@@ -177,13 +171,10 @@ sends that to <a href="../values-module/3-lp.html" class="internal">Literal Patt
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  One can define LPs with a list of alternatives, of which the first is the
 &quot;primary alternative&quot; and said to be the &quot;owner&quot; of the rest. For instance:</p>
-</div>
 <blockquote>
-    <p>1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units,</p>
+<p>1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units,
+in tonnes, plural) specifies a mass scale_factor up by 1000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>in tonnes, plural) specifies a mass scale_factor up by 1000.</p>
 <p>Here &quot;1 tonne&quot; is the primary alternative, and it owns &quot;2 tonnes&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -394,12 +385,9 @@ can't set both scaling and an equivalent, for instance.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Of the optional tails, the only tricky one is the part list, which has the
 following rather extensive grammar. This handles text like:</p>
-</div>
 <blockquote>
-    <p>dollars and cents (optional, preamble optional)</p>
+<p>dollars and cents (optional, preamble optional)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The text is a list of part-names, each of which can optionally be followed
 by a bracketed list of up to three options in any order.</p>
 </div>

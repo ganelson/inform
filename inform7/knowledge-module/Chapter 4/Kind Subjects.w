@@ -5,7 +5,7 @@ The kinds family of inference subjects.
 @ Every base kind gets its own inference subject, making it possible to draw
 inferences from sentences such as:
 
->> A scene has a number called the witness count. The witness count of a scene is usually 4.
+> A scene has a number called the witness count. The witness count of a scene is usually 4.
 
 =
 inference_subject_family *kinds_family = NULL;
@@ -35,7 +35,7 @@ cannot sensibly be given properties; likewise proper constructors such as
 "list of K".
 
 The //kinds: Kind Constructors// code kindly allows us to use one field
-of the |kind_constructor| structure to connect a base kind (i.e., a kind
+of the `kind_constructor` structure to connect a base kind (i.e., a kind
 constructor) with its subject. The following is called when a new constructor
 is created.
 

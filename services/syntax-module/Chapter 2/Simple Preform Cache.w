@@ -7,7 +7,7 @@ its findings: so, for instance, if Inform parses the text in words 507 to 511
 once, it need not do so again in the same context.
 
 We provide a cache, then, for Preform nonterminals whose return type is
-|parse_node|. The cache takes the form of a modest ring buffer for each
+`parse_node`. The cache takes the form of a modest ring buffer for each
 of the contexts:
 
 @d MAXIMUM_CACHE_SIZE 20 /* a Goldilocks value: too high slows us down, too low doesn't cache enough */
@@ -16,13 +16,13 @@ of the contexts:
 =
 typedef struct expression_cache {
 	struct expression_cache_entry pe_cache[MAXIMUM_CACHE_SIZE];
-	int pe_cache_size; /* number of entries used, 0 to |MAXIMUM_CACHE_SIZE| */
-	int pe_cache_posn; /* next write position, 0 to |pe_cache_size| minus 1 */
+	int pe_cache_size; /* number of entries used, 0 to `MAXIMUM_CACHE_SIZE` */
+	int pe_cache_posn; /* next write position, 0 to `pe_cache_size` minus 1 */
 } expression_cache;
 
 typedef struct expression_cache_entry {
 	struct wording cached_query; /* the word range whose parsing this is */
-	struct parse_node *cached_result; /* and the result (quite possibly |UNKNOWN_NT|) */
+	struct parse_node *cached_result; /* and the result (quite possibly `UNKNOWN_NT`) */
 } expression_cache_entry;
 
 int expression_cache_has_been_used = FALSE;
@@ -61,9 +61,9 @@ parse_node *PreformCache::parse(wording W, int context, nonterminal *nt) {
 		if (Wordings::eq(W, ec->pe_cache[i].cached_query))
 			return ec->pe_cache[i].cached_result;
 
-@ The cache expands until it reaches |MAXIMUM_CACHE_SIZE|; after that,
+@ The cache expands until it reaches `MAXIMUM_CACHE_SIZE`; after that,
 entries are written in a position cycling through the ring. In either case
-it takes |MAXIMUM_CACHE_SIZE| further parses (not found in the cache) to
+it takes `MAXIMUM_CACHE_SIZE` further parses (not found in the cache) to
 overwrite the one we put down now.
 
 @<Write the newly discovered specification to the cache for future use@> =

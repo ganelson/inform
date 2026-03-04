@@ -20,7 +20,7 @@ And so we end up with a compromise:
 
 - Regard them as "action-based rulebooks". This looks right to authors, though
 it arguably abuses the word "action". But it does mean there is no way to have
-a rulebook which actually has |K_action_name| as its focus kind.
+a rulebook which actually has `K_action_name` as its focus kind.
 
 People seem okay with this, but it is indeed a compromise. (In Basic Inform,
 there are no actions anyway and this whole discussion is moot.) In case this
@@ -66,26 +66,26 @@ typedef struct outcomes {
 	struct kind *outcome_kind; /* of the value produced */
 
 	int default_outcome_declared; /* has the author declared one? */
-	int default_rule_outcome; /* one of the three |*_OUTCOME| values above... */
+	int default_rule_outcome; /* one of the three `*_OUTCOME` values above... */
 	struct rulebook_outcome *default_named_outcome; /* ...or a named alternative */
 
-	struct linked_list *named_outcomes; /* of |rulebook_outcome|: other possibilities */
+	struct linked_list *named_outcomes; /* of `rulebook_outcome`: other possibilities */
 } outcomes;
 
 @ The source text can also have a rulebook end, say, "in a blaze of glory", or give
-it other possible endings. Those, if any, are listed in the |named_outcomes|.
+it other possible endings. Those, if any, are listed in the `named_outcomes`.
 Note that they still have to count as failures, successes or not.
 
 =
 typedef struct rulebook_outcome {
 	struct named_rulebook_outcome *outcome_name;
-	int kind_of_outcome; /* one of the three |*_OUTCOME| values abov */
+	int kind_of_outcome; /* one of the three `*_OUTCOME` values abov */
 	CLASS_DEFINITION
 } rulebook_outcome;
 
 @ And each individual named ending corresponds to one of the following. Note
 that the same named ending can be used in multiple rulebooks, and can have
-a different |kind_of_outcome| in each; that's why we distinguish the
+a different `kind_of_outcome` in each; that's why we distinguish the
 structures //rulebook_outcome// and //named_rulebook_outcome//.
 
 =
@@ -123,11 +123,11 @@ rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *nro,
 	return NULL;
 }
 
-@ And this tests whether there is any obstacle to using |nro| in the body of
-phrase |idb|'s code. If a rule ends "splendidly", then that needs to be a valid
+@ And this tests whether there is any obstacle to using `nro` in the body of
+phrase `idb`'s code. If a rule ends "splendidly", then that needs to be a valid
 ending for all of the rulebooks holding it.
 
-This very similar function returns |NULL| if there's no problem, or the rulebook
+This very similar function returns `NULL` if there's no problem, or the rulebook
 causing the difficulty if so.
 
 =
@@ -184,7 +184,7 @@ named_rulebook_outcome *FocusAndOutcome::rbno_by_name(wording W) {
 }
 
 @ Those nouns can be parsed as follows, and form the constant values of the
-slightly odd kind |K_rulebook_outcome|.
+slightly odd kind `K_rulebook_outcome`.
 
 =
 <named-rulebook-outcome> internal {
@@ -196,7 +196,7 @@ slightly odd kind |K_rulebook_outcome|.
 	==> { fail nonterminal }
 }
 
-@ And the following adds a new outcome name to a given set of |outs|:
+@ And the following adds a new outcome name to a given set of `outs`:
 
 =
 void FocusAndOutcome::fresh_outcome(outcomes *outs, wording OW, int koo, int def) {
@@ -243,7 +243,7 @@ void FocusAndOutcome::fresh_outcome(outcomes *outs, wording OW, int koo, int def
 Rulebooks do not have properties as such, but the following syntax instead creates
 outcomes:
 
->> Visibility rules have outcomes there is sufficient light (failure) and there is insufficient light (success).
+> Visibility rules have outcomes there is sufficient light (failure) and there is insufficient light (success).
 
 =
 outcomes *outcomes_being_parsed = NULL;
@@ -255,7 +255,7 @@ void FocusAndOutcome::parse_properties(rulebook *B, wording W) {
 
 @ The following Preform grammar, then, parses text such as "outcomes there is
 sufficient light (failure) and there is insufficient light (success)" and
-modifies |outcomes_being_parsed| accordingly.
+modifies `outcomes_being_parsed` accordingly.
 
 =
 <rulebook-property> ::=

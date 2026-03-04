@@ -3,19 +3,19 @@
 Two consecutive bytecode words are used to store a single value in binary Inter.
 
 @ About time to define the types we're using to represent Inter words in C.
-It turns out to be more convenient to define these by what amounts to |#define|
-than to use |typedef|.
+It turns out to be more convenient to define these by what amounts to `#define`
+than to use `typedef`.
 
 @d inter_ti unsigned int
 @d signed_inter_ti int
 
 @h Pairs.
-A constant value in Inter code is represented by a pair of |inter_ti| values:
+A constant value in Inter code is represented by a pair of `inter_ti` values:
 the format and the content.
 
 =
 typedef struct inter_pair {
-	inter_ti data_format; /* one of the |*_IVAL| values below */
+	inter_ti data_format; /* one of the `*_IVAL` values below */
 	inter_ti data_content;
 } inter_pair;
 
@@ -35,7 +35,7 @@ existing Inter binary files, necessitating a bump of //The Inter Version//.
 @e UNDEF_IVAL
 
 @h Numeric pairs.
-These can represent any |inter_ti| value, and are used when the data is a
+These can represent any `inter_ti` value, and are used when the data is a
 literal integer. Note that they express both an integer and also a preferred
 way to print it out -- as decimal, hexadecimal, binary, or signed decimal.
 But these are all numerically equal. They affect only the way in which the
@@ -164,10 +164,10 @@ int InterValuePairs::is_text(inter_pair pair) {
 
 @h Real pairs.
 These represent real numbers, but they do so by storing them as literal strings
-prefaced by a sign character, |+| or |-|.
+prefaced by a sign character, `+` or `-`.
 
-Though the argument here has type |double|, we are not guaranteeing that level
-of service, and in fact these are likely to be no better than |float| precision
+Though the argument here has type `double`, we are not guaranteeing that level
+of service, and in fact these are likely to be no better than `float` precision
 on some platforms.
 
 =
@@ -184,7 +184,7 @@ inter_pair InterValuePairs::real(inter_bookmark *IBM, double g) {
 	return pair;
 }
 
-@ Inform 6 notation begins with a dollar |$| -- for example, |$+3.1415| -- but
+@ Inform 6 notation begins with a dollar `$` -- for example, `$+3.1415` -- but
 otherwise is similar.
 
 =
@@ -279,7 +279,7 @@ int InterValuePairs::is_plural_dword(inter_pair pair) {
 @h Symbolic pairs.
 All other pairs represent known literal values, but a symbolic pair delegates
 that by saying "it's the value of this symbol". For example, a symbolic pair
-could mean "whatever the value of |WORDSIZE| is". Note that this symbol might
+could mean "whatever the value of `WORDSIZE` is". Note that this symbol might
 not even be defined in the current Inter tree: it could be wired to a plug, which
 expects to find a definition in some other tree when linking takes place.
 
@@ -328,7 +328,7 @@ int InterValuePairs::is_symbolic(inter_pair pair) {
 @h Glob pairs.
 Globs are a desperation measure. They represent a value, but which is expressed
 in terms of raw source code which will produce that value. For instance, if you
-knew your Inter code would be compiled to C, you could have a glob of |"time(0)"|,
+knew your Inter code would be compiled to C, you could have a glob of `"time(0)"`,
 but of course this wouldn't work in compiled in a constant context, and wouldn't
 work if the Inter were aimed at any other final code-generator than C.
 
@@ -364,7 +364,7 @@ int InterValuePairs::is_glob(inter_pair pair) {
 }
 
 @h The undef pair.
-There is just one |undef| pair. It means "undefined value", and allows functions
+There is just one `undef` pair. It means "undefined value", and allows functions
 which return //inter_pair// to signal that they couldn't work anything useful out.
 (See for example //InterValuePairs::number_from_I6_notation// above.)
 
@@ -403,7 +403,7 @@ void InterValuePairs::set(inter_tree_node *P, int field, inter_pair pair) {
 }
 
 @ When creating new instructions, //InterValuePairs::set// cannot be used
-because the two words of a pair need to be supplied as two |inter_ti| values.
+because the two words of a pair need to be supplied as two `inter_ti` values.
 For that purpose only, the following functions may be used:
 
 =

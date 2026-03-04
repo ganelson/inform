@@ -63,12 +63,9 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  &quot;To...&quot; phrases are defined with prototypes: for example, in</p>
-</div>
 <blockquote>
-    <p>To add (new entry - K) to (L - list of values of kind K), if absent: ...</p>
+<p>To add (new entry - K) to (L - list of values of kind K), if absent: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the prototype is <code>add (new entry - K) to (L - list of values of kind K)</code>. In
 this section we define three related functions: one to register the prototype
 with the excerpt parser, one to convert any textual match against that to an
@@ -239,11 +236,9 @@ calls itself in order to provide for alternate wordings in prototypes:</p>
 the left and right hand sides of &quot;deckchairs/loungers&quot; the A and B forms.</p>
 <p>Note than a phrase with many slashed words will register a frightening number of
 possibilities -- for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&gt;&gt; </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">meld</span><span class="plain-syntax">/</span><span class="identifier-syntax">blend</span><span class="plain-syntax">/</span><span class="identifier-syntax">merge</span><span class="plain-syntax"> (</span><span class="identifier-syntax">O</span><span class="plain-syntax"> - </span><span class="identifier-syntax">object</span><span class="plain-syntax">) </span><span class="identifier-syntax">onto</span><span class="plain-syntax">/</span><span class="identifier-syntax">into</span><span class="plain-syntax">/</span><span class="identifier-syntax">amongst</span><span class="plain-syntax">/</span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> - </span><span class="identifier-syntax">object</span><span class="plain-syntax">) </span><span class="identifier-syntax">quickly</span><span class="plain-syntax">/</span><span class="identifier-syntax">rapidly</span><span class="plain-syntax">/</span><span class="identifier-syntax">pronto</span><span class="plain-syntax">: ...</span>
-</pre>
-<div class="lsmarkdown">
+<blockquote>
+<p>To meld/blend/merge (O - object) onto/into/amongst/with (P - object) quickly/rapidly/pronto: ...</p>
+</blockquote>
 <p>will register 36 excerpts. But the hashing in the excerpts parser shouldn't
 make the result too slow, and in any case authors do not often do this.</p>
 </div>

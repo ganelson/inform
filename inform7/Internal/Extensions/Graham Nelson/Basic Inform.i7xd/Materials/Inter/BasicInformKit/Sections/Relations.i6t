@@ -16,7 +16,7 @@ Constant RR_DESCRIPTION		10;
 
 @h Valency Adjectives.
 These are defined in the Standard Rules; the following routines must either
-test the state (if |set| is negative), or change the state to |set|.
+test the state (if `set` is negative), or change the state to `set`.
 
 =
 Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNIQUE;
@@ -129,9 +129,9 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 
 @h One To One Relations.
 We provide routines to assert a 1-to-1 relation true, or to assert it false.
-The relation |rel| is represented by a property number, and the property in
+The relation `rel` is represented by a property number, and the property in
 question is used to store the fact of a relationship: $O_1\sim O_2$ if and
-only if |O1.rel == O2|.
+only if `O1.rel == O2`.
 
 There is no routine to test a 1-to-1 relation, since the predicate calculus
 code in Inform simplifies propositions which test these into direct looking up
@@ -165,7 +165,7 @@ of the property relation.
 
 @h Symmetric One To One Relations.
 Here the relation is used for both objects: $O_1\sim O_2$ if and only if
-both |O1.relation_property == O2| and |O2.relation_property == O1|.
+both `O1.relation_property == O2` and `O2.relation_property == O1`.
 
 =
 [ Relation_NowS1to1 obj1 relation_property obj2; ! Assert symmetric 1-1 true
@@ -220,9 +220,9 @@ as being a KOV rather than a kind of object by storing 0 instead of a
 property in the relevant part of the relation metadata: note that 0 is
 not a valid property number.
 
-The structure for a relation consists of eight |-->| words, followed by a
-bitmap in which we store 16 bits in each |-->| word. (Yes, this is wasteful
-in Glulx, where |-->| words store 32 bits, but memory is not in short supply
+The structure for a relation consists of eight `-->` words, followed by a
+bitmap in which we store 16 bits in each `-->` word. (Yes, this is wasteful
+in Glulx, where `-->` words store 32 bits, but memory is not in short supply
 in Glulx and the total cost of relations is in practice small; we prefer
 to keep all the code involved simple.) The structure is precompiled by the
 Inform compiler: we do not create new ones on the fly.
@@ -323,7 +323,7 @@ that $x\sim y$ if and only if $f(x)=f(y)$, where $f(x)$ is a number identifying
 the equivalence class of $x$. Rather than inefficiently storing a large
 relation bitmap (and then having a very complicated time updating it to
 keep the relation transitive), we store $f$: that is, for every object in
-the domain set, there is a property |prop| such that |O.prop| is the value
+the domain set, there is a property `prop` such that `O.prop` is the value
 $f(O)$.
 
 =
@@ -774,7 +774,7 @@ to have the same left and right domains; Inform compiles the memory caches for
 V-to-V relations to force any cases with different domains into using the
 "slow" algorithm.
 
-|MAX_ROUTE_LENGTH| is used simply as a sanity check to prevent hangs if
+`MAX_ROUTE_LENGTH` is used simply as a sanity check to prevent hangs if
 something should go wrong, for instance if the property of a 1-to-V
 relation has been modified by some third-party code in such a way that
 it loses its defining invariant.
@@ -819,7 +819,7 @@ only path leading to $y$ and seeing if it ever passed through $x$; thus the
 running time is $O(n)$, where $n$ is the size of the domain. It would be
 pointless to cache this.
 
-Note that we can assume here that $x\neq y$, or rather, that |from ~= to|,
+Note that we can assume here that $x\neq y$, or rather, that `from ~= to`,
 because that case has already been taken care of.
 
 =
@@ -838,7 +838,7 @@ This time the simplifying assumption is that, given $x$, we can immediately
 determine the unique $x'$ such that $x\sim x'$, so it suffices to follow
 the only path forwards from $x$ and see if it ever reaches $y$. The routine
 is not quite a mirror image of the one above, because both have the same
-return requirements: we have to ensure that the |vector| properties lay out
+return requirements: we have to ensure that the `vector` properties lay out
 the path, and also return the next step after $x$.
 
 =
@@ -909,8 +909,8 @@ Now, as above, a form of the Floyd-Warshall algorithm. The matrix is here
 stored in the cache of memory pointed to in the V-to-V relation structure.
 We are unable to combine $a_{ij}$ and $d_{ij}$ into a single cell of
 memory, so in fact we store two separate matrices: one for $a_{ij}$
-(this is |cache| below), the other for $n_{ij}$, where $n_{ij}$ is the
-next object in the shortest path from $O_i$ to $O_j$ (this is |cache2|
+(this is `cache` below), the other for $n_{ij}$, where $n_{ij}$ is the
+next object in the shortest path from $O_i$ to $O_j$ (this is `cache2`
 below).
 
 Where $n<256$ a shortest path must be such that $a_{ij}\leq 255$, so can

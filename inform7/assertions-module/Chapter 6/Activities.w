@@ -38,7 +38,7 @@ int Activities::hide_in_debugging(activity *av) {
 
 @ Activities are much simpler to create than actions. For example,
 
->> Announcing something is an activity on numbers.
+> Announcing something is an activity on numbers.
 
 The object phrase (here "an activity on numbers") matches <k-kind> and needs no
 special Preform of its own; here is the subject phrase:

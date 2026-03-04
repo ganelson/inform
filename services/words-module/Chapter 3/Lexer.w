@@ -16,7 +16,7 @@ will need it later to decide whether punctuation at the end of a quotation
 is meant to end the sentence making the quote, or not. Humans certainly
 read these differently:
 
->> Say "Hello!" with alarm, ... Say "Hello!" With alarm, ...
+> Say "Hello!" with alarm, ... Say "Hello!" With alarm, ...
 
 And paragraph breaks can also have semantic meanings. A gap between two words
 does not end a sentence, but a paragraph break between two words clearly does.
@@ -26,12 +26,12 @@ earliest parts of this chapter.
 @ We must never lose sight of the origin of text, because we may need to
 print problem messages back to the user which refer to that original material.
 We record the provenance of text using the following structure; the
-|lexer_position| is such a structure, and marks where the lexer is
+`lexer_position` is such a structure, and marks where the lexer is
 currently reading.
 
 =
 typedef struct source_location {
-	struct source_file *file_of_origin; /* or |NULL| if internally written and not from a file */
+	struct source_file *file_of_origin; /* or `NULL` if internally written and not from a file */
 	int line_number; /* counting upwards from 1 within file (if any) */
 } source_location;
 
@@ -50,9 +50,9 @@ source_location Lexer::as_if_from_nowhere(void) {
 =
 source_location lexer_position;
 
-@ A word can be an English word such as |bedspread|, or a piece of punctuation
-such as |!|, or a number such as |127|, or a piece of quoted text of arbitrary
-size such as |"I summon up remembrance of things past"|.
+@ A word can be an English word such as `bedspread`, or a piece of punctuation
+such as `!`, or a number such as `127`, or a piece of quoted text of arbitrary
+size such as `"I summon up remembrance of things past"`.
 
 The words found are numbered 0, 1, 2, ... in order of being read by
 the lexer. The first eight or so words come from the mandatory insertion
@@ -60,15 +60,15 @@ text (see Read Source Text.w), then come the words from the primary source
 text, then those from the extensions loaded.
 
 References to text throughout Inform's data structure are often in the form
-of a pair of word numbers, usually called |w1| and |w2| or some variation
-on that, indicating the text which starts at word |w1| and finishes
-at |w2| (including both ends). Thus if the text is
+of a pair of word numbers, usually called `w1` and `w2` or some variation
+on that, indicating the text which starts at word `w1` and finishes
+at `w2` (including both ends). Thus if the text is
 
->> When to the sessions of sweet silent thought
+> When to the sessions of sweet silent thought
 
-then the eight words are numbered 0 to 7 and a reference to |w1=2|, |w2=5|
+then the eight words are numbered 0 to 7 and a reference to `w1=2`, `w2=5`
 would mean the sub-text "the sessions of sweet". The special null value
-|wn=-1| is used when no word reference has been made: never 0, as that would
+`wn=-1` is used when no word reference has been made: never 0, as that would
 mean the first word in the list. The maximum legal word number is always one
 less than the following variable's value.
 
@@ -117,7 +117,7 @@ this is the title of the work.
 
 (2) Documentation text (extension text only: not found in primary source).
 If a paragraph consists of a single non-whitespace token only, and that
-token is |----| (four hyphens in a row), then this paragraph and all
+token is `----` (four hyphens in a row), then this paragraph and all
 subsequent text down to the bottom of the file.
 
 (3) Heading text. If a paragraph consists of a single line only and which
@@ -125,12 +125,12 @@ begins with one of the five words Volume, Book, Part, Chapter or Section,
 capitalised as here, then that paragraph is a heading. (A paragraph
 division is found at the start and end of a file, and also at any run
 of white space containing two or more newline characters: a newline
-can be any of the Unicode characters |0x000A|, |0x2028| or |0x2029|.)
+can be any of the Unicode characters `0x000A`, `0x2028` or `0x2029`.)
 
 (4a) Quoted text. Outside of (4b) and (4c), a double-quotation mark
-(in principle any of Unicode |0x0022|, |0x201C|, |0x201D|) begins
+(in principle any of Unicode `0x0022`, `0x201C`, `0x201D`) begins
 quoted text provided it follows either whitespace, or the start of
-the file, or one of the punctuation marks in the |PUNCTUATION_MARKS|
+the file, or one of the punctuation marks in the `PUNCTUATION_MARKS`
 string defined above. Quoted text continues until the next
 double-quotation mark (or the end of the file if there isn't one,
 though Inform would issue Problems if asked to compile this).
@@ -143,27 +143,27 @@ issue problem messages if given a string malformed in this way.)
 (4b) Comment text. Outside of (4a) and (4c), an open square bracket begins
 comment. Comment continues until the next matching close square
 bracket. (This is the case even if that is in double quotes within the
-comment, i.e., quotation marks should be ignored when matching |[| and |]|
+comment, i.e., quotation marks should be ignored when matching `[` and `]`
 inside a comment.) Thus, nested comments are allowed, and the following
 text contains a single comment running from just after "the" through to
 the full stop:
 
->> |Snow White and the [Seven Dwarfs [but not Doc]].|
+> `Snow White and the [Seven Dwarfs [but not Doc]].`
 
-(4c) Literal I6 code. Outside of (4a) and (4b), the combination |(-| begins
-literal I6 matter. This matter continues until the next |-)| is reached.
+(4c) Literal I6 code. Outside of (4a) and (4b), the combination `(-` begins
+literal I6 matter. This matter continues until the next `-)` is reached.
 Within literal I6 matter, one can escape back into I7 source text using a
-matched pair of |(+| and |+)| tokens, but it really doesn't seem worth
+matched pair of `(+` and `+)` tokens, but it really doesn't seem worth
 syntax colouring this very much. And the authors of Inform will lose no
 sleep if we miscolour this, for instance, especially if it deters people
 from such horrible coding practices:
 
->> |(- Constant BLOB = (+ the total weight of things in (- selfobj -) +); -)|
+> `(- Constant BLOB = (+ the total weight of things in (- selfobj -) +); -)`
 
 (5) Normal text. Everything else.
 
-Inform regards all of the Unicode characters |0x0009|, |0x000A|, |0x000D|,
-|0x0020|, |0x0085|, |0x00A0|, |0x02000| to |0x200A|, |0x2028| and |0x2029|
+Inform regards all of the Unicode characters `0x0009`, `0x000A`, `0x000D`,
+`0x0020`, `0x0085`, `0x00A0`, `0x02000` to `0x200A`, `0x2028` and `0x2029`
 as instances of white space. Of course, it's entirely open to the Inform
 user interfaces to not allow the user to key some of these codes, but
 we should bear in mind that projects using them might be created on one
@@ -217,7 +217,7 @@ on the Welsh isle of Anglesey), but this has a mere 63 letters, and in any case
 the name was "improved" by the village cobbler in the mid-19th century to
 make it a tourist attraction for the new railway age.
 
-@d TEXT_STORAGE_CHUNK_SIZE 600000 /* Must exceed |MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH| */
+@d TEXT_STORAGE_CHUNK_SIZE 600000 /* Must exceed `MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH` */
 @d MAX_VERBATIM_LENGTH 200000 /* Largest quantity of Inform 6 which can be quoted verbatim. */
 @d MAX_WORD_LENGTH 128 /* Maximum length of any unquoted word */
 
@@ -240,7 +240,7 @@ void Lexer::start(void) {
 }
 
 @ These are quite hefty memory allocations, with the expensive one --
-|lw_source| -- also being the least essential to Inform's running. But at least
+`lw_source` -- also being the least essential to Inform's running. But at least
 we use memory in a way at least vaguely related to the size of the source
 text, never using more than twice what we need, and we impose no absolute
 upper limits.
@@ -282,7 +282,7 @@ void Lexer::ensure_space_up_to(int n) {
 
 @ Inform would almost certainly crash if we wrote past the end of the
 workspace, so we need to watch for the water running high. The following
-routine checks that there is room for another |n| characters, plus a
+routine checks that there is room for another `n` characters, plus a
 termination character, plus breathing space for a single character's worth
 of lookahead:
 
@@ -340,33 +340,33 @@ flags, but with three exceptions this state is used only within the lexer.
 The three exceptional modes are by default both off and by default they
 stay off: the lexer never goes into either mode by itself.
 
-|lexer_divide_strings_at_text_substitutions| is used by some of the lexical writing-back
+`lexer_divide_strings_at_text_substitutions` is used by some of the lexical writing-back
 machinery,  when it has been decided to compile something like
 
->> say "[The noun] falls onto [the second noun]."
+> say "[The noun] falls onto [the second noun]."
 
 In its ordinary mode, with this setting off, the lexer will render this as
 two words, the second being the entire quoted text. But if
-|lexer_divide_strings_at_text_substitutions| is set then the text is reinterpreted as
+`lexer_divide_strings_at_text_substitutions` is set then the text is reinterpreted as
 
->> say The noun, " falls onto ", the second noun, "."
+> say The noun, " falls onto ", the second noun, "."
 
 which runs to eleven words, three of them commas (punctuation always counts
 as a word).
 
-|lexer_wait_for_dashes| is set by the extension-reading machinery, in
+`lexer_wait_for_dashes` is set by the extension-reading machinery, in
 cases where it wants to get at the documentation text of an extension but
 does not want to have to fill Inform's memory with the source text of its code.
 In this mode, the lexer ignores the whole stream of words until it reaches
-|----|, the special marker used in extensions to divide source text from
+`----`, the special marker used in extensions to divide source text from
 documentation: it then drops out of this mode and back into normal running,
 so that subsequent words are lexed as usual.
 
 =
 inchar32_t *lexer_punctuation_marks = U"";
 int lexer_divide_strings_at_text_substitutions; /* Break up text substitutions in quoted text */
-int lexer_allow_I6_escapes; /* Recognise |(-| and |-)| */
-int lexer_wait_for_dashes; /* Ignore all text until first |----| found */
+int lexer_allow_I6_escapes; /* Recognise `(-` and `-)` */
+int lexer_wait_for_dashes; /* Ignore all text until first `----` found */
 int lexer_break_at_slashes;
 
 @h Definition of punctuation.
@@ -385,7 +385,7 @@ int Lexer::is_punctuation(inchar32_t c) {
 We're going to record the level of indentation in the "break" character.
 We will recognise anything from 1 to 25 tabs as distinct indentation amounts;
 a value of 26 means "26 or more", and at such sizes, indentation isn't
-distinguished. We'll do this with the letters |A| to |Z|.
+distinguished. We'll do this with the letters `A` to `Z`.
 
 @d GROSS_AMOUNT_OF_INDENTATION 26
 
@@ -496,9 +496,9 @@ the previous character in the raw, un-respaced source.
 inchar32_t lxs_previous_char_in_raw_feed; /* Preceding character in raw file read */
 
 @ There are four kinds of word: ordinary words, [comments in square brackets],
-"strings in double quotes," and |(- I6_inclusion_text -)|. The latter
+"strings in double quotes," and `(- I6_inclusion_text -)`. The latter
 three are kinds are collectively called literals. As each word is read,
-the variable |lxs_kind_of_word| holds what it is currently believed to be.
+the variable `lxs_kind_of_word` holds what it is currently believed to be.
 
 @d ORDINARY_KW 0
 @d COMMENT_KW 1
@@ -510,9 +510,9 @@ int lxs_kind_of_word; /* One of the defined values above */
 
 @ While there are a pile of state variables below, the basic situation is that
 the lexer has two main modes: ordinary mode and literal mode, determined
-by whether |lxs_literal_mode| is false or true. It might look as if this
-variable is redundant -- can't we simply see whether |lxs_kind_of_word|
-is |ORDINARY_KW| or not? -- but in fact we return to ordinary mode slightly
+by whether `lxs_literal_mode` is false or true. It might look as if this
+variable is redundant -- can't we simply see whether `lxs_kind_of_word`
+is `ORDINARY_KW` or not? -- but in fact we return to ordinary mode slightly
 before we finish recording a literal, as we shall see, so it is important
 to be able to switch in and out of literal mode without changing the kind
 of word.
@@ -567,10 +567,10 @@ The lexer takes its input as a stream of characters, sent from a "feeder
 routine": there are two of these, one sending the stream from a file, the
 other from a C string. A feeder routine is required to:
 
-- call |Lexer::feed_begins| before sending the first character,
+- call `Lexer::feed_begins` before sending the first character,
 - send ISO Latin-1 characters which also exist in ZSCII, in sequence,
-via |Lexer::feed_triplet|,
-- conclude by calling |Lexer::feed_ends|.
+via `Lexer::feed_triplet`,
+- conclude by calling `Lexer::feed_ends`.
 
 Only one feeder can be active at a time, as the following routines ensure.
 
@@ -655,7 +655,7 @@ be a bug, and Inform is bug-free, so it follows that it could never happen.
     lxs_kind_of_word = ORDINARY_KW;
 
 @ This slightly crudely (well, very crudely) detects whether the
-|---- DOCUMENTATION ----| tear-off marker has been reached in source text.
+`---- DOCUMENTATION ----` tear-off marker has been reached in source text.
 
 =
 int Lexer::detect_tear_off(void) {
@@ -668,10 +668,10 @@ int Lexer::detect_tear_off(void) {
 	return TRUE;
 }
 
-@ The feeder routine is required to send us a triple each time: |cr|
-must be a valid character (see above) and may not be |CH32EOF|; |last_cr| must
-be the previous one or else perhaps |CH32EOF| at the start of feed;
-while |next_cr| must be the next or else perhaps |CH32EOF| at the end of feed.
+@ The feeder routine is required to send us a triple each time: `cr`
+must be a valid character (see above) and may not be `CH32EOF`; `last_cr` must
+be the previous one or else perhaps `CH32EOF` at the start of feed;
+while `next_cr` must be the next or else perhaps `CH32EOF` at the end of feed.
 
 Spaces, often redundant, are inserted around punctuation unless one of the
 following exceptions holds:
@@ -684,10 +684,10 @@ alphanumeric characters. This is done so that, for instance, "0.91" does
 not split into three words in the lexer. We do not count square brackets
 here, because if we did, that would cause trouble in parsing
 
->> say "[if M is less than 10]0[otherwise]1";
+> say "[if M is less than 10]0[otherwise]1";
 
-where the |0]0| would go unbroken in |lexer_divide_strings_at_text_substitutions|
-mode, and therefore the |]| would remain glued to the preceding text;
+where the `0]0` would go unbroken in `lexer_divide_strings_at_text_substitutions`
+mode, and therefore the `]` would remain glued to the preceding text;
 
 Where the character following is a slash. (This is done essentially to make
 most common URLs glue up as single words.)
@@ -741,13 +741,13 @@ has completed one batch, and moves on to dropping marbles into the next
 bucket.
 
 The marbles are characters; transparent glass ones are whitespace, which
-will always now be |' '|, |'\t'| or |'\n'|; the routine |Lexer::feed_triplet|
-above was the hopper; the routine |Lexer::feed_char_into_lexer|, which occupies
+will always now be `' '`, `'\t'` or `'\n'`; the routine `Lexer::feed_triplet`
+above was the hopper; the routine `Lexer::feed_char_into_lexer`, which occupies
 the whole of the rest of this section, is the mechanism which takes each marble
 in turn. (On occasion it calls itself recursively to cause extra characters of
 its choice to drop in.) The batches are words, and the bucket receiving the
-surviving marbles is the sequence of characters starting at |lexer_word| and
-extending to |lexer_hwm-1|.
+surviving marbles is the sequence of characters starting at `lexer_word` and
+extending to `lexer_hwm-1`.
 
 =
 void Lexer::feed_char_into_lexer(inchar32_t c) {
@@ -841,7 +841,7 @@ enter "soak up spaces" mode: in which mode, any subsequent whitespace is
 ignored until something else is reached. If we reach another new-line while
 still soaking up, then the literal text contained a paragraph break. In
 this instance, the splurge of whitespace is converted not to a single
-space |" "| but to two forced newlines in quick succession. In other words,
+space `" "` but to two forced newlines in quick succession. In other words,
 paragraph breaks in literal strings are converted to codes which will make
 Inform print a paragraph break at run-time.
 
@@ -867,8 +867,8 @@ literal string, I6 insertion or comment) has been stored character by
 character at the steadily rising high water mark. We have now hit the end
 by reaching whitespace (in the case of a literal, this has happened because
 we found the end of the literal, escaped literal mode, and then hit
-whitespace). The start of the word is at |lexer_word|; the last character
-is stored just below |lexer_hwm|.
+whitespace). The start of the word is at `lexer_word`; the last character
+is stored just below `lexer_hwm`.
 
 @<Complete the current word@> =
     *lexer_hwm++ = 0; /* terminate the current word as a C string */
@@ -922,11 +922,11 @@ since this would allow the next word's break setting to overwrite the
 array.
 
 For ordinary words (but not literals), the copy of a word in the main array
-|lw_text| is lowered in case. The original is preserved in |lw_rawtext| and
+`lw_text` is lowered in case. The original is preserved in `lw_rawtext` and
 is used to print more attractive error messages, and also to enable a few
 semantic parts of Inform to be case sensitive. This copying means that in the
 worst case -- when we complete an ordinary word of maximal length -- we need
-to consume an additional |MAX_WORD_LENGTH+2| bytes of the lexer's workspace,
+to consume an additional `MAX_WORD_LENGTH+2` bytes of the lexer's workspace,
 which is why that was the amount we checked to ensure existed when the
 lexer was called. The lowering loop can therefore never overspill the
 workspace.
@@ -944,7 +944,7 @@ workspace.
         lw_array[lexer_wordcount].lw_text = lw_array[lexer_wordcount].lw_rawtext;
     }
 
-    Vocabulary::identify_word(lexer_wordcount); /* which sets |lw_array[lexer_wordcount].lw_identity| */
+    Vocabulary::identify_word(lexer_wordcount); /* which sets `lw_array[lexer_wordcount].lw_identity` */
 
     lexer_wordcount++;
     Lexer::ensure_space_up_to(lexer_wordcount);
@@ -961,13 +961,13 @@ anyhow; as it happens, we keep it for now. But in the case of an I6
 escape we are in danger, because of the auto-spacing around brackets, of
 recording two words
 
->> |( -something|
+> `( -something`
 
 when in fact we want to record
 
->> |(- something|
+> `(- something`
 
-We do this by adding a hyphen to the previous word (the |(| word), and by
+We do this by adding a hyphen to the previous word (the `(` word), and by
 throwing away the hyphen from the material of the current word.
 
 @<Contemplate entering literal mode@> =
@@ -983,13 +983,13 @@ throwing away the hyphen from the material of the current word.
             if ((lxs_previous_char_in_raw_feed != INFORM6_ESCAPE_BEGIN_1) ||
             	(lexer_allow_I6_escapes == FALSE)) break;
             lxs_literal_mode = TRUE; lxs_kind_of_word = I6_INCLUSION_KW;
-            /* because of spacing around punctuation outside literal mode, the |(| became a word */
+            /* because of spacing around punctuation outside literal mode, the `(` became a word */
             if (lexer_wordcount > 0) { /* this should always be true: just being cautious */
-                lw_array[lexer_wordcount-1].lw_text = U"(-"; /* change the previous word's text from |(| to |(-| */
+                lw_array[lexer_wordcount-1].lw_text = U"(-"; /* change the previous word's text from `(` to `(-` */
                 lw_array[lexer_wordcount-1].lw_rawtext = U"(-";
                 Vocabulary::identify_word(lexer_wordcount-1); /* and re-identify */
             }
-            lexer_hwm--; /* erase the just-recorded |INFORM6_ESCAPE_BEGIN_2| character */
+            lexer_hwm--; /* erase the just-recorded `INFORM6_ESCAPE_BEGIN_2` character */
             break;
     }
 
@@ -1002,14 +1002,14 @@ a literal.
 Note that, when we leave literal mode, we set the current character to a
 space. This means the character forcing our departure is lost and not
 recorded: but we only actually want it in the case of strings (because
-we prefer to record them in the form |"frogs and lilies"| rather than
-|"frogs and lilies|, for tidiness's sake). And so for strings we explicitly
+we prefer to record them in the form `"frogs and lilies"` rather than
+`"frogs and lilies`, for tidiness's sake). And so for strings we explicitly
 record a close quotation mark.
 
 The new current character, being a space and thus whitespace outside of
 literal mode, triggers the completion of the word, recording whatever
 literal we have just made. (Or, if it was a comment, discarding it.)
-|lxs_kind_of_word| continues to hold the kind of literal we have just
+`lxs_kind_of_word` continues to hold the kind of literal we have just
 finished.
 
 @<Contemplate leaving literal mode@> =
@@ -1024,14 +1024,14 @@ finished.
         case STRING_KW:
             if (c == STRING_END) {
                 lxs_string_soak_up_spaces_mode = FALSE;
-                *(lexer_hwm++) = c; /* record the |STRING_END| character as part of the word */
+                *(lexer_hwm++) = c; /* record the `STRING_END` character as part of the word */
                 lxs_literal_mode = FALSE;
             }
             break;
         case I6_INCLUSION_KW:
             if ((c == INFORM6_ESCAPE_END_2) &&
                 (lxs_previous_char_in_raw_feed == INFORM6_ESCAPE_END_1)) {
-                lexer_hwm--; /* erase the |INFORM6_ESCAPE_END_1| character recorded last time */
+                lexer_hwm--; /* erase the `INFORM6_ESCAPE_END_1` character recorded last time */
                 lxs_literal_mode = FALSE;
             }
             break;
@@ -1041,45 +1041,45 @@ finished.
 
 @h Breaking strings up at text substitutions.
 When text contains text substitutions, these are ordinarily ignored by the
-lexer, but in |lexer_divide_strings_at_text_substitutions| mode, we need to
+lexer, but in `lexer_divide_strings_at_text_substitutions` mode, we need to
 force strings to end and resume at the two ends of each substitution. For
 instance:
 
->> "Hello, [greeted person]. Do you make it [supper time]?"
+> "Hello, [greeted person]. Do you make it [supper time]?"
 
 must be split as
 
->> |"Hello, " , greeted person , ". Do you make it " , supper time , "?"|
+> `"Hello, " , greeted person , ". Do you make it " , supper time , "?"`
 
 where our original single text literal is now three text literals, plus
 eight ordinary words (four of them commas).
 
 Note that each open square bracket, and each close square bracket, has been
 removed and become a comma word. We see to open squares before we come
-to recording the character, so to get rid of the |[| character, we change
-|c| to a space:
+to recording the character, so to get rid of the `[` character, we change
+`c` to a space:
 
 @<Force string division at the start of a text substitution, if necessary@> =
     if ((lexer_divide_strings_at_text_substitutions) && (c == TEXT_SUBSTITUTION_BEGIN)) {
-        Lexer::feed_char_into_lexer(STRING_END); /* feed |"| to close the old string */
+        Lexer::feed_char_into_lexer(STRING_END); /* feed `"` to close the old string */
         Lexer::feed_char_into_lexer(' ');
-        Lexer::feed_char_into_lexer(TEXT_SUBSTITUTION_SEPARATOR); /* feed |,| to start new word */
-        c = ' '; /* the lexer now goes on to record a space, which will end the |,| word */
+        Lexer::feed_char_into_lexer(TEXT_SUBSTITUTION_SEPARATOR); /* feed `,` to start new word */
+        c = ' '; /* the lexer now goes on to record a space, which will end the `,` word */
         lxs_scanning_text_substitution = TRUE; /* but remember that we must get back again */
     }
 
 @ Whereas we see to close squares after recording the character, so we have
-to erase it to get rid of the |]|. Note that since this was read in ordinary
+to erase it to get rid of the `]`. Note that since this was read in ordinary
 mode, it was automatically spaced (being punctuation), and that therefore
 the feeder above has just sent the second of a sequence of three characters:
-space, |]|, space. That means we have recorded, so far, a one-character
-word in ordinary mode, whose text consists only of |]|. By overwriting
+space, `]`, space. That means we have recorded, so far, a one-character
+word in ordinary mode, whose text consists only of `]`. By overwriting
 this with a comma, we instead get a one-character word in ordinary mode
 whose text consists only of a comma. We then feed a space to end that word;
 then feed a double-quote to start text again.
 
 But, it might be objected: surely the feeder above is still poised with
-that third character in its sequence space, |]|, space, and that means
+that third character in its sequence space, `]`, space, and that means
 it will now feed a spurious space into the start of our resumed text?
 Happily, the answer is no: this is why the feeder above checks that it
 is still in ordinary mode before sending that third character. Having
@@ -1089,29 +1089,29 @@ spurious space is never fed, and there is no problem.
 @<Force string division at the end of a text substitution, if necessary@> =
     if ((lexer_divide_strings_at_text_substitutions) && (c == TEXT_SUBSTITUTION_END)) {
         lxs_scanning_text_substitution = FALSE;
-		*(lexer_hwm-1) = TEXT_SUBSTITUTION_SEPARATOR; /* overwrite recorded copy of |]| with |,| */
-		Lexer::feed_char_into_lexer(' '); /* then feed a space to end the |,| word */
-		Lexer::feed_char_into_lexer(STRING_BEGIN); /* then feed |"| to open a new string */
+		*(lexer_hwm-1) = TEXT_SUBSTITUTION_SEPARATOR; /* overwrite recorded copy of `]` with `,` */
+		Lexer::feed_char_into_lexer(' '); /* then feed a space to end the `,` word */
+		Lexer::feed_char_into_lexer(STRING_BEGIN); /* then feed `"` to open a new string */
 	}
 
 @ Finally, note that the breaking-up process may result in empty strings
 where square brackets abut each other or the ends of the original string.
 Thus
 
->> "[The noun] is on the [colour][style] table."
+> "[The noun] is on the [colour][style] table."
 
-is split as: |"" , The noun , " is on the " , colour , "" , style , " table."|
+is split as: `"" , The noun , " is on the " , colour , "" , style , " table."`
 This is not a bug: empty strings are legal. It's for higher-level code to
 remove them if they aren't wanted.
 
 @h Splicing.
 Once in a while, we need to have a run of words in the lexer which
 all do occur in the source text, but not contiguously, so that they
-cannot be represented by a pair |(w1, w2)|. In that event we use the
+cannot be represented by a pair `(w1, w2)`. In that event we use the
 following routine to splice duplicate references at the end of the word
 list (this does not duplicate the text itself, only references to it):
-for instance, if we start with 10 words (0 to 9) and then splice |(2,3)|
-and then |(6,8)|, we end up with 15 words, and the text of |(10,14)|
+for instance, if we start with 10 words (0 to 9) and then splice `(2,3)`
+and then `(6,8)`, we end up with 15 words, and the text of `(10,14)`
 contains the same material as words 2, 3, 6, 7, 8.
 
 =
@@ -1128,7 +1128,7 @@ wording Lexer::splice_words(wording W) {
 @h Basic command-line error handler.
 Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_WORDS_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_WORDS_CALLBACK`
 to some routine of her own, gazumping this one.
 
 =

@@ -5,10 +5,10 @@ To handle the printing of names of objects.
 @h Short Name Storage.
 None of the following functions should be called for the Z-machine if the
 short name exceeds the size of the following buffer: whereas the Glulx
-implementation of |VM_PrintToBuffer| will safely truncate overlong text,
+implementation of `VM_PrintToBuffer` will safely truncate overlong text,
 that's impossible for the Z-machine, and horrible results will follow.
 
-|CPrintOrRun| is a variation on |PrintOrRun|, simplified by not needing
+`CPrintOrRun` is a variation on `PrintOrRun`, simplified by not needing
 to handle entire paragraphs (so, no fuss about dividing) but complicated
 by having to capitalise the first letter. We do this by writing to the
 buffer and then altering the first character.
@@ -130,12 +130,12 @@ The second level of the system for printing object names handles the placing
 of articles in front of them: {\it the} red herring, {\it an} elephant,
 {\it Some} bread. The following routine allows us to choose:
 
-- |obj|, the object whose name is to be printed;
-- |acode|, the kind of article needed: capitalised definite (0), lower case
+- `obj`, the object whose name is to be printed;
+- `acode`, the kind of article needed: capitalised definite (0), lower case
 uncapitalised definite (1), or uncapitalised indefinite (2);
-- |pluralise|, a flag forcing to a plural form (e.g., "some" being the
+- `pluralise`, a flag forcing to a plural form (e.g., "some" being the
 pluralised form of an indefinite article in English);
-- |capitalise|, a flag forcing us to capitalise the article -- it's by
+- `capitalise`, a flag forcing us to capitalise the article -- it's by
 setting this that we can achieve the fourth option missing from (b), viz.,
 capitalised indefinite. (All of this is a legacy design from a time when
 the I6 library did not support capitalised indefinite articles.)
@@ -261,11 +261,11 @@ The routines accessible from outside this segment.
 ];
 
 @h Printing in number bases.
-The following prints the number |n| in base |base|, which must be 2 to 36.
-If |digits| is supplied, the number is padded with leading zeros to form at
+The following prints the number `n` in base `base`, which must be 2 to 36.
+If `digits` is supplied, the number is padded with leading zeros to form at
 least that many digits.
 
-|n| is printed as a signed number if |base| is 10 and |digits| is not supplied,
+`n` is printed as a signed number if `base` is 10 and `digits` is not supplied,
 but in all other cases is printed as unsigned.
 
 For example, -1 prints as FFFFFFFF in hex, either -1 or 4294967285 in decimal,
@@ -303,15 +303,15 @@ in base 3 and 1Z141Y3 in base 36.
 	}
 ];
 
-@ Here, |n| may be negative, but we want to treat it as an unsigned integer,
+@ Here, `n` may be negative, but we want to treat it as an unsigned integer,
 not as twos-complement signed, and that is very annoying because we only have
-access to signed integer division and remainder. On the bright side, |base| is
+access to signed integer division and remainder. On the bright side, `base` is
 between 2 and 36.
 
-The idea here is that if |n| has the top bit set, we take that bit away and
+The idea here is that if `n` has the top bit set, we take that bit away and
 then can safely perform signed division getting the right answer; but then we
 have to compensate by working out what difference it made that we changed
-the value of |n| (from an unsigned point of view) by subtracting |$80000000|.
+the value of `n` (from an unsigned point of view) by subtracting `$80000000`.
 
 =
 [ DropDigit n base;
@@ -339,7 +339,7 @@ the value of |n| (from an unsigned point of view) by subtracting |$80000000|.
 @h Miscellaneous.
 What the following functions have in common is that they are all minimal
 definitions which apply only to Basic Inform programs. More elaborate
-|WorldModelKit| alternatives will be used if that kit is present, as it
+`WorldModelKit` alternatives will be used if that kit is present, as it
 always is for non-Basic Inform projects.
 
 =
@@ -348,7 +348,7 @@ always is for non-Basic Inform projects.
 [ PRINT_PROTAGONIST_INTERNAL_R; ]; ! There is no player in Basic Inform
 
 @ PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
-the |prior_named_noun|.
+the `prior_named_noun`.
 
 =
 [ PNToVP gna;

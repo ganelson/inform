@@ -11,12 +11,12 @@ only thing which ever sits on it. So the "stack" has just one 3-word
 record now. The meanings of these are as follows. The first word is one of
 the following:
 
-- |RS_SUCCEEDS| indicates that the most recent rule or rulebook processed
-ended in success. Word 2 is |false| if there's no value, or the kind if there
+- `RS_SUCCEEDS` indicates that the most recent rule or rulebook processed
+ended in success. Word 2 is `false` if there's no value, or the kind if there
 is, in which case word 3 contains the value itself.
-- |RS_FAILS| is similar, but for a failure. Note that failures can also
+- `RS_FAILS` is similar, but for a failure. Note that failures can also
 return values.
-- |RS_NEITHER| is similar except that it cannot return any value, so that
+- `RS_NEITHER` is similar except that it cannot return any value, so that
 words 2 and 3 are meaningless.
 
 =
@@ -47,22 +47,22 @@ some forms of the Frotz Z-machine interpreter provided only 4K of stack
 by default. ("Only" 4K. In the mid-1980s, one of the obstacles facing
 IF authors at Infocom was the need to get the stack usage down to fewer
 than 600 bytes in order that the story file could be run on the smaller
-home computers of the day.) |FollowRulebook| was the major consumer of
+home computers of the day.) `FollowRulebook` was the major consumer of
 stack space, on average, because of its frequent recursion. Now that the
 process is simpler, this has become less problematic, since the routine
 now has fewer local variables.
 
-|FollowRulebook| takes three arguments, of which only the first is
+`FollowRulebook` takes three arguments, of which only the first is
 compulsory:
 
-- The |rulebook| is an I7 value of kind "rule", which means it can be
+- The `rulebook` is an I7 value of kind "rule", which means it can be
 either the ID number of a rulebook -- from 0 up to $N-1$, where $N$ is the
 number of rulebooks compiled by Inform, typically about 600 -- or else the
 address of a routine representing an individual rule.
-- The |parameter| supplied to the rulebook. Much as arguments can be supplied
+- The `parameter` supplied to the rulebook. Much as arguments can be supplied
 to a function in a conventional language's function call, so a parameter can be
 supplied whenever a rulebook is invoked.
-- |no_paragraph_skips| is a flag: if explicitly set |true|, then the rulebook
+- `no_paragraph_skips` is a flag: if explicitly set `true`, then the rulebook
 is run with paragraph breaking suppressed. This is the process by which
 paragraph division points are placed between rules, so that if two rules both
 print text then a paragraph break appears between. While that is appropriate
@@ -70,11 +70,11 @@ for rulebooks attached to actions or for "every turn" rules, it is disastrous
 for rulebooks attached to activities such as "printing the name of
 something".
 
-|FollowRulebook| returns |R| if rule |R| in the rulebook (or rule) chose to
-"succeed" or "fail", and |false| if it made no choice. (To repeat: if
-the rule explicitly fails, then |FollowRulebook| returns |true|. It's easy
+`FollowRulebook` returns `R` if rule `R` in the rulebook (or rule) chose to
+"succeed" or "fail", and `false` if it made no choice. (To repeat: if
+the rule explicitly fails, then `FollowRulebook` returns `true`. It's easy
 to write plausible-looking code which goes wrong because it assumes that the
-return value is success vs. failure.) The outcome of |FollowRulebook| is
+return value is success vs. failure.) The outcome of `FollowRulebook` is
 stored as described above: thus the most recent rule or rulebook succeeded
 or failed if --
 = (text as Inform 6)
@@ -146,7 +146,7 @@ Global rulebook_without_variables = -1; ! WorldModelKit sets this to ACTION_PROC
 The following provide ways for rules to succeed, fail or decline to do
 either.
 
-|SetRulebookOutcome| is a little different: it changes the outcome state
+`SetRulebookOutcome` is a little different: it changes the outcome state
 of the most recent rule completed, not the current one. (It's used only
 when saving and restoring this in the actions machinery: rules should not
 call it.)

@@ -73,12 +73,9 @@ but we cannot discard upper case entirely at the lexical stage because we
 will need it later to decide whether punctuation at the end of a quotation
 is meant to end the sentence making the quote, or not. Humans certainly
 read these differently:</p>
-</div>
 <blockquote>
-    <p>Say "Hello!" with alarm, ... Say "Hello!" With alarm, ...</p>
+<p>Say &quot;Hello!&quot; with alarm, ... Say &quot;Hello!&quot; With alarm, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>And paragraph breaks can also have semantic meanings. A gap between two words
 does not end a sentence, but a paragraph break between two words clearly does.
 So semantic considerations occasionally infiltrate themselves into even the
@@ -93,7 +90,7 @@ currently reading.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">source_location</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file_of_origin</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or |NULL| if internally written and not from a file */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file_of_origin</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NULL</code> if internally written and not from a file */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* counting upwards from 1 within file (if any) */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">source_location</span><span class="plain-syntax">;</span>
 </pre>
@@ -127,12 +124,9 @@ text, then those from the extensions loaded.</p>
 of a pair of word numbers, usually called <code>w1</code> and <code>w2</code> or some variation
 on that, indicating the text which starts at word <code>w1</code> and finishes
 at <code>w2</code> (including both ends). Thus if the text is</p>
-</div>
 <blockquote>
-    <p>When to the sessions of sweet silent thought</p>
+<p>When to the sessions of sweet silent thought</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then the eight words are numbered 0 to 7 and a reference to <code>w1=2</code>, <code>w2=5</code>
 would mean the sub-text &quot;the sessions of sweet&quot;. The special null value
 <code>wn=-1</code> is used when no word reference has been made: never 0, as that would
@@ -221,12 +215,9 @@ comment, i.e., quotation marks should be ignored when matching <code>[</code> an
 inside a comment.) Thus, nested comments are allowed, and the following
 text contains a single comment running from just after &quot;the&quot; through to
 the full stop:</p>
-</div>
 <blockquote>
-    <p>|Snow White and the [Seven Dwarfs [but not Doc]].|</p>
+<p><code>Snow White and the [Seven Dwarfs [but not Doc]].</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(4c) Literal I6 code. Outside of (4a) and (4b), the combination <code>(-</code> begins
 literal I6 matter. This matter continues until the next <code>-)</code> is reached.
 Within literal I6 matter, one can escape back into I7 source text using a
@@ -234,12 +225,9 @@ matched pair of <code>(+</code> and <code>+)</code> tokens, but it really doesn'
 syntax colouring this very much. And the authors of Inform will lose no
 sleep if we miscolour this, for instance, especially if it deters people
 from such horrible coding practices:</p>
-</div>
 <blockquote>
-    <p>|(- Constant BLOB = (+ the total weight of things in (- selfobj -) +); -)|</p>
+<p><code>(- Constant BLOB = (+ the total weight of things in (- selfobj -) +); -)</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(5) Normal text. Everything else.</p>
 <p>Inform regards all of the Unicode characters <code>0x0009</code>, <code>0x000A</code>, <code>0x000D</code>,
 <code>0x0020</code>, <code>0x0085</code>, <code>0x00A0</code>, <code>0x02000</code> to <code>0x200A</code>, <code>0x2028</code> and <code>0x2029</code>
@@ -290,7 +278,7 @@ on the Welsh isle of Anglesey), but this has a mere 63 letters, and in any case
 the name was &quot;improved&quot; by the village cobbler in the mid-19th century to
 make it a tourist attraction for the new railway age.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TEXT_STORAGE_CHUNK_SIZE</span> <span class="constant-syntax">600000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Must exceed |MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TEXT_STORAGE_CHUNK_SIZE</span> <span class="constant-syntax">600000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Must exceed <code>MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH</code> */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_VERBATIM_LENGTH</span> <span class="constant-syntax">200000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Largest quantity of Inform 6 which can be quoted verbatim. */</span>
 </pre>
@@ -419,21 +407,15 @@ flags, but with three exceptions this state is used only within the lexer.</p>
 stay off: the lexer never goes into either mode by itself.</p>
 <p><code>lexer_divide_strings_at_text_substitutions</code> is used by some of the lexical writing-back
 machinery,  when it has been decided to compile something like</p>
-</div>
 <blockquote>
-    <p>say "[The noun] falls onto [the second noun]."</p>
+<p>say &quot;[The noun] falls onto [the second noun].&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In its ordinary mode, with this setting off, the lexer will render this as
 two words, the second being the entire quoted text. But if
 <code>lexer_divide_strings_at_text_substitutions</code> is set then the text is reinterpreted as</p>
-</div>
 <blockquote>
-    <p>say The noun, " falls onto ", the second noun, "."</p>
+<p>say The noun, &quot; falls onto &quot;, the second noun, &quot;.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which runs to eleven words, three of them commas (punctuation always counts
 as a word).</p>
 <p><code>lexer_wait_for_dashes</code> is set by the extension-reading machinery, in
@@ -447,8 +429,8 @@ so that subsequent words are lexed as usual.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lexer_punctuation_marks</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_divide_strings_at_text_substitutions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Break up text substitutions in quoted text */</span>
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_allow_I6_escapes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Recognise |(-| and |-)| */</span>
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_wait_for_dashes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Ignore all text until first |----| found */</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_allow_I6_escapes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Recognise <code>(-</code> and <code>-)</code> */</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_wait_for_dashes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Ignore all text until first <code>----</code> found */</span>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexer_break_at_slashes</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
@@ -780,12 +762,9 @@ a digit and a minus sign, or (in the case of full stops) between two lower-case
 alphanumeric characters. This is done so that, for instance, &quot;0.91&quot; does
 not split into three words in the lexer. We do not count square brackets
 here, because if we did, that would cause trouble in parsing</p>
-</div>
 <blockquote>
-    <p>say "[if M is less than 10]0[otherwise]1";</p>
+<p>say &quot;[if M is less than 10]0[otherwise]1&quot;;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the <code>0]0</code> would go unbroken in <code>lexer_divide_strings_at_text_substitutions</code>
 mode, and therefore the <code>]</code> would remain glued to the preceding text;</p>
 <p>Where the character following is a slash. (This is done essentially to make
@@ -1065,7 +1044,7 @@ workspace.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">].</span><span class="element-syntax">lw_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">].</span><span class="element-syntax">lw_rawtext</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::identify_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">); </span><span class="comment-syntax">/* which sets |lw_array[lexer_wordcount].lw_identity| */</span>
+<span class="plain-syntax">    </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::identify_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">); </span><span class="comment-syntax">/* which sets <code>lw_array[lexer_wordcount].lw_identity</code> */</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><a href="3-lxr.html#SP13" class="function-link"><span class="function-syntax">Lexer::ensure_space_up_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">);</span>
@@ -1081,19 +1060,13 @@ In the case of a comment, we don't care, as we're going to throw it away
 anyhow; as it happens, we keep it for now. But in the case of an I6
 escape we are in danger, because of the auto-spacing around brackets, of
 recording two words</p>
-</div>
 <blockquote>
-    <p>|( -something|</p>
+<p><code>( -something</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>when in fact we want to record</p>
-</div>
 <blockquote>
-    <p>|(- something|</p>
+<p><code>(- something</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We do this by adding a hyphen to the previous word (the <code>(</code> word), and by
 throwing away the hyphen from the material of the current word.</p>
 </div>
@@ -1112,13 +1085,13 @@ throwing away the hyphen from the material of the current word.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">lxs_previous_char_in_raw_feed</span><span class="plain-syntax"> != </span><span class="constant-syntax">INFORM6_ESCAPE_BEGIN_1</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">lexer_allow_I6_escapes</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">lxs_literal_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">lxs_kind_of_word</span><span class="plain-syntax"> = </span><span class="constant-syntax">I6_INCLUSION_KW</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">/* because of spacing around punctuation outside literal mode, the |(| became a word */</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">/* because of spacing around punctuation outside literal mode, the <code>(</code> became a word */</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* this should always be true: just being cautious */</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">-1].</span><span class="element-syntax">lw_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"(-"</span><span class="plain-syntax">; </span><span class="comment-syntax">/* change the previous word's text from |(| to |(-| */</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">-1].</span><span class="element-syntax">lw_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"(-"</span><span class="plain-syntax">; </span><span class="comment-syntax">/* change the previous word's text from <code>(</code> to <code>(-</code> */</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">-1].</span><span class="element-syntax">lw_rawtext</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"(-"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::identify_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">-1); </span><span class="comment-syntax">/* and re-identify */</span>
 <span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">--; </span><span class="comment-syntax">/* erase the just-recorded |INFORM6_ESCAPE_BEGIN_2| character */</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">--; </span><span class="comment-syntax">/* erase the just-recorded <code>INFORM6_ESCAPE_BEGIN_2</code> character */</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -1155,14 +1128,14 @@ finished.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STRING_KW:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">STRING_END</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">lxs_string_soak_up_spaces_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                *(</span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">++) = </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax">/* record the |STRING_END| character as part of the word */</span>
+<span class="plain-syntax">                *(</span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">++) = </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax">/* record the <code>STRING_END</code> character as part of the word */</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">lxs_literal_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6_INCLUSION_KW:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">INFORM6_ESCAPE_END_2</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">lxs_previous_char_in_raw_feed</span><span class="plain-syntax"> == </span><span class="constant-syntax">INFORM6_ESCAPE_END_1</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">--; </span><span class="comment-syntax">/* erase the |INFORM6_ESCAPE_END_1| character recorded last time */</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">--; </span><span class="comment-syntax">/* erase the <code>INFORM6_ESCAPE_END_1</code> character recorded last time */</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">lxs_literal_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -1176,19 +1149,13 @@ finished.</p>
 lexer, but in <code>lexer_divide_strings_at_text_substitutions</code> mode, we need to
 force strings to end and resume at the two ends of each substitution. For
 instance:</p>
-</div>
 <blockquote>
-    <p>"Hello, [greeted person]. Do you make it [supper time]?"</p>
+<p>&quot;Hello, [greeted person]. Do you make it [supper time]?&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>must be split as</p>
-</div>
 <blockquote>
-    <p>|"Hello, " , greeted person , ". Do you make it " , supper time , "?"|</p>
+<p><code>&quot;Hello, &quot; , greeted person , &quot;. Do you make it &quot; , supper time , &quot;?&quot;</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where our original single text literal is now three text literals, plus
 eight ordinary words (four of them commas).</p>
 <p>Note that each open square bracket, and each close square bracket, has been
@@ -1200,10 +1167,10 @@ to recording the character, so to get rid of the <code>[</code> character, we ch
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">lexer_divide_strings_at_text_substitutions</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">TEXT_SUBSTITUTION_BEGIN</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STRING_END</span><span class="plain-syntax">); </span><span class="comment-syntax">/* feed |"| to close the old string */</span>
+<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STRING_END</span><span class="plain-syntax">); </span><span class="comment-syntax">/* feed <code>&quot;</code> to close the old string */</span>
 <span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain-syntax">); </span><span class="comment-syntax">/* feed |,| to start new word */</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the lexer now goes on to record a space, which will end the |,| word */</span>
+<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain-syntax">); </span><span class="comment-syntax">/* feed <code>,</code> to start new word */</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the lexer now goes on to record a space, which will end the <code>,</code> word */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">lxs_scanning_text_substitution</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* but remember that we must get back again */</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -1231,9 +1198,9 @@ spurious space is never fed, and there is no problem.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">lexer_divide_strings_at_text_substitutions</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">TEXT_SUBSTITUTION_END</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">lxs_scanning_text_substitution</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        *(</span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">-1) = </span><span class="constant-syntax">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain-syntax">; </span><span class="comment-syntax">/* overwrite recorded copy of |]| with |,| */</span>
-<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">); </span><span class="comment-syntax">/* then feed a space to end the |,| word */</span>
-<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STRING_BEGIN</span><span class="plain-syntax">); </span><span class="comment-syntax">/* then feed |"| to open a new string */</span>
+<span class="plain-syntax">        *(</span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">-1) = </span><span class="constant-syntax">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain-syntax">; </span><span class="comment-syntax">/* overwrite recorded copy of <code>]</code> with <code>,</code> */</span>
+<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">); </span><span class="comment-syntax">/* then feed a space to end the <code>,</code> word */</span>
+<span class="plain-syntax">        </span><a href="3-lxr.html#SP28" class="function-link"><span class="function-syntax">Lexer::feed_char_into_lexer</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STRING_BEGIN</span><span class="plain-syntax">); </span><span class="comment-syntax">/* then feed <code>&quot;</code> to open a new string */</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-lxr.html#SP28">&#167;28</a>.</li></ul>
@@ -1241,12 +1208,9 @@ spurious space is never fed, and there is no problem.</p>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  Finally, note that the breaking-up process may result in empty strings
 where square brackets abut each other or the ends of the original string.
 Thus</p>
-</div>
 <blockquote>
-    <p>"[The noun] is on the [colour][style] table."</p>
+<p>&quot;[The noun] is on the [colour][style] table.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is split as: <code>&quot;&quot; , The noun , &quot; is on the &quot; , colour , &quot;&quot; , style , &quot; table.&quot;</code>
 This is not a bug: empty strings are legal. It's for higher-level code to
 remove them if they aren't wanted.</p>

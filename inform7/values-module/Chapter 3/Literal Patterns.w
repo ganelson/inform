@@ -5,7 +5,7 @@ To manage the possible notations with which literal values can be written.
 @ Literal patterns (LPs) allow an author to create new notations for
 quasi-numerical kinds of value. For example,
 
->> 16:9 specifies an aspect ratio.
+> 16:9 specifies an aspect ratio.
 
 establishes a new notation for writing literals of the kind "aspect ratios".
 
@@ -33,7 +33,7 @@ then be scaled down by 1000, and up by 1000, respectively.
 @ Syntactically, a literal pattern is a series of "tokens", of which more
 below. Some tokens are simply fixed lettering or wording, but at least one
 must be numerical, and called an "element". For example, "16:9" has three
-tokens -- element, fixed |:|, element.
+tokens -- element, fixed `:`, element.
 
 @d MAX_ELEMENTS_PER_LITERAL 8
 @d MAX_TOKENS_PER_LITERAL 100
@@ -71,10 +71,10 @@ typedef struct literal_pattern {
 @ There are three sorts of token: character, word and element. Each token can
 be a whole word, or only part of a word. For instance, in
 
->> 28kg net specifies a weight.
+> 28kg net specifies a weight.
 
 we have a sequence of four tokens: an element token, marked as beginning a
-word; a character token |k|; a character token |g|; and a word token |net|,
+word; a character token `k`; a character token `g`; and a word token `net`,
 which necessarily begins a word. Word boundaries in the source text must
 match those in the specification, so this notation does not match the text
 "41 kg net", for instance.
@@ -87,8 +87,8 @@ match those in the specification, so this notation does not match the text
 typedef struct literal_pattern_token {
 	int new_word_at; /* does token start a new word? */
 	int lpt_type; /* one of the three constants defined above */
-	inchar32_t token_char; /* |CHARACTER_LPT| only; the character to match */
-	int token_wn; /* |WORD_LPT| only; word number in source text of the prototype */
+	inchar32_t token_char; /* `CHARACTER_LPT` only; the character to match */
+	int token_wn; /* `WORD_LPT` only; word number in source text of the prototype */
 } literal_pattern_token;
 
 @ A value notated this way is like an old-school Pascal packed integer,
@@ -150,12 +150,12 @@ typedef struct literal_pattern_element_value_pair {
 @ For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,
 
->> 1 tonne (in tonnes, singular) specifies a mass scaled up by 1000.
+> 1 tonne (in tonnes, singular) specifies a mass scaled up by 1000.
 
 assigns the name "in tonnes" to this notation for writing a mass. There can
 be several notation associated with "in tonnes":
 
->> 2 tonnes (in tonnes, plural) specifies a mass scaled up by 1000.
+> 2 tonnes (in tonnes, plural) specifies a mass scaled up by 1000.
 
 and hence the linked list of LPs associated with a single "literal pattern
 name". Moreover, a given kind of value can support multiple named notations;
@@ -287,7 +287,7 @@ equivalent to an exact value.
 				break;
 			}
 
-@ Within the list, exactly one LP is marked with the |last_resort| flag: the
+@ Within the list, exactly one LP is marked with the `last_resort` flag: the
 last one not marked as an equivalent unit. (You can only be equivalent to
 something already there, so it's not possible for all the LPs in the list to
 be equivalent.)
@@ -422,9 +422,9 @@ int LiteralPatterns::at_optional_break_point(literal_pattern *lp, int ec, int tc
 }
 
 @h Matching an LP in the source text.
-Given an excerpt |(w1, w2)|, we try to parse it as a constant value written
+Given an excerpt `(w1, w2)`, we try to parse it as a constant value written
 in the LP notation: if it passes, we return the kind of value, and if not
-we return |NULL|.
+we return `NULL`.
 
 =
 int waive_lp_overflows = FALSE;
@@ -456,8 +456,8 @@ kind *LiteralPatterns::match(literal_pattern *lp, wording W, int *found) {
 }
 
 @ Scanning the tokens one at a time. The scan position is represented as a
-word number |wn| together with a character position within the word, |wpos|.
-The |wpos| value $-1$ means that word |wn| has not yet been started.
+word number `wn` together with a character position within the word, `wpos`.
+The `wpos` value $-1$ means that word `wn` has not yet been started.
 
 @<Try to match the excerpt against the whole prototype or up to an optional break@> =
 	int tc, wn = Wordings::first_wn(W), wpos = -1, ec = 0, matched_scaledown = 1, parsed_as_real = FALSE;
@@ -506,7 +506,7 @@ The |wpos| value $-1$ means that word |wn| has not yet been started.
 	wn++;
 
 @ A character token matches only a single character -- note the case insensitivity
-here, because of the use of |tolower|.
+here, because of the use of `tolower`.
 
 @<Match a character token within a literal pattern@> =
 	if (wpos == -1) { wpos = 0; wd = Lexer::word_text(wn); } /* start parsing the interior of a word */
@@ -531,9 +531,9 @@ can store on a 16-bit virtual machine;
 We report none of these as a problem immediately -- only if the pattern would
 otherwise match.
 
-The following assumes that |long long int| is at least 64-bit, so that it
+The following assumes that `long long int` is at least 64-bit, so that it
 can hold any 32-bit integer multiplied by the number base, and also any product
-of two 32-bit numbers. This is true for all modern |gcc| implementations, but
+of two 32-bit numbers. This is true for all modern `gcc` implementations, but
 was not required by C90, so it is just possible that this could cause trouble
 on unusual platforms.
 
@@ -1107,11 +1107,11 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	}
 
 @ We parse the specification text as if it were a constant value, hoping
-for the result |NULL| -- so that it doesn't already mean something else.
+for the result `NULL` -- so that it doesn't already mean something else.
 During this process, we waive checking of numerical overflows in matching
 an LP: this is done so that
 
->> 3/13 specifies a bar. 2/19 specifies a foo.
+> 3/13 specifies a bar. 2/19 specifies a foo.
 
 reports "2/19" as a duplicate using the following problem message, but
 does not throw a problem message as being a bar which is out of range
@@ -1219,7 +1219,7 @@ alphabetic vs numeric pieces of a word:
 	}
 
 @ We will use this throwaway little structure to hold inclusive endpoints for
-ranges we are scanning: |(143, 2)| means "character 2 (counting from 0) in
+ranges we are scanning: `(143, 2)` means "character 2 (counting from 0) in
 word number 143".
 
 =
@@ -1229,7 +1229,7 @@ typedef struct lpe_notation_pos {
 } lpe_notation_pos;
 
 @ This enables us to express how we want to divide up text such as
-|#<red level>_<green level>_<blue level>|, which may have word breaks in the
+`#<red level>_<green level>_<blue level>`, which may have word breaks in the
 middle of either angle-escapes or the material in between.
 
 @<Subdivide the wording around angle-bracket escapes@> =
@@ -1314,8 +1314,8 @@ material or else names for parts about which nothing else is said.
 		angle_escaped_parts_exist = TRUE;
 	}
 
-@ Now we are looking for digits. |x45yyz| would be split into the character
-literal |x|, then a numerical element with range |45| in the current number base,
+@ Now we are looking for digits. `x45yyz` would be split into the character
+literal `x`, then a numerical element with range `45` in the current number base,
 then three more character literals. If there are no digits, and we have an entire
 word to play with, we optimise by making a word token instead of a run of
 character ones.
@@ -1406,7 +1406,7 @@ hold -- so we need not fool around with long long ints.
 @ In fact counting tokens is not necessarily a good way to measure the
 complexity of an LP, since any long run of characters in a word which
 also contains a number will splurge the number of tokens. So
-|MAX_TOKENS_PER_LITERAL| is set to a high enough value that this will
+`MAX_TOKENS_PER_LITERAL` is set to a high enough value that this will
 not really distort matters.
 
 @<Add new token to LP@> =
@@ -1710,9 +1710,9 @@ in both the LP for "1 tonne" and for "2 tonnes", deciding at run-time
 which to use. And on the other hand, "in metric units" may produce text
 substitutions for many different kinds, distinguished by type-checking:
 
->> To say (val - mass) in metric units: ...
+> To say (val - mass) in metric units: ...
 
->> To say (val - length) in metric units: ...
+> To say (val - length) in metric units: ...
 
 The following creates one text substitution for each different kind among
 the LPs under each named possibility.
@@ -1881,7 +1881,7 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 
 @h The kind's list.
 On reading "5 feet 4 inches specifies a height", Inform parses
-"5 feet 4 inches" into a |literal_pattern| structure and then calls this
+"5 feet 4 inches" into a `literal_pattern` structure and then calls this
 routine to attach it to the kind "height". (Multiple patterns can be
 attached to the same kind, and they become alternative syntaxes.)
 

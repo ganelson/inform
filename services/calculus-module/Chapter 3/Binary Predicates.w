@@ -11,7 +11,7 @@ $x$ and $y$ are called its "terms", and are numbered 0 and 1 below.
 The classic example is equality, $(x == y)$, which is true if and only if they
 are the same value. But Inform has many others. In the Inform documentation,
 binary predicates are called "relations". These are grouped by //bp_family//,
-and the |family_specific| field of a BP holds data meaningful only to a
+and the `family_specific` field of a BP holds data meaningful only to a
 predicate in that family; for example, in a predicate to measure a property,
 this would store the property in question and the threshold value.
 
@@ -52,7 +52,7 @@ relation is always the right way round.
 @ Given any binary predicate $B$, we may wish to perform one of several
 possible "tasks" ar run-time. This will require code to be generated, which
 is done via a "schema". See //BinaryPredicateFamilies::get_schema//, but
-by default this adopts the one given in the BP's |task_functions| field.
+by default this adopts the one given in the BP's `task_functions` field.
 
 @ Without further ado:
 
@@ -86,7 +86,7 @@ typedef struct binary_predicate {
 } binary_predicate;
 
 @ The //linguistics// module needs a data type for what verbs are supposed
-to mean: well, |binary_predicate| is perfect for that.
+to mean: well, `binary_predicate` is perfect for that.
 
 @d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
 @d VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK BinaryPredicates::get_reversal
@@ -98,10 +98,10 @@ For handling the terms individually, see //Binary Predicate Term Details//.
 
 Inform makes only very sparing use of the ability to define terms which have
 no kind; this deactivates certain type-checks. It almost but not quite works to
-use |value| instead, and almost but not quite works to default null terms to
-|value| rather than to |object|; the difficulty in that case comes with spatial
-containment, i.e., "X is in Y". See the test cases |MetaRelations|,
-|ContainmentScanning| and |RelevantRelations| before fooling with any of this.
+use `value` instead, and almost but not quite works to default null terms to
+`value` rather than to `object`; the difficulty in that case comes with spatial
+containment, i.e., "X is in Y". See the test cases `MetaRelations`,
+`ContainmentScanning` and `RelevantRelations` before fooling with any of this.
 
 =
 kind *BinaryPredicates::kind(binary_predicate *bp) {
@@ -196,7 +196,7 @@ binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 @h BP construction.
 The following routine should only ever be called from the two above.
 
-It looks a little asymmetric that the "make true function" schema |mtf| is an
+It looks a little asymmetric that the "make true function" schema `mtf` is an
 argument here, but the "make false function" isn't; that's just because
 Inform finds this convenient. A "make false" can easily be added later.
 
@@ -212,7 +212,7 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	bp->term_details[0] = left_term; bp->term_details[1] = right_term;
 
-	/* the |reversal| and the |right_way_round| field must be set by the caller */
+	/* the `reversal` and the `right_way_round` field must be set by the caller */
 
 	/* for use in code compilation */
 	bp->task_functions[0] = NULL; /* not used: there's no task 0 */
@@ -325,8 +325,8 @@ int BinaryPredicates::can_be_made_true_at_runtime(binary_predicate *bp) {
 The predicate-calculus engine compiles much better loops if we can help it by
 providing an I6 schema of a loop header solving the following problem:
 
-Loop a variable $v$ (in the schema, |*1|) over all possible $x$ such that
-$R(x, t)$, for some fixed $t$ (in the schema, |*2|).
+Loop a variable $v$ (in the schema, `*1`) over all possible $x$ such that
+$R(x, t)$, for some fixed $t$ (in the schema, `*2`).
 
 If we can't do this, it will have to fall back on the brute force method of
 looping over all $x$ in the left domain of $R$ and testing every possible $R(x, t)$.
@@ -339,9 +339,9 @@ int BinaryPredicates::write_optimised_loop_schema(i6_schema *sch, binary_predica
 	return FALSE;
 }
 
-@ Some relations $R$ provide a "ranger" routine, |R|, which is such that
-|R(t)| supplies the first "child" of $t$ and |R(t, n)| supplies the next
-"child" after $n$. Thus |R| iterates through some linked list of all the
+@ Some relations $R$ provide a "ranger" routine, `R`, which is such that
+`R(t)` supplies the first "child" of $t$ and `R(t, n)` supplies the next
+"child" after $n$. Thus `R` iterates through some linked list of all the
 objects $x$ such that $R(x, t)$.
 
 @<Try loop ranger optimisation@> =
@@ -356,8 +356,8 @@ objects $x$ such that $R(x, t)$.
 @ Other relations make use of the I6 object tree, in cases where $R(x, t)$
 is true if and only if $t$ is an object which is the parent of $x$ in the
 I6 object tree and some routine associated with $R$, called its
-proviso |P|, is such that |P(x) == t|. For example, worn-by($x$, $t$)
-is true iff $t$ is the parent of $x$ and |WearerOf(x) == t|. The proviso
+proviso `P`, is such that `P(x) == t`. For example, worn-by($x$, $t$)
+is true iff $t$ is the parent of $x$ and `WearerOf(x) == t`. The proviso
 ensures that we don't falsely pick up, say, items carried by $t$ which
 aren't being worn, or aren't even clothing.
 

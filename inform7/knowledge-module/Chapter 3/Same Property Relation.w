@@ -18,12 +18,12 @@ void SameAsRelations::start(void) {
 If, for example, there is a value property called "height" then we make a
 relation to serve as the meaning of "the same height as" in text like this:
 
->> if Ms Cregg is the same height as Big Bird, ...
+> if Ms Cregg is the same height as Big Bird, ...
 
 We have two schemas, because it now[1] makes sense not only to perform
 the comparison but also to force it true thus:
 
->> now Ms Cregg is the same height as Big Bird;
+> now Ms Cregg is the same height as Big Bird;
 
 [1] That couldn't be arranged for strict inequality comparisons like "taller
 than" -- see //Comparative Relations// -- because it is unclear just how much
@@ -90,13 +90,14 @@ void SameAsRelations::register_same_property_as(binary_predicate *root,
 mention this in the documentation because (for timing reasons) it doesn't
 exist when the new-verb sentences are being parsed: so writing
 
->> The verb to be level with implies the same-height-as relation.
+> The verb to be level with implies the same-height-as relation.
 
 cannot work. Nothing is really lost by this, since it's easy enough to
 define an identically-behaving relation by hand:
 
->> Levelling relates a person (called Mr X) to a person (called Mr Y) when the height of Mr X is the height of Mr Y.
->> The verb to be level with implies the levelling relation.
+> Levelling relates a person (called Mr X) to a person (called Mr Y) when the height of Mr X is the height of Mr Y.
+>
+> The verb to be level with implies the levelling relation.
 
 Relations need to have single-word names, but properties don't, so we shrink
 spaces to hyphens: thus, for instance, "same-carrying-capacity-as".

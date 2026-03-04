@@ -67,27 +67,20 @@ function togglePopup(material_id) {
 order subject, verb, object. The following grammar parses that crucial division,
 and note that it can be used either to form a complete sentence, where there
 is an active verb --</p>
-</div>
 <blockquote>
-    <p>now the silver bars are in the Hall of Mists;</p>
+<p>now the silver bars are in the Hall of Mists;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>or alternatively to make a more elaborate noun phrase, using a relative clause,
 where there is no active verb:</p>
-</div>
 <blockquote>
-    <p>a woman who carries the silver bars;</p>
+<p>a woman who carries the silver bars;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We sometimes also have to deal with English's use of &quot;there&quot; as a meaningless
 placeholder to stand for a missing noun phrase:</p>
-</div>
 <blockquote>
-    <p>there is an open door</p>
+<p>there is an open door</p>
 </blockquote>
-
+</div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-existential&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-existential-verb-tail&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-varc.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make SV provided object is descriptive</span></span><span class="named-paragraph-number">1.2</span></a></span><span class="Preform-constant-syntax">;</span>
@@ -163,12 +156,9 @@ removes it again.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The following catches the &quot;Y to Z&quot; right-hand term of the universal relation,</p>
-</div>
 <blockquote>
-    <p>X relates Y to Z</p>
+<p>X relates Y to Z</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where Y and Z must somehow be folded into a single noun phrase. Conceptually it
 would be neatest to represent this as a combination kind, but that might lead
 us to require the presence of the heap, since combinations are stored on the
@@ -184,20 +174,14 @@ works.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  The following parses a noun phrase with a relative clause, which is
 syntactically very similar to the case of a sentence. Sometimes the verb is
 explicit, as here:</p>
-</div>
 <blockquote>
-    <p>a woman who does not carry an animal</p>
+<p>a woman who does not carry an animal</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in which case &quot;who&quot;, acting as a marker of the relative clause, is the
 only way this differs from a sentence; but sometimes it is implicit:</p>
-</div>
 <blockquote>
-    <p>a woman not in the Hall of Mists</p>
+<p>a woman not in the Hall of Mists</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In this case the verb is implicitly the copular verb &quot;to be&quot; and our
 grammar has to differ from the sentence grammar above.</p>
 <p>Some prepositions imply the player as object: &quot;carried&quot;, in the sense of
@@ -272,8 +256,8 @@ is orange&quot; so that &quot;orange&quot; will be used not as a noun but as an 
 <ul class="endnotetexts"><li>This code is used in <a href="4-varc.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Values as noun phrases.</b>  It is very nearly true that the subject and object noun phrases are parsed
-by &lt;s-value&gt;, which was given in <a href="4-teav.html" class="internal">Type Expressions and Values</a>. But there
-is a technicality: for reasons to do with ambiguities, &lt;s-value&gt; needs to
+by <s-value>, which was given in <a href="4-teav.html" class="internal">Type Expressions and Values</a>. But there
+is a technicality: for reasons to do with ambiguities, <s-value> needs to
 be able to try descriptions which involve only physical objects at one stage,
 and then later to try other descriptions.</p>
 </div>
@@ -281,10 +265,10 @@ and then later to try other descriptions.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">force_all_SP_noun_phrases_to_be_physical</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Note that &lt;s-purely-physical-description&gt; calls &lt;s-description&gt; which in
-turn may, if there's a relative clause, call &lt;s-np-with-relative-clause&gt; and thus
-&lt;s-noun-phrase&gt;. Rather than passing endless copies of a flag down the call
-stack, we simply give &lt;s-noun-phrase&gt; a global mode of operation.</p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Note that <s-purely-physical-description> calls <s-description> which in
+turn may, if there's a relative clause, call <s-np-with-relative-clause> and thus
+<s-noun-phrase>. Rather than passing endless copies of a flag down the call
+stack, we simply give <s-noun-phrase> a global mode of operation.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-purely-physical-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
@@ -304,10 +288,10 @@ stack, we simply give &lt;s-noun-phrase&gt; a global mode of operation.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The upshot of this is that &lt;s-noun-phrase&gt; is only ever called in &quot;purely
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The upshot of this is that <s-noun-phrase> is only ever called in &quot;purely
 physical mode&quot; when it will later be called outside that mode in any event,
-and that therefore the set of excerpts matched by &lt;s-noun-phrase&gt; genuinely
-is the same as that matched by &lt;s-value&gt;.</p>
+and that therefore the set of excerpts matched by <s-noun-phrase> genuinely
+is the same as that matched by <s-value>.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -326,7 +310,7 @@ is the same as that matched by &lt;s-value&gt;.</p>
 scenery, ...&quot;) where the object referred to is understood from context.</p>
 <p>The reason a literal number is explicitly not allowed to be a condition is
 that if something is created called (say) &quot;Room 62&quot; then &quot;62&quot; might be read
-by &lt;s-description&gt; as an abbreviated reference to that room. (This doesn't
+by <s-description> as an abbreviated reference to that room. (This doesn't
 happen with non-descriptive NPs because then literal values are tried earlier,
 pre-empting descriptions.)</p>
 </div>

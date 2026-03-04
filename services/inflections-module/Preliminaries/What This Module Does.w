@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -40,7 +40,7 @@ in sequence until one matches, or must be a list of inflection rules. These
 cannot be mixed within the same NT.
 
 @ In a list of tries, each production consists only of a single nonterminal
-identifying the trie to make use of. One exception: the token |...| before the
+identifying the trie to make use of. One exception: the token `...` before the
 trie's name makes it work on the end of a word instead of the beginning.
 For example:
 = (text as Preform)
@@ -57,7 +57,7 @@ means try <fiddle-with-exceptions> first (on the whole text), then
 first token is what to match; the second gives instructions on what to turn
 it into. An asterisk is used to mean "any string of 0 or more letters";
 a digit at the start of the replacement text means "truncate by this many
-letters and add...". The simplest possible instruction is |0| alone, which
+letters and add...". The simplest possible instruction is `0` alone, which
 means "truncate 0 letters and add nothing", and therefore leaves the text
 unchanged.
 
@@ -71,9 +71,9 @@ Some examples:
 This would pluralise "lead" as "lead", "codex" as "codices", "mouse" as "mice",
 and "fieldmouse" as "fieldmice".
 
-The special character |+| after a digit means "double the last letter", so
-that, for example, |0+er| turns "big" to "bigger". In other positions, |+|
-means "add another word", so for example |0+er+still| turns "big" to "bigger
+The special character `+` after a digit means "double the last letter", so
+that, for example, `0+er` turns "big" to "bigger". In other positions, `+`
+means "add another word", so for example `0+er+still` turns "big" to "bigger
 still".
 
 Designing a list of inflection rules is not quite as easy as it looks, because
@@ -126,18 +126,18 @@ These are done with Preform NTs called <noun-declension> and <article-declension
 respectively; these are currently the only two "declension NTs".
 
 The rule for a "declension NT" is that it must provide a list of possibilities
-in the form either |gender table| or |gender grouper table|, where |gender| is:
+in the form either `gender table` or `gender grouper table`, where `gender` is:
 
-- the letter |m| for masculine,
-- the letter |f| for feminine,
-- the letter |n| for neuter/common,
-- the asterisk |*| for "any gender".
+- the letter `m` for masculine,
+- the letter `f` for feminine,
+- the letter `n` for neuter/common,
+- the asterisk `*` for "any gender".
 
-In the two-token form |gender table|, the |table| is a nonterminal for
-irregular forms; if the three-token form |gender grouper table|, the |grouper|
+In the two-token form `gender table`, the `table` is a nonterminal for
+irregular forms; if the three-token form `gender grouper table`, the `grouper`
 is a nonterminal which works out which "group" the word falls into -- groups
 are numbered, so perhaps, e.g., the word "device" falls into group 1 -- and
-then the |table| provides declensions for the different groups needed.
+then the `table` provides declensions for the different groups needed.
 
 @ A simple example of using the irregular forms table is provided by the
 English language definition of <article-declension>:
@@ -153,7 +153,7 @@ English language definition of <article-declension>:
 	     the  the
 =
 Here the declension NT is <article-declension> and contains only one possibility,
-applying to all genders (hence the |*|). The |table| of irregular forms is then
+applying to all genders (hence the `*`). The `table` of irregular forms is then
 <en-article-declension>. Each production begins with the possibility against
 which the stem is matched -- here, it's going to have to be "a" or "the". There
 are then one possibility for each case (nominative and accusative) in each of
@@ -228,7 +228,7 @@ which demonstrates a complete conjugation of English verbs.
 Tries are highly language specific, and would need rewriting for every language.
 The tries for English are supplied in //English Inflections//, but that's just
 for convenience; other languages should supply them in the Inform source text of
-the relevant language extension, or in |Syntax.preform| files.
+the relevant language extension, or in `Syntax.preform` files.
 
 Except at the very top level, translators are free to created new tries
 and name them as they please, but the top-level tries must have the same

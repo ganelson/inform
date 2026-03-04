@@ -22,7 +22,7 @@ making selections from alternative readings, and in limited cases actually
 making changes to the parse tree, in order to do this. For instance,
 consider checking the tree for:
 
->> let the score be the score plus 10
+> let the score be the score plus 10
 
 Dash takes the view that the phrase usage can be proved correct, so long as
 the arguments can also be proved. There are several valid interpretations of
@@ -142,7 +142,7 @@ int unique_DR_call_identifier = 0, DR_call_counter = 0; /* solely to make the lo
 @h Return values.
 Dash records the outcome of checking as one of three states.
 
-It is perhaps telling that we never need a |Dash::best_case| routine.
+It is perhaps telling that we never need a `Dash::best_case` routine.
 Typecheckers are not allowed to be optimistic.
 
 =
@@ -222,7 +222,7 @@ the backtrace if the inner routine should throw a problem message.
 The recursion limit below is clearly arbitrary, but is there to prevent the
 algorithm from slowing Inform unacceptably in the event of something like
 
->> say  g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g;
+> say  g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g;
 
 where "g" is a term Inform doesn't recognise, because otherwise this will
 recurse through every possible interpretation of the plus sign (i.e. every
@@ -263,7 +263,7 @@ int Dash::typecheck_recursive(parse_node *p, parse_node *context, int consider_a
 a phrase, and if it produced problems not previously seen. The trick here is
 to ensure that if we have
 
->> let X be a random wibble bibble spong;
+> let X be a random wibble bibble spong;
 
 then it will be the "random ..." phrase which is backtraced, and not the
 "let ..." phrase, even though that also goes wrong in turn.
@@ -476,9 +476,9 @@ from a text substitution.)
 @h (3) Context switching.
 After those epic preliminaries, we finally do some typechecking.
 
-The scheme here is that our expectations of |p| depend on the context, and
-this is defined by some node higher in the current subtree than |p|, which
-we will call |context|. Most of the time this is the parent of |p|, but
+The scheme here is that our expectations of `p` depend on the context, and
+this is defined by some node higher in the current subtree than `p`, which
+we will call `context`. Most of the time this is the parent of `p`, but
 sometimes the grandparent or great-grandparent; and at the start of the
 recursion, when no context has appeared yet, it will be null. In effect,
 then, the tree we're checking contains its own instructions on how it
@@ -487,7 +487,7 @@ should be checked. For example, the subtree
 	CONDITION_CONTEXT_NT
 	    p
 =
-tells us that when we reach |p| it should be checked as a condition.
+tells us that when we reach `p` it should be checked as a condition.
 
 =
 int Dash::typecheck_recursive_inner(parse_node *p, parse_node *context, int consider_alternatives) {
@@ -511,7 +511,7 @@ int Dash::typecheck_recursive_inner(parse_node *p, parse_node *context, int cons
 	return NEVER_MATCH; /* to prevent compiler warnings: unreachable in fact */
 }
 
-@ When we find a node like |CONDITION_CONTEXT_NT|, that becomes the new context
+@ When we find a node like `CONDITION_CONTEXT_NT`, that becomes the new context
 and we move down to its only child.
 
 @d SWITCH_CONTEXT_AND_RECURSE(p) Dash::typecheck_recursive(p->down, p, TRUE)
@@ -544,15 +544,15 @@ the value meets some extra requirement. For example:
 
 @ Suppose we are matching the parameter of a phrase like this:
 
->> To inspect (D - an open door): ...
+> To inspect (D - an open door): ...
 
 and typechecking the following invocation:
 
->> inspect the Marble Portal;
+> inspect the Marble Portal;
 
-Then we would have |p| set to some value -- here "the Marble Portal" --
-and the |MATCHING_RVALUE_CONTEXT_NT| node would point to a description node
-for open doors. We must see if |p| matches that. Any match can be at best at
+Then we would have `p` set to some value -- here "the Marble Portal" --
+and the `MATCHING_RVALUE_CONTEXT_NT` node would point to a description node
+for open doors. We must see if `p` matches that. Any match can be at best at
 the "sometimes" level. We can prove the Marble Portal is a door at compile
 time, but we can't prove it's open until run-time.
 
@@ -570,7 +570,7 @@ check afterwards, when we know the kinds at least must be right.
 @ This is something else that wouldn't appear in a typical typechecker.
 Here we are dealing with a phrase specification such as:
 
->> To attract (N - 10) things: ...
+> To attract (N - 10) things: ...
 
 where the "N" argument will be accepted if and only if it's the value 10.
 The fact that Inform allows this is further evidence of the slippery way
@@ -601,7 +601,7 @@ compared are word values.
 
 @ I would ideally like to remove void contexts from Dash entirely, but was
 forced to retain them by the popularity of the Hypothetical Questions
-extension, which made use of the old undocumented |phrase| token.
+extension, which made use of the old undocumented `phrase` token.
 
 @<Switch to a void context@> =
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
@@ -693,7 +693,7 @@ wrong, so how did things get to this stage?
 In a C-like language, where variables are predeclared, that would be true.
 But in Inform, a phrase like:
 
->> let the monster be a random pterodactyl;
+> let the monster be a random pterodactyl;
 
 can be valid even where "the monster" is text not known to the S-parser
 as yet -- indeed, that's how local variables are made. It's the typechecker
@@ -734,7 +734,7 @@ species; and then to misuse that phrase.
 
 @h (4) Typechecking within current context.
 Everything else, then, passes through here, with the context now set either
-to |NULL| (meaning no expectations) or to some ancestor of |p| in the parse
+to `NULL` (meaning no expectations) or to some ancestor of `p` in the parse
 tree.
 
 Level 4 forks rapidly into three branches: (4A), for ambiguous readings;
@@ -853,7 +853,7 @@ let's be pragmatic.
 	Dash::clear_flags(alt);
 
 @ Now we work through the list of tests. We must produce at least one reading
-passing at least at the "sometimes" level marked by the |UNPROVEN_DASHFLAG|, or
+passing at least at the "sometimes" level marked by the `UNPROVEN_DASHFLAG`, or
 else the whole specification fails its match. The first proven match stops our
 work, since we can never need lower-priority interpretations.
 
@@ -910,7 +910,7 @@ like this as the result:
 = (text)
 	f ? f g ? ? p - - -
 =
-We can now throw away the |f|, |g| and |-| readings -- failed, grossly failed,
+We can now throw away the `f`, `g` and `-` readings -- failed, grossly failed,
 or never reached -- to leave just those which will be compiled:
 = (text)
 	? ? ? p
@@ -1209,9 +1209,9 @@ L and R are more definite.
 including all phrases created outside the Standard Rules.
 
 The deal is simply that every argument must match its specification. For
-instance, if |inv| is an invocation of this phrase:
+instance, if `inv` is an invocation of this phrase:
 
->> To truncate (L - a list of values) to (N - a number) entries: ...
+> To truncate (L - a list of values) to (N - a number) entries: ...
 
 ...then token 0 must match "list of values", and token 1 must match "number".
 
@@ -1281,29 +1281,33 @@ rarely and in very specific circumstances. We allow a very limited use
 of second-order logic in using the name of a kind as if it were a value,
 even though Inform is really not set up for this. The point is to allow:
 
->> let (name - nonexisting variable) be (K - name of kind of word value);
+> let (name - nonexisting variable) be (K - name of kind of word value);
 
 where the "K" parameter would match (1) but not (2), (3) or (4) from:
 
->> (1) let X be a number;
->> (2) let X be text;
->> (3) let X be 21;
->> (4) let X be \{1, 2, 3\};
+> (1) let X be a number;
 
-What all of this has to do with being |UNKNOWN_NT| is that text parsed in the
+> (2) let X be text;
+
+> (3) let X be 21;
+
+> (4) let X be \{1, 2, 3\};
+
+What all of this has to do with being `UNKNOWN_NT` is that text parsed in the
 expectation of a value will usually not recognise something like "a list
-of numbers", so that would be here as |UNKNOWN_NT|. We take the otherwise
+of numbers", so that would be here as `UNKNOWN_NT`. We take the otherwise
 unheard-of measure of reparsing the text, but we only impose the result
 if the match can definitely be made successfully.
 
 We have to be very careful to take action only on (5) and not (6):
 
->> (5) let L be a list of scenes;
->> (6) let L be the list of scenes;
+> (5) let L be a list of scenes;
+
+> (6) let L be the list of scenes;
 
 (5) creates L as an empty list, whereas (6) creates it as the list made up
 of all scenes. We can tell these apart since (6) will have a valid phrase
-in |ith_token|, an invocation of "the list of K", whereas (5) won't.
+in `ith_token`, an invocation of "the list of K", whereas (5) won't.
 
 @<Cautiously reparse this as a name of a kind of value@> =
 	outcome = NEVER_MATCH;
@@ -1384,11 +1388,11 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 		}
 	}
 
-@ For templates and the meaning of |kind_checker_mode|, see the section
+@ For templates and the meaning of `kind_checker_mode`, see the section
 on "Kind Checking". But basically this handles the matching of an invocation
 against a definition like:
 
->> To remove (N - value of kind K) from (L - list of Ks): ...
+> To remove (N - value of kind K) from (L - list of Ks): ...
 
 @<Step (4I.c) Match type templates in the argument specifications@> =
 	LOG_DASH("(4I.c)");
@@ -1421,7 +1425,7 @@ against a definition like:
 							break;
 						case SOMETIMES_MATCH:
 							outcome = Dash::worst_case(outcome, SOMETIMES_MATCH);
-							/* we won't use |with_qualifications| -- we don't know exactly what they are */
+							/* we won't use `with_qualifications` -- we don't know exactly what they are */
 							LOGIF(MATCHING, "(4I.c) dropping to sometimes at token %d\n", i);
 							break;
 						case ALWAYS_MATCH:
@@ -1475,12 +1479,12 @@ against a definition like:
 similar constraint on the arguments of an assignment. If we are checking an
 invocation against:
 
->> To let (t - existing variable) be (u - value): ...
+> To let (t - existing variable) be (u - value): ...
 
 then we have so far checked that argument 0 is indeed the name of a variable
 which already exists. But suppose the invocation is
 
->> let N be "there'll be no mutant enemy";
+> let N be "there'll be no mutant enemy";
 
 where N has already been created as a variable of kind "number". This clearly
 has to be rejected, as it would violate type-safety. Step (4I.d) therefore
@@ -1490,7 +1494,7 @@ kind of the storage item to which it is being written.
 A reasonable question might be why we don't implement this using the prototype
 system of (4I.c), thus removing a rule from this already-complex algorithm, say by
 
->> To let (var - K variable) be (val - value of kind K): ...
+> To let (var - K variable) be (val - value of kind K): ...
 
 The answer is that this would indeed work nicely for valid source text, but that
 we would get less helpful problem messages in the all-too-likely case of a
@@ -1519,7 +1523,7 @@ mistake having been made.
 
 @ It doesn't always look like an assignment, but a phrase such as:
 
->> change the Marble Door to open;
+> change the Marble Door to open;
 
 has similar type-checking needs.
 
@@ -1537,12 +1541,13 @@ has similar type-checking needs.
 
 @ There are actually two definitions like this in the Standard Rules:
 
->> (1) To change (o - object) to (w - value): ...
->> (2) To change (o - object) to (p - property): ...
+> (1) To change (o - object) to (w - value): ...
+
+> (2) To change (o - object) to (p - property): ...
 
 Here's the code for (1), the less obvious case. This is needed for something like
 
->> change the canvas to blue;
+> change the canvas to blue;
 
 where "blue" is a constant colour, and "colour" is both a kind and also a
 property. (This case really is an assignment -- it assigns the value "blue"
@@ -1561,14 +1566,15 @@ to the colour property of the canvas.)
 @ And here's the simpler case, (2). A small quirk here is that it will also pick
 up "change the Atrium to spiffy" in the following:
 
->> Atrium is a room. The Atrium can be spiffy, cool or lame.
->> When play begins: change the Atrium to spiffy.
+> Atrium is a room. The Atrium can be spiffy, cool or lame.
+>
+> When play begins: change the Atrium to spiffy.
 
 ...where "spiffy" is deemed a property rather than a constant value of a kind
 because of the way the condition of the Atrium is declared. This is a little
 bit horrid, but works fine in practice. (If we try to accommodate this case
 within (1.2.4.1a), which might seem more logical, we run into trouble because
-the property name is cast to a property value of |self| when being typechecked
+the property name is cast to a property value of `self` when being typechecked
 against "value".)
 
 @<Maybe we're changing an object to a named either/or property or condition state@> =
@@ -1588,11 +1594,11 @@ against "value".)
 named: we deliberately allow an assignment which may not be type-safe, and
 without even dropping to the "sometimes" level. This is for phrases like so:
 
->> change the item to closed;
+> change the item to closed;
 
 Here the author seems to know what he's doing, and is pretty sure that the
 current contents of "item" will accept closure. All we can prove is that
-"item" contains an object (or perhaps |nothing|, the non-object). But
+"item" contains an object (or perhaps `nothing`, the non-object). But
 we allow the assignment because it will compile to code which will issue
 a helpful run-time problem message if it goes wrong.
 
@@ -1677,15 +1683,15 @@ literal can mean are too generous.)
 
 @ Suppose we have something like this:
 
->> award the current action points;
+> award the current action points;
 
-and we are typechecking |found| as "the current action" (a phrase deciding
-a value) against |expected| as "number", the parameter expected in
+and we are typechecking `found` as "the current action" (a phrase deciding
+a value) against `expected` as "number", the parameter expected in
 "award (N - a number) points".
 
-No matter how peculiar this invocation of |found| was, we have now successfully
+No matter how peculiar this invocation of `found` was, we have now successfully
 worked out the kind of the value it would return if compiled, and this is
-stored in |inv->kind_resulting|. We now check to see if this matches the kind
+stored in `inv->kind_resulting`. We now check to see if this matches the kind
 expected -- in this example, it won't, because a stored action does not cast
 to a number.
 
@@ -1719,15 +1725,15 @@ the scope for any vaguely described properties within the text supplied
 as that property (if it is indeed text). We have to mark any such
 property, and any such say. For instance, suppose we are typechecking
 
->> (1) "Oh, look: [initial appearance of the escritoire]"
+> (1) "Oh, look: [initial appearance of the escritoire]"
 
 and the initial appearance in question is:
 
->> (2) "A small, portable writing desk holding up to [carrying capacity] letters."
+> (2) "A small, portable writing desk holding up to [carrying capacity] letters."
 
-Printing text (2), it's important for the |self| object to be the
+Printing text (2), it's important for the `self` object to be the
 escritoire, which might not be the case otherwise; so during the printing
-of (1), we have to change |self| temporarily and restore it afterwards.
+of (1), we have to change `self` temporarily and restore it afterwards.
 
 @<Step (4I.g) Worry about self in say property of@> =
 	LOG_DASH("(4I.g)");
@@ -1741,7 +1747,7 @@ of (1), we have to change |self| temporarily and restore it afterwards.
 @ Some phrases are defined with a notation making them allowable only inside
 loops, or other control structures; for instance,
 
->> To break -- in loop: ...
+> To break -- in loop: ...
 
 And here is where we check that "break" is indeed used only in a loop.
 
@@ -1856,7 +1862,7 @@ to level 5.
 	}
 
 @ The "C listed in T" form of table reference is illegal as a general value,
-and allowed only in phrases using the |table-reference| token.
+and allowed only in phrases using the `table-reference` token.
 
 @<Allow listed-in table references only where these are expected@> =
 	if ((Node::is(p, TABLE_ENTRY_NT)) &&
@@ -2131,11 +2137,11 @@ applied to any invocation surviving Dash.
 Here's the usual way a local variable is made. One invocation we matched is
 for the phrase whose prototype reads:
 
->> To let (T - nonexisting variable) be (V - value): ...
+> To let (T - nonexisting variable) be (V - value): ...
 
 To be definite, let's suppose we are working on:
 
->> let the magic word be "Shazam [turn count] times!";
+> let the magic word be "Shazam [turn count] times!";
 
 The checking code above accepted "magic word" as a new name, and marked
 token 0 in the invocation as one where a new variable will need to be
@@ -2163,7 +2169,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 instead of "value", based on looking at token 1 -- the value being assigned.
 In the example above, we look at this initial value,
 
->> "Shazam [turn count] times!"
+> "Shazam [turn count] times!"
 
 and decide that K should be "text".
 
@@ -2177,7 +2183,7 @@ and decide that K should be "text".
 
 @ Unusually, it's legal for the initial value to be a kind --
 
->> let the magic digraph be a text;
+> let the magic digraph be a text;
 
 This doesn't give us an initial value as such, but it explicitly tells us the
 kind, which is good enough.
@@ -2190,7 +2196,7 @@ a room or a region.
 
 We make one exception to allow lines like --
 
->> let X be a one-to-one relation of numbers to men;
+> let X be a one-to-one relation of numbers to men;
 
 where the adjective "one-to-one" forces the right hand side to be description
 of a relation.
@@ -2272,7 +2278,7 @@ relevant code to issue a better problem message if it can.
 
 @h Problems, problems, problems.
 We are now in a situation where Dash has certainly failed, and on every
-possible alternative reading, so it would be legitimate to return |NEVER_MATCH|
+possible alternative reading, so it would be legitimate to return `NEVER_MATCH`
 here, which would likely result in some anodyne problem message from higher
 up in Dash.
 
@@ -2441,8 +2447,8 @@ unrecognised.
 invocation in a problem message will call the following routine for each
 parsed token. This remembers the token so that it can be explained in notes
 at the end of the big list; but each word range is remembered only once,
-for brevity. We don't gloss the meanings of literal constants like |26|
-or |"frog"| since these are glaringly obvious.
+for brevity. We don't gloss the meanings of literal constants like `26`
+or `"frog"` since these are glaringly obvious.
 
 =
 void Dash::note_inv_token_text(parse_node *p, int new_name) {
@@ -2517,7 +2523,7 @@ any children it may have.
 int Dash::typecheck_single_node(parse_node *p, kind *kind_expected, int condition_context) {
 	LOG_DASH("(5)");
 	LOGIF(MATCHING, "Kind expected: %u, condition expected: %d\n", kind_expected, condition_context);
-	int outcome = ALWAYS_MATCH; /* drops to |SOMETIMES_MATCH| if a need for run-time checking is realised */
+	int outcome = ALWAYS_MATCH; /* drops to `SOMETIMES_MATCH` if a need for run-time checking is realised */
 
 	if ((Rvalues::is_nothing_object_constant(p)) &&
 		(kind_expected) && (Kinds::Behaviour::is_subkind_of_object(kind_expected)))
@@ -2548,7 +2554,7 @@ us with the air of having just made a great discovery; well, you can't have
 	return NEVER_MATCH;
 
 @h Rule (5.a).
-In all cases, unknown text in |found| is incorrect. We can produce
+In all cases, unknown text in `found` is incorrect. We can produce
 any of more than twenty different problem messages here, in an attempt to be
 helpful about what exactly is wrong.
 
@@ -2920,9 +2926,9 @@ stack frame, and this is unlikely to be what anyone wanted.
 @ The tricky part is working out what the implicitly meant object is, a
 classic donkey anaphora-style problem in linguistics. We don't even begin
 to solve that here: indeed the decision is taken rather indirectly, because
-we simply compile code which uses Inform 6's |self| variable to refer to
+we simply compile code which uses Inform 6's `self` variable to refer to
 the owner. The I6 library and our own run-time code conspire to ensure that
-|self| is always equal to something sensible.
+`self` is always equal to something sensible.
 
 @<Coerce into a property of the "self" object@> =
 	parse_node *was = p->next_alternative;
@@ -3056,7 +3062,7 @@ different representations at run-time.
 
 @ Another ambiguity is that the text "women who are in lighted rooms" in:
 
->> let N be the number of women who are in lighted rooms;
+> let N be the number of women who are in lighted rooms;
 
 ...is parsed as a description, a condition. But in
 fact it's a noun here -- it has to be a value, in fact, which can go into
@@ -3171,11 +3177,11 @@ have made an understandable confusion.
 	}
 
 @h Rule (5.e).
-The "main rule" is, as we shall see, that |p| should have the same
-species as |expected|, or if |expected| give no species then at least it
-should have the same family. The two exceptional cases are when |expected|
+The "main rule" is, as we shall see, that `p` should have the same
+species as `expected`, or if `expected` give no species then at least it
+should have the same family. The two exceptional cases are when `expected`
 is a description such as "an even number", or the name of a kind of value
-such as "a scene", in which case we allow |p| if it's a value which
+such as "a scene", in which case we allow `p` if it's a value which
 meets these requirements.
 
 @<Step (5.e) The Main Rule of Type-Checking@> =
@@ -3186,9 +3192,9 @@ meets these requirements.
 @ Now for the related, but slightly simpler, case of matching the name of a
 kind. Suppose we are parsing "award 5 points" against
 
->> To award (N - a number) points: ...
+> To award (N - a number) points: ...
 
-Here |p| will be the actual constant value 5, and |expected| the
+Here `p` will be the actual constant value 5, and `expected` the
 generic constant value with kind "number".
 
 A phrase which returns a value must have its own return value's kind
@@ -3267,7 +3273,7 @@ it says the value has the wrong kind.
 
 @ We now apply the main rule, supposing that neither of the exceptional cases
 has intervened to stop us getting here. The found and expected specifications
-must have the same family and, unless the expected species is |UNKNOWN_NT|, the
+must have the same family and, unless the expected species is `UNKNOWN_NT`, the
 same species as well.
 
 @<Step (5.e.3) Main rule@> =
@@ -3478,7 +3484,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 		return FALSE;
 }
 
-@ This is the state of the |***| pseudo-phrase used for debugging:
+@ This is the state of the `***` pseudo-phrase used for debugging:
 
 =
 int verbose_checking_state = FALSE;
@@ -3519,7 +3525,7 @@ linked_list *Dash::phrases_to_log(void) {
 @h Value checking.
 The following adapts the above test to attempt to match two specifications
 together: for example, to match "12" against "even number". This, rather
-surprisingly, returns |SOMETIMES_MATCH|, since we find that the kinds
+surprisingly, returns `SOMETIMES_MATCH`, since we find that the kinds
 are guaranteed -- 12 is indeed a number -- but Inform doesn't "know" the
 meaning of the word "even", only that it's a test which will be applied
 at run time.

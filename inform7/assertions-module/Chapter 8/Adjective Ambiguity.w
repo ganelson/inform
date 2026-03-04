@@ -21,8 +21,8 @@ So, then, every adjective has the following data attached to it:
 
 =
 typedef struct adjective_meaning_data {
-	struct linked_list *in_defn_order; /* of |adjective_meaning| */
-	struct linked_list *in_precedence_order; /* of |adjective_meaning| */
+	struct linked_list *in_defn_order; /* of `adjective_meaning` */
+	struct linked_list *in_precedence_order; /* of `adjective_meaning` */
 } adjective_meaning_data;
 
 void AdjectiveAmbiguity::new_set(adjective *adj) {
@@ -78,12 +78,12 @@ logically impossible outcomes -- we would say that it's acceptable to apply
 that "list of open things" or "something open" are allowed. Source text
 such as:
 
->> The labrador puppy is an open animal.
+> The labrador puppy is an open animal.
 
 will successfully parse, but then result in higher-level problem messages.
 The following does compile:
 
->> now the labrador puppy is open;
+> now the labrador puppy is open;
 
 but results in a run-time problem message when it executes.
 
@@ -220,11 +220,11 @@ author's source text.)
 @ With that sorting done, we can begin to use an adjective. Suppose there has
 been an assertion sentence like this:
 
->> The ormolu clock is fixed in place.
+> The ormolu clock is fixed in place.
 
-"Fixed in place" is identified as an adjective, |adj|; the "ormulo clock" is
-what it applies to, stored in either |infs_to_assert_on|. |kind_domain| is what
-kind we think this has. |parity| is equal to |TRUE|.
+"Fixed in place" is identified as an adjective, `adj`; the "ormulo clock" is
+what it applies to, stored in either `infs_to_assert_on`. `kind_domain` is what
+kind we think this has. `parity` is equal to `TRUE`.
 
 What happens is that the list of definitions for "fixed in place" is checked
 in logical precedence order, and //AdjectiveMeanings::assert// called
@@ -234,8 +234,8 @@ someone has given the adjective some special meaning unique to the clock.) The
 first adjective meaning to be assertable then wins.
 
 The following routine therefore acts as a junction-box, deciding which sense
-of the adjective is to be applied. We return |TRUE| if we were able to find a
-definition which could be asserted and which the clock matched, and |FALSE| if
+of the adjective is to be applied. We return `TRUE` if we were able to find a
+definition which could be asserted and which the clock matched, and `FALSE` if
 there was no definition which applied, or if none of those which did could be
 asserted for it.
 

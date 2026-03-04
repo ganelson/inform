@@ -41,18 +41,18 @@ void CreationPredicates::start(void) {
 	#endif
 }
 
-@ |CALLED| atoms are interesting because they exist only for their side-effects:
+@ `CALLED` atoms are interesting because they exist only for their side-effects:
 they have no effect at all on the logical status of a proposition (well, except
 that they should not be applied to free variables referred to nowhere else).
 They can therefore be added or removed freely. In the phrase
 
->> if a woman is in a lighted room (called the den), ...
+> if a woman is in a lighted room (called the den), ...
 
 we need to note that the value of the bound variable corresponding to the
 lighted room will need to be kept and to have a name ("the den"): this
-will probably mean the inclusion of a |CALLED=den(y)| atom.
+will probably mean the inclusion of a `CALLED=den(y)` atom.
 
-The calling data for a |CALLED| atom is the textual name by which the variable
+The calling data for a `CALLED` atom is the textual name by which the variable
 will be called.
 
 =
@@ -150,13 +150,13 @@ int CreationPredicates::typecheck_is_a_kind(up_family *self, unary_predicate *up
 
 @ "Called" predicates cannot be asserted, and to test them, we simply copy the
 value into the local variable of the given name. Note then that here
-the I6 |=| (set equal) operator is being used in a condition context:
+the I6 `=` (set equal) operator is being used in a condition context:
 there's a good chance that the value set is non-zero (since all objects
 and enumerated values are non-zero), but it isn't necessarily so --
 in Inform it's legal to quantify over times and truth states, for
 instance, where 0 is a legal I6 value. So we use the comma operator
 to throw away the result of the assignment, and evaluate the condition
-to |true|.
+to `true`.
 
 =
 #ifdef CORE_MODULE

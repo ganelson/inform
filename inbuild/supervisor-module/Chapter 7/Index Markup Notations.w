@@ -2,9 +2,9 @@
 
 Lemmas are marked up semantically using all sorts of notations.
 
-@ For example, this code is used to remember that |^^{taking+action+}| is an
+@ For example, this code is used to remember that `^^{taking+action+}` is an
 index reference to "taking" which should have the style "action". The left
-pattern here is empty, while the right pattern is |+action+|.
+pattern here is empty, while the right pattern is `+action+`.
 
 @d MAX_PATTERN_LENGTH 1024
 

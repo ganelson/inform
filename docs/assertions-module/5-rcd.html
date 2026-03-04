@@ -85,12 +85,9 @@ MathJax = {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  Runtime context data (RCD) is a set of restrictions on when a body of code can run.
 It's intended for rules, but in principle available for any imperative definition.
 For example,</p>
-</div>
 <blockquote>
-    <p>Before taking a container when the player is in the Box Room: ...</p>
+<p>Before taking a container when the player is in the Box Room: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>can take effect only if the action is &quot;taking a container&quot; and the condition
 about the location applies. Those two restrictions are both stored in its RCD.</p>
 </div>
@@ -234,23 +231,17 @@ all of them fail to decide, we return 0.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Activity lists.</b>  The activity list part of a RCD is a list of activities, one of which must
 be currently running for the rule to fire. For example, in:</p>
-</div>
 <blockquote>
-    <p>Rule for printing the name of the lemon sherbet while listing contents: ...</p>
+<p>Rule for printing the name of the lemon sherbet while listing contents: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>the activity list is just &quot;listing contents&quot;. These are like action patterns,
 but much simpler to parse -- an or-divided list of activities can be given,
 with or without operands; &quot;not&quot; can be used to negate the list; and ordinary
 conditions are also allowed, as here:</p>
-</div>
 <blockquote>
-    <p>Rule for printing the name of the sack while the sack is not carried: ...</p>
+<p>Rule for printing the name of the sack while the sack is not carried: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>where &quot;the sack is not carried&quot; is also a &lt;run-time-context&gt; even though
+<p>where &quot;the sack is not carried&quot; is also a <run-time-context> even though
 it mentions no activities.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -258,7 +249,7 @@ it mentions no activities.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">activity</span><span class="plain-syntax"> *</span><span class="type-syntax">activity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what activity */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">acting_on</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the parameter */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">only_when</span><span class="plain-syntax">; </span><span class="comment-syntax">/* condition for when this applies */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACL_parity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |+1| if meant positively, |-1| if negatively */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACL_parity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>+1</code> if meant positively, <code>-1</code> if negatively */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">activity_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in activity list */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">activity_list</span><span class="plain-syntax">;</span>
 </pre>

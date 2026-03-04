@@ -269,7 +269,7 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 	SpatialInferences::infer_is_room(item, IMPOSSIBLE_CE);
 
 @ If something is being worn, it needs to have the I7 either/or property
-"wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought
+"wearable" and also the I6-only attribute `worn`. (Arguably Clothing ought
 to be a feature of its own, but the compiler needs to do hardly anything
 special to make it work, so this doesn't seem worth the trouble.)
 

@@ -13,6 +13,25 @@
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
+MathJax = {
+    options: {
+    	skipHtmlTags: {'[-]': ['pre']},
+    	processHtmlClass: 'mathjax_process'
+    },
+	loader: {load: ['[tex]/texhtml']},
+  	tex: {
+		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+    	packages: {'[+]': ['texhtml']},
+    	allowTexHTML: true
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+
+<script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
   popup.classList.toggle("show");
@@ -79,7 +98,7 @@ many different objects in the map, and their values inherited by sub-objects.</p
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FONT_MDT</span> <span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the name of a font */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OFF_MDT</span> <span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a positional offset in an $(x,y)$ grid */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OFF_MDT</span> <span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a positional offset in an \INWEBMATH((x,y)\INWEBMATH) grid */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">plotting_parameter</span><span class="plain-syntax"> {</span>

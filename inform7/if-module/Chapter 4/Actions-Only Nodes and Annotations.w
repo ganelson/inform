@@ -6,11 +6,11 @@ Additional syntax tree node and annotation types used by the actions feature.
 
 @e ACTION_NT  /* "taking something closed" */
 
-@e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
-@e constant_action_name_ANNOT /* |action_name|: for constant values */
-@e constant_action_pattern_ANNOT /* |action_pattern|: for constant values */
-@e constant_explicit_action_ANNOT /* |explicit_action|: for constant values */
-@e constant_named_action_pattern_ANNOT /* |named_action_pattern|: for constant values */
+@e action_meaning_ANNOT /* `action_pattern`: meaning in parse tree when used as noun */
+@e constant_action_name_ANNOT /* `action_name`: for constant values */
+@e constant_action_pattern_ANNOT /* `action_pattern`: for constant values */
+@e constant_explicit_action_ANNOT /* `explicit_action`: for constant values */
+@e constant_named_action_pattern_ANNOT /* `named_action_pattern`: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
@@ -90,8 +90,8 @@ whole phrases in sentences which are descriptions of actions. It occurs only
 when working on copular sentences.
 
 There are in principle two ways that such text could be represented: exactly
-specified actions may come out as |PROPER_NOUN_NT| nodes referring to constants
-of the |K_stored_action| kind, while vaguely specified ones will be |ACTION_NT|
+specified actions may come out as `PROPER_NOUN_NT` nodes referring to constants
+of the `K_stored_action` kind, while vaguely specified ones will be `ACTION_NT`
 nodes. The following therefore detects either:
 
 =
@@ -118,7 +118,7 @@ void ActionsNodes::convert_stored_action_constant(parse_node *p) {
 	}
 }
 
-@ As this exemplifies, |ACTION_NT| nodes are converted from existing ones,
+@ As this exemplifies, `ACTION_NT` nodes are converted from existing ones,
 not born:
 
 =
@@ -140,13 +140,13 @@ int ActionsNodes::creation(parse_node *px, parse_node *py) {
 
 @ Consider:
 
->> Taking something is proactive behaviour.
+> Taking something is proactive behaviour.
 
-Here |Refiner::refine| will correctly report that "proactive behaviour" is
-a new term, and give it a |CREATED_NT| node. But we don't want it to become an
+Here `Refiner::refine` will correctly report that "proactive behaviour" is
+a new term, and give it a `CREATED_NT` node. But we don't want it to become an
 object or a value -- we want it to be a new named action pattern. So we
-amend the node to |ACTION_NT|. And in general, whenever both sides of a
-copular assertion are actionlike, we want to make them |ACTION_NT| nodes.
+amend the node to `ACTION_NT`. And in general, whenever both sides of a
+copular assertion are actionlike, we want to make them `ACTION_NT` nodes.
 
 @<Intervene to catch behaviour sentences@> =
 	if ((ActionsNodes::is_actionlike(px)) && (Node::get_type(py) == CREATED_NT))
@@ -157,21 +157,21 @@ copular assertion are actionlike, we want to make them |ACTION_NT| nodes.
 	}
 
 @ The second case occurs much less often -- for instance, the only time it comes
-up in the test suite is |CHS|, the example "Chronic Hinting Syndrome":
+up in the test suite is `CHS`, the example "Chronic Hinting Syndrome":
 
->> Setting is a kind of value. The settings are bright and dull.
+> Setting is a kind of value. The settings are bright and dull.
 
 Here the first sentence wants to create something called "setting", which
-ought to have a |CREATED_NT| node type, but doesn't because it has been read
-as an action instead. We correct the spurious |ACTION_NT| to a |CREATED_NT|.
+ought to have a `CREATED_NT` node type, but doesn't because it has been read
+as an action instead. We correct the spurious `ACTION_NT` to a `CREATED_NT`.
 
 @<Intervene to undo a false action detection@> =
 	if ((Node::get_type(px) == ACTION_NT) && (Node::get_type(py) == KIND_NT))
 		Node::set_type(px, CREATED_NT);
 
 @ This is also an intervention in an assertion, and comes when a property
-is being set to an |ACTION_NT| node. This is where we make the reverse
-conversion, and turn such a node back to a |K_stored_action| proper noun,
+is being set to an `ACTION_NT` node. This is where we make the reverse
+conversion, and turn such a node back to a `K_stored_action` proper noun,
 so that it can indeed be used as a value.
 
 =

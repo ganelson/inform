@@ -73,7 +73,7 @@ To say the/-- text of (R - response)
 
 @h Using the list-writer.
 One of the most powerful features of Inform 6 was its list-writer, a lengthy
-piece of I6 code which now lives on as Inter code, in the |srules| template:
+piece of I6 code which now lives on as Inter code, in the `srules` template:
 see "ListWriter.i6t". The following phrases control it:
 
 =
@@ -102,7 +102,7 @@ To list the/-- contents of (O - an object),
 passing a description value to some routine, because that's tricky if the
 description needs to refer to a value local to the current stack frame. (There
 are ways round that, but it minimises nuisance to avoid the need.) So we mark
-out the set of objects matching by giving them, and only them, the |workflag2|
+out the set of objects matching by giving them, and only them, the `workflag2`
 attribute.
 
 =
@@ -193,7 +193,7 @@ To say a list of (OS - description of objects) including contents
 	-).
 
 @h Grouping in the list-writer.
-See the specifications of |list_together| and |c_style| in the DM4, which are
+See the specifications of `list_together` and `c_style` in the DM4, which are
 still broadly accurate.
 
 =
@@ -230,7 +230,7 @@ It's needed by the Standard Rules to tidy up an implementation and
 avoid I6, but is not an ideal trick and may be dropped in later
 builds. Recursion occurs when the list-writer descends to the contents
 of, or items supported by, something it lists. Here we can restrict to
-just those contents, or supportees, matching a description |D|.
+just those contents, or supportees, matching a description `D`.
 
 =
 Section 7 - Filtering contents of lists - Unindexed
@@ -265,7 +265,7 @@ To decide which number is the Glulx resource ID of (SFX - sound name)
 
 @h Actions, activities and rules.
 We begin with the firing off of new actions. The current action runs silently
-if the I6 global variable |keep_silent| is set, so the result of the
+if the I6 global variable `keep_silent` is set, so the result of the
 definitions below is that one can go into silence mode, using "try silently",
 but not climb out of it again. This is done because many actions try other
 actions as part of their normal workings: if we want action $X$ to be tried
@@ -331,13 +331,13 @@ To anonymously abide by (RL - a nothing based rule)
 		return 2;
 	} -) - in to only.
 
-@ Within the rulebooks to do with an action, returning |true| from a rule
+@ Within the rulebooks to do with an action, returning `true` from a rule
 is sufficient to stop the rulebook early: there is no need to specify
 success or failure because that is determined by the rulebook itself. (For
 instance, if the check taking rules stop for any reason, the action failed;
 if the after rules stop, it succeeded.) In some rulebooks, notably "instead"
 and "after", the default is to stop, so that execution reaching the end of
-the I6 routine for a rule will run into an |rtrue|. "Continue the action"
+the I6 routine for a rule will run into an `rtrue`. "Continue the action"
 prevents this.
 
 =
@@ -435,7 +435,7 @@ day divides at midnight but for other purposes (daylight savings time,
 for instance) society often chooses 2 AM as the boundary. Inform uses
 4 AM instead as the least probable time through which play continues.
 (Modulo a 24-hour clock, adding 20 hours is equivalent to subtracting
-4 AM from the current time: hence the use of |20*ONE_HOUR| below.)
+4 AM from the current time: hence the use of `20*ONE_HOUR` below.)
 Thus 3:59 AM is after 4:00 AM, the former being at the very end of a
 day, the latter at the very beginning.
 

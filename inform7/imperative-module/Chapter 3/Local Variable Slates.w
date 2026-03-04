@@ -6,25 +6,26 @@ The collection of Inter locals belonging to a stack frame.
 Each stack frame has its own "slate" of local variables, and there are four
 varieties of these. For example, in the definition "..." of:
 
->> To attract (ferrous item - a thing) with (magnet - a thing), uninsulated: ...
+> To attract (ferrous item - a thing) with (magnet - a thing), uninsulated: ...
 
-two locals are "ferrous item" and "magnet", of type |TOKEN_CALL_PARAMETER_LV|.
+two locals are "ferrous item" and "magnet", of type `TOKEN_CALL_PARAMETER_LV`.
 The presence of ", uninsulated" means that another local is "phrase options",
-of type |OTHER_CALL_PARAMETER_LV|, because the bitmap of options chosen is
+of type `OTHER_CALL_PARAMETER_LV`, because the bitmap of options chosen is
 passed as an additional call parameter when the phrase is invoked.
 
 Within the definition, we might have:
 
->> let Q be the electrical charge;
->> repeat with the item running through things: say "The needle flickers over [the item]."
+> let Q be the electrical charge;
 
-Here "Q" and "item" are both |LET_VALUE_LV| variables, but whereas "Q" exists
+> repeat with the item running through things: say "The needle flickers over [the item]."
+
+Here "Q" and "item" are both `LET_VALUE_LV` variables, but whereas "Q" exists
 all through the phrase, "item" exists only inside its own repeat loop: this
 is called its block scope.
 
 Finally, a handful of inline definitions of phrases create local variables which
 have no Inform 7 names but are used instead to implement some low-level feature;
-these are of the type |INTERNAL_USE_LV|.
+these are of the type `INTERNAL_USE_LV`.
 
 @d TOKEN_CALL_PARAMETER_LV 1	/* values for the tokens of the phrase being invoked */
 @d OTHER_CALL_PARAMETER_LV 2	/* other implied parameters passed during invocation: Inter-level only */
@@ -45,10 +46,10 @@ a conventional compiler. For example, consider this C code:
 	printf("A moment of suspense. ");
 	for (int j=9; j>=0; j--) printf("%d! ", j);
 =
-A C compiler will allocate registers in the CPU to hold |i| and |j|, but it is
-also likely to notice that |i| ceases to exist before |j| comes into being: and
-therefore the same register can be used to hold both. It holds |i| for a while,
-and then |j|; and there is a period in between when it is unused, and has no
+A C compiler will allocate registers in the CPU to hold `i` and `j`, but it is
+also likely to notice that `i` ceases to exist before `j` comes into being: and
+therefore the same register can be used to hold both. It holds `i` for a while,
+and then `j`; and there is a period in between when it is unused, and has no
 meaningful contents.
 
 Inside the Inter function we are compiling, Inter VM locals are like registers
@@ -59,31 +60,31 @@ in this analogy. Inform 7 source text like this:
 	repeat with the watcher running through people in the Laboratory:
 		say "[The watcher] looks on anxiously."
 =
-Here there are two |LET_VALUE_LV| variables, "item" and "watcher", but "watcher"
+Here there are two `LET_VALUE_LV` variables, "item" and "watcher", but "watcher"
 does not come into being until after "item" has ceased to exist, and Inform
 will compile both to use the same Inter local. Note that this causes it not
 only to have a different name, but also a different kind: when it is being "item"
 it stores a thing, and when it is "watcher" it stores a person. However, Inform
 never re-uses an Inter local in a way which changes its purpose: so, once a
-|LET_VALUE_LV|, always a |LET_VALUE_LV|. This is very slightly inefficient but
+`LET_VALUE_LV`, always a `LET_VALUE_LV`. This is very slightly inefficient but
 it results in much more legible output.
 
 @ The //local_variable// objects in a locals slate correspond to the Inter
-locals, and the |allocated| field is true if they are currently being used to
+locals, and the `allocated` field is true if they are currently being used to
 store an I7 local, or false if they are not (and are therefore free to be reused).
 
-The |current_usage| field contains the I7 local it currently stores, and must
-therefore be ignored if |allocated| is |FALSE|.
+The `current_usage` field contains the I7 local it currently stores, and must
+therefore be ignored if `allocated` is `FALSE`.
 
 =
 typedef struct local_variable {
 	int allocated; /* in existence at this point in the routine? */
-	int lv_purpose; /* one of the |*_LV| values above */
+	int lv_purpose; /* one of the `*_LV` values above */
 	int index_with_this_purpose; /* counting up from 0 within locals of same purpose */
 	struct text_stream *identifier; /* for the Inter local */
 	struct text_stream *comment_on_use; /* purely to make the output more legible */
 
-	struct I7_local_variable current_usage; /* meaningful only if |allocated| */
+	struct I7_local_variable current_usage; /* meaningful only if `allocated` */
 	CLASS_DEFINITION
 } local_variable;
 
@@ -118,7 +119,7 @@ a typical Inter function will have locals looking something like this:
 = (text)
 	t_0  t_1  phrase_options  tmp_0  tmp_1  tmp_2  ct_0  ct_1
 =
-where the defaults have been overridden for |phrase_options|, |ct_0| and |ct_1|,
+where the defaults have been overridden for `phrase_options`, `ct_0` and `ct_1`,
 but allowed to stand for the rest.
 
 =
@@ -139,7 +140,7 @@ just a list of its Inter locals. Each Inter local belongs to exactly one slate.
 
 =
 typedef struct locals_slate {
-	struct linked_list *local_variable_allocation; /* of |local_variable| */
+	struct linked_list *local_variable_allocation; /* of `local_variable` */
 	int it_variable_exists; /* it, he, she, or they, used for adjective definitions */
 	int its_form_allowed; /* its, his, her or their, ditto */
 	struct wording it_pseudonym; /* a further variation on the same variable */
@@ -347,7 +348,7 @@ void LocalVariableSlates::deallocate_all(stack_frame *frame) {
 }
 
 @ Variables can be marked to have a lifetime which expires at the end of the
-current level |s| code block:
+current level `s` code block:
 
 =
 void LocalVariableSlates::set_scope_to(local_variable *lvar, int s) {

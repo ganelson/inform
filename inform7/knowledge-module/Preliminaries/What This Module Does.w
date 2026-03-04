@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than just `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -68,8 +68,8 @@ inferred from a proposition.
 //Chapter 3// implements our system of properties: each different value
 or either-or property is a //property// object. There might be a puritan
 case for abolishing this type in favour of regarding either-or properties
-as special cases of |unary_predicate| and value properties as special cases
-of |binary_predicate| (by identifying a predicate with its setting relation),
+as special cases of `unary_predicate` and value properties as special cases
+of `binary_predicate` (by identifying a predicate with its setting relation),
 but I do not think this would clarify anything.
 
 //Chapter 4// gives a general API for dealing with //Inference Subjects//,

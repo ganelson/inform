@@ -163,12 +163,9 @@ handled here: if we see one, we ignore it.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ir.html#SP2">&#167;2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  So, then, this function is called on inclusion sentences such as:</p>
-</div>
 <blockquote>
-    <p>Include (- ... -) before "I6 Inclusions" in "Output.i6t".</p>
+<p>Include (- ... -) before &quot;I6 Inclusions&quot; in &quot;Output.i6t&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Those references are now meaningless (I6T files in the sense meant by this
 syntax no longer exist), but we faithfully parse them before ignoring them.
 A later version of Inform will probably produce problem messages on these.</p>
@@ -272,7 +269,7 @@ action: see <a href="../runtime-module/2-int.html" class="internal">Intervention
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">source_text_intervention</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_LINK_STAGE| enumerated constants */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_LINK_STAGE</code> enumerated constants */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">segment</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">part</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">seg</span><span class="plain-syntax">;</span>

@@ -56,7 +56,7 @@ named value properties. We'll take the first of those first.
 
 We are concerned here with the syntax of sentences like
 
->> A container can be stout, standard or fragile (this is its strength property).
+> A container can be stout, standard or fragile (this is its strength property).
 
 The subject (in this example, "a container") is required not to match:
 
@@ -145,10 +145,13 @@ int NewPropertyRequests::list_length(parse_node *P) {
 @ And the following parses the object noun phrase of a "can be" sentence,
 which might take forms such as:
 
->> either speedy or sluggish
->> fast or slow
->> allegro, presto, or adagio (the speed property)
->> allegro, presto, or adagio (this is its speed property)
+> either speedy or sluggish
+
+> fast or slow
+
+> allegro, presto, or adagio (the speed property)
+
+> allegro, presto, or adagio (this is its speed property)
 
 =
 <can-be-sentence-object> ::=
@@ -196,7 +199,7 @@ which might take forms such as:
 
 @ This allows for natural sentences such as:
 
->> An animal can be either alive or dead.
+> An animal can be either alive or dead.
 
 Here "either" has a slight sense of emphasis, implying the exclusivity of the
 two choices -- the lack of a middle way. That's not useful information for us,
@@ -382,18 +385,18 @@ differently as a result.
 @ An interesting anomaly in the language here is that when an either/or
 pair is created, like so:
 
->> A vehicle can be speedy or sluggish.
+> A vehicle can be speedy or sluggish.
 
 the convention is that the first-named term is the more surprising one,
 so that the default is the second. That seems natural, because if there's
 just one named alternative, like this:
 
->> A vehicle can be fabulously racy.
+> A vehicle can be fabulously racy.
 
 then the default is for this property not to be had. But when there are
 three or more alternatives, like so:
 
->> A vehicle can be petrol, diesel, electric or hybrid.
+> A vehicle can be petrol, diesel, electric or hybrid.
 
 the default is the first option -- petrol. This accords with the
 convention that the first-created value for an enumerated kind is always

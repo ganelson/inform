@@ -7,12 +7,12 @@ for its index entries, and a collection of "lemmas", or entries.
 
 =
 typedef struct cd_indexing_data {
-	struct linked_list *notations; /* of |index_markup_notation| */
-	struct dictionary *categories_by_name; /* to |indexing_category| */
+	struct linked_list *notations; /* of `index_markup_notation` */
+	struct dictionary *categories_by_name; /* to `indexing_category` */
 	struct dictionary *categories_redirect; /* to text */
-	struct dictionary *lemmas; /* to |index_lemma| */
-	struct linked_list *lemma_list; /* of |index_lemma| */
-	struct index_lemma **sorted_lemma_list; /* or |NULL| if not yet sorted */
+	struct dictionary *lemmas; /* to `index_lemma` */
+	struct linked_list *lemma_list; /* of `index_lemma` */
+	struct index_lemma **sorted_lemma_list; /* or `NULL` if not yet sorted */
 	struct dictionary *alphabetisation_exceptions; /* hash of lemmas with unusual alphabetisations */
 	int letters_taken[26];
 	int use_letter_alphabetisation; /* as opposed to word */
@@ -114,9 +114,9 @@ int IndexingData::parse_category_command(compiled_documentation *cd,
 }
 
 @ Once all of the category commands have been read in, the following pair of
-defaults are created automatically. Note that the notation for |standard| is
+defaults are created automatically. Note that the notation for `standard` is
 blank on either side, so that it always matches any lemma. This is why a lemma
-with no special notation attached comes out in the category |standard|.
+with no special notation attached comes out in the category `standard`.
 
 =
 void IndexingData::add_default_categories(compiled_documentation *cd) {

@@ -5,20 +5,20 @@ To compile storage references into Inter value opcodes.
 @ The following compiles an lvalue -- a piece of stored data: see //values: Lvalues// --
 but in one of three different ways:
 
-|COMPILE_LVALUE_AS_RVALUE| is a mode used when the storage is being compiled in
+`COMPILE_LVALUE_AS_RVALUE` is a mode used when the storage is being compiled in
 an rvalue context, i.e., having its value read but not being altered.
 
-|COMPILE_LVALUE_AS_LVALUE| is a mode used only when the lvalue really is being
+`COMPILE_LVALUE_AS_LVALUE` is a mode used only when the lvalue really is being
 compiled as the recipient of an assignment, rather than being read. Thus:
 = (text as Inform 7)
 	let R be a number;
 	now R is 76;
 	showme R plus 1;
 =
-In line 2 here, |R| must be compiled in |COMPILE_LVALUE_AS_LVALUE| mode; in line 3,
+In line 2 here, `R` must be compiled in `COMPILE_LVALUE_AS_LVALUE` mode; in line 3,
 it must not be.
 
-|COMPILE_LVALUE_AS_FUNCTION| is a way to access the Inter function managing the
+`COMPILE_LVALUE_AS_FUNCTION` is a way to access the Inter function managing the
 storage at runtime. (This can be accessed from a schema.)
 
 @d COMPILE_LVALUE_AS_RVALUE   0
@@ -86,11 +86,11 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 
 @ When Inform reads a text with a substitution like so:
 
->> if the signpost is visible, say "The signpost is still [signpost condition]."
+> if the signpost is visible, say "The signpost is still [signpost condition]."
 
 ...it has to decide which object is meant as the owner of the property
 "signpost condition". Ordinarily, missing property owners are the self object,
-which works nicely because |self| always has the right value at run-time when
+which works nicely because `self` always has the right value at run-time when
 we're, e.g., printing names of things. But what if, as here, there is no
 formal indication of the owner? If we compile with the self object as owner,
 the code may fail at run-time, complaining about using a property of nothing.
@@ -107,9 +107,9 @@ we use here. We replace "self" as a default owner by the only possible owner.
 		if (I) owner = Rvalues::from_instance(I);
 	}
 
-@ During type-checking, a small number of |PROPERTY_VALUE_NT| SPs are marked
-with the |record_as_self_ANNOT| flag. Such a SP compiles not only to code
-performing the property lookup, but also setting the |self| I6 variable at
+@ During type-checking, a small number of `PROPERTY_VALUE_NT` SPs are marked
+with the `record_as_self_ANNOT` flag. Such a SP compiles not only to code
+performing the property lookup, but also setting the `self` I6 variable at
 run-time to the object whose property is being looked up. The point of this
 is to change the context used for implicit property lookups involved in the
 actual property: e.g., if the value of this property turns out to be text
@@ -240,8 +240,8 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 
 @h Schemas.
 The following function returns the text of an I6 schema for the code to set
-an lvalue with node type |storage_class|, and kind |left|, to a value of
-kind |right|. |inc| is positive if we're incrementing what's there, negative
+an lvalue with node type `storage_class`, and kind `left`, to a value of
+kind `right`. `inc` is positive if we're incrementing what's there, negative
 if decrementing, zero if simply setting.
 
 At present no arithmetic values are stored in pointer values, but that might

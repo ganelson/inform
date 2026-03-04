@@ -86,12 +86,9 @@ MathJax = {
 world model perhaps, or can be longer prototypes of commands to describe
 actions. There are many, many examples in <a href="../standard_rules/cmgr.html" class="internal">Command Grammar (in standard_rules)</a>,
 but for example in:</p>
-</div>
 <blockquote>
-    <p>Understand "remove [things inside] from [something]" as removing it from.</p>
+<p>Understand &quot;remove [things inside] from [something]&quot; as removing it from.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...the CG line &quot;[things inside] from [something]&quot; is added to the CG for the
 command verb REMOVE. This is a CG line with a <a href="5-dt.html#SP1" class="internal">determination_type</a>
 expressing that it describes two <code>K_object</code> terms, the first perhaps being
@@ -109,17 +106,17 @@ removing it from action. That's a feature only seen in lines for
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_grammar_specified</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where found in source */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">original_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the word number of the double-quoted grammar text... */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...which is parsed into this list of tokens */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexeme_count</span><span class="plain-syntax">; </span><span class="comment-syntax">/* number of lexemes, or |-1| if not yet counted */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexeme_count</span><span class="plain-syntax">; </span><span class="comment-syntax">/* number of lexemes, or <code>-1</code> if not yet counted */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">determination_type</span><span class="plain-syntax"> </span><span class="identifier-syntax">cgl_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only correct after determination occurs */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">understand_when_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* match me only when this condition holds */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">understand_when_prop</span><span class="plain-syntax">; </span><span class="comment-syntax">/* match me only when this proposition applies */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pluralised</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_SUBJECT|: refers in the plural */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pluralised</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_SUBJECT</code>: refers in the plural */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">resulting_action</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_COMMAND|: the action */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reversed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_COMMAND|: the two values are in reverse order */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mistaken</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_COMMAND|: is this understood as a mistake? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">resulting_action</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_COMMAND</code>: the action */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reversed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_COMMAND</code>: the two values are in reverse order */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mistaken</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_COMMAND</code>: is this understood as a mistake? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">mistake_response_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if so, reply thus */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_line_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
@@ -257,12 +254,9 @@ which is not an object, and we record which value the line refers to here.</p>
 conditions are valid to specify this, with the notation &quot;Understand ... as
 ... when ...&quot;. However, we want to protect new authors from mistakes
 like this:</p>
-</div>
 <blockquote>
-    <p>Understand "mate" as Fred when asking Fred to do something: ...</p>
+<p>Understand &quot;mate&quot; as Fred when asking Fred to do something: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the condition couldn't test anything useful because it's not yet
 known what the action will be.</p>
 </div>
@@ -637,7 +631,7 @@ which parses to a <code>K_understanding</code> match.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Specifications::is_kind_like</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">))) { </span><span class="comment-syntax">/* "[text]" token */</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">))) { </span><span class="comment-syntax">/* &quot;[text]&quot; token */</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">; </span><span class="comment-syntax">/* very unlikely to happen */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax">*</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> + (</span><span class="identifier-syntax">line_length</span><span class="plain-syntax">-1-</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>

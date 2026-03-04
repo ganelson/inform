@@ -96,7 +96,7 @@ But if a match is indeed made, there are side-effects too, as we shall see.</p>
 <div class="lsmarkdown">
 <p>A small number of nonterminals are &quot;internal&quot;, meaning that they are defined
 by the Inform compiler modules; all of the rest are called &quot;regular&quot; and are
-defined rather like &lt;competitor&gt;, i.e., with grammar spelled out.</p>
+defined rather like <competitor>, i.e., with grammar spelled out.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Preform grammar is stored in a text file which is read by Inform early in
@@ -131,7 +131,7 @@ and a void pointer, to be stored in <code>*XP</code>, which is usually an object
 <p>The example above, <code>&lt;competitor&gt;</code>, only results in an integer. The <code>==&gt;</code> arrow
 is optional, but if present, it says what the integer result is if the given
 production is matched. So, for example, &quot;runner bean&quot; or &quot;beetroot&quot; would not
-match &lt;competitor&gt;; &quot;4th runner&quot; would match with integer result <code>TRUE</code>;
+match <competitor>; &quot;4th runner&quot; would match with integer result <code>TRUE</code>;
 &quot;runner no 17&quot; would match with integer result <code>FALSE</code>.</p>
 <p>Usually, though, the result(s) of a nonterminal depend on the result(s) of
 other nonterminals used to make the match. If that's so, then the expression
@@ -148,10 +148,10 @@ pointer results. For example, you could make a very crude calculator with:</p>
 </pre>
 <div class="lsmarkdown">
 <p>Here <code>R[1]+R[2]</code> produces a result by composition of the two results of
-the &lt;cardinal-number&gt; nonterminal which occurred when parsing the line.
-So, for example, &quot;seven&quot; matches &lt;arithmetic&gt; with result 7, and &quot;two plus
+the <cardinal-number> nonterminal which occurred when parsing the line.
+So, for example, &quot;seven&quot; matches <arithmetic> with result 7, and &quot;two plus
 three&quot; with result 5.</p>
-<p>Or consider the following refinement of &lt;competitor&gt;:</p>
+<p>Or consider the following refinement of <competitor>:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -160,7 +160,7 @@ three&quot; with result 5.</p>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <div class="lsmarkdown">
-<p>Now &quot;4th runner&quot; matches with integer result 4, because &lt;ordinal-number&gt;
+<p>Now &quot;4th runner&quot; matches with integer result 4, because <ordinal-number>
 matches &quot;4th&quot; with integer result 4, and that goes into <code>R[1]</code>. Similarly,
 &quot;runner no 17&quot; ends up with integer result 17. &quot;The pacemaker&quot; matches
 with integer result 1; here there are no intermediate results to make use
@@ -174,7 +174,7 @@ with result 2.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;race-jersey&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  As a convenient abbreviation, a slash character can be used to divide
@@ -182,7 +182,7 @@ alternative possibilities for a single word. For example:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;race-jersey&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot/polka-dot</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot/polka-dot</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
 </pre>
 <div class="lsmarkdown">
 <p>matches &quot;polka-dot&quot; equivalently to &quot;polkadot&quot;.</p>
@@ -201,7 +201,7 @@ use of upper casing. Thus</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;race-jersey&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
 </pre>
 <div class="lsmarkdown">
 <p>means that it will match Yellow, yellow, Polkadot, polkadot, green, White
@@ -314,7 +314,7 @@ of this:</p>
 done in the main Inform source code -- which is why we never do it. But
 Preform can also be used by translators of Inform to other languages, who might
 supply, e.g., a French version of <code>Syntax.preform</code>. Or suppose in this instance
-that the Inform source code contains &lt;letter-score&gt; but that a translator into
+that the Inform source code contains <letter-score> but that a translator into
 Hebrew wants to override that definition. Her Hebrew version of <code>Syntax.preform</code>
 could then write:</p>
 </div>

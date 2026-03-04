@@ -72,7 +72,7 @@ right shape: two columns, number then text. If so, the maximum score is
 initialised to the number in the final row of the table, which is assumed to
 be the score corresponding to successful completion and the highest rank.
 
-The test case |Cooking|, an example from the documentation, tests this.
+The test case `Cooking`, an example from the documentation, tests this.
 
 =
 table *the_ranking_table = NULL;

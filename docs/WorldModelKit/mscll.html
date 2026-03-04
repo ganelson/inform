@@ -184,7 +184,7 @@ based on character cells.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="comment-syntax">! (1)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">location</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">! does not = I7 "location": see below</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">location</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">! does not = I7 &quot;location&quot;: see below</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">sline1</span><span class="plain-syntax">; </span><span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">sline2</span><span class="plain-syntax">;</span>
 
 <span class="comment-syntax">! (2)</span>
@@ -196,8 +196,8 @@ based on character cells.</p>
 
 <span class="comment-syntax">! (5)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">not_yet_in_play</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">; </span><span class="comment-syntax">! set false when first command received</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">turns</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "turn count"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "time of day"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">turns</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;turn count&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;time of day&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_rate</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">NUMBER_SCENES_CREATED</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ICOUNT_SCENE</span><span class="plain-syntax">;</span>
@@ -209,14 +209,14 @@ based on character cells.</p>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene_latest_ending</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">SCENE_ARRAY_SIZE</span><span class="plain-syntax">;</span>
 
 <span class="comment-syntax">! (6)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "score"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_score</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "last notified score"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;score&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_score</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;last notified score&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">notify_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">! score notification on or off</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">left_hand_status_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T_SL_Location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "left hand status line"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">right_hand_status_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T_SL_Score_Moves</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "right hand status line"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">left_hand_status_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T_SL_Location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;left hand status line&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">right_hand_status_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T_SL_Score_Moves</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;right hand status line&quot;</span>
 
 <span class="comment-syntax">! (7)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "location"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;location&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">visibility_ceiling</span><span class="plain-syntax">; </span><span class="comment-syntax">! highest object in tree visible to player</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">visibility_levels</span><span class="plain-syntax">; </span><span class="comment-syntax">! distance in tree to that</span>
 
@@ -224,9 +224,9 @@ based on character cells.</p>
 
 <span class="comment-syntax">! (8)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">act_requester</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "person asked" = I7 "person reaching"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;person asked&quot; = I7 &quot;person reaching&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actors_location</span><span class="plain-syntax">; </span><span class="comment-syntax">! like real_location, but for the actor</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor_location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "actor-location"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor_location</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;actor-location&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax">; </span><span class="comment-syntax">! action is out of world</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inp1</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inp2</span><span class="plain-syntax">;</span>
@@ -234,8 +234,8 @@ based on character cells.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">toomany_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">! multiple-object list overflowed</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiflag</span><span class="plain-syntax">; </span><span class="comment-syntax">! multiple-object being processed</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiple_object_item</span><span class="plain-syntax">; </span><span class="comment-syntax">! item currently being processed in multiple-object list</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "noun"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "second noun"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;noun&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;second noun&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">keep_silent</span><span class="plain-syntax">; </span><span class="comment-syntax">! true if current action is being tried silently</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
@@ -243,22 +243,22 @@ based on character cells.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">untouchable_silence</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">touch_persona</span><span class="plain-syntax">;</span>
 
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">special_word</span><span class="plain-syntax">; </span><span class="comment-syntax">! dictionary address of first word in "[text]" token</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">consult_from</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">! word number of start of "[text]" token</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">consult_words</span><span class="plain-syntax">; </span><span class="comment-syntax">! number of words in "[text]" token</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">special_word</span><span class="plain-syntax">; </span><span class="comment-syntax">! dictionary address of first word in &quot;[text]&quot; token</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">consult_from</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">! word number of start of &quot;[text]&quot; token</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">consult_words</span><span class="plain-syntax">; </span><span class="comment-syntax">! number of words in &quot;[text]&quot; token</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsed_number</span><span class="plain-syntax">; </span><span class="comment-syntax">! value from any token not an object</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">special_number1</span><span class="plain-syntax">; </span><span class="comment-syntax">! first value, if token not an object</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">special_number2</span><span class="plain-syntax">; </span><span class="comment-syntax">! second value, if token not an object</span>
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parser_results</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">16</span><span class="plain-syntax">; </span><span class="comment-syntax">! for parser to write its results in</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_trace</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">! normally 0, but 1 to 5 traces parser workings</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">pronoun_word</span><span class="plain-syntax">; </span><span class="comment-syntax">! records which pronoun ("it", "them", ...) caused an error</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">pronoun_word</span><span class="plain-syntax">; </span><span class="comment-syntax">! records which pronoun (&quot;it&quot;, &quot;them&quot;, ...) caused an error</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">pronoun_obj</span><span class="plain-syntax">; </span><span class="comment-syntax">! and what object it was thought to refer to</span>
 
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">players_command</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "player's command"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">matched_text</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "matched text"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">understand_as_mistake_number</span><span class="plain-syntax">; </span><span class="comment-syntax">! which form of "Understand... as a mistake"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">particular_possession</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 "particular possession"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">players_command</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;player's command&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">matched_text</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;matched text&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">understand_as_mistake_number</span><span class="plain-syntax">; </span><span class="comment-syntax">! which form of &quot;Understand... as a mistake&quot;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">particular_possession</span><span class="plain-syntax">; </span><span class="comment-syntax">! = I7 &quot;particular possession&quot;</span>
 
 <span class="comment-syntax">! (9)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_action</span><span class="plain-syntax">; </span><span class="comment-syntax">! written by the parser for the benefit of GPRs</span>
@@ -266,14 +266,14 @@ based on character cells.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_two</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameters</span><span class="plain-syntax">; </span><span class="comment-syntax">! number of I7 tokens parsed on the current line</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_reversed</span><span class="plain-syntax">; </span><span class="comment-syntax">! (parameters would be reversed in order)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">; </span><span class="comment-syntax">! word number within "parse" buffer (from 1)</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">; </span><span class="comment-syntax">! word number within &quot;parse&quot; buffer (from 1)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">num_words</span><span class="plain-syntax">; </span><span class="comment-syntax">! number of words in buffer</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">; </span><span class="comment-syntax">! dictionary address of command verb</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax">; </span><span class="comment-syntax">! word number of command verb</span>
 
 <span class="comment-syntax">! (10)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope_reason</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PARSING_REASON</span><span class="plain-syntax">; </span><span class="comment-syntax">! current reason for searching scope</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope_token</span><span class="plain-syntax">; </span><span class="comment-syntax">! for "scope=Routine" grammar tokens</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope_token</span><span class="plain-syntax">; </span><span class="comment-syntax">! for &quot;scope=Routine&quot; grammar tokens</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope_error</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope_stage</span><span class="plain-syntax">; </span><span class="comment-syntax">! 1, 2 then 3</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">advance_warning</span><span class="plain-syntax">; </span><span class="comment-syntax">! what a later-named thing will be</span>

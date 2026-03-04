@@ -198,9 +198,9 @@ That completes the compulsory services required for this KOV to function:
 from here on, the remaining routines provide definitions of stored action-related
 phrases in the Standard Rules.
 
-Given a description |D| which applies to some objects and not others --
+Given a description `D` which applies to some objects and not others --
 say, "lighted rooms adjacent to the Transport Hub" -- we can cast this
-into a list of all objects satisfying |D| with the following routine.
+into a list of all objects satisfying `D` with the following routine.
 Slightly wastefully of time, we have to iterate through the objects
 twice in order first to work out the length of list we will need, and
 then to transcribe them.
@@ -227,7 +227,7 @@ then to transcribe them.
 ];
 
 @h Find Item.
-We test whether a list |list| includes a value equal to |v| or not. Equality
+We test whether a list `list` includes a value equal to `v` or not. Equality
 here is in the sense of the list's comparison function: thus for texts or
 other lists, say, deep comparisons rather than simple pointer comparisons are
 performed. In other words, one copy of "Alert" is equal to another.
@@ -252,14 +252,14 @@ The following routine inserts an item into the list. If this would break
 the size of the current block-value, then we extend by at least enough room
 to hold at least another 16 entries.
 
-In the call |LIST_OF_TY_InsertItem(list, v, posnflag, posn, nodups)|, only
+In the call `LIST_OF_TY_InsertItem(list, v, posnflag, posn, nodups)`, only
 the first two arguments are compulsory.
 
-- If |nodups| is set, and an item equal to |v| is already present in the
-list, we return and do nothing. (|nodups| means "no duplicates".)
-- Otherwise, if |posnflag| is |false|, we append a new entry |v| at the
-back of the given |list|.
-- Otherwise, when |posnflag| is |true|, |posn| indicates the insertion
+- If `nodups` is set, and an item equal to `v` is already present in the
+list, we return and do nothing. (`nodups` means "no duplicates".)
+- Otherwise, if `posnflag` is `false`, we append a new entry `v` at the
+back of the given `list`.
+- Otherwise, when `posnflag` is `true`, `posn` indicates the insertion
 position, from 1 (before the current first item) to $N+1$ (after the last),
 where $N$ is the number of items in the list at present.
 
@@ -304,9 +304,9 @@ where $N$ is the number of items in the list at present.
 @h Append List.
 Instead of adjoining a single value, we adjoin an entire second list, which
 must be of a compatible kind of value (something which Inform's type-checking
-machinery polices for us). Except that we have a list |more| rather than a
-value |v| to insert, the specification is the same as for
-|LIST_OF_TY_InsertItem|.
+machinery polices for us). Except that we have a list `more` rather than a
+value `v` to insert, the specification is the same as for
+`LIST_OF_TY_InsertItem`.
 
 =
 [ LIST_OF_TY_AppendList list more posnflag posn nodups v i j no_items msize ex nv;
@@ -363,12 +363,12 @@ value |v| to insert, the specification is the same as for
 ];
 
 @h Remove Value.
-We remove every instance of the value |v| from the given |list|. If the
-optional flag |forgive| is set, then we make no complaint if no value of
-|v| was present in the first place: otherwise, we issue a run-time problem.
+We remove every instance of the value `v` from the given `list`. If the
+optional flag `forgive` is set, then we make no complaint if no value of
+`v` was present in the first place: otherwise, we issue a run-time problem.
 
 Note that if the list contains block-values then the value must be properly
-destroyed with |DestroyPV| before being overwritten as the items shuffle down.
+destroyed with `DestroyPV` before being overwritten as the items shuffle down.
 
 =
 [ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;
@@ -405,8 +405,8 @@ destroyed with |DestroyPV| before being overwritten as the items shuffle down.
 ];
 
 @h Remove Item Range.
-We excise items |from| to |to| from the given |list|, which numbers its items
-upwards from 1. If the optional flag |forgive| is set, then we truncate a range
+We excise items `from` to `to` from the given `list`, which numbers its items
+upwards from 1. If the optional flag `forgive` is set, then we truncate a range
 overspilling the actual list, and we make no complaint if it turns out that
 there is then nothing to be done: otherwise, in either event, we issue a
 run-time problem.
@@ -446,11 +446,11 @@ as the list shuffles down to fill the void.
 ];
 
 @h Remove List.
-We excise all values from the removal list |rlist|, wherever they occur in
-|list|. Inevitably, given that we haven't sorted these lists and can spare
+We excise all values from the removal list `rlist`, wherever they occur in
+`list`. Inevitably, given that we haven't sorted these lists and can spare
 neither time nor storage to do so, this is an expensive process with a
 running time proportional to the product of the two list sizes: we accept
-that as an overhead because in practice the |rlist| is almost always small
+that as an overhead because in practice the `rlist` is almost always small
 in real-world use.
 
 If the initial lists were disjoint, so that no removals occur, we always
@@ -509,13 +509,13 @@ empty text, and so on -- creating such block-values as might be needed;
 or else it might shorten the list, in which case we must cut items,
 destroying them properly if they were block-values.
 
-|LIST_OF_TY_SetLength(list, newsize, this_way_only, truncation_end)|
-alters the length of the given |list| to |newsize|. If |this_way_only| is 1,
+`LIST_OF_TY_SetLength(list, newsize, this_way_only, truncation_end)`
+alters the length of the given `list` to `newsize`. If `this_way_only` is 1,
 the list is only allowed to grow, and nothing happens if we have asked to
 shrink it; if it is $-1$, the list is only allowed to shrink; if it is 0,
 the list is allowed either to grow or shrink. In the event that the list
 does have to shrink, entries must be removed, and we remove from the end
-if |truncation_end| is 1, or from the start if it is $-1$.
+if `truncation_end` is 1, or from the start if it is $-1$.
 
 =
 [ LIST_OF_TY_SetLength list newsize this_way_only truncation_end no_items ex i dv;
@@ -579,8 +579,8 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 
 @h Write Item.
 The slightly odd name for this function comes about because our usual way
-to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
-|Write|, so that it becomes |WriteLIST_OF_TY_GetItem(L, 4)|.
+to convert an rvalue such as `LIST_OF_TY_GetItem(L, 4)` is to prefix
+`Write`, so that it becomes `WriteLIST_OF_TY_GetItem(L, 4)`.
 
 =
 [ WriteLIST_OF_TY_GetItem list i val no_items;
@@ -601,7 +601,7 @@ to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
 ];
 
 @h Put Item.
-Higher-level code should not use |Write_LIST_OF_TY_GetItem|, because it does
+Higher-level code should not use `Write_LIST_OF_TY_GetItem`, because it does
 not properly keep track of block-value copying: the following should be
 used instead.
 
@@ -669,15 +669,15 @@ values when it comes to performing comparisons, because we can only compare
 items in the list by looking at their contents, not the pointers to their
 contents.
 
-|LIST_OF_TY_Sort(list, dir, prop)| sorts the given |list| in ascending order
-if |dir| is 1, in descending order if |dir| is $-1$, or in random order if
-|dir| is 2. The comparison used is the one for the kind of value stored in
-the list, unless the optional argument |prop| is supplied, in which case
+`LIST_OF_TY_Sort(list, dir, prop)` sorts the given `list` in ascending order
+if `dir` is 1, in descending order if `dir` is $-1$, or in random order if
+`dir` is 2. The comparison used is the one for the kind of value stored in
+the list, unless the optional argument `prop` is supplied, in which case
 we sort based not on the item values but on their values for the property
-|prop|. (This only makes sense if the list contains objects.)
+`prop`. (This only makes sense if the list contains objects.)
 
-|LIST_OF_TY_Sort(list, dir, 0, 0, cf)| sorts the given |list| with the custom
-comparison function |cf|, which must behave as any standard comparison function
+`LIST_OF_TY_Sort(list, dir, 0, 0, cf)` sorts the given `list` with the custom
+comparison function `cf`, which must behave as any standard comparison function
 would.
 
 =

@@ -6,7 +6,7 @@ Allowing Neptune files to generate additional source text.
 
 =
 typedef struct kind_template_definition {
-	struct text_stream *template_name; /* including the asterisk, e.g., |"*PRINTING-ROUTINE"| */
+	struct text_stream *template_name; /* including the asterisk, e.g., `"*PRINTING-ROUTINE"` */
 	struct text_stream *template_text;
 	CLASS_DEFINITION
 } kind_template_definition;
@@ -26,7 +26,7 @@ kind_template_definition *StarTemplates::parse_name(text_stream *name) {
 }
 
 @ Here is the code which records templates, reading them as one line of plain
-text at a time. (In the above example, |StarTemplates::record_line| would be
+text at a time. (In the above example, `StarTemplates::record_line` would be
 called just once, with the single source text line.)
 
 =

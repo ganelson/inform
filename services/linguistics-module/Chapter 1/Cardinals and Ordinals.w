@@ -6,7 +6,7 @@ To parse integers seen from a grammatical point of view.
 We read a few low numbers in text, but larger numbers only in digits. Textual
 numbers run from 0 to 12 since that's what clocks need.
 
-By a cardinal we mean a number such as |five| or |351|.
+By a cardinal we mean a number such as `five` or `351`.
 
 =
 <cardinal-number-in-words> ::=
@@ -24,7 +24,7 @@ By a cardinal we mean a number such as |five| or |351|.
 	eleven |
 	twelve
 
-@ And by an ordinal we mean a number such as |fifth| or |351st|; note that
+@ And by an ordinal we mean a number such as `fifth` or `351st`; note that
 this is not a noun, and isn't allowed as a constant value in Inform.
 
 =

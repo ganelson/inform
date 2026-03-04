@@ -9,10 +9,10 @@ in the hierarchy of an Inter tree, and given a name.
 
 A //hierarchy_location// is an abstract way to specify the rules for doing
 that. The compiler creates a mass of these objects, and they are then indexed
-by unique IDs, their |access_number|s. The compiler can then, with essentially
-no overhead, ask to create the resource with ID |JINXED_WIZARDS_HL| (say),
+by unique IDs, their `access_number`s. The compiler can then, with essentially
+no overhead, ask to create the resource with ID `JINXED_WIZARDS_HL` (say),
 and the machinery below will work out where it is to go, and what it is to
-be called -- |/synoptic/pangrams/jinxed_wizards_fn|, say.
+be called -- `/synoptic/pangrams/jinxed_wizards_fn`, say.
 
 This leads to greater consistency, less duplication of book-keeping code,
 and the ability to have a sort of registry of where everything will go:
@@ -20,7 +20,7 @@ see //runtime: Hierarchy// for an example.
 
 But it's also helpful when trying to use these resources. If the compiler needs
 to make a function call to our hypothetical jinxed-wizards function, it can
-simply use |HierarchyLocations::iname(JINXED_WIZARDS_HL)| to obtain an //inter_name//
+simply use `HierarchyLocations::iname(JINXED_WIZARDS_HL)` to obtain an //inter_name//
 for where that function is (if it already exists) or will be (if not).
 
 =
@@ -51,7 +51,7 @@ hierarchy_location *HierarchyLocations::new(int id, location_requirement req) {
 
 @ We provide an API of five creator functions for HLs. First, for a resource
 like a constant[1] (possibly translated in some way: see //Translation//), and
-which must be located at position |req|.
+which must be located at position `req`.
 
 [1] Or a variable, or really anything self-contained under a single simple name
 which is not a package of some kind.
@@ -74,7 +74,7 @@ hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *
 	return HierarchyLocations::ctr(I, id, name, Translation::same(), req);
 }
 
-@ Third, for a function, possibly translated in some way, again at |req|:
+@ Third, for a function, possibly translated in some way, again at `req`:
 
 =
 hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *name,
@@ -87,7 +87,7 @@ hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
-@ Fourth, for a package of a given type, which must live at |req|:
+@ Fourth, for a package of a given type, which must live at `req`:
 
 =
 hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *name,
@@ -116,7 +116,7 @@ hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *
 As noted above, HLs are identified with ID numbers for speed, and this means
 that an array must be maintained so that the //hierarchy_location// for a
 given ID can be found quickly. We also sometimes want to look them up by name,
-which is slower, but the hashing used by a |dictionary| makes even that tolerable.
+which is slower, but the hashing used by a `dictionary` makes even that tolerable.
 
 Both of these forms of lookup need an index to be kept, so HLs must be registered
 for use with any tree which will need them, using the following.
@@ -153,9 +153,9 @@ hierarchy_location *HierarchyLocations::name_to_HL(inter_tree *I, text_stream *n
 The two functions here allow the client to get an iname for a resource which
 occurs just once in the whole repository.
 
-For example, |HierarchyLocations::iname(I, UN_BUILDING_HL)| might return the
-iname |/main/generic/UN_building|. The package location, here |/main/generic|,
-and the name, here |UN_building|, would both be specified explicitly in the HL.
+For example, `HierarchyLocations::iname(I, UN_BUILDING_HL)` might return the
+iname `/main/generic/UN_building`. The package location, here `/main/generic`,
+and the name, here `UN_building`, would both be specified explicitly in the HL.
 So this is the simplest case.
 
 In response to these requests, we actually never return the //hierarchy_location//
@@ -174,7 +174,7 @@ inter_name *HierarchyLocations::name_to_iname(inter_tree *I, text_stream *name) 
 	@<Work out the iname for this HL@>;
 }
 
-@ The result of the following is cached in |hl->equates_to_iname|, so that
+@ The result of the following is cached in `hl->equates_to_iname`, so that
 it only needs to be worked out once.
 
 @<Work out the iname for this HL@> =
@@ -228,7 +228,7 @@ it only needs to be worked out once.
 
 @h Finding HLs representing resources in families of packages.
 Suppose we want to have packages representing, say, South American countries, and
-the compiler wants to create a constant |capital_city| in each of these packages.
+the compiler wants to create a constant `capital_city` in each of these packages.
 
 There will be a single HL supplying the rules to do this, but multiple inames
 will be produced as the compiler makes multiple calls:
@@ -251,7 +251,7 @@ inter_name *HierarchyLocations::make_iname_in(inter_tree *I, int id, package_req
 	/main/south_america/chile/capital_city
 =
 When final code is generated from these, the constants will probably end up
-with bland identifiers like |capital_city_U1|, |capital_city_U2|, and so on.
+with bland identifiers like `capital_city_U1`, `capital_city_U2`, and so on.
 If we don't want that, we can make an exception like so:
 = (text as InC)
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, uruguay_package) ...
@@ -259,8 +259,8 @@ If we don't want that, we can make an exception like so:
 		I"Lima", peru_package) ...
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, chile_package) ...
 =
-Our three capitals would then translate to |capital_city_U1|, |Lima|, and
-|capital_city_U2|.
+Our three capitals would then translate to `capital_city_U1`, `Lima`, and
+`capital_city_U2`.
 
 =
 inter_name *HierarchyLocations::make_iname_with_specific_translation(inter_tree *I, int id,
@@ -271,15 +271,15 @@ inter_name *HierarchyLocations::make_iname_with_specific_translation(inter_tree 
 
 @ Sometimes we want the name itself to be more meaningful, or at least, more
 legible when Inter code is printed out. We can do that by attaching a "memo"
-of wording to its name. For example, if |W| is the wording "Uruguay", then
+of wording to its name. For example, if `W` is the wording "Uruguay", then
 calling:
 = (text as InC)
 	HierarchyLocations::make_iname_with_memo(I, COUNTRY_HL, uruguay_package, W)
 =
-might produce the iname |/main/south_america/uruguay/C3_uruguay|; a subsequent
+might produce the iname `/main/south_america/uruguay/C3_uruguay`; a subsequent
 call in a different package, with a different wording, might then produce
-|/main/south_america/uruguay/C4_trinidad_and_tobago|, and so on. (The choice of
-|C| as the prefix would be made in the HL, which specifies naming conventions.)
+`/main/south_america/uruguay/C4_trinidad_and_tobago`, and so on. (The choice of
+`C` as the prefix would be made in the HL, which specifies naming conventions.)
 
 =
 inter_name *HierarchyLocations::make_iname_with_memo(inter_tree *I, int id,
@@ -293,9 +293,9 @@ inter_name *HierarchyLocations::make_iname_with_shorter_memo(inter_tree *I, int 
 		DEFAULT_INAME_TRUNCATION - 5);
 }
 
-@ Note that the HL, in this example |COUNTRY_HL|, keeps track of how many of
+@ Note that the HL, in this example `COUNTRY_HL`, keeps track of how many of
 these inames it has made, so that it can increment the index number -- in those
-two cases, 3 and then 4. If we need to override this with a specific number |x|
+two cases, 3 and then 4. If we need to override this with a specific number `x`
 for some reason, we can use this variant:
 
 =
@@ -312,11 +312,11 @@ inter_name *HierarchyLocations::make_iname_with_shorter_memo_and_value(inter_tre
 }
 
 @ Finally, it's often useful to "derive" a name: to say that a resource in a
-given package |P| should have a name based on the name of an existing iname.
-For example, the HL |POPULATION_HL| might have the rule that names are made
-by suffixing |_POP| to an existing iname. Calling //HierarchyLocations::derive_iname_in//
-might then produce a name like |C3_uruguay_POP|, derived from the existing iname
-|C3_uruguay|.
+given package `P` should have a name based on the name of an existing iname.
+For example, the HL `POPULATION_HL` might have the rule that names are made
+by suffixing `_POP` to an existing iname. Calling //HierarchyLocations::derive_iname_in//
+might then produce a name like `C3_uruguay_POP`, derived from the existing iname
+`C3_uruguay`.
 
 =
 inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_name *from, 
@@ -325,7 +325,7 @@ inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_nam
 		DEFAULT_INAME_TRUNCATION);
 }
 
-@ And this variant form ensures that any translation already made to |from|
+@ And this variant form ensures that any translation already made to `from`
 is transferred to a similarly derived translation name for the result.
 
 =
@@ -393,7 +393,7 @@ inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 }
 
 @ We do nothing to change matters here. But an HL can specify that it may only
-be used to generate inames in, say, a package of type |_country|: and an
+be used to generate inames in, say, a package of type `_country`: and an
 internal error is thrown if this is violated. So compliance is not automatic,
 but it is at least policed.
 
@@ -493,7 +493,7 @@ hierarchy_attachment_point *HierarchyLocations::id_to_HAP(inter_tree *I, int id)
 	return I->site.shdata.HAPs_indexed_by_id[id];
 }
 
-@ The API is now very simple. |HierarchyLocations::attach_new_package(I, M, R, id)|
+@ The API is now very simple. `HierarchyLocations::attach_new_package(I, M, R, id)`
 attaches another package. R and M need only be specified if the location requirements
 of the HAL do not imply a definite position already; M is meaningful only if the
 requirements are to put everything in a submodule of a given module, and then M
@@ -501,10 +501,10 @@ is that module. For example:
 = (text as InC)
 	vf_req = Hierarchy::package_within(I, NULL, R, VERB_FORMS_HAP);
 =
-attaches a new verb form package inside |R|. |VERB_FORMS_HAP| has already been
-declared with //HierarchyLocations::att//, and has stem |"form"| and type |"_verb_form"|.
-So the outcome might be a package called, say, |form_16| of type |_verb_form|
-inside of |R|; and then on the next call |form_17|, and so on.
+attaches a new verb form package inside `R`. `VERB_FORMS_HAP` has already been
+declared with //HierarchyLocations::att//, and has stem `"form"` and type `"_verb_form"`.
+So the outcome might be a package called, say, `form_16` of type `_verb_form`
+inside of `R`; and then on the next call `form_17`, and so on.
 
 =
 package_request *HierarchyLocations::attach_new_package(inter_tree *I,

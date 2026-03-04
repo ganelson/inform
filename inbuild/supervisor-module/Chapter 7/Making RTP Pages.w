@@ -3,12 +3,12 @@
 To turn Markdown source into outcome or run-time-problem pages.
 
 @h Introduction.
-This section is descended from an earlier command-line tool, |inrtps|, which
+This section is descended from an earlier command-line tool, `inrtps`, which
 was removed in August 2023. Its purpose was to generate simple HTML pages
 which could be displayed inside the Inform GUI apps to explain run-time problems
 or other issues to the user. But it was very inflexible, making it difficult to
 provide RTPs from kits other than the built-in ones, and it used a notation of
-its own. The code below, which is activated from |inbuild| using the |-markdown-*|
+its own. The code below, which is activated from `inbuild` using the `-markdown-*`
 command-line switches, uses Markdown instead and is quite flexible in the
 services it provides.
 
@@ -36,10 +36,10 @@ Markdown is in practice not enough to make a stand-alone HTML file, since it
 renders only to content suitable for the body, and cannot render the head,
 any CSS needed, and so on. We therefore generate pages from "models", which
 are HTML pages where the place where the content should go is marked as a
-placeholder |[CONTENT]|, and so on.
+placeholder `[CONTENT]`, and so on.
 
 In the standard Inform distribution, the internal resources nest contains a
-subdirectory called |HTML|, and that's where we look for models by default.
+subdirectory called `HTML`, and that's where we look for models by default.
 
 =
 pathname *RTPPages::internal_HTML_path(void) {
@@ -52,13 +52,13 @@ filename *RTPPages::default_model(void) {
 }
 
 @h Making one page.
-So, then, |RTPPages::make_one(M, F, T, V)| generates an HTML page from model
-|M| using Markdown source in |F|, writing to file |T| and using the dialect
-of Markdown indicated by |V|.
+So, then, `RTPPages::make_one(M, F, T, V)` generates an HTML page from model
+`M` using Markdown source in `F`, writing to file `T` and using the dialect
+of Markdown indicated by `V`.
 
-Only |F| is mandatory. |M| defaults to the RTP template; |T| defaults to writing
-the HTML to the same directory as the source, but with |.html| not |.md| as
-the file extension; |V| defaults to RTP-flavoured Markdown.
+Only `F` is mandatory. `M` defaults to the RTP template; `T` defaults to writing
+the HTML to the same directory as the source, but with `.html` not `.md` as
+the file extension; `V` defaults to RTP-flavoured Markdown.
 
 =
 typedef struct RTP_maker_state {
@@ -134,9 +134,9 @@ which we expand into appropriate material:
 	DISCARD_TEXT(source)
 	Regexp::dispose_of(&mr);
 
-@ The precursor tool |inrtps| used the awkward notations |*1| to |*5| for
-placeholders. |[RTPCODE]| is the new |*1|; |[CONTENT]| is the new |*2|;
-|[TITLE]| is the new |*3|; |INFORMCSS| is the new |*5|, and |*4| has been
+@ The precursor tool `inrtps` used the awkward notations `*1` to `*5` for
+placeholders. `[RTPCODE]` is the new `*1`; `[CONTENT]` is the new `*2`;
+`[TITLE]` is the new `*3`; `INFORMCSS` is the new `*5`, and `*4` has been
 abolished.
 
 @<Insert the insertion@> =
@@ -155,11 +155,11 @@ abolished.
 
 @h Making a batch of pages.
 This works through all Markdown files in a source folder and converts them
-into the destination, using a common model. Again, only |from_folder| is
+into the destination, using a common model. Again, only `from_folder` is
 mandatory.
 
-If a file |roster.txt| exists in the source folder, we follow that: see below.
-If not, we convert every file whose leafname has the extension |.md| or |.MD|.
+If a file `roster.txt` exists in the source folder, we follow that: see below.
+If not, we convert every file whose leafname has the extension `.md` or `.MD`.
 
 =
 void RTPPages::work_through_directory(filename *model, pathname *from_folder,
@@ -191,7 +191,7 @@ void RTPPages::work_through_directory(filename *model, pathname *from_folder,
 
 @h Making a batch from a roster.
 This is called by the above, but can also be called directly. Once again,
-only |from_folder| is mandatory.
+only `from_folder` is mandatory.
 
 =
 typedef struct RTP_roster_state {
@@ -221,19 +221,19 @@ void RTPPages::work_through_roster(filename *roster, pathname *models_folder,
 
 @ Thus, the following is called on each line in turn of the roster file. In
 a roster file, leading and trailing white space is removed. Blank lines are
-ignored, and lines beginning with |!| are ignored as comments. All other
+ignored, and lines beginning with `!` are ignored as comments. All other
 lines are commands to make one HTML page.
 
-The line |> TOKEN| means "convert |TOKEN.md| in the source folder into
-|TOKEN.html| in the destination folder, using the default model". |TOKEN|
+The line `> TOKEN` means "convert `TOKEN.md` in the source folder into
+`TOKEN.html` in the destination folder, using the default model". `TOKEN`
 must not contain spaces.
 
-The line |> MODEL: TOKEN| means "convert |TOKEN.md| in the source folder into
-|TOKEN.html| in the destination folder, using |MODEL| as model". |MODEL|
+The line `> MODEL: TOKEN` means "convert `TOKEN.md` in the source folder into
+`TOKEN.html` in the destination folder, using `MODEL` as model". `MODEL`
 should be a leafname in the models directory.
 
-Finally, |> MODEL: FROM --> TO| means the same, except that the Markdown
-is read from |FROM.md| and written to |TO.html|. |FROM| and |TO| must not
+Finally, `> MODEL: FROM --> TO` means the same, except that the Markdown
+is read from `FROM.md` and written to `TO.html`. `FROM` and `TO` must not
 contain spaces.
 
 =

@@ -23,8 +23,8 @@ Global I7S_Swap; ! The current routine for swapping two fields
 Global I7S_Comp; ! The current routine for comparing two fields
 
 @h Front End.
-To perform a sort, we first call |SetSortDomain| to declare the swap and
-compare functions to be used, and then call |SortArray| actually to sort. (It
+To perform a sort, we first call `SetSortDomain` to declare the swap and
+compare functions to be used, and then call `SortArray` actually to sort. (It
 would be nice to combine these in a single call, but I6 allows a maximum of
 7 call arguments for a routine, and that would make 8.) These are the only
 two routines which should ever be called from outside of this template
@@ -32,7 +32,7 @@ segment.
 
 The swap and compare functions are expected to take two arguments, which
 are the field numbers of the fields being swapped or compared, where fields
-are numbered from 1. Comparison is like |strcmp|: it returns 0 on equality,
+are numbered from 1. Comparison is like `strcmp`: it returns 0 on equality,
 and then is positive or negative according to which of the fields is
 greater in value.
 
@@ -51,7 +51,7 @@ greater in value.
 
 @h Sort Range.
 This routine sorts a range of fields $x\leq i < y$ within the array. Fields
-are numbered from 0. The supplied |algorithm| is an I6 routine to implement
+are numbered from 0. The supplied `algorithm` is an I6 routine to implement
 a particular sorting algorithm; if it is not supplied, then in-place merge
 sort is used by default.
 
@@ -128,7 +128,7 @@ and which has very low overhead.
 A stable algorithm with $O(n\log n)$ running time, at some stack cost, and
 which is generally good for nearly sorted tables, but which is also complex
 and has some overhead. The code here mostly follows Thomas Baudel's
-implementation, which in turn follows the |C++| STL library.
+implementation, which in turn follows the `C++` STL library.
 
 =
 [ InPlaceMergeSortAlgorithm from to

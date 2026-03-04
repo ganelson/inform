@@ -7,15 +7,15 @@ problem occurs, in terms of headings and subheadings written in the
 source text, and it is this indication that we consider first. For
 example,
 
->> In Part the First, Chapter 1 - Attic Area:
+> In Part the First, Chapter 1 - Attic Area:
 
 There can be up to 10 levels in the hierarchy of headings and
 subheadings, with level 0 the top level and level 9 the lowest.
 
-When we need to issue a problem at sentence |S|, we work out what the
+When we need to issue a problem at sentence `S`, we work out what the
 current heading is (if any) at each of the 10 levels. We do this by
 trekking right through the whole linked list of sentences until we reach
-|S|, changing the current headings whenever we pass one. This sounds
+`S`, changing the current headings whenever we pass one. This sounds
 inefficient, but of course few problems are issued, and in any case we
 cannot optimise by simply cacheing the heading level from one problem to
 the next because it is not true that problems are always issued in source
@@ -53,7 +53,7 @@ int Problems::visit_for_headings(parse_node *p, parse_node *from,
 for an error message, and only mention what has changed about the location.
 Thus we might next print:
 
->> In Chapter 2 - Cellar Area:
+> In Chapter 2 - Cellar Area:
 
 omitting to mention "Part the First" this time, since that part has not
 changed. (And we never print internally made level 0, File, headings.)
@@ -96,7 +96,7 @@ void Problems::show_problem_location(parse_node_tree *T) {
 }
 
 @ We print only the part of the heading position which differs from that
-of the previous one quoted: |i| is at this point the highest level at
+of the previous one quoted: `i` is at this point the highest level at
 which they differ.
 
 @<Print the heading position@> =
@@ -127,7 +127,7 @@ which they differ.
 	ProblemBuffer::clear();
 
 @h Problem quotations.
-The texts to be substituted in place of |%1|, |%2|, ..., are called the
+The texts to be substituted in place of `%1`, `%2`, ..., are called the
 "quotations". The value is either a range of words in the source text, or
 else a pointer to some object, depending on the type. The type is a
 single character code. (This coding system is used only here, and could
@@ -140,17 +140,17 @@ typedef struct problem_quotation {
 	void *structure_quoted; /* if false */
 	void (*expander)(text_stream *, void *); /* if false */
 	struct wording text_quoted; /* if true */
-	struct text_stream *file; /* relevant only to |'F'| file references */
-	int line; /* relevant only to |'F'| file references */
+	struct text_stream *file; /* relevant only to `'F'` file references */
+	int line; /* relevant only to `'F'` file references */
 } problem_quotation;
 
 problem_quotation problem_quotations[10];
 
 @ When some higher-level part of Inform wants to issue a formatted problem
 message, it first declares the contents of any quotations it will make.
-It does this using the routines |Problems::quote_object|, |Problems::quote_spec|, ...
-below. Thus |Problems::quote_spec(2, SP)| specifies that |%2| should be
-printed as the inference |SP|.
+It does this using the routines `Problems::quote_object`, `Problems::quote_spec`, ...
+below. Thus `Problems::quote_spec(2, SP)` specifies that `%2` should be
+printed as the inference `SP`.
 
 =
 void Problems::problem_quote(int t, void *v, void (*f)(text_stream *, void *)) {
@@ -327,7 +327,7 @@ appear only in the long form, or only in the short form.
 
 If the text of a message begins with an asterisk, then it is a continuation of
 a message already partly issued. Otherwise we can sensibly find out whether
-this is one we've seen before. Either way, we set |this_is_a_subsequent_use_of_problem|
+this is one we've seen before. Either way, we set `this_is_a_subsequent_use_of_problem`
 to remember whether to use the short or long form.
 
 =
@@ -429,7 +429,7 @@ void Problems::issue_warning_segment(char *message) {
 }
 
 @ Ordinarily we just append the new character, but we also act on the escapes
-|%P| and |%1| to |%9|. |%P| forces a paragraph break, or at any rate, it does
+`%P` and `%1` to `%9`. `%P` forces a paragraph break, or at any rate, it does
 in the eventual HTML version of the problem message. Note that these escapes
 are acted on only if they occur in a contextually allowed part of the problem
 message (e.g., if they occur in the short form only, they will only be acted
@@ -461,7 +461,7 @@ on when the shortened form is the one being issued).
 @<Expand file reference@> =
 	ProblemBuffer::copy_file_reference(problem_quotations[t].file, problem_quotations[t].line);
 
-@ This is where a quotation escape, such as |%2|, is expanded: by looking up
+@ This is where a quotation escape, such as `%2`, is expanded: by looking up
 its type, stored internally as a single character.
 
 @<Expand wording-based escape@> =

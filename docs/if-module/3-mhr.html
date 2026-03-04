@@ -104,7 +104,7 @@ MathJax = {
 
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">MappingHints::index_map_with_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">MappingHints::index_map_with_SMF</span></span>:<br/>The Map - <a href="3-tm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "Index map with ..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;Index map with ...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;np-articled-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -127,12 +127,9 @@ MathJax = {
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The subject noun phrase of sentences like this:</p>
-</div>
 <blockquote>
-    <p>Index map with Chamber mapped north of Cave and EPS file.</p>
+<p>Index map with Chamber mapped north of Cave and EPS file.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is an articled list of subjects (in this case, two of them); each subject
 is parsed with the following grammar, which is almost a mini-language in
 itself.</p>
@@ -210,23 +207,19 @@ itself.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Now we parse the setting to be set. For example,</p>
+<blockquote>
+<p>title-size of the first room</p>
+</blockquote>
+<blockquote>
+<p>border-size of level 1</p>
+</blockquote>
+<blockquote>
+<p>room-outline-thickness of the Taj Mahal</p>
+</blockquote>
+<blockquote>
+<p>title-size</p>
+</blockquote>
 </div>
-<blockquote>
-    <p>title-size of the first room</p>
-</blockquote>
-
-<blockquote>
-    <p>border-size of level 1</p>
-</blockquote>
-
-<blockquote>
-    <p>room-outline-thickness of the Taj Mahal</p>
-</blockquote>
-
-<blockquote>
-    <p>title-size</p>
-</blockquote>
-
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;map-setting&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;map-parameter&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;map-setting-scope&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[2], -, &lt;&lt;inchar32_t:partext&gt;&gt; = RP[1], &lt;&lt;parindex&gt;&gt; = R[1] }</span>
@@ -247,12 +240,9 @@ itself.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  The map parameters all have one-word, sometimes hyphenated, names, such
 as the following:</p>
-</div>
 <blockquote>
-    <p>vertical-spacing, monochrome, annotation-size</p>
+<p>vertical-spacing, monochrome, annotation-size</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>For now, at least, these are all in English only.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -290,7 +280,7 @@ Never mind.</p>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;quoted-text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TEXT_MDT, -, &lt;&lt;msvalue&gt;&gt; = R[1], &lt;&lt;msword&gt;&gt; = Wordings::first_wn(W) }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;map-setting-boolean&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { BOOL_MDT, -, &lt;&lt;msvalue&gt;&gt; = R[1], &lt;&lt;msword&gt;&gt; = Wordings::first_wn(W) }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;map-offset&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { OFF_MDT, -, &lt;&lt;msvalue&gt;&gt; = R[1], &lt;&lt;msword&gt;&gt; = Wordings::first_wn(W) }; if (R[1] == ERRONEOUS_OFFSET_VALUE) return FALSE;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax">                      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -1, -, &lt;&lt;msword&gt;&gt; = Wordings::first_wn(W) } </span><span class="Preform-constant-syntax">/*</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">leads</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">problem</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">message</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">later</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">*/</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax">                      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -1, -, &lt;&lt;msword&gt;&gt; = Wordings::first_wn(W) } </span><span class="comment-syntax">/* leads to a problem message later */</span>
 
 <span class="Preform-function-syntax">&lt;map-setting-boolean&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                     </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, - }</span>
@@ -434,7 +424,7 @@ the following:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">point_size</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 12-point type */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">font</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;font&gt;"</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaning the default font */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"000000"</span><span class="plain-syntax">; </span><span class="comment-syntax">/* black */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at_offset</span><span class="plain-syntax"> = </span><span class="constant-syntax">10001</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the offset $(1, 1)$ */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at_offset</span><span class="plain-syntax"> = </span><span class="constant-syntax">10001</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the offset \INWEBMATH((1, 1)\INWEBMATH) */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">offset_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">RESTW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">Wordings::last_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">RESTW</span><span class="plain-syntax">)) {</span>

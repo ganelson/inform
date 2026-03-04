@@ -23,7 +23,7 @@ void CommentInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the
+In bytecode, the frame of an `comment` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d TEXT_COMMENT_IFLD (DATA_IFLD + 0)
@@ -64,7 +64,7 @@ void CommentInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 }
 
 @h Writing to textual Inter syntax.
-The empty comment is printed back as a blank line, rather than a lone |#|.
+The empty comment is printed back as a blank line, rather than a lone `#`.
 
 =
 void CommentInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {

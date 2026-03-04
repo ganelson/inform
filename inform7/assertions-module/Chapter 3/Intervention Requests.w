@@ -82,7 +82,7 @@ handled here: if we see one, we ignore it.
 
 @ So, then, this function is called on inclusion sentences such as:
 
->> Include (- ... -) before "I6 Inclusions" in "Output.i6t".
+> Include (- ... -) before "I6 Inclusions" in "Output.i6t".
 
 Those references are now meaningless (I6T files in the sense meant by this
 syntax no longer exist), but we faithfully parse them before ignoring them.
@@ -167,7 +167,7 @@ action: see //runtime: Interventions//.
 
 =
 typedef struct source_text_intervention {
-	int stage; /* one of the |*_LINK_STAGE| enumerated constants */
+	int stage; /* one of the `*_LINK_STAGE` enumerated constants */
 	struct text_stream *segment;
 	struct text_stream *part;
 	struct text_stream *seg;

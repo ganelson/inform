@@ -57,7 +57,7 @@ void Manuals::duplex_contents_page(OUTPUT_STREAM, compiled_documentation *cd) {
 	@<Render a heavyweight column of links@>;
 	HTML_CLOSE("td");
 
-@ The lines linking to sections within a chapter are grouped into a |<div>| for
+@ The lines linking to sections within a chapter are grouped into a `<div>` for
 that chapter, which can be hidden or revealed -- it contains "extra" material,
 as we put it.
 
@@ -131,7 +131,7 @@ void Manuals::duplex_r(OUTPUT_STREAM, markdown_item *md, int column, int *extra_
 
 @ The "extra" functions here are for revealing or concealing page content
 when the user clicks a button. Each such piece of content is in its own
-uniquely-ID'd |<div>|, as follows:
+uniquely-ID'd `<div>`, as follows:
 
 =
 void Manuals::extra_div_open(OUTPUT_STREAM, int id) {

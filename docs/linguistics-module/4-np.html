@@ -124,15 +124,12 @@ used in a balanced way: thus <code>frogs ( and toads )</code> would match, but
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Articled nounphrases (NP2).</b>  Now an initial article becomes an annotation and is removed from the text.
 Note that</p>
 <ul>
-<li>Unexpectedly upper-case articles are left well alone, as in the sentence:</li>
-</ul>
-</div>
+<li>
+<p>Unexpectedly upper-case articles are left well alone, as in the sentence:</p>
 <blockquote>
-    <p>On the table is a thing called A Town Called Alice.</p>
+<p>On the table is a thing called A Town Called Alice.</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<ul>
+</li>
 <li>
 <p>Articles are not removed if that would leave the text empty.</p>
 </li>
@@ -164,7 +161,7 @@ indefinite, the latter has precedence.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  The following function is only occasionally useful; it takes an existing raw
-node and retrospectively applies &lt;np-articled&gt; to it.</p>
+node and retrospectively applies <np-articled> to it.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">NounPhrases::annotate_by_articles</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">RAW_NP</span><span class="plain-syntax">) {</span>
@@ -238,7 +235,7 @@ the word &quot;kind&quot; alone, or &quot;kind of N&quot; for some atomic noun N
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Full nounphrase parsing varies slightly according to the position of the
 phrase, i.e., whether it is in the subject or object position. Thus &quot;X is Y&quot;
-or &quot;X is in Y&quot; would lead to X being parsed by &lt;np-as-subject&gt;, Y by &lt;np-as-object&gt;.
+or &quot;X is in Y&quot; would lead to X being parsed by <np-as-subject>, Y by <np-as-object>.
 They are identical except that:</p>
 <ul>
 <li>
@@ -285,7 +282,7 @@ called &quot;Area&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Inform guesses above that most English words ending in &quot;-ing&quot; are present
 participles -- like guessing, bluffing, cheating, and so on. But there is
-a conspicuous exception to this; so any word found in &lt;non-participles&gt;
+a conspicuous exception to this; so any word found in <non-participles>
 is never treated as a participle.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -377,17 +374,17 @@ directions, in particular, a little better. But it means we do not recognise
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">CALLED_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">WITH_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">AND_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">KIND_NT</span>
 </pre>
 <div class="lsmarkdown">
-<p>These are all handled by &lt;np-nonrelative&gt;. Two points to note:</p>
+<p>These are all handled by <np-nonrelative>. Two points to note:</p>
 <ul>
 <li>The first production accepts arbitrary text quickly and without allocating
 memory if we're in lookahead mode -- an important economy since otherwise
 parsing a list of \INWEBMATH(n\INWEBMATH) items would have running time and memory of order \INWEBMATH(2^n\INWEBMATH).</li>
 <li>If we regard the above constructs as being like operators in arithmetic,
-then the operands have to match &lt;np-operand&gt;, and this requires text which has
+then the operands have to match <np-operand>, and this requires text which has
 balanced brackets. That ensures that, for example, &quot;frog (called toad)&quot;
 is not misread as saying that &quot;frog (&quot; is called &quot;toad )&quot;. But note that
-the final &lt;np-articled&gt; production catches any unbalanced text, so even
-text like &quot;smile X-)&quot; will in fact match &lt;np-nonrelative&gt;.</li>
+the final <np-articled> production catches any unbalanced text, so even
+text like &quot;smile X-)&quot; will in fact match <np-nonrelative>.</li>
 </ul>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -410,14 +407,11 @@ text like &quot;smile X-)&quot; will in fact match &lt;np-nonrelative&gt;.</li>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  The tail of with-or-having parses for instance &quot;with carrying capacity 5&quot;
 in the NP</p>
-</div>
 <blockquote>
-    <p>a container with carrying capacity 5</p>
+<p>a container with carrying capacity 5</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This makes use of a nifty feature of Preform: when Preform scans to see how to
-divide the text, it tries &lt;np-with-or-having-tail&gt; in each possible position.
+divide the text, it tries <np-with-or-having-tail> in each possible position.
 The reply can be yes, no, or no and move on a little. So if we spot &quot;it with
 action&quot;, the answer is no, and move on three words: that jumps over a &quot;with&quot;
 which we don't want to recognise. (Because if we did, then &quot;the locking it
@@ -455,12 +449,9 @@ bogus object called &quot;locking it&quot;.)</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  Kind phrases are easier:</p>
-</div>
 <blockquote>
-    <p>A sedan chair is a kind of vehicle. A weather pattern is a kind.</p>
+<p>A sedan chair is a kind of vehicle. A weather pattern is a kind.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Note that indefinite articles are permitted before the word &quot;kind(s)&quot;,
 but definite articles are not.</p>
 </div>

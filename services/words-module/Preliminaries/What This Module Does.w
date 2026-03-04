@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -41,7 +41,7 @@ returns the VE for a given word number. In the above example,
 	Lexer::word(20) != Lexer::word(24)   /* one is "little", the other "that" */
 =
 The important point is that words at two positions can be tested for textual
-equality in an essentially instant process, by comparing |vocabulary_entry *|
+equality in an essentially instant process, by comparing `vocabulary_entry *`
 pointers. (See //Numbered Words// for just this sort of comparison.)
 
 Nothing in life is free, and building the vocabulary efficiently is itself a
@@ -55,14 +55,14 @@ although //inform7// may later unroll text substitutions in it, calling the
 lexer again to do that.
 
 @ A few //vocabulary_entry// objects are hardwired into //words//, but only
-for punctuation. These have names like |COMMA_V|, which means just what you
+for punctuation. These have names like `COMMA_V`, which means just what you
 think it means. In our example,
 = (text as InC)
 	Lexer::word(27) == COMMA_V   /* the comma between "went" and "the" */
 =
 See //Vocabulary::create_punctuation//, and also //LoadPreform::create_punctuation//,
 where further punctuation marks are created in order to parse Preform syntax --
-there are exotica such as |COLONCOLONEQUALS_V| there, for "::=".
+there are exotica such as `COLONCOLONEQUALS_V` there, for "::=".
 
 @ Lexical errors occur if words are too long, or quoted text continues without
 a close quote right to the end of a file, and so on. These are sent to the
@@ -70,27 +70,27 @@ function //Lexer::lexer_problem_handler//, but can be intercepted by the
 user (see //How To Include This Module//).
 
 @h Meaning codes.
-Each //vocabulary_entry// has a bitmap of |*_MC| meaning codes assigned to it.
+Each //vocabulary_entry// has a bitmap of `*_MC` meaning codes assigned to it.
 (And //Vocabulary::test_flags// tests whether the Nth word has a given bit.)
-For example, |ORDINAL_MC| is applied to ordinal numbers like "sixth" or "15th"
--- see //Vocabulary::an_ordinal_number//, and |NUMBER_MC| to cardinals. The
+For example, `ORDINAL_MC` is applied to ordinal numbers like "sixth" or "15th"
+-- see //Vocabulary::an_ordinal_number//, and `NUMBER_MC` to cardinals. The
 //words// module uses only a few bits in this map, but the //linguistics//
 module develops the idea much further: for example, any word which can be used
 in a particular semantic category -- say, in a variable name -- is marked
-with a bit representing that -- say, |VARIABLE_MC|. The //core// module
+with a bit representing that -- say, `VARIABLE_MC`. The //core// module
 uses this for 15 or so of the most commonly used semantic categories in the
 Inform language. See //linguistics: What This Module Does// to pick up the story.
 
 @h Contiguous runs of words.
 Natural languages are fundamentally unlike programming languages because a noun
 referring to, say, a variable is rarely a single lexical token. In C, a variable
-name like |selected_lamb| is one lexical unit. For us, though, "a little lamb"
+name like `selected_lamb` is one lexical unit. For us, though, "a little lamb"
 is three words.
 
 However, multi-word snippets of text which have a joint meaning are almost
 always contiguous. The text "a little lamb" is word numbers 19, 20, 21. We
 deal with this using the //wording// type: it's essentially a pair of integers,
-|(19, 21)|, and thus is very quick to form, compare, copy and pass as a
+`(19, 21)`, and thus is very quick to form, compare, copy and pass as a
 parameter. //Wordings// provides an extensive API for this.
 
 @h Hypothetical words.
@@ -118,7 +118,7 @@ can be represented by a //wording//:
 If however we want to make "lamb tian with haricot beans", we need to use the
 Lexer's ability to read text internally as well as from external files. This
 is called a "feed": see //Feeds//. In particular, //Feeds::feed_text// will
-take the text |I"tian with haricot beans"|, treat this as fresh text for
+take the text `I"tian with haricot beans"`, treat this as fresh text for
 lexing so that we now have
 = (text)
 	... ,  the lamb lamb went everywhere tian with haricot beans
@@ -135,16 +135,16 @@ their original origins.
 
 @h Rock, paper, scissors.
 We now have three ways to represent text which may contain multiple words:
-as a |text_stream|, as a |wording|, as a |word_assemblage|. Each can be
+as a `text_stream`, as a `wording`, as a `word_assemblage`. Each can be
 converted into the other two:
 
-- Use //Feeds::feed_text// to turn a |text_stream| to a |wording|.
-- Use //WordAssemblages::from_wording// to turn a |wording| to a |word_assemblage|.
-- Use //WordAssemblages::to_wording// to turn a |word_assemblage| to a |wording|.
-- Use //Wordings::writer// or use the formatted |WRITE| escape |%W| to
-write a |wording| into a |text_stream|.
-- Use //WordAssemblages::writer// or use the formatted |WRITE| escape |%A| to
-write a |word_assemblage| into a |text_stream|.
+- Use //Feeds::feed_text// to turn a `text_stream` to a `wording`.
+- Use //WordAssemblages::from_wording// to turn a `wording` to a `word_assemblage`.
+- Use //WordAssemblages::to_wording// to turn a `word_assemblage` to a `wording`.
+- Use //Wordings::writer// or use the formatted `WRITE` escape `%W` to
+write a `wording` into a `text_stream`.
+- Use //WordAssemblages::writer// or use the formatted `WRITE` escape `%A` to
+write a `word_assemblage` into a `text_stream`.
 
 As a general design goal, all Inform code uses //wording// to identify names
 of things: this is fastest and most efficient on memory.
@@ -156,10 +156,10 @@ as a named location in memory, or object, or something like that: and this name
 must be a valid identifier for some other compiler or assembler -- alphanumeric,
 not too long, and so on. Calling it "a little lamb" is not an option.
 
-You could of course name it |ref_15A40F|, or some such, because the user will
+You could of course name it `ref_15A40F`, or some such, because the user will
 never see it anyway, so why have a helpful name? But that won't make debugging
 your output easy. The function //Identifiers::compose// therefore takes a
-wording and a unique ID number and makes something sensible: |I15_a_little_lamb|,
+wording and a unique ID number and makes something sensible: `I15_a_little_lamb`,
 say.
 
 @h Preform.

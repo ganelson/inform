@@ -254,13 +254,13 @@ dictionary of the symbol names being declared to keep track.
 
 @ The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
-notation inside |(-| and |-)| markers: for example,
+notation inside `(-` and `-)` markers: for example,
 = (text as Inform 7)
 Use feverish dreams translates as (- Constant FEVERISH_DREAMS; -).
 Use hallucination time of at least 1024 translates as
 	(- Constant DREAMY_TIME = {N}+3; -).
 =
-The |{N}| marker, if present, is converted to the value, producing, say:
+The `{N}` marker, if present, is converted to the value, producing, say:
 = (text as Inform 6)
 	Constant DREAMY_TIME = 4096+3;
 =
@@ -403,8 +403,8 @@ void RTUseOptions::uo_identifier(OUTPUT_STREAM,
 	}
 }
 
-@ Kit configuration constants are created in the |configuration| submodule
-of the |completion| module in the Inter tree:
+@ Kit configuration constants are created in the `configuration` submodule
+of the `completion` module in the Inter tree:
 
 =
 void RTUseOptions::define_config_constant(text_stream *UO, inter_ti val) {
@@ -439,13 +439,13 @@ void RTUseOptions::log_puos(parsed_use_option_setting *puos) {
 @h Deprecated inclusion notation.
 The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
-notation inside |(-| and |-)| markers: for example,
+notation inside `(-` and `-)` markers: for example,
 = (text as Inform 7)
 Use feverish dreams translates as (- Constant FEVERISH_DREAMS; -).
 Use hallucination time of at least 1024 translates as
 	(- Constant DREAMY_TIME = {N}+3; -).
 =
-The |{N}| marker, if present, is converted to the value, producing, say:
+The `{N}` marker, if present, is converted to the value, producing, say:
 = (text as Inform 6)
 	Constant DREAMY_TIME = 4096+3;
 =

@@ -8,10 +8,10 @@ Literal texts arise from source text such as:
 	let Q be "the quick brown fox";
 	say "Where has that indolent hound got to?";
 =
-Note that only |"the quick brown fox"| is actually a constant value here; the
+Note that only `"the quick brown fox"` is actually a constant value here; the
 text concerning the hound is turned directly into operands for Inter instructions
 for printing text, and never needs to be a value. The fox text, on the other hand,
-is being stored in |Q|, and you can only store values.
+is being stored in `Q`, and you can only store values.
 
 Text at runtime is stored in small blocks, always of size 2:
 = (text)
@@ -24,12 +24,12 @@ system may dynamically switch between them; essentially it uses this to
 decompress text from its "packed" form to a character-accessible form only
 on demand.
 
-The compiler generates only one of these formats: |CONSTANT_PACKED_TEXT_STORAGE|.
-In this format, the |content| can be either a packed string, or a function,
+The compiler generates only one of these formats: `CONSTANT_PACKED_TEXT_STORAGE`.
+In this format, the `content` can be either a packed string, or a function,
 so although there is no long block to make, we do always have something else
 to make besides the small block.
 
-In this section, |content| will always be a packed string; in //Text Substitutions//
+In this section, `content` will always be a packed string; in //Text Substitutions//
 it will always be a function.
 
 =

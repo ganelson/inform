@@ -15,7 +15,7 @@ typedef struct inform_extension {
 	int has_literate_source;
 	struct wording body_text; /* Body of source text supplied in extension, if any */
 	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
-	struct compiled_documentation *documentation; /* or |NULL| if none supplied */
+	struct compiled_documentation *documentation; /* or `NULL` if none supplied */
 	int documentation_sought; /* Has it yet been looked for? */
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
@@ -28,17 +28,17 @@ typedef struct inform_extension {
 	struct parse_node_tree *syntax_tree;
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
 	int auto_included;
-	struct linked_list *search_list; /* of |inbuild_nest| */	
+	struct linked_list *search_list; /* of `inbuild_nest` */	
 	int word_count; /* or 0 if this hasn't been read (yet) */
-	struct linked_list *activations; /* of |element_activation| */
-	struct linked_list *extensions; /* of |inbuild_requirement| */
-	struct linked_list *kits; /* of |inbuild_requirement| */
+	struct linked_list *activations; /* of `element_activation` */
+	struct linked_list *extensions; /* of `inbuild_requirement` */
+	struct linked_list *kits; /* of `inbuild_requirement` */
 	struct inbuild_nest *materials_nest;
 	int documented_on_this_run;
 	CLASS_DEFINITION
 } inform_extension;
 
-@ This is called as soon as a new copy |C| of the extension genre is created.
+@ This is called as soon as a new copy `C` of the extension genre is created.
 We scan the extension file for the title, author, version number and any
 compatibility notes given (such as "for Glulx only").
 
@@ -100,10 +100,10 @@ void Extensions::scan(inbuild_copy *C) {
 	E->has_literate_source = FALSE;
 
 @ The following scans a potential extension file. If it seems malformed, a
-suitable error is written to the stream |error_text|. If not, this is left
+suitable error is written to the stream `error_text`. If not, this is left
 alone, and the version number is returned.
 
-If the source directory for a directory-based extension contains a |Contents.w|
+If the source directory for a directory-based extension contains a `Contents.w`
 file, then this is considered as a literate-programming web containing the
 source text.
 
@@ -183,8 +183,8 @@ source text.
 		V = VersionNumbers::from_text(I"1");
 	}
 
-@ The titling line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or
-by the local |\n| for good measure.
+@ The titling line is terminated by any of `0A`, `0D`, `0A 0D` or `0D 0A`, or
+by the local `\n` for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
 	inchar32_t c;
@@ -223,8 +223,8 @@ by the local |\n| for good measure.
 all white space before a quoted rubric text is ignored. We need to do this
 partly because users have probably keyed a double line break before the
 rubric, but also because we might have stopped reading the titling line
-halfway through a line division combination like |0A 0D|, so that the first
-thing we read here is a meaningless |0D|.
+halfway through a line division combination like `0A 0D`, so that the first
+thing we read here is a meaningless `0D`.
 
 @<Read the rubric text, if any is present@> =
 	inchar32_t c;
@@ -242,7 +242,7 @@ thing we read here is a meaningless |0D|.
 
 @ In general, once case-normalised, a titling line looks like this:
 
->> Version 2/070423 Of Going To The Zoo (For Glulx Only) By Cary Grant Begins Here.
+> Version 2/070423 Of Going To The Zoo (For Glulx Only) By Cary Grant Begins Here.
 
 and the version information, the VM restriction and the full stop are all
 optional, but the division word "of" and the concluding "begin[s] here"
@@ -554,7 +554,7 @@ need to detect that and either flag an error, or force a repair.
 
 @ This is where incorrect or missing JSON metadata is repaired. If there was metadata
 at all, we rewrite it with the correct author, title and version. If not, we create it
-in a minimal sort of way, with just an |is| object.
+in a minimal sort of way, with just an `is` object.
 
 @<Write a corrected JSON metadata file@> =
 	if (repair_mode == FALSE)
@@ -756,8 +756,8 @@ int Extensions::compare_by_length(inform_extension *E1, inform_extension *E2) {
 }
 
 @h Search list.
-Sometimes ane extension is being looked at in isolation, and then |read_into_project|
-will be |NULL|; but if it is being loaded to be included in the source text of a
+Sometimes ane extension is being looked at in isolation, and then `read_into_project`
+will be `NULL`; but if it is being loaded to be included in the source text of a
 project, then...
 
 =
@@ -785,8 +785,8 @@ linked_list *Extensions::nest_list(inform_extension *E) {
 
 @h Language element activation.
 Note that this function is meaningful only when this module is part of the
-|inform7| executable, and it invites us to activate or deactivate language
-features as |E| would like.
+`inform7` executable, and it invites us to activate or deactivate language
+features as `E` would like.
 
 =
 void Extensions::activate_elements(inform_extension *E, inform_project *proj) {
@@ -897,8 +897,8 @@ void Extensions::read_source_text_for(inform_extension *E) {
 = (text)
 	"Pantomime Sausages by Mr Punch"
 =
-to be used by |SourceFiles::read_extension_source_text| for printing to |stdout|. Since
-we dare not assume |stdout| can manage characters outside the basic ASCII
+to be used by `SourceFiles::read_extension_source_text` for printing to `stdout`. Since
+we dare not assume `stdout` can manage characters outside the basic ASCII
 range, we flatten them from general ISO to plain ASCII.
 
 @<Concoct a synopsis for the extension to be read@> =
@@ -915,7 +915,7 @@ range, we flatten them from general ISO to plain ASCII.
 @ Note that if there is an active project, then we are reading the extension
 in order to include it in that, and so we send it to the project's syntax tree,
 rather than to the extension's own one. But if we are simply examining the
-extension by running |-graph| on it in the Inbuild command line, for example,
+extension by running `-graph` on it in the Inbuild command line, for example,
 then its sentences will go to the extension's own tree.
 
 @<Break the text into sentences@> =
@@ -968,7 +968,7 @@ compiled_documentation *Extensions::get_documentation(inform_extension *E,
 		E->documentation = DocumentationCompiler::compile_from_path(D, E, sitemap);
 	}
 
-@ And this serves the |-document| feature of inbuild:
+@ And this serves the `-document` feature of inbuild:
 
 =
 void Extensions::document(inform_extension *E, pathname *dest, filename *sitemap) {
@@ -977,8 +977,8 @@ void Extensions::document(inform_extension *E, pathname *dest, filename *sitemap
 	DocumentationRenderer::as_HTML(dest, cd, NULL, NULL);
 }
 
-@ When the extension source text was read from its |source_file|, we
-attached a reference to say which |inform_extension| it was, and here we
+@ When the extension source text was read from its `source_file`, we
+attached a reference to say which `inform_extension` it was, and here we
 make use of that:
 
 =
@@ -1097,7 +1097,7 @@ inform_extension *Extensions::find_by_name(text_stream *name, text_stream *autho
 @h Version requirements.
 When it's known that an extension must satisfy a given version requirement --
 say, being version 7.2.1 or better -- the following is called. Note that
-if incompatible requirements are placed on it, the range in |E->must_satisfy|
+if incompatible requirements are placed on it, the range in `E->must_satisfy`
 becomes empty and stays that way. 
 
 =

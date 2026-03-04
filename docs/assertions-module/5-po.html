@@ -71,12 +71,9 @@ features (such as the bitmap passed as a parameter to the list-printer).</p>
 <p>I now slightly regret the existence of phrase options, but above all the
 comma-based syntax used for them, as here. Brackets would have been better;
 it makes phrase options impossible to use for text substitutions.</p>
-</div>
 <blockquote>
-    <p>let R be the best route from X to Y, using doors;</p>
+<p>let R be the best route from X to Y, using doors;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>I sometimes even regret the existence of phrase options, but it must be
 admitted that they are a clean way to interface to low-level Inform 6 code.
 But it's mostly the comma which annoys me (making text substitutions unable
@@ -227,20 +224,14 @@ that the slash between &quot;and&quot; and &quot;or&quot; is part of the word.</
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Parsing phrase options in an invocation.</b>  At this point, we're looking at the text after the first comma in something
 like:</p>
-</div>
 <blockquote>
-    <p>list the contents of the box, as a sentence, with newlines;</p>
+<p>list the contents of the box, as a sentence, with newlines;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The invocation has already been parsed enough that we know the options
 chosen are:</p>
-</div>
 <blockquote>
-    <p>as a sentence, with newlines</p>
+<p>as a sentence, with newlines</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and the following routine turns that into a bitmap with two bits set, one
 corresponding to each choice.</p>
 <p>We return <code>TRUE</code> or <code>FALSE</code> according to whether the options were valid or

@@ -16,7 +16,7 @@ one of the following:
 
 - it is unused if it is never mentioned as, or in, any term, and is not the
 variable of any quantifier;
-- it is bound if it appears as the variable of any |QUANTIFIER_ATOM|;
+- it is bound if it appears as the variable of any `QUANTIFIER_ATOM`;
 - it is free if it is used but not bound.
 
 The following shows some examples of operations on variables:
@@ -25,15 +25,15 @@ The following shows some examples of operations on variables:
 It might seem logical to have a function which takes a proposition $\phi$
 and a variable $v$ and returns its status -- unused, free or bound. But this
 would be inefficient, since we want to work with all 26 at once, so instead
-we take a pointer to an array of |int| which needs to have (at least, but
+we take a pointer to an array of `int` which needs to have (at least, but
 probably exactly) 26 entries, and on exit each entry is set to one of the
 following.
 
 In the course of doing that, it's easy to test whether variables are used
 properly -- a bound variable should occur for the first time in its
 quantification, and should not reoccur once the subexpression holding the
-quantifier has finished. We return |TRUE| if all is well, or |FALSE| if not,
-writing the reason why not to |err|.
+quantifier has finished. We return `TRUE` if all is well, or `FALSE` if not,
+writing the reason why not to `err`.
 
 @d UNUSED_VST 1
 @d FREE_VST 2
@@ -119,7 +119,7 @@ int Binding::find_unused(pcalc_prop *prop) {
 }
 
 @ Another "vector operation" on variables: to renumber them throughout a
-proposition according to a map array. If |renumber_map[j]| is $-1$, make
+proposition according to a map array. If `renumber_map[j]` is $-1$, make
 no change; otherwise each instance of variable $j$ should be changed to
 this new number.
 
@@ -128,7 +128,7 @@ already used in the same proposition: that way we could accidentally change
 "$v$ is greater than $w$" into "$w$ is greater than $w$", thus changing the
 meaning.
 
-Note that because |QUANTIFIER_ATOM|s store the variable being quantified
+Note that because `QUANTIFIER_ATOM`s store the variable being quantified
 as a term, the following changes quantification variables as well as
 predicate terms, which is as it should be.
 
@@ -183,7 +183,7 @@ be combined in a single proposition if one of the $x$ variables is changed
 to, say, $y$.
 
 The surprising thing here is the asymmetry. Why do we only renumber to avoid
-clashes with bound variables in |prop| -- why not free ones as well? The
+clashes with bound variables in `prop` -- why not free ones as well? The
 answer is that we use a form of conjunction in Inform which assumes that a
 free variable in $\phi$ has the same meaning as it does in $\psi$; thus in
 conjoining "open" with "lockable" we assume that the same thing is meant
@@ -192,7 +192,7 @@ variables, we would produce a proposition meaning that one unknown thing is
 open, and another one lockable: that would have two free variables and be
 much harder to interpret.
 
-If we pass a |query| parameter which is a valid variable number, the routine
+If we pass a `query` parameter which is a valid variable number, the routine
 returns its new identity when renumbered.
 
 =
@@ -228,13 +228,13 @@ Propositions with free variables are vague, and Inform tries to minimise its
 use of them. Whole verb phrases such as "the tree is in the Courtyard" can in
 general become propositions with no free variables, while descriptions such as
 "open containers which are in lighted rooms" will become propositions in which
-only variable 0, |x|, is free.
+only variable 0, `x`, is free.
 
 Here we see two ways to remove a free variable from a proposition:
 = (text from Figures/binding2.txt as REPL)
 
-@ The first way is "binding". Suppose |x| is free and we do not know its
-value. We can at least put |Exists x :| at the front of the proposition, thus
+@ The first way is "binding". Suppose `x` is free and we do not know its
+value. We can at least put `Exists x :` at the front of the proposition, thus
 saying only "well, it's something". This does the equivalent of turning "open
 containers which are in lighted rooms" into "an open container is in a lighted
 room", by applying the existential quantifier to anything free.
@@ -366,7 +366,7 @@ free in SN-propositions -- we sometimes need to know about it. The range
 of a bound variable can be found by looking at its quantifier, but a free
 variable can remain ambiguous. The presence of a "kind" atom will explicitly
 solve the problem for us; if we don't find one, though, we will simply have
-to assume that the set of objects is the domain of $x$. (We return |NULL|
+to assume that the set of objects is the domain of $x$. (We return `NULL`
 here, but that's the assumption which the caller will have to make.)
 
 =

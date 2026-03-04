@@ -11,10 +11,10 @@ changes by "now" and "if" side-effects.
 
 A program consists of a sequence of 0 or more two-word instructions terminated
 by the word 0. Each instruction has an opcode word followed by an operand word.
-The opcode word is encoded as |100*I + D|, where |I| is an instruction code
-ranging from 1 upwards, and |D| is the depth within the dialogue tree, ranging
+The opcode word is encoded as `100*I + D`, where `I` is an instruction code
+ranging from 1 upwards, and `D` is the depth within the dialogue tree, ranging
 from 0 upwards. Finding 0 in the opcode word position therefore unambiguously
-marks the end, since |I| cannot be 0 even though |D| can.
+marks the end, since `I` cannot be 0 even though `D` can.
 
 Depth levels correspond to the tree structure in the original dialogue. This
 is not quite the same as the number of tab stops in the source code because
@@ -24,30 +24,30 @@ in the tab indentation. This effectively pushes all choice nodes out by 1
 in depth, compared to the tab indentation level, each time a nested decision
 is reached.
 
-|D| begins at 0, is never negative, and is never more than 1 greater than the
-previous instruction. The Inform compiler never generates |D| values greater
-than about 25 (see //if: Dialogue Nodes//), so there is no danger of |D|
-reaching 100 and corrupting the |I| value.
+`D` begins at 0, is never negative, and is never more than 1 greater than the
+previous instruction. The Inform compiler never generates `D` values greater
+than about 25 (see //if: Dialogue Nodes//), so there is no danger of `D`
+reaching 100 and corrupting the `I` value.
 
 There are only three instruction codes:
 
-|LINE_DCODEI| means a dialogue line, and the operand then represents the
+`LINE_DCODEI` means a dialogue line, and the operand then represents the
 enumerated value for the dialogue line.
 
-|CHOICE_DCODEI| similarly represents a choice. All such instructions are
-immediate children of a |DECISION_DCODEI| instruction.
+`CHOICE_DCODEI` similarly represents a choice. All such instructions are
+immediate children of a `DECISION_DCODEI` instruction.
 
-|DECISION_DCODEI| is a decision point, and the operand is the "decision type",
-one of the |*_DCODEDT| values. All immediate children of a |DECISION_DCODEI|
-instruction are |CHOICE_DCODEI|s.
+`DECISION_DCODEI` is a decision point, and the operand is the "decision type",
+one of the `*_DCODEDT` values. All immediate children of a `DECISION_DCODEI`
+instruction are `CHOICE_DCODEI`s.
 
-- |BLANK_DCODEDT| should never appear in compiled D-code, and is only used
+- `BLANK_DCODEDT` should never appear in compiled D-code, and is only used
 in the Inform compiler.
-- |TEXTUAL_DCODEDT| is a decision point offering textual choices for the
+- `TEXTUAL_DCODEDT` is a decision point offering textual choices for the
 player to pick.
-- |PARSED_COMMAND_DCODEDT| is a decision point requiring us to wait for the
+- `PARSED_COMMAND_DCODEDT` is a decision point requiring us to wait for the
 next typed command and see what action it produced.
-- |FLOW_DCODEDT| is a flow control choice, |->| or |<-|.
+- `FLOW_DCODEDT` is a flow control choice, `->` or `<-`.
 
 =
 Constant LINE_DCODEI = 1;
@@ -69,11 +69,11 @@ This enables us to implement the test for whether a given line or choice
 occurs in a beat, because we need only look to see whether it occurs as
 operand in the instructions for the beat's program.
 
-|DirectorTestContainment(dl, db, DIALOGUE_LINE_TY, DIALOGUE_BEAT_TY)| tests
-whether the line |dl| occurs in the beat |db|, returning |true| or |false|.
+`DirectorTestContainment(dl, db, DIALOGUE_LINE_TY, DIALOGUE_BEAT_TY)` tests
+whether the line `dl` occurs in the beat `db`, returning `true` or `false`.
 
-|DirectorTestContainment(dc, db, DIALOGUE_CHOICE_TY, DIALOGUE_BEAT_TY)| tests
-whether the choice |dc| occurs in the beat |db|, returning |true| or |false|.
+`DirectorTestContainment(dc, db, DIALOGUE_CHOICE_TY, DIALOGUE_BEAT_TY)` tests
+whether the choice `dc` occurs in the beat `db`, returning `true` or `false`.
 
 =
 [ DirectorTestContainment X db tX tb program pc instruction wanted;
@@ -174,37 +174,37 @@ its state on a stack so that it can safely interrupt what it's doing, call
 itself, and then resume where it left off. The stack consists of a suite of
 arrays, as follows:
 
-|DirectorStackBeat| holds the beat whose program is being interpreted.
+`DirectorStackBeat` holds the beat whose program is being interpreted.
 
-|DirectorStackPC| holds the current PC ("program counter"), which counts in
+`DirectorStackPC` holds the current PC ("program counter"), which counts in
 words from the start of the program, which is position 0. It therefore
 increases by 2 to advance by one instruction.
 
-|DirectorStackMin| holds the minimum instruction level for the subtree
+`DirectorStackMin` holds the minimum instruction level for the subtree
 being interpreted. If the whole tree is being interpreted, this is 0.
 
-|DirectorStackStart| is a flag which is true if and only if the current
+`DirectorStackStart` is a flag which is true if and only if the current
 subtree was the entire tree, so that execution began from PC 0. 
 
-|DirectorStackDecisionPC| holds the PC position of the last instruction
-node of |DECISION_DCODEI| type, that is, the last decision; or -1 if no
+`DirectorStackDecisionPC` holds the PC position of the last instruction
+node of `DECISION_DCODEI` type, that is, the last decision; or -1 if no
 decision node has been reached in this subtree yet.
 
-|DirectorStackLastPC| holds the PC position before the most recent
+`DirectorStackLastPC` holds the PC position before the most recent
 instruction was executed, or 0 if none has yet been executed.
 
-|DirectorStackChoices| holds a valid Inform list, which in turn holds the
+`DirectorStackChoices` holds a valid Inform list, which in turn holds the
 set of choices in the current decision. If no decision has been reached in
 the execution of the subtree, the list is empty.
 
-|DirectorStackLastSpeaker| holds the identity of the last person/object to
+`DirectorStackLastSpeaker` holds the identity of the last person/object to
 be the speaker in a line which was actually performed (and note that not
-all |LINE_DCODEI| instructions result in a performance). It is |nothing|
+all `LINE_DCODEI` instructions result in a performance). It is `nothing`
 if no line has been performed in (this performance of) the current beat,
 except perhaps for narration.
 
-|DirectorStackLastInterlocutor| similarly holds the identity of the interlocutor
-for that line. It is |nothing| if no line has been performed in (this performance
+`DirectorStackLastInterlocutor` similarly holds the identity of the interlocutor
+for that line. It is `nothing` if no line has been performed in (this performance
 of) the current beat, except perhaps for narration, or if the most recently
 performed line had no interlocutor.
 
@@ -224,7 +224,7 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 
 @h Reading the current choice list.
 The stack begins empty, except that we arrange for there always to be a
-valid Inform list in |DirectorStackChoices-->0|, so that if the phrase
+valid Inform list in `DirectorStackChoices-->0`, so that if the phrase
 "current choice list" is used at a time when no dialogue has ever run, it will
 still produce an empty list in a typesafe way.
 
@@ -278,7 +278,7 @@ For debugging only, of course.
 Two functions exist to create a new "subtree stack frame", pushing, or to destroy
 an existing one, popping the stack.
 
-|DirectorPush| must specify the beat, the minimum instruction level to
+`DirectorPush` must specify the beat, the minimum instruction level to
 execute (by default 0), and the initial pc (position in the program) to execute
 from (by default 0). Within such a subtree, the D-code interpreter will run
 from the PC position until it hits an instruction of too low a level, or until
@@ -314,7 +314,7 @@ dialogue tree, or any well-formed subtree of it.
 ];
 
 @h Flow operations.
-|DirectorAgain| implements the flow marker |<-|; |DirectorStop| implements |-> stop|.
+`DirectorAgain` implements the flow marker `<-`; `DirectorStop` implements `-> stop`.
 Both involve popping, either back to the last decision point (which means adjusting
 the PC as well) or to the last time a new beat began.
 
@@ -344,13 +344,13 @@ the PC as well) or to the last time a new beat began.
 ];
 
 @h Main interpreter loop.
-Calling |DirectorRun()| lets the interpreter rip, running until the end of the
+Calling `DirectorRun()` lets the interpreter rip, running until the end of the
 current subtree, or some catastrophe happened, or we need to wait for the player
 to enter a command into the command parser. (In the latter case we can resume
-where we left off with just by calling |DirectorRun()| again.)
+where we left off with just by calling `DirectorRun()` again.)
 
-Note that this loop should never hit a |CHOICE_DCODEI| instruction, because
-those are always underneath |DECISION_DCODEI| instructions -- which it does hit.
+Note that this loop should never hit a `CHOICE_DCODEI` instruction, because
+those are always underneath `DECISION_DCODEI` instructions -- which it does hit.
 
 =
 [ DirectorRun program pc last_pc instruction operand operand_at depth next_instruction sc;
@@ -445,9 +445,9 @@ The immediate children of the instruction will all be choice instructions, and
 the first task is to obtain them. If there are none, there's nothing to decide
 and we silently return.
 
-We deal with |TEXTUAL_DCODEDT| and |FLOW_DCODEDT| decisions immediately, and
+We deal with `TEXTUAL_DCODEDT` and `FLOW_DCODEDT` decisions immediately, and
 empty the choices list as soon as we can. Perhaps surprisingly, we do nothing
-at all about a |PARSED_COMMAND_DCODEDT| except to signal a sort of exception.
+at all about a `PARSED_COMMAND_DCODEDT` except to signal a sort of exception.
 This function call nevertheless has an effect because it leaves the choices list
 on the stack, where it will cause the D-code interpreter to halt waiting for a
 command, to be re-entered later on when actions are processed.
@@ -575,11 +575,11 @@ available to a given decision node, making them the content of an Inform list.
 
 @h Dealing with action choices.
 At various stages in action processing, the main story loop calls the following
-three functions, which in turn call |DirectorDetectActionChoice|. That looks
+three functions, which in turn call `DirectorDetectActionChoice`. That looks
 for a match of the current action against one of the choices in the list on
 the stack: it then re-enters the D-code interpreter if it makes a match, and
-eventually comes back with |true| to halt action processing. If it makes no
-match, it returns |false|.
+eventually comes back with `true` to halt action processing. If it makes no
+match, it returns `false`.
 
 Note that if we do make a match, and try to resume dialogue, we may still not
 be able to complete it and empty the D-stack, because it may pause again for
@@ -645,7 +645,7 @@ too, even if the VM stack does for a while have a surprising state.
 ];
 
 @h Exercising a choice.
-By whatever means, then, a choice |dc| has been made in either the textual or
+By whatever means, then, a choice `dc` has been made in either the textual or
 action-based sense, and the following function runs the D-code interpreter
 on the subtree underneath it:
 

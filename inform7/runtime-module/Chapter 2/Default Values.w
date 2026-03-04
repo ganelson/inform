@@ -3,14 +3,14 @@
 An unusual feature of Inform is that every kind has a default value, so that
 it is impossible for any variable or property to be uninitialised.
 
-@ The following should compile a default value for |K|, and return
+@ The following should compile a default value for `K`, and return
 
-- |TRUE| if it succeeded,
-- |FALSE| if it failed (because $K$ had no values or no default could be
+- `TRUE` if it succeeded,
+- `FALSE` if it failed (because $K$ had no values or no default could be
 chosen), but no problem message has been issued about this, or
-- |NOT_APPLICABLE| if it failed and issued a specific problem message.
+- `NOT_APPLICABLE` if it failed and issued a specific problem message.
 
-The wording |W| and detail |storage_name| are used only to issue those problem
+The wording `W` and detail `storage_name` are used only to issue those problem
 messages.
 
 =
@@ -76,7 +76,7 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 
 @ The remaining problem messages are no longer seen, since better typechecking
 higher up the compiler means that Inform no longer attempts to create variables
-or properties with dubious kinds such as |value|.
+or properties with dubious kinds such as `value`.
 
 @<This is a kind not intended for end users at all@> =
 	if (Wordings::nonempty(W)) {
@@ -109,15 +109,15 @@ or properties with dubious kinds such as |value|.
 	return NOT_APPLICABLE;
 
 @ The above functions all convert into this one, where the actual choice is made.
-If no choice is possible, the function simply returns the |undef| value.
+If no choice is possible, the function simply returns the `undef` value.
 
 We begin with some special cases where the default value depends on circumstances,
 or has to be constructed in a more elaborate way. For example, the default value
 of "vehicle" will depend on what vehicles have been created in the source text.
 We then turn to the more typical case of kinds whose defaults never change --
-for example, the default value of |K_number| is always 0.
+for example, the default value of `K_number` is always 0.
 
-The test case |DefaultValues| may be helpful when tinkering with this.
+The test case `DefaultValues` may be helpful when tinkering with this.
 
 =
 inter_pair DefaultValues::to_value_pair(kind *K) {
@@ -187,7 +187,7 @@ stored action does not. Stored actions, again, cannot be modified at runtime.
 	if (Kinds::eq(K, K_text))
 		return Emit::to_value_pair(TextLiterals::default_text());
 
-@ The default value of |K_object| is |nothing|, which is represented at runtime
+@ The default value of `K_object` is `nothing`, which is represented at runtime
 as the number 0.
 
 @<Object@> =
@@ -213,10 +213,10 @@ find any instances...
 	if (Kinds::Behaviour::is_an_enumeration(K))
 		return InterValuePairs::undef();
 
-@ ...and that will take us here. Ordinarily we just |return|, triggering a
+@ ...and that will take us here. Ordinarily we just `return`, triggering a
 problem message higher up because we couldn't find a default value.
 
-But we bend the rules and allow |nothing| as the default value of all kinds of
+But we bend the rules and allow `nothing` as the default value of all kinds of
 objects when the source text is a roomless one used only to rerelease an old
 Z-machine story file; this effectively suppresses problem messages which the
 absence of rooms would otherwise result in.
@@ -235,7 +235,7 @@ conventions.
 	if (Kinds::eq(K, K_rulebook_outcome))
 		return Emit::to_value_pair(RTRulebooks::default_outcome_iname());
 
-@ Whereas the default action name is |##Wait|. This is handled as a special
+@ Whereas the default action name is `##Wait`. This is handled as a special
 case to avoid having to parse double-sharp notation below.
 
 @<Action name@> =
@@ -324,7 +324,7 @@ and specified by a brief textual description taken from a Neptune file.
 @<Kinds whose default values are set by Neptune files@> =
 	return DefaultValues::from_Neptune_term(textual_description, K);
 
-@ That description has to be very simple: a literal number, |true|, |false|, or an
+@ That description has to be very simple: a literal number, `true`, `false`, or an
 identifier name which the linker will be able to find -- maybe a function name,
 maybe an array, maybe a constant.
 

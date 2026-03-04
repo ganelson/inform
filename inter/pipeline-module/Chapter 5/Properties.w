@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/properties submodule.
 
-@ Our inventory |inv| already contains a list |inv->property_nodes| of all packages
-in the tree with type |_property|.
+@ Our inventory `inv` already contains a list `inv->property_nodes` of all packages
+in the tree with type `_property`.
 
 =
 void SynopticProperties::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -11,7 +11,7 @@ void SynopticProperties::compile(inter_tree *I, pipeline_step *step, tree_invent
 	@<Define CCOUNT_PROPERTY@>;
 }
 
-@ Each property package contains a numeric constant with the symbol name |property_id|.
+@ Each property package contains a numeric constant with the symbol name `property_id`.
 We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
 so we change the values of these constants accordingly.
 

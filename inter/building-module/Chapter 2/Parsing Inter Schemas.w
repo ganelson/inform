@@ -21,8 +21,8 @@ inter_schema *ParsingSchemas::from_text(text_stream *from, text_provenance prove
 @h Abbreviated I6S notation.
 This is a slicker notation used inside the //calculus// module for purposes
 such as representing how to compile a test of a given binary predicate, or
-how to store data in a given storage object. For example, |*1.frog == *2.frog|
-is a valid I6S notation, using the placeholders |*1| and |*2| to represent
+how to store data in a given storage object. For example, `*1.frog == *2.frog`
+is a valid I6S notation, using the placeholders `*1` and `*2` to represent
 the two terms of a binary predicate. See //calculus: Compilation Schemas//
 for more on this notation.
 
@@ -61,7 +61,7 @@ This is a typical inline phrase definition which //inform7// must handle:
 		(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
 =
 Essentially, this defines "say ... in brace notation" as meaning the schema
-coming from the text |LIST_OF_TY_Say({-by-reference:L}, 1);|.
+coming from the text `LIST_OF_TY_Say({-by-reference:L}, 1);`.
 
 Note that the //inform7// compiler calls //ParsingSchemas::from_inline_phrase_definition//
 only once on such a definition -- it would clearly be slow and wasteful to parse
@@ -71,13 +71,13 @@ are made in a typical run, and so speed is not critical here.
 @ That was a simple example, in that only one schema was involved: it is a
 head which has no tail.
 
-However, a few inline phrases make use of the notation |{-block}|, which
+However, a few inline phrases make use of the notation `{-block}`, which
 represents a block of code -- usually a loop body -- and which divides the
 definition into a head part, before the block, and a tail part, after. So
 in general we may have to compile two schemas, not one.
 
-The text |from| is in a wide C string because it's coming raw from the lexer,
-as the content of a |(- ... -)| lexeme, but with the |(-| and |-)| removed.
+The text `from` is in a wide C string because it's coming raw from the lexer,
+as the content of a `(- ... -)` lexeme, but with the `(-` and `-)` removed.
 
 If the text contains syntax errors, these are attached to the schema returned;
 so it's the caller's responsibility to check for those and act accordingly.
@@ -96,13 +96,13 @@ void ParsingSchemas::from_inline_phrase_definition(inchar32_t *from, inter_schem
 		*tail = ParsingSchemas::from_text(tail_defn, provenance);
 }
 
-@ A tail will only be present if the definition contains |{-block}|. If it
+@ A tail will only be present if the definition contains `{-block}`. If it
 does, we then split the definition into a head and a tail, and again trim
-white space from each. Note that |{-block}| is not legal anywhere else.
+white space from each. Note that `{-block}` is not legal anywhere else.
 
 For example:
 
->> To repeat with a King's Court begin -- end loop:
+> To repeat with a King's Court begin -- end loop:
 
 could be given the definition:
 = (text as Inform 6)
@@ -112,7 +112,7 @@ could be given the definition:
 	@pull trcount;
 =
 This then repeats what it's given three times, while guaranteeing that the
-counter is always a local variable called |trcount|, and that no matter how
+counter is always a local variable called `trcount`, and that no matter how
 such operations are nested, they will work. We might then write:
 = (text as Inform 7)
 	To say iteration: (- print {-my:trcount}; -).

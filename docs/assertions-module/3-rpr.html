@@ -77,7 +77,7 @@ filed in rulebooks; the test group <code>:placement</code> exercises these.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RulePlacement::listed_in_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RulePlacement::listed_in_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The time passes rule is listed in the turn sequence rulebook." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The time passes rule is listed in the turn sequence rulebook.&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;nounphrase-rule-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;listed-in-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule_placement_sense_ANNOT</span><span class="plain-syntax">, </span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">);</span>
@@ -133,7 +133,7 @@ following won't pick up many false positives.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RulePlacement::substitutes_for_SMF</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">RulePlacement::substitutes_for_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The time passes slowly rule substitutes for the time passes rule." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The time passes slowly rule substitutes for the time passes rule.&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;nounphrase-rule-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;substitutes-for-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule_placement_sense_ANNOT</span><span class="plain-syntax">, </span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">);</span>
@@ -154,20 +154,14 @@ following won't pick up many false positives.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  A sentence in the form:</p>
-</div>
 <blockquote>
-    <p>The print fancy final score rule substitutes for the print final score rule.</p>
+<p>The print fancy final score rule substitutes for the print final score rule.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>It also exists in a form with a condition attached:</p>
-</div>
 <blockquote>
-    <p>The print fancy final score rule substitutes for the print final score rule when ...</p>
+<p>The print fancy final score rule substitutes for the print final score rule when ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>This optional tail is eventually required to match &lt;spec-condition&gt;,
+<p>This optional tail is eventually required to match <spec-condition>,
 but that parsing is done later on. For now, we only parse for rules in both the
 subject and object NPs.</p>
 </div>
@@ -211,19 +205,15 @@ subject and object NPs.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  A sentence in the form:</p>
-</div>
 <blockquote>
-    <p>The print final score rule does nothing.</p>
+<p>The print final score rule does nothing.</p>
 </blockquote>
-
 <blockquote>
-    <p>The print final score rule does nothing unless ....</p>
+<p>The print final score rule does nothing unless ....</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is parsed similarly. The subject NP is an articled list, each entry of which
 must be a rule, and the optional condition is put aside for later, but must
-eventually match &lt;spec-condition&gt;.</p>
+eventually match <spec-condition>.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;does-nothing-sentence-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -240,7 +230,7 @@ eventually match &lt;spec-condition&gt;.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RulePlacement::does_nothing_SMF</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">RulePlacement::does_nothing_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The time passes rule does nothing." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The time passes rule does nothing.&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;nounphrase-rule-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;does-nothing-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -264,7 +254,7 @@ eventually match &lt;spec-condition&gt;.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[2]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The time passes rule does nothing if ..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The time passes rule does nothing if ...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;nounphrase-rule-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;does-nothing-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
@@ -289,7 +279,7 @@ eventually match &lt;spec-condition&gt;.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[2]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The time passes rule does nothing unless ..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The time passes rule does nothing unless ...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;nounphrase-rule-list&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;does-nothing-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
@@ -328,12 +318,9 @@ eventually match &lt;spec-condition&gt;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Explicit listing sentences allow the source text to control which rulebook(s)
 a given rule appears in, and (within limits) where. A simple example:</p>
-</div>
 <blockquote>
-    <p>The can't act in the dark rule is not listed in the visibility rules.</p>
+<p>The can't act in the dark rule is not listed in the visibility rules.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The subject noun phrase is an articled list, each entry of which must match:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">

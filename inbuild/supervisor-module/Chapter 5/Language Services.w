@@ -30,7 +30,7 @@ typedef struct inform_language {
 	CLASS_DEFINITION
 } inform_language;
 
-@ This is called as soon as a new copy |C| of the language genre is created.
+@ This is called as soon as a new copy `C` of the language genre is created.
 
 =
 void Languages::scan(inbuild_copy *C) {
@@ -245,7 +245,7 @@ inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	return NULL;
 }
 
-@ Or we can convert the native cue, |en français|, to the name, |French|,
+@ Or we can convert the native cue, `en français`, to the name, `French`,
 though this will not work for language bundles inside of extensions, and
 so the function is now deprecated:
 

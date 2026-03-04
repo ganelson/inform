@@ -17,9 +17,9 @@ void I6TargetConstants::create_generator(code_generator *gtr) {
 }
 
 @h Constant values.
-Constants are layered by depth, so that if the initial value for |X| depends
-on that for |Y| then the declaration for |Y| will always be placed earlier in the
-code than that for |X|. See //Code Generation// for how this is done.
+Constants are layered by depth, so that if the initial value for `X` depends
+on that for `Y` then the declaration for `Y` will always be placed earlier in the
+code than that for `X`. See //Code Generation// for how this is done.
 
 =
 void I6TargetConstants::declare_constant(code_generator *gtr, code_generation *gen,
@@ -63,7 +63,7 @@ declaring them will therefore throw an error message calling them duplicates.
 (The initial values these have in the Inter tree are perfectly correct, and on
 other targets they will be compiled normally.)
 
-The |FLOAT_*| constants are defined only when I6 compiles to the Glulx VM,
+The `FLOAT_*` constants are defined only when I6 compiles to the Glulx VM,
 but then, they are only present in the Inter tree when we are headed that way
 anyway.
 
@@ -80,7 +80,7 @@ anyway.
 depending on, for example, the choice of virtual machine I6 is compiling to.
 Some of this goes back to the fact that support for the Glulx VM was a retrofit
 to the I6 compiler some years after its original design: there was no need for
-a |TARGET_ZCODE| constant back when Z-code was the only code it could make,
+a `TARGET_ZCODE` constant back when Z-code was the only code it could make,
 for example.
 
 @<Certain constants should be declared only if I6 has not already declared them@> =
@@ -95,7 +95,7 @@ for example.
 	}
 
 @ The release number is just another constant integer, but in I6 it has to be
-declared with the |Release| directive, so:
+declared with the `Release` directive, so:
 
 @<Declare the Release constant with a directive@> =
 	WRITE("Release ");
@@ -103,7 +103,7 @@ declared with the |Release| directive, so:
 	WRITE(";\n");
 	return;
 
-@ Likewise the Serial code (e.g., |"211010"|), which must be a double-quoted
+@ Likewise the Serial code (e.g., `"211010"`), which must be a double-quoted
 literal:
 
 @<Declare the Serial constant with a directive@> =
@@ -113,9 +113,9 @@ literal:
 	return;
 
 @h Arrays.
-Now for arrays, which we turn into |Verb| or |Array| directives in I6. We will
-return |FALSE| in the Verb case to tell Vanilla that the entire array has now
-been declared, so it need do nothing further; |TRUE| in the more typical |Array|
+Now for arrays, which we turn into `Verb` or `Array` directives in I6. We will
+return `FALSE` in the Verb case to tell Vanilla that the entire array has now
+been declared, so it need do nothing further; `TRUE` in the more typical `Array`
 case, whereupon Vanilla will lead us through the rest of the declaration.
 
 =
@@ -131,10 +131,10 @@ int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	}
 }
 
-@ Here we hijack a command-verb grammar array entirely. |Verb| directives in I6
+@ Here we hijack a command-verb grammar array entirely. `Verb` directives in I6
 have a fruity sort of syntax, using reserved words not found elsewhere, and
-punctuation markers like |*| and |->|, and constructs like |scope=F| for functions
-|F|, and so on; so it's not really practical to create such directives as if
+punctuation markers like `*` and `->`, and constructs like `scope=F` for functions
+`F`, and so on; so it's not really practical to create such directives as if
 they were any other arrays. Here goes:
 
 @<Write a complete I6 Verb directive@> =
@@ -179,7 +179,7 @@ they were any other arrays. Here goes:
 	}
 	WRITE(";\n");
 
-@ When an action is named in a |Verb| directive, it appears without its |##| prefix;
+@ When an action is named in a `Verb` directive, it appears without its `##` prefix;
 so the following ensures that we write, say,
 = (text as Inform 6)
 	Verb 'help' * -> Help;
@@ -200,13 +200,13 @@ which would be a more consistent design, but is a syntax error in I6.
 = (text as Inform 6)
 	Array X table 10 20 30;
 =
-makes a table array with three entries, so that |X| ends up as a pointer to a
-block of four words in memory: |3, 10, 20, 30|. However,
+makes a table array with three entries, so that `X` ends up as a pointer to a
+block of four words in memory: `3, 10, 20, 30`. However,
 = (text as Inform 6)
 	Array X table 10;
 =
-makes a table with 10 entries, initially zeroes, so that |X| points to the
-block |10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0|. We do not want this: there are times
+makes a table with 10 entries, initially zeroes, so that `X` points to the
+block `10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0`. We do not want this: there are times
 when we genuinely need a 1-entry table array. So we use the alternate syntax,
 provided by Inform 6 since at least 2000 but for some reason not documented in
 the DM4:
@@ -239,7 +239,7 @@ or binary -- in other words, with minus signs. In I6, this:
 = (text as Inform 6)
 	Array X --> [ 2 4 -5 ];
 =
-makes a two-element array, with |X| pointing to |2, -1|, because |4 -5| is
+makes a two-element array, with `X` pointing to `2, -1`, because `4 -5` is
 read as a binary operation (subtraction), not as 4 followed by a unary
 operation (negation) applied to 5.
 
@@ -266,11 +266,11 @@ void I6TargetConstants::end_array(code_generator *gtr, code_generation *gen, int
 
 @h Actions.
 In I6, actions are implicitly created when they are used in command-grammar
-syntax (i.e. in |Verb| directives); so if |true_action| is set, we do nothing.
+syntax (i.e. in `Verb` directives); so if `true_action` is set, we do nothing.
 
-Fake actions, where |true_action| is not set, are those which are valid actions
+Fake actions, where `true_action` is not set, are those which are valid actions
 in principle but which never occur in any command grammar. It follows that these
-must be explicitly declared, which we do with the I6 |Fake_Action| directive:
+must be explicitly declared, which we do with the I6 `Fake_Action` directive:
 
 =
 void I6TargetConstants::new_action(code_generator *gtr, code_generation *gen,
@@ -285,7 +285,7 @@ void I6TargetConstants::new_action(code_generator *gtr, code_generation *gen,
 
 @h Literals.
 Integer literals are written in the obvious way. In hexadecimal, I6 uses a
-single |$| prefix. Real literals also begin with a |$|, but then continue with
+single `$` prefix. Real literals also begin with a `$`, but then continue with
 a real-number notation including a decimal point. The same notation is used
 by Inter, so we need do nothing to modify it here.
 
@@ -309,8 +309,8 @@ void I6TargetConstants::compile_literal_real(code_generator *gtr,
 @ Dictionary words -- those used in the command parser grammar -- are written in
 single quotation marks and have their own peculiar syntax: see the Inform
 Designer's Manual, 4th edition, for more. In particular note that we compile
-a one-character dword to, say, |'z//'| not |'z'|: the double-slash is meaningless
-there, but distinguishes this from the character constant |'z'|, which evaluates
+a one-character dword to, say, `'z//'` not `'z'`: the double-slash is meaningless
+there, but distinguishes this from the character constant `'z'`, which evaluates
 to the ZSCII code for lower-case Z.
 
 =
@@ -342,11 +342,11 @@ void I6TargetConstants::compile_dictionary_word(code_generator *gtr, code_genera
 @ Literal texts, written in double quotation marks, are more of a slog to get
 right, and have subtly different escape-character syntax: again, see the DM4.
 
-Note that the |PRINTING_LTM| literal text mode is enabled when the following
-is used for text appearing in an I6 |print| statement, rather than as an I6
+Note that the `PRINTING_LTM` literal text mode is enabled when the following
+is used for text appearing in an I6 `print` statement, rather than as an I6
 value.
 
-The |BOX_LTM| mode is used for quotation text appearing in the I6 |box| statement.
+The `BOX_LTM` mode is used for quotation text appearing in the I6 `box` statement.
 
 If you think it surprising that the escape characters would need to use
 different syntaxes in these three cases, I won't argue.
@@ -411,12 +411,12 @@ characters being written.
 	}
 
 @ Print mode is like value mode except that, for obscure implementation reasons
-inside the I6 compiler, |@{40}|, |@{5E}| and |@{7E}| cannot be used to escape
-those character codes, and instead the |@@| decimal notation has to be used
+inside the I6 compiler, `@{40}`, `@{5E}` and `@{7E}` cannot be used to escape
+those character codes, and instead the `@@` decimal notation has to be used
 instead. But that can take a decimal value of arbitrary length and has no
-brace delimiters; so we must be careful not to encode |^1| as |"@@941"| because
-that would ask for character 941, not for character 94 and then a |1|. Instead
-we encode it as |"@@94@{31}"|, since the ASCII code for a digit 1 is 31 in
+brace delimiters; so we must be careful not to encode `^1` as `"@@941"` because
+that would ask for character 941, not for character 94 and then a `1`. Instead
+we encode it as `"@@94@{31}"`, since the ASCII code for a digit 1 is 31 in
 hexadecimal.
 
 @<Compile literal text in print-statement mode@> =

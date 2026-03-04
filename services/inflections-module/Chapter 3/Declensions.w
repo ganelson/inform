@@ -67,7 +67,7 @@ void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 	Declensions::error(nt, D->within_language, I"not provided for this language");
 }
 
-@ And this function extracts the right form for a given case |c|:
+@ And this function extracts the right form for a given case `c`:
 
 =
 wording Declensions::in_case(declension *D, int c) {
@@ -104,7 +104,7 @@ we will say that so does any inflected form of it:
 		LOOP_THROUGH_WORDING(i, D.wording_cased[c])
 			Lexer::set_word_location(i, Lexer::word_location(Wordings::first_wn(W)));
 
-@ For the format of the table expressed by the nonterminal |nt|, see
+@ For the format of the table expressed by the nonterminal `nt`, see
 //What This Module Does//.
 
 =
@@ -153,7 +153,7 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 	}
 	if (found) return D;
 
-@ This is for the two-token form of row, |gender table|:
+@ This is for the two-token form of row, `gender table`:
 
 =
 declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
@@ -196,7 +196,7 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 	return D;
 }
 
-@ And this is for the three-token form of row, |gender grouper table|:
+@ And this is for the three-token form of row, `gender grouper table`:
 
 =
 declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,

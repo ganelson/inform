@@ -7,7 +7,7 @@ numerical less-than comparison applies to numbers, whereas containment
 applies to things. The two terms need not have the same domain: the
 "wearing" relation, as seen in
 
->> Harry Smythe wears the tweed waistcoat.
+> Harry Smythe wears the tweed waistcoat.
 
 is a binary predicate $W(x_0, x_1)$ such that $x_0$ ranges across people
 and $x_1$ ranges across things.
@@ -79,7 +79,7 @@ difficult to perform any reasoning about them, because knowing that
 $B(x, y)$ is true doesn't give you any information about $B(x, z)$.
 For instance, the BP created by
 
->> Suspicion relates various people to various people.
+> Suspicion relates various people to various people.
 
 is stored at run-time in a bitmap of $P^2$ bits, where $P$ is the number
 of people, and searching it ("if anyone suspects Harry") requires
@@ -108,7 +108,7 @@ identical $f_1$ function, and vice versa.
 @ We never in fact need to calculate the value of $f_0(y)$ from $y$ during
 compilation -- only at run-time. So we store the function $f_0(y)$ in an
 //i6_schema// for the necessary run-time code. For example, this might be
-the schema |ContainerOf(*1)|, which would code-generate to a function call.
+the schema `ContainerOf(*1)`, which would code-generate to a function call.
 
 =
 void BPTerms::set_function(bp_term_details *bptd, i6_schema *f) {

@@ -220,10 +220,10 @@ to optimise this.</p>
 <span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this_score</span><span class="plain-syntax"> == </span><span class="identifier-syntax">best_score</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">best_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">                }</span>
-<span class="plain-syntax">                </span><span class="comment-syntax">! print (name) speaker, " scores ", this_score, "^";</span>
+<span class="plain-syntax">                </span><span class="comment-syntax">! print (name) speaker, &quot; scores &quot;, this_score, &quot;^&quot;;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">best_count</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="string-syntax">"*** impossibly low ***"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! print best_count, " option(s)^";</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! print best_count, &quot; option(s)^&quot;;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">best_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">best</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">best_count</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">len</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
@@ -303,7 +303,7 @@ otherwise.</p>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">action_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">linedata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">ACTIONS_DLMETADATA</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! If the line is "after ..." some action, that action must succeed</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! If the line is &quot;after ...&quot; some action, that action must succeed</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">action_fn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ta</span><span class="plain-syntax"> = </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax">) </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -325,9 +325,9 @@ otherwise.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">action_fn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ta</span><span class="plain-syntax"> = </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax">) </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! Carry out any "now" state changes</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! Carry out any &quot;now&quot; state changes</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">action_fn</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">speaker</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! Run any "before ..." actions</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! Run any &quot;before ...&quot; actions</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">action_fn</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">speaker</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">trace_actions</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ta</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>

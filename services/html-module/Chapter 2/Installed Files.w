@@ -5,7 +5,7 @@ Filenames for a few unmanaged files included in a standard Inform installation.
 @ Inform needs a whole pile of files to have been installed on the host computer
 before it can run: everything from the Standard Rules to a PDF file explaining
 what interactive fiction is. They're never written to, only read. They are
-stored in subdirectories called |Miscellany| or |HTML| of the internal nest;
+stored in subdirectories called `Miscellany` or `HTML` of the internal nest;
 but they're just plain old files, and are not managed by Inbuild as "copies".
 
 @e CBLORB_REPORT_MODEL_IRES from 1
@@ -132,7 +132,7 @@ filename *InstalledFiles::varied_by_named_platform(pathname *models, text_stream
 	return F;
 }
 
-@ This directory also holds the |Basic.indext| and |Standard.indext| index
+@ This directory also holds the `Basic.indext` and `Standard.indext` index
 structure files, but in principle we allow a wider range of these to exist, so:
 
 =

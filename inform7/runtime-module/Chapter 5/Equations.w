@@ -4,7 +4,7 @@ To compile the equations submodule for a compilation unit, which contains
 _equation packages.
 
 @ Each equation has a distinct runtime identifier, which in fact is a stub
-function returning |false|; but because these functions are all different,
+function returning `false`; but because these functions are all different,
 they provide values different from each other and from all other functions.
 
 There is otherwise nothing to see except metadata used in indexing. Equations

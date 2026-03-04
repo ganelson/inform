@@ -101,7 +101,7 @@ void iFiction::write_ifiction_record(OUTPUT_STREAM, release_instructions *rel) {
 	}
 	OUTDENT; WRITE("</resources>\n");
 
-@ The |<description>| key here was added in version 8 of the Treaty of Babel,
+@ The `<description>` key here was added in version 8 of the Treaty of Babel,
 in February 2014.
 
 @<Write the cover tag of the iFiction record@> =

@@ -106,7 +106,7 @@ on each such sentence in turn.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Understand::understand_as_SMF</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Understand::understand_as_SMF</span></span>:<br/><a href="5-us.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">O2W</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[2]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "Understand... as..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;Understand... as...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">O2W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -135,7 +135,7 @@ As examples:</p>
 <span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"earthenware"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">. </span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"photograph [something]"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">photographing</span><span class="plain-syntax">.</span>
 </pre>
 <div class="lsmarkdown">
-<p>&lt;understand-sentence-sp&gt; has, as its integer result, one of these:</p>
+<p><understand-sentence-sp> has, as its integer result, one of these:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">COMMAND_UNDERSTAND_FORM</span> <span class="constant-syntax">1</span>
 </pre>
@@ -248,20 +248,14 @@ objects, which are really just unions of being a text in quotes or a property na
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Object phrases I: Understand explicit grammar.</b>  We use three different Preform grammars to parse the object phrase depending on
 the form of the sentence, and this is the commonest, shared by the
 <code>GRAMMAR_UNDERSTAND_FORM</code> and <code>NOTHING_UNDERSTAND_FORM</code>. It handles sentences like:</p>
-</div>
 <blockquote>
-    <p>Understand "take [something]" as taking.</p>
+<p>Understand &quot;take [something]&quot; as taking.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>It's not widely known, but the object phrase here can be a list:</p>
-</div>
 <blockquote>
-    <p>Understand "broken" as the pot, the shovel or the contract.</p>
+<p>Understand &quot;broken&quot; as the pot, the shovel or the contract.</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>The nonterminal &lt;understand-sentence-op&gt; returns <code>TRUE</code> or <code>FALSE</code> in its
+<p>The nonterminal <understand-sentence-op> returns <code>TRUE</code> or <code>FALSE</code> in its
 integer return value according to whether a when condition is supplied, or not.
 Its pointer return value is once again a linked list of objects, but this time
 they are <a href="5-us.html#SP7" class="internal">understanding_reference</a> objects:</p>
@@ -344,7 +338,7 @@ looks odd but is actually quite simple: if it matches against one of the
 possible notations, the temporary <code>ur_being_parsed</code> object is annotated;
 if this succeeds without problem messages, that temporary object is
 converted into a permanent <a href="5-us.html#SP7" class="internal">understanding_reference</a>.</p>
-<p>&lt;understand-as-this&gt; and &lt;understand-ref&gt; has no pointer result, and their
+<p><understand-as-this> and <understand-ref> has no pointer result, and their
 integer result is 0 if no problems were thrown, or -1 if they were.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -497,12 +491,9 @@ integer result is 0 if no problems were thrown, or -1 if they were.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Object phrases II: Understand the command.</b>  The second form of the sentence has an object phrase like so:</p>
-</div>
 <blockquote>
-    <p>Understand the command "snatch" as "take".</p>
+<p>Understand the command &quot;snatch&quot; as &quot;take&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here the grammar is very simple, and the object can't be a list.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -546,12 +537,9 @@ integer result is 0 if no problems were thrown, or -1 if they were.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-us.html#SP12_2">&#167;12.2</a> and <a href="5-us.html#SP15_3">&#167;15.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Object phrases III: Understand the property.</b>  The third and final form of the sentence has an object phrase like so:</p>
-</div>
 <blockquote>
-    <p>Understand the unbroken property as describing the pot.</p>
+<p>Understand the unbroken property as describing the pot.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Once again, the object can't be a list.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -591,9 +579,9 @@ integer result is 0 if no problems were thrown, or -1 if they were.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-us.html#SP13">&#167;13</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Handling object phrase depending on subject phrase.</b>  So now we use the above Preform: on the sentence &quot;Understand SP as OP&quot;, we
-parse the subject phrase SP with &lt;understand-sentence-sp&gt;, and depending
-on which of the forms it has, we then use one of &lt;understand-command-op&gt;,
-&lt;understand-prop-op&gt; or &lt;understand-text-op&gt; on the OP.</p>
+parse the subject phrase SP with <understand-sentence-sp>, and depending
+on which of the forms it has, we then use one of <understand-command-op>,
+<understand-prop-op> or <understand-text-op> on the OP.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Understand::understand_sentence</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Understand::understand_sentence</span></span>:<br/><a href="5-us.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">ASW</span><span class="plain-syntax">) {</span>
@@ -827,12 +815,9 @@ it, one at a time, by previous Understand sentences.</p>
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. The other way quoted grammar arises.</b>  This section is primarily about Understand sentences, but Inform also receives
 grammar in some other contexts, such as in a table where one column contains
 conversation topics to be matched, or in the condition:</p>
-</div>
 <blockquote>
-    <p>if the player's command matches "room [number]", ...</p>
+<p>if the player's command matches &quot;room [number]&quot;, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The quoted text here becomes a constant of the kind <code>K_understanding</code>, and
 when it needs to be compiled, the following function is called. As can be
 seen, it funnels directly into <a href="5-us.html#SP19" class="internal">Understand::text_block</a>.</p>

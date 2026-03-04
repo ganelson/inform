@@ -5,12 +5,12 @@ Special sentences creating new activities.
 @ This special meaning is only needed for one case. If activities are created
 by the sentence
 
->> Counting is an activity on numbers.
+> Counting is an activity on numbers.
 
 then this happens via the regular meaning of "to be", because "activity on
 numbers" is a valid kind of value. But this:
 
->> Describing is an activity.
+> Describing is an activity.
 
 can't be handled that way because "activity" is not a valid kind. And so we
 handle this case through a special case of "X is Y" which applies only if Y

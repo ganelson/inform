@@ -28,13 +28,13 @@ worth of cheerful hacking), but debugging one until it passes the trickiest
 hundred of Perl's 645 test cases is another matter (and it took a whole
 week more). Still, the result seems to be robust. The main compromise made
 is that backtracking is not always comprehensive with regexps like
-|^(a\1?){4}$|, because we do not allocate individual storage to backtrack
+`^(a\1?){4}$`, because we do not allocate individual storage to backtrack
 individually through all possibilities of each of the four uses of the
 bracketed subexpression -- which means we miss some cases, since the
 subexpression contains a reference to itself, so that its content can vary
 in the four uses. PCRE's approach here is to expand the expression as if it
 were a sequence of four bracketed expressions, thus removing the awkward
-quantifier |{4}|, but that costs memory: indeed this is why PCRE cannot
+quantifier `{4}`, but that costs memory: indeed this is why PCRE cannot
 solve all of Perl's test cases without its default memory allocation being
 raised. In other respects, the algorithm below appears to be accurate if
 not very fast.
@@ -45,7 +45,7 @@ practice the syntax of regular expressions is complex enough that this
 would be tricky and rather slow: we would be parsing the same notations over
 and over again. So we begin by compiling it to a simple tree structure. The
 tree is made up of nodes, and each node has a "class code": these are
-identified by the |*_RE_CC| constants below. Note that the class codes
+identified by the `*_RE_CC` constants below. Note that the class codes
 below are all negative: this is so that they are distinct from all valid
 ZSCII or Unicode characters. (ZSCII is used only on the Z-machine, which
 has a 16-bit word but an 8-bit character set, so that all character values
@@ -105,7 +105,7 @@ Constant SENSITIVITY_RE_CC = -50;
 @h Packets.
 The nodes of the compiled expression tree are stored in "packets", which
 are segments of a fixed array. A regexp complicated enough that it cannot
-be stored in |RE_MAX_PACKETS| packets will be rejected with an error: it
+be stored in `RE_MAX_PACKETS` packets will be rejected with an error: it
 looks like a rather low limit, but in fact suffices to handle all of Perl's
 test cases, some of which are works of diabolism.
 
@@ -143,7 +143,7 @@ Constant RE_MODES = 13;
 The routine to create a node, something which happens only during the
 compilation phase, and also the routine which returns the address of a given
 node. Nodes are numbered from 0 up to $M-1$, where $M$ is the constant
-|RE_MAX_PACKETS|.
+`RE_MAX_PACKETS`.
 
 =
 [ TEXT_TY_RE_Node n cc par1 par2 par3  offset;
@@ -169,21 +169,21 @@ node. Nodes are numbered from 0 up to $M-1$, where $M$ is the constant
 ];
 
 @h Match Variables.
-A bracketed subexpression can be used as a variable: we support |\1|, ..., |\9|
-to mean "the value of subexpression 1 to 9", and |\0| to mean "the whole
+A bracketed subexpression can be used as a variable: we support `\1`, ..., `\9`
+to mean "the value of subexpression 1 to 9", and `\0` to mean "the whole
 text matched", as if the entire regexp were bracketed. (PCRE and Perl also
-allow |\10|, |\11|, ..., but we don't, because it complicates parsing and
+allow `\10`, `\11`, ..., but we don't, because it complicates parsing and
 memory is too short.)
 
-|RE_Subexpressions-->10| stores the number of subexpressions in use, not
-counting |\0|. During the compiling stage, |RE_Subexpressions-->N| is set
-to point to the node representating |\N|, where |N| varies from 1 to 9.
+`RE_Subexpressions-->10` stores the number of subexpressions in use, not
+counting `\0`. During the compiling stage, `RE_Subexpressions-->N` is set
+to point to the node representating `\N`, where `N` varies from 1 to 9.
 When matching is complete, and assuming we care about the contents of
 these variables -- which we might not, and if not we certainly don't want
-to waste time and memory -- we call |TEXT_TY_RE_CreateMatchVars| to allocate
+to waste time and memory -- we call `TEXT_TY_RE_CreateMatchVars` to allocate
 text variables and fill them in as appropriate, memory permitting.
 
-|TEXT_TY_RE_EmptyMatchVars| empties any such variables which may survive from
+`TEXT_TY_RE_EmptyMatchVars` empties any such variables which may survive from
 a previous match, setting them to the empty text.
 
 =
@@ -249,12 +249,12 @@ Global match0_idx2; ! for plain text match, index of final character match
 ];
 
 @h Markers.
-At each node, the |-->RE_DATA1| and |-->RE_DATA2| fields represent the
+At each node, the `-->RE_DATA1` and `-->RE_DATA2` fields represent the
 character positions of the start and end of the text matched by the node
 and its subtree (if any). These are called markers.
 
-Thus |TEXT_TY_MV_End(N, 0)| returns the start of |\N| and |TEXT_TY_MV_End(N, 1)|
-the end of |\N|, according to the current match of subexpression |N|.
+Thus `TEXT_TY_MV_End(N, 0)` returns the start of `\N` and `TEXT_TY_MV_End(N, 1)`
+the end of `\N`, according to the current match of subexpression `N`.
 
 =
 [ TEXT_TY_MV_End n end
@@ -383,8 +383,8 @@ but it is relatively compact and we keep it just in case.
 @h Compiling Tree For Substring Search.
 When we search for a literal substring, say looking for "per" in
 "Supernumerary", we will in fact use the same apparatus as when searching
-for a regular expression: we compile a very simple node tree in which |\0|
-as the root contains just one child node, a |LITERAL_RE_CC| matching exactly
+for a regular expression: we compile a very simple node tree in which `\0`
+as the root contains just one child node, a `LITERAL_RE_CC` matching exactly
 the text "per". We return 2 since that's the number of nodes in the tree.
 
 =
@@ -936,9 +936,9 @@ The main matcher simply starts a recursive subroutine to perform the match.
 However, the subroutine tests for a match at a particular position in the
 source text; so the main routine tries the subroutine everywhere convenient
 in the source text, from left to right, until a match is made -- unless the
-regexp is constrained by a |^| glyph to begin matching at the start of the
-source text, which will cause a |START_RE_CC| node to be the eldest child
-of the |\0| root.
+regexp is constrained by a `^` glyph to begin matching at the start of the
+source text, which will cause a `START_RE_CC` node to be the eldest child
+of the `\0` root.
 
 =
 Global TEXT_TY_RE_RewindCount;
@@ -980,13 +980,13 @@ Constant ACCUM_MFLAG = 2;
 ];
 
 @h Parse At Position.
-|TEXT_TY_RE_ParseAtPosition(ftxt, txt, ifrom, ito)| attempts to match text
-beginning at position |ifrom| in the text |txt| and extending for
-any length up to position |ito|: it returns the number of characters which
+`TEXT_TY_RE_ParseAtPosition(ftxt, txt, ifrom, ito)` attempts to match text
+beginning at position `ifrom` in the text `txt` and extending for
+any length up to position `ito`: it returns the number of characters which
 were matched (which can legitimately be 0), or $-1$ if no match could be
-made. |ftxt| is the original text of the regular expression in its
+made. `ftxt` is the original text of the regular expression in its
 precompiled form, which we need partly to print good debugging information,
-but mostly in order to match against a |LITERAL_RE_CC| node.
+but mostly in order to match against a `LITERAL_RE_CC` node.
 
 =
 [ TEXT_TY_RE_ParseAtPosition ftxt txt ifrom ito token mode_flags
@@ -1370,25 +1370,25 @@ be any need to retreat.
 
 Well, in fact that happy state does apply to a surprising number of nodes,
 and some quite complicated regular expressions can be made which use only
-them: |<abc>{2}\d\d\1|, for instance, matches a sequence of exactly 6
+them: `<abc>{2}\d\d\1`, for instance, matches a sequence of exactly 6
 characters or else fails to match altogether, and there is never any need
 to backtrack. One reason why backtracking is a fairly good algorithm in
 practice is that these "good" cases occur fairly often, in subexpressions
 if not in the entire expression, and the simple method above disposes of
 them efficiently.
 
-But in an expression like |ab+bb|, there is no alternative to backtracking
+But in an expression like `ab+bb`, there is no alternative to backtracking
 if we are going to try to match the nodes from left to right: we match the
 "a", then we match as many "b"s as we can -- but then we find that we
 have to match "bb", and this is necessarily impossible because we have
 just eaten all of the "b"s available. We therefore backtrack one node
-to the |b+| and try again. We obviously can't literally try again because
+to the `b+` and try again. We obviously can't literally try again because
 that would give the same result: instead we impose a constraint. Suppose
-it previously matched a row of 23 letter "b"s, so that the quantifier |+|
+it previously matched a row of 23 letter "b"s, so that the quantifier `+`
 resulted in a multiplicity of 23. We then constrain the node and in effect
-consider it to be |b{1,22}|, that is, to match at least 1 and at most 22
+consider it to be `b{1,22}`, that is, to match at least 1 and at most 22
 letter "b"s. That still won't work, as it happens, so we backtrack again
-with a constraint tightened to make it |b{1,21}|, and now the match occurs
+with a constraint tightened to make it `b{1,21}`, and now the match occurs
 as we would hope. When the expression becomes more complex, backtracking
 becomes a longer-distance, recursive procedure -- we have to exhaust all
 possibilities of a more recent node before tracking back to one from longer
@@ -1396,9 +1396,9 @@ ago. (This is why the worst test cases are those which entice us into a long,
 long series of matches only to find that a guess made right back at the
 start was ill-fated.)
 
-Rather than describing |TEXT_TY_RE_SeekBacktrack| in detail here, it is probably
+Rather than describing `TEXT_TY_RE_SeekBacktrack` in detail here, it is probably
 more useful to suggest that the reader observe it in action by setting
-|TEXT_TY_RE_Trace| and trying a few regular expressions.
+`TEXT_TY_RE_Trace` and trying a few regular expressions.
 
 =
 [ TEXT_TY_RE_SeekBacktrack token ftxt downwards ito report_only untried;
@@ -1457,17 +1457,17 @@ more useful to suggest that the reader observe it in action by setting
 ];
 
 @h Fail Subexpressions.
-Here, an attempt to make a complicated match against the node in |token| has
+Here, an attempt to make a complicated match against the node in `token` has
 failed: that means that any subexpressions which were matched in the course of
 the attempt must also in retrospect be considered unmatched. So we work down
-through the subtree at |token| and empty any markers for subexpressions,
+through the subtree at `token` and empty any markers for subexpressions,
 which in effect clears their backslash variables -- this is important as,
 otherwise, the contents left over could cause the alternative reading of the
-|token| to be misparsed if it refers to the backslash variables in question.
+`token` to be misparsed if it refers to the backslash variables in question.
 (If you think nobody would ever be crazy enough to write a regular expression
 like that, you haven't see Perl's test suite.)
 
-If the |downwards| flag is clear, it not only invalidates subexpression
+If the `downwards` flag is clear, it not only invalidates subexpression
 matches below the node but also to the right of the node -- this is useful
 for a backtrack which runs back quite some distance.
 
@@ -1503,9 +1503,9 @@ attempt has been abandoned.
 ];
 
 @h Matching Literal Text.
-Here we attempt to make a match of the substring of the text |mtxt| which runs
-from character |mfrom| to character |mto|, looking for it at the given
-position |ipos| in the source text |txt|.
+Here we attempt to make a match of the substring of the text `mtxt` which runs
+from character `mfrom` to character `mto`, looking for it at the given
+position `ipos` in the source text `txt`.
 
 =
 [ TEXT_TY_RE_MatchSubstring txt ipos mtxt mfrom mto insens
@@ -1525,11 +1525,11 @@ position |ipos| in the source text |txt|.
 ];
 
 @h Matching Character Range.
-Suppose that a character range is stored in |ftxt| between the character
-positions |rf| and |rt|. Then |TEXT_TY_RE_Range(ch, ftxt, rf, rt, negate, insens)|
-tests whether a given character |ch| lies within that character range,
-negating the outcome if |negate| is set, and performing comparisons
-case insensitively if |insens| is set.
+Suppose that a character range is stored in `ftxt` between the character
+positions `rf` and `rt`. Then `TEXT_TY_RE_Range(ch, ftxt, rf, rt, negate, insens)`
+tests whether a given character `ch` lies within that character range,
+negating the outcome if `negate` is set, and performing comparisons
+case insensitively if `insens` is set.
 
 =
 [ TEXT_TY_RE_Range ch ftxt rf rt negate insens
@@ -1599,22 +1599,22 @@ case insensitively if |insens| is set.
 
 @h Search And Replace.
 And finally, last but not least: the routine which searches an indexed
-text |txt| trying to match it against |ftxt|. If |ftxtype| is set to
-|REGEXP_BLOB| then |ftxt| is expected to be a regular expression such
-as |ab+(c*de)?|, whereas if |ftxtype| is |CHR_BLOB| then it is expected
-only to be a simple string of characters taken literally, such as |frog|.
+text `txt` trying to match it against `ftxt`. If `ftxtype` is set to
+`REGEXP_BLOB` then `ftxt` is expected to be a regular expression such
+as `ab+(c*de)?`, whereas if `ftxtype` is `CHR_BLOB` then it is expected
+only to be a simple string of characters taken literally, such as `frog`.
 
-Each match found is replaced with the contents of |rtxt|, except
-that if the blob type is |REGEXP_BLOB| then we recognise a few syntaxes
-as special: for instance, |\2| expands to the value of subexpression 2
+Each match found is replaced with the contents of `rtxt`, except
+that if the blob type is `REGEXP_BLOB` then we recognise a few syntaxes
+as special: for instance, `\2` expands to the value of subexpression 2
 as it was matched -- see {\it Writing with Inform} for details.
 
-The optional argument |insens| is a flag which, if set, causes the matching
-to be done case insensitively; the optional argument |exactly|, if set,
-causes the matching to work only if the entire |txt| is matched. (This
+The optional argument `insens` is a flag which, if set, causes the matching
+to be done case insensitively; the optional argument `exactly`, if set,
+causes the matching to work only if the entire `txt` is matched. (This
 is not especially useful with regular expressions, because the effect can
-equally be achieved by turning |ab+c|, say, into |^ab+c$|, but it is
-indeed useful where the blob type is |CHR_BLOB|.)
+equally be achieved by turning `ab+c`, say, into `^ab+c$`, but it is
+indeed useful where the blob type is `CHR_BLOB`.)
 
 For an explanation of the use of the word "blob", see "Text.i6t".
 

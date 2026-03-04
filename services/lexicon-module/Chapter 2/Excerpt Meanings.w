@@ -16,7 +16,7 @@ For instance, the token list:
 	drink # milk #
 =
 matches "drink more milk today and every day", but not "drink milk". The
-sharp symbol |#| is printed in place of a null token, both here and in the
+sharp symbol `#` is printed in place of a null token, both here and in the
 debugging log.
 
 Each excerpt meaning also comes with a hash code, which is automatically
@@ -35,9 +35,9 @@ typedef struct excerpt_meaning {
 } excerpt_meaning;
 
 @h Meaning codes.
-These assign a context to a meaning, and so decide how the |data| pointer for
+These assign a context to a meaning, and so decide how the `data` pointer for
 an excerpt meaning is to interpreted. For instance, "Persian carpet" might
-have a meaning with code |NOUN_MC|.
+have a meaning with code `NOUN_MC`.
 
 Meaning codes are used in other contexts in Inform besides this one. There
 are up to 31 of them and each is a distinct power of two; there is no
@@ -45,13 +45,13 @@ significance to their ordering. Integers are assumed at least 32 bits wide and
 can therefore hold a bitmap representing any subset of these meaning codes;
 using only 31 bits avoids any potential nuisance over the sign bit.
 
-For instance, |PROPERTY_MC + TABLE_MC| might mean "either a property name or
-a table name". But the |meaning_code| field of an //excerpt_meaning// is always
+For instance, `PROPERTY_MC + TABLE_MC` might mean "either a property name or
+a table name". But the `meaning_code` field of an //excerpt_meaning// is always
 a pure power of 2, i.e., a single bit.
 
 @d MISCELLANEOUS_MC			0x00000001 /* a grab-bag of other possible nouns */
-@d NOUN_MC					0x00000002 /* e.g., |upright chair| */
-@d ADJECTIVE_MC				0x00000004 /* e.g., |invisible| */
+@d NOUN_MC					0x00000002 /* e.g., `upright chair` */
+@d ADJECTIVE_MC				0x00000004 /* e.g., `invisible` */
 
 @h Annotating words.
 Each word in the vocabulary collected up by //words// will be annotated with
@@ -132,7 +132,7 @@ void ExcerptMeanings::log_all(void) {
 }
 
 @h Hashing excerpts.
-For excerpts |(w1, w2)|, we need a form of hash function which makes it
+For excerpts `(w1, w2)`, we need a form of hash function which makes it
 easy to test whether the words in one excerpt can all be found in another,
 or to be more exact whether
 
@@ -201,8 +201,8 @@ void ExcerptMeanings::hash_code_from_token_list(excerpt_meaning *em) {
 	em->excerpt_hash = h;
 }
 
-@ Now each vocabulary entry |v|, i.e., each distinct word identity, itself has
-a hash code to identify it. These are stored in |v->hash| and, except for
+@ Now each vocabulary entry `v`, i.e., each distinct word identity, itself has
+a hash code to identify it. These are stored in `v->hash` and, except for
 literals, are more or less evenly distributed in about the range 0 to 1000.
 
 The contribution made by a single word's individual hash to the bitmap hash
@@ -242,30 +242,30 @@ and its end list.
 
 -	If an EM needs to allow parsing as a subset, it must be placed in the
 	subset list of every word. For instance, "buttress against cathedral
-	wall" registered under the code |NOUN_MC| would be listed
+	wall" registered under the code `NOUN_MC` would be listed
 	in the subset lists of "buttress", "against", "cathedral" and "wall".
 
 -	Otherwise it is placed in only one list:
 
-	- If the token list consists only of a single gap |#|, we must be
+	- If the token list consists only of a single gap `#`, we must be
 	registering a "say" phrase to say a value. (There is one of these for
-	each kind of value.) This meaning is listed under a special |blank_says_p|
+	each kind of value.) This meaning is listed under a special `blank_says_p`
 	list, which is not attached to any vocabulary entry.
-	- Otherwise, if the first token is not a |#| gap, it goes into the
-	start list for the first token's word: for instance, |award # points| joins
+	- Otherwise, if the first token is not a `#` gap, it goes into the
+	start list for the first token's word: for instance, `award # points` joins
 	the start list for "award".
-	- Otherwise, if the last token is not a |#| gap, it goes into the end
-	list for the last token's word: for instance, |# in # from now| joins the
+	- Otherwise, if the last token is not a `#` gap, it goes into the end
+	list for the last token's word: for instance, `# in # from now` joins the
 	end list for "now".
 	- Otherwise, it goes into the middle list of the word for the leftmost
-	token which is not a |#|: for instance, |# plus #| joins the middle list for
+	token which is not a `#`: for instance, `# plus #` joins the middle list for
 	"plus".
 
-Since no token lists of two or more consecutive |#|s cannot exist, this exhausts the possibilities.
+Since no token lists of two or more consecutive `#`s cannot exist, this exhausts the possibilities.
 
-Outside of subset mode, we will then test a given excerpt |(w1, w2)| in the
-source text against all possible meanings by checking the start list for |w1|,
-the end list for |w2| and the middle list for every one of |(w1+1, w2-1)|.
+Outside of subset mode, we will then test a given excerpt `(w1, w2)` in the
+source text against all possible meanings by checking the start list for `w1`,
+the end list for `w2` and the middle list for every one of `(w1+1, w2-1)`.
 Because of this:
 
 - Performance suffers if lists for individual words become unbalanced
@@ -274,7 +274,7 @@ knight" rather than "Unicode white chess knight", and so on; the
 alternative would be a stupendously long start list for "unicode".
 - Middle lists are tested far more often than start or end lists, so
 we should keep them as small as possible. This is why (b4) above is our last
-resort; happily phrases both starting and ending with |#| are uncommon.
+resort; happily phrases both starting and ending with `#` are uncommon.
 
 =
 parse_node *blank_says_p = NULL;
@@ -320,11 +320,11 @@ void ExcerptMeanings::register_em(unsigned int meaning_code, excerpt_meaning *em
 the given meaning code -- this is why vocabulary flags and excerpt meaning
 codes share the same numbering space. If we register "Table of Surgical
 Instruments" as a table name, the word "surgical", for instance, picks
-up the |TABLE_MC| bit in its |flags| bitmap.
+up the `TABLE_MC` bit in its `flags` bitmap.
 
-The advantage of this is that if we want to see whether |(w1, w2)| might be
+The advantage of this is that if we want to see whether `(w1, w2)` might be
 a table name, we can take a bitwise AND of the flags for each word in
-the range; if the result doesn't have the |TABLE_MC| bit set, then at least
+the range; if the result doesn't have the `TABLE_MC` bit set, then at least
 one of the words never occurs in a table name, so the answer must be
 "no". This produces rapid, definite negatives with only a few false
 positives.
@@ -354,7 +354,7 @@ object "Gregory the Great".
 		v->means.subset_list_length++;
 	}
 
-@ To register |#|, which is what "To say (N - a number)" and similar
+@ To register `#`, which is what "To say (N - a number)" and similar
 constructions translate to.
 
 @<Place the new meaning under the say-blank list@> =
@@ -443,18 +443,18 @@ text substitutions need to distinguish (for instance) "say [the X]" from
 				internal_error("registered a meaning which was only an article");
 		}
 
-@ Because an open bracket fails |isupper|, the following looks at the first
+@ Because an open bracket fails `isupper`, the following looks at the first
 letter of the first word only if it's not a blank. If it finds upper case, as
 it would when reading the "T" in:
 
->> To say The Portrait: ...
+> To say The Portrait: ...
 
 then it makes a new upper-case version of the word "the", i.e., "The",
 with a distinct lexical identity; and places this distinguished identity as
 the new first token. This ensures that we end up with a different token list
 from the one in:
 
->> To say the Portrait: ...
+> To say the Portrait: ...
 
 (These are the only circumstances in which phrase parsing has any case
 sensitivity.)
@@ -472,9 +472,9 @@ sensitivity.)
 
 @ We read the text in something like:
 
->> award (P - a number) points
+> award (P - a number) points
 
-and transcribe it into the token list, collapsing bracketed parts into |#|
+and transcribe it into the token list, collapsing bracketed parts into `#`
 tokens denoting gaps, to result in something like:
 = (text)
 	award # points
@@ -530,7 +530,7 @@ going to any trouble to prevent this.
 @h Errors.
 Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_LEXICON_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_LEXICON_CALLBACK`
 to some routine of her own, gazumping this one.
 
 =

@@ -66,12 +66,9 @@ function togglePopup(material_id) {
 problem occurs, in terms of headings and subheadings written in the
 source text, and it is this indication that we consider first. For
 example,</p>
-</div>
 <blockquote>
-    <p>In Part the First, Chapter 1 - Attic Area:</p>
+<p>In Part the First, Chapter 1 - Attic Area:</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>There can be up to 10 levels in the hierarchy of headings and
 subheadings, with level 0 the top level and level 9 the lowest.</p>
 <p>When we need to issue a problem at sentence <code>S</code>, we work out what the
@@ -115,12 +112,9 @@ code order.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  A further refinement is that we remember the last set of headings used
 for an error message, and only mention what has changed about the location.
 Thus we might next print:</p>
-</div>
 <blockquote>
-    <p>In Chapter 2 - Cellar Area:</p>
+<p>In Chapter 2 - Cellar Area:</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>omitting to mention &quot;Part the First&quot; this time, since that part has not
 changed. (And we never print internally made level 0, File, headings.)</p>
 </div>
@@ -211,8 +205,8 @@ easily be changed, but there seems no reason to.)</p>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">structure_quoted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if false */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">expander</span><span class="plain-syntax">)(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="type-syntax">void</span><span class="plain-syntax"> *); </span><span class="comment-syntax">/* if false */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_quoted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if true */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to |'F'| file references */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to |'F'| file references */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to <code>'F'</code> file references */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to <code>'F'</code> file references */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">problem_quotation</span><span class="plain-syntax">;</span>
 
 <span class="type-syntax">problem_quotation</span><span class="plain-syntax"> </span><span class="identifier-syntax">problem_quotations</span><span class="plain-syntax">[10];</span>

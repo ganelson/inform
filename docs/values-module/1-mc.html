@@ -58,40 +58,40 @@ of that module is supposed to provide bitmap-friendly codes which categorise
 the various meanings likely to be given. Several modules do this, but this
 is where the Inform compiler-specific codes appear.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VOID_PHRASE_MC</span> <span class="constant-syntax">0x00000010</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |award # points| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VOID_PHRASE_MC</span> <span class="constant-syntax">0x00000010</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>award # points</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VALUE_PHRASE_MC</span> <span class="constant-syntax">0x00000020</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |number of rows in #| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VALUE_PHRASE_MC</span> <span class="constant-syntax">0x00000020</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>number of rows in #</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">COND_PHRASE_MC</span> <span class="constant-syntax">0x00000040</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |# has not ended| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">COND_PHRASE_MC</span> <span class="constant-syntax">0x00000040</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code># has not ended</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROPERTY_MC</span> <span class="constant-syntax">0x00000080</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |carrying capacity| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROPERTY_MC</span> <span class="constant-syntax">0x00000080</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>carrying capacity</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_CONSTANT_MC</span> <span class="constant-syntax">0x00000100</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |green| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_CONSTANT_MC</span> <span class="constant-syntax">0x00000100</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>green</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_MC</span> <span class="constant-syntax">0x00000200</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |table of rankings| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_MC</span> <span class="constant-syntax">0x00000200</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>table of rankings</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_COLUMN_MC</span> <span class="constant-syntax">0x00000400</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |rank| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TABLE_COLUMN_MC</span> <span class="constant-syntax">0x00000400</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>rank</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">RULE_MC</span> <span class="constant-syntax">0x00000800</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |update chronological records rule| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">RULE_MC</span> <span class="constant-syntax">0x00000800</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>update chronological records rule</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">RULEBOOK_MC</span> <span class="constant-syntax">0x00001000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |instead| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">RULEBOOK_MC</span> <span class="constant-syntax">0x00001000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>instead</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ACTIVITY_MC</span> <span class="constant-syntax">0x00002000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |reading a command| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ACTIVITY_MC</span> <span class="constant-syntax">0x00002000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>reading a command</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EQUATION_MC</span> <span class="constant-syntax">0x00004000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |Newton's Second Law| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EQUATION_MC</span> <span class="constant-syntax">0x00004000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>Newton's Second Law</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VARIABLE_MC</span> <span class="constant-syntax">0x00008000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |left hand status line| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VARIABLE_MC</span> <span class="constant-syntax">0x00008000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>left hand status line</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_AP_MC</span> <span class="constant-syntax">0x00010000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |bad behaviour| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMED_AP_MC</span> <span class="constant-syntax">0x00010000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>bad behaviour</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SAY_PHRASE_MC</span> <span class="constant-syntax">0x00020000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |say # in words| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SAY_PHRASE_MC</span> <span class="constant-syntax">0x00020000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>say # in words</code> */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PHRASE_CONSTANT_MC</span> <span class="constant-syntax">0x00040000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., |doubling function| */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PHRASE_CONSTANT_MC</span> <span class="constant-syntax">0x00040000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* e.g., <code>doubling function</code> */</span><span class="plain-syntax"> </span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  This one is used only by the <a href="../if-module/index.html" class="internal">if</a> module, but let's define it here anyway:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ACTION_PARTICIPLE_MC</span> <span class="constant-syntax">0x02000000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a word like "taking" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ACTION_PARTICIPLE_MC</span> <span class="constant-syntax">0x02000000</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a word like &quot;taking&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  We use callback functions to tell <a href="../lexicon-module/index.html" class="internal">lexicon</a> any special rules for

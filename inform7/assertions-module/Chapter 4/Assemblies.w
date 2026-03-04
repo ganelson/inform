@@ -16,13 +16,13 @@ data structure.
 @ Generalisations are essentially fragments of parse tree stored for later use.
 They handle sentences like
 
->> In every container is a coin.
+> In every container is a coin.
 
 which are done by recognising the prototype part ("in every container") in
 the parse tree and grafting on a duplicate of the assembly part ("a coin")
-in place of the |EVERY_NT| subtree ("every container"). Sometimes the EVERY
+in place of the `EVERY_NT` subtree ("every container"). Sometimes the EVERY
 subtree is the whole prototype subtree ("Every coin is on a table"), in
-which case |px| and |substitute_at| in the following structure coincide.
+which case `px` and `substitute_at` in the following structure coincide.
 
 Each kind (in this example "container") keeps a linked list of the
 generalisations which apply to it.
@@ -31,7 +31,7 @@ generalisations which apply to it.
 typedef struct generalisation {
 	struct parse_node *look_for; /* prototype situation to look for */
 	struct parse_node *what_to_make; /* subtree for what to assemble */
-	struct parse_node *substitute_at; /* position under |look_for| of the EVERY node */
+	struct parse_node *substitute_at; /* position under `look_for` of the EVERY node */
 	struct generalisation *next; /* next in list of generalisations about kind */
 	CLASS_DEFINITION
 } generalisation;
@@ -92,17 +92,17 @@ wording Assertions::Assemblies::get_named_after_text(inference_subject *infs) {
 }
 
 @h New generalisations.
-Here a new generalisation is made. The |look_for| subtree contains the
-|EVERY_NT| node, but it might be either at the top, as here:
+Here a new generalisation is made. The `look_for` subtree contains the
+`EVERY_NT` node, but it might be either at the top, as here:
 
->> Every container is in the Lumber Room.
+> Every container is in the Lumber Room.
 
-or the first child of a |RELATIONSHIP_NT| node, as here:
+or the first child of a `RELATIONSHIP_NT` node, as here:
 
->> In every container is a vehicle.
+> In every container is a vehicle.
 
-In the second case the |what_to_make| subtree is an |COMMON_NOUN_NT|, and in the
-first it's a |RELATIONSHIP_NT| subtree.
+In the second case the `what_to_make` subtree is an `COMMON_NOUN_NT`, and in the
+first it's a `RELATIONSHIP_NT` subtree.
 
 =
 void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_node *what_to_make) {
@@ -223,7 +223,7 @@ void Assertions::Assemblies::ensure_all_generalisations_made(inference_subject *
 the kind of an object is determined, because that potentially expands the set of
 generalisations applicable to it. But it's needlessly slow to apply a full
 refresh when we know the only object which can be affected, so in that
-situation we call just |Assertions::Assemblies::satisfies_generalisations| on the object in question.
+situation we call just `Assertions::Assemblies::satisfies_generalisations` on the object in question.
 
 =
 void Assertions::Assemblies::satisfies_generalisations(inference_subject *infs) {
@@ -238,8 +238,8 @@ void Assertions::Assemblies::satisfies_generalisations(inference_subject *infs) 
 	}
 }
 
-@ At this point |app| points to the record of which generalisations in $K$
-have been applied to the object so far, or is |NULL| if none of $K$'s
+@ At this point `app` points to the record of which generalisations in $K$
+have been applied to the object so far, or is `NULL` if none of $K$'s
 generalisation has ever been applied to it.
 
 @<Apply generalisations about K which have not yet been applied@> =
@@ -274,7 +274,7 @@ structure instance. We clearly won't do better than that.
 The storage required to record which generalisations have so far applied to
 which objects is $O(HN)$, since each object stores about $12H$ bytes of data,
 which is significantly better than a bitmap recording all pairs of generalisations
-and objects (which would be $O(GN)$). The running time of |Assertions::Assemblies::satisfies_generalisations|
+and objects (which would be $O(GN)$). The running time of `Assertions::Assemblies::satisfies_generalisations`
 applied to object $X$ is $O(G_X H^2)$, where $G_X$ is the number of generalisations
 which can be applied to $X$. In the course of compilation this is called once
 each time the kind of $X$ is changed -- at most $H$ times -- and once each time
@@ -287,7 +287,7 @@ The main point, then, is that the mechanism above is much, much faster than
 repeatedly checking each generalisation against each object, for a cost of
 $O(G^2N)$.
 
-@ So here we get on with the actual construction: we apply |g| to |infs|. What
+@ So here we get on with the actual construction: we apply `g` to `infs`. What
 we actually do is to insert new sentences after the current one.
 
 =
@@ -310,7 +310,7 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 		Annotations::read_int(current_sentence, implicitness_count_ANNOT) + 1);
 	Node::set_text(new_sentence, Node::get_text(current_sentence));
 
-	/* temporarily make the |EVERY_NT| node refer to the specific new |infs|: */
+	/* temporarily make the `EVERY_NT` node refer to the specific new `infs`: */
 	Refiner::give_subject_to_noun(g->substitute_at, infs);
 
 	/* make the new sentence an assertion: */
@@ -321,7 +321,7 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 	Node::copy_subtree(g->what_to_make, new_sentence->down->next->next, 0);
 	new_sentence->down->next->next->next = NULL;
 
-	/* restore the |EVERY_NT| node, now that the tree containing it has been copied: */
+	/* restore the `EVERY_NT` node, now that the tree containing it has been copied: */
 	Node::set_type(g->substitute_at, EVERY_NT);
 	Node::set_subject(g->substitute_at, infs_k);
 

@@ -50,7 +50,7 @@ Default LanguageCases 1;
 @h Final Code Dependencies.
 This function definition is a little misleading. The idea is that the
 final code-generator can inject code of its own into the body here: for example,
-the final code-generation for Glulx injects code into |PLATFORM_SPECIFIC_STARTUP_R|
+the final code-generation for Glulx injects code into `PLATFORM_SPECIFIC_STARTUP_R`
 to use accelerated VM support for certain veneer functions.
 
 The other three are also misleading, in that final code-generation can add more
@@ -79,9 +79,9 @@ helpful code here: the fallbacks here are basic.
 Array Protect_I7_Arrays --> 16339 12345;
 
 @h Print Decimal Number.
-|DecimalNumber| is a trivial function which just prints a number, in decimal
+`DecimalNumber` is a trivial function which just prints a number, in decimal
 digits. It is left over from the I6 library's support routines for Glulx,
-where it was intended as a stub to pass to the Glulx |Glulx_PrintAnything| routine
+where it was intended as a stub to pass to the Glulx `Glulx_PrintAnything` routine
 (which I7 does not use). In I7, however, it's also used as the default
 printing routine for new kinds of value.
 
@@ -103,16 +103,16 @@ without substitutions.
 
 @h Print Or Run.
 This utility remains from the old I6 library: it essentially treats a
-property as textual and prints it where possible. Where the |no_break|
+property as textual and prints it where possible. Where the `no_break`
 flag is set, we expect the text to form only a small part of a paragraph,
 and it's inappropriate to break here: for instance, for printing the
 "printed name" of an object. Where the flag is clear, however, the text
 is expected to form its own paragraph.
 
-Where |PrintOrRun| is used in breaking mode, which is only for a very few
-properties in I7 (indeed at present only |initial| and |description|),
+Where `PrintOrRun` is used in breaking mode, which is only for a very few
+properties in I7 (indeed at present only `initial` and `description`),
 the routine called is given the chance to decide whether to print or not.
-It should return |true| or |false| according to whether it did so; this
+It should return `true` or `false` according to whether it did so; this
 allows us to divide the paragraph or not accordingly.
 
 =
@@ -237,7 +237,7 @@ Global status_window_table_value;
 
 @h GenerateRandomNumber.
 The following uses the virtual machine's RNG (via the I6 built-in function
-|random|) to produce a uniformly random integer in the range $n$ to $m$
+`random`) to produce a uniformly random integer in the range $n$ to $m$
 inclusive, where $n$ and $m$ are allowed to be either way around; so that
 a random number between 17 and 4 is the same thing as a random number
 between 4 and 17, and there is therefore no pair of $n$ and $m$ corresponding
@@ -285,7 +285,7 @@ Which prints a row of $n$ spaces, for $n\geq 0$.
 
 @h SwapWorkflags.
 Recall that we have two general-purpose temporary attributes for each object:
-|workflag| and |workflag2|. The following swaps their values over for every
+`workflag` and `workflag2`. The following swaps their values over for every
 object at once.
 
 =
@@ -301,14 +301,14 @@ object at once.
 ];
 
 @h TestUseOption.
-This routine, compiled by Inform, returns |true| if the supplied argument is the
-number of a use option in force for the current run of Inform, and |false|
+This routine, compiled by Inform, returns `true` if the supplied argument is the
+number of a use option in force for the current run of Inform, and `false`
 otherwise.
 
 @h ZRegion.
 I7 contains many relics from I6, but here's a relic from I5: a routine which
 used to determine the metaclass of a value, before that concept was given a
-name. In I6 code, it can be implemented simply using |metaclass|, as the
+name. In I6 code, it can be implemented simply using `metaclass`, as the
 following shows. (The name is from "region of the Z-machine".)
 
 =
@@ -418,8 +418,8 @@ Array I7_SOO_SHUF->32;
 ];
 
 @h Rounding.
-The following rounds a numerical value |t1| to the nearest unit of |t2|;
-for instance, if |t2| is 5 then it rounds to the nearest 5. The name is an
+The following rounds a numerical value `t1` to the nearest unit of `t2`;
+for instance, if `t2` is 5 then it rounds to the nearest 5. The name is an
 anachronism, as it's used for all kinds of value.
 
 =

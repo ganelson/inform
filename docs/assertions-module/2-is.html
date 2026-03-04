@@ -99,7 +99,7 @@ therefore safely be used to sweep up any <code>IMPERATIVE_NT</code> nodes not al
 <span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">end_def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">end_def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) == </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">end_def</span><span class="plain-syntax"> = </span><span class="identifier-syntax">end_def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">header</span><span class="plain-syntax"> != </span><span class="identifier-syntax">end_def</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">/* splice so that |p-&gt;next| to |end_def| become the children of |p|: */</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">/* splice so that <code>p-&gt;next</code> to <code>end_def</code> become the children of <code>p</code>: */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">end_def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">end_def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -191,7 +191,7 @@ to catch and report these problems early.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">syntax_used</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">colon_block_command_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">syntax_used</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* i.e., doesn't end with a colon */</span>
-<span class="plain-syntax">                </span><span class="comment-syntax">/* don't count "if x is 1, let y be 2" -- with no block -- as deciding it */</span>
+<span class="plain-syntax">                </span><span class="comment-syntax">/* don't count &quot;if x is 1, let y be 2&quot; -- with no block -- as deciding it */</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">subordinate_to</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                    (!(</span><span class="function-syntax">&lt;phrase-beginning-block&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)))))</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">syntax_used</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
@@ -335,12 +335,9 @@ or type-checked until compilation.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_1_5" class="paragraph-anchor"></a><b>&#167;1.1.5. </b>  &quot;Comma notation&quot; is when a comma is used in an &quot;if&quot; statement to divide
 off only a single consequential phrase, as in</p>
-</div>
 <blockquote>
-    <p>if the hat is worn, try dropping the hat;</p>
+<p>if the hat is worn, try dropping the hat;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Such a line occupies a single node in its routine's parse tree, and we need
 to break this up.</p>
 </div>
@@ -362,12 +359,12 @@ to break this up.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">BCW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;phrase-with-comma-notation&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="comment-syntax">/* text before the comma */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;phrase-with-comma-notation&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">); </span><span class="comment-syntax">/* text after the comma */</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* First trim and annotate the "if ..." part */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* First trim and annotate the &quot;if ...&quot; part */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">colon_block_command_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">); </span><span class="comment-syntax">/* it previously had no colon... */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_control_structure_used</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">csp</span><span class="plain-syntax">); </span><span class="comment-syntax">/* ...and therefore didn't have its CSP set */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">BCW</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* Now make a new node for the "then" part, indenting it one step inward */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* Now make a new node for the &quot;then&quot; part, indenting it one step inward */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">then_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InvocationLists::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">then_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">results_from_splitting_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">then_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">indentation_level_ANNOT</span><span class="plain-syntax">,</span>
@@ -375,7 +372,7 @@ to break this up.</p>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_node_of_if_construction</span><span class="plain-syntax"> = </span><span class="identifier-syntax">then_node</span><span class="plain-syntax">, *</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* Attach the "then" node after the "if" node: */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* Attach the &quot;then&quot; node after the &quot;if&quot; node: */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">then_node</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-is.html#SP1_1_5_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Deal with an immediately following otherwise node, if there is one</span></span><span class="named-paragraph-number">1.1.5.1.1</span></a></span><span class="plain-syntax">;</span>
@@ -415,12 +412,9 @@ to break this up.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP1_1_5_1_1">&#167;1.1.5.1.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_1_5_1_1_2" class="paragraph-anchor"></a><b>&#167;1.1.5.1.1.2. </b>  An abbreviated otherwise clause looks like this:</p>
-</div>
 <blockquote>
-    <p>otherwise award 4 points;</p>
+<p>otherwise award 4 points;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and we want to split this, too, into distinct nodes.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an abbreviated otherwise node</span><span class="named-paragraph-number">1.1.5.1.1.2</span></span> =</p>
@@ -431,14 +425,14 @@ to break this up.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">indentation_level_ANNOT</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">indentation_level_ANNOT</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">)))); </span><span class="comment-syntax">/* extract just the word "otherwise" */</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">)))); </span><span class="comment-syntax">/* extract just the word &quot;otherwise&quot; */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_control_structure_used</span><span class="plain-syntax">(</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">then_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Wordings::trim_first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">))); </span><span class="comment-syntax">/* to remove the "otherwise" */</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Wordings::trim_first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">))); </span><span class="comment-syntax">/* to remove the &quot;otherwise&quot; */</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">indentation_level_ANNOT</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">indentation_level_ANNOT</span><span class="plain-syntax">) + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -1154,7 +1148,7 @@ to issue good problem messages for failures to use &quot;otherwise if&quot; corr
 <span class="plain-syntax">            </span><span class="comment-syntax">/* put an otherwise node in the position previously occupied by p */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Node::set_control_structure_used</span><span class="plain-syntax">(</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">/* extract just the word "otherwise" */</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">/* extract just the word &quot;otherwise&quot; */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">))));</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prev_p</span><span class="plain-syntax">) </span><span class="identifier-syntax">prev_p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_node</span><span class="plain-syntax">;</span>
 
@@ -1169,7 +1163,7 @@ to issue good problem messages for failures to use &quot;otherwise if&quot; corr
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">former_contents</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">            </span><span class="comment-syntax">/* any further "otherwise if" or "otherwise" nodes after p follow */</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">/* any further &quot;otherwise if&quot; or &quot;otherwise&quot; nodes after p follow */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">former_successors</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) </span><a href="2-is.html#SP4" class="function-link"><span class="function-syntax">ImperativeSubtrees::purge_otherwise_if</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
@@ -1459,22 +1453,16 @@ around the contents of any substitution which contains a comma.</p>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Something devious happens when text following a &quot;say&quot; is found. Double-quoted text
 is literal if it contains no square brackets, but is expanded if it includes text
 substitutions in squares. Thus:</p>
-</div>
 <blockquote>
-    <p>"Look, [the noun] said."</p>
+<p>&quot;Look, [the noun] said.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>becomes:</p>
-</div>
 <blockquote>
-    <p>"Look, ", the noun, " said."</p>
+<p>&quot;Look, &quot;, the noun, &quot; said.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This is then re-parsed with the following nonterminal; note that we report any
 problem with misuse of commas -- really, of square brackets -- before handing back
-to &lt;s-say-phrase&gt; to parse the list.</p>
+to <s-say-phrase> to parse the list.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;verify-expanded-text-substitution&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>

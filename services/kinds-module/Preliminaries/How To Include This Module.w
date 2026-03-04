@@ -20,7 +20,7 @@ that is, which will include its code and be able to use it. As with any
 imported module,
 
 - The contents page of the parent's web must identify and locate the
-module: |Import: somepath/kinds|
+module: `Import: somepath/kinds`
 - The parent must call //KindsModule::start// just after it starts up, and
 //KindsModule::end// just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
@@ -46,36 +46,36 @@ would be
 =
 The following alphabetical list has references to fuller explanations:
 
-- |DETERMINE_SCALE_FACTOR_KINDS_CALLBACK|, if provided, is called to give
+- `DETERMINE_SCALE_FACTOR_KINDS_CALLBACK`, if provided, is called to give
 the "scale factor" for a kind. See //values: Literal Patterns// for the
 use of this; here, it appears in //Kinds::Behaviour::scale_factor//.
 
-- |HIERARCHY_GET_SUPER_KINDS_CALLBACK| is called to ask what the superkind
+- `HIERARCHY_GET_SUPER_KINDS_CALLBACK` is called to ask what the superkind
 of a kind is. See //Latticework::super//.
 
-- |HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK| is called to ask if q
+- `HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK` is called to ask if q
 kind can contain sometimes-matching subkind instances. See
 //Latticework::order_relation//.
 
-- |HIERARCHY_MOVE_KINDS_CALLBACK| is called to ask us to put make one
+- `HIERARCHY_MOVE_KINDS_CALLBACK` is called to ask us to put make one
 kind a subkind of another. See //Kinds::make_subkind// and
 //Kinds::new_base// -- there are two ways this can happen.
 
-- |HIERARCHY_VETO_MOVE_KINDS_CALLBACK| is called to give the parent tool a
+- `HIERARCHY_VETO_MOVE_KINDS_CALLBACK` is called to give the parent tool a
 chance to veto any proposed subkind. (Inform uses this, for example, to catch
 the case of somebody making "region" a subkind of some other kind of object.)
 See //Kinds::make_subkind//.
 
-- |NEW_BASE_KINDS_CALLBACK| is called when a new base kind (properly
+- `NEW_BASE_KINDS_CALLBACK` is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See //Kinds::new_base//
 and //NeptuneFiles::read_command// -- there are two ways this can happen.
 
-- |NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK| is called when the kind "natural
+- `NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK` is called when the kind "natural
 language" is created (if it is): see //FamiliarKinds::notice_new_kind//.
 
-- |PROBLEM_KINDS_CALLBACK| is called when a syntax error is found, and can
+- `PROBLEM_KINDS_CALLBACK` is called when a syntax error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //KindsModule::problem_handler//.
 
-- |REGISTER_NOUN_KINDS_CALLBACK|, if provided, can register a common noun
+- `REGISTER_NOUN_KINDS_CALLBACK`, if provided, can register a common noun
 for a new base kind with the lexicon itself. See //Kinds::new_base//.

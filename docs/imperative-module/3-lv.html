@@ -542,12 +542,9 @@ making all of them objects.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Permissible names.</b>  This is an interesting issue of policy. Suppose the source text says:</p>
-</div>
 <blockquote>
-    <p>let the slate be 1;</p>
+<p>let the slate be 1;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and, far away, an object called &quot;the slate&quot; is sitting on a schoolroom desk.
 Do we allow this, thus temporarily changing the meaning of &quot;slate&quot;, or do
 we throw it out with a problem message? If we allow it, we enable source text
@@ -555,12 +552,9 @@ to become less clear, since meaning now depends on context. If we forbid it,
 we cause all sorts of things to go wrong with extensions (including not least
 the Standard Rules): because suppose they contain a local called &quot;slate&quot;
 somewhere, and then the unsuspecting user writes</p>
-</div>
 <blockquote>
-    <p>The slate is on the desk.</p>
+<p>The slate is on the desk.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Now there's a conflict, and the user will be baffled, never having read the
 extension he's using. So we do allow this, and certain other overloadings
 of meanings, too, but it would be too much to say that every phrase has its
@@ -568,12 +562,9 @@ own namespace.</p>
 <p>Callings get one extra benefit, because they typically exist more fleetingly --
 often only for the sentence where they're defined -- and because the syntax
 is more explicit. So you can write:</p>
-</div>
 <blockquote>
-    <p>if an infected person can see a healthy person (called random bystander), ...</p>
+<p>if an infected person can see a healthy person (called random bystander), ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>even if &quot;random bystander&quot; might otherwise be a request to randomly generate
 an instance of the kind &quot;bystander&quot;.</p>
 </div>
@@ -625,7 +616,7 @@ exists to fix that:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lvar</span><span class="plain-syntax"> = (</span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">lvar</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no such variable"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">[0]) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'L'</span><span class="plain-syntax">: </span><span class="comment-syntax">/* bare |%L| means the same as |%+L|, so fall through to... */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'L'</span><span class="plain-syntax">: </span><span class="comment-syntax">/* bare <code>%L</code> means the same as <code>%+L</code>, so fall through to... */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'+'</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lvar</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">current_usage</span><span class="plain-syntax">.</span><span class="element-syntax">varname</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'-'</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%-W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lvar</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">current_usage</span><span class="plain-syntax">.</span><span class="element-syntax">varname</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'~'</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lvar</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">identifier</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>

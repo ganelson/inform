@@ -7,7 +7,7 @@ taken case insensitively.
 @h Vocabulary Entries.
 A //vocabulary_entry// object is created for each different word found in the
 source. (Recall that these are not necessarily words in the usual English
-sense: for instance, |17| is a word here.)
+sense: for instance, `17` is a word here.)
 
 The vocabulary entry structure exists to make textual comparisons faster,
 which is essential to make Inform run tolerably quickly: Inform's speed on
@@ -21,7 +21,7 @@ could also be written "small shoe"); and thirdly, each word also carries
 a bitmap of flags indicating the possible contexts in which it might
 be used. Finally, to avoid parsing the same text over and over for its
 possible meaning as a literal integer, we cache the result: for instance,
-17 for the text |17|.
+17 for the text `17`.
 
 The meaning codes alluded to below are also used for excerpts of text
 (i.e., are not just for single words): see //lexicon: Excerpt Meanings//.
@@ -92,22 +92,22 @@ void Vocabulary::create_punctuation(void) {
 	STROKE_V         = Vocabulary::entry_for_text(U"|");
 }
 
-@ Each distinct word is to have a unique |vocabulary_entry| structure, and the
-"identity" at word number |wn| is to point to the structure for the text
+@ Each distinct word is to have a unique `vocabulary_entry` structure, and the
+"identity" at word number `wn` is to point to the structure for the text
 at that word. Two words are distinct if their lower-case forms are different,
 except that two quoted literal texts are always distinct, even if they have
 the same content. So for instance,
 
->> Daleks conquer and destroy! "Ba-dum." Exterminate, exterminate! "Ba-dum."
+> Daleks conquer and destroy! "Ba-dum." Exterminate, exterminate! "Ba-dum."
 
 would be identified as
 
->> |ve0| |ve1| |ve2| |ve3| |ve4| |ve5| |ve6| |ve6| |ve4| |ve7|
+> `ve0` `ve1` `ve2` `ve3` `ve4` `ve5` `ve6` `ve6` `ve4` `ve7`
 
-where |ve4| is the common identity of both exclamation marks, and |ve6|
+where `ve4` is the common identity of both exclamation marks, and `ve6`
 that of the two "exterminate"s, even though they have different casings;
-while the quoted text |"Ba-dum."| came out with two different identities
-|ve5| and |ve7|.
+while the quoted text `"Ba-dum."` came out with two different identities
+`ve5` and `ve7`.
 
 When we want to set the identity for a given word, we call these front-door
 routines, either on a single word or on a range.
@@ -125,7 +125,7 @@ void Vocabulary::identify_word_range(wording W) {
 }
 
 @ Should we ever change the text of a word, it's essential to re-identify it,
-as otherwise its |lw_identity| points to the wrong vocabulary entry.
+as otherwise its `lw_identity` points to the wrong vocabulary entry.
 
 =
 void Vocabulary::change_text_of_word(int wn, inchar32_t *new) {
@@ -172,7 +172,7 @@ files which the word came from. This looks strange because we normally
 identify words on their case-lowered text, not on their raw text. In
 the source material:
 
->> Former Marillion vocalist Fish derived his nickname not from a fish, but from habitual bathing.
+> Former Marillion vocalist Fish derived his nickname not from a fish, but from habitual bathing.
 
 words 4, "Fish", and 11, "fish", each have the same vocabulary entry
 as identity, even though their raw texts differ. Clearly the ordinary
@@ -220,7 +220,7 @@ void Vocabulary::set_literal_number_value(vocabulary_entry *ve, int val) {
 occasionally need to distinguish "The" from "the" and the like, when
 parsing the names of text substitutions. When a new text substitution is
 declared whose first word, in the definition, begins with a capital letter,
-|Vocabulary::make_case_sensitive| is called on the first word, and its identity
+`Vocabulary::make_case_sensitive` is called on the first word, and its identity
 is changed to the upper case variant form.
 
 =
@@ -295,7 +295,7 @@ a "hash code". This is the algorithm called "X 30011" in Aho, Sethi and
 Ullman's standard "Compilers: Principles, Techniques and Tools" (1986).
 Because it is derived from constantly overflowing integer arithmetic,
 it will produce different codes on different architectures (say, where
-|int| is 64 bits long rather than 32, or where |char| is unsigned).
+`int` is 64 bits long rather than 32, or where `char` is unsigned).
 All that matters is that it provides a good spread of hash codes for
 typical texts fed into it on any given occasion.
 
@@ -311,7 +311,7 @@ codes produced by X 30011: we reserve a further three special codes to be
 the hashes of literals rather than ordinary words, and this brings us up to
 a round 1000.
 
-Inside the lexer, decimal integers such as |-506| were treated as ordinary
+Inside the lexer, decimal integers such as `-506` were treated as ordinary
 words, as there were no lexical difficulties in parsing them. Here they
 begin to semantically diverge from the way other ordinary words are handled:
 they're treated more like literal texts and I6 inclusions.
@@ -319,7 +319,7 @@ they're treated more like literal texts and I6 inclusions.
 @d HASH_TAB_SIZE 1000 /* the possible hash codes are 0 up to this minus 1 */
 @d NUMBER_HASH 0 /* literal decimal integers, and no other words, have this hash code */
 @d TEXT_HASH 1 /* double quoted texts, and no other words, have this hash code */
-@d I6_HASH 2 /* the |(-| word introducing an I6 inclusion uniquely has this hash code */
+@d I6_HASH 2 /* the `(-` word introducing an I6 inclusion uniquely has this hash code */
 
 =
 int Vocabulary::hash_code_from_word(inchar32_t *text) {
@@ -372,7 +372,7 @@ void Vocabulary::write_hash_table(OUTPUT_STREAM) {
 }
 
 @ And that leaves only one routine: for finding the unique vocabulary
-entry pointer associated with the material in |text|. We search the
+entry pointer associated with the material in `text`. We search the
 hash table to see if we have the word already, and if not, we add it.
 Either way, we return a valid pointer. (Compare Isaiah 55:11, "So shall
 my word be that goeth forth out of my mouth: it shall not return unto
@@ -415,7 +415,7 @@ vocabulary_entry *Vocabulary::entry_for_text(inchar32_t *text) {
 			n++, old_entry = new_entry, new_entry = new_entry->next_in_vocab_hash)
 			if (Wide::cmp(new_entry->exemplar, text) == 0)
 				return new_entry;
-		/* and if we do not find |text| in there, then... */
+		/* and if we do not find `text` in there, then... */
 		@<My vision is impaired! I cannot see!@>;
 	}
 }
@@ -433,8 +433,8 @@ hash list for all text literals empty.
 		no_vocabulary_entries++, text, hash_code);
 	return new_entry;
 
-@ And here, we exhausted the list at entry |n-1|, with the last entry being
-pointed to by |old_entry|. We add the new word at the end.
+@ And here, we exhausted the list at entry `n-1`, with the last entry being
+pointed to by `old_entry`. We add the new word at the end.
 
 @<My vision is impaired! I cannot see!@> =
 	new_entry = Vocabulary::vocab_entry_new(text, hash_code, f, val);

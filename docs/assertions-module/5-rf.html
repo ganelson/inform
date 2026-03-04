@@ -78,7 +78,7 @@ they belong to, and others are placed in rulebooks with separate sentences.
 So there's quite a lot to do.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "Before taking a container, ..." */</span>
+<span class="type-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;Before taking a container, ...&quot; */</span>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuleFamily::create_family</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RuleFamily::create_family</span></span>:<br/>Imperative Definition Families - <a href="5-idf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax"> = </span><a href="5-idf.html#SP2" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"rule-idf"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP5" class="function-link"><span class="function-syntax">RuleFamily::identify</span></a><span class="plain-syntax">);</span>
@@ -298,7 +298,7 @@ happen. (That's why it is important that we are the last family to claim.)</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  The crucial nonterminal in the above grammar is &lt;rulebook-stem&gt;, which tries
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  The crucial nonterminal in the above grammar is <rulebook-stem>, which tries
 to make the longest match it can of a rulebook name; if it matches successfully,
 then calling <code>Rulebooks::match</code> produces a detailed rundown of its findings,
 which are too elaborate to pass back in a simple pointer.</p>
@@ -436,20 +436,14 @@ clauses are therefore better recognised.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Every rule corresponds to a <code>rule</code> structure. If the rule is an anonymous
 one, such as:</p>
-</div>
 <blockquote>
-    <p>Instead of jumping: say "Don't."</p>
+<p>Instead of jumping: say &quot;Don't.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then we need to call <code>Rules::obtain</code> to create a nameless <code>rule</code> structure
 to be connected to it. But if the phrase has an explicit name:</p>
-</div>
 <blockquote>
-    <p>Instead of swimming (this is the avoid water rule): say "Don't."</p>
+<p>Instead of swimming (this is the avoid water rule): say &quot;Don't.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then we have a predeclared rule called &quot;avoid water rule&quot; already, so we
 connect this existing one to the phrase.</p>
 </div>
@@ -789,7 +783,7 @@ parser, recording how it most recently failed.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1_5">&#167;11.1.1.5</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11_1_1_5_4" class="paragraph-anchor"></a><b>&#167;11.1.1.5.4. </b>  If the action pattern contains what looks like a list of action names, as for example
-&quot;Instead of taking or dropping the magnet: ...&quot; then the &lt;anl-diagnosis&gt; grammar will
+&quot;Instead of taking or dropping the magnet: ...&quot; then the <anl-diagnosis> grammar will
 parse this and return N equal to 2, the apparent number of action names. We then
 run the grammar again, but this time allowing it to print comments on each apparent
 action name it sees.</p>

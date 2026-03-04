@@ -64,7 +64,7 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. How nonterminals are stored.</b>  Each different nonterminal defined in the <code>Syntax.preform</code> code read in,
-such as &lt;any-integer&gt;, is going to correspond to a global variable in the
+such as <any-integer>, is going to correspond to a global variable in the
 program reading it in, such as <code>any_integer_NTM</code>. On the face of it, this is
 impossible. How can what happens at run-time affect what variables are named
 at compile time?</p>
@@ -171,12 +171,12 @@ use the constant <code>INFINITE_WORD_COUNT</code> for it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  So, then, the following rather lengthy class declaration shows what goes
 into a nonterminal. Note that nonterminals are uniquely identifiable by their
-names: there can be only one called, say, &lt;any-integer&gt;. This is why its
+names: there can be only one called, say, <any-integer>. This is why its
 textual name is referred to as an &quot;ID&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nonterminal_id</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. |"</span><span class="function-syntax">&lt;any-integer&gt;</span><span class="comment-syntax">"| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nonterminal_id</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. <code>&quot;&lt;any-integer&gt;&quot;</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* For internal nonterminals */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marked_internal</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has, or will be given, an internal definition... */</span>
@@ -187,14 +187,14 @@ textual name is referred to as an &quot;ID&quot;.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_pl</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if not internal, this defines it */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">compositor_fn</span><span class="plain-syntax">)(</span><span class="type-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">r</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">rp</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i_s</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">i_ps</span><span class="plain-syntax">, </span><span class="type-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i_W</span><span class="plain-syntax">, </span><span class="type-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiplicitous</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if true, matches are alternative syntax tree readings */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_words_by_production</span><span class="plain-syntax">; </span><span class="comment-syntax">/* this parses names for numbers, like "huit" or "zwei" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_words_by_production</span><span class="plain-syntax">; </span><span class="comment-syntax">/* this parses names for numbers, like &quot;huit&quot; or &quot;zwei&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">flag_words_in_production</span><span class="plain-syntax">; </span><span class="comment-syntax">/* all words in the production should get these flags */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* Storage for most recent correct match */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_result</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_RANGES_PER_PRODUCTION</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* storage for word ranges matched */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_optimisation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">opt</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see //The Optimiser// */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_instrumentation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">ins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see //Instrumentation// */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_optimisation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">opt</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-to.html" class="internal">The Optimiser</a> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_instrumentation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">ins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-ins.html" class="internal">Instrumentation</a> */</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">nonterminal</span><span class="plain-syntax">;</span>
@@ -229,7 +229,7 @@ below.</p>
 </li>
 <li>
 <p>The optimisation data helps the parser to reject non-matching text quickly.
-For example, if the optimiser can determine that &lt;competitor&gt; only ever matches
+For example, if the optimiser can determine that <competitor> only ever matches
 texts of between 3 and 7 words in length, it can quickly reject any run of
 words outside that range. (However: note that a maximum of 0 means that the
 maximum and minimum word counts are disregarded.) The other fields are harder
@@ -318,8 +318,8 @@ any single NT.</p>
 <p><a href="../inweb/index.html" class="internal">inweb</a> translates the notation <code>&lt;&lt;r&gt;&gt;</code> and <code>&lt;&lt;rp&gt;&gt;</code> to these variable names:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">most_recent_result</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable which |inweb| writes |</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="comment-syntax">| */</span>
-<span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">most_recent_result_p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable which |inweb| writes |</span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="comment-syntax">| */</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">most_recent_result</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable which <code>inweb</code> writes <code>&lt;&lt;r&gt;&gt;</code> */</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">most_recent_result_p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable which <code>inweb</code> writes <code>&lt;&lt;rp&gt;&gt;</code> */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Flagging and numbering.</b>  The following mechanism arranges for words used in the grammar for a NT to
@@ -329,10 +329,10 @@ we might have:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;dogg-numbers&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">sun</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dock</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">trog</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">slack</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pan</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">sun</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dock</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">trog</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">slack</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pan</span>
 </pre>
 <div class="lsmarkdown">
-<p>And if &lt;dogg-numbers&gt; were made a &quot;numbering&quot; NT, the effect would be that
+<p>And if <dogg-numbers> were made a &quot;numbering&quot; NT, the effect would be that
 these five words would pick up the numerical values 1, 2, 3, 4, 5, because
 they occur in production number 1, 2, 3, 4, 5 for the NT.</p>
 </div>

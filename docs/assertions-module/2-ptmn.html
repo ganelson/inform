@@ -130,19 +130,13 @@ but saves a deal of passing parameters around.</p>
 <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b>  Here's a tricky timing problem, or rather, here's the fix for it. Assemblies
 are made when the kinds of objects are set, and they're made by inserting
 appropriate sentences. For instance, given the generalisation:</p>
-</div>
 <blockquote>
-    <p>Every room contains a vehicle.</p>
+<p>Every room contains a vehicle.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>we would insert the following sentence into the tree:</p>
-</div>
 <blockquote>
-    <p>Ballroom West contains a vehicle.</p>
+<p>Ballroom West contains a vehicle.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>as soon as we discover that Ballroom West is a room. That works fine if we
 discover this fact during traverses 1 or 2, but sometimes the room-ness of
 a room cannot be established until the world model is constructed. So we

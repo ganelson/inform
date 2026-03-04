@@ -6,8 +6,8 @@ To render the spatial map of rooms as HTML.
 Three three-dimensional arrays called "grids" are used to store a rasterised
 version of the map before we render this on screen.
 
-The |room_grid| tells us which room can be found at $(x, y, z)$, while the
-|icon_grid| is 25 times larger since it splits each room cell into a 5 by 5
+The `room_grid` tells us which room can be found at $(x, y, z)$, while the
+`icon_grid` is 25 times larger since it splits each room cell into a 5 by 5
 subgrid of icons. Bitmaps stored in the 16 icon cells around the perimeter
 of the 5 by 5 subgrid tell us which exits to mark (and since we map only 12
 kinds of exit, this means that four of them are unused). The central 3 by 3
@@ -17,7 +17,7 @@ HTML table routine below. We will often use the wasteful coordinate system
 $(x, y, z, i_1, i_2)$ to mean the icon at $(i_1, i_2)$ (with $0\leq i_1,
 i_2\leq 4$) associated with the room cell at $(x, y, z)$.
 
-The |exit_grid| stores which direction number is the exit being marked at
+The `exit_grid` stores which direction number is the exit being marked at
 this icon position, and has the same indexing as the icon grid.
 
 @d ROOM_GRID_POS(P) Geometry::cuboid_index(P, session->calc.Universe)
@@ -370,7 +370,7 @@ void HTMLMap::end_map_table(OUTPUT_STREAM) {
 	for (int i=0; i<map_tables_begun; i++) WRITE("  ");
 
 @h Icon images.
-The icons we use will all be PNGs, and all stored in the |map_icons|
+The icons we use will all be PNGs, and all stored in the `map_icons`
 directory. A "tool tip" is the text which appears over the mouse arrow
 when it hovers for long enough over the icon.
 

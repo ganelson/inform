@@ -76,7 +76,7 @@ function definitions. For example:</p>
 by its opening word &quot;To&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_phrase_idf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "To award (some - number) points: ..." */</span>
+<span class="type-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_phrase_idf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;To award (some - number) points: ...&quot; */</span>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ToPhraseFamily::create_family</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ToPhraseFamily::create_family</span></span>:<br/>Imperative Definition Families - <a href="5-idf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">to_phrase_idf</span><span class="plain-syntax"> = </span><a href="5-idf.html#SP2" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"TO_PHRASE_EFF"</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">to_phrase_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-tpf.html#SP4" class="function-link"><span class="function-syntax">ToPhraseFamily::claim</span></a><span class="plain-syntax">);</span>
@@ -103,8 +103,8 @@ only the prototype is compulsory, and the other two are often empty.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_documentation_symbol</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the documentation reference, if any */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">constant_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_constant</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">explicit_name_used_in_maths</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if so, this flag means it's like |log()| or |sin()| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">explicit_name_for_inverse</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. |exp| for |log| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">explicit_name_used_in_maths</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if so, this flag means it's like <code>log()</code> or <code>sin()</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">explicit_name_for_inverse</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. <code>exp</code> for <code>log</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_begin</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in Basic mode only: this is to be the main id_body */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_in_logical_order</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence_count</span><span class="plain-syntax">; </span><span class="comment-syntax">/* within the logical order list, from 0 */</span>
@@ -120,7 +120,7 @@ only the prototype is compulsory, and the other two are often empty.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_name_used_in_maths</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_name_for_inverse</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">to_begin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sequence_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaning "not yet determined" */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sequence_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaning &quot;not yet determined&quot; */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_in_logical_order</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -550,12 +550,9 @@ number them sequentially from 0:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  A few &quot;To...&quot; phrases have names, and can therefore be used as values in their
 own right, a functional-programming sort of device. For example:</p>
-</div>
 <blockquote>
-    <p>To decide what number is double (N - a number) (this is doubling):</p>
+<p>To decide what number is double (N - a number) (this is doubling):</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>has the name &quot;doubling&quot;. Such a name is recorded here:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

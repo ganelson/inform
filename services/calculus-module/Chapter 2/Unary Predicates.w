@@ -4,8 +4,8 @@ A lightweight structure to represent a unary predicate, which is either true
 or false when applied to a single term.
 
 @ UPs are relatively small and quick to make, and are parametrised in various
-ways. For example, there is no single |kind=K| unary predicate; there is one
-for every possible kind |K|.
+ways. For example, there is no single `kind=K` unary predicate; there is one
+for every possible kind `K`.
 
 =
 typedef struct unary_predicate {

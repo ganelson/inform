@@ -241,7 +241,7 @@ but German would be quite a bit more interesting.
 	a/an some a/an some a/an some
 
 @h Unit testing.
-The //linguistics-test// test case |articles| calls this.
+The //linguistics-test// test case `articles` calls this.
 
 =
 void Articles::test(OUTPUT_STREAM) {

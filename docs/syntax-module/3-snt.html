@@ -70,20 +70,14 @@ other cases when they occur at the end of quoted matter. Moreover, we
 actually subdivide a little further, because we also want to break up
 rule &quot;sentences&quot; into their subordinate clauses. Thus, going on
 punctuation, we recognise rules as having the following model:</p>
-</div>
 <blockquote>
-    <p>Preamble: phrase 1; phrase 2; ...; phrase N.</p>
+<p>Preamble: phrase 1; phrase 2; ...; phrase N.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>It is even, in certain limited circumstances, possible that a comma can
 divide a sentence:</p>
-</div>
 <blockquote>
-    <p>Instead of eating, say "You really aren't hungry just now."</p>
+<p>Instead of eating, say &quot;You really aren't hungry just now.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This means that context is important even here, where it might have been
 expected that all we needed to do was to spot the punctuation marks.</p>
 </div>
@@ -112,7 +106,7 @@ in Preform grammar functions.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">syntax_fsm_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sf</span><span class="plain-syntax">; </span><span class="comment-syntax">/* reading from this source file */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ext_pos</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_EXTENSION_POS| values: where we are in an extension */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ext_pos</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_EXTENSION_POS</code> values: where we are in an extension */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">skipping_material_at_level</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main_source_start_wn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
@@ -275,12 +269,9 @@ which is a doubled sentence division. But we forgive it as harmless, and
 that forgiveness is provided by the loop arrangement below.</p>
 <p>We also avoid the need for empty sentences, because it is not possible
 for the code below to detect them: thus</p>
-</div>
 <blockquote>
-    <p>say "Look behind you!";;;;; now the Wug is in the Cave</p>
+<p>say &quot;Look behind you!&quot;;;;;; now the Wug is in the Cave</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is broken as two sentences, not six sentences of which four are empty.
 Perhaps we ought to be stricter, and reject more of these dubious forms,
 but at this point we have too little understanding of the semantics of
@@ -400,22 +391,16 @@ before and the word after the current position.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5_2_7" class="paragraph-anchor"></a><b>&#167;5.2.7. </b>  Inform authors habitually use the punctuation in quoted text to end
 sentences, just as other writers of English do. The text</p>
-</div>
 <blockquote>
-    <p>"Look out!" The explosion shattered the calm of the hillside.</p>
+<p>&quot;Look out!&quot; The explosion shattered the calm of the hillside.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is certainly intended as two sentences, not one.</p>
 <p>An exception is made for table declarations, because a table needs to be formed as
 one long sentence, and it clearly does not abide by the ordinary punctuation
 rules of English. The point is that in the random line of table entries...</p>
-</div>
 <blockquote>
-    <p>"Of cabbages and kings."\qquad Walrus\qquad "Carroll"</p>
+<p>&quot;Of cabbages and kings.&quot;\qquad Walrus\qquad &quot;Carroll&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...the full stop after &quot;kings&quot; has no significance: the semantics of the
 table would be no different if it were not there.</p>
 </div>
@@ -452,7 +437,7 @@ or until reaching the end of the text: whichever comes first.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Sentences::make_node</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Sentences::make_node</span></span>:<br/><a href="3-snt.html#SP5">&#167;5</a>, <a href="3-snt.html#SP7_7_1_1">&#167;7.7.1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stop_character</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_level</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">entering_dialogue</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">entering_dialogue_for</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins_or_ends</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 1 for "begins here", -1 for "ends here" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins_or_ends</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 1 for &quot;begins here&quot;, -1 for &quot;ends here&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"empty sentence generated"</span><span class="plain-syntax">);</span>
@@ -634,32 +619,24 @@ a preamble (ending with a colon, or in certain cases a comma) of node type
 <code>IMPERATIVE_NT</code> is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
 <code>INVOCATION_LIST_NT</code>. For instance, the following produces three nodes:</p>
+<p>To look upwards: say &quot;Look out!&quot;; something else.</p>
 </li>
-</ul>
-</div>
-<blockquote>
-    <p>To look upwards: say "Look out!"; something else.</p>
-</blockquote>
-
-<div class="lsmarkdown">
-<ul>
-<li>&quot;Structural sentences&quot;. These demarcate the text, call for other text
+<li>
+<p>&quot;Structural sentences&quot;. These demarcate the text, call for other text
 or unusual matter to be included, etc.: the types in question are <code>TRACE_NT</code>,
 <code>HEADING_NT</code>, <code>INCLUDE_NT</code>, <code>INFORM6CODE_NT</code>, <code>BEGINHERE_NT</code>, <code>ENDHERE_NT</code>,
-<code>TABLE_NT</code>, <code>EQUATION_NT</code> and <code>BIBLIOGRAPHIC_NT</code>.</li>
+<code>TABLE_NT</code>, <code>EQUATION_NT</code> and <code>BIBLIOGRAPHIC_NT</code>.</p>
+</li>
 </ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The second sentence in the source text is construed as containing
 bibliographic data if it begins with a quoted piece of text, perhaps with
 substitutions. For instance,</p>
-</div>
 <blockquote>
-    <p>"A Dream of Fair to Middling Women" by Samuel Beckett</p>
+<p>&quot;A Dream of Fair to Middling Women&quot; by Samuel Beckett</p>
 </blockquote>
-
-<div class="lsmarkdown">
-<p>This sentence is at the position matched by &lt;if-start-of-source-text&gt;.
+<p>This sentence is at the position matched by <if-start-of-source-text>.
 (It may not be the first sentence read, because implied extension inclusion
 sentences and options-file sentences may have been read already.)</p>
 </div>
@@ -717,12 +694,9 @@ alternatives: thus the comma in &quot;Aeschylus, Sophocles, or Euripides&quot; d
 not trigger this rule. We need this exception because such lists of
 alternatives often occur in rule preambles, where it's the third comma
 which divides rule from preamble:</p>
-</div>
 <blockquote>
-    <p>Instead of pushing, dropping, or taking the talisman, say "It is cursed."</p>
+<p>Instead of pushing, dropping, or taking the talisman, say &quot;It is cursed.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The following is used to detect &quot;or&quot; in such lists.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -788,24 +762,18 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.</p
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_7_3" class="paragraph-anchor"></a><b>&#167;7.7.3. </b>  Rules are sequences of phrases with a preamble in front, which we detect by
 its terminating colon. For instance:</p>
-</div>
 <blockquote>
-    <p>To look upwards: say "Look out!"; something else.</p>
+<p>To look upwards: say &quot;Look out!&quot;; something else.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(which arrives at this routine as three separate &quot;sentences&quot;) will produce
 nodes with type <code>IMPERATIVE_NT</code>, <code>INVOCATION_LIST_NT</code> and <code>INVOCATION_LIST_NT</code> respectively.</p>
 <p>This paragraph of code might look as if it should only be used in assertion
 mode, not in rule mode, because how can a rule preamble legally occur in
 the middle of another rule? But in fact it can, in two ways. One is the
 officially sanctioned way to make a definition with a complex phrase:</p>
-</div>
 <blockquote>
-    <p>Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.</p>
+<p>Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This produces four nodes: <code>IMPERATIVE_NT</code>, <code>IMPERATIVE_NT</code>, <code>INVOCATION_LIST_NT</code> and
 <code>INVOCATION_LIST_NT</code> respectively.</p>
 <p>The other arises somewhat less officially when people treat phrases as

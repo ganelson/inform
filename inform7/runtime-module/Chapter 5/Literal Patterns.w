@@ -3,7 +3,7 @@
 Compiled code to print and parse values expressed as literals.
 
 @h Compilation data.
-Each |literal_pattern| object contains this data.
+Each `literal_pattern` object contains this data.
 
 =
 typedef struct literal_pattern_compilation_data {
@@ -326,8 +326,8 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 The following function compiles a "general parsing routine" (GPR), in the sense
 used by the Inform 6 Designer's Manual, to match typed input in the correct
 notation: roughly speaking, it tries to match words at the current word position
-|wn|, and returns either |GPR_FAIL| or |GPR_NUMBER|. In the latter case, it
-sets the |parsed_number| global to the value matched.
+`wn`, and returns either `GPR_FAIL` or `GPR_NUMBER`. In the latter case, it
+sets the `parsed_number` global to the value matched.
 
 @<Compile the parse function@> =
 	inter_name *iname = RTLiteralPatterns::parse_fn_iname(lp);
@@ -1533,7 +1533,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	EmitCode::up();
 
-@h Printing the I6 variable |value| out in an LP's notation at run-time.
+@h Printing the I6 variable `value` out in an LP's notation at run-time.
 
 =
 void RTLiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_list) {

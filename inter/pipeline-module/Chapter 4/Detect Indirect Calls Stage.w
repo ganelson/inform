@@ -3,8 +3,8 @@
 To handle function calls made to functions identified by symbols which turn
 out, during linking, to be variables rather than constants.
 
-@ Suppose kit A makes the function call |Mystery(1, 2, 3)|, where |Mystery| is a
-function defined in kit B; and suppose further that |Mystery| is not the name of
+@ Suppose kit A makes the function call `Mystery(1, 2, 3)`, where `Mystery` is a
+function defined in kit B; and suppose further that `Mystery` is not the name of
 a function, but the name of a variable in kit B, whose value at runtime will be
 the address of the function which must be called. The original call in Kit A
 will be a function invocation like so:
@@ -15,7 +15,7 @@ will be a function invocation like so:
 		val K_number 3
 =
 But this is incorrect, because only explicitly identified functions can be
-invoked like this, and |Mystery| turns out to be a variable. (The compiler
+invoked like this, and `Mystery` turns out to be a variable. (The compiler
 of kit A has no way to know this.) We must correct to:
 = (text as Inter)
 	inv !indirect3v

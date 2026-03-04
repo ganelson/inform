@@ -4,7 +4,7 @@ To compile the actions submodule for a compilation unit, which contains
 _action packages.
 
 @h Compilation data.
-Each |action_name| object contains this data:
+Each `action_name` object contains this data:
 
 =
 typedef struct action_compilation_data {
@@ -12,9 +12,9 @@ typedef struct action_compilation_data {
 	int translated;
 	struct text_stream *translated_name;
 	struct package_request *an_package;
-	struct inter_name *an_base_iname; /* e.g., |Take| */
-	struct inter_name *an_double_sharp_iname; /* e.g., |##Take| */
-	struct inter_name *an_processing_fn_iname; /* e.g., |TakeSub| */
+	struct inter_name *an_base_iname; /* e.g., `Take` */
+	struct inter_name *an_double_sharp_iname; /* e.g., `##Take` */
+	struct inter_name *an_processing_fn_iname; /* e.g., `TakeSub` */
 	struct inter_name *variables_id; /* for the shared variables set */
 	struct parse_node *where_created;
 	int an_specification_text_word; /* description used in index */
@@ -79,8 +79,8 @@ inter_name *RTActions::base_iname(action_name *an) {
 }
 
 @ We actually want the other names to still be related to the base name even
-after a translation; i.e., if an action is translated to |Grab|, then we want
-to have the related names be |##Grab| and |GrabSub|. So translation needs to
+after a translation; i.e., if an action is translated to `Grab`, then we want
+to have the related names be `##Grab` and `GrabSub`. So translation needs to
 happen early-ish in the run, before the base iname is generated.
 
 =
@@ -104,7 +104,7 @@ text_stream *RTActions::identifier(action_name *an) {
 	return InterNames::to_text(RTActions::base_iname(an));
 }
 
-@ The convention of writing actions with a |##| prefix is lost in the mists of
+@ The convention of writing actions with a `##` prefix is lost in the mists of
 early Inform history. It's harmless enough, though.
 
 =
@@ -116,7 +116,7 @@ inter_name *RTActions::double_sharp(action_name *an) {
 	return an->compilation_data.an_double_sharp_iname;
 }
 
-@ Similarly, the function to carry out an action has been named with a |Sub|
+@ Similarly, the function to carry out an action has been named with a `Sub`
 suffix for as long as anyone can remember. "Sub" simply meant "subroutine",
 and has its roots in Inform 1's predecessor, a Z-machine assembler called "zass".
 Again, we keep these conventions because why not. They are at least familiar
@@ -269,7 +269,7 @@ void RTActions::compilation_agent(compilation_subtask *t) {
 	inter_name *vc = Hierarchy::make_iname_in(ACTION_VARC_MD_HL, pack);
 	Emit::iname_constant(vc, K_value, iname);
 
-@ The "perform" function for an action, typically called something like |TakeSub|,
+@ The "perform" function for an action, typically called something like `TakeSub`,
 consists only of a call to a generic action-performing function; that function
 takes our three rulebooks as arguments.
 
@@ -420,7 +420,7 @@ void RTActions::print_noun_or_second(action_name *an, int n, inter_symbol *n_s, 
 }
 
 void RTActions::print_something(OUTPUT_STREAM, action_name *an, int argc) {
-	kind *K = NULL; /* redundant assignment to appease |gcc -O2| */
+	kind *K = NULL; /* redundant assignment to appease `gcc -O2` */
 	HTML::begin_span(OUT, I"indexdullblue");
 	if (argc == 0) K = ActionSemantics::kind_of_noun(an);
 	if (argc == 1) K = ActionSemantics::kind_of_second(an);

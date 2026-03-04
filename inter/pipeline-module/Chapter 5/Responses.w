@@ -5,13 +5,13 @@ To compile the main/synoptic/responses submodule.
 @ Response packages are scattered all over the Inter tree. Each one contains
 these metadata constants:
 
-- |^group|, textual, which describes the origin.
-- |^marker|, numeric, from 0 to 25: whether this is (A), (B), ..., (Z);
-- |^rule|, symbol, the rule to which this is a response.
-- |^value|, symbol, the text for the response at start of play.
+- `^group`, textual, which describes the origin.
+- `^marker`, numeric, from 0 to 25: whether this is (A), (B), ..., (Z);
+- `^rule`, symbol, the rule to which this is a response.
+- `^value`, symbol, the text for the response at start of play.
 
-Our inventory |inv| already contains a list |inv->response_nodes| of all packages
-in the tree with type |_response|.
+Our inventory `inv` already contains a list `inv->response_nodes` of all packages
+in the tree with type `_response`.
 
 =
 void SynopticResponses::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -22,10 +22,10 @@ void SynopticResponses::compile(inter_tree *I, pipeline_step *step, tree_invento
 	@<Define PrintResponse function@>;
 }
 
-@ Each response package contains a numeric constant with the symbol name |response_id|.
+@ Each response package contains a numeric constant with the symbol name `response_id`.
 We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
 so we change the values of these constants accordingly. These will be the enumerated
-values at runtime of the kind |K_response|.
+values at runtime of the kind `K_response`.
 
 @<Assign unique response ID numbers@> =
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
@@ -57,11 +57,11 @@ of the text of that response.
 prints out all known responses, divided up by the extensions containing the
 rules which produce them.
 
-The format is triples |(group, from, to)| where |group| is a textual
-description of the origin of the set (e.g., an extension name), and |from|
-and |to| are an inclusive range of response ID numbers.
+The format is triples `(group, from, to)` where `group` is a textual
+description of the origin of the set (e.g., an extension name), and `from`
+and `to` are an inclusive range of response ID numbers.
 
-The triple |(0, 0, 0)| ends the array.
+The triple `(0, 0, 0)` ends the array.
 
 @<Define ResponseDivisions array@> =
 	inter_name *iname = HierarchyLocations::iname(I, RESPONSEDIVISIONS_HL);
@@ -90,9 +90,9 @@ The triple |(0, 0, 0)| ends the array.
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
 
-@ Finally, a function used when printing values of the |K_response| kind;
+@ Finally, a function used when printing values of the `K_response` kind;
 the main compiler created this as a mostly empty function with two local
-variables -- |R|, the ID for the response we should print, and |RPR|, the
+variables -- `R`, the ID for the response we should print, and `RPR`, the
 address of a function for printing rule names.
 
 This is in effect a big switch statement, so it's not fast; but being a print

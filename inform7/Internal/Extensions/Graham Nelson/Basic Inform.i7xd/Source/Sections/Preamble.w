@@ -140,7 +140,7 @@ Use manual line input echoing translates as the configuration flag
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates
 to an I6 constant declaration, with the value chosen being substituted for
-|{N}|.
+`{N}`.
 
 The "dynamic memory allocation" defined here is slightly misleading, in
 that the memory is only actually consumed in the event that any of the

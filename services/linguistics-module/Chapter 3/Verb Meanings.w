@@ -7,7 +7,7 @@ Because this module is concerned with the structure of sentences and not
 their meanings, we don't really want to get into what verbs "mean". Instead,
 we assume that the tool using this module will assign meanings in some way
 that it understands and we do not: the data for the meaning of a verb will
-be a pointer to |VERB_MEANING_LINGUISTICS_TYPE|. (In Inform, this will be
+be a pointer to `VERB_MEANING_LINGUISTICS_TYPE`. (In Inform, this will be
 a binary predicate.)
 
 By default, there's no meaning at all:
@@ -16,7 +16,7 @@ By default, there's no meaning at all:
 
 @ The "reversal" of a verb is the meaning which exchanges its object and
 subject. So the reverse meaning to "A likes B" is "A is liked by B", or
-equivalent, "B likes A". We use the |VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK|
+equivalent, "B likes A". We use the `VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK`
 to ask for a reversal to be performed when needed.
 
 =
@@ -34,7 +34,7 @@ We can now define an object to wrap up this abstracted idea of verb meaning:
 
 =
 typedef struct verb_meaning {
-	int take_meaning_reversed; /* |TRUE| if this has been reversed */
+	int take_meaning_reversed; /* `TRUE` if this has been reversed */
 	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
 	struct special_meaning_holder *special_meaning;
 	struct verb *take_meaning_from;
@@ -126,7 +126,7 @@ void VerbMeanings::set_where_assigned(verb_meaning *vm, parse_node *pn) {
 }
 
 @h The regular meaning.
-This is not as simple as returning the |regular_meaning| field, because we
+This is not as simple as returning the `regular_meaning` field, because we
 have to follow any indirection, and reverse if necessary.
 
 =
@@ -146,7 +146,7 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning_of_form(verb_fo
 }
 
 @h The special meaning.
-This is also not as simple as returning the |regular_meaning| field, because
+This is also not as simple as returning the `regular_meaning` field, because
 again we have to follow any indirection. Since we have no good way to modify
 a special meaning function, we have to provide a function to tell the user
 whether to reverse what that function does.

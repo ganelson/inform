@@ -30,7 +30,7 @@ typedef struct pipeline_step_ephemera {
 	int to_debugging_log;
 	int from_memory;
 	struct text_stream *to_stream;
-	struct linked_list *requirements_list; /* of |attachment_instruction| */
+	struct linked_list *requirements_list; /* of `attachment_instruction` */
 	struct inter_tree *tree;
 	struct inter_pipeline *pipeline;
 	struct target_vm *for_VM;
@@ -197,7 +197,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 		Filenames::in(P, step->step_argument);
 
 @ The pipeline stops running (becomes inactive) as soon as one of the stage
-functions returns |FALSE|, or as soon as a pipeline processing error occurs, 
+functions returns `FALSE`, or as soon as a pipeline processing error occurs, 
 whichever comes first.
 
 @<Call the stage execution function@> =

@@ -41,7 +41,7 @@ inbuild_licence *Licences::new(inbuild_copy *copy) {
 }
 
 @h Date from a JSON object.
-This is the optional |legal-metadata| object in any inbuild-standard JSON
+This is the optional `legal-metadata` object in any inbuild-standard JSON
 metadata file.
 
 =

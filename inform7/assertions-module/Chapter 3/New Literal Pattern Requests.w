@@ -4,18 +4,18 @@ Special sentences creating new notations for literal values.
 
 @ The ability to create new ways to write literal values is one of the best
 features of Inform, but it is complex to parse, and has around 30 problem
-messages associated with it. The |:literals| set of test cases may be useful
+messages associated with it. The `:literals` set of test cases may be useful
 when tweaking the code below.
 
 The first point to note is that "X specifies Y" sentences have two different
 uses, but that both are covered below. First, they create literal patterns,
 and the syntax for that can be quite involved:
 
->> 1 tonne (in metric units, in tonnes, singular) specifies a mass scaled up by 1000.
+> 1 tonne (in metric units, in tonnes, singular) specifies a mass scaled up by 1000.
 
 Second, they can gives dimensional instructions about kinds:
 
->> A length times a length specifies an area.
+> A length times a length specifies an area.
 
 This is a slightly unhappy ambiguity, but the potential for confusion is low.
 Nobody who defines a literal pattern with the word "times" in can expect good
@@ -68,7 +68,7 @@ typedef struct lp_specification {
 	struct wording notation_wording; /* the actual notation, e.g., "2 tonnes" */
 	struct kind *kind_specified; /* what kind this sentence specifies */
 
-	int scaled_dir; /* one of the |LP_SCALED_*| constants above */
+	int scaled_dir; /* one of the `LP_SCALED_*` constants above */
 	int scale_factor;
 	double scale_factor_as_double;
 
@@ -81,7 +81,7 @@ typedef struct lp_specification {
 	int number_base;
 	int uses_real_arithmetic;
 
-	int notation_options; /* a bitmap of the |*_LPN| values */
+	int notation_options; /* a bitmap of the `*_LPN` values */
 	struct literal_pattern_name *notation_groups; /* "in metric units", and so on */
 
 	struct parse_node *part_np_list;
@@ -108,7 +108,7 @@ void LPRequests::initialise(lp_specification *lps) {
 @ One can define LPs with a list of alternatives, of which the first is the
 "primary alternative" and said to be the "owner" of the rest. For instance:
 
->> 1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units,
+> 1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units,
 in tonnes, plural) specifies a mass scale_factor up by 1000.
 
 Here "1 tonne" is the primary alternative, and it owns "2 tonnes".
@@ -277,7 +277,7 @@ can't set both scaling and an equivalent, for instance.
 @ Of the optional tails, the only tricky one is the part list, which has the
 following rather extensive grammar. This handles text like:
 
->> dollars and cents (optional, preamble optional)
+> dollars and cents (optional, preamble optional)
 
 The text is a list of part-names, each of which can optionally be followed
 by a bracketed list of up to three options in any order.

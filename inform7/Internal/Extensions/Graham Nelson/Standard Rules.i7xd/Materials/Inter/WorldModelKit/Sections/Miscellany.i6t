@@ -16,36 +16,36 @@ are more important to understand.
 
 - (1) The first three variables to be defined are special in that they are
 significant to very early-style Z-machine interpreters, where they are
-used to produce the status line display (hence |sline1| and |sline2|).
+used to produce the status line display (hence `sline1` and `sline2`).
 
-- (2) The |say__*| are used for the finite state machine used in printing
+- (2) The `say__*` are used for the finite state machine used in printing
 text, which keeps track of automatic paragraph breaking and the like. For
 details see the "Printing.i6t" section.
 
-- (3) |standard_interpreter| is used only for the Z-machine VM, and is always
+- (3) `standard_interpreter` is used only for the Z-machine VM, and is always
 0 for Glulx. For Z, a non-zero value here is the version number of the
 {\it Z-Machine Standards Document} which the interpreter claims to support,
-in the form (upper byte).(lower). |undo_flag|, similarly, behaves slightly
+in the form (upper byte).(lower). `undo_flag`, similarly, behaves slightly
 differently on the two platforms according to whether they support multiple
 consecutive UNDOs. UNDO basically works by taking memory snapshots of the
 whole VM ("saving UNDO") to revert to at a later point ("performing UNDO"),
 so it is expensive on memory, and traditional VMs can only store a single
 memory snapshot -- making two UNDOs in a row, going back two steps,
-impossible. Given this, |undo_flag| has three possible states: 0 means
+impossible. Given this, `undo_flag` has three possible states: 0 means
 UNDO is not available at all, 1 means it is not available now because
 there is no further saved state to go back to from here, and 2 means it
 is available.
 
-- (4) |deadflag| in normally 0, or false, meaning play continues; 1 means the
+- (4) `deadflag` in normally 0, or false, meaning play continues; 1 means the
 game ended in death; 2 for ended in victory; higher numbers represent
 exotic endings. (As from May 2010, the use of 2 for victory is deprecated,
-and a separate flag, |story_complete|, records whether the story is
+and a separate flag, `story_complete`, records whether the story is
 "complete" in the sense that we don't expect the player to replay.)
-|deadflag| switching state normally triggers an end to rulebook processing,
+`deadflag` switching state normally triggers an end to rulebook processing,
 so is the single most important global variable to the running of a story
 file.
 
-- (5) At present, |time_rate| is not made use of in I7: if positive, it is
+- (5) At present, `time_rate` is not made use of in I7: if positive, it is
 the number of minutes which pass each turn; if negative, the number of
 turns which pass each minute. This is quite a neat way to approximate a
 wide range of time steps with an integer such that fractions are exact
@@ -53,16 +53,16 @@ and we can approximate any duration to a fair accuracy (the worst case
 being $3/4$ minute, where we have to choose between 1 minute or $1/2$
 minute).
 
-- (6) Note that |notify_mode| is irrelevant if the use option "Use no scoring"
+- (6) Note that `notify_mode` is irrelevant if the use option "Use no scoring"
 is in force: it isn't looked at, and can't be changed, and shouldn't have
-an effect anyway since |score| will never be altered.
+an effect anyway since `score` will never be altered.
 
-- (7) |player| is a variable, not a constant, since the focus of play can
-change. |SACK_OBJECT| is likewise an unexpected variable: in the I6
+- (7) `player` is a variable, not a constant, since the focus of play can
+change. `SACK_OBJECT` is likewise an unexpected variable: in the I6
 library, there could only be one player's holdall, a single rucksack-like
-possession which had to be the value of the constant |SACK_OBJECT|. Here we
-define |SACK_OBJECT| as a global variable instead, the value of which is
-the player's holdall currently in use. |visibility_ceiling| is the
+possession which had to be the value of the constant `SACK_OBJECT`. Here we
+define `SACK_OBJECT` as a global variable instead, the value of which is
+the player's holdall currently in use. `visibility_ceiling` is the
 highest object in the tree visible from the player's point of view:
 usually the room, but sometimes nothing (in darkness), and sometimes a
 closed non-transparent container.
@@ -71,14 +71,14 @@ closed non-transparent container.
 
 - (9) This is a slate of global variables used by the parser to give some
 context to the general parsing routines (GPRs) which it calls; in the I6
-design, any object can provide its own GPR, in the form of a |parse_name|
+design, any object can provide its own GPR, in the form of a `parse_name`
 property. GPRs are in effect parser plug-ins, and I7 makes extensive use
 of them.
 
 - (10) Similarly, variables for the parser to give context to another sort
 of plug-in routine: a scope filter. I7 uses these too.
 
-- (11) The |move_*| variables are specific to the |##Going| action.
+- (11) The `move_*` variables are specific to the `##Going` action.
 
 - (12) These variables hold current settings for listing objects and,
 more elaborately, performing room descriptions.
@@ -88,7 +88,7 @@ be saved in the save game state, and changed correctly on an UNDO: if it
 were a transient state inside the VM interpreter's screen model, then a
 RESTORE or UNDO will upset what the original author may have intended the
 appearance of text in particular scenes to be. (Cf. Adam Cadre's I6 patch
-|L61007|.)
+`L61007`.)
 
 - (14) These pixel dimensions are used both for the Glulx and v6 Z-machines,
 but not for the more commonly used versions 5 or 8, whose screen model is
@@ -216,7 +216,7 @@ Global debug_scenes = 0;
 
 @h Compass.
 I6 identified compass directions as being children of the pseudo-object
-|Compass|, so we define it. (Note that |Compass| is not a valid I7 object,
+`Compass`, so we define it. (Note that `Compass` is not a valid I7 object,
 and is used for no other purpose.) Because of the traditional structure
 of language definitions, this needs to come first.
 
@@ -224,9 +224,9 @@ of language definitions, this needs to come first.
 Object Compass "compass" has concealed;
 
 @h Score and Rankings Table.
-The following command tells Inform to compile constant definitions for |INITIAL_MAX_SCORE|
-and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
-no ranking table, |RANKING_TABLE| is left undefined, so that we can |#ifdef| this
+The following command tells Inform to compile constant definitions for `INITIAL_MAX_SCORE`
+and/or `RANKING_TABLE`, in cases where there are scores and rankings. If there's
+no ranking table, `RANKING_TABLE` is left undefined, so that we can `#ifdef` this
 possibility later.
 
 =

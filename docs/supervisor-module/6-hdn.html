@@ -84,12 +84,9 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The hierarchy.</b>  Headings in the source text correspond to <code>HEADING_NT</code> nodes in syntax
 trees, and mostly occur when the user has explicitly typed a heading such as:</p>
-</div>
 <blockquote>
-    <p>Part VII - The Ghost of the Aragon</p>
+<p>Part VII - The Ghost of the Aragon</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Source text can make whatever headings it likes: no sequence is illegal. It
 is not for Inform to decide on behalf of the author that it is eccentric to
 place Section C before Section B, for instance. The author might be doing so
@@ -164,7 +161,7 @@ instances of:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_root</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assembled_at_least_once</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_indentation_above_level</span><span class="plain-syntax">[</span><span class="constant-syntax">NO_HEADING_LEVELS</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subordinates</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |heading| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subordinates</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>heading</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">damaged</span><span class="plain-syntax">; </span><span class="comment-syntax">/* i.e., failed verification */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">heading_tree</span><span class="plain-syntax">;</span>
@@ -236,10 +233,10 @@ on each heading in sequence:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">omit_material</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if set, simply ignore all of this */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">use_with_or_without</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if TRUE, use with the extension; if FALSE, without */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">holds_dialogue</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if TRUE, contains dialogue in a different format */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_use_with</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. "for use with ... by ..." */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">in_place_of_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. "in place of ... in ... by ..." */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_use_with</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. &quot;for use with ... by ...&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">in_place_of_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. &quot;in place of ... in ... by ...&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* once provisos have been stripped away */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">external_file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. "see ..." */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">external_file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. &quot;see ...&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">external_file_read</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">external_file_loaded</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_of_contents</span><span class="plain-syntax">; </span><span class="comment-syntax">/* tagged names defined under this */</span>
@@ -425,14 +422,11 @@ with the result of parsing any caveats in its wording.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="6-hdn.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  When a heading has been found, we repeatedly try to match it against
-&lt;heading-qualifier&gt; to see if it ends with text telling us what to do with
+<heading-qualifier> to see if it ends with text telling us what to do with
 the source text it governs. For example,</p>
-</div>
 <blockquote>
-    <p>Section 21 - Frogs (unindexed) (not for Glulx)</p>
+<p>Section 21 - Frogs (unindexed) (not for Glulx)</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>would match twice, first registering the VM requirement, then the unindexedness.</p>
 <p>It's an unfortunate historical quirk that the unbracketed qualifiers are
 allowed; they should probably be withdrawn.</p>

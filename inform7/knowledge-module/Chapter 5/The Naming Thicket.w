@@ -240,7 +240,7 @@ a comma, and that's caught here:
 		@<Assert the I6 cap-short-name property@>;
 	}
 
-@ The I7 property "printed name" translates to Inter |short_name|.
+@ The I7 property "printed name" translates to Inter `short_name`.
 
 @<Assert the I6 short-name property@> =
 	inter_name *faux = NULL;
@@ -257,7 +257,7 @@ a comma, and that's caught here:
 		ValueProperties::assert(P_printed_name, subj,
 			Rvalues::from_unescaped_wording(Feeds::feed_text(textual_value)), CERTAIN_CE);
 
-@ The I6 |cap_short_name| has no corresponding property in I7. Note that it's
+@ The I6 `cap_short_name` has no corresponding property in I7. Note that it's
 only needed if the object is named after something else which might need it,
 or if it's a proper-named object which begins with a lower-case letter. (This
 actually means it's rarely needed.)
@@ -289,7 +289,7 @@ source text description, so that "Mr Beebe" will not be flattened to "mr
 beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 
-If the "spatial" feature is inactive, |this_is_a_room| is always |FALSE|.
+If the "spatial" feature is inactive, `this_is_a_room` is always `FALSE`.
 
 @<Compose the I6 short-name as a piece of text@> =
 	Naming::compose_words_to_I6_naming_text(textual_value, W, FALSE,
@@ -410,7 +410,7 @@ The following is only relevant for the language of play, whose extension will
 always be read in. That in turn is expected to contain a declaration like
 this one:
 
->> The adaptive text viewpoint of the French language is second person singular.
+> The adaptive text viewpoint of the French language is second person singular.
 
 The following routine picks up on the result of this declaration. (We cache
 this because we need access to it very quickly when parsing text substitutions.)

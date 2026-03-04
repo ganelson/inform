@@ -90,9 +90,9 @@ crucial: options near the top of the list are preferred to those lower down.
 	ActionNameLists::remove_entries_marked_for_deletion(list);
 
 @ Now each clause's text must be evaluated: for example, on the clause
-|[in-presence: hans]| we will have to evaluate "Hans".
+`[in-presence: hans]` we will have to evaluate "Hans".
 
-Note the special case for actions whose second noun has the kind |K_understanding|,
+Note the special case for actions whose second noun has the kind `K_understanding`,
 meaning that they hold topics of conversation ("ask Hans about cosmic rays").
 There is ordinarily no way in Inform to write a literal of this kind, but here
 we are allowed to write a text literal instead, and it is automatically converted.

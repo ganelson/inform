@@ -9,18 +9,18 @@ is a reference to that content. This reference is an I6 String or Routine
 in all cases except one, when it's a pointer to a long block containing
 a null-terminated array of characters, like a C string.
 
-Clearly we need |PACKED_TEXT_STORAGE| and |UNPACKED_TEXT_STORAGE| to
+Clearly we need `PACKED_TEXT_STORAGE` and `UNPACKED_TEXT_STORAGE` to
 distinguish between the two basic methods of text storage, roughly
 equivalent to the pre-2013 kinds "text" and "indexed text". But why
 do we need four?
 
-|CONSTANT_PACKED_TEXT_STORAGE| is easy to explain: the BlkValue routines
+`CONSTANT_PACKED_TEXT_STORAGE` is easy to explain: the BlkValue routines
 normally detect constants using metadata in their long blocks, but of
 course that won't work for values which haven't got any long blocks.
-We use this instead. We don't need a |CONSTANT_UNPACKED_TEXT_STORAGE|
+We use this instead. We don't need a `CONSTANT_UNPACKED_TEXT_STORAGE`
 because I7 never compiles constant text in unpacked form.
 
-The surprising one is |CONSTANT_PERISHABLE_TEXT_STORAGE|. This is a
+The surprising one is `CONSTANT_PERISHABLE_TEXT_STORAGE`. This is a
 constant created by the I7 compiler which is marked as being tricky
 because its value is a text substitution containing references to local
 variables. Unlike other text substitutions, this can't meaningfully be
@@ -190,7 +190,7 @@ to do is to copy it into the text and add a null termination byte.
 
 What complicates things is that the two virtual machines handle printing
 to memory quite differently, and that the original text has unpredictable
-length. We are going to try printing it into the array |TEXT_TY_Buffers|,
+length. We are going to try printing it into the array `TEXT_TY_Buffers`,
 but what if the text is too big? Disastrously, the Z-machine simply
 writes on in memory, corrupting all subsequent arrays and almost certainly
 causing the story file to crash soon after. There is nothing we can do
@@ -309,7 +309,7 @@ it's clearer to give two definitions, so:
 #endif;
 
 @h Comparison.
-This is more or less |strcmp|, the traditional C library routine for comparing
+This is more or less `strcmp`, the traditional C library routine for comparing
 strings, but it does pose a few interesting questions. The answers are:
 
 - Two different unexpanded texts with substitutions are never equal, so
@@ -420,7 +420,7 @@ but in fact always takes place when the output stream is a file.
 
 The format chosen is a letter "S" for string, then a comma-separated list
 of decimal character codes, ending with the null terminator, and followed by
-a semicolon: thus |S65,66,67,0;| is the serialised form of the text "ABC".
+a semicolon: thus `S65,66,67,0;` is the serialised form of the text "ABC".
 
 =
 [ TEXT_TY_Serialise txt len pos ch p cp;
@@ -527,12 +527,12 @@ Constant REGEXP_BLOB = 7; ! Not a blob type as such, but needed as a distinct va
 @h Blob Access.
 The following routine runs a small finite-state-machine to count the number
 of blobs in a text, using any of the above blob types (except
-|REGEXP_BLOB|, which is used for other purposes). If the optional arguments
-|ctxt| and |wanted| are supplied, it also copies the text of blob number
-|wanted| (counting upwards from 1 at the start of the text) into the
-text |ctxt|. If the further optional argument |rtxt| is supplied,
-then |ctxt| is instead written with the original text |txt| as it would
-read if the blob in question were replaced with the text in |rtxt|.
+`REGEXP_BLOB`, which is used for other purposes). If the optional arguments
+`ctxt` and `wanted` are supplied, it also copies the text of blob number
+`wanted` (counting upwards from 1 at the start of the text) into the
+text `ctxt`. If the further optional argument `rtxt` is supplied,
+then `ctxt` is instead written with the original text `txt` as it would
+read if the blob in question were replaced with the text in `rtxt`.
 
 =
 Constant WS_BRM = 1;
@@ -732,14 +732,14 @@ characters are handled directly to avoid incurring all that overhead.)
 ];
 
 @h Replace Text.
-This is the general routine which searches for any instance of |ftxt|,
-as a blob, in |txt|, and replaces it with the text |rtxt|. It works on
+This is the general routine which searches for any instance of `ftxt`,
+as a blob, in `txt`, and replaces it with the text `rtxt`. It works on
 any of the above blob-types, but two cases are special: first, if the
-blob-type is |CHR_BLOB|, then it can do more than search and replace
+blob-type is `CHR_BLOB`, then it can do more than search and replace
 for any instance of a single character: it can search and replace any
-instance of a substring, so that |ftxt| is not required to be only a
+instance of a substring, so that `ftxt` is not required to be only a
 single character. Second, if the blob-type is the special value
-|REGEXP_BLOB| then |ftxt| is interpreted as a regular expression rather
+`REGEXP_BLOB` then `ftxt` is interpreted as a regular expression rather
 than something literal to find: see "RegExp.i6t" for what happens next.
 
 =
@@ -868,12 +868,12 @@ strings, but not in I7. To I7, a character is simply a text which
 happens to have length 1 -- this has its inefficiencies, but is conceptually
 easy for the user.
 
-|TEXT_TY_CharactersOfCase(txt, case)| determines whether all the characters in |txt|
+`TEXT_TY_CharactersOfCase(txt, case)` determines whether all the characters in `txt`
 are letters of the given casing: 0 for lower case, 1 for upper case. In the
 case of ZSCII, this is done correctly handling all of the European accented
 letters; in the case of Unicode, it follows the Unicode standard.
 
-Note that there is no requirement for |txt| to be only a single character
+Note that there is no requirement for `txt` to be only a single character
 long.
 
 =
@@ -891,8 +891,8 @@ long.
 ];
 
 @h Change Case.
-We set |ctxt| to the text in |txt|, except that all the letters are
-converted to the |case| given (0 for lower, 1 for upper). The definition
+We set `ctxt` to the text in `txt`, except that all the letters are
+converted to the `case` given (0 for lower, 1 for upper). The definition
 of what is a "letter", what case it has and what the other-case form is
 are as specified in the ZSCII and Unicode standards.
 
@@ -935,11 +935,11 @@ are as specified in the ZSCII and Unicode standards.
 
 @h Concatenation.
 To concatenate two texts is to place one after the other: thus "green"
-concatenated with "horn" makes "greenhorn". In this routine, |from_txt|
-would be "horn", and is added at the end of |to_txt|, which is returned in
+concatenated with "horn" makes "greenhorn". In this routine, `from_txt`
+would be "horn", and is added at the end of `to_txt`, which is returned in
 its expanded state.
 
-When the blob type is |REGEXP_BLOB|, the routine is used not for simple
+When the blob type is `REGEXP_BLOB`, the routine is used not for simple
 concatenation but to handle the concatenations occurring when a regular
 expression search-and-replace is going on: see "RegExp.i6t".
 

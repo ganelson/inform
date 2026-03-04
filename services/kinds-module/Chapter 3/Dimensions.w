@@ -15,7 +15,7 @@ sound effect.[2]
 
 Further fundamental units are created every time source text like this is read:
 
->> Mass is a kind of value. 1kg specifies a mass.
+> Mass is a kind of value. 1kg specifies a mass.
 
 Mass will then be considered fundamental until the source text says otherwise.
 It would no doubt be cool to decide what is fundamental and what is derived by
@@ -24,7 +24,7 @@ this is a tricky technique and does not always produce the "natural" results
 which people expect. So Inform requires the writer to specify explicitly
 how units combine. When it reads, for example,
 
->> A mass times an acceleration specifies a force.
+> A mass times an acceleration specifies a force.
 
 Inform chooses one of the three units -- say, force -- and derives that from
 the others.
@@ -38,7 +38,7 @@ lists -- but it always seemed more likely to be used by mistake than intentional
 
 @ Multiplication rules are stored in a linked list associated with the left
 operand; so that the rule $A$ times $B$ specifies $C$ causes $(B, C)$ to be
-stored in the list of |multiplications| belonging to $A$.
+stored in the list of `multiplications` belonging to $A$.
 
 =
 typedef struct dimensional_rules {
@@ -53,10 +53,10 @@ typedef struct dimensional_rule {
 } dimensional_rule;
 
 @ The derivation process can be seen in action by feeding Inform
-definitions of the SI units (see the test case |SIUnits-G|) and looking at
+definitions of the SI units (see the test case `SIUnits-G`) and looking at
 the output of:
 
->> Test dimensions (internal) with --.
+> Test dimensions (internal) with --.
 
 (The dash is meaningless -- this is a test with no input.) In the output, we
 see that
@@ -88,7 +88,7 @@ Here $A$ and $r$ are both lengths, so the angle $\theta$ must be dimensionless.
 But clearly it's not quite conceptually the same thing as an ordinary number.
 Inform deduces dimensionlessness from multiplication laws like so:
 
->> Angle is a kind of value. 1 rad specifies an angle. Length times angle specifies a length.
+> Angle is a kind of value. 1 rad specifies an angle. Length times angle specifies a length.
 
 Inform is not quite so careful about distinguishing dimensionless quantities
 as some physicists might be. The official SI units distinguish angle, measured
@@ -97,7 +97,7 @@ ${\rm m}\cdot{\rm m}^{-1}$ and ${\rm m}^2\cdot{\rm m}^{-2}$ respectively --
 one is a ratio of lengths, the other of areas. Inform cancels the units
 and sees them as dimensionally equal. So if we write:
 
->> Solid angle is a kind of value. 1 srad specifies an solid angle. Area times solid angle specifies an area.
+> Solid angle is a kind of value. 1 srad specifies an solid angle. Area times solid angle specifies an area.
 
 then Inform treats angle and solid angle as having the same multiplicative
 properties -- but it still allows variables to have either one as a kind of
@@ -118,13 +118,13 @@ velocity in? The answer has to be
 but that's a unit which isn't useful for much, and doesn't have any everyday
 name. Inform creates what are called "intermediate kinds" like this in
 order to be able to represent the kinds of intermediate values which turn
-up in calculation. They use the special |CON_INTERMEDIATE| construction, they
+up in calculation. They use the special `CON_INTERMEDIATE` construction, they
 are nameless, and the user isn't allowed to store the results permanently.
 (They can't be the kind of a global variable, a table column, and so on.)
 If the user wants to deal with such values on a long-term basis, he must give
 them a name, like this:
 
->> Funkiness is a kind of value. 1 Claude is a funkiness. A velocity times a velocity specifies a funkiness.
+> Funkiness is a kind of value. 1 Claude is a funkiness. A velocity times a velocity specifies a funkiness.
 
 @ Expressions like ${\rm m}^2\cdot{\rm kg}$ are stored inside Inform as
 sequences of ordered pairs in the form
@@ -164,7 +164,7 @@ if you're taking notes).
 
 =
 typedef struct unit_sequence {
-	int no_unit_pairs; /* in range 0 to |MAX_BASE_UNITS_IN_SEQUENCE| */
+	int no_unit_pairs; /* in range 0 to `MAX_BASE_UNITS_IN_SEQUENCE` */
 	struct unit_pair unit_pairs[MAX_BASE_UNITS_IN_SEQUENCE];
 	int scaling_factor; /* see discussion of scaling below */
 } unit_sequence;
@@ -367,7 +367,7 @@ int Kinds::Dimensions::gcd(int m, int n) {
 }
 
 @ The sequence of operation here is to reduce the risk of integer overflows
-when multiplying |m| by |n|.
+when multiplying `m` by `n`.
 
 =
 int Kinds::Dimensions::lcm(int m, int n) {
@@ -376,7 +376,7 @@ int Kinds::Dimensions::lcm(int m, int n) {
 
 @h Unit sequences.
 Given a fundamental type $B$, convert it to a unit sequence: $B = B^1$, so we
-get a sequence with a single pair: $((B, 1))$. Uniquely, |number| is born
+get a sequence with a single pair: $((B, 1))$. Uniquely, `number` is born
 derived and dimensionless, though, so that comes out as the empty sequence.
 
 =
@@ -412,9 +412,9 @@ int Kinds::Dimensions::compare_unit_sequences(unit_sequence *ik1, unit_sequence 
 }
 
 @ We now have three fundamental operations we can perform on unit sequences.
-First, we can multiply them: that is, we store in |result| the unit
+First, we can multiply them: that is, we store in `result` the unit
 sequence representing $X_1^{s_1}X_2^{s_2}$, where $X_1$ and $X_2$ are
-represented by unit sequences |us1| and |us2|.
+represented by unit sequences `us1` and `us2`.
 
 So the case $s_1 = s_2 = 1$ represents multiplying $X_1$ by $X_2$, while
 $s_1 = 1, s_2 = -1$ represents dividing $X_1$ by $X_2$. But we can also
@@ -426,12 +426,12 @@ X_2 = T_{21}^{p_{21}}\cdot T_{22}^{p_{22}}\cdots T_{2m}^{p_{2m}} $$
 where $T_{11} < T_{12} < ... < T_{1n}$ and $T_{21}<T_{22}<...<T_{2m}$. We
 can therefore merge the two in a single pass.
 
-On each iteration of the loop the variables |i1| and |i2| are our current
+On each iteration of the loop the variables `i1` and `i2` are our current
 read positions in each sequence, while we are currently looking at the
-unit pairs (|t1|, |m1|) and (|t2|, |m2|). The following symmetrical
+unit pairs (`t1`, `m1`) and (`t2`, `m2`). The following symmetrical
 algorithm holds on to each pair until the one from the other sequence has had
 a chance to catch up with it, because we always deal with the pair with the
-numerically lower |t| first. This also proves that the |results| sequence comes
+numerically lower `t` first. This also proves that the `results` sequence comes
 out in numerical order.
 
 =
@@ -473,7 +473,7 @@ is $T^{p_2}$, so in the product we ought to see $(T^{p_1})^{s_1}\cdot
 cancelled out, that is, where $p_1s_1+p_2s_2$ = 0.
 
 @<Both terms refer to the same fundamental unit, so combine these into the result@> =
-	int p = p1*s1 + p2*s2; /* combined power of |t1| $=$ |t2| */
+	int p = p1*s1 + p2*s2; /* combined power of `t1` $=$ `t2` */
 	if (p != 0) {
 		if (result->no_unit_pairs == MAX_BASE_UNITS_IN_SEQUENCE)
 			@<Trip a unit sequence overflow@>;
@@ -486,10 +486,10 @@ cancelled out, that is, where $p_1s_1+p_2s_2$ = 0.
 that it will never occur again in either sequence. So we can copy it straight
 into the results.
 
-The code is slightly warped by the fact that |UNKNOWN_NT|, representing the
+The code is slightly warped by the fact that `UNKNOWN_NT`, representing the
 end of the sequence, happens to be numerically lower than all the valid
 kinds. We don't want to make use of facts like that, so we write code
-to deal with |UNKNOWN_NT| explicitly.
+to deal with `UNKNOWN_NT` explicitly.
 
 @<Different fundamental units, so copy the numerically lower one into the result@> =
 	if ((t2 == NULL) || ((t1 != NULL) && (Kinds::Dimensions::kind_prior(t1, t2)))) {
@@ -520,9 +520,9 @@ $^{3}\sqrt{X}$ for any unit $X$ -- it's just that it can't always be done.
 Inform does not permit non-integer powers of units, so for instance
 $\sqrt{{\rm time}}$ does not exist, whereas $\sqrt{{\rm length}^2\cdot{\rm mass}^{-2}}$
 does. Square roots exist if each power in the sequence is even, cube roots
-exist if each is divisible by 3. We return |TRUE| or |FALSE| according to
-whether the root could be taken, and if |FALSE| then the contents of
-|result| are undefined.
+exist if each is divisible by 3. We return `TRUE` or `FALSE` according to
+whether the root could be taken, and if `FALSE` then the contents of
+`result` are undefined.
 
 =
 int Kinds::Dimensions::root_unit_sequence(unit_sequence *us, int pow, unit_sequence *result) {
@@ -661,7 +661,7 @@ derived unit (already).
 If two or more are fundamental units, we have a choice. That is, suppose we have
 created three kinds already: mass, acceleration, force. Then we read:
 
->> Mass times acceleration specifies a force.
+> Mass times acceleration specifies a force.
 
 We could make this true in any of three ways: keep M and A as fundamental units
 and derive F from them, keep A and F as fundamental units and derive M from those,
@@ -750,8 +750,8 @@ the Kinds index page more helpful. But we must reject a contradiction.
 		KindsModule::problem_handler(DimensionsInconsistent_KINDERROR, NULL, NULL, NULL, NULL);
 
 @h Classifying the units.
-Some of the derived units are dimensionless, others not. |number| and
-|real number| are always dimensionless, and any unit whose derivation is the
+Some of the derived units are dimensionless, others not. `number` and
+`real number` are always dimensionless, and any unit whose derivation is the
 empty unit sequence must be dimensionless.
 
 =
@@ -801,10 +801,10 @@ void Kinds::Dimensions::log_unit_analysis(void) {
 
 @h Arithmetic on kinds.
 We are finally able to provide our central routine, the one providing a service
-for the rest of Inform. Given |K1| and |K2|, we return the kind resulting
-from applying arithmetic operation |op|, or |NULL| if the operation cannot
-meaningfully be applied. In the case where |op| is a unary operation, |K2|
-has no significance and should be |NULL|.
+for the rest of Inform. Given `K1` and `K2`, we return the kind resulting
+from applying arithmetic operation `op`, or `NULL` if the operation cannot
+meaningfully be applied. In the case where `op` is a unary operation, `K2`
+has no significance and should be `NULL`.
 
 =
 kind *Kinds::Dimensions::arithmetic_on_kinds(kind *K1, kind *K2, int op) {
@@ -827,7 +827,7 @@ kind *Kinds::Dimensions::arithmetic_on_kinds(kind *K1, kind *K2, int op) {
 
 @ Some operations -- like addition -- cannot be performed on mixed dimensions,
 and roots can only be taken where fractional powers are avoided, so we sometimes
-have to give up here and return |NULL|. Otherwise, though, the functions above
+have to give up here and return `NULL`. Otherwise, though, the functions above
 make it possible to work out the correct unit sequence.
 
 It's an interesting question what the result of a remainder should be, in
@@ -873,7 +873,7 @@ so it has to be a weight, not a dimensionless number.
 		default: return NULL;
 	}
 
-@ If |result| is the empty unit sequence, we'll identify it as a number,
+@ If `result` is the empty unit sequence, we'll identify it as a number,
 because number is the lowest type ID representing a dimensionless unit.
 Usually that's good: for instance, it says that a frequency times a time
 is a number, and not some more exotic dimensionless quantity like an angle.
@@ -944,7 +944,7 @@ which turns out to have a name: acceleration.
 			Kinds::Behaviour::get_dimensional_form(R)))
 			return R;
 
-@ Otherwise the |result| is a unit sequence which doesn't have a name, so
+@ Otherwise the `result` is a unit sequence which doesn't have a name, so
 we store it as an intermediate kind, representing a temporary value living
 only for the duration of a calculation.
 
@@ -954,18 +954,18 @@ author wants us to be. But these intermediate kinds are not defined, and we
 don't know for sure what the author would want. It seems wise to set
 $k \geq k_X$ and $k\geq k_Y$, so that we have at least as much detail as
 the calculation would have had within each operand kind. So perhaps we should
-put $k = {\rm max}(k_X, k_Y)$. But in fact we will choose $k$ = |Kinds::Dimensions::lcm(k_X, k_Y)|,
+put $k = {\rm max}(k_X, k_Y)$. But in fact we will choose $k$ = `Kinds::Dimensions::lcm(k_X, k_Y)`,
 the least common multiple, so that any subsequent divisions will cancel
 correctly and we won't lose too much information through integer rounding.
 (In practice this will probably either be the same as ${\rm max}(k_X, k_Y)$
-or will multiply by 6, since |Kinds::Dimensions::lcm(60, 1000) == 6000| and so on.)
+or will multiply by 6, since `Kinds::Dimensions::lcm(60, 1000) == 6000` and so on.)
 
 The same unit sequence can have different scalings each time it appears as
 an intermediate calculation. We could get to ${\rm m}^2\cdot {\rm kg}$
 either as ${\rm m}\cdot{\rm kg}$ times ${\rm m}$, or as ${\rm m^2}$ times
 ${\rm kg}$, or many other ways, and we'll get different scalings depending
-on the route. This is why the |unit_sequence| structure has a
-|scaling_factor| field; the choice of scale factor does not depend on
+on the route. This is why the `unit_sequence` structure has a
+`scaling_factor` field; the choice of scale factor does not depend on
 the physics but on the arithmetic method being used.
 
 @<And otherwise create a kind as the intermediate result of a calculation@> =

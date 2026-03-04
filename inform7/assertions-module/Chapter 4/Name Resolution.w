@@ -89,7 +89,7 @@ We can hardly tell an Inform author to create at most one item whose
 name contains the word "jar", for instance.
 
 All programming languages face similar problems. In C, for instance, a local
-variable named |east| will be recognised in preference to a global one of the
+variable named `east` will be recognised in preference to a global one of the
 same name (to some extent external linking provides a third level again).
 The way this is done is usually explained in terms of the "scope" of a
 definition, the part of the source for which it is valid: the winner, in
@@ -290,7 +290,7 @@ void NameResolution::build_search_list_from(heading *within, heading *way_we_cam
 	nt_search_finish = nt;
 
 @ The search list is used for finding best matches in a particular order, the
-order being used to break tie-breaks. Note that we return |NULL| if no noun
+order being used to break tie-breaks. Note that we return `NULL` if no noun
 in the search list has a positive score.
 
 =

@@ -18,7 +18,7 @@ void PragmaInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |pragma| instruction is laid out with the
+In bytecode, the frame of a `pragma` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d TARGET_PRAGMA_IFLD (DATA_IFLD + 0)

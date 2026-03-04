@@ -17,7 +17,7 @@ void TheHeap::ensure_basic_heap_present(void) {
 	total_heap_allocation += 256; /* enough for the initial free-space block */
 }
 
-@ By now, we know that we need at least |total_heap_allocation| bytes on the
+@ By now, we know that we need at least `total_heap_allocation` bytes on the
 heap, but the initial heap size has to be a power of 2, so we compute the
 smallest such which is big enough. On Glulx, we then multiply by 4: one factor
 of 2 is because the word size is twice as much -- words are 4-byte, not 2-byte
@@ -48,7 +48,7 @@ function runs. For more on the latter, see //imperative: Stack Frames//.
 
 It increases the heap size estimate accordingly, and returns a convenient
 structure to describe the new value -- recording its kind and its position
-in the local M-stack frame. The |stack_offset| should be -1 for a global value,
+in the local M-stack frame. The `stack_offset` should be -1 for a global value,
 which is then not stored on the stack.
 
 =
@@ -61,8 +61,8 @@ typedef struct heap_allocation {
 on the heap -- its exact size needs if it is fixed in size, and a reasonable
 overestimate of typical usage if it is flexible.
 
-The |multiplier| is used when we need to calculate the size of, say, a list of
-20 texts; it would then, of course, be 20. Any |stack_offset| is simply passed
+The `multiplier` is used when we need to calculate the size of, say, a list of
+20 texts; it would then, of course, be 20. Any `stack_offset` is simply passed
 through to the returned record; we don't understand any of that here.
 
 =

@@ -65,32 +65,24 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Tables lie behind the special &quot;defined by&quot; sentence. These come in three
 subtly different versions:</p>
-</div>
 <blockquote>
-    <p>(1) Some animals are defined by the Table of Specimens.</p>
+<p>(1) Some animals are defined by the Table of Specimens.</p>
 </blockquote>
-
 <blockquote>
-    <p>(2) Some men in the Zoo are defined by the Table of Zookeepers.</p>
+<p>(2) Some men in the Zoo are defined by the Table of Zookeepers.</p>
 </blockquote>
-
 <blockquote>
-    <p>(3) Some kinds of animal are defined by the Table of Zoology.</p>
+<p>(3) Some kinds of animal are defined by the Table of Zoology.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The subject in (1) is the name of a kind; in (2), it's a description which
 incorporates a kind, but can include relative clauses and adjectives; in (3),
 it's something second-order -- a kind of a kind. Given this variety of
 possibilities, we treat &quot;defined by&quot; sentences as if they were abbreviations
 for a mass of assertion sentences, one for each row of the table. We do
 however reject:</p>
-</div>
 <blockquote>
-    <p>The okapi is defined by the Table of Short-Necked Giraffes.</p>
+<p>The okapi is defined by the Table of Short-Necked Giraffes.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the &quot;okapi&quot; is an existing single animal (or indeed where it's a new
 name, meaning as yet unknown).</p>
 </div>
@@ -109,7 +101,7 @@ a special meaning of &quot;to be&quot;, recognised when Y matches --</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">DefineByTable::defined_by_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">DefineByTable::defined_by_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The colours are defined by Table 1." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The colours are defined by Table 1.&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;defined-by-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
@@ -354,12 +346,9 @@ to create new instances -- the names in column 1 would be, say, the instances
 of the kind &quot;colour&quot;. Inform did this by writing propositions to assert their
 existence, in an elegantly high-level way; and all was well. But people also
 wanted things like this:</p>
-</div>
 <blockquote>
-    <p>Some people on the dais are defined by the Table of Presenters.</p>
+<p>Some people on the dais are defined by the Table of Presenters.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and the process of converting that to propositional form, while issuing
 a range of intelligible problem messages if anything went wrong, would end
 up duplicating what's already done in the assertion parser.</p>

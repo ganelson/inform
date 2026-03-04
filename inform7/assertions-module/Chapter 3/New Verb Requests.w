@@ -85,7 +85,7 @@ int NewVerbRequests::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 	return FALSE;
 }
 
-@ And the above share the following. |usage| will be one of these:
+@ And the above share the following. `usage` will be one of these:
 
 @d NEW_IMPERATIVE_VERB 1
 @d NEW_SVO_VERB 2
@@ -106,11 +106,11 @@ void NewVerbRequests::parse_new(int usage, parse_node *V) {
 prepositions: "less than", for instance, is combined with "to be", giving us
 "A is less than B" and similar forms. These wordy forms are therefore defined
 as prepositional usages and created as such in Basic Inform. But we also
-permit the use of the familiar mathematical symbols |<|, |>|, |<=| and |>=|.
+permit the use of the familiar mathematical symbols `<`, `>`, `<=` and `>=`.
 Inform treats these as "operator verbs" without tense, so registers them as
 verb usages, but without the full conjugation given to a conventional verb;
 and they are also excluded from the lexicon in the Phrasebook index, being
-notation rather than words. (This is why the variable |current_main_verb| is
+notation rather than words. (This is why the variable `current_main_verb` is
 cleared.)
 
 =
@@ -199,9 +199,9 @@ cleared.)
 
 @ And now for the definition grammar.
 
-The handling of |PROP_VERBM| perhaps looks odd. What happens if the user typed
+The handling of `PROP_VERBM` perhaps looks odd. What happens if the user typed
 
->> The verb to be mystified by implies the arfle barfle gloop property.
+> The verb to be mystified by implies the arfle barfle gloop property.
 
 when there is no property of that name? The answer is that we can't check this
 at the time we're parsing this sentence, because verb definitions are read long
@@ -298,7 +298,7 @@ Machine", "On Top of Old Smoky". Our best way to avoid confusion is to read
 prepositions as such only when they do not unexpectedly jump into upper case,
 i.e., to distinguish between the meanings of
 
->> X is in Bahrain. Y is In Bahrain.
+> X is in Bahrain. Y is In Bahrain.
 
 according to the unexpected capital I in the second "In". But just occasionally
 people do want to define prepositions which genuinely involve an unexpected
@@ -396,7 +396,7 @@ infinitive for that -- the two are the same in most regular English verbs
 	<probable-participle> *** |
 	*** <probable-participle>
 
-@ A single English verb, such as "to contain", produces numerous |verb_usage|
+@ A single English verb, such as "to contain", produces numerous `verb_usage`
 objects, since we have one for each combination of tense, number and negation
 -- "contains", "had not contained", etc. These have upper limits on their
 sizes, not so much from the language definition as from limitations on our

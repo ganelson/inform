@@ -19,7 +19,7 @@ up_family *UnaryPredicateFamilies::new(void) {
 	return f;
 }
 
-@ |STOCK_UPF_MTID| is for stocking up on unaries, and happens very early
+@ `STOCK_UPF_MTID` is for stocking up on unaries, and happens very early
 in Inform's run.
 
 @e STOCK_UPF_MTID
@@ -34,8 +34,8 @@ void UnaryPredicateFamilies::stock(int n) {
 }
 
 @ This method performs a type-check to see whether the value supplied as the
-term of the predicate is acceptable. For example, |even(t)| should reject
-|t| if it is a text, because |even| is meaningful only for numbers.
+term of the predicate is acceptable. For example, `even(t)` should reject
+`t` if it is a text, because `even` is meaningful only for numbers.
 
 @e TYPECHECK_UPF_MTID
 
@@ -56,7 +56,7 @@ int UnaryPredicateFamilies::typecheck(unary_predicate *up,
 
 @ A unary predicate is "testable" if its truth can be determined at compile
 time. (We assume everything can be tested at run time.) For example,
-|kind=number(t)| can generally be tested at compile time, but |even(t)| cannot.
+`kind=number(t)` can generally be tested at compile time, but `even(t)` cannot.
 
 @e TESTABLE_UPF_MTID
 
@@ -115,7 +115,7 @@ void UnaryPredicateFamilies::get_schema(int task, unary_predicate *up,
 }
 
 @ If the usage of this UP implies the kind of its term, here's where we say so.
-The obvious example is |kind=K(t)|, which necessarily means |t| has kind |K|.
+The obvious example is `kind=K(t)`, which necessarily means `t` has kind `K`.
 But one could also imagine UPs which are appropriate only for, say, real numbers.
 
 @e INFER_KIND_UPF_MTID
@@ -129,7 +129,7 @@ kind *UnaryPredicateFamilies::infer_kind(unary_predicate *up) {
 	return K;
 }
 
-@ Logging should be brief: something like |kind=number| is plenty.
+@ Logging should be brief: something like `kind=number` is plenty.
 
 @e LOG_UPF_MTID
 

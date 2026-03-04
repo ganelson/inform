@@ -127,11 +127,11 @@ So the indexer in fact looks at headings in the source text and attempts
 to group definitions by them. In particular, in the Standard Rules, it looks
 for headings with this form:
 
->> Blah blah blah - Major title - Minor title
+> Blah blah blah - Major title - Minor title
 
 For example, we might have
 
->> Section SR5/3/2 - Control phrases - While
+> Section SR5/3/2 - Control phrases - While
 
 which would match the first production below. The first piece is discarded,
 and the second and third pieces used as headings and subheadings respectively.
@@ -168,7 +168,7 @@ and the second and third pieces used as headings and subheadings respectively.
 		HW = GET_RW(<heading-name-hyphenated>, 1);
 	}
 
-@ We see where |idb| is in a run of phrases which share a common documentation
+@ We see where `idb` is in a run of phrases which share a common documentation
 symbol; only the first in the run has a plus-sign link to reveal the box of
 documentation in question, and only the last in the run is followed by the
 code for the box.

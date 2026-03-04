@@ -20,14 +20,14 @@ language simply being a verbose description of obviously equivalent C-like
 code. However, the simplicity is misleading, because the definitions below
 tend to conceal where the complexity of the translation process suddenly
 increases. If the preamble includes "(c - condition)", and the definition
-includes the expansion |{c}|, then the text forming c is translated in a way
+includes the expansion `{c}`, then the text forming c is translated in a way
 much more profound than any simple substitution process could describe.
 Type-checking also complicates the code produced below, since Inform
 automatically generates the code needed to perform run-time type checking at
 any point where doubt remains as to the phrase definition which must be used.
 
 @ Many of these phrases have what are called inline definitions, written
-using the |(-| and |-)| notation. Non-inline phrases are compiled as
+using the `(-` and `-)` notation. Non-inline phrases are compiled as
 functions, which are then called when they need to be used. For example,
 "To say the magic number: say 17." compiles to a function, and when
 another phrase includes the instruction "say the magic number", that
@@ -35,7 +35,7 @@ instruction compiles a call to this function. But an inline phrase
 instead generates Inter instructions to do something directly. (That
 something may in fact still be just a function call, but not always.)
 The Inter code to be generated is expressed by the contents of the
-definition between the |(-| and |-)| markers, and is written in a
+definition between the `(-` and `-)` markers, and is written in a
 marked-up form of Inform 6 notation. This is much more concise and
 readable than if the Inter code were written out longhand, but it may
 give the misleading impression that Inform inline definitions can only
@@ -43,21 +43,21 @@ produce Inform 6 code. That is not so: they produce Inter code, which
 can then be translated as needed.
 
 Most of the definitions here also have annotations to positions in the
-main Inform documentation: for example, |(documented at phs_s)|. This has
+main Inform documentation: for example, `(documented at phs_s)`. This has
 no effect on the code compiled, and is used only when Inform generates
 certain problem messages; if the source text misuses the phrase, the problem
-can then give a reference to the relevant documentation. |phs_s| is a
+can then give a reference to the relevant documentation. `phs_s` is a
 typical example of a "documentation token", and is only a label. See the
 source of the Inform documentation for how this markup is done.
 
-@ Unit tests for the phrases below have test case names beginning |BIP-|,
+@ Unit tests for the phrases below have test case names beginning `BIP-`,
 which stands for "Basic Inform phrase". In fact, these come in pairs, one for
-each virtual machine we customarily generate code to. For example, |BIP-Say|
-tests the "say" phrase for the Z-machine target, and |BIP-Say-G| does the same
+each virtual machine we customarily generate code to. For example, `BIP-Say`
+tests the "say" phrase for the Z-machine target, and `BIP-Say-G` does the same
 for the Glulx target. But in the commentary below, test cases will be listed
 only once.
 
-It follows that running |intest -from inform7 BIP-%c+| will test all of
+It follows that running `intest -from inform7 BIP-%c+` will test all of
 these phrases on all platforms, since this regular expression matches all
 test case names beginning with "BIP-".
 
@@ -72,25 +72,25 @@ than necessary by obliging them to cite a longer list of possible readings
 of a misread phrase.
 
 The three inline definitions here neatly demonstrate the three sorts of
-things which appear inside |(-| and |-)|. The definition for "To say s",
+things which appear inside `(-` and `-)`. The definition for "To say s",
 which looks more familiar as the "[s]" text substitution, is straightforwardly
 Inform 6 notation. The definition for "To say (something - number) in words"
-is I6 notation except for the |{something}| part in braces: this expands
+is I6 notation except for the `{something}` part in braces: this expands
 to the value used by the code causing compilation. For example, if the code
-to be compiled is "say 17 in words" then |{something}| here would expand to
+to be compiled is "say 17 in words" then `{something}` here would expand to
 the constant 17. The definition for "To say (val)" is much more complex than
 I6 notation could convey, and so a more complex escape notation is needed,
-|{-say:val:K}|, which tells Inform to compile code which will say |val| with
-whatever method is appropriate to its kind |K|. For documentation on these
+`{-say:val:K}`, which tells Inform to compile code which will say `val` with
+whatever method is appropriate to its kind `K`. For documentation on these
 escape notations, see the core Inform source code.
 
-The global variable |say__n| tracks the last number printed. For the "in
+The global variable `say__n` tracks the last number printed. For the "in
 words" definition, we need to set it by hand, since Inform doesn't otherwise
 realise that number-printing is what we are doing here. For definitions of
-functions such as |STextSubstitution|, see the source for |BasicInformKit|,
-which is also where |say__n| is defined.
+functions such as `STextSubstitution`, see the source for `BasicInformKit`,
+which is also where `say__n` is defined.
 
-See test case |BIP-Say|.
+See test case `BIP-Say`.
 
 =
 Part Three - Phrasebook
@@ -112,7 +112,7 @@ To say s
 @ "Showme" is a debugging version of "say" which can print some version of
 the value, and the kind, of just about anything.
 
-See test case |BIP-Showme|.
+See test case `BIP-Showme`.
 
 =
 To showme (val - value)
@@ -186,10 +186,10 @@ Note that "To say ..." phrases are case sensitive on the first word, so that
 
 A curiosity of Inform 6's syntax, arising I think mostly from the need to
 save property memory in "Curses" (1993), the work of IF for which Inform 1
-had been created, is that it lacks a |print (A) ...| statement. The omission
+had been created, is that it lacks a `print (A) ...` statement. The omission
 is made good by using a routine in the template library instead.
 
-See test case |BIP-SayName|.
+See test case `BIP-SayName`.
 
 =
 Section 2 - Saying Names
@@ -215,10 +215,10 @@ To say The (something - object)
 
 @ Now some text substitutions which are the equivalent of escape characters.
 (In double-quoted I6 text, the notation for a literal quotation mark is a
-tilde |~|.) Note the use of the "-- running on" annotation, which tells Inform
+tilde `~`.) Note the use of the "-- running on" annotation, which tells Inform
 that a text substitution should not cause a new-line.
 
-See test case |BIP-SaySpecial|.
+See test case `BIP-SaySpecial`.
 
 =
 Section 3 - Saying Special Characters
@@ -239,7 +239,7 @@ To say quotation mark -- running on
 @ For an explanation of the paragraph breaking algorithm, see the template
 file "Printing.i6t".
 
-See test case |BIP-SayParagraphing|.
+See test case `BIP-SayParagraphing`.
 
 =
 Section 4 - Saying Line and Paragraph Breaks
@@ -264,7 +264,7 @@ To decide if a paragraph break is pending
 	(- (say__p) -).
 
 @ Now for "[if ...]", which expands into a rather assembly-language-like
-usage of |jump| statements, I6's form of goto. For instance, the text
+usage of `jump` statements, I6's form of goto. For instance, the text
 "[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
 thus:
 = (text as Inform 6)
@@ -277,8 +277,8 @@ thus:
 Though labels actually have local namespaces in I6 routines, we use
 globally unique labels throughout the whole program: compiling the same
 phrase again would involve say labels 5 and 6 and "say exit" label 3.
-This example text demonstrates the reason we |jump| about, rather than
-making use of |if... else...| and bracing groups of statements: it is legal
+This example text demonstrates the reason we `jump` about, rather than
+making use of `if... else...` and bracing groups of statements: it is legal
 in I7 either to conclude with or to omit the "[end if]". (If statements
 in I6 compile to jump instructions in any event, and on our virtual
 machines there is no speed penalty for branches.) We also need the same
@@ -306,7 +306,7 @@ the start of the next block, and that the next say exit label number is always
 the one at the end of the current construct. This is true because Inform does
 not allow "say if" to be nested.
 
-See test case |BIP-SayIf|.
+See test case `BIP-SayIf`.
 
 =
 Section 5 - Saying If and Otherwise
@@ -355,7 +355,7 @@ of "Writing with Inform", so we won't repeat all that here. Essentially it
 uses its own allocated cell of storage in an array to remember a state between
 uses, and compiles as a switch statement based on the current state.
 
-See test case |BIP-SayOneOf|.
+See test case `BIP-SayOneOf`.
 
 =
 Section 6 - Saying one of
@@ -402,7 +402,7 @@ To say only -- ending say_first_time (documented at phs_firsttime):
 @ These are lists in the sense of the "list of" kind of value constructor, and
 the first two phrases here might list any values, not just objects.
 
-See test case |BIP-SayLists|.
+See test case `BIP-SayLists`.
 
 =
 Section 7 - Saying Lists of Values
@@ -425,7 +425,7 @@ The "whether or not" phrase exists only to convert a condition to a value,
 and is needed because I7 does not silently cast from one to the other in
 the way that C would.
 
-See test case |BIP-Now|.
+See test case `BIP-Now`.
 
 =
 Chapter 2 - Conditions and Variables
@@ -444,13 +444,13 @@ cope with, since "let" has to work when applied to both unknown names (it
 creates a new variable) and existing ones (kind of value permitting). There
 are also four different ways to create with "let", and two to use
 existing variables. Note that the "given by" forms are not strictly
-speaking assignments at all; the value placed in |t| is found by solving
-the equation |Q|. This does require special typechecking, but of a
+speaking assignments at all; the value placed in `t` is found by solving
+the equation `Q`. This does require special typechecking, but of a
 different kind to that requested by "(assignment operation)". All of which
 makes the "To let" section here only slightly shorter than John Galsworthy's
 Forsyte novel of the same name.
 
-See test case |BIP-Let|.
+See test case `BIP-Let`.
 
 =
 Section 2 - Assigning Temporary Variables
@@ -496,7 +496,7 @@ that the values held by these storage objects can be incremented or decremented
 (as an object, say, cannot, but a number can): Inform nevertheless contains
 code which does this.
 
-See test case |BIP-Increase|.
+See test case `BIP-Increase`.
 
 =
 Section 3 - Increase and Decrease
@@ -531,7 +531,7 @@ The totalling code (12) is not structly to do with arithmetic in the same
 way, but it's needed to flag the phrase for the Inform typechecker's special
 attention.
 
-See test case |BIP-ArithmeticOperations|.
+See test case `BIP-ArithmeticOperations`.
 
 =
 Chapter 2 - Arithmetic
@@ -601,7 +601,7 @@ To decide which arithmetic value is total (p - arithmetic value valued property)
 be available everywhere else, i.e., on any other platform Inform may target
 in future.
 
-See test case |BIP-SayRealNumbers-G|, which has no Z-machine counterpart.
+See test case `BIP-SayRealNumbers-G`, which has no Z-machine counterpart.
 
 =
 Section 2 - Saying Real Numbers (not for Z-machine)
@@ -623,7 +623,7 @@ To say (R - a real number) to (N - number) decimal places in scientific notation
 	(- FloatExp({R}, {N}); -).
 
 @ A number of miscellaneous mathematical functions follow, for real
-numbers only; these are tested as part of |BIP-ArithmeticOperations-G|,
+numbers only; these are tested as part of `BIP-ArithmeticOperations-G`,
 already mentioned above. Note that we do not need to define real versions
 of addition, multiplication and so on: the above definitions are polymorphic
 enough to have done that already.
@@ -660,7 +660,7 @@ To decide which number is (R - a real number) to the/-- nearest whole number
 	(this is the int function):
 	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
 
-@ And these are tested in |BIP-Exponentials-G|.
+@ And these are tested in `BIP-Exponentials-G`.
 
 =
 Section 4 - Exponential Functions (not for Z-machine)
@@ -680,7 +680,7 @@ To decide which real number is (R - a real number) to the power (P - a real numb
 	(documented at ph_power):
 	(- REAL_NUMBER_TY_Pow({R}, {P}) -).
 
-@ And these are tested in |BIP-Trigonometry-G|.
+@ And these are tested in `BIP-Trigonometry-G`.
 
 =
 Section 5 - Trigonometric Functions (not for Z-machine)
@@ -714,7 +714,7 @@ To decide which real number is the arctangent of (R - a real number)
 	(this is the arctan function inverse to tan):
 	(- REAL_NUMBER_TY_Arctan({R}) -).
 
-@ And these are tested in |BIP-Hyperbolics-G|.
+@ And these are tested in `BIP-Hyperbolics-G`.
 
 =
 Section 6 - Trigonometric Functions (not for Z-machine)
@@ -750,7 +750,7 @@ To decide which real number is the hyperbolic arctangent of (R - a real number)
 @h Control structures.
 The term "control structure" conjures up the thought of conditionals and loops,
 and we'll get to those, but we'll begin with the equivalent of the C language's
-|return| statement: ending a function call with some value as an outcome.
+`return` statement: ending a function call with some value as an outcome.
 Inform calls this "deciding" something, since in Inform programs functions
 returning values are usually quite functional: that is, their point is what
 value they return, rather than the side-effects of what they did.
@@ -765,7 +765,7 @@ synonyms for "decide yes" and "decide no"; these are not present in Basic
 Inform, and are defined in the Standard Rules (and only to keep old source
 text working).
 
-See test case |BIP-Decide|.
+See test case `BIP-Decide`.
 
 =
 Chapter 3 - Control
@@ -797,7 +797,7 @@ As with some other control structures, the definitions here are somewhat
 partial, and made up for by direct code in the compiler. (There's a limit to
 how much a general syntax for phrases can encode control phrases.)
 
-See test case |BIP-If|.
+See test case `BIP-If`.
 
 =
 Section 2 - If and Unless
@@ -828,7 +828,7 @@ To do nothing (documented at ph_nothing):
 of "unless" for "if" argues for a similarly negated form, "until" for
 "while", but users haven't yet petitioned for this.
 
-See test case |BIP-Loops|.
+See test case `BIP-Loops`.
 
 =
 Section 3 - While and Repeat
@@ -840,7 +840,7 @@ To while (c - condition) begin -- end loop
 @ The repeat loop looks like a single construction, but isn't, because the
 range can be given in four fundamentally different ways (and the loop variable
 then has a different kind of value accordingly). First, the equivalents of
-BASIC's |for| loop and of Inform 6's |objectloop|, respectively:
+BASIC's `for` loop and of Inform 6's `objectloop`, respectively:
 
 =
 To repeat with (loopvar - nonexisting K variable)
@@ -916,10 +916,10 @@ To repeat with (loopvar - nonexisting text variable)
 			{-block}
 	-).
 
-@ The equivalent of |break| or |continue| in C or I6, or of |last| or |next|
+@ The equivalent of `break` or `continue` in C or I6, or of `last` or `next`
 in Perl. Here "in loop" means "in any of the forms of while or repeat".
 
-See test case |BIP-Break|.
+See test case `BIP-Break`.
 
 =
 Section 4 - Loop Flow
@@ -933,7 +933,7 @@ To next -- in loop
 
 @ The following innocent-looking definition throws a problem message if the
 RTP label is not (a) literal text and (b) the leafname of a Markdown file
-(once |.md| has been added) in the |RTPs| subdirectory of the current
+(once `.md` has been added) in the `RTPs` subdirectory of the current
 extension directory: it can only be used from with a directory-format extension.
 
 =
@@ -946,7 +946,7 @@ To issue the run-time problem (pcode - text):
 Some of the things we can do with enumerations, others being listed under
 randomness below.
 
-See test case |BIP-Enumerations|.
+See test case `BIP-Enumerations`.
 
 =
 Chapter 4 - Values
@@ -978,7 +978,7 @@ To decide which K is the last value of (name of kind of enumerated value K)
 @ Random numbers and random items chosen from sets of objects matching a
 given description ("a random closed door").
 
-See test case |BIP-Randomness|.
+See test case `BIP-Randomness`.
 
 =
 Section 2 - Randomness
@@ -1010,7 +1010,7 @@ example, it is 0 for a number, or the empty text for text. When Inform compiles
 a value of a given kind but isn't told what value to compile, it always
 chooses the default, which is why the following definition works.
 
-See test case |BIP-DefaultValues|.
+See test case `BIP-DefaultValues`.
 
 =
 Section 3 - Default Values
@@ -1028,7 +1028,7 @@ As repetitive as the following is, it's much simpler and less prone to
 possible namespace trouble if we don't define kinds of value for the different
 structural levels of text (character, word, punctuated word, etc.).
 
-See test case |BIP-Texts|.
+See test case `BIP-Texts`.
 
 =
 Chapter 5 - Text
@@ -1083,7 +1083,7 @@ To decide what text is the substituted form of (T - text)
 
 @ A common matching engine is used for matching plain text...
 
-See test case |BIP-TextReplacement|.
+See test case `BIP-TextReplacement`.
 
 =
 Section 2 - Matching and Replacing
@@ -1152,7 +1152,7 @@ exact text which matched (not interesting in the plain text case since it's
 the same as the search text, up to case at least), and the values of matched
 subexpressions (which the plain text case doesn't have).
 
-See test case |BIP-RegExp|.
+See test case `BIP-RegExp`.
 
 =
 Section 3 - Regular Expressions
@@ -1192,7 +1192,7 @@ To replace the regular expression (find - text) in (T - text) with
 
 @ Casing of text.
 
-See test case |BIP-TextCasing|.
+See test case `BIP-TextCasing`.
 
 =
 Section 4 - Casing of Text
@@ -1218,7 +1218,7 @@ To decide if (T - text) is in upper case
 
 @h Adaptive text.
 
-See test case |BIP-AdaptiveText|.
+See test case `BIP-AdaptiveText`.
 
 =
 Section 5 - Adaptive Text
@@ -1269,7 +1269,7 @@ changing a table entry is not something defined here as a phrase: the
 ever-powerful "now" can do that. But changing something to a non-value --
 or "blanking" it -- requires specialist phrases.
 
-See test case |BIP-Tables|.
+See test case `BIP-Tables`.
 
 =
 Chapter 6 - Data Structures
@@ -1339,7 +1339,7 @@ To say (TC - table column) in/from (T - table name)
 
 @ Sorting.
 
-See test case |BIP-TableSort|.
+See test case `BIP-TableSort`.
 
 =
 Section 2 - Sorting Tables
@@ -1360,7 +1360,7 @@ To sort (T - table name) with (cf - phrase (table name, number, number) -> numbe
 @h Lists.
 The following are all for adding and removing values to dynamic lists.
 
-See test case |BIP-Lists|.
+See test case `BIP-Lists`.
 
 =
 Section 3 - Lists
@@ -1421,7 +1421,7 @@ To decide what list of Ks is the list of (D - description of values of kind K)
 
 @ Determining and setting the length:
 
-See test case |BIP-ListLength|.
+See test case `BIP-ListLength`.
 
 =
 Section 4 - Length of lists
@@ -1448,7 +1448,7 @@ To change (L - a list of values) to have (N - a number) entries/entry
 @ Easy but useful list operations. Sorting ultimately uses a common sorting
 mechanism, in "Sort.i6t", which handles both lists and tables.
 
-See test case |BIP-ListOperations|.
+See test case `BIP-ListOperations`.
 
 =
 Section 5 - List operations
@@ -1486,7 +1486,7 @@ the most fundamental of all, but they're not either set or tested by
 procedural phrases -- they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:
 
-See test case |BIP-Relations|.
+See test case `BIP-Relations`.
 
 =
 Section 6 - Relations
@@ -1563,7 +1563,7 @@ To decide which L is (name of kind of value L) that/which/whom (X - K)
 Here we have the ability to use the name of a function as a value, and to
 apply such a function.
 
-See test case |BIP-Apply|.
+See test case `BIP-Apply`.
 
 =
 Chapter 7 - Functional Programming
@@ -1615,7 +1615,7 @@ To apply (function - phrase (value of kind K, value of kind L, value of kind M) 
 @ The standard map, reduce and filter operations found in most functional
 programming languages also have Inform analogues.
 
-See test case |BIP-Map|.
+See test case `BIP-Map`.
 
 =
 Section 2 - Working with Lists
@@ -1651,7 +1651,7 @@ To decide what list of K is the filter to (criterion - description of Ks) of
 
 Firing off activities:
 
-See test case |BIP-Activities|.
+See test case `BIP-Activities`.
 
 =
 Chapter 8 - Rulebooks and Activities
@@ -1674,7 +1674,7 @@ a good thing, but it does open up possibilities, and it's good for
 retro-fitting onto extensions to make them more customisable.
 
 These are really only useful in an activity-rich environment, in any case.
-See the documentation example |AntSensitiveSunglasses|.
+See the documentation example `AntSensitiveSunglasses`.
 
 =
 Section 2 - Advanced Activities
@@ -1706,7 +1706,7 @@ To abandon the (A - activity on value of kind K) activity with (val - K)
 
 @ Here are four different ways to invoke a rule or rulebook:
 
-See test case |BIP-Rules|.
+See test case `BIP-Rules`.
 
 =
 Section 3 - Following Rules
@@ -1740,11 +1740,11 @@ To abide by (RL - a nothing based rule)
 	(documented at ph_abide):
 	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
 
-@ Rules return |true| to indicate a decision, which could be either a success
-or a failure, and optionally may also return a value. If they return |false|,
+@ Rules return `true` to indicate a decision, which could be either a success
+or a failure, and optionally may also return a value. If they return `false`,
 there's no decision.
 
-See test case |BIP-Rules| once again.
+See test case `BIP-Rules` once again.
 
 =
 Section 4 - Success and Failure
@@ -1780,7 +1780,7 @@ Chapter 9 - Basic Input/Output
 @ Some basic visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
 
-See test case |BIP-SayFonts|, though since |intest| runs on plain text only,
+See test case `BIP-SayFonts`, though since `intest` runs on plain text only,
 you may need to run this in the Inform application to be convinced.
 
 =
@@ -1986,7 +1986,7 @@ To set the status bar/line/window to (rows - number) row/rows:
 Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.
 
-See test case |BIP-Files-G|, which has no Z-machine counterpart.
+See test case `BIP-Files-G`, which has no Z-machine counterpart.
 
 =
 Chapter 10 - External Files (not for Z-machine)
@@ -2003,7 +2003,7 @@ To say text of (FN - external file)
 	(documented at ph_saytext):
 	(- FileIO_PrintContents({FN}); say__p = 1; -).
 
-@ See test case |BIP-FilesOfTables-G|, which has no Z-machine counterpart.
+@ See test case `BIP-FilesOfTables-G`, which has no Z-machine counterpart.
 
 =
 Section 2 - Files of Data

@@ -7,9 +7,9 @@ at runtime.
 Designer's Manual, fourth edition (the "DM4") for explanations, but basically
 it means giving instances of such doors three low-level properties --
 
-- |door_dir|, the map direction through the door;
-- |door_to|, the room on the other side;
-- |found_in|, the two rooms in which the door is located.
+- `door_dir`, the map direction through the door;
+- `door_to`, the room on the other side;
+- `found_in`, the two rooms in which the door is located.
 
 We continue to use that implementation because there is no pressing reason to
 change it: I7 authors are never even aware of how this is all done, and do not
@@ -179,7 +179,7 @@ void RTDoors::door_to_agent(compilation_subtask *t) {
 }
 
 @h Found in.
-And this is a two-element array, simply giving the two rooms |R1| and |R2|
+And this is a two-element array, simply giving the two rooms `R1` and `R2`
 which the door is found in:
 
 =

@@ -114,12 +114,9 @@ bibliographic data (which could just as easily be variables). But two of the
 larger worked examples we were trying Inform out on, in the early days,
 belonged to a sequence called &quot;When in Rome&quot;. So it didn't seem such an
 obscure request at the time.</p>
-</div>
 <blockquote>
-    <p>This is episode 2 of "When in Rome".</p>
+<p>This is episode 2 of &quot;When in Rome&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This handles the special meaning &quot;The story is episode...&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -137,7 +134,7 @@ obscure request at the time.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">BibliographicData::episode_SMF</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">BibliographicData::episode_SMF</span></span>:<br/><a href="2-bd.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "The story is episode 2 of ..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;The story is episode 2 of ...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;episode-sentence-subject&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;episode-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -571,12 +568,9 @@ otherwise it's much the same.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12_4" class="paragraph-anchor"></a><b>&#167;12.4. </b>  This code is used to work out a good filename for something given a name
 inside Inform. For instance, if a project is called</p>
-</div>
 <blockquote>
-    <p>"St. Bartholemew's Fair: Etude for a Push-Me/Pull-You Machine"</p>
+<p>&quot;St. Bartholemew's Fair: Etude for a Push-Me/Pull-You Machine&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then what would be a good filename for its released story file?</p>
 <p>In the filename version we must forcibly truncate the text to ensure
 that it does not exceed a certain length, and must also make it filename-safe,

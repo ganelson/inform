@@ -5,7 +5,7 @@ used to match noun phrases in the command parser.
 
 @h Introduction.
 At runtime, the command parser handles noun phrases in two ways. Simple
-nouns for an object are handled by giving it a |name| property listing
+nouns for an object are handled by giving it a `name` property listing
 some dictionary words which could refer to it -- see //Name Properties//.
 
 More complex nouns are handled with Inter functions called "general parsing
@@ -22,7 +22,7 @@ automatically, so that the story's author is not really aware of them at all.
 
 To compile a GPR, Inform has to:
 
-- work out where to put it, i.e., choose an |inter_name|;
+- work out where to put it, i.e., choose an `inter_name`;
 - open a function body there;
 - use a //gpr_kit// to give it local variables as needed;
 - compile a "GPR head";

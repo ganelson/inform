@@ -429,7 +429,7 @@ general parsing routine.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">default</span><span class="plain-syntax">: </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax"> == </span><span class="identifier-syntax">entry</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! print "Giving up^";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! print &quot;Giving up^&quot;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -605,10 +605,10 @@ a legal row number.)</p>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TableBlankRows</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TableRows</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">); </span><span class="comment-syntax">!print i, " rows^";</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TableRows</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">); </span><span class="comment-syntax">!print i, &quot; rows^&quot;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax">=1:</span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">i</span><span class="plain-syntax">:</span><span class="identifier-syntax">j</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TableRowIsBlank</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">)) </span><span class="identifier-syntax">c</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!print c, " blank^";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!print c, &quot; blank^&quot;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -756,7 +756,8 @@ also ignored at present.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Next Row.</b>  <code>TableNextRow(T, C, R, D)</code> is used when scanning through a table in order
-of the values in column <code>C</code>: ascending order if <code>D = 1</code>, descending if <code>D = -1</code>. The current position is row <code>R</code> of column <code>C</code>, or <code>R = 0</code> if we have
+of the values in column <code>C</code>: ascending order if <code>D = 1</code>, descending if |D =
+-1<code>. The current position is row </code>R<code>of column</code>C<code>, or </code>R = 0| if we have
 not yet found the first row. The return value is the row number for the
 next value, or 0 if we are already at the final value. Note that if there
 are several equal values in the column, they will be run through in turn,

@@ -74,7 +74,7 @@ int Spatial::new_base_kind_notify(kind *new_base, text_stream *name, wording W) 
 
 @ When the rest of Inform makes something a room, for instance in response to
 an explicit sentence like "The Hall of Mirrors is a room.", we take notice;
-if it turns out to be news, we infer |is_room_inf| with certainty.
+if it turns out to be news, we infer `is_room_inf` with certainty.
 
 =
 int Spatial::set_kind_notify(instance *I, kind *k) {
@@ -164,7 +164,7 @@ int Spatial::create_inference_subjects(void) {
 @ And this is where those placeholders give up their places for the real kind
 subjects. What happens is that, ordinarily, the machinery creating objects
 (and kinds) will allocate a new inference structure for each object, but it
-first invites plugins to choose an existing one instead. (The |inference_subject|
+first invites plugins to choose an existing one instead. (The `inference_subject`
 structure is rewritten, but pointers to it remain consistent and valid.)
 
 =
@@ -204,7 +204,7 @@ the Standard Rules. (So there is no need to translate this to other languages.)
 
 "Matching key" has to appear in here because it both has a traditional I6
 name and is used as relation storage. If we didn't care about it being
-called |with_key| in the I6 source code, we wouldn't need to do anything
+called `with_key` in the I6 source code, we wouldn't need to do anything
 special with it at all.
 
 =
@@ -235,7 +235,7 @@ following structure, though we really only use it for instance subjects,
 which correspond to the objects in the world model.
 
 An important concept here is the "progenitor" of something in the model,
-which may be |NULL|: the "progenitor" is the object which immediately contains,
+which may be `NULL`: the "progenitor" is the object which immediately contains,
 carries, wears, supports or incorporates it.
 
 @d SPATIAL_DATA(I) FEATURE_DATA_ON_INSTANCE(spatial, I)
@@ -305,7 +305,7 @@ int Spatial::default_appearance(inference_subject *infs, parse_node *txt) {
 
 @ A lone string as a sentence is a description for a room, but an initial
 description for an object. Only now can we know which, since we have only
-just decided whether |I| is a room or not. We therefore draw the necessary
+just decided whether `I` is a room or not. We therefore draw the necessary
 inference.
 
 @<Produce a problem for doubly described scenery@> =
@@ -338,14 +338,14 @@ an object" pseudo-value).
 	_nobody/no-one *** |                    ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 	_no _one ***                            ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 
-@ When we detect them, we set both |quantifier_used| and |some_kind|
+@ When we detect them, we set both `quantifier_used` and `some_kind`
 appropriately. None can be recognised if the basic kinds are not created yet,
-which we check for by inspecting |K_thing|. (Note that the S-parser may indeed
+which we check for by inspecting `K_thing`. (Note that the S-parser may indeed
 be asked to parse "something" before this point, as when it scans the domains
 of adjective definitions, but that it's okay that it produces a null result.)
 
 With the "some-" words, no quantifier is set because the meaning here is the
-|exists_quantifier|. Since this is the default behaviour for unquantified
+`exists_quantifier`. Since this is the default behaviour for unquantified
 descriptions anyway -- "a door is in the Great Hall" means that such a door
 exists -- we needn't set the variable.
 
@@ -417,7 +417,7 @@ needs delicate handling, and its own inference type.
 The fact that rooms cannot be "here" is useful, because it means Inform can
 with certainty read
 
->> The washing machine is here. The shirt is in the machine.
+> The washing machine is here. The shirt is in the machine.
 
 as creating a container called "washing machine", not a room.
 
@@ -531,14 +531,14 @@ could well be argued that they are linguistically the same thing.
 
 It means that Inform is often reading code such as:
 
->> The croquet ball is in the Boxed Set.
+> The croquet ball is in the Boxed Set.
 
 and not being sure whether "Boxed Set" is a container or a room.
 
 In the following determination, we use two sources of information. One is explicit
 data given by the source text or unambiguously implied in it, like so --
 
->> The Boxed Set is a container. The spoon is on the low table.
+> The Boxed Set is a container. The spoon is on the low table.
 
 which tell us the Boxed Set is certainly a container and the table certainly
 a supporter. This information about an object is the "designer choice" about
@@ -691,7 +691,7 @@ Inform spatial model:
 
 @ Stage II at last. Now the kinds are all known, and it's time to work out
 the spatial arrangements. Inform's spatial model assigns every instance object
-a unique "progenitor", which may be |NULL|, representing the object which
+a unique "progenitor", which may be `NULL`, representing the object which
 immediately contains, carries, wears, supports or incorporates it.
 
 Clearly if we know every object's progenitor, then we know the whole spatial
@@ -838,7 +838,7 @@ object under investigation.
 	}
 
 @ This runs through the source text from the beginning up to the "here"
-sentence, setting |whereabouts| to any rooms it finds along the way, so that
+sentence, setting `whereabouts` to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.
 
 @<Set the whereabouts to the last discussed room prior to this inference being drawn@> =
@@ -1105,11 +1105,11 @@ the absence of other information.)
 	@<Assert container and supporter indicator properties@>;
 	@<Assert incorporation tree properties@>;
 
-@ We need to make sure that every room does have an Inter |description| value
+@ We need to make sure that every room does have an Inter `description` value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
-that any room with no explicit description will inherit |EMPTY_TEXT_VALUE|
-as a value for |description| from the room class.
+that any room with no explicit description will inherit `EMPTY_TEXT_VALUE`
+as a value for `description` from the room class.
 
 @<Assert an explicit default description value for the room kind@> =
 	if (K_room) {

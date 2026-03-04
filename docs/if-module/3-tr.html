@@ -70,7 +70,7 @@ special significance:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_A_TIMED_EVENT</span> <span class="constant-syntax">-1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* as for the vast majority of rules */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NO_FIXED_TIME</span> <span class="constant-syntax">-2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* for phrases like "When the clock strikes: ..." */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NO_FIXED_TIME</span> <span class="constant-syntax">-2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* for phrases like &quot;When the clock strikes: ...&quot; */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_AN_EVENT</span> <span class="constant-syntax">-3</span><span class="plain-syntax"> </span><span class="comment-syntax">/* not even syntactically */</span>
 </pre>
@@ -153,7 +153,7 @@ special significance:</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_time</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 to 1339, or one of the special values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if one is given */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">uses_as_event</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |parse_node| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">uses_as_event</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>parse_node</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax">;</span>
 

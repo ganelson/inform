@@ -62,17 +62,17 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  There is just one additional node type, but it can take four new annotations:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ACTION_NT</span> <span class="comment-syntax">/* "taking something closed" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ACTION_NT</span> <span class="comment-syntax">/* &quot;taking something closed&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">action_meaning_ANNOT</span> <span class="comment-syntax">/* |action_pattern|: meaning in parse tree when used as noun */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">action_meaning_ANNOT</span> <span class="comment-syntax">/* <code>action_pattern</code>: meaning in parse tree when used as noun */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_action_name_ANNOT</span> <span class="comment-syntax">/* |action_name|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_action_name_ANNOT</span> <span class="comment-syntax">/* <code>action_name</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_action_pattern_ANNOT</span> <span class="comment-syntax">/* |action_pattern|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_action_pattern_ANNOT</span> <span class="comment-syntax">/* <code>action_pattern</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_explicit_action_ANNOT</span> <span class="comment-syntax">/* |explicit_action|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_explicit_action_ANNOT</span> <span class="comment-syntax">/* <code>explicit_action</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_named_action_pattern_ANNOT</span> <span class="comment-syntax">/* |named_action_pattern|: for constant values */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">constant_named_action_pattern_ANNOT</span> <span class="comment-syntax">/* <code>named_action_pattern</code>: for constant values */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_meaning</span><span class="plain-syntax">, </span><span class="type-syntax">action_pattern</span><span class="plain-syntax">)</span>
@@ -208,12 +208,9 @@ something, by making an &quot;X is a Y&quot; sort of sentence.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>  Consider:</p>
-</div>
 <blockquote>
-    <p>Taking something is proactive behaviour.</p>
+<p>Taking something is proactive behaviour.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here <code>Refiner::refine</code> will correctly report that &quot;proactive behaviour&quot; is
 a new term, and give it a <code>CREATED_NT</code> node. But we don't want it to become an
 object or a value -- we want it to be a new named action pattern. So we
@@ -234,12 +231,9 @@ copular assertion are actionlike, we want to make them <code>ACTION_NT</code> no
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b>  The second case occurs much less often -- for instance, the only time it comes
 up in the test suite is <code>CHS</code>, the example &quot;Chronic Hinting Syndrome&quot;:</p>
-</div>
 <blockquote>
-    <p>Setting is a kind of value. The settings are bright and dull.</p>
+<p>Setting is a kind of value. The settings are bright and dull.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here the first sentence wants to create something called &quot;setting&quot;, which
 ought to have a <code>CREATED_NT</code> node type, but doesn't because it has been read
 as an action instead. We correct the spurious <code>ACTION_NT</code> to a <code>CREATED_NT</code>.</p>

@@ -67,18 +67,14 @@ but they're not really part of that program, and are instead instructions to
 the compiler (or more often, the Inter kits which the program is linked to)
 to do something in a different way.</p>
 <p>Use options have natural-language names, and are created with sentences like:</p>
-</div>
 <blockquote>
-    <p>Use American dialect translates as the configuration flag AMERICAN_DIALECT in BasicInformKit.</p>
+<p>Use American dialect translates as the configuration flag AMERICAN_DIALECT in BasicInformKit.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>or with the more old-fashioned (and soon to be deprecated)</p>
-</div>
 <blockquote>
-    <p>Use American dialect translates as (- Constant US_DIALECT = 1; -).</p>
+<p>Use American dialect translates as (- Constant US_DIALECT = 1; -).</p>
 </blockquote>
-
+</div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  A &quot;... translates as ...&quot; sentence has this special meaning if its SP and
 OP match the following:</p>
@@ -151,7 +147,7 @@ OP match the following:</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewUseOptions::use_translates_as_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NewUseOptions::use_translates_as_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* "Use American dialect means ..." */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;Use American dialect means ...&quot; */</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;use-translates-as-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="function-syntax">&lt;use-translates-as-sentence-subject&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">))) {</span>
@@ -175,13 +171,13 @@ OP match the following:</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">use_option</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word range where name is stored */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">expansion</span><span class="plain-syntax">; </span><span class="comment-syntax">/* inline definition as given in source */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">definition_form</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_UTAS| constants above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">definition_form</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_UTAS</code> constants above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if not defined as inline code */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* null if no kit specified */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_created</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">source_file_scoped</span><span class="plain-syntax">; </span><span class="comment-syntax">/* scope is the current source file only? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parsed_use_option_setting</span><span class="plain-syntax"> *</span><span class="identifier-syntax">default_value</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">settings_made</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |parsed_use_option_setting| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">settings_made</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>parsed_use_option_setting</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_explicitly_numerical</span><span class="plain-syntax">; </span><span class="comment-syntax">/* must a Use sentence give a number? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">notable_option_code</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or negative if not notable */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">use_option_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
@@ -453,12 +449,9 @@ them back that way too:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Target pragma settings arise from sentences like</p>
-</div>
 <blockquote>
-    <p>Use Ada compiler option "!check-boundaries".</p>
+<p>Use Ada compiler option &quot;!check-boundaries&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which tell Inform that the Inter it produces should be marked so that any
 hypothetical translation of that code to Ada could (if the translation code
 chose to) take notice of the option set. We know nothing of the possible
@@ -524,7 +517,7 @@ they mostly are.)</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">i6_memory_setting</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ICL_identifier</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see the DM4 for the I6 memory setting names */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., |50000| means "at least 50,000" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., <code>50000</code> means &quot;at least 50,000&quot; */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">i6_memory_setting</span><span class="plain-syntax">;</span>
 </pre>

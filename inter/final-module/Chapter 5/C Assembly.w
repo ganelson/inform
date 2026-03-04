@@ -36,14 +36,14 @@ code will successfully build as part of an Inter kit:
 	    @bandersnatch x;
 	];
 =
-Kit code, and also material included in |(-| and |-)| brackets in I7 source text,
+Kit code, and also material included in `(-` and `-)` brackets in I7 source text,
 can claim to use assembly language opcodes with any names it likes. No checking
-is done that these are "real" opcodes. (Spoilers: |@bandersnatch| is not.)
+is done that these are "real" opcodes. (Spoilers: `@bandersnatch` is not.)
 
 The point of this is that different final targets support different sets of
 assembly language. This was always true for Inform 6 code (after around 2000,
 anyway), because the Z and Glulx virtual machines had different assembly
-languages: |@split_window| exists for Z but not Glulx, |@atan| exists for
+languages: `@split_window` exists for Z but not Glulx, `@atan` exists for
 Glulx but not Z, for example.
 
 So each different final generator needs to make its own decision about what
@@ -66,7 +66,7 @@ giving it some metadata: we will gather these into a dictionary so that names
 of opcodes can quickly be resolved to their metadata structures.
 
 That dictionary will begin with (1) about 60 standard supported opcodes, but
-then may pick up (2) a few others such as |@bandersnatch|, if kits do something
+then may pick up (2) a few others such as `@bandersnatch`, if kits do something
 non-standard.
 
 So now we define some very minimal metadata on our opcodes. Each opcode will,
@@ -77,8 +77,8 @@ when used, be followed by a number of operands, which we number from 1:
 =
 This opcode, which performs floating-point division with remainder, reads in
 operands 1 and 2, and writes results out to operands 3 and 4. In the following,
-|store_this_operand[3]| and |store_this_operand[4]| would be |TRUE|, while
-|store_this_operand[1]| and |store_this_operand[2]| would be |FALSE|. (In fact,
+`store_this_operand[3]` and `store_this_operand[4]` would be `TRUE`, while
+`store_this_operand[1]` and `store_this_operand[2]` would be `FALSE`. (In fact,
 this is an outlier, because it is the only opcode we support which has more than
 one store operand. But in principle we could have many.)
 
@@ -94,18 +94,18 @@ stack rather than in the body of the instruction. For example,
 = (text as Inform 6)
 	@glk 4 6 ret;
 =
-would provide |@glk| with seven operands to read in: the one in the instruction
-itself, |4|, and then the top 6 items on the stack.
+would provide `@glk` with seven operands to read in: the one in the instruction
+itself, `4`, and then the top 6 items on the stack.
 
 Because of this, an operand holding a variable-argument count is special. There
-can be at most one for any opcode; |vararg_operand| is -1 if there isn't one,
-but for |@glk|, |vararg_operand| would be 2.
+can be at most one for any opcode; `vararg_operand` is -1 if there isn't one,
+but for `@glk`, `vararg_operand` would be 2.
 
 =
 typedef struct C_supported_opcode {
-	struct text_stream *name; /* including the opening |@| character */
+	struct text_stream *name; /* including the opening `@` character */
 	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
-	int vararg_operand; /* position of |_vararg_count| operand, or -1 if none */
+	int vararg_operand; /* position of `_vararg_count` operand, or -1 if none */
 	int speculative; /* i.e., not part of the standard supported set */
 	CLASS_DEFINITION
 } C_supported_opcode;
@@ -127,8 +127,8 @@ C_supported_opcode *CAssembly::new_opcode(code_generation *gen, text_stream *nam
 	return opc;
 }
 
-@ When the generator encounters an opcode called |name| which seems to be used
-with |operand_count| operands, it calls the following function to find the
+@ When the generator encounters an opcode called `name` which seems to be used
+with `operand_count` operands, it calls the following function to find the
 corresponding metadata. Note that this always returns a valid //C_supported_opcode//,
 because even if a completely unexpected name is encountered, the above
 mechanism will just create a meaning for it.
@@ -265,7 +265,7 @@ void CAssembly::invoke_opcode(code_generator *gtr, code_generation *gen,
 	Vanilla::node(gen, label);
 
 @ Each instruction becomes a function call to the function implementing the
-opcode in question, except that |@return| becomes the C statement |return|.
+opcode in question, except that `@return` becomes the C statement `return`.
 If the opcode has N operands then the function has N+1 arguments, since the
 first is always the process pointer. 
 
@@ -295,12 +295,12 @@ inline optimisation to remove most of these calls anyway.
 	}
 	WRITE(")");
 
-@ The argument for a regular operand will have type |i7word_t|, so we have to
+@ The argument for a regular operand will have type `i7word_t`, so we have to
 compile something of that type here.
 
-The special operand notation |sp| is a pseudo-variable meaning "the top of the
-stack", so if we see that then we compile that to a pull: note that |i7_pull|
-returns an |i7word_t|.
+The special operand notation `sp` is a pseudo-variable meaning "the top of the
+stack", so if we see that then we compile that to a pull: note that `i7_pull`
+returns an `i7word_t`.
 
 @<Generate a regular operand@> =
 	if (Str::eq(O, I"sp")) {
@@ -309,17 +309,17 @@ returns an |i7word_t|.
 		WRITE("%S", O);
 	}
 
-@ The argument for a store operand will have type |i7word_t *|, so now we have
+@ The argument for a store operand will have type `i7word_t *`, so now we have
 to make a pointer.
 
-Again, |sp| is a pseudo-variable meaning "the top of the stack", but this time
+Again, `sp` is a pseudo-variable meaning "the top of the stack", but this time
 we have to push, not pull, and that's something we can't do until the function
 has returned -- the function will create the value we need to push. We get
 around this by compiling a pointer to some temporary memory.
 
-Finally, assembly also allows |0| as a special value for a store operand, and
+Finally, assembly also allows `0` as a special value for a store operand, and
 this means "throw the value away". We don't want to incur a C compiler warning
-by attempting to write |0| in a pointer context, so we pass it as |NULL| instead.
+by attempting to write `0` in a pointer context, so we pass it as `NULL` instead.
 
 @<Generate a store operand@> =
 	if (Str::eq(O, I"sp")) { 
@@ -338,7 +338,7 @@ by attempting to write |0| in a pointer context, so we pass it as |NULL| instead
 		if (push_store[operand])
 			WRITE("; i7_push(proc, proc->state.tmp[%d])", operand);
 
-@ And where does the special operand |sp| come from? From here:
+@ And where does the special operand `sp` come from? From here:
 
 =
 void CAssembly::assembly_marker(code_generator *gtr, code_generation *gen, inter_ti marker) {
@@ -359,10 +359,10 @@ This is not the place to specify what Glulx opcodes do. See Andrew Plotkin's
 //documentation on the Glulx virtual machine -> https://www.eblong.com/zarf/glulx//.
 
 Most of the opcodes we support are defined below, but see also //C Input-Output Model//
-for |@glk|, and see //C Arithmetic// for the plethora of mathematical operations
-such as |@fmul|.
+for `@glk`, and see //C Arithmetic// for the plethora of mathematical operations
+such as `@fmul`.
 
-To begin, here is a |@call|, which performs a function call to a perhaps computed
+To begin, here is a `@call`, which performs a function call to a perhaps computed
 address:
 
 = (text to inform7_clib.h)
@@ -380,8 +380,8 @@ void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word
 
 @h copy.
 Though it doesn't look it, this is one of the main ways Glulx assembly language
-programs push or pull to the stack -- |@copy sp x| pulls the stack to |x|;
-|@copy sp 0| pops the stack; |@copy x sp| pushes |x| to the stack. But all of
+programs push or pull to the stack -- `@copy sp x` pulls the stack to `x`;
+`@copy sp 0` pops the stack; `@copy x sp` pushes `x` to the stack. But all of
 that is handled by the general mechanism above.
 
 = (text to inform7_clib.h)
@@ -438,10 +438,10 @@ void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 =
 
 @h jeq, jleu, jnz, jz.
-These are branch opcodes and return an |int|.
+These are branch opcodes and return an `int`.
 
-The implementation of |@jleu| here is modelled on the one from |dumb-glulxe|.
-Writing code like |*((i7word_t *) &ux) = x| really makes you proud to have chosen
+The implementation of `@jleu` here is modelled on the one from `dumb-glulxe`.
+Writing code like `*((i7word_t *) &ux) = x` really makes you proud to have chosen
 C as your programming language, but it works.
 
 = (text to inform7_clib.h)
@@ -476,7 +476,7 @@ int i7_opcode_jz(i7process_t *proc, i7word_t x) {
 =
 
 @h nop, quit, verify.
-There is no real meaning for |@verify| in this situation: it's supposed to
+There is no real meaning for `@verify` in this situation: it's supposed to
 check the checksum for the contents of a virtual machine, to protect against
 the (entirely likely) scenario of a floppy disk sector going bad in 1983.
 So we unconditionally store the "okay" result.
@@ -501,18 +501,18 @@ void i7_opcode_verify(i7process_t *proc, i7word_t *z) {
 =
 
 @h restoreundo, saveundo, hasundo, discardundo.
-This all works, but we do something pretty inelegant to support |@restoreundo|:
-we insert a call to a (presumably kit-based) function called |DealWithUndo|,
+This all works, but we do something pretty inelegant to support `@restoreundo`:
+we insert a call to a (presumably kit-based) function called `DealWithUndo`,
 provided this exists. This is done because we are unable safely to follow the
-proper Glulx specification. In principle, after a |@restoreundo| succeeds,
+proper Glulx specification. In principle, after a `@restoreundo` succeeds,
 execution immediately continues from the position in the program where the
-|@saveundo| occurred. For a while the implementation here imitated this by
-using |longjmp| and |setjmp|, but it all proved very fragile because of the
-difficulty of storing |setjmp| positions safely in memory.
+`@saveundo` occurred. For a while the implementation here imitated this by
+using `longjmp` and `setjmp`, but it all proved very fragile because of the
+difficulty of storing `setjmp` positions safely in memory.
 
-Correspondingly, our implementation of |@saveundo| always stores the result
+Correspondingly, our implementation of `@saveundo` always stores the result
 value 0. The result value 1 would indicate that execution had switched there
-from a successful |@restoreundo|: but, as noted, that never happens.
+from a successful `@restoreundo`: but, as noted, that never happens.
 
 = (text to inform7_clib.h)
 void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x);
@@ -561,7 +561,7 @@ of asking the user for a filename and then saving data out to a binary file
 of that name in the current working directory. Better to do nothing here, and
 let users handle this themselves.
 
-Similar considerations apply to |@restart|. The intention of this opcode is
+Similar considerations apply to `@restart`. The intention of this opcode is
 essentially to reboot the virtual machine and start over: here, though, we
 have a real machine. It's easy enough to reinitialise the process state,
 but not so simple to restart execution as if from a clean process start.
@@ -616,10 +616,10 @@ fiction is being played: that's the only use which the standard Inform kits make
 of it.
 
 The elegant implementation here comes from Andrew Plotkin's reference code for
-|glulxe|, a Glulx interpreter. |options| is a bitmap of the bits defined below.
-In the only use the standard Inform kits make of this opcode, |options| will be
-just |serop_KeyIndirect|, but |keysize| will be more than 4, so that the elaborate
-speed optimisation for keys of size 1, 2 and 4, and thus |keybuf|, are never used.
+`glulxe`, a Glulx interpreter. `options` is a bitmap of the bits defined below.
+In the only use the standard Inform kits make of this opcode, `options` will be
+just `serop_KeyIndirect`, but `keysize` will be more than 4, so that the elaborate
+speed optimisation for keys of size 1, 2 and 4, and thus `keybuf`, are never used.
 But we may as well have the full functionality here.
 
 = (text to inform7_clib.h)
@@ -698,9 +698,9 @@ void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 
 @h mcopy, mzero, malloc, mfree.
 A Glulx assembly opcode is provided for fast memory copies, which we must
-implement. We're choosing not to implement the Glulx |@malloc| or |@mfree|
+implement. We're choosing not to implement the Glulx `@malloc` or `@mfree`
 opcodes for now, but that will surely need to change in due course. (When that
-does change, we will need also to change |@gestalt|.)
+does change, we will need also to change `@gestalt`.)
 
 = (text to inform7_clib.h)
 void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
@@ -735,14 +735,14 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 =
 
 @h random, setrandom.
-Note that the |random(...)| function built in to Inform is just a name for the
-|@random| opcode, so we define that here too.
+Note that the `random(...)` function built in to Inform is just a name for the
+`@random` opcode, so we define that here too.
 
 We have no convincing need for a statistically good random number algorithm,
 but we do want cross-platform consistency in order that the test suite for Inform
 should behave equivalently on MacOS, Linux and Windows -- at least when the
 generator is seeded with the same value. To that end, we borrow the algorithm
-used by the |frotz| Z-machine interpreter, which in turn is based on suggestions
+used by the `frotz` Z-machine interpreter, which in turn is based on suggestions
 in the Z-machine standards document.
 
 = (text to inform7_clib.h)

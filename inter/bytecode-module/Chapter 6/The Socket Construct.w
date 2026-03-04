@@ -3,7 +3,7 @@
 Defining the socket construct.
 
 @ This is a pseudo-construct: it looks like an instruction in textual Inter
-syntax, but specifies something else, and does not result in an |inter_tree_node|.
+syntax, but specifies something else, and does not result in an `inter_tree_node`.
 
 =
 void SocketInstruction::define_construct(void) {
@@ -22,7 +22,7 @@ void SocketInstruction::verify(inter_construct *IC, inter_tree_node *P,
 
 @ What it does is to specify a symbol which is a socket in the current tree:
 this results in an entry in the symbols table for the current package (which
-will always be |/main/connectors|, in fact) but not an instruction.
+will always be `/main/connectors`, in fact) but not an instruction.
 
 For how these are printed back, see //PlugInstruction::write_declaration//,
 which handles both plugs and sockets.

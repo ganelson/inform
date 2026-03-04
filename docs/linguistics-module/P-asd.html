@@ -58,7 +58,7 @@ If you are interested in using <a href="index.html" class="internal">linguistics
 <a href="../linguistics-test/index.html" class="internal">linguistics-test</a> may be a good starting point.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Every example sentence in this section was passed in turn to the &lt;sentence&gt;
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Every example sentence in this section was passed in turn to the <sentence>
 nonterminal, and the trees displayed below were the result. For example:</p>
 </div>
 <pre class="undisplayed-code all-displayed-code code-font">
@@ -106,7 +106,7 @@ predictable shape.<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
 </li></ul>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Using &lt;sentence&gt; alone tends to result in a lot of <code>UNPARSED_NOUN_NT</code> nodes.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Using <sentence> alone tends to result in a lot of <code>UNPARSED_NOUN_NT</code> nodes.
 This is unsatisfying, but useful, because sometimes the meaning of a verb
 affects how those nodes should be parsed further. The idea is that the user
 will traverse the tree and parse the <code>UNPARSED_NOUN_NT</code> nodes as needed.
@@ -458,20 +458,16 @@ comma is allowed but not required.</p>
 <p><code>AND_NT</code> in conjunction with <code>RELATIONSHIP_NT</code> can allow for zeugmas.
 Zeugma is sometimes thought to be rare in English and to be basically a comedy
 effect, as in the famous Flanders and Swann lyric:</p>
-</div>
 <blockquote>
-    <p>She made no reply, up her mind, and a dash for the door.</p>
+<p>She made no reply, up her mind, and a dash for the door.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>in which three completely different senses of the same verb are used,
 but in which the verb appears only once. It might seem reasonable just to
 disallow this. Unfortunately, less extreme zeugmas occur all the time:</p>
-</div>
 <blockquote>
-    <p>The red door is west of the Dining Room and east of the Ballroom.</p>
+<p>The red door is west of the Dining Room and east of the Ballroom.</p>
 </blockquote>
-
+</div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Now we introduce pronouns to the mix. These are detected automatically
 by <a href="index.html" class="internal">linguistics</a>, and exist in nominative and accusative cases in

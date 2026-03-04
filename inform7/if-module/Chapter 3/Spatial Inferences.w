@@ -38,7 +38,7 @@ void SpatialInferences::create(void) {
 	METHOD_ADD(part_of_inf, COMPARE_INF_MTID, SpatialInferences::cmp_part_of);
 }
 
-@ Details for |is_room_inf|:
+@ Details for `is_room_inf`:
 
 =
 void SpatialInferences::infer_is_room(inference_subject *R, int certitude) {
@@ -56,7 +56,7 @@ int SpatialInferences::is_room_explain_contradiction(inference_family *f, infere
 	return TRUE;
 }
 
-@ Details for |contains_things_inf|:
+@ Details for `contains_things_inf`:
 
 =
 void SpatialInferences::infer_contains_things(inference_subject *R, int certitude) {
@@ -65,7 +65,7 @@ void SpatialInferences::infer_contains_things(inference_subject *R, int certitud
 			NULL_GENERAL_POINTER, certitude), R);
 }
 
-@ Details for |parentage_inf|:
+@ Details for `parentage_inf`:
 
 =
 typedef struct parentage_inference_data {
@@ -125,7 +125,7 @@ int SpatialInferences::parentage_explain_contradiction(inference_family *f, infe
 	return FALSE;
 }
 
-@ Details for |parentage_here_inf|:
+@ Details for `parentage_here_inf`:
 
 =
 typedef struct parentage_here_inference_data {
@@ -164,7 +164,7 @@ int SpatialInferences::cmp_parentage_here(inference_family *f, inference *i1,
 	return CI_IDENTICAL;
 }
 
-@ Details for |parentage_nowhere_inf|:
+@ Details for `parentage_nowhere_inf`:
 
 =
 void SpatialInferences::infer_is_nowhere(inference_subject *R, int certitude) {
@@ -172,7 +172,7 @@ void SpatialInferences::infer_is_nowhere(inference_subject *R, int certitude) {
 		NULL_GENERAL_POINTER, certitude), R);
 }
 
-@ Details for |part_of_inf|:
+@ Details for `part_of_inf`:
 
 =
 void SpatialInferences::infer_part_of(inference_subject *inner, int certitude,

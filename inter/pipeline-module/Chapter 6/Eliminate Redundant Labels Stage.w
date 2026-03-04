@@ -38,7 +38,7 @@ void EliminateRedundantLabelsStage::visitor(inter_tree *I, inter_tree_node *P, v
 	@<Look through the function for mentions of labels, marking those as used@>;
 	@<Remove the label declarations for any that are still marked unused@>;
 
-@ The symbol flag |USED_MARK_ISYMF| is free for us to use, but its value for
+@ The symbol flag `USED_MARK_ISYMF` is free for us to use, but its value for
 any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Mark all the labels for this function as being unused@> =
@@ -52,7 +52,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this
 by striking its definition; the definition of a label symbol is the line
-which shows where it belongs in the function (written |.Example| in Inter
+which shows where it belongs in the function (written `.Example` in Inter
 syntax). Striking this does two things: it removes the definition line; and
 it renders the symbol undefined. It still lives on in the function's symbols
 table, though, and (since we have made sure there are no references to it from
@@ -78,7 +78,7 @@ void EliminateRedundantLabelsStage::traverse_code_tree(inter_tree_node *P) {
 	}
 }
 
-@ If a label is used, there will be a line reading |lab Example| or similar.
+@ If a label is used, there will be a line reading `lab Example` or similar.
 We look for such lines.
 
 @<Examine a line of code in the function@> =

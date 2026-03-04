@@ -301,12 +301,9 @@ of story directions to page directions; if the value is 12 or more, the directio
 won't be shown on the index at all. The initial setup is for the 12 standard
 story directions to correspond exactly to the 12 page directions.</p>
 <p>If we want to show one of the exotic directions, we can use a sentence like:</p>
-</div>
 <blockquote>
-    <p>Index map with starboard mapped as east.</p>
+<p>Index map with starboard mapped as east.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>When we read this, we associate direction object 13, say (the starboard
 direction) with page direction 6:</p>
 </div>
@@ -617,12 +614,9 @@ position the rooms.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-sm.html#SP8_1">&#167;8.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_1_1_1" class="paragraph-anchor"></a><b>&#167;8.1.1.1. </b>  What we're looking for here is a configuration like:</p>
-</div>
 <blockquote>
-    <p>Alpha is east of Beta. Beta is south of Alpha.</p>
+<p>Alpha is east of Beta. Beta is south of Alpha.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This in fact sets up four connections: A is both S and W of B, and B is both
 N and E of A. A reasonable interpretation is that A lies SW of B, and so we
 form a single (symmetric) spatial relationship between them, in this direction.
@@ -1119,8 +1113,8 @@ the loop over submaps doesn't therefore add to the running time.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">LS</span><span class="plain-syntax"> = </span><a href="1-ia.html#SP11" class="function-link"><span class="function-syntax">Indexing::get_list_of_submaps</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">session</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_SUBMAPS</span><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_MAP</span><span class="plain-syntax">, </span><span class="string-syntax">"Laying out component %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="4-sm.html#SP40" class="function-link"><span class="function-syntax">SpatialMap::lock_positions_in_submap</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">session</span><span class="plain-syntax">); </span><span class="comment-syntax">/* $O(R)$ running time */</span>
-<span class="plain-syntax">        </span><a href="4-sm.html#SP41" class="function-link"><span class="function-syntax">SpatialMap::establish_natural_lengths</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">); </span><span class="comment-syntax">/* $O(R)$ running time */</span>
+<span class="plain-syntax">        </span><a href="4-sm.html#SP40" class="function-link"><span class="function-syntax">SpatialMap::lock_positions_in_submap</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">session</span><span class="plain-syntax">); </span><span class="comment-syntax">/* \INWEBMATH(O(R)\INWEBMATH) running time */</span>
+<span class="plain-syntax">        </span><a href="4-sm.html#SP41" class="function-link"><span class="function-syntax">SpatialMap::establish_natural_lengths</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">); </span><span class="comment-syntax">/* \INWEBMATH(O(R)\INWEBMATH) running time */</span>
 <span class="plain-syntax">        </span><a href="4-sm.html#SP47" class="function-link"><span class="function-syntax">SpatialMap::position_submap</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">total_accuracy</span><span class="plain-syntax"> += </span><span class="identifier-syntax">sub</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heat</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_MAP</span><span class="plain-syntax">, </span><span class="string-syntax">"Component %d has final heat %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heat</span><span class="plain-syntax">);</span>
@@ -1463,12 +1457,9 @@ F1-to-T1 line segment to that length which minimises the total heat of
 the submap. For a single cut, this is clearly the smallest length such
 that there's no collision between old zone-1 and old zone-2 rooms.</p>
 <p>The worst case is a configuration like so:</p>
-</div>
 <blockquote>
-    <p>X is west of Y. X1 is northeast of X. X2 is northeast of X. Y1 is northwest of Y. Y2 is northwest of Y1.</p>
+<p>X is west of Y. X1 is northeast of X. X2 is northeast of X. Y1 is northwest of Y. Y2 is northwest of Y1.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We've cut between X and Y. To give clearance so that X2 and Y2 do not collide,
 the new length X to Y needs to be 5.</p>
 <p>However, it's computationally too expensive to check every possible length
@@ -2150,12 +2141,9 @@ start of the process; this means there are at most 12 iterations.</p>
 <p>The reason we do this in what looks an indirect way (why iterate at all?) is
 to cope better with cases where there are two different exits from R to S.
 This frequently happens in IF maps:</p>
-</div>
 <blockquote>
-    <p>The Exalted Throne is above the Ziggurat. [...] South from the Throne is the Ziggurat.</p>
+<p>The Exalted Throne is above the Ziggurat. [...] South from the Throne is the Ziggurat.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Now there are two exits from Z to E: up and north. They cannot simultaneously
 be cooled. The rule we follow is that we never cool an exit if another exit
 between the two rooms is already cold -- this keeps us from endless flipping

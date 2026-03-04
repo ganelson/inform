@@ -18,14 +18,14 @@ void Tables::Relations::start(void) {
 
 @h Subsequent creations.
 When a column called, say, "pledged delegate count" appears in one or more
-tables in the source text, Inform creates a |table_column| structure to
+tables in the source text, Inform creates a `table_column` structure to
 represent the common identity of all table columns with this name. (They
 are required all to share the same kind of value in their entries.) For
 each different table column, a BP is created to represent the meaning
 of "X is a pledged delegate count listed in T". Arguably there should just
-be one super-powerful predicate |listed-in(X, C, T)|, but that would need
+be one super-powerful predicate `listed-in(X, C, T)`, but that would need
 to be a ternary predicate, not binary, and Inform doesn't at present support
-those. So we make a one-parameter family of |listed-in-C(X, T)| binary
+those. So we make a one-parameter family of `listed-in-C(X, T)` binary
 predicates instead.
 
 =
@@ -71,7 +71,7 @@ int Tables::Relations::assert(bp_family *self, binary_predicate *bp,
 }
 
 @h Compilation.
-Note the side-effect here: we ensure that the |ct| local variables will be
+Note the side-effect here: we ensure that the `ct` local variables will be
 present in the current stack frame, since we're going to need them to hold
 the table reference for any successful lookup.
 

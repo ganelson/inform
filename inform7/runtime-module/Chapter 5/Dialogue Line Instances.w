@@ -3,7 +3,7 @@
 To compile any dialogue details in the instances submodule.
 
 @h Compilation data for dialogue lines.
-Each |dialogue_line| object contains this data:
+Each `dialogue_line` object contains this data:
 
 =
 typedef struct dialogue_line_compilation_data {
@@ -450,10 +450,10 @@ instance *RTDialogueLines::speaker_instance(dialogue_line *dl) {
 }
 
 @ This provides the body of a function to determine a speaker or interlocutor
-matching |desc|. It is called first with parameter |par| set to |nothing|,
-and returns either an object, or |nothing|, or the special value |true| to
+matching `desc`. It is called first with parameter `par` set to `nothing`,
+and returns either an object, or `nothing`, or the special value `true` to
 indicate that multiple objects might qualify. It can then be called again
-with |par| set to one such object to see if it does indeed qualify.
+with `par` set to one such object to see if it does indeed qualify.
 
 =
 void RTDialogueLines::fn_body_matching(local_variable *par, parse_node *desc) {

@@ -103,8 +103,8 @@ system from Basic Inform.
 ];
 
 @h Status Line Utilities.
-Two convenient routines for the default values of |right_hand_status_line|
-and |left_hand_status_line| respectively. |SL_Location| also implements the
+Two convenient routines for the default values of `right_hand_status_line`
+and `left_hand_status_line` respectively. `SL_Location` also implements the
 text substitution "[player's surroundings]".
 
 =
@@ -143,8 +143,8 @@ Array T_SL_Location --> CONSTANT_PACKED_TEXT_STORAGE SL_Location;
 ];
 
 @h Banner.
-Note that Inform always compiles |Story| and |Headline| texts, but does not always
-compile a |Story_Author|.
+Note that Inform always compiles `Story` and `Headline` texts, but does not always
+compile a `Story_Author`.
 
 =
 [ Banner i serial;

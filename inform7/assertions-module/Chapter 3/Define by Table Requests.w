@@ -5,9 +5,11 @@ Special sentences declaring that tables amount to massed groups of assertions.
 @ Tables lie behind the special "defined by" sentence. These come in three
 subtly different versions:
 
->> (1) Some animals are defined by the Table of Specimens.
->> (2) Some men in the Zoo are defined by the Table of Zookeepers.
->> (3) Some kinds of animal are defined by the Table of Zoology.
+> (1) Some animals are defined by the Table of Specimens.
+
+> (2) Some men in the Zoo are defined by the Table of Zookeepers.
+
+> (3) Some kinds of animal are defined by the Table of Zoology.
 
 The subject in (1) is the name of a kind; in (2), it's a description which
 incorporates a kind, but can include relative clauses and adjectives; in (3),
@@ -16,7 +18,7 @@ possibilities, we treat "defined by" sentences as if they were abbreviations
 for a mass of assertion sentences, one for each row of the table. We do
 however reject:
 
->> The okapi is defined by the Table of Short-Necked Giraffes.
+> The okapi is defined by the Table of Short-Necked Giraffes.
 
 where the "okapi" is an existing single animal (or indeed where it's a new
 name, meaning as yet unknown).
@@ -160,8 +162,8 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	if (t) Tables::use_to_define(t, defining_objects, V->next);
 
 @ This is all a little clumsy, but it rewrites, say, "kinds of snake" in a
-little subtree under a |KIND_NT| node with "snake" as |UNPARSED_NOUN_NT|, rather
-than leaving "kinds of snake" as a single |UNPARSED_NOUN_NT| node, which would
+little subtree under a `KIND_NT` node with "snake" as `UNPARSED_NOUN_NT`, rather
+than leaving "kinds of snake" as a single `UNPARSED_NOUN_NT` node, which would
 cause a new object instance to be created with that name.
 
 @<Rewrite in a KIND subtree@> =
@@ -236,7 +238,7 @@ of the kind "colour". Inform did this by writing propositions to assert their
 existence, in an elegantly high-level way; and all was well. But people also
 wanted things like this:
 
->> Some people on the dais are defined by the Table of Presenters.
+> Some people on the dais are defined by the Table of Presenters.
 
 and the process of converting that to propositional form, while issuing
 a range of intelligible problem messages if anything went wrong, would end

@@ -12,10 +12,10 @@ there are none.
 bp_family *explicit_bp_family = NULL;
 bp_family *by_function_bp_family = NULL;
 typedef struct explicit_bp_data {
-	int form_of_relation; /* one of the |Relation_*| constants defined below */
+	int form_of_relation; /* one of the `Relation_*` constants defined below */
 	struct property *i6_storage_property; /* provides run-time storage */
-	struct equivalence_bp_data *equiv_data; /* only used for |Relation_Equiv| */
-	struct inter_name *v2v_bitmap_iname; /* only used for |Relation_VtoV| and |Relation_Sym_VtoV| */
+	struct equivalence_bp_data *equiv_data; /* only used for `Relation_Equiv` */
+	struct inter_name *v2v_bitmap_iname; /* only used for `Relation_VtoV` and `Relation_Sym_VtoV` */
 	int store_dynamically;
 	CLASS_DEFINITION
 } explicit_bp_data;
@@ -205,8 +205,8 @@ int ExplicitRelations::assert(bp_family *self, binary_predicate *bp,
 
 @ This routine converts the knowledge that $R(ox, oy)$ into a single
 inference. It can only be used for a simple subclass of the relations:
-those which store |oy|, the only thing related to |ox|, in a given property
-of |ox|. The beauty of this is that the "only thing related to" business
+those which store `oy`, the only thing related to `ox`, in a given property
+of `ox`. The beauty of this is that the "only thing related to" business
 is then enforced by the inference mechanism, since an attempt to assert
 both $R(x,y)$ and $R(x,z)$ will result in contradictory property value
 inferences for $y$ and $z$.

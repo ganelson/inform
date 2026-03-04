@@ -23,12 +23,12 @@ Section 1 - Situation
 The player is a person that varies.
 The player variable is defined by Inter as "player".
 
-@ The I7 variable "location" corresponds to I6's |real_location|, not
-|location|. Its value is never equal to a pseudo-room representing darkness:
+@ The I7 variable "location" corresponds to I6's `real_location`, not
+`location`. Its value is never equal to a pseudo-room representing darkness:
 it is always an actual room, and I7 has nothing corresponding to I6's
-|thedark| "room". Similarly, we use an I7 variable "darkness witnessed" for a
-flag which the I6 library would have stored as the |visited| attribute for the
-|thedark| object.
+`thedark` "room". Similarly, we use an I7 variable "darkness witnessed" for a
+flag which the I6 library would have stored as the `visited` attribute for the
+`thedark` object.
 
 =
 The location -- documented at var_location -- is an object that varies.
@@ -56,7 +56,7 @@ after it has finished, and making them global variables also makes them a
 little faster to look up (a good thing since they are used so much), and
 causes them to be indexed more prominently.
 
-"Item described" is simply an I7 name for |self|. (This is an Inter variable
+"Item described" is simply an I7 name for `self`. (This is an Inter variable
 which refers to the object currently under discussion.) In early drafts of I7,
 it was called "this object", but somehow this raised expectations too high
 about how often it would be meaningful: it looked like a pronoun running
@@ -79,7 +79,7 @@ The reason the action failed variable is defined by Inter as "reason_the_action_
 The item described variable is defined by Inter as "self".
 
 @ "Person reaching" turns out to have exactly the same meaning as "person
-asked" -- they are both the |actor|, in Inter terms, but are used in different
+asked" -- they are both the `actor`, in Inter terms, but are used in different
 situations.
 
 =
@@ -96,12 +96,12 @@ The supporter in question variable is defined by Inter as "parameter_object".
 The particular possession variable is defined by Inter as "particular_possession".
 
 @ Parsing variables follow. The I6 parser tends to put any data read as part
-of a command into the variable |parsed_number|, but then, Inter is typeless:
+of a command into the variable `parsed_number`, but then, Inter is typeless:
 we can't have a single I7 variable for all these possibilities since it could
 then have no legal type. We solve this as follows. Whenever a kind of value
 $K$ is created which can be parsed as part of a command, an I7 variable "the
 $K$ understood" is also created, as a $K$ that varies. All of these variables
-are translated into Inter's |parsed_number|, so in effect they provide aliases
+are translated into Inter's `parsed_number`, so in effect they provide aliases
 of each possible type for the same underlying memory location. The one exception
 is for "the topic understood" (for historical reasons this one is not called
 "the snippet understood", and so we make it by hand).
@@ -203,7 +203,7 @@ such logical propositions, it often needs to substitute $x=c$, that is, to
 replace $x$ with a given constant $c$. But it can only do this if $c$ is an
 Inform 7 value. This is a problem if what it wants is to substitute in
 something which is only meaningful at the I6 level: say, it wants to
-substitute a value $c$ which will eventually translate to |whatever|, but
+substitute a value $c$ which will eventually translate to `whatever`, but
 it can't find any I7 value $c$ which will do this.
 
 We solve this problem by constructing some unusual I7 variables whose only
@@ -213,16 +213,16 @@ the Standard Rules.
 
 - The sentence "The i6-nothing-constant is an object that varies." is
 a rare example of a flat lie in the Standard Rules, as it is the I6 constant
-|nothing| and never varies at all. It exists as a "variable" so that the
-substitution $x=$~|nothing| can be made.
+`nothing` and never varies at all. It exists as a "variable" so that the
+substitution $x=$~`nothing` can be made.
 
 - Well, once you start telling lies it's so hard to stop, and it's also a
-lie that the "I6-varying-global" translates to |nothing|. It actually
+lie that the "I6-varying-global" translates to `nothing`. It actually
 translates to whatever the Inform machinery for compiling propositions happens
 to want at the moment, so it has no permanent meaning at all. (It will
 always translate to an I6 global variable storing a value whose I7 kind
 is "object", so the type-checking machinery isn't endangered by this
-chicanery. It will in fact never translate to |nothing|, but we make the
+chicanery. It will in fact never translate to `nothing`, but we make the
 translation sentence below in order to avoid allocating any storage at
 run-time for what is in the end only a label.)
 
@@ -245,7 +245,7 @@ and into the action variable "thing gone with" of the going action.
 which the actor of the current action is standing, and it wants to be
 an I6 global (rather than, say, a rulebook variable belonging to the
 action-processing rulebook) so that Inform can use common code to handle
-this alongside |noun|, |second| and |actor| when compiling preambles
+this alongside `noun`, `second` and `actor` when compiling preambles
 to rules.
 
 - The "parameter-object" is likewise needed in order to compile
@@ -270,7 +270,7 @@ it does the following:
 
 - Consider the startup rules.
 - Repeatedly follow the turn sequence rules until the Inter variable
-|deadflag| is set, which is used to indicate that the game has ended in one
+`deadflag` is set, which is used to indicate that the game has ended in one
 way or another (though not necessarily in "death").
 - Follow the shutdown rules.
 
@@ -439,10 +439,10 @@ doesn't really make any sense to split that question into a before, for and
 after stage. So this is a named rulebook instead.
 
 "Does the player mean" is essentially a front end for the I6 parser's
-|ChooseObjects| entry point, which relies on numerical scores to assess the
+`ChooseObjects` entry point, which relies on numerical scores to assess the
 likelihood of possible choices. To facilitate that, the I7 compiler recognises
 these five outcome names and translates them into the Inter constants
-|RBNO4_OUTCOME|, |RBNO3_OUTCOME|, ..., |RBNO0_OUTCOME| respectively. So don't
+`RBNO4_OUTCOME`, `RBNO3_OUTCOME`, ..., `RBNO0_OUTCOME` respectively. So don't
 change the names of these outcomes.
 
 =
@@ -557,7 +557,7 @@ action(s) that requested is or are processed. (And may in turn cause
 other actions, which must also be processed.) There is then a fair
 amount of business needed to end one turn and get ready for another.
 
-The turn sequences rulebook terminates early if |deadflag| becomes set at
+The turn sequences rulebook terminates early if `deadflag` becomes set at
 any point, so the last turn of play will be incomplete. Besides that
 consideration, it can also end early if the command for the turn was
 for an out-of-world action such as saving the game: in such cases, the
@@ -595,7 +595,7 @@ turn sequence rules.
 
 An unusual point here is that the "parse command rule" and the
 "generate action rule" are written such that they do nothing unless
-the turn sequence rulebook is being followed at the top level (by |Main|,
+the turn sequence rulebook is being followed at the top level (by `Main`,
 that is). This prevents them from being used recursively, which would not
 work properly, and enables a popular trick from the time before the 2008
 reform to keep working: we can simulate six turns going by in which the
@@ -733,7 +733,7 @@ The resurrect player if asked rule is defined by Inter as "RESURRECT_PLAYER_IF_A
 The ask the final question rule is defined by Inter as "ASK_FINAL_QUESTION_R".
 
 @h Scene changing.
-Scene changing is handled by a routine called |DetectSceneChange| which is
+Scene changing is handled by a routine called `DetectSceneChange` which is
 compiled directly by Inform: this is so primitive that it can't even be handled
 at the template layer. The rulebook is all a little elaborate given that
 it contains only one rule, but it's possible to imagine extensions which
@@ -975,8 +975,9 @@ failure.)
 @ The specific action-processing rulebook is probably more fruitful than the
 main one if we want to modify what happens. For instance:
 
->> This is the sixth sense rule: if the player is not the actor, say "You sense that [the actor] is up to something."
->> The sixth sense rule is listed before the carry out stage rule in the specific action-processing rules.
+> This is the sixth sense rule: if the player is not the actor, say "You sense that [the actor] is up to something."
+
+> The sixth sense rule is listed before the carry out stage rule in the specific action-processing rules.
 
 ...produces the message at a time when the action is definitely possible and
 will succeed, but before anything has been done.
@@ -1115,7 +1116,7 @@ When a scene (called the event) begins (this is the scene description text rule)
 
 @h Command parser errors.
 This abstracts a set of return codes from the I6 parser, which are written
-there as constants with the notation |*_ETYPE|.
+there as constants with the notation `*_ETYPE`.
 
 =
 Section 8 - Command parser errors

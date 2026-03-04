@@ -4,7 +4,7 @@ Mathematical functions, especially for real numbers.
 
 @h Unsigned integer comparison.
 Comparison of I6 integers is normally signed, that is, treating the word as
-a twos-complement signed number, so that |$FFFF| is less than |0|, for
+a twos-complement signed number, so that `$FFFF` is less than `0`, for
 instance. If we want to construe words as being unsigned integers, or as
 addresses, we need to compare them with the following routine, which returns
 1 if $x>y$, 0 if $x=y$ and $-1$ if $x<y$.

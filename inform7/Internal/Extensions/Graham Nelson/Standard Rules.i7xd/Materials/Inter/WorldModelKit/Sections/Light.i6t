@@ -11,10 +11,10 @@ little as possible: note that it has no properties.
 Object thedark "(darkness object)";
 
 @h Light Measurement.
-These two routines, |OffersLight| and |HasLightSource|, are largely unchanged
+These two routines, `OffersLight` and `HasLightSource`, are largely unchanged
 from their I6 definitions; see the {\it Inform Designer's Manual}, 4th edition,
-for a commentary. In terms of how they are used in I7, |OffersLight| is called
-only by the two rules below; |HasLightSource| is called also in determining
+for a commentary. In terms of how they are used in I7, `OffersLight` is called
+only by the two rules below; `HasLightSource` is called also in determining
 the scope, that is, what is visible to the player.
 
 =
@@ -82,12 +82,12 @@ the scope, that is, what is visible to the player.
 The following routines maintain two variables about the light condition
 of the player:
 
-- If on the most recent check the player was in light, then |location|
-equals |real_location| and |lightflag| is false.
-- If on the most recent check the player was in darkness, then |location|
-equals |thedark| and |lightflag| is true.
+- If on the most recent check the player was in light, then `location`
+equals `real_location` and `lightflag` is false.
+- If on the most recent check the player was in darkness, then `location`
+equals `thedark` and `lightflag` is true.
 
-Note that they are not allowed to alter |real_location|, whose definition
+Note that they are not allowed to alter `real_location`, whose definition
 has nothing to do with light.
 
 =
@@ -142,7 +142,7 @@ circumstances:
 
 - To determine the initial light condition at start of play.
 - When the player moves from one room to another via the "going" action.
-- When the player moves via |PlayerTo|, which is used by "now the player is in ...".
+- When the player moves via `PlayerTo`, which is used by "now the player is in ...".
 - When the player changes from one persona to another.
 
 Perhaps case (b) is surprising. Why not simply use the adjust light rule,
@@ -159,8 +159,8 @@ rule print out details as well.
 ];
 
 @h Translucency.
-|IsSeeThrough| is used at various places: roughly speaking, it determines
-whether |obj| being in scope means that the object-tree contents of |obj|
+`IsSeeThrough` is used at various places: roughly speaking, it determines
+whether `obj` being in scope means that the object-tree contents of `obj`
 are in scope.
 
 =
@@ -174,15 +174,15 @@ are in scope.
 ];
 
 @h Visibility Parent.
-The idea of |VisibilityParent| is that it takes us from a given position in
-the object tree, |o|, to the next visible position above. Note that
+The idea of `VisibilityParent` is that it takes us from a given position in
+the object tree, `o`, to the next visible position above. Note that
 
 - A container has an inside and an outside: this routine calculates from
-the "inside of |o|", which is why it returns |nothing| from an opaque
+the "inside of `o`", which is why it returns `nothing` from an opaque
 closed container;
 - Component parts are (for purposes of this routine) attached to the outside
-surface of a container, so that if |o| is part of a closed opaque container
-then the visibility parent of |o| is its actual parent.
+surface of a container, so that if `o` is part of a closed opaque container
+then the visibility parent of `o` is its actual parent.
 
 =
 [ VisibilityParent o;
@@ -192,10 +192,10 @@ then the visibility parent of |o| is its actual parent.
 ];
 
 @h Find Visibility Levels.
-The following routine sets the pair of variables |visibility_ceiling|, the
-highest visible point in the object tree above the player -- or |thedark|
-if the player cannot see at all -- and |visibility_levels|, the number of
-steps of |VisibilityParent| needed to reach this ceiling; or 0 if the
+The following routine sets the pair of variables `visibility_ceiling`, the
+highest visible point in the object tree above the player -- or `thedark`
+if the player cannot see at all -- and `visibility_levels`, the number of
+steps of `VisibilityParent` needed to reach this ceiling; or 0 if the
 player cannot see at all.
 
 =
@@ -234,10 +234,10 @@ Analogously:
 
 @h Scope Ceiling.
 Scope is almost the same thing as visibility, but not quite, and the following
-routine does not quite duplicate the calculation of |FindVisibilityLevels|.
-The difference arises in the first step, where we take the |parent| of |pos|,
-not the core of the |parent| of the core of |pos|: this makes a
-difference if |pos| is inside a container which is itself part of something
+routine does not quite duplicate the calculation of `FindVisibilityLevels`.
+The difference arises in the first step, where we take the `parent` of `pos`,
+not the core of the `parent` of the core of `pos`: this makes a
+difference if `pos` is inside a container which is itself part of something
 else.
 
 =

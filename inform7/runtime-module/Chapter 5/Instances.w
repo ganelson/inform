@@ -4,13 +4,13 @@ To compile the instances submodule for a compilation unit, which contains
 _instance packages.
 
 @h Compilation data.
-Each |instance| object contains this data:
+Each `instance` object contains this data:
 
 =
 typedef struct instance_compilation_data {
 	struct package_request *instance_package;
 	struct inter_name *instance_iname;
-	struct linked_list *usages; /* of |parse_node| */
+	struct linked_list *usages; /* of `parse_node` */
 	int declaration_sequence_number;
 	int has_explicit_runtime_value;
 	inter_ti explicit_runtime_value;
@@ -41,7 +41,7 @@ package_request *RTInstances::package(instance *I) {
 }
 
 @ It's perhaps ambiguous what a usage of an instance is, or where it occurs,
-but this function is called each time the instance |I| is compiled as a
+but this function is called each time the instance `I` is compiled as a
 constant value.
 
 =
@@ -69,7 +69,7 @@ int RTInstances::compile_all(inference_subject_family *family, int ignored) {
 	return TRUE;
 }
 
-@ The code here assigns each instance |I| a sequence number in such a way that
+@ The code here assigns each instance `I` a sequence number in such a way that
 the object instances come out in a well-founded order spatially -- that is,
 so that each object X is followed immediately by its children (i.e., the
 objects inside or on top of it).
@@ -88,7 +88,7 @@ the various instances scatter all over the tree.
 			I->compilation_data.declaration_sequence_number = n++;
 
 @ This is really all metadata except for the actual instance declaration,
-using Inter's |INSTANCE_IST| instruction.
+using Inter's `INSTANCE_IST` instruction.
 
 =
 void RTInstances::compilation_agent(compilation_subtask *t) {
@@ -383,7 +383,7 @@ South" comes out as "QS".
 	}
 
 @h Condition element.
-This compiles a test of whether or not |t0_s| is equal to an instance.
+This compiles a test of whether or not `t0_s` is equal to an instance.
 
 =
 int RTInstances::emit_element_of_condition(inference_subject_family *family,

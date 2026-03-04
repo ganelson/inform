@@ -16,7 +16,7 @@ about the function currently being compiled. In particular:
 
 - its local variables;
 - what shared variables it can see;
-- what interpretations to place on the kind variables |A| to |Z|, if any;
+- what interpretations to place on the kind variables `A` to `Z`, if any;
 - what kind of value we should be returning, if anything.
 
 @ Code can only be compiled "inside" a stack frame, and at any given time
@@ -95,10 +95,10 @@ stack_frame *Frames::boxed_frame(stack_frame *old_frame) {
 typedef struct stack_frame {
 	struct locals_slate local_variables; /* those in scope here */
 	struct shared_variable_access_list *shared_variables; /* those in scope here */
-	struct linked_list *local_block_values; /* of |local_block_value| */
+	struct linked_list *local_block_values; /* of `local_block_value` */
 	int no_formal_parameters_needed; /* usually 0, unless there are ambiguities */
 
-	struct kind *kind_returned; /* or |NULL| for no return value */
+	struct kind *kind_returned; /* or `NULL` for no return value */
 	struct kind **local_kind_variables; /* points to an array indexed 1 to 26 */
 
 	int determines_past_conditions; /* or rather, in the present, but for future use */
@@ -260,9 +260,9 @@ void Frames::alias_it(stack_frame *frame, wording W) {
 }
 
 @h Local block values.
-Simple data at runtime, such as values of |K_number| or |K_truth_state|, occupy
-a single Inter word. More involved data, such as values of |K_text| or
-|K_stored_action|, cannot. Those are called "block values", because they occupy
+Simple data at runtime, such as values of `K_number` or `K_truth_state`, occupy
+a single Inter word. More involved data, such as values of `K_text` or
+`K_stored_action`, cannot. Those are called "block values", because they occupy
 entire multiple-word blocks of memory to store.
 
 So when such data must be stored in a local variable, or some other memory location,
@@ -298,9 +298,9 @@ cannot be written or read. We could put it on the heap, but then allocation
 and deallocation would be expensive.
 
 Instead we put just the small blocks on a stack in memory: it fills downwards,
-and at runtime the Inter identifier |I7SFRAME| points to the current and therefore
+and at runtime the Inter identifier `I7SFRAME` points to the current and therefore
 bottom-most frame on this stack. So, for example, if the current stack frame has
-just two local block values, a |K_text| and a |K_stored_action|, then we would have:
+just two local block values, a `K_text` and a `K_stored_action`, then we would have:
 
 = (text)
                  ...free space...
@@ -319,7 +319,7 @@ These small blocks may well point to larger blocks elsewhere on the heap (for
 example, to accommodate the actual contents of a text, if they are non-constant).
 But small blocks have the virtue of being of a size which is fixed for each
 kind, and we can allocate space for them essentially immediately just by raising
-the |I7SFRAME| sufficiently.
+the `I7SFRAME` sufficiently.
 
 Each local block value is kept track of with one of these:
 =
@@ -331,9 +331,9 @@ typedef struct local_block_value {
 	CLASS_DEFINITION
 } local_block_value;
 
-@ Note that the schemas below for calculating offset positions from |I7SFRAME|
+@ Note that the schemas below for calculating offset positions from `I7SFRAME`
 will end up only as a single addition at runtime, because the multiplication of
-|WORDSIZE| by a literal positive integer will be constant-folded in code
+`WORDSIZE` by a literal positive integer will be constant-folded in code
 generation.
 
 =
@@ -357,9 +357,9 @@ local_block_value *Frames::new_lbv(kind *K, local_block_value *last) {
 }
 
 @ The following code is executed when the stack frame is entered: we push the
-old value of |I7SFRAME_HL| to the call stack to save it; then call a function
+old value of `I7SFRAME_HL` to the call stack to save it; then call a function
 in //BasicInformKit: BlockValues// to make space for the small
-blocks we need, which will move |I7SFRAME_HL| downwards by |size| words; and
+blocks we need, which will move `I7SFRAME_HL` downwards by `size` words; and
 then initialise the small blocks one by one to default values.
 
 =
@@ -381,7 +381,7 @@ void Frames::compile_lbv_setup(stack_frame *frame) {
 }
 
 @ Symmetrically, this teardown code is executed when the stack frame is exited.
-We deallocate each small block, and then restore |I7SFRAME_HL| by pulling the
+We deallocate each small block, and then restore `I7SFRAME_HL` by pulling the
 value we pushed earlier.
 
 =
@@ -399,7 +399,7 @@ void Frames::compile_lbv_teardown(stack_frame *frame) {
 }
 
 @ The net effect is that when the rest of Inform needs to compile the address
-of a newly-allocated value of a block kind |K|, it can simply call the
+of a newly-allocated value of a block kind `K`, it can simply call the
 following, without having to worry about how any of this works:
 
 =

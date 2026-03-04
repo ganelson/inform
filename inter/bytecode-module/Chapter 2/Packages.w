@@ -6,8 +6,8 @@ To manage packages of inter code.
 As noted in //What This Module Does//, the content in a tree is structured by
 being placed in a nested hierarchy of boxes called "packages".
 
-A package has a location in the tree defined by its |package_head| node: this
-will be a |PACKAGE_IST| instruction. Every package has a name and a type. For
+A package has a location in the tree defined by its `package_head` node: this
+will be a `PACKAGE_IST` instruction. Every package has a name and a type. For
 example, suppose we have:
 = (text as Inter)
 	A
@@ -21,18 +21,18 @@ example, suppose we have:
 	G
 =
 Here the Inter instructions C, D and E are the content of the package, which
-is called "gadgets" and has the type |_paraphernalia|. Instructions A, B, F,
-G , along with the |package| instruction itself, belong to the wider context. The
-symbol name |^is_electrical| is visible to C, D and E, but not to A, B, F,
-and G: it belongs to the "scope" of the |gadgets| package, and is recorded
+is called "gadgets" and has the type `_paraphernalia`. Instructions A, B, F,
+G , along with the `package` instruction itself, belong to the wider context. The
+symbol name `^is_electrical` is visible to C, D and E, but not to A, B, F,
+and G: it belongs to the "scope" of the `gadgets` package, and is recorded
 in its private symbols table.
 
 Note that the package head node is outside the package. So although the name
-|gadgets| is also a symbol, it belongs to the wider scope (the A, B, ...
+`gadgets` is also a symbol, it belongs to the wider scope (the A, B, ...
 scope): it does not appear in the package's own symbols table, and in that
 sense a package cannot see its own name.
 
-@ Clearly a package involves more data than can be recorded in the |PACKAGE_IST|
+@ Clearly a package involves more data than can be recorded in the `PACKAGE_IST`
 instruction alone, so each package has a corresponding //inter_package// structure.
 That structure is a resource belonging to the tree, so it's included in the
 resource list of the tree's warehouse, and has a resource ID within it. See
@@ -42,15 +42,15 @@ resource list of the tree's warehouse, and has a resource ID within it. See
 typedef struct inter_package {
 	struct inter_tree_node *package_head;
 	struct inter_symbols_table *package_scope;
-	int package_flags; /* a bitmap of the |*_PACKAGE_FLAG| bits */
+	int package_flags; /* a bitmap of the `*_PACKAGE_FLAG` bits */
 	inter_ti resource_ID; /* within the warehouse for the tree holding the package */
 	CLASS_DEFINITION
 } inter_package;
 
-@ Do not call this directly to make a new package: it needs the resource ID |n|
+@ Do not call this directly to make a new package: it needs the resource ID `n`
 to exist already, and that has to be allocated. So instead you could call
 //InterWarehouse::create_package//, which calls this. But in fact what you
-should really do is just to generate a |PACKAGE_IST| instruction, because
+should really do is just to generate a `PACKAGE_IST` instruction, because
 the package needs its head node too: everything will then automatically work.
 See //PackageInstruction::new// for how to do that.
 
@@ -69,7 +69,7 @@ inter_ti InterPackage::warehouse_ID(inter_package *pack) {
 	return pack->resource_ID;
 }
 
-@ //inter_package// structures and |PACKAGE_IST| instruction nodes correspond
+@ //inter_package// structures and `PACKAGE_IST` instruction nodes correspond
 to each other in a way which exactly matches, except for the root package.
 For all other packages, these two operations are inverse to each other: 
 
@@ -124,7 +124,7 @@ int InterPackage::baseline(inter_package *P) {
 
 @h Naming.
 The name of a package is by definition the name of its symbol, which can be
-extracted from the bytecode of its |package| instruction, stored at the head-node.
+extracted from the bytecode of its `package` instruction, stored at the head-node.
 (And the root package, which has no head-node, has the empty name.)
 
 =
@@ -245,7 +245,7 @@ void InterPackage::set_persistent_flags(inter_package *P, int x) {
 		(P->package_flags & (~PERSISTENT_PACKAGE_FLAGS)) | (x & PERSISTENT_PACKAGE_FLAGS);
 }
 
-@ The |ROOT_PACKAGE_FLAG| is given only to the root package of a tree, so there
+@ The `ROOT_PACKAGE_FLAG` is given only to the root package of a tree, so there
 will only ever be one of these in any given tree.
 
 =
@@ -258,7 +258,7 @@ void InterPackage::mark_as_a_root_package(inter_package *pack) {
 	if (pack) pack->package_flags |= ROOT_PACKAGE_FLAG;
 }
 
-@ The |FUNCTION_BODY_PACKAGE_FLAG| is given to function bodies. Note that the code
+@ The `FUNCTION_BODY_PACKAGE_FLAG` is given to function bodies. Note that the code
 of each function always occupies a single package, which contains nothing else.
 Subsidiary parts of the function -- what are called "code blocks" in C, like
 loop bodies -- are not subpackages of this: a code package has no subpackages.
@@ -273,7 +273,7 @@ void InterPackage::mark_as_a_function_body(inter_package *pack) {
 	if (pack) pack->package_flags |= FUNCTION_BODY_PACKAGE_FLAG;
 }
 
-@ The |LINKAGE_PACKAGE_FLAG| is given only to a few top-level packages which
+@ The `LINKAGE_PACKAGE_FLAG` is given only to a few top-level packages which
 behave differently during the transmigration process used in linking trees
 together. This is not the place to explain: see //building: Large-Scale Structure//.
 
@@ -287,7 +287,7 @@ void InterPackage::mark_as_a_linkage_package(inter_package *pack) {
 	if (pack) pack->package_flags |= LINKAGE_PACKAGE_FLAG;
 }
 
-@ |MARK_PACKAGE_FLAG| is ephemeral and typically used to mark that something
+@ `MARK_PACKAGE_FLAG` is ephemeral and typically used to mark that something
 has already been done on a given package, so that it won't be done twice.
 At the start of such a process, call this.
 
@@ -300,7 +300,7 @@ void InterPackage::unmark_all(void) {
 
 @h Subpackages and URLs.
 A package is uniquely identifiable (within its tree) by its textual URL, in the
-form |/main/whatever/example1/this|. The following goes from an //inter_package//
+form `/main/whatever/example1/this`. The following goes from an //inter_package//
 to its URL, which is particularly handy for the debugging log:
 
 =
@@ -324,7 +324,7 @@ void InterPackage::log(OUTPUT_STREAM, void *vp) {
 
 @ The other direction, parsing a URL into its corresponding //inter_package//, is
 necessarily slower, and we perform it as little as possible. The following looks
-for a subpackage called |name| within the parent package |P|:
+for a subpackage called `name` within the parent package `P`:
 
 =
 inter_package *InterPackage::from_name(inter_package *P, text_stream *name) {
@@ -342,7 +342,7 @@ inter_package *InterPackage::from_name(inter_package *P, text_stream *name) {
 
 @ And that is the key tool needed for the following. Note that if there is an
 initial slash, the URL is absolute, with respect to the top of the tree; and
-otherwise it is construed as a single name. (So searching for |this/that|
+otherwise it is construed as a single name. (So searching for `this/that`
 could never succeed: without the initial slash, this would have to be the name
 of a single package, and slashes can't be part of package names.)
 

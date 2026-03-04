@@ -4,7 +4,7 @@ To manage dialogue beats and to parse their cue paragraphs.
 
 @h Dialogue.
 This is still only partially implemented, and is aiming to implement the evolution
-proposal IE-0009. See the test group |:dialogue| to exercise problem messages
+proposal IE-0009. See the test group `:dialogue` to exercise problem messages
 in this area.
 
 @h Scanning the dialogue sections in pass 0.
@@ -41,14 +41,14 @@ a whole paragraph, which might, for example, read:
 = (text as Inform 7)
 	(About the carriage clock; this is the horological beat.)
 =
-|PN| is that text, but it has already been partially parsed:
+`PN` is that text, but it has already been partially parsed:
 = (text)
 	DIALOGUE_CUE_NT
 		DIALOGUE_CLAUSE_NT "About the carriage clock"
 		DIALOGUE_CLAUSE_NT "this is the horological beat"
 =
 Here we have a simple tree where the beat node has any number of child nodes,
-each of which is a |DIALOGUE_CLAUSE_NT|.
+each of which is a `DIALOGUE_CLAUSE_NT`.
 
 =
 dialogue_beat *DialogueBeats::new(parse_node *PN) {
@@ -73,7 +73,7 @@ dialogue_beat *DialogueBeats::new(parse_node *PN) {
 	return db;
 }
 
-@ Note that a |DIALOGUE_CUE_NT| is only made under a section marked as containing
+@ Note that a `DIALOGUE_CUE_NT` is only made under a section marked as containing
 dialogue, so the internal error here should be impossible to hit.
 
 @<See if we are expecting a dialogue beat@> =
@@ -98,14 +98,14 @@ typedef struct dialogue_beat {
 	struct scene *as_scene;
 	struct wording during_scene_W;
 	struct scene *during_scene;
-	struct linked_list *required; /* of |instance| */
+	struct linked_list *required; /* of `instance` */
 	int starting_beat;
 	int requiring_nothing;
 
 	struct parse_node *immediately_after;
-	struct linked_list *some_time_after; /* of |parse_node| */
-	struct linked_list *some_time_before; /* of |parse_node| */
-	struct linked_list *about_list; /* of |parse_node| */
+	struct linked_list *some_time_after; /* of `parse_node` */
+	struct linked_list *some_time_before; /* of `parse_node` */
+	struct linked_list *about_list; /* of `parse_node` */
 
 	struct dialogue_node *root;
 	struct dialogue_beat_compilation_data compilation_data;
@@ -209,9 +209,9 @@ void DialogueBeats::write_dbc(OUTPUT_STREAM, int c) {
 	}
 }
 
-@ A beat can either be named |this is the WHATEVER beat|, or |this is the WHATEVER scene|,
+@ A beat can either be named `this is the WHATEVER beat`, or `this is the WHATEVER scene`,
 but not of course both. If the latter, we construct the beat name itself as
-|WHATEVER beat| and the name for its associated scene as |WHATEVER scene|.
+`WHATEVER beat` and the name for its associated scene as `WHATEVER scene`.
 
 @<Look through the clauses for a name@> =
 	int dialogue_beat_name_count = 0;
@@ -260,14 +260,14 @@ following Preform nonterminal:
 	... scene
 
 @ The following creates a dialogue beat with the given name (or an invented name
-failing that) and makes it an instance of the kind |K_dialogue_beat|. This kind
-definitely exists, because it is created by |DialogueKit|, which the supervisor
+failing that) and makes it an instance of the kind `K_dialogue_beat`. This kind
+definitely exists, because it is created by `DialogueKit`, which the supervisor
 module has automatically added to the project on spotting that dialogue is present
 in the source text.
 
 It's a little surprising, perhaps, that we do not also create the associated
 scene instance (if there is one). But this is for timing reasons: we want the
-default value of |scene| to be created by the Standard Rules, which will not
+default value of `scene` to be created by the Standard Rules, which will not
 happen until the next pass through the source text. If we create a scene instance
 here, it will be the first to be created, and will thus become the default.
 
@@ -408,9 +408,9 @@ performed only after or before other beats.
 		"this dialogue beat asks to be performed after the previous one",
 		"but in this dialogue section, there is no previous one.");
 
-@ Syntactically, these clauses all take articled lists: |after X, Y and Z|, for
+@ Syntactically, these clauses all take articled lists: `after X, Y and Z`, for
 example. The following burrows through the resulting subtree, in which each of
-|X|, |Y| and |Z| would be an |UNPARSED_NOUN_NT| node.
+`X`, `Y` and `Z` would be an `UNPARSED_NOUN_NT` node.
 
 Semantically, we can only be immediately after one beat, so we keep a count of
 those in order to produce a problem if there are too many. With regular "after"
@@ -506,7 +506,7 @@ parse_node *DialogueBeats::parse_beat_name(wording CW) {
 
 @h Processing beats after pass 2.
 It's now later still. At this point all constant values have been created, and
-therefore we can safely parse |ABOUT| and |PROPERTY| clauses. Again, these are
+therefore we can safely parse `ABOUT` and `PROPERTY` clauses. Again, these are
 syntactically articled lists.
 
 =
@@ -541,8 +541,8 @@ void DialogueBeats::decide_cue_topics(void) {
 	}
 }
 
-@ Topics are picked up here. For example, |about the carriage clock| results
-in the |UNPARSED_NOUN_NT| node "carriage clock".
+@ Topics are picked up here. For example, `about the carriage clock` results
+in the `UNPARSED_NOUN_NT` node "carriage clock".
 
 =
 void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL, unsigned int nt) {
@@ -596,7 +596,7 @@ void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL, unsigne
 	}
 }
 
-@ And properties are picked up here. So |recurring| or |spontaneous|, for
+@ And properties are picked up here. So `recurring` or `spontaneous`, for
 example, might be valid. The rule is that any text given must be either the
 name of an either/or property or condition which a dialogue beat can have.
 
@@ -635,10 +635,10 @@ void DialogueBeats::parse_property(dialogue_beat *db, parse_node *AL) {
 	}
 }
 
-@ Note the introduction into the propositions of the atom |dialogue-beat(x)|,
+@ Note the introduction into the propositions of the atom `dialogue-beat(x)`,
 in order to ensure that typechecking of the proposition will correctly spot
-that |x| has kind |dialogue beat|; without that, there would be problem
-messages because |x| would be assumed as an |object|.
+that `x` has kind `dialogue beat`; without that, there would be problem
+messages because `x` would be assumed as an `object`.
 
 Basically, though, this asserts the property in the same way that assertion
 sentences would do, and using all of the same machinery.
@@ -680,6 +680,6 @@ void DialogueBeats::make_fully_recurring_r(dialogue_node *node) {
 	}
 }					
 
-@ So what remains to be done? Only the parsing of |IF| and |UNLESS| clauses,
+@ So what remains to be done? Only the parsing of `IF` and `UNLESS` clauses,
 which take arbitrary conditions. There's no need to do that here: we can do
 that when compiling the runtime representation of a beat. See //runtime: Dialogue Beat Instances//.

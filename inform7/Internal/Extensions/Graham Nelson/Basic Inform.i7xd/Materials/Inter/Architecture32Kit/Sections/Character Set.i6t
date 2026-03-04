@@ -10,9 +10,9 @@ Constant Large_Unicode_Tables;
 
 @ We must create two arrays:
 
-- |CharCasingChart0|, a table indicating lower-case letters with
+- `CharCasingChart0`, a table indicating lower-case letters with
 transitions to convert them to upper case;
-- |CharCasingChart1|, vice versa.
+- `CharCasingChart1`, vice versa.
 
 Each array is a sequence of three-word records, consisting of the start of
 a character range, the size of the range (the number of characters in it),
@@ -24,7 +24,7 @@ range is negative, this indicates that only every alternate code is valid.
 (This makes for efficient storage since there are large parts of the
 Unicode number-space in which upper and lower case letters alternate.)
 
-An offset of |UNIC_NCT| means no case change is possible; and any character
+An offset of `UNIC_NCT` means no case change is possible; and any character
 not included in the ranges below is not a letter.
 
 =
@@ -109,7 +109,7 @@ Array CharCasingChart1 -->
     $213e (   2)   UNIC_NCT $2145 (   1)   UNIC_NCT $ff21 (  26) (      32) $0000
 ;
 
-@ The following are the equivalent of |tolower| and |toupper|, the traditional
+@ The following are the equivalent of `tolower` and `toupper`, the traditional
 C library functions for forcing letters into lower and upper case form, for
 the 32-bit architecture's character set. That's now Unicode, and we delegate
 all of the work to glk functions.

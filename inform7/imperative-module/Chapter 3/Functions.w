@@ -16,10 +16,10 @@ However it happens, every function is compiled using code like so:
 	Functions::end(save);
 =
 This will create a new stack frame for the function, which is usually what is
-wanted. If we want to compile it using an existing frame |frame|, then instead
-call |Functions::begin_framed(iname, frame)|, not |Functions::begin(iname)|;
-and a third version, |Functions::begin_from_idb(iname, frame, idb)| exists
-if we are compiling from an imperative definition |idb|.
+wanted. If we want to compile it using an existing frame `frame`, then instead
+call `Functions::begin_framed(iname, frame)`, not `Functions::begin(iname)`;
+and a third version, `Functions::begin_from_idb(iname, frame, idb)` exists
+if we are compiling from an imperative definition `idb`.
 
 There are nearly 100 examples of this simple API being used in Inform, so
 it's not hard to find code to imitate if you want to compile a new function.
@@ -46,7 +46,7 @@ typedef struct function_under_compilation {
 	int currently_compiling_nnp; /* is this a nonphrasal stack frame we made ourselves? */
 	struct inter_package *into_package; /* where Inter is being emitted to */
 	struct inter_name *currently_compiling_iname; /* function we end up with */
-	struct linked_list *label_namespaces; /* of |label_namespace| */
+	struct linked_list *label_namespaces; /* of `label_namespace` */
 } function_under_compilation;
 
 int function_compilation_is_happening_now = FALSE;
@@ -84,7 +84,7 @@ linked_list *Functions::current_label_namespaces(void) {
 	return NULL;
 }
 
-@ If the |frame| argument is set, then we'll use that; otherwise we will
+@ If the `frame` argument is set, then we'll use that; otherwise we will
 create a new nonphrasal stack frame.
 
 =
@@ -125,7 +125,7 @@ Inter function.
 What we do with this depends on whether any block values were used in the
 function, because it they were then we need to worry about memory allocation.
 The following pseudocode gives the general idea. Suppose we want to create
-a function called |public_name|. If no block values were needed, we do the
+a function called `public_name`. If no block values were needed, we do the
 obvious thing:
 = (text)
     public_name(t1, t2, ..., tn) {
@@ -147,7 +147,7 @@ that the kernel returns an ordinary value, then this happens:
     }
 =
 Since we do not support exceptions in the Inter VM, it follows that whatever
-|kernel_name| does -- even if it fails in some way at runtime -- all
+`kernel_name` does -- even if it fails in some way at runtime -- all
 allocated memory will safely be deallocated.
 
 A slight variation is needed if the kernel returns a block value, as follows:
@@ -162,7 +162,7 @@ A slight variation is needed if the kernel returns a block value, as follows:
         ... package code here ...
     }
 =
-Here |BRV| is a pointer to memory in which to write the return value: note that
+Here `BRV` is a pointer to memory in which to write the return value: note that
 we copy it before we deallocate any of the memory which was likely used to
 generate it.
 
@@ -227,10 +227,10 @@ void Functions::end(packaging_state save) {
 	PackageInstruction::set_data_type(shell_package, Produce::kind_to_type(F_kind));
 
 @ Suppose the function has to return a list. Then the function is compiled
-with an extra first parameter (called |I7RBLK|), which is a pointer to the
+with an extra first parameter (called `I7RBLK`), which is a pointer to the
 block value in which to write the answer. After that come all of the call
 parameters of the phrase (but none of the "let" or scratch-use locals). If,
-on the other hand, the function returns a word value, |I7RBLK| is placed
+on the other hand, the function returns a word value, `I7RBLK` is placed
 after the call parameters, and is used only as a scratch variable.
 
 @<Compile I6 locals for the outer shell@> =

@@ -107,12 +107,9 @@ contemporary languages this latter meaning would be a &quot;typeclass&quot;
 ultimate in indefiniteness is the kind <code>value</code>, which expresses only that
 something is a piece of data. Phrase tokens can be indefinite, as this
 example shows:</p>
-</div>
 <blockquote>
-    <p>To display (X - an arithmetic value):</p>
+<p>To display (X - an arithmetic value):</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
 See for instance definitions in Michael L. Scott, &quot;Programming Language
 Pragmatics&quot; (second edition, 2006), chapter 7. We will refer to &quot;kind checking&quot;
@@ -157,12 +154,9 @@ to data on the heap. (Indeed, this isn't even shown on the Kinds index page.)</p
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  One caveat: Inform provides low-level features allowing Inter code to be
 injected directly into the compiler's output, bypassing all kind checking.
 For instance:</p>
-</div>
 <blockquote>
-    <p>To decide which text is (N - a number) as text: (- {N} -).</p>
+<p>To decide which text is (N - a number) as text: (- {N} -).</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is analogous to a C function like so:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -180,12 +174,9 @@ Inform's <code>(-</code> and <code>-)</code> notation, only volunteers.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Kinds and knowledge.</b>  Inform uses the kinds system when building its world model of knowledge, and
 not only to monitor specific computational operations. For example, if the
 source text says:</p>
-</div>
 <blockquote>
-    <p>A wheelbarrow is a kind of vehicle. The blue garden barrow is a wheelbarrow.</p>
+<p>A wheelbarrow is a kind of vehicle. The blue garden barrow is a wheelbarrow.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then the value &quot;blue garden barrow&quot; has kind <code>wheelbarrow</code>, which is
 within <code>vehicle</code>, within <code>thing</code>, within <code>object</code>. As this example suggests,
 knowledge and property ownership passes through a single-inheritance hierarchy;
@@ -305,7 +296,7 @@ their evaluations. As a simple example:</p>
 </pre>
 <div class="lsmarkdown">
 <p>This is more of a test than it appears. In each line <a href="../kinds-test/index.html" class="internal">kinds-test</a> has read in
-the textual description in quotes, parsed it into a <a href="2-knd.html#SP1" class="internal">kind</a> object using the &lt;k-kind&gt;
+the textual description in quotes, parsed it into a <a href="2-knd.html#SP1" class="internal">kind</a> object using the <k-kind>
 Preform nonterminal, then printed it out with <a href="2-dk.html#SP22" class="internal">Kinds::Textual::write</a> (or
 in fact by using the <code>%u</code> string escape, which amounts to the same thing).</p>
 </div>

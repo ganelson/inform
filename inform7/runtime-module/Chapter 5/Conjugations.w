@@ -25,7 +25,7 @@ void RTVerbs::compile_generic_constants(void) {
 }
 
 @h Compilation data for verbs.
-Each |verb| object contains this data:
+Each `verb` object contains this data:
 
 @d VERB_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_verb
 
@@ -49,9 +49,9 @@ package_request *RTVerbs::package(verb *V, parse_node *where) {
 	return V->compilation_data.verb_package;
 }
 
-@ But modal verbs, which have no underlying |verb| structure, are also given
+@ But modal verbs, which have no underlying `verb` structure, are also given
 conjugation functions. Those have to live somewhere, so they go into free-standing
-|_modal_verb| packages:
+`_modal_verb` packages:
 
 =
 package_request *RTVerbs::modal_package(parse_node *where) {
@@ -59,7 +59,7 @@ package_request *RTVerbs::modal_package(parse_node *where) {
 }
 
 @h Compilation data for conjugations.
-Each |verb_conjugation| object contains this data:
+Each `verb_conjugation` object contains this data:
 
 @d VC_COMPILATION_INFLECTIONS_CALLBACK RTVerbs::initialise_vc
 
@@ -362,10 +362,10 @@ void RTVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 }
 
 @h Compilation data for verb forms.
-Now we turn to the "forms" of a verb; each one makes a |_verb_form| package
-inside its verb's |_verb| package. (Modal verbs do not have forms.)
+Now we turn to the "forms" of a verb; each one makes a `_verb_form` package
+inside its verb's `_verb` package. (Modal verbs do not have forms.)
 
-Each |verb_form| object contains this data:
+Each `verb_form` object contains this data:
 
 @d VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_verb_form
 
@@ -382,8 +382,8 @@ void RTVerbs::initialise_verb_form(verb_form *VF) {
 	VF->verb_form_compilation.where_vf_created = current_sentence;
 }
 
-@ And these too are then filled out on demand. Note that the |_verb_form|
-packages occur as sub-packages of the relevant |_verb| packages.
+@ And these too are then filled out on demand. Note that the `_verb_form`
+packages occur as sub-packages of the relevant `_verb` packages.
 
 =
 package_request *RTVerbs::form_package(verb_form *vf) {
@@ -670,7 +670,7 @@ void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc,
 	}
 }
 
-@ Used to adjust spacing so that we get |I've|, not |I 've|:
+@ Used to adjust spacing so that we get `I've`, not `I 've`:
 
 =
 int RTVerbs::takes_contraction_form(word_assemblage *wa) {

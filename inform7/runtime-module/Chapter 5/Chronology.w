@@ -237,7 +237,7 @@ typedef struct action_history_condition_record {
 	CLASS_DEFINITION
 } action_history_condition_record;
 
-@ The |duration| here records the "for the third turn" part; the |ap|, the
+@ The `duration` here records the "for the third turn" part; the `ap`, the
 "taking something edible" part.
 
 =

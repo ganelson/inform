@@ -5,9 +5,9 @@ quicker to test at run-time without changing their meaning.
 
 @h Golden rules.
 The following functions all take a propeosition $\Sigma$ in the parameter
-|prop|, and return $\Sigma'$; they set the flag pointed to by |changed| if
+`prop`, and return $\Sigma'$; they set the flag pointed to by `changed` if
 they in fact change something. (They are allowed to modify or destroy the
-data structure pointed to by |prop|, or indeed to change it in place and
+data structure pointed to by `prop`, or indeed to change it in place and
 return the same pointer.)
 
 - (1) $\Sigma'$ must remain a syntactically correct proposition;
@@ -72,10 +72,10 @@ where $K_1$ and $K_2$ are the kinds of terms 1 and 2 in the predicate $B$.
 The difference in where we place the quantifier is important in double-negative
 sentences. Consider these:
 
->> [1] the box does not contain nothing
+> the box does not contain nothing
 
 which produces $\Sigma = \lnot({\it contains}(B, N))$. Here,
-|nothing| is part of the object phrase, not the subject phrase, and we need
+`nothing` is part of the object phrase, not the subject phrase, and we need
 to quantify it within the OP -- which means, within the negation, because our
 recipe for negated sentences was (roughly) SP $\land\lnot($ OP $\land$ VP$)$.
 We thus make $\Sigma' = \lnot(\not\exists x:{\it contains}(B, x))$,
@@ -83,7 +83,7 @@ although later simplification converts that to $\exists x: {\it contains}(B, x)$
 just as if the original sentence had been "the box contains something".
 On the other hand,
 
->> [2] nothing does not annoy Peter
+> nothing does not annoy Peter
 
 produces $\Sigma = \lnot({\it annoys}(N, P))$, and now we have
 to quantify as $\Sigma' = \not\exists x: \lnot({\it annoys}(x, P))$.
@@ -103,7 +103,7 @@ are always saying "not for nothing, but..." to mean "it's nothing, but...".
 	int nv = Binding::find_unused(prop);
 	pcalc_term new_var = Terms::new_variable(nv);
 	Binding::substitute_nothing_in_term(&(pl->terms[i]), &new_var);
-	pcalc_prop *position = NULL; /* at the front if |nothing| is the SP... */
+	pcalc_prop *position = NULL; /* at the front if `nothing` is the SP... */
 	if (i == 1) position = pl_prev; /* ...but up close to the predicate if it's the OP */
 	/* insert four atoms, in reverse order, at this position: */
 	prop = Propositions::insert_atom(prop, position, Atoms::new(DOMAIN_CLOSE_ATOM));
@@ -117,7 +117,7 @@ are always saying "not for nothing, but..." to mean "it's nothing, but...".
 @h Use listed-in predicates (deduction).
 Suppose the source text reads:
 
->> if X is a density listed in the Table of Solid Stuff, ...
+> if X is a density listed in the Table of Solid Stuff, ...
 
 Inform parses "a density listed in the Table of Solid Stuff" as a single
 specification, with references to the density column and the Solid Stuff
@@ -144,7 +144,7 @@ of the terms of $P$.
 Note that this can act twice on the same predicate, if such terms occur
 twice. For example,
 
->> if a crispiness listed in the Table of Salad Stuff is a density listed in the Table of Solid Stuff, ...
+> if a crispiness listed in the Table of Salad Stuff is a density listed in the Table of Solid Stuff, ...
 
 generates ${\it is}(L(C_1, T_1), L(C_2, T_2))$. As it happens, Inform can't
 compile this efficiently and will produce a problem message to say so, but
@@ -241,11 +241,11 @@ So we want the braces to enclose fixed, unassertable matter -- $v$ being
 a container, say -- and the $\phi$ outside the braces should then contain
 predicates which can be asserted.
 
-In practice that's way too hard for this function to handle. If |add_domain_brackets|
+In practice that's way too hard for this function to handle. If `add_domain_brackets`
 is true, then it converts
 $$ \lnot(\exists v: \cdots) \quad\longrightarrow\quad \not\exists v\in \lbrace v\mid \cdots\rbrace $$
 -- that is, it will make the entire negated subproposition the domain of the
-quantifier. If |add_domain_brackets| is false, the function will return a
+quantifier. If `add_domain_brackets` is false, the function will return a
 syntactically incorrect proposition lacking the domain brackets, and it's
 the caller's responsibility to put that right.
 
@@ -282,7 +282,7 @@ pcalc_prop *Simplifications::prop_ungroup_and_negate_determiner(pcalc_prop *prop
 
 @h Simplify negated satisfiability (deduction).
 When simplifying converted sentences, we chose not to use the
-|Simplifications::negated_determiners| tactic on existence quantifiers $\exists v$,
+`Simplifications::negated_determiners` tactic on existence quantifiers $\exists v$,
 partly because it's tricky to establish their domain in a way helpful to
 the rest of Inform.
 
@@ -332,7 +332,7 @@ $$ \Sigma = \cdots R(t, v)\cdots \quad \longrightarrow \quad \Sigma' = \cdots K_
 and therefore, if both cases occur,
 $$ \Sigma = \cdots R(v, w)\cdots \quad \longrightarrow \quad \Sigma' = \cdots K_1(v)\land K_2(w)\land R(v, w) $$
 
-Some of these new kind atoms are unnecessary, but |Simplifications::redundant_kinds| will
+Some of these new kind atoms are unnecessary, but `Simplifications::redundant_kinds` will
 detect and remove those.
 
 Why do we do this for binary predicates, but not unary predicates? The answer
@@ -366,7 +366,7 @@ pcalc_prop *Simplifications::make_kinds_of_value_explicit(pcalc_prop *prop, int 
 
 @h Remove redundant kind predicates (deduction).
 Propositions often contain more kind predicates than they need, not least as a
-result of |Simplifications::make_kinds_of_value_explicit|. Here we remove some of
+result of `Simplifications::make_kinds_of_value_explicit`. Here we remove some of
 those, and move the survivors to what we consider the best positions within
 the line. For reasons to be revealed below, we run this process twice over:
 
@@ -383,8 +383,8 @@ pcalc_prop *Simplifications::redundant_kinds(pcalc_prop *prop, int *changed) {
 proposition. These all begin and end with matched open and close brackets,
 with one exception: the main proposition itself.
 
-|start_group| represents the first atom of the expression (the open
-bracket, in most cases) and |start_level| the level of bracket nesting
+`start_group` represents the first atom of the expression (the open
+bracket, in most cases) and `start_level` the level of bracket nesting
 at that point. This is 1 for the main proposition, but 0 for subexpressions,
 so that inside the brackets the main content will be at level 1.
 
@@ -448,8 +448,8 @@ said no movement was necessary; the reason we made the move is that it
 makes $\Sigma'$ possible to assert with "now", as in the phrase "now
 nothing in the Ballroom is an open container".
 
-The following calculates two arrays: |optimal_kind_placings_domain| marks the
-start of $\phi$ for each variable $v$, while |optimal_kind_placings_statement|
+The following calculates two arrays: `optimal_kind_placings_domain` marks the
+start of $\phi$ for each variable $v$, while `optimal_kind_placings_statement`
 marks the start of the statement following the quantifier.
 
 @<Find optimal positions for kind predicates@> =
@@ -564,7 +564,7 @@ outer subexpression -- the one which is governed by the quantifier.
 		} else if (Atoms::is_closer(gpl->element)) glevel--;
 		if (glevel == 0) break;
 		if ((gpl != pl) && (KindPredicates::is_kind_atom(gpl)) && (v == gpl->terms[0].variable)) {
-			/* i.e., |gpl| now points to a different kind atom on the same variable */
+			/* i.e., `gpl` now points to a different kind atom on the same variable */
 			kind *later_kind = KindPredicates::get_kind(gpl);
 			if ((later_kind) && (Kinds::conforms_to(early_kind, later_kind))) {
 				prop = Propositions::delete_atom(prop, gpl_prev);
@@ -601,10 +601,10 @@ We could clearly go further than this:
 
 (a) Why don't we eliminate $K(C)$ when $K$ is an object, too? Logically this
 would be fine, but we choose not to, for two reasons: people sometimes write
-phrases in I7 which claim to return a room, say, but sometimes return |nothing|.
+phrases in I7 which claim to return a room, say, but sometimes return `nothing`.
 Technically this is a violation of type safety. If $t$ is a term representing
 a call to this function, then ${\it room}(t)$ ought to be redundant. But in
-practice it will protect against the |nothing| value. The other reason is
+practice it will protect against the `nothing` value. The other reason is
 to ensure that text like "Peter is a man" is not simplified all the way
 down to the null proposition (as it clearly can be, if Peter is indeed a man).
 That might seem harmless, but means that "now Peter is a man" doesn't produce
@@ -682,8 +682,8 @@ allowing simplification of many common sentences, but regional containment
 allows no such simplification. Basically: you can be directly contained by
 only one thing at a time, but might be in many regions at once.
 
-So far we assume every "in" means the |R_containment|. This is the
-point where we choose to divert some uses to |R_regional_containment|.
+So far we assume every "in" means the `R_containment`. This is the
+point where we choose to divert some uses to `R_regional_containment`.
 If $R$ is a constant region name, and $C_D$, $C_R$ are the predicates for
 direct and region containment, then
 $$ \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad \Sigma' = \cdots C_R(t, R)\cdots $$
@@ -882,7 +882,7 @@ $$ V_{=2} w $$
 which asserts "there are exactly two objects" -- which is certainly not a
 valid deduction.
 
-Here |var_to_sub| is $v$ and |var_in_other_term| is $w$, or else they are $-1$
+Here `var_to_sub` is $v$ and `var_in_other_term` is $w$, or else they are $-1$
 if no variables are present in their respective terms.
 
 @<Decide if the variable is redundant, and if its value can safely be subbed@> =
@@ -907,7 +907,7 @@ asserting first that there is no $y$ such that $t$ is a part of $y$, and then
 simplifying to remove the $y$ variable. A term like the one above is then
 left behind. But the negation is cumbersome, and makes the proposition harder
 to assert or test. Exploiting the fact that $f_P(t)$ is a property
-which is either the part-parent or else $N =$ |nothing|, we can simplify to:
+which is either the part-parent or else $N =$ `nothing`, we can simplify to:
 $$ {\it is}(f_P(t), N) $$
 And similar tricks can be pulled for other various-to-one-object predicates.
 
@@ -918,7 +918,7 @@ Then:
 $$ \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t), N) \cdots $$
 
 A similar trick for kinds of value is not possible, because -- unlike objects --
-they have no "not a valid case" value analogous to the non-object |nothing|.
+they have no "not a valid case" value analogous to the non-object `nothing`.
 
 =
 pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *changed) {
@@ -940,7 +940,7 @@ pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *cha
 				if ((bp) && (Kinds::eq(K, BinaryPredicates::term_kind(bp, 1)))) {
 					/* remove negation grouping */
 					prop = Propositions::ungroup_after(prop, pl_prev, NULL); 
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `kind=K` */
 					/* now insert equality predicate: */
 					prop = Propositions::insert_atom(prop, pl_prev,
 						Atoms::binary_PREDICATE_new(R_equality,
@@ -984,12 +984,12 @@ pcalc_prop *Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 The verb "to have" normally means ownership of a physical thing, but it
 can also arise from text such as
 
->> the balloon has weight at most 1
+> the balloon has weight at most 1
 
 where it's the numerical "weight" property which is owned by the balloon.
 At this stage of simplification, the above has produced
 $$ {\it atmost}(w, 1)\land {\it is}(B, f_H(w)) $$
-where $H$ is the predicate |a_has_b_predicate|. As it stands, this proposition
+where $H$ is the predicate `a_has_b_predicate`. As it stands, this proposition
 will fail type-checking, because it contains an implicit free variable -- the
 object which owns the weight. We make this explicit by removing
 ${\it is}(B, f_H(w))$ and replacing all other references to $w$ with "the
@@ -1078,7 +1078,7 @@ This rather special rule handles the consequences of the English word
 which is logical but loses the connotation of place -- by "everywhere", we
 usually mean "in all rooms", so that the sentence
 
->> The sky is everywhere.
+> The sky is everywhere.
 
 means the sky is in every room, not that the sky is equal to every room.
 Since the literal reading would make no useful sense, Inform fudges the
@@ -1112,11 +1112,11 @@ pcalc_prop *Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
 			int j, v = k_atom->terms[0].variable;
 			for (j=0; j<2; j++) {
 				if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `QUANTIFIER_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_OPEN_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `kind=K` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_CLOSE_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `PREDICATE_ATOM` */
 					if (Atoms::is_notall_quantifier(q_atom))
 						prop = Propositions::insert_atom(prop, pl_prev,
 							Atoms::new(NEGATION_CLOSE_ATOM));
@@ -1145,11 +1145,11 @@ pcalc_prop *Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
 			int j, v = k_atom->terms[0].variable;
 			for (j=0; j<2; j++) {
 				if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `QUANTIFIER_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_OPEN_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `kind=K` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_CLOSE_ATOM` */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove `PREDICATE_ATOM` */
 					prop = Propositions::insert_atom(prop, pl_prev,
 						WherePredicates::nowhere_up(bp_atom->terms[j]));
 					PROPOSITION_EDITED(pl, prop);
@@ -1193,11 +1193,11 @@ pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *chang
 				int j, v = k_atom->terms[0].variable;
 				for (j=0; j<2; j++) {
 					if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove `QUANTIFIER_ATOM` */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_OPEN_ATOM` */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove `kind=K` */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove `DOMAIN_CLOSE_ATOM` */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove `PREDICATE_ATOM` */
 						if (Atoms::is_notall_quantifier(q_atom))
 							prop = Propositions::insert_atom(prop, pl_prev,
 								Atoms::new(NEGATION_CLOSE_ATOM));

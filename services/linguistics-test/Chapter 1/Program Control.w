@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-@ |-trace| turns all verb phrase tracing on; |-viability| just shows the
+@ `-trace` turns all verb phrase tracing on; `-viability` just shows the
 viability map for each sentence.
 
 @d TRACING_LINGUISTICS_CALLBACK Main::trace_parsing

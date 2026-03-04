@@ -102,11 +102,11 @@ bracketed clauses in its prototype. In:
 To advance (the piece - a chess piece) by (N - a number):
 	...
 =
-the prototype is |advance (the piece - a chess piece) by (N - a number)|, and
+the prototype is `advance (the piece - a chess piece) by (N - a number)`, and
 an invocation of this should therefore have two tokens. For the invocation
-|advance the pawn by 2|, those tokens will be |the pawn| and |2|.
+`advance the pawn by 2`, those tokens will be `the pawn` and `2`.
 
-Tokens are represented in the parse tree as children of the |INVOCATION_NT|
+Tokens are represented in the parse tree as children of the `INVOCATION_NT`
 node:
 = (text)
 	INVOCATION_NT "advance the pawn by 2"
@@ -117,11 +117,11 @@ node:
 =
 Each token node represents what we expect to find at that position, while its
 child node represents what we actually found. Token nodes can have a variety
-of types -- any of the |*_CONTEXT_NT| types -- reflecting the surprising range
-of possibilities in phrase prototypes, but |RVALUE_CONTEXT_NT| is the commonest.
+of types -- any of the `*_CONTEXT_NT` types -- reflecting the surprising range
+of possibilities in phrase prototypes, but `RVALUE_CONTEXT_NT` is the commonest.
 
 @ The following function might become more interesting if we ever allowed
-variable-argument phrases like C's |printf|. Note that if an adaptive verb
+variable-argument phrases like C's `printf`. Note that if an adaptive verb
 or adjective is invoked, rather than a phrase, then this returns 0: there
 are never any tokens in such cases.
 
@@ -152,9 +152,9 @@ parse_node *Invocations::get_token(parse_node *inv, int i) {
 	return NULL;
 }
 
-@ Note that the following always returns a non-|NULL| pointer, or else throws
-an internal error. If |inv| currently has 2 tokens and //Invocations::get_token_creating//
-is asked for the 1000th, it will cheerfully add 999 |INVALID_NT| tokens to the
+@ Note that the following always returns a non-`NULL` pointer, or else throws
+an internal error. If `inv` currently has 2 tokens and //Invocations::get_token_creating//
+is asked for the 1000th, it will cheerfully add 999 `INVALID_NT` tokens to the
 list, returning the last one.
 
 =
@@ -170,8 +170,8 @@ parse_node *Invocations::get_token_creating(parse_node *inv, int i) {
 	return NULL; /* can never be reached, but needed because the compiler cannot prove this */
 }
 
-@ All tokens thus originate as |INVALID_NT|, but since the following function is
-always used to create new tokens, they are immediately given a better type |t|:
+@ All tokens thus originate as `INVALID_NT`, but since the following function is
+always used to create new tokens, they are immediately given a better type `t`:
 
 =
 void Invocations::attach_token(parse_node *inv, int i, node_type_t t, wording W) {
@@ -196,7 +196,7 @@ parse_node *Invocations::get_token_as_parsed(parse_node *inv, int i) {
 
 @ Other properties are stored as annotations of the token node. First, the
 "kind required by context": for example, for a token going into the place of
-|(X - an even number)| this kind will be "number".
+`(X - an even number)` this kind will be "number".
 
 =
 void Invocations::set_kind_required_by_context(parse_node *inv, int i, kind *K) {
@@ -210,7 +210,7 @@ kind *Invocations::get_kind_required_by_context(parse_node *inv, int i) {
 }
 
 @ The "token to be parsed against" is the full description which must be matched;
-for |(X - an even number)| this will be the specification "even number".
+for `(X - an even number)` this will be the specification "even number".
 
 =
 void Invocations::set_token_to_be_parsed_against(parse_node *inv, int i, parse_node *spec) {
@@ -226,7 +226,7 @@ parse_node *Invocations::get_token_to_be_parsed_against(parse_node *inv, int i) 
 @ The "token check to do" is a temporary calculational aid for the //Dash//
 typechecker, when it's keeping track of what still has to be checked. If
 //Dash// succeeds in proving that the token as parsed meets the test, then
-the token check is cleared to |NULL|; but in the case of a "not proven"
+the token check is cleared to `NULL`; but in the case of a "not proven"
 verdict, the "token check to do" remains, and code must be generated to
 perform this checking at runtime instead.
 
@@ -242,7 +242,7 @@ parse_node *Invocations::get_token_check_to_do(parse_node *inv, int i) {
 }
 
 @ Similarly, the "token variable kind" is a way for //Dash// to keep track of
-the kind of any variable created by a token such as |(V - nonexisting variable)|.
+the kind of any variable created by a token such as `(V - nonexisting variable)`.
 
 =
 void Invocations::set_token_variable_kind(parse_node *inv, int i, kind *K) {
@@ -259,7 +259,7 @@ kind *Invocations::get_token_variable_kind(parse_node *inv, int i) {
 When necessary, and it usually isn't, an invocation has a packet of
 details attached about any phrase options used; for instance, in
 
->> list the contents of the Box, with newlines;
+> list the contents of the Box, with newlines;
 
 this packet records the text "with newlines" along with its translation
 as a run-time bitmap (with just one bit set, since only one option is used).

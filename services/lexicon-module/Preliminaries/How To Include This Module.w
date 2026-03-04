@@ -20,21 +20,21 @@ that is, which will include its code and be able to use it. As with any
 imported module,
 
 - The contents page of the parent's web must identify and locate the
-module: |Import: somepath/lexicon|
-- The parent must call |LexiconModule::start()| just after it starts up, and
-|LexiconModule::end()| just before it shuts down. (But just after, and just
+module: `Import: somepath/lexicon`
+- The parent must call `LexiconModule::start()` just after it starts up, and
+`LexiconModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
 @h Defining parsing methods.
 When lexicon entries are registered (see //lexicon: Lexicon//), they are
 assigned "meaning codes", and these affect the way that parsing is done.
-The user should define |EXACT_PARSING_BITMAP|, |SUBSET_PARSING_BITMAP|
-and |PARAMETRISED_PARSING_BITMAP| to be sums of the meaning codes for
+The user should define `EXACT_PARSING_BITMAP`, `SUBSET_PARSING_BITMAP`
+and `PARAMETRISED_PARSING_BITMAP` to be sums of the meaning codes for
 which these methods are used -- see //Parse Excerpts//.
 
-For example, the parent could define |INGREDIENTS_MC| and |RECIPES_MC| to
-have two different namespaces, and then define |EXACT_PARSING_BITMAP| to
-be |INGREDIENTS_MC + RECIPES_MC| to make both of them parsed exactly.
+For example, the parent could define `INGREDIENTS_MC` and `RECIPES_MC` to
+have two different namespaces, and then define `EXACT_PARSING_BITMAP` to
+be `INGREDIENTS_MC + RECIPES_MC` to make both of them parsed exactly.
 
 Minimal default settings are made if the parent doesn't create these
 constants.
@@ -61,17 +61,17 @@ would be
 The lexicon module has many callbacks, but they are all optional. The
 following alphabetical list has references to fuller explanations:
 
-- |EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK|, |EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK|
-and |EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK| can all make excerpts
-parse in slightly different ways. //core// sets all of these to return |TRUE|
-for say phrases, and |FALSE| for everything else. See //Lexicon::retrieve//
+- `EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK`, `EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK`
+and `EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK` can all make excerpts
+parse in slightly different ways. //core// sets all of these to return `TRUE`
+for say phrases, and `FALSE` for everything else. See //Lexicon::retrieve//
 and //Lexicon::register//.
 
-- |PARSE_EXACTLY_LEXICON_CALLBACK| is called when an excerpt is about to be
+- `PARSE_EXACTLY_LEXICON_CALLBACK` is called when an excerpt is about to be
 parsed in "subset mode" -- allowing just a subset of its words to be used,
 i.e., not requiring exact wording. This function can refuse to allow that in
 certain cases. See //Lexicon::retrieve//.
 
-- |PROBLEM_LEXICON_CALLBACK| is called when an error is found, and can
+- `PROBLEM_LEXICON_CALLBACK` is called when an error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //ExcerptMeanings::problem_handler//.

@@ -4,7 +4,7 @@ To compile the table_columns submodule for a compilation unit, which contains
 _table_column packages.
 
 @h Compilation data for table columns.
-Each |table_column| object contains this data:
+Each `table_column` object contains this data:
 
 =
 typedef struct table_column_compilation_data {

@@ -81,19 +81,19 @@ this example is reserved.
 
 Template paths tell Inblorb where to find templates. Any number of these
 can be set -- including none at all, but if so then commands needing a
-named template, like |website|, can't be used. Inblorb looks for any
+named template, like `website`, can't be used. Inblorb looks for any
 template it needs by trying each template path in turn (the earliest
-defined having the highest priority). The blurb files produced by |inform7|
-in its |-release| mode contain a chain of three template paths, for the
+defined having the highest priority). The blurb files produced by `inform7`
+in its `-release` mode contain a chain of three template paths, for the
 individual project folder, the user's library of installed templates, and
 the built-in stock inside the Inform user interface application,
 respectively.
 
-The command |css| tells Inblorb that it is allowed to use CSS styles to
+The command `css` tells Inblorb that it is allowed to use CSS styles to
 make its web pages more appealing to look at: this results in generally
 better HTML, easier to use in other contexts, too.
 
-All of that set things up so that the |website| command could be used,
+All of that set things up so that the `website` command could be used,
 which actually does something -- it creates a website in the release-to
 location, taking its design from the template named. If we were to add
 any of these commands --
@@ -137,12 +137,12 @@ There's nothing very special about it, in any case.)
 A blorb script should be a text file, using the Unicode character set and
 encoded as UTF-8 without a byte order marker -- in other words, a plain
 text file. It consists of lines of up to 10239 bytes in length each,
-divided by any of the four line-end markers in common use (|CR|, |LF|,
-|CR LF| or |LF CR|), though the same line-end marker should be used
+divided by any of the four line-end markers in common use (`CR`, `LF`,
+`CR LF` or `LF CR`), though the same line-end marker should be used
 throughout the file.
 
 Each command occupies one and only one line of text. (In Blorb 2001, the
-now-deprecated |palette| command could occupy multiple lines, but Inblorb
+now-deprecated `palette` command could occupy multiple lines, but Inblorb
 will choke on such a usage.) Lines are permitted to be empty or to contain
 only white space. Lines whose first non-white-space character is an
 exclamation mark are treated as comments, that is, ignored. "White space"
@@ -151,27 +151,27 @@ nothing but white space, is perfectly legal though useless.
 
 In the following description:
 
-|<string>| means any text within double-quotes, not
+`<string>` means any text within double-quotes, not
 containing either double-quote or new-line characters, of up to 2048 bytes.
 
-|<filename>| means any double-quoted filename.
+`<filename>` means any double-quoted filename.
 
-|<number>| means a decimal number in the range 0 to 32767.
+`<number>` means a decimal number in the range 0 to 32767.
 
-|<id>| means either nothing at all, or a |<number>|,
-or a sequence of up to 20 letters, digits or underscore characters |_|.
+`<id>` means either nothing at all, or a `<number>`,
+or a sequence of up to 20 letters, digits or underscore characters `_`.
 
-|<dim>| indicates screen dimensions, and must take the form
-|<number>||x||<number>|.
+`<dim>` indicates screen dimensions, and must take the form
+`<number>``x``<number>`.
 
-|<ratio>| is a fraction in the form
-|<number>|/|<number>|. 0/0 is legal but
+`<ratio>` is a fraction in the form
+`<number>`/`<number>`. 0/0 is legal but
 otherwise both numbers must be positive.
 
-|<colour>| is a colour expressed as six hexadecimal digits,
-as in some HTML tags: for instance |F5DEB3| is the colour of wheat, with red
-value |F5| (on a scale |00|, none, to |FF|, full), green value |DE| and blue
-value |B3|. Hexadecimal digits may be given in either upper or lower case.
+`<colour>` is a colour expressed as six hexadecimal digits,
+as in some HTML tags: for instance `F5DEB3` is the colour of wheat, with red
+value `F5` (on a scale `00`, none, to `FF`, full), green value `DE` and blue
+value `B3`. Hexadecimal digits may be given in either upper or lower case.
 
 @ The full set of commands is as follows. First, core commands for making
 a blorb:
@@ -218,11 +218,11 @@ to do with the release except the story file; that way a release
 might consist of one story file plus one Blorb file containing its pictures
 and sounds. The Blorb file would then contain a note of the release number,
 serial code and checksum of the associated story file so that an
-interpreter can try to match up the two files at run-time. If the |include|
+interpreter can try to match up the two files at run-time. If the `include`
 option is used, however, the entire story file is embedded within the Blorb
 file, so that game and resources are all bound up in one single file.
-Inblorb always does this, and does not support |storyfile| without
-|include|.
+Inblorb always does this, and does not support `storyfile` without
+`include`.
 
 @ Second, now-deprecated commands describing our ideal screen display:
 = (text as Blurb)
@@ -259,11 +259,11 @@ infinity by infinity.
 	sound <id> <filename> song    ... unsupported by Inblorb
 =
 Tells us to take a sound sample from the named file and make it the sound
-effect with the given number. Most forms of |sound| are now deprecated:
+effect with the given number. Most forms of `sound` are now deprecated:
 repeat information (the number of repeats to be played) is meaningful
 only with Z-machine version 3 story files using sound effects, and Inform 7
-does not generate those; the |music| and |song| keywords specify unusual
-sound formats. Nowadays the straight |sound| command should always
+does not generate those; the `music` and `song` keywords specify unusual
+sound formats. Nowadays the straight `sound` command should always
 be used regardless of format.
 = (text as Blurb)
 	picture <id> <filename>
@@ -294,8 +294,8 @@ means "you can display this anywhere between one tenth normal size and
 eight times normal size, but if possible it ought to be just its normal
 size".
 
-Inblorb does not support any of the scaled forms of |picture|. As with
-the exotic forms of |sound|, they now seem pass\'e. We no longer need to
+Inblorb does not support any of the scaled forms of `picture`. As with
+the exotic forms of `sound`, they now seem pass\'e. We no longer need to
 worry too much about the size of the blorb file, nor about screens with
 very low resolution; an iPhone today has a screen resolution close to that
 of a typical desktop of 2001.
@@ -303,7 +303,7 @@ of a typical desktop of 2001.
 	cover <filename>
 =
 specifies that this is the cover art; it must also be declared with a
-|picture| command in the usual way, and must have picture ID 1.
+`picture` command in the usual way, and must have picture ID 1.
 
 @ Fourth, a command for adding static internal data files:
 = (text as Blurb)
@@ -311,13 +311,13 @@ specifies that this is the cover art; it must also be declared with a
 =
 Tells us to take the given data file and embed it into the blorb so that its
 contents can be read whenever the story is played. The "format" here can be
-either |TEXT| or |BINA|, meaning plain text or binary data.
+either `TEXT` or `BINA`, meaning plain text or binary data.
 
-Exactly what |TEXT| means will depend on how the story file wants to read
+Exactly what `TEXT` means will depend on how the story file wants to read
 the file, but the convention used by Inform is that it should be UTF-8 plain
 text with Unix line breaks.
 
-Similarly, by |BINA| Inform understands a sequence of big-endian four-byte
+Similarly, by `BINA` Inform understands a sequence of big-endian four-byte
 data words.
 
 @ Three commands help us to specify locations.
@@ -335,7 +335,7 @@ in the command line arguments, but see the description above of how Inblorb
 then contrives to move it.) The folder must already exist, and Inblorb
 won't create it. Under some circumstances Inform will seem to be creating
 the release folder if it doesn't already exist, but that's always the work
-of |inform7|, not Inblorb.
+of `inform7`, not Inblorb.
 = (text as Blurb)
 	template path <filename>
 =
@@ -404,7 +404,7 @@ A few reserved placeholders have special effects, causing Inblorb to
 expand interesting text in their places -- see "Writing with Inform"
 for more on this.
 = (text as Blurb)
-	release source <filename>| using |<filename> from <template>
+	release source <filename>` using `<filename> from <template>
 =
 makes Inblorb convert the Inform source text in the first filename into a
 suite of web pages using the style of the given file from the given template.
@@ -413,9 +413,9 @@ suite of web pages using the style of the given file from the given template.
 =
 saves the best until last: it makes a complete website for an Inform project,
 using the named template. This means that the CSS file is copied into place
-(assuming |css| is used), the "index.html" is released from the template,
-the source of the project is run through |release source| using "source.html"
-from the template (assuming |source public| is used), and any extra files
+(assuming `css` is used), the "index.html" is released from the template,
+the source of the project is run through `release source` using "source.html"
+from the template (assuming `source public` is used), and any extra files
 specified in the template's "(extras.txt)" are released as well. See
 "Writing with Inform" for more.
 
@@ -429,7 +429,7 @@ The encoding part is taken care of by:
 =
 This performs an RFC 1113-standard encoding on the binary file in (almost
 always our story file) into a textual base-64 file out. The file is topped
-and tailed with the text in placeholders |[BASESIXTYFOURTOP]| and |[BASESIXTYFOURTAIL]|,
+and tailed with the text in placeholders `[BASESIXTYFOURTOP]` and `[BASESIXTYFOURTAIL]`,
 allowing Javascript wrapper code to surround the encoded data.
 
 The interpreter itself is copied into place in the Release folder in a

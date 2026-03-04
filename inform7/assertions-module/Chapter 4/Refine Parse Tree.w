@@ -6,17 +6,17 @@ table" or "a paper cup" found in assertion sentences.
 @h How individual nouns are represented after refinement.
 
 - In general, noun phrases in the parse tree divide into "proper" and "common".
-Before refinement they generally have node type |UNPARSED_NOUN_NT|: afterwards,
-either |PROPER_NOUN_NT| or |COMMON_NOUN_NT|.
+Before refinement they generally have node type `UNPARSED_NOUN_NT`: afterwards,
+either `PROPER_NOUN_NT` or `COMMON_NOUN_NT`.
 - A noun phrase node has a "subject" annotation, identifying what if anything
 it refers to. For example, "a door" refers to the kind "door".
 - It also has an "evaluation" annotation. For example, "35" evaluates to
 the number 33, but has no subject.
-- If the noun phrase gives a number of items, the |multiplicity| annotation
+- If the noun phrase gives a number of items, the `multiplicity` annotation
 records how many; thus, for "six lorries" it would be 6.
 - If the noun phrase describes some properties or relations which must be
 true -- "an open door", say, or "a woman in London" -- these are recorded
-in a |creation_proposition| annotation.
+in a `creation_proposition` annotation.
 
 =
 void Refiner::give_subject_to_noun(parse_node *p, inference_subject *infs) {
@@ -36,7 +36,7 @@ void Refiner::give_spec_to_noun(parse_node *p, parse_node *eval) {
 	Node::set_subject(p, infs);
 	Node::set_evaluation(p, eval);
 
-@ This can be performed either on noun or |ADJECTIVE_NT| nodes. It transfers
+@ This can be performed either on noun or `ADJECTIVE_NT` nodes. It transfers
 the details of a description to the node.
 
 =
@@ -51,7 +51,7 @@ void Refiner::apply_description(parse_node *p, parse_node *desc) {
 
 @ It's useful to have a safe way of transferring the complete noun details
 from one node to another, without breaking the above invariant. (The
-|nowhere| annotation is used by the spatial feature, if active, and
+`nowhere` annotation is used by the spatial feature, if active, and
 it probably never needs to be copied, but we do so for safety's sake.)
 
 =
@@ -98,7 +98,7 @@ int Refiner::turn_player_to_yourself(parse_node *pn) {
 Individual adjective nodes are made as follows. Note that we append noun
 details to the nodes so that sentences like this one...
 
->> Scenery is usually fixed in place.
+> Scenery is usually fixed in place.
 
 ...can work; here "scenery", though an adjective, is effectively a common
 noun in disguise. (It's a deficiency of English that a surprising number of
@@ -139,13 +139,13 @@ thus "closed" and "a closed lockable door" are simple, but "four women in a
 lighted room" is complex.
 
 The following function should be called only on a simple description.
-It turns the node |p| into a subtree representing the content of
-that simple description in |desc|.
+It turns the node `p` into a subtree representing the content of
+that simple description in `desc`.
 
 Depending on the circumstances, we get a subtree in which the headword if any
-is represented by an |COMMON_NOUN_NT| node (where the headword is a kind of
-object) or a |PROPER_NOUN_NT| (where the headword is a specific object), and
-where the adjectives each become |ADJECTIVE_NT| nodes.
+is represented by an `COMMON_NOUN_NT` node (where the headword is a kind of
+object) or a `PROPER_NOUN_NT` (where the headword is a specific object), and
+where the adjectives each become `ADJECTIVE_NT` nodes.
 
 =
 void Refiner::refine_from_simple_description(parse_node *p, parse_node *desc) {
@@ -160,10 +160,10 @@ void Refiner::refine_from_simple_description(parse_node *p, parse_node *desc) {
 @ Crucially, the headword node gets one extra annotation: its "full phrase
 evaluation", which retains the original description information -- in
 particular, quantification data such as that in "four doors", which
-would be lost if we simply applied |Refiner::give_subject_to_noun| to the inference
+would be lost if we simply applied `Refiner::give_subject_to_noun` to the inference
 subject for "door".
 
-If |head| is not set, it doesn't matter what we do, because there'll be
+If `head` is not set, it doesn't matter what we do, because there'll be
 no headword node -- this is why we don't bother to find any subject to
 set for it.
 
@@ -195,7 +195,7 @@ position -- so that that is where the adjectives subtree will go.
 	p = lower_copy->next;
 
 @ When there are two or more adjectives, they must occur as leaves of a
-binary tree whose non-leaf nodes are |AND_NT|. We do this pretty inefficiently,
+binary tree whose non-leaf nodes are `AND_NT`. We do this pretty inefficiently,
 making no effort to balance the tree, since it has negligible effect on speed
 or memory.
 
@@ -227,7 +227,7 @@ or memory.
 	}
 
 @h Refining couplings.
-When an assertion couples |px| and |py|, the following is called first to
+When an assertion couples `px` and `py`, the following is called first to
 refine them.
 
 =
@@ -251,7 +251,7 @@ int Refiner::refine_coupling(parse_node *px, parse_node *py, int logging) {
 @h The refinery itself.
 Time to get started, then. Each subtree can be refined only once.
 
-The |creation_rule| can have three values:
+The `creation_rule` can have three values:
 
 @d FORBID_CREATION 0 /* never create an object with this name */
 @d ALLOW_CREATION 1 /* create an object with this name if that looks sensible */
@@ -293,7 +293,7 @@ void Refiner::refine_parse_tree_inner(parse_node *p, int creation_rule) {
 	}
 }
 
-@ Recall that an |X_OF_Y_NT| subtree has the form owner followed by
+@ Recall that an `X_OF_Y_NT` subtree has the form owner followed by
 property name, so we forbid creation of a new object from the property name
 subtree.
 
@@ -301,7 +301,7 @@ subtree.
 	Refiner::refine(p->down, creation_rule);
 	Refiner::refine(p->down->next, FORBID_CREATION);
 
-@ |WITH_NT| is used to create something with a list of properties. This
+@ `WITH_NT` is used to create something with a list of properties. This
 leads to some awkward cases -- for instance, where a "with" in an action
 pattern like "doing something with the bucket" has been misinterpreted.
 We fix those cases by hand, by reconstructing the text before it was
@@ -324,21 +324,21 @@ is allowed to stand.
 		#endif
 	}
 
-@ |AND_NT| is easy, except for "and surgery", of which more below.
+@ `AND_NT` is easy, except for "and surgery", of which more below.
 
 @<Refine an X-and-Y subtree@> =
 	Refiner::refine(p->down, creation_rule);
 	Refiner::refine(p->down->next, creation_rule);
 	Refiner::perform_and_surgery(p);
 
-@ A |CALLED_NT| node has two children: in the phrase "an X called Y", they
+@ A `CALLED_NT` node has two children: in the phrase "an X called Y", they
 will represent X and Y respectively. Y must be created afresh whatever its
 name, since the whole point of "called" is that it enables the designer
 to use names which would otherwise be interpreted as meaning something
 significant: it is a sort of literal escape, like the backslash character
 in C strings. X is never something new: it is expected to be a kind.
-We convert the whole node into a simple |PROPER_NOUN_NT| with the name
-of Y and the kind of X. In this way, all |CALLED_NT| nodes are removed
+We convert the whole node into a simple `PROPER_NOUN_NT` with the name
+of Y and the kind of X. In this way, all `CALLED_NT` nodes are removed
 from the tree.
 
 @<Refine a calling subtree@> =
@@ -359,7 +359,7 @@ from the tree.
 	else Refiner::refine(p->down->next, MANDATE_CREATION);
 	forbid_nowhere = FALSE;
 
-@ A |RELATIONSHIP_NT| node may have no children, representing "here"; or
+@ A `RELATIONSHIP_NT` node may have no children, representing "here"; or
 it may have one child, a room or door which lies in some map direction. But
 in general it has two children: for instance "a green marble in a blue box"
 has the marble and the box as its children, the relationship being containment.
@@ -386,7 +386,7 @@ direction object for "north".
 	Refiner::give_subject_to_noun(p->down->next, Instances::as_subject(dir));
 	Annotations::write_int(p->down->next, refined_ANNOT, TRUE);
 
-@ A |KIND_NT| node may have no children, and if so it represents the bare
+@ A `KIND_NT` node may have no children, and if so it represents the bare
 word "kind": the reference must be to the kind "kind" itself.
 Otherwise it has one child -- the name of an existing kind of value or
 object. After refinement, it will be annotated with a valid non-null
@@ -471,11 +471,11 @@ inference subject representing the domain to which any new kind would belong.
 		return;
 	} else internal_error("misconstrued pronoun");
 
-@ The simple description of what happens to a |PROPER_NOUN_NT| node is that
+@ The simple description of what happens to a `PROPER_NOUN_NT` node is that
 if it's an existing object or value, then it should be annotated with a
 reference to that object or value; and if not, then a new object should be
 created with that name. (We don't actually create here, though: we just mark
-such a noun phrase by changing its node type to |CREATED_NT|.) The more
+such a noun phrase by changing its node type to `CREATED_NT`.) The more
 complicated description is as follows:
 
 @<Refine what seems to be a noun phrase@> =
@@ -636,7 +636,7 @@ objects in particular states when setting up the initial state -- the kettle
 either starts out as heating, or it doesn't. Moreover, we don't want to
 misread a line like:
 
->> Heating Kettle is a scene.
+> Heating Kettle is a scene.
 
 (also a sentence from "Goat-Cheese and Sage Chicken"). Because of this and
 similar ambiguities, we ignore the S-parser's recommendation of reading
@@ -664,13 +664,13 @@ performed on the tree in the light of what we can now see.
 resolution of all the nouns in a phrase which involves both "and" and
 "with" in a particular way. There's no problem with either of these:
 
->> In the Pitch are a bat and ball with weight 10.
+> In the Pitch are a bat and ball with weight 10.
 
->> In the Pitch is a sweater with score for finding 5 and description "White wool."
+> In the Pitch is a sweater with score for finding 5 and description "White wool."
 
 neither of which is altered by and surgery. The difficulty arises with
 
->> In the Pitch is an openable and open door with description "The Hut door."
+> In the Pitch is an openable and open door with description "The Hut door."
 
 which, we notice, has exactly the same grammatical structure as the first of
 the two sentences above, yet a very different meaning, since "openable" is a
@@ -716,12 +716,12 @@ void Refiner::perform_and_surgery(parse_node *p) {
 
 @ "With surgery" is a less traumatic operation, motivated by sentences like:
 
->> In the Pitch is an open container with description "The box of stumps and bails."
+> In the Pitch is an open container with description "The box of stumps and bails."
 
-The initial parse tree for such a sentence will have two nested |WITH_NT|
+The initial parse tree for such a sentence will have two nested `WITH_NT`
 clauses, which is arguably correct -- "a (container with property open)
 with description ..." -- but which is inconvenient for our implementation
-of |WITH_NT| later on. So we construe the sentence instead with a single
+of `WITH_NT` later on. So we construe the sentence instead with a single
 "with", as "a container with properties open and description ..." In
 terms of the tree,
 = (text)
@@ -759,7 +759,7 @@ We may subsequently learn that what appeared to be a property setting was
 actually some other noun phrase containing the word "with" -- a particular
 issue for sentences like:
 
->> The agreeing with policy action has an object called the hat.
+> The agreeing with policy action has an object called the hat.
 
 =
 void Refiner::un_with(parse_node *p) {

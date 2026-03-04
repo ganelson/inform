@@ -99,12 +99,9 @@ approach. It aims to prove that the node found can match what's expected,
 making selections from alternative readings, and in limited cases actually
 making changes to the parse tree, in order to do this. For instance,
 consider checking the tree for:</p>
-</div>
 <blockquote>
-    <p>let the score be the score plus 10</p>
+<p>let the score be the score plus 10</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Dash takes the view that the phrase usage can be proved correct, so long as
 the arguments can also be proved. There are several valid interpretations of
 &quot;let ... be ...&quot;, and these are all present in the parse tree as alternative
@@ -309,12 +306,9 @@ functions: it keeps the debugging log tidy (see above) and it produces
 the backtrace if the inner routine should throw a problem message.</p>
 <p>The recursion limit below is clearly arbitrary, but is there to prevent the
 algorithm from slowing Inform unacceptably in the event of something like</p>
-</div>
 <blockquote>
-    <p>say  g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g;</p>
+<p>say  g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;g&quot; is a term Inform doesn't recognise, because otherwise this will
 recurse through every possible interpretation of the plus sign (i.e. every
 possible order of operations).</p>
@@ -354,12 +348,9 @@ possible order of operations).</p>
 <p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. </b>  The backtrace is added to problem messages only if we have just been checking
 a phrase, and if it produced problems not previously seen. The trick here is
 to ensure that if we have</p>
-</div>
 <blockquote>
-    <p>let X be a random wibble bibble spong;</p>
+<p>let X be a random wibble bibble spong;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then it will be the &quot;random ...&quot; phrase which is backtraced, and not the
 &quot;let ...&quot; phrase, even though that also goes wrong in turn.</p>
 </div>
@@ -692,19 +683,13 @@ the value meets some extra requirement. For example:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5. </b>  Suppose we are matching the parameter of a phrase like this:</p>
-</div>
 <blockquote>
-    <p>To inspect (D - an open door): ...</p>
+<p>To inspect (D - an open door): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and typechecking the following invocation:</p>
-</div>
 <blockquote>
-    <p>inspect the Marble Portal;</p>
+<p>inspect the Marble Portal;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Then we would have <code>p</code> set to some value -- here &quot;the Marble Portal&quot; --
 and the <code>MATCHING_RVALUE_CONTEXT_NT</code> node would point to a description node
 for open doors. We must see if <code>p</code> matches that. Any match can be at best at
@@ -727,12 +712,9 @@ check afterwards, when we know the kinds at least must be right.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6. </b>  This is something else that wouldn't appear in a typical typechecker.
 Here we are dealing with a phrase specification such as:</p>
-</div>
 <blockquote>
-    <p>To attract (N - 10) things: ...</p>
+<p>To attract (N - 10) things: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the &quot;N&quot; argument will be accepted if and only if it's the value 10.
 The fact that Inform allows this is further evidence of the slippery way
 that natural language doesn't distinguish values from types; early designs
@@ -873,12 +855,9 @@ which creates local variables. Surely that's a sign that the parsing went
 wrong, so how did things get to this stage?</p>
 <p>In a C-like language, where variables are predeclared, that would be true.
 But in Inform, a phrase like:</p>
-</div>
 <blockquote>
-    <p>let the monster be a random pterodactyl;</p>
+<p>let the monster be a random pterodactyl;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>can be valid even where &quot;the monster&quot; is text not known to the S-parser
 as yet -- indeed, that's how local variables are made. It's the typechecker
 which sorts this out, because only the typechecker can decide which of the
@@ -1483,12 +1462,9 @@ L and R are more definite.</p>
 including all phrases created outside the Standard Rules.</p>
 <p>The deal is simply that every argument must match its specification. For
 instance, if <code>inv</code> is an invocation of this phrase:</p>
-</div>
 <blockquote>
-    <p>To truncate (L - a list of values) to (N - a number) entries: ...</p>
+<p>To truncate (L - a list of values) to (N - a number) entries: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...then token 0 must match &quot;list of values&quot;, and token 1 must match &quot;number&quot;.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.b) Take care of non-arithmetic phrases</span><span class="named-paragraph-number">10.9.1.1.2</span></span> =</p>
@@ -1563,47 +1539,34 @@ instance, if <code>inv</code> is an invocation of this phrase:</p>
 rarely and in very specific circumstances. We allow a very limited use
 of second-order logic in using the name of a kind as if it were a value,
 even though Inform is really not set up for this. The point is to allow:</p>
-</div>
 <blockquote>
-    <p>let (name - nonexisting variable) be (K - name of kind of word value);</p>
+<p>let (name - nonexisting variable) be (K - name of kind of word value);</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the &quot;K&quot; parameter would match (1) but not (2), (3) or (4) from:</p>
-</div>
 <blockquote>
-    <p>(1) let X be a number;</p>
+<p>(1) let X be a number;</p>
 </blockquote>
-
 <blockquote>
-    <p>(2) let X be text;</p>
+<p>(2) let X be text;</p>
 </blockquote>
-
 <blockquote>
-    <p>(3) let X be 21;</p>
+<p>(3) let X be 21;</p>
 </blockquote>
-
 <blockquote>
-    <p>(4) let X be \{1, 2, 3\};</p>
+<p>(4) let X be {1, 2, 3};</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>What all of this has to do with being <code>UNKNOWN_NT</code> is that text parsed in the
 expectation of a value will usually not recognise something like &quot;a list
 of numbers&quot;, so that would be here as <code>UNKNOWN_NT</code>. We take the otherwise
 unheard-of measure of reparsing the text, but we only impose the result
 if the match can definitely be made successfully.</p>
 <p>We have to be very careful to take action only on (5) and not (6):</p>
-</div>
 <blockquote>
-    <p>(5) let L be a list of scenes;</p>
+<p>(5) let L be a list of scenes;</p>
 </blockquote>
-
 <blockquote>
-    <p>(6) let L be the list of scenes;</p>
+<p>(6) let L be the list of scenes;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(5) creates L as an empty list, whereas (6) creates it as the list made up
 of all scenes. We can tell these apart since (6) will have a valid phrase
 in <code>ith_token</code>, an invocation of &quot;the list of K&quot;, whereas (5) won't.</p>
@@ -1694,11 +1657,10 @@ in <code>ith_token</code>, an invocation of &quot;the list of K&quot;, whereas (
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_3" class="paragraph-anchor"></a><b>&#167;10.9.1.1.3. </b>  For templates and the meaning of <code>kind_checker_mode</code>, see the section
 on &quot;Kind Checking&quot;. But basically this handles the matching of an invocation
 against a definition like:</p>
-</div>
 <blockquote>
-    <p>To remove (N - value of kind K) from (L - list of Ks): ...</p>
+<p>To remove (N - value of kind K) from (L - list of Ks): ...</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.c) Match type templates in the argument specifications</span><span class="named-paragraph-number">10.9.1.1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1732,7 +1694,7 @@ against a definition like:</p>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SOMETIMES_MATCH:</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><a href="5-dsh.html#SP7" class="function-link"><span class="function-syntax">Dash::worst_case</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">SOMETIMES_MATCH</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                            </span><span class="comment-syntax">/* we won't use |with_qualifications| -- we don't know exactly what they are */</span>
+<span class="plain-syntax">                            </span><span class="comment-syntax">/* we won't use <code>with_qualifications</code> -- we don't know exactly what they are */</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(4I.c) dropping to sometimes at token %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALWAYS_MATCH:</span>
@@ -1790,32 +1752,23 @@ against a definition like:</p>
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_4" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4. </b>  Although we don't implement it with prototypes as such, there's a
 similar constraint on the arguments of an assignment. If we are checking an
 invocation against:</p>
-</div>
 <blockquote>
-    <p>To let (t - existing variable) be (u - value): ...</p>
+<p>To let (t - existing variable) be (u - value): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then we have so far checked that argument 0 is indeed the name of a variable
 which already exists. But suppose the invocation is</p>
-</div>
 <blockquote>
-    <p>let N be "there'll be no mutant enemy";</p>
+<p>let N be &quot;there'll be no mutant enemy&quot;;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where N has already been created as a variable of kind &quot;number&quot;. This clearly
 has to be rejected, as it would violate type-safety. Step (4I.d) therefore
 makes sure that all assignments match the kind of the new value against the
 kind of the storage item to which it is being written.</p>
 <p>A reasonable question might be why we don't implement this using the prototype
 system of (4I.c), thus removing a rule from this already-complex algorithm, say by</p>
-</div>
 <blockquote>
-    <p>To let (var - K variable) be (val - value of kind K): ...</p>
+<p>To let (var - K variable) be (val - value of kind K): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The answer is that this would indeed work nicely for valid source text, but that
 we would get less helpful problem messages in the all-too-likely case of a
 mistake having been made.</p>
@@ -1846,12 +1799,9 @@ mistake having been made.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.1. </b>  It doesn't always look like an assignment, but a phrase such as:</p>
-</div>
 <blockquote>
-    <p>change the Marble Door to open;</p>
+<p>change the Marble Door to open;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>has similar type-checking needs.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.d.1) Police an assignment to an object</span><span class="named-paragraph-number">10.9.1.1.4.1</span></span> =</p>
@@ -1871,23 +1821,16 @@ mistake having been made.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP10_9_1_1_4">&#167;10.9.1.1.4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.1.1. </b>  There are actually two definitions like this in the Standard Rules:</p>
-</div>
 <blockquote>
-    <p>(1) To change (o - object) to (w - value): ...</p>
+<p>(1) To change (o - object) to (w - value): ...</p>
 </blockquote>
-
 <blockquote>
-    <p>(2) To change (o - object) to (p - property): ...</p>
+<p>(2) To change (o - object) to (p - property): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here's the code for (1), the less obvious case. This is needed for something like</p>
-</div>
 <blockquote>
-    <p>change the canvas to blue;</p>
+<p>change the canvas to blue;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;blue&quot; is a constant colour, and &quot;colour&quot; is both a kind and also a
 property. (This case really is an assignment -- it assigns the value &quot;blue&quot;
 to the colour property of the canvas.)</p>
@@ -1908,16 +1851,10 @@ to the colour property of the canvas.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.1.2. </b>  And here's the simpler case, (2). A small quirk here is that it will also pick
 up &quot;change the Atrium to spiffy&quot; in the following:</p>
-</div>
 <blockquote>
-    <p>Atrium is a room. The Atrium can be spiffy, cool or lame.</p>
+<p>Atrium is a room. The Atrium can be spiffy, cool or lame.</p>
+<p>When play begins: change the Atrium to spiffy.</p>
 </blockquote>
-
-<blockquote>
-    <p>When play begins: change the Atrium to spiffy.</p>
-</blockquote>
-
-<div class="lsmarkdown">
 <p>...where &quot;spiffy&quot; is deemed a property rather than a constant value of a kind
 because of the way the condition of the Atrium is declared. This is a little
 bit horrid, but works fine in practice. (If we try to accommodate this case
@@ -1945,12 +1882,9 @@ against &quot;value&quot;.)</p>
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1_3" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.1.3. </b>  We do something quite interesting here, if the object is not explicitly
 named: we deliberately allow an assignment which may not be type-safe, and
 without even dropping to the &quot;sometimes&quot; level. This is for phrases like so:</p>
-</div>
 <blockquote>
-    <p>change the item to closed;</p>
+<p>change the item to closed;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here the author seems to know what he's doing, and is pretty sure that the
 current contents of &quot;item&quot; will accept closure. All we can prove is that
 &quot;item&quot; contains an object (or perhaps <code>nothing</code>, the non-object). But
@@ -2044,12 +1978,9 @@ literal can mean are too generous.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP10_9_1_1_4">&#167;10.9.1.1.4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_5" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5. </b>  Suppose we have something like this:</p>
-</div>
 <blockquote>
-    <p>award the current action points;</p>
+<p>award the current action points;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and we are typechecking <code>found</code> as &quot;the current action&quot; (a phrase deciding
 a value) against <code>expected</code> as &quot;number&quot;, the parameter expected in
 &quot;award (N - a number) points&quot;.</p>
@@ -2096,19 +2027,13 @@ options are properly used.</p>
 the scope for any vaguely described properties within the text supplied
 as that property (if it is indeed text). We have to mark any such
 property, and any such say. For instance, suppose we are typechecking</p>
-</div>
 <blockquote>
-    <p>(1) "Oh, look: [initial appearance of the escritoire]"</p>
+<p>(1) &quot;Oh, look: [initial appearance of the escritoire]&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and the initial appearance in question is:</p>
-</div>
 <blockquote>
-    <p>(2) "A small, portable writing desk holding up to [carrying capacity] letters."</p>
+<p>(2) &quot;A small, portable writing desk holding up to [carrying capacity] letters.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Printing text (2), it's important for the <code>self</code> object to be the
 escritoire, which might not be the case otherwise; so during the printing
 of (1), we have to change <code>self</code> temporarily and restore it afterwards.</p>
@@ -2128,12 +2053,9 @@ of (1), we have to change <code>self</code> temporarily and restore it afterward
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_9_1_1_8" class="paragraph-anchor"></a><b>&#167;10.9.1.1.8. </b>  Some phrases are defined with a notation making them allowable only inside
 loops, or other control structures; for instance,</p>
-</div>
 <blockquote>
-    <p>To break -- in loop: ...</p>
+<p>To break -- in loop: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>And here is where we check that &quot;break&quot; is indeed used only in a loop.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.h) Worry about using a phrase outside of the control structure it belongs to</span><span class="named-paragraph-number">10.9.1.1.8</span></span> =</p>
@@ -2573,19 +2495,13 @@ which because of polymorphism is not as straightforward as it looks.</p>
 applied to any invocation surviving Dash.</p>
 <p>Here's the usual way a local variable is made. One invocation we matched is
 for the phrase whose prototype reads:</p>
-</div>
 <blockquote>
-    <p>To let (T - nonexisting variable) be (V - value): ...</p>
+<p>To let (T - nonexisting variable) be (V - value): ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>To be definite, let's suppose we are working on:</p>
-</div>
 <blockquote>
-    <p>let the magic word be "Shazam [turn count] times!";</p>
+<p>let the magic word be &quot;Shazam [turn count] times!&quot;;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The checking code above accepted &quot;magic word&quot; as a new name, and marked
 token 0 in the invocation as one where a new variable will need to be
 created -- which is done if and when the invocation is ever compiled.</p>
@@ -2612,12 +2528,9 @@ created -- which is done if and when the invocation is ever compiled.</p>
 <p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1. </b>  The following code is used to work out a good kind for the new variable,
 instead of &quot;value&quot;, based on looking at token 1 -- the value being assigned.
 In the example above, we look at this initial value,</p>
-</div>
 <blockquote>
-    <p>"Shazam [turn count] times!"</p>
+<p>&quot;Shazam [turn count] times!&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and decide that K should be &quot;text&quot;.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Infer the kind of the new variable</span><span class="named-paragraph-number">14.1</span></span> =</p>
@@ -2633,12 +2546,9 @@ In the example above, we look at this initial value,</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP14">&#167;14</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14_1_1" class="paragraph-anchor"></a><b>&#167;14.1.1. </b>  Unusually, it's legal for the initial value to be a kind --</p>
-</div>
 <blockquote>
-    <p>let the magic digraph be a text;</p>
+<p>let the magic digraph be a text;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This doesn't give us an initial value as such, but it explicitly tells us the
 kind, which is good enough.</p>
 <p>Otherwise, we either know the kind already from polymorphism calculations, or
@@ -2647,12 +2557,9 @@ with values which are objects, we guess the kind as the broadest subkind of
 &quot;object&quot; to which the value belongs: in practice that means usually a thing,
 a room or a region.</p>
 <p>We make one exception to allow lines like --</p>
-</div>
 <blockquote>
-    <p>let X be a one-to-one relation of numbers to men;</p>
+<p>let X be a one-to-one relation of numbers to men;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where the adjective &quot;one-to-one&quot; forces the right hand side to be description
 of a relation.</p>
 </div>
@@ -3029,7 +2936,7 @@ any children it may have.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Dash::typecheck_single_node</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Dash::typecheck_single_node</span></span>:<br/><a href="5-dsh.html#SP10_9_1_2">&#167;10.9.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_expected</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_context</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG_DASH</span><span class="plain-syntax">(</span><span class="string-syntax">"(5)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Kind expected: %u, condition expected: %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_expected</span><span class="plain-syntax">, </span><span class="identifier-syntax">condition_context</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">; </span><span class="comment-syntax">/* drops to |SOMETIMES_MATCH| if a need for run-time checking is realised */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">; </span><span class="comment-syntax">/* drops to <code>SOMETIMES_MATCH</code> if a need for run-time checking is realised */</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="2-rvl.html#SP8" class="function-link"><span class="function-syntax">Rvalues::is_nothing_object_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">kind_expected</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_expected</span><span class="plain-syntax">)))</span>
@@ -3148,7 +3055,7 @@ helpful about what exactly is wrong.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP19_2">&#167;19.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  The &lt;unknown-text-shape&gt; is used purely in diagnosing problems; it helps
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  The <unknown-text-shape> is used purely in diagnosing problems; it helps
 to decide, for instance, whether the errant phrase was intended to be a text
 substitution or not.</p>
 </div>
@@ -3661,12 +3568,9 @@ different representations at run-time.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP19_5">&#167;19.5</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19_5_3" class="paragraph-anchor"></a><b>&#167;19.5.3. </b>  Another ambiguity is that the text &quot;women who are in lighted rooms&quot; in:</p>
-</div>
 <blockquote>
-    <p>let N be the number of women who are in lighted rooms;</p>
+<p>let N be the number of women who are in lighted rooms;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...is parsed as a description, a condition. But in
 fact it's a noun here -- it has to be a value, in fact, which can go into
 the &quot;number of...&quot; phrase as an argument. We make this happen by coercing
@@ -3817,12 +3721,9 @@ meets these requirements.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19_6_1" class="paragraph-anchor"></a><b>&#167;19.6.1. </b>  Now for the related, but slightly simpler, case of matching the name of a
 kind. Suppose we are parsing &quot;award 5 points&quot; against</p>
-</div>
 <blockquote>
-    <p>To award (N - a number) points: ...</p>
+<p>To award (N - a number) points: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here <code>p</code> will be the actual constant value 5, and <code>expected</code> the
 generic constant value with kind &quot;number&quot;.</p>
 <p>A phrase which returns a value must have its own return value's kind

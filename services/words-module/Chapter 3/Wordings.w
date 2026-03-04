@@ -7,9 +7,9 @@ something, using the fact that almost all names derive from contiguous
 runs of words in the source text.
 
 Recall that words are numbered from 0 upwards in order of reading into
-the lexer. The wording |Wordings::new(A, B)| represents both a positional
-marker, at word number |A|, and also some textual content, the text making
-up words |A| to |B| inclusive. Different wordings can represent the
+the lexer. The wording `Wordings::new(A, B)` represents both a positional
+marker, at word number `A`, and also some textual content, the text making
+up words `A` to `B` inclusive. Different wordings can represent the
 same text at different positions in the source text, for example if
 "brown spotted owl" occurs multiple times.
 
@@ -19,15 +19,15 @@ typedef struct wording {
 } wording;
 
 @ Note that this applies even to the empty text. A wording holds no text
-if both |A| and |B| are negative, or if |A| is larger than |B|. Thus
-the wording |(17, 16)| represents the empty text at position 17. (Preform
+if both `A` and `B` are negative, or if `A` is larger than `B`. Thus
+the wording `(17, 16)` represents the empty text at position 17. (Preform
 makes use of this when parsing nonterminals which match conditionally
 but consume no text, for example.) When we are representing no text and
 no position either, we should use the following constant wording:
 
 @d EMPTY_WORDING ((wording) { -1, -1 })
 
-@ Annoyingly, |gcc| (though not |clang|) rejects this as an initializer, so
+@ Annoyingly, `gcc` (though not `clang`) rejects this as an initializer, so
 we also need:
 
 @d EMPTY_WORDING_INIT { -1, -1 }
@@ -52,7 +52,7 @@ wording Wordings::one_word(int A) {
 }
 
 @ Note that these two are sometimes used to construct empty wordings either
-by moving |A| past |B|, or moving |B| before |A|.
+by moving `A` past `B`, or moving `B` before `A`.
 
 =
 wording Wordings::up_to(wording W, int last_wn) {
@@ -261,7 +261,7 @@ int Wordings::match_perhaps_quoted(wording W1, wording W2) {
 }
 
 @ And relatedly, used for sorting into alphabetical order, a direct analogue
-of |strcmp| but for word ranges:
+of `strcmp` but for word ranges:
 
 =
 int Wordings::strcmp(wording X, wording Y) {
@@ -320,13 +320,13 @@ int Wordings::top_level_comma(wording W) {
 
 @h Searching for unusual spacing in ranges.
 Looking forward to see how far the current column or row extends,
-for formatted tables. The idea is that we have a range |w1| to |w2|,
-and that the current column or row extends from |w1| but may run only
+for formatted tables. The idea is that we have a range `w1` to `w2`,
+and that the current column or row extends from `w1` but may run only
 part-way through: we look for the first point at which there is a
 tab break (for column scanning) or a newline break (for row scanning),
 and return the word position just before that break. If we do not find
 one, it follows that the entire range holds the current column or row,
-and we return |w2|.
+and we return `w2`.
 
 =
 int Wordings::last_word_of_formatted_text(wording W, int tab_flag) {
@@ -342,12 +342,12 @@ int Wordings::last_word_of_formatted_text(wording W, int tab_flag) {
 }
 
 @h The Writer.
-The following implements the |%W| escape, which comes in four varieties:
+The following implements the `%W` escape, which comes in four varieties:
 
 =
 void Wordings::writer(OUTPUT_STREAM, char *format_string, wording W) {
 	switch (format_string[0]) {
-		case 'W': /* bare |%W| means the same as |%-W|, so fall through to... */
+		case 'W': /* bare `%W` means the same as `%-W`, so fall through to... */
 		case '-': @<Write the stream with normalised casing@>; break;
 		case '+': @<Write the stream raw@>; break;
 		case '<': @<Write the stream in an abbreviated raw form@>; break;
@@ -369,11 +369,11 @@ it retains its original spacing. This is sometimes problematic: we need to
 go to some trouble to make punctuation look reasonably nice again, to obtain,
 say,
 
->> The auctioneer said: "I'm not through yet -".
+> The auctioneer said: "I'm not through yet -".
 
 in preference to:
 
->> The auctioneer said : "I'm not through yet -" .
+> The auctioneer said : "I'm not through yet -" .
 
 Note that we are not actually preserving the spacing in the original source --
 that might have line breaks or other curiosities which we don't want: we are
@@ -437,7 +437,7 @@ in which the actual information is more or less hidden.
 @ Another variation, this time formatted for use in I6 double-quoted text.
 Here we don't care about punctuation spacing, because we are only writing
 in comments and I6 debugging routines, but we do need to use the I6 escape
-|~| for a double-quotation mark.
+`~` for a double-quotation mark.
 
 @<Write the stream in a raw form suitable for use in an I6 literal string@> =
 	LOOP_THROUGH_WORDING(j, W) {

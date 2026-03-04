@@ -4,7 +4,7 @@ How the vanilla code generation strategy handles the actual code inside function
 
 @ The subtrees of Inter inside function bodies are pretty simple. There are
 some structural nodes, breaking up code-blocks and the like: and these we
-simply recurse down through, except that in the case of |code| we keep track
+simply recurse down through, except that in the case of `code` we keep track
 of the "void level". This is the level in the hierarchy where evaluation is
 in a void context. For example,
 = (text)
@@ -17,8 +17,8 @@ in a void context. For example,
 		|
 		void level
 =
-here the invocation of |!printnumber| is in a void context (i.e., any value
-produced is discarded), whereas the invocation of |!plus| is not.
+here the invocation of `!printnumber` is in a void context (i.e., any value
+produced is discarded), whereas the invocation of `!plus` is not.
 
 =
 void VanillaCode::code(code_generation *gen, inter_tree_node *P) {
@@ -100,10 +100,10 @@ need to.
 	}
 
 @ If they are not further invocations or code blocks, for which see above, the
-nodes under an invocation will be |val|, |ref| or |lab|.
+nodes under an invocation will be `val`, `ref` or `lab`.
 
-A |ref| can be to a variable; a |val| can be to a named constant, a variable
-or a literal. The special |self| symbol, which has no definition, counts as
+A `ref` can be to a variable; a `val` can be to a named constant, a variable
+or a literal. The special `self` symbol, which has no definition, counts as
 a variable here.
 
 =
@@ -126,7 +126,7 @@ void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) 
 	}	
 }
 
-@ A |lab| works on a named label, which will be defined somewhere in the same
+@ A `lab` works on a named label, which will be defined somewhere in the same
 function body.
 
 =
@@ -136,7 +136,7 @@ void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 	Generators::evaluate_label(gen, InterSymbol::identifier(label_s));
 }
 
-@ An |assembly| specifies one of a fixed number of special assembly-language
+@ An `assembly` specifies one of a fixed number of special assembly-language
 punctuation marks:
 
 =

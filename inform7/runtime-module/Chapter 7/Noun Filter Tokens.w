@@ -265,7 +265,7 @@ void NounFilterTokens::compilation_agent(compilation_subtask *t) {
 
 @ Similarly, for more on noun filters, see the DM4; but as will be evident, this
 really only wraps a simple condition. We convert this to a proposition with one
-free variable, $x$, and then substitute |noun| for this value.
+free variable, $x$, and then substitute `noun` for this value.
 
 @<Implement as a noun filter@> =
 	inter_symbol *x_s =
@@ -289,8 +289,8 @@ free variable, $x$, and then substitute |noun| for this value.
 	EmitCode::up();
 
 @ NFTs are sometimes used in code mode, in which case they appear as function
-calls in the form |ParseTokenStopped(f, T)|, where |T| is the token itself and
-|f| is some appropriate function in the command parser.
+calls in the form `ParseTokenStopped(f, T)`, where `T` is the token itself and
+`f` is some appropriate function in the command parser.
 
 =
 void NounFilterTokens::function_and_filter(noun_filter_token *nft) {

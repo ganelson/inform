@@ -41,7 +41,7 @@ to namespace collisions. Such identifiers are composed in a pattern which
 uses an identifying letter (e.g., A for Action), a unique ID number
 (preventing name-clashes) and then a truncated alphanumeric-safe form of
 the words used in the textual description, if any. For example, an object
-called "apple crumble" might have identifier |O100_apple_crumble|. Any
+called "apple crumble" might have identifier `O100_apple_crumble`. Any
 other object also called "apple crumble" would have a different identifier
 since the number parts would be different.
 

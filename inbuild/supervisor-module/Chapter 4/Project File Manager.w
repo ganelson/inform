@@ -4,15 +4,15 @@ Claiming and creating copies of the projectfile genre: used for Inform 7
 source texts stored as stand-alone plain text files, outside the GUI apps.
 
 @h Genre definition.
-The |project_file_genre| can be summarised as follows. Copies consist of
-single files. These are recognised by having the filename extension |.txt|,
-|.ni| or |.i7|. They cannot be stored in nests. Their build graphs are
+The `project_file_genre` can be summarised as follows. Copies consist of
+single files. These are recognised by having the filename extension `.txt`,
+`.ni` or `.i7`. They cannot be stored in nests. Their build graphs are
 extensive, having "upstream" vertices representing possible ways to build or
 release them, and having numerous "downstream" vertices as well: build edges
 run out to the extensions, kits and language definitions that they need.
 
-Note that |project_bundle_genre| and |project_file_genre| are managed
-differently, but share the same annotation data structure |inform_project|.
+Note that `project_bundle_genre` and `project_file_genre` are managed
+differently, but share the same annotation data structure `inform_project`.
 However it is stored in the file system, a project is a project.
 
 =
@@ -30,7 +30,7 @@ void ProjectFileManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_w
 	WRITE("%S", work->title);
 }
 
-@ Project copies are annotated with a structure called an |inform_project|,
+@ Project copies are annotated with a structure called an `inform_project`,
 which stores data about extensions used by the Inform compiler.
 
 =
@@ -50,14 +50,14 @@ inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
 }
 
 @h Claiming.
-Here |arg| is a textual form of a filename or pathname, such as may have been
-supplied at the command line; |ext| is a substring of it, and is its extension
-(e.g., |jpg| if |arg| is |Geraniums.jpg|), or is empty if there isn't one;
-|directory_status| is true if we know for some reason that this is a directory
+Here `arg` is a textual form of a filename or pathname, such as may have been
+supplied at the command line; `ext` is a substring of it, and is its extension
+(e.g., `jpg` if `arg` is `Geraniums.jpg`), or is empty if there isn't one;
+`directory_status` is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A project file needs to be a plain text file whose name ends in |.txt|, |.ni|
-or |.i7|.
+A project file needs to be a plain text file whose name ends in `.txt`, `.ni`
+or `.i7`.
 
 =
 void ProjectFileManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,

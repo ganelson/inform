@@ -3,9 +3,9 @@
 Generating code to perform an invocation.
 
 @h Upper level: compiling from whole lists.
-Here, we are given an invocation list |invl|, and we must generate Inter code
+Here, we are given an invocation list `invl`, and we must generate Inter code
 to carry it out. The code in this section does some complicated things; the
-test group |:invocations| may be helpful when maintaining it.
+test group `:invocations` may be helpful when maintaining it.
 
 =
 void CompileInvocations::list(value_holster *VH, parse_node *invl, wording W,
@@ -50,8 +50,8 @@ of tokens.
 		internal_error("invocation list not in canonical form");
 	}
 
-@ In fact it is impossible for this to be called with |VH->vhmode_wanted| set to
-anything other than |INTER_VAL_VHMODE| or |INTER_VOID_VHMODE|.
+@ In fact it is impossible for this to be called with `VH->vhmode_wanted` set to
+anything other than `INTER_VAL_VHMODE` or `INTER_VOID_VHMODE`.
 
 @<Tell the holster we intend to generate Inter code@> =
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) VH->vhmode_provided = INTER_VAL_VHMODE;
@@ -108,7 +108,7 @@ proven, we can more simply do this:
 =
 
 @ That's almost what we do, but not quite. The problem lies in the fact that
-the tokens |T1|, ..., |Tm| are evaluated multiple times - not in the invocations
+the tokens `T1`, ..., `Tm` are evaluated multiple times - not in the invocations
 (since only one is reached in execution) but in the condition tests. This
 multiple evaluation would be incorrect if token evaluation had side-effects,
 as it easily might, and would also waste time if the tokens were slow to evaluate.
@@ -122,33 +122,33 @@ So in fact we modify our scheme like so:
 	...
 	else runtime-error-message();
 =
-Here |F1, ..., Fn| are called the "formal parameters". But now we have a tricky
+Here `F1, ..., Fn` are called the "formal parameters". But now we have a tricky
 issue to contend with: where can they be stored?
 
 Here are the answers I thought of in turn:
 
-- Make |F1, ..., Fn| local variables for the current function. Often works
+- Make `F1, ..., Fn` local variables for the current function. Often works
 but not always, since some of our eventual target VMs have low upper limits
 on the number of locals in any one function.
-- Put |F1, ..., Fn| on the call stack for the current function. Impossible
+- Put `F1, ..., Fn` on the call stack for the current function. Impossible
 because the Inter VM has no memory access to its call stack, a restriction
 forced on Inter by the nature of the Z-machine and Glulx VMs it is a bridge to.
-- Have |F1, ..., Fn| be global variables. Impossible because they have to be
-local in scope since evaluation of |T2|, say, might itself involve a call to
+- Have `F1, ..., Fn` be global variables. Impossible because they have to be
+local in scope since evaluation of `T2`, say, might itself involve a call to
 another phrase which needs to make a resolution itself.
-- Have |F1, ..., Fn| be global variables, but push copies to the call stack
+- Have `F1, ..., Fn` be global variables, but push copies to the call stack
 before the resolution, and pull them back afterwards, thus using only saved
 copies. This sometimes works in void context (if we are careful to avoid cases
 where the phrase invoked might perform a jump or return), but is impossible
-in value context, where the Inter |PUSH_BIP| and |PULL_BIP| opcodes are illegal.
+in value context, where the Inter `PUSH_BIP` and `PULL_BIP` opcodes are illegal.
 - Force the current function to be a kernel function inside an outer shell
-function, and then allocate |F1, ..., Fn| as memory in the |I7SFRAME| space
+function, and then allocate `F1, ..., Fn` as memory in the `I7SFRAME` space
 provided by the shell function. This works, but is slower to access, and forces
 us to have a memory stack, which can be a problem if we are compiling for a
 very tight Z-machine memory.
 - Force the current function to be a kernel function inside an outer shell
-function, but have |F1, ..., Fn| be global variables anyway. In the shell
-function, push copies of |F1, ..., Fn| to the call stack before calling the
+function, but have `F1, ..., Fn` be global variables anyway. In the shell
+function, push copies of `F1, ..., Fn` to the call stack before calling the
 kernel, and then pull these saved values back afterwards. This one, finally,
 works in all cases, and is what we do.
 
@@ -203,7 +203,7 @@ works in all cases, and is what we do.
 	}
 
 @ There may be checks needed on several tokens, so we accumulate these into
-a list divided by logical-and |&&| operators.
+a list divided by logical-and `&&` operators.
 
 @<Put the condition check here@> =
 	int check_needed = 0;
@@ -280,12 +280,12 @@ at runtime; we assign 0 to it for the sake of tidiness.
 of a value. This means we can only use Inter opcodes which are legal in a value
 context, making everything harder.
 
-The |TERNARYSEQUENTIAL_BIP| opcode is similar to evaluating |x, y, z| in C: it
-evaluates |x|, throws that away, evaluates |y|, ditto, then evaluates |z| as
-its answer. |x| and |y| are thus evaluated only for and side-effects that has.
-Here |x| is going to be code to set the formal parameters; |y| will be code
+The `TERNARYSEQUENTIAL_BIP` opcode is similar to evaluating `x, y, z` in C: it
+evaluates `x`, throws that away, evaluates `y`, ditto, then evaluates `z` as
+its answer. `x` and `y` are thus evaluated only for and side-effects that has.
+Here `x` is going to be code to set the formal parameters; `y` will be code
 to test the conditions for invocation and invoke one of them into a dummy
-variable called |formal_rv|; and |z| will simply evaluate |formal_rv|, thus
+variable called `formal_rv`; and `z` will simply evaluate `formal_rv`, thus
 producing the answer.
 
 @<Compile the resolution in value mode@> =
@@ -303,13 +303,13 @@ producing the answer.
 But because Inter does not provide a binary sequential opcode, we will fold
 our run of assignments into a single value by adding them up -- the result
 doesn't matter, since it will be thrown away anyway. So if there are, say,
-four formal parameters then our |x| will be:
+four formal parameters then our `x` will be:
 = (text)
 	(F4 = T4) + ((F3 = T3) + ((F2 = T2) + (F1 = T1)))
 =
 It isn't really important that we count downwards from 4 to 1 here, but we do
-it because the Inform 6 compiler happens to evaluate operands of |+| in the
-order right then left. So this actually causes |T1| to evaluate first, then |T2|
+it because the Inform 6 compiler happens to evaluate operands of `+` in the
+order right then left. So this actually causes `T1` to evaluate first, then `T2`
 and so on, provided Inform 6 is the eventual code generator.
 
 =
@@ -324,7 +324,7 @@ and so on, provided Inform 6 is the eventual code generator.
 	}
 	if (L != EmitCode::level()) internal_error("misimplemented");
 
-@ Now the fun really begins. We compile |y| to an expression like so:
+@ Now the fun really begins. We compile `y` to an expression like so:
 = (text)
 	((condition for I1 to be valid) && ((formal_rv = I1) bitwise-or 1)) ||
 	((condition for I2 to be valid) && ((formal_rv = I2) bitwise-or 1)) ||
@@ -332,9 +332,9 @@ and so on, provided Inform 6 is the eventual code generator.
 	((condition for In to be valid) && ((formal_rv = In) bitwise-or 1)) ||
 	(issue run-time-problem)
 =
-The key here is that Inter, like C, evaluates operands of |&&| left to right
+The key here is that Inter, like C, evaluates operands of `&&` left to right
 and short-circuits: if the left operand is false, the right is never evaluated,
-and its side-effect (of invoking a phrase and setting |formal_rv|) never
+and its side-effect (of invoking a phrase and setting `formal_rv`) never
 happens; and similarly for logical-or.
 
 Bitwise-or does not short-circuit, so the faintly ridiculous trick of
@@ -438,8 +438,8 @@ void CompileInvocations::single(value_holster *VH, parse_node *inv,
 }
 
 @ Note that the phrases which compile to Inter jump or return instructions can
-never be marked to save |self|, or the code here would lead to slow stack overflow
-errors, since |self| would be pushed but not pulled.
+never be marked to save `self`, or the code here would lead to slow stack overflow
+errors, since `self` would be pushed but not pulled.
 
 @<Invoke a phrasal invocation@> =
 	int manner_of_return = DONT_KNOW_MOR;
@@ -513,7 +513,7 @@ control structures.
 	else
 		CallingFunctions::csi_by_call(VH, inv, where_from, tokens);
 
-@ If |allow_implied_newlines| is set, we understand the final part of a
+@ If `allow_implied_newlines` is set, we understand the final part of a
 text literal to be allowed to print an implied newline. For example, here it's on:
 = (text as Inform 7)
 	say "At [time of day], I like to serve afternoon tea. Indian or Chinese?";
@@ -549,10 +549,10 @@ invoked is polymorphic, like so --
 To discuss (V - sayable value):
 	say "You discourse about [V]."
 =
-If the invocation is "discuss 16", then the token has kind |K_number| not
-|K_sayable_value|, because we derive the kind from what the phrase was actually
+If the invocation is "discuss 16", then the token has kind `K_number` not
+`K_sayable_value`, because we derive the kind from what the phrase was actually
 invoked on rather than the full range of what it might have been. Similarly,
-the |fn_kind| is |function number -> nothing|, not |function sayable value -> nothing|.
+the `fn_kind` is `function number -> nothing`, not `function sayable value -> nothing`.
 
 =
 typedef struct tokens_packet {
@@ -565,7 +565,7 @@ typedef struct tokens_packet {
 @ This is all easy to unpack from the invocation subtree.
 
 If a token holds the name of a kind rather than a value as such, we use the
-|nothing| constant as the "token value", just as a placeholder. It won't be compiled.
+`nothing` constant as the "token value", just as a placeholder. It won't be compiled.
 
 =
 tokens_packet CompileInvocations::new_tokens_packet(parse_node *inv) {

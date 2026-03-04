@@ -6,11 +6,11 @@ which may have multiple inflected forms.
 @h A noun is more than a lexical cluster.
 Consider the line:
 
->> A mammal is a kind of animal.
+> A mammal is a kind of animal.
 
 Inform generates a new noun from this line: "mammal". This may well occur
 in a variety of inflected forms (though in English, there will be just two:
-"mammal" and "mammals"). That set of forms is gathered into a |lexical_cluster|
+"mammal" and "mammals"). That set of forms is gathered into a `lexical_cluster`
 object: see //inflections: Lexical Clusters//. Lexical clusters are not necessarily
 of nouns -- they are also used for adjectives, for example. So it would be
 wrong to represent a noun by a lexical cluster alone.
@@ -22,7 +22,7 @@ contains the lexical cluster to define its syntax, but it also has semantics att
 subclasses: common nouns and proper nouns. "Mammal" is a common noun, whereas
 a sentence such as:
 
->> A carved oak table is here.
+> A carved oak table is here.
 
 ...creates a proper noun, "carved oak table". Nouns are not used only to
 refer to the model world of some interactive fiction, though: Inform uses
@@ -37,7 +37,7 @@ What we will call the "subclass" of the noun is always one of these values:
 
 @ The other semantic ingredient in a //noun// object is a pointer to some
 object which gives it a meaning. For example, for the "carved oak table" in
-the Inform example above that would be an |instance| object representing this
+the Inform example above that would be an `instance` object representing this
 piece of furniture in the model world.
 
 It might seem the wrong way around for the //noun// object to contain its
@@ -52,7 +52,7 @@ feminine accusative plural".
 =
 typedef struct noun {
 	struct lexical_cluster *names;
-	int noun_subclass; /* either |COMMON_NOUN| or |PROPER_NOUN| */
+	int noun_subclass; /* either `COMMON_NOUN` or `PROPER_NOUN` */
 	struct general_pointer meaning;
 	unsigned int registration_category;
 	struct linguistic_stock_item *in_stock;
@@ -106,10 +106,10 @@ note that:
 
 - It is legal for the supplied text to be empty, and this does happen
 for example when Inform creates the nouns of anonymous objects, as in a
-sentence such as "Four people are in the Dining Room." Empty text in |W| means
+sentence such as "Four people are in the Dining Room." Empty text in `W` means
 that no forms are added to the lexical cluster and nothing is registered with
 the lexicon.
-- The |options| are a bitmap which used to be larger, and is now reduced
+- The `options` are a bitmap which used to be larger, and is now reduced
 to a combination of just two possibilities:
 
 @d ADD_TO_LEXICON_NTOPT 1         /* register these forms with the lexicon */
@@ -259,7 +259,7 @@ general_pointer Nouns::meaning(noun *N) {
 }
 
 @h Disambiguation.
-Here the parse node |p| stands at the head of a list of alternative meanings
+Here the parse node `p` stands at the head of a list of alternative meanings
 for some text: for example, they might be different possible meanings of the
 words "red chair" -- perhaps the "red stuffed chair", perhaps the "red upright
 chair", and so on. We want to choose the most likely possibility.
@@ -328,7 +328,7 @@ noun_usage *Nouns::usage_from_excerpt_meaning(excerpt_meaning *em) {
 values as nouns -- for example, each rulebook name is a noun, and the meaning
 of that is a valid rvalue in the compiler sense; it's a value which can be
 computed with at run-time. Inform represents rvalues as sprigs of the parse
-tree, so this function returns a |parse_node|.
+tree, so this function returns a `parse_node`.
 
 @d PN_FROM_EM_LEXICON_CALLBACK Nouns::extract_noun_as_rvalue
 

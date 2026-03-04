@@ -102,7 +102,7 @@ form, so this is not as bloated a structure as it looks.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">command_grammar</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |CG_IS_*| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>CG_IS_*</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_cg_created</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for problem message reports */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">determination_type</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_type</span><span class="plain-syntax">;</span>
@@ -112,17 +112,17 @@ form, so this is not as bloated a structure as it looks.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slashed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* slashing has been done */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">determined</span><span class="plain-syntax">; </span><span class="comment-syntax">/* determination has been done */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_COMMAND|: what command verb this belongs to */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_COMMAND</code>: what command verb this belongs to */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">aliased_command</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_ALIASED_COMMANDS</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* ...and other commands synonymous */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_aliased_commands</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...and how many of them there are */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_TOKEN|: name of this token */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_TOKEN</code>: name of this token */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_SUBJECT|: what this provides names for */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_SUBJECT</code>: what this provides names for */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_VALUE|: for which type it names an instance of */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_VALUE</code>: for which type it names an instance of */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CG_IS_PROPERTY_NAME|: which prn this names */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_PROPERTY_NAME</code>: which prn this names */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -354,12 +354,9 @@ token called &quot;[suitable colour]&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The CG_IS_SUBJECT form.</b>  Any inference subject can in theory be given a CG, used to parse unusual forms
 of its name. If the source reads:</p>
-</div>
 <blockquote>
-    <p>Understand "frog" as the Brazilian leaping toad.</p>
+<p>Understand &quot;frog&quot; as the Brazilian leaping toad.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then &quot;frog&quot; is added to the CG for the toad's inference subject.</p>
 <p>The toad is of course an object, and in fact although there are many other
 inference subjects in Inform, this system is used only for objects and their
@@ -580,7 +577,7 @@ matches the single term of the determination type of each CGL in the list.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax"> = </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::get_single_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_flag</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* initially no expectations: |spec_union| is meaningless */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_flag</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* initially no expectations: <code>spec_union</code> is meaningless */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* so we set it to the first result */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">first_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -589,11 +586,11 @@ matches the single term of the determination type of each CGL in the list.</p>
 
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::compatible_with_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* here |spec_of_line| was a wider type */</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* here <code>spec_of_line</code> was a wider type */</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::compatible_with_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; </span><span class="comment-syntax">/* here |spec_union| was already wide enough */</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; </span><span class="comment-syntax">/* here <code>spec_union</code> was already wide enough */</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">It is now evident that the lines have incompatible determination types</span></span><span class="named-paragraph-number">20.3.1</span></a></span><span class="plain-syntax">;</span>

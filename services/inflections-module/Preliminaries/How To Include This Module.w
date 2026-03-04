@@ -20,9 +20,9 @@ that is, which will include its code and be able to use it. As with any
 imported module,
 
 - The contents page of the parent's web must identify and locate the
-module: |somepath/inflections|
-- The parent must call |InflectionsModule::start()| just after it starts up, and
-|InflectionsModule::end()| just before it shuts down. (But just after, and just
+module: `somepath/inflections`
+- The parent must call `InflectionsModule::start()` just after it starts up, and
+`InflectionsModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
 @h Using callbacks.
@@ -35,9 +35,9 @@ ask for data or action.
 
 This module has only two callbacks and both are optional:
 
-- |VC_COMPILATION_INFLECTIONS_CALLBACK|, if provided, allows the |compilation_data|
-part of a |verb_conjugation| to be initialised. See //Conjugation::conjugate//.
+- `VC_COMPILATION_INFLECTIONS_CALLBACK`, if provided, allows the `compilation_data`
+part of a `verb_conjugation` to be initialised. See //Conjugation::conjugate//.
 
-- |PREFORM_ERROR_INFLECTIONS_CALLBACK|, if provided, allows for more civilised
+- `PREFORM_ERROR_INFLECTIONS_CALLBACK`, if provided, allows for more civilised
 error messages than fatal halts if the Preform syntax for inflections turns out
 to be defective, as can happen when non-English language bundles are being tested.

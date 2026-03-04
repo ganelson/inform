@@ -9,10 +9,10 @@ we don't want to assume that.
 
 @d feed_t int /* (not a typedef only because it makes trouble for inweb) */
 
-@ There are two ways to make a feed. One is simply to call one of the |feed_text|
+@ There are two ways to make a feed. One is simply to call one of the `feed_text`
 routines below and use its output. The other is for a multi-stage process,
 that is, for when multiple pieces of text need to go into the same feed:
-to start such, call |Feeds::begin| and get an ID; to end, call |Feeds::end|
+to start such, call `Feeds::begin` and get an ID; to end, call `Feeds::end`
 with the corresponding ID back again.
 
 =

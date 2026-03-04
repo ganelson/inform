@@ -95,7 +95,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">vocabulary_entry</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">flags</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of "meaning codes" indicating possible usages */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">flags</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of &quot;meaning codes&quot; indicating possible usages */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">literal_number_value</span><span class="plain-syntax">; </span><span class="comment-syntax">/* evaluation as a literal number, if any */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exemplar</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text of one instance of this word */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw_exemplar</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text of one instance in its raw untreated form */</span>
@@ -160,19 +160,13 @@ possible meaning as a literal integer, we cache the result: for instance,
 at that word. Two words are distinct if their lower-case forms are different,
 except that two quoted literal texts are always distinct, even if they have
 the same content. So for instance,</p>
-</div>
 <blockquote>
-    <p>Daleks conquer and destroy! "Ba-dum." Exterminate, exterminate! "Ba-dum."</p>
+<p>Daleks conquer and destroy! &quot;Ba-dum.&quot; Exterminate, exterminate! &quot;Ba-dum.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>would be identified as</p>
-</div>
 <blockquote>
-    <p>|ve0| |ve1| |ve2| |ve3| |ve4| |ve5| |ve6| |ve6| |ve4| |ve7|</p>
+<p><code>ve0</code> <code>ve1</code> <code>ve2</code> <code>ve3</code> <code>ve4</code> <code>ve5</code> <code>ve6</code> <code>ve6</code> <code>ve4</code> <code>ve7</code></p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where <code>ve4</code> is the common identity of both exclamation marks, and <code>ve6</code>
 that of the two &quot;exterminate&quot;s, even though they have different casings;
 while the quoted text <code>&quot;Ba-dum.&quot;</code> came out with two different identities
@@ -242,12 +236,9 @@ the text: raw in the sense of retaining the original form in the source
 files which the word came from. This looks strange because we normally
 identify words on their case-lowered text, not on their raw text. In
 the source material:</p>
-</div>
 <blockquote>
-    <p>Former Marillion vocalist Fish derived his nickname not from a fish, but from habitual bathing.</p>
+<p>Former Marillion vocalist Fish derived his nickname not from a fish, but from habitual bathing.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>words 4, &quot;Fish&quot;, and 11, &quot;fish&quot;, each have the same vocabulary entry
 as identity, even though their raw texts differ. Clearly the ordinary
 exemplar of this entry must be &quot;fish&quot;. But what should the raw exemplar
@@ -398,7 +389,7 @@ they're treated more like literal texts and I6 inclusions.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TEXT_HASH</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* double quoted texts, and no other words, have this hash code */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">I6_HASH</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the |(-| word introducing an I6 inclusion uniquely has this hash code */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">I6_HASH</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the <code>(-</code> word introducing an I6 inclusion uniquely has this hash code */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Vocabulary::hash_code_from_word</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Vocabulary::hash_code_from_word</span></span>:<br/><a href="2-vcb.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -480,7 +471,7 @@ codes for any number, any text, or any I6 inclusion.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6_HASH:</span><span class="plain-syntax"> </span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="constant-syntax">I6_MC</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">default:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><a href="2-vcb.html#SP17" class="function-link"><span class="function-syntax">Vocabulary::an_ordinal_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="constant-syntax">NUMBER_MC</span><span class="plain-syntax"> + </span><span class="constant-syntax">ORDINAL_MC</span><span class="plain-syntax">; </span><span class="comment-syntax">/* so that "4th", say, picks up both */</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="constant-syntax">NUMBER_MC</span><span class="plain-syntax"> + </span><span class="constant-syntax">ORDINAL_MC</span><span class="plain-syntax">; </span><span class="comment-syntax">/* so that &quot;4th&quot;, say, picks up both */</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list_of_vocab_with_hash</span><span class="plain-syntax">[</span><span class="identifier-syntax">hash_code</span><span class="plain-syntax">] == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -494,7 +485,7 @@ codes for any number, any text, or any I6 inclusion.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">n</span><span class="plain-syntax">++, </span><span class="identifier-syntax">old_entry</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">, </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_in_vocab_hash</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wide::cmp</span><span class="plain-syntax">(</span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">exemplar</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/* and if we do not find |text| in there, then... */</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">/* and if we do not find <code>text</code> in there, then... */</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vcb.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">My vision is impaired! I cannot see!</span></span><span class="named-paragraph-number">15.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>

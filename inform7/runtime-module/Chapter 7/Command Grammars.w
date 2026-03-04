@@ -3,7 +3,7 @@
 Runtime support for CGs.
 
 @h Generic constants.
-Here, |REPARSE_CODE| is a magic value used in //CommandParserKit// to
+Here, `REPARSE_CODE` is a magic value used in //CommandParserKit// to
 signal that some code which ought to have been parsing a command has in
 fact rewritten it, so that the whole command must be re-parsed afresh.
 
@@ -70,13 +70,13 @@ inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 }
 
 @h Compilation data.
-Each |command_grammar| object contains this data:
+Each `command_grammar` object contains this data:
 
 =
 typedef struct cg_compilation_data {
 	struct package_request *cg_package;
 
-	struct inter_name *cg_token_iname; /* |CG_IS_TOKEN| */
+	struct inter_name *cg_token_iname; /* `CG_IS_TOKEN` */
 
 	struct inter_name *property_GPR_fn_iname; /* CG_IS_PROPERTY_NAME| */
 	struct text_stream *CG_IS_TOKEN_identifier; /* CG_IS_PROPERTY_NAME| */
@@ -95,7 +95,7 @@ cg_compilation_data RTCommandGrammars::new_compilation_data(command_grammar *cg)
 }
 
 @ In fact, however, only four of the six CG types live in their own packages,
-so the following is not used for |CG_IS_VALUE| or |CG_IS_SUBJECT| grammars.
+so the following is not used for `CG_IS_VALUE` or `CG_IS_SUBJECT` grammars.
 
 =
 package_request *RTCommandGrammars::package(command_grammar *cg) {
@@ -105,7 +105,7 @@ package_request *RTCommandGrammars::package(command_grammar *cg) {
 	return cg->compilation_data.cg_package;
 }
 
-@ |CG_IS_PROPERTY_NAME| packages contain a function to match the value of
+@ `CG_IS_PROPERTY_NAME` packages contain a function to match the value of
 that property:
 
 =
@@ -119,7 +119,7 @@ inter_name *RTCommandGrammars::get_property_GPR_fn_iname(command_grammar *cg) {
 	return cg->compilation_data.property_GPR_fn_iname;
 }
 
-@ |CG_IS_TOKEN| packages contain a function to match that token. Note that these
+@ `CG_IS_TOKEN` packages contain a function to match that token. Note that these
 can be translated in order to have a particular identifier.
 
 =
@@ -144,7 +144,7 @@ void RTCommandGrammars::set_CG_IS_TOKEN_identifier(command_grammar *cg, wording 
 	WRITE_TO(cg->compilation_data.CG_IS_TOKEN_identifier, "%N", Wordings::first_wn(W));
 }
 
-@ |CG_IS_CONSULT| packages contain a function which matches a snippet:
+@ `CG_IS_CONSULT` packages contain a function which matches a snippet:
 
 =
 inter_name *RTCommandGrammars::get_consult_fn_iname(command_grammar *cg) {
@@ -350,11 +350,11 @@ void RTCommandGrammars::compile_for_value_GPR(gpr_kit *kit, command_grammar *cg)
 
 @h Compiling CG_IS_SUBJECT grammars.
 Again, these are not compiled into their own packages, but into the body of
-GPRs: in fact, they will be functions used as |parse_name| property values.
+GPRs: in fact, they will be functions used as `parse_name` property values.
 
 Each CG_IS_SUBJECT grammar is attached to an inference subject, and when we
 compile them we recurse up the subject hierarchy: thus if the red ball is of
-kind ball which is of kind thing, then the |parse_name| for the red ball
+kind ball which is of kind thing, then the `parse_name` for the red ball
 consists of grammar lines specified for the red ball, then those specified for
 all balls, and lastly those specified for all things.
 
@@ -391,14 +391,14 @@ And so all of the above functions ultimately funnel down to this one.
 At this level we compile the list of CGLs in sorted order: this is what the
 sorting was all for. In certain cases, we skip any CGLs marked as "one word":
 these are cases arising from, e.g., "Understand "frog" as the toad.",
-where we noticed that the CGL was a single word and included it in the |name|
+where we noticed that the CGL was a single word and included it in the `name`
 property instead. This is faster and more flexible, besides writing tidier
 code.
 
 The need for this is not immediately obvious. After all, shouldn't we have
 simply deleted the CGL in the first place, rather than leaving it in but
 marking it? The answer is no, because of the way inheritance works differently
-for the |name| property as opposed to |parse_name| functions.
+for the `name` property as opposed to `parse_name` functions.
 
 =
 void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {

@@ -97,13 +97,13 @@ common.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">property</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name of property */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_of_in_the_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* looks like a property test, e.g., "point of view"? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_of_in_the_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* looks like a property test, e.g., &quot;point of view&quot;? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter_level_only</span><span class="plain-syntax">; </span><span class="comment-syntax">/* i.e., does not correspond to an I7 property */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_created</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">permissions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |property_permission|: who can have this? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">permissions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>property_permission</code>: who can have this? */</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* exactly one of these must be non-|NULL|: */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* exactly one of these must be non-<code>NULL</code>: */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">either_or_property_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">either_or_data</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for an either/or property */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">value_property_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">value_data</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for a value property */</span>
 
@@ -427,7 +427,7 @@ ambiguity:</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And this internal is exactly like &lt;property-name-v&gt; except that it only
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And this internal is exactly like <property-name-v> except that it only
 matches ambiguous cases.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -517,11 +517,10 @@ and <code>value_data</code> is <code>NULL</code>, so these are in fact antonyms:
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Inter translation requests.</b>  This is the function which is called by the assertion parser in response
 to sentences like:</p>
-</div>
 <blockquote>
-    <p>The initial appearance property translates into Inter as "initial".</p>
+<p>The initial appearance property translates into Inter as &quot;initial&quot;.</p>
 </blockquote>
-
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Properties::translates</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -566,20 +565,14 @@ to sentences like:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18_3" class="paragraph-anchor"></a><b>&#167;18.3. </b>  But there is a kick in the tail, which is that translation can reverse the
 run-time parity of an either/or property. The Standard Rules normally say:</p>
-</div>
 <blockquote>
-    <p>The open property translates into Inter as "open".</p>
+<p>The open property translates into Inter as &quot;open&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This means that information about openness is stored as <code>open</code> within the
 template; an open door has <code>open</code> set, for instance. If we had written:</p>
-</div>
 <blockquote>
-    <p>The closed property translates into Inter as "open".</p>
+<p>The closed property translates into Inter as &quot;open&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>then the relevant data would still have been stored as <code>open</code>, but with the
 opposite sense; an open door would now be one with <code>open</code> cleared.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
@@ -690,12 +683,9 @@ we find it, we compile it and return <code>TRUE</code>; if not we do nothing and
 exactly as a property, allowing the same name to be used grammatically in
 two different contexts. We say that the kind and the property &quot;coincide&quot;.
 In particular, this happens with conditions:</p>
-</div>
 <blockquote>
-    <p>Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. The lantern has a brightness. The lantern is blazing.</p>
+<p>Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. The lantern has a brightness. The lantern is blazing.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here &quot;brightness&quot; becomes the name of a new kind, but &quot;brightness&quot; also
 becomes the name of a property.</p>
 </div>

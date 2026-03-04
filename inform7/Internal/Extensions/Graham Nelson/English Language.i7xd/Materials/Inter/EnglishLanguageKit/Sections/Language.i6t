@@ -149,8 +149,8 @@ Array LanguageNumbers table
 These are all opportunities to meddle with the normal (Anglo-centric) running
 of things, which we will decline.
 
-Until April 2023, it was optional for a kit to provide |LanguageRefers| and
-|LanguagePrintShortName|, but this is now compulsory.
+Until April 2023, it was optional for a kit to provide `LanguageRefers` and
+`LanguagePrintShortName`, but this is now compulsory.
 
 =
 [ LanguageToInformese; ];
@@ -196,18 +196,18 @@ Array LanguageArticles -->
 Array LanguageGNAsToArticles --> 0 0 0 1 1 1 0 0 0 1 1 1;
 
 @h Commands.
-|LanguageVerbLikesAdverb| is called by |PrintCommand| when printing an |UPTO_PE|
+`LanguageVerbLikesAdverb` is called by `PrintCommand` when printing an `UPTO_PE`
 error or an inference message.  Words which are intransitive verbs, i.e.,
 which require a direction name as an adverb ("walk west"), not a noun
 ("I only understood you as far as wanting to touch the ground"), should
-cause the routine to return |true|.
+cause the routine to return `true`.
 
-|LanguageVerbMayBeName| is called by |NounDomain| when dealing with
+`LanguageVerbMayBeName` is called by `NounDomain` when dealing with
 the player's reply to a "Which do you mean, the short stick or the
 long stick?" prompt from the parser. If the reply is another verb
 (for example, LOOK) then then previous ambiguous command is discarded
 unless it is one of these words which could be both a verb and an
-adjective in a |name| property.
+adjective in a `name` property.
 
 =
 [ LanguageVerb i;

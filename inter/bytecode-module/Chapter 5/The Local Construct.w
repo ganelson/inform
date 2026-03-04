@@ -18,7 +18,7 @@ void LocalInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |local| instruction is laid out with the
+In bytecode, the frame of a `local` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d DEFN_LOCAL_IFLD (DATA_IFLD + 0)

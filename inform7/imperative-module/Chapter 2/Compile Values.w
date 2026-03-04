@@ -4,10 +4,10 @@ To compile specifications of values into Inter value opcodes or array entries.
 
 @h Introduction.
 Quite a range of data can be held as specifications: see //values: Specifications//.
-Inside the compiler these are stored as |parse_node| pointers. This section of
+Inside the compiler these are stored as `parse_node` pointers. This section of
 code aims to provide a single unified way to compile values, even though:
 
-- We may need to compile either an array entry or an Inter |val| opcode.
+- We may need to compile either an array entry or an Inter `val` opcode.
 We abstract this using //building: Value Holsters//, holders into which
 compiled values are placed.
 - We sometimes need to compile a value which needs to be converted to a
@@ -24,7 +24,7 @@ exited far away from their consequences, and in dozens of different parts of
 the compiler, it became difficult to reason with any confidence about what
 would happen, so worrying was about all that could be done.
 
-In April 2021, all modes were removed except |compile_spec_in_constant_mode|,
+In April 2021, all modes were removed except `compile_spec_in_constant_mode`,
 and even that one is relatively benign: entry and exit into it is managed
 automatically by the code below, so that the rest of Inform no longer needs
 to think about compilation modes at all.
@@ -54,7 +54,7 @@ void CompileValues::to_array_entry(parse_node *value) {
 	EmitArrays::generic_entry(val);
 }
 
-@ Now constants, which can be compiled either to a holster or to a pair of |inter_t|
+@ Now constants, which can be compiled either to a holster or to a pair of `inter_t`
 numbers. Use the latter as little as possible.
 
 =
@@ -80,7 +80,7 @@ inter_pair CompileValues::to_pair(parse_node *spec) {
 	return Holsters::unholster_to_pair(&VH);
 }
 
-@ Finally, for compiling to Inter opcodes in a |val| context -- in other words,
+@ Finally, for compiling to Inter opcodes in a `val` context -- in other words,
 for values as they appear in imperative code rather than in data structures.
 A "fresh" value should be made when we want the value compiled to be a new,
 independent copy of the data in question. Consider:
@@ -89,8 +89,8 @@ independent copy of the data in question. Consider:
 	let U be T;
 	add 11 to T;
 =
-Clearly |U| must be set to a fresh copy of the data in |T|, not a reference to the
-same data. So the |T| in line 2 must be compiled as "fresh", whereas the |T| in
+Clearly `U` must be set to a fresh copy of the data in `T`, not a reference to the
+same data. So the `T` in line 2 must be compiled as "fresh", whereas the `T` in
 line 3 must not.
 
 =
@@ -139,9 +139,9 @@ void CompileValues::to_holster(value_holster *VH, parse_node *value, int how) {
 
 @ This implements "fresh" mode. For regular values like numbers there's no
 difference, but if our value is a block value such as a list then we evaluate to
-a copy of it, not to the original. Making that copy means calling |CopyPV|
-at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
-|INTER_DATA_VHMODE| holster).
+a copy of it, not to the original. Making that copy means calling `CopyPV`
+at runtime, so it cannot be done in a data holster (i.e., when `VH` is an
+`INTER_DATA_VHMODE` holster).
 
 @<Take care of any freshness@> =	
 	value = NonlocalVariables::substitute_constants(value);
@@ -179,8 +179,8 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 
 @ "Casting" is converting a value of one kind to a value of another but which has
 the same meaning, give or take. In a constant context, the main cast we can
-perform is from literal |K_number| values like |31| to turn them into literal
-|K_real_number| values, a process called "promotion".
+perform is from literal `K_number` values like `31` to turn them into literal
+`K_real_number` values, a process called "promotion".
 
 =
 parse_node *CompileValues::cast_constant(parse_node *value, kind *K_wanted) {

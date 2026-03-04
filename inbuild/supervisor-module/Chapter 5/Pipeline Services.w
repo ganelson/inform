@@ -13,7 +13,7 @@ typedef struct inform_pipeline {
 	CLASS_DEFINITION
 } inform_pipeline;
 
-@ This is called as soon as a new copy |C| of the language genre is created.
+@ This is called as soon as a new copy `C` of the language genre is created.
 
 =
 void Pipelines::scan(inbuild_copy *C) {

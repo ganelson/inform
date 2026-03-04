@@ -23,7 +23,7 @@ For example:
 kind K_action_name int32
 kind K_list_of_texts list of K_text
 =
-...make two kinds available in Inter, defining |K_action_name| and |K_list_of_texts|
+...make two kinds available in Inter, defining `K_action_name` and `K_list_of_texts`
 to refer to them.
 
 We need to remember what we have already declared, so that we don't declare the
@@ -31,9 +31,9 @@ same kind over and over. We use two different mechanisms for this:
 
 - for base kinds, storing the iname as the identifier for the associated noun,
 which is quicker to look up;
-- for constructed kinds, storing it in a |cached_kind_declaration|, which is
+- for constructed kinds, storing it in a `cached_kind_declaration`, which is
 slower but occurs considerably less often -- there are in practice relatively
-few |cached_kind_declaration| objects created.
+few `cached_kind_declaration` objects created.
 
 @ So, firstly, each base kind registers a new noun for itself here:
 
@@ -60,7 +60,7 @@ typedef struct cached_kind_declaration {
 	CLASS_DEFINITION
 } cached_kind_declaration;
 
-@ Calling //RTKindDeclarations::iname// produces the |inter_name| referring to
+@ Calling //RTKindDeclarations::iname// produces the `inter_name` referring to
 the kind in Inter, ensuring that it has been declared exactly once.
 
 =
@@ -85,13 +85,13 @@ inter_name *RTKindDeclarations::iname(kind *K) {
 	return dec->noted_iname;
 }
 
-@ Whichever cache is used, the following generates a name like |K_list_of_numbers|
-for use in the kind declaration. It is called once only for any given |K|.
+@ Whichever cache is used, the following generates a name like `K_list_of_numbers`
+for use in the kind declaration. It is called once only for any given `K`.
 
 Note that in order to play nicely with code in //WorldModelKit// and elsewhere,
 we want the names of kinds of objects to come out the same as they traditionally
-have in Inform 6 and 7 code for many years: so, for example, |K3_direction|,
-not |K_direction|. We do that by throwing in the "range number". See the
+have in Inform 6 and 7 code for many years: so, for example, `K3_direction`,
+not `K_direction`. We do that by throwing in the "range number". See the
 function //RTKindDeclarations::register// above for how these numbers originate;
 they are in registration order, which does not necessarily correspond to the
 sequence in which declarations are made here.

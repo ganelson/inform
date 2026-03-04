@@ -148,7 +148,7 @@ be read or written by the parser.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax">;                  </span><span class="comment-syntax">! Preferred error number so far</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">nextbest_etype</span><span class="plain-syntax">;              </span><span class="comment-syntax">! Preferred one, if ASKSCOPE_PE disallowed</span>
 
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_inflection</span><span class="plain-syntax">;           </span><span class="comment-syntax">! A property (usually "name") to find object names in</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_inflection</span><span class="plain-syntax">;           </span><span class="comment-syntax">! A property (usually &quot;name&quot;) to find object names in</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">indirect_parser_inflection</span><span class="plain-syntax">;  </span><span class="comment-syntax">! Set this to have parser_inflection called</span>
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">pattern</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">32</span><span class="plain-syntax">;               </span><span class="comment-syntax">! For the current pattern match</span>
@@ -166,22 +166,22 @@ be read or written by the parser.</p>
 
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inferfrom</span><span class="plain-syntax">;                   </span><span class="comment-syntax">! The point from which the rest of the command must be inferred</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inferword</span><span class="plain-syntax">;                   </span><span class="comment-syntax">! And the preposition inferred</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">dont_infer_pronoun</span><span class="plain-syntax">;          </span><span class="comment-syntax">! Do not infer an "it"</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">dont_infer_pronoun</span><span class="plain-syntax">;          </span><span class="comment-syntax">! Do not infer an &quot;it&quot;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">dont_infer</span><span class="plain-syntax">;                  </span><span class="comment-syntax">! Another dull flag</span>
 
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">cobj_flag</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax">;                   </span><span class="comment-syntax">! The "first mistake" word number</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax">;                   </span><span class="comment-syntax">! The &quot;first mistake&quot; word number</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved_oops</span><span class="plain-syntax">;                  </span><span class="comment-syntax">! Used in working this out</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="constant-syntax">64</span><span class="plain-syntax">;        </span><span class="comment-syntax">! Used temporarily by "oops" routine</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="constant-syntax">64</span><span class="plain-syntax">;        </span><span class="comment-syntax">! Used temporarily by &quot;oops&quot; routine</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">64</span><span class="plain-syntax">;       </span><span class="comment-syntax">! Used temporarily by "oops" routine</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">64</span><span class="plain-syntax">;       </span><span class="comment-syntax">! Used temporarily by &quot;oops&quot; routine</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">held_back_mode</span><span class="plain-syntax">;              </span><span class="comment-syntax">! Flag: is there some input from last time</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">hb_wn</span><span class="plain-syntax">;                       </span><span class="comment-syntax">! left over?  (And a save value for wn.)</span>
-<span class="plain-syntax">                                    </span><span class="comment-syntax">! (Used for full stops and "then".)</span>
+<span class="plain-syntax">                                    </span><span class="comment-syntax">! (Used for full stops and &quot;then&quot;.)</span>
 
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">usual_grammar_after</span><span class="plain-syntax">;         </span><span class="comment-syntax">! Point from which usual grammar is parsed (it may vary from</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! the above if user's routines match multi-word verbs)</span>
@@ -215,11 +215,11 @@ be read or written by the parser.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">indef_cases</span><span class="plain-syntax">;                 </span><span class="comment-syntax">! Possible gender and numbers of them</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">indef_possambig</span><span class="plain-syntax">;             </span><span class="comment-syntax">! Has a possibly dangerous assumption</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! been made about meaning of a descriptor?</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">indef_nspec_at</span><span class="plain-syntax">;              </span><span class="comment-syntax">! Word at which a number like "two" was parsed</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">indef_nspec_at</span><span class="plain-syntax">;              </span><span class="comment-syntax">! Word at which a number like &quot;two&quot; was parsed</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! (for backtracking)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_plurals</span><span class="plain-syntax">;               </span><span class="comment-syntax">! Whether plurals presently allowed or not</span>
 
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">take_all_rule</span><span class="plain-syntax">;               </span><span class="comment-syntax">! Slightly different rules apply to "take all" than other uses</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">take_all_rule</span><span class="plain-syntax">;               </span><span class="comment-syntax">! Slightly different rules apply to &quot;take all&quot; than other uses</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! of multiple objects, to make adjudication produce more</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! pragmatically useful results</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! (Not a flag: possible values 0, 1, 2)</span>
@@ -228,7 +228,7 @@ be read or written by the parser.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">pronoun__word</span><span class="plain-syntax">;               </span><span class="comment-syntax">! Saved value</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">pronoun__obj</span><span class="plain-syntax">;                </span><span class="comment-syntax">! Saved value</span>
 
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">comma_word</span><span class="plain-syntax"> = </span><span class="character-syntax">'comma,'</span><span class="plain-syntax">;     </span><span class="comment-syntax">! An "untypeable word" used to substitute</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">comma_word</span><span class="plain-syntax"> = </span><span class="character-syntax">'comma,'</span><span class="plain-syntax">;     </span><span class="comment-syntax">! An &quot;untypeable word&quot; used to substitute</span>
 <span class="plain-syntax">                                    </span><span class="comment-syntax">! for commas in parse buffers</span>
 </pre>
 <div class="lsmarkdown">
@@ -540,7 +540,7 @@ yes/no questions and the like, without invoking the rest of the parser.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sline1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">score</span><span class="plain-syntax">; </span><span class="identifier-syntax">sline2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">turns</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="reserved-syntax">true</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! Save the start of the buffer, in case "oops" needs to restore it</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! Save the start of the buffer, in case &quot;oops&quot; needs to restore it</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;64 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">;</span>
@@ -592,15 +592,15 @@ yes/no questions and the like, without invoking the rest of the parser.</p>
 
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">buffer2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">-&gt;9;  </span><span class="comment-syntax">! Start of word following "oops"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">-&gt;8;  </span><span class="comment-syntax">! Length of word following "oops"</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">x1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">-&gt;9;  </span><span class="comment-syntax">! Start of word following &quot;oops&quot;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">x2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">-&gt;8;  </span><span class="comment-syntax">! Length of word following &quot;oops&quot;</span>
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">buffer2</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">--&gt;6; </span><span class="comment-syntax">! Start of word following "oops"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">--&gt;5; </span><span class="comment-syntax">! Length of word following "oops"</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">x1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">--&gt;6; </span><span class="comment-syntax">! Start of word following &quot;oops&quot;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">x2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">--&gt;5; </span><span class="comment-syntax">! Length of word following &quot;oops&quot;</span>
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">            </span><span class="comment-syntax">! Repair the buffer to the text that was in it before the "oops"</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! Repair the buffer to the text that was in it before the &quot;oops&quot;</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! was typed:</span>
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;64 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">oops_workspace</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -740,9 +740,9 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NextWord</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN2__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN3__WD</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! Delete the words "then again" from the again buffer,</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! Delete the words &quot;then again&quot; from the again buffer,</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! in which we have just realised that it must occur:</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! prevents an infinite loop on "i. again"</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! prevents an infinite loop on &quot;i. again&quot;</span>
 
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WordAddress</span><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">-2)-</span><span class="identifier-syntax">buffer</span><span class="plain-syntax">;</span>
@@ -828,7 +828,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">  .</span><span class="identifier-syntax">BeginCommand</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb_word</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NextWordStopped</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! If there's no input here, we must have something like "person,".</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! If there's no input here, we must have something like &quot;person,&quot;.</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax"> == </span><span class="constant-syntax">-1</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STUCK_PE</span><span class="plain-syntax">; </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">GiveError</span><span class="plain-syntax">;</span>
@@ -837,7 +837,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">        </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">COMMABEGIN_PE</span><span class="plain-syntax">; </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">GiveError</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Now try for "again" or "g", which are special cases: don't allow "again" if nothing</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Now try for &quot;again&quot; or &quot;g&quot;, which are special cases: don't allow &quot;again&quot; if nothing</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! has previously been typed; simply copy the previous text across</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax"> == </span><span class="identifier-syntax">AGAIN2__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN3__WD</span><span class="plain-syntax">) </span><span class="identifier-syntax">verb_word</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax">;</span>
@@ -866,7 +866,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">        </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">ReParse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Save the present input in case of an "again" next time</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Save the present input in case of an &quot;again&quot; next time</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -915,7 +915,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    </span><span class="comment-syntax">! or the name of someone to talk to</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WordMarkedAsVerb</span><span class="plain-syntax">(</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">) == </span><span class="reserved-syntax">false</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! So is the first word an object contained in the special object "compass"</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! So is the first word an object contained in the special object &quot;compass&quot;</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! (i.e., a direction)?  This needs use of NounDomain, a routine which</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! does the object matching, returning the object number, or 0 if none found,</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! or REPARSE_CODE if it has restructured the parse table so the whole parse</span>
@@ -945,9 +945,9 @@ fairly thorough description of its output, which is written into the
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Parser Letter C.</b>  Is anyone being addressed?</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="comment-syntax">! Only check for a comma (a "someone, do something" command) if we are</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Only check for a comma (a &quot;someone, do something&quot; command) if we are</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! not already in the middle of one.  (This simplification stops us from</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! worrying about "robot, wizard, you are an idiot", telling the robot to</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! worrying about &quot;robot, wizard, you are an idiot&quot;, telling the robot to</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! tell the wizard that she is an idiot.)</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> == </span><span class="identifier-syntax">player</span><span class="plain-syntax">) {</span>
@@ -964,7 +964,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    .</span><span class="identifier-syntax">Conversation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Use NounDomain (in the context of "animate creature") to see if the</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Use NounDomain (in the context of &quot;animate creature&quot;) to see if the</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! words make sense as the name of someone held or nearby</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">lookahead</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HELD_TOKEN</span><span class="plain-syntax">;</span>
@@ -979,7 +979,7 @@ fairly thorough description of its output, which is written into the
 
 <span class="plain-syntax">    .</span><span class="identifier-syntax">Conversation2</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! The object addressed must at least be "talkable" if not actually "animate"</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! The object addressed must at least be &quot;talkable&quot; if not actually &quot;animate&quot;</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (the distinction allows, for instance, a microphone to be spoken to,</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! without the parser thinking that the microphone is human).</span>
 
@@ -988,23 +988,23 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! Check that there aren't any mystery words between the end of the person's</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! name and the comma (eg, throw out "dwarf sdfgsdgs, go north").</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! name and the comma (eg, throw out &quot;dwarf sdfgsdgs, go north&quot;).</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">j</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WordMarkedAsVerb</span><span class="plain-syntax">(</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">NotConversation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TOTALK_PE</span><span class="plain-syntax">; </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">GiveError</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! The player has now successfully named someone.  Adjust "him", "her", "it":</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! The player has now successfully named someone.  Adjust &quot;him&quot;, &quot;her&quot;, &quot;it&quot;:</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">PronounNotice</span><span class="plain-syntax">(</span><span class="identifier-syntax">l</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Set the global variable "actor", adjust the number of the first word,</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Set the global variable &quot;actor&quot;, adjust the number of the first word,</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! and begin parsing again from there.</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Stop things like "me, again":</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Stop things like &quot;me, again&quot;:</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">l</span><span class="plain-syntax"> == </span><span class="identifier-syntax">player</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax">;</span>
@@ -1036,9 +1036,9 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    .</span><span class="identifier-syntax">VerbAccepted</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! We now definitely have a verb, not a direction, whether we got here by the</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! "take ..." or "person, take ..." method.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! &quot;take ...&quot; or &quot;person, take ...&quot; method.</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! You can't order other people to "full score" for you, and so on...</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! You can't order other people to &quot;full score&quot; for you, and so on...</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WordMarkedAsMeta</span><span class="plain-syntax">(</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VERB_PE</span><span class="plain-syntax">;</span>
@@ -1078,9 +1078,9 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STUCK_PE</span><span class="plain-syntax">; </span><span class="identifier-syntax">nextbest_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STUCK_PE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">multiflag</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! "best_etype" is the current failure-to-match error - it is by default</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! the least informative one, "don't understand that sentence".</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! "nextbest_etype" remembers the best alternative to having to ask a</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! &quot;best_etype&quot; is the current failure-to-match error - it is by default</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! the least informative one, &quot;don't understand that sentence&quot;.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! &quot;nextbest_etype&quot; remembers the best alternative to having to ask a</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! scope token for an error message (i.e., the best not counting ASKSCOPE_PE).</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! multiflag is used here to prevent inappropriate MULTI_PE errors</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! in addition to its unrelated duties passing information to action routines</span>
@@ -1106,7 +1106,7 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! DEBUG</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax">! We aren't in "not holding" or inferring modes, and haven't entered</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! We aren't in &quot;not holding&quot; or inferring modes, and haven't entered</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! any parameters on the line yet, or any special numbers; the multiple</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! object is still empty.</span>
 
@@ -1128,7 +1128,8 @@ the result of parsing another token later, and these two cases (multiexcept
 and multiinside tokens) are helped by a quick look ahead, to work out the
 future token now. We can only carry this out in the simple (but by far the
 most common) case:</p>
-<p><code>multiexcept &lt;one or more prepositions&gt; noun</code></p>
+<pre><code>`multiexcept &lt;one or more prepositions&gt; noun`
+</code></pre>
 <p>and similarly for <code>multiinside</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1141,8 +1142,8 @@ most common) case:</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">line_ttype</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pcount</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ELEMENTARY_TT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">line_tdata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pcount</span><span class="plain-syntax"> == </span><span class="identifier-syntax">MULTI_TOKEN</span><span class="plain-syntax">) </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">line_tdata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pcount</span><span class="plain-syntax"> == </span><span class="identifier-syntax">MULTIEXCEPT_TOKEN</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">MULTIINSIDE_TOKEN</span><span class="plain-syntax">  &amp;&amp; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="comment-syntax">! First non-preposition is "multiexcept" or</span>
-<span class="plain-syntax">                    </span><span class="comment-syntax">! "multiinside", so look ahead.</span>
+<span class="plain-syntax">                    </span><span class="comment-syntax">! First non-preposition is &quot;multiexcept&quot; or</span>
+<span class="plain-syntax">                    </span><span class="comment-syntax">! &quot;multiinside&quot;, so look ahead.</span>
 
 <span class="plain-syntax">                    #</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEBUG</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parser_trace</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" [Trying look-ahead]^"</span><span class="plain-syntax">;</span>
@@ -1228,8 +1229,8 @@ most common) case:</p>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax">! Slightly different line-parsing rules will apply to "take multi", to</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! prevent "take all" behaving correctly but misleadingly when there's</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! Slightly different line-parsing rules will apply to &quot;take multi&quot;, to</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! prevent &quot;take all&quot; behaving correctly but misleadingly when there's</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! nothing to take.</span>
 
 <span class="plain-syntax">        </span><span class="identifier-syntax">take_all_rule</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -1340,7 +1341,7 @@ so that it may be reprinted by the parser later on.</p>
 <span class="plain-syntax">                </span><span class="comment-syntax">! a decent error message if this turns out to be the best we ever manage,</span>
 <span class="plain-syntax">                </span><span class="comment-syntax">! and in the mean time give up on this line</span>
 
-<span class="plain-syntax">                </span><span class="comment-syntax">! However, if the superfluous text begins with a comma or "then" then</span>
+<span class="plain-syntax">                </span><span class="comment-syntax">! However, if the superfluous text begins with a comma or &quot;then&quot; then</span>
 <span class="plain-syntax">                </span><span class="comment-syntax">! take that to be the start of another instruction</span>
 
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">num_words</span><span class="plain-syntax">) {</span>
@@ -1380,7 +1381,7 @@ so that it may be reprinted by the parser later on.</p>
 <span class="plain-syntax">                    }</span>
 <span class="plain-syntax">                }</span>
 
-<span class="plain-syntax">                </span><span class="comment-syntax">! To trap the case of "take all" inferring only "yourself" when absolutely</span>
+<span class="plain-syntax">                </span><span class="comment-syntax">! To trap the case of &quot;take all&quot; inferring only &quot;yourself&quot; when absolutely</span>
 <span class="plain-syntax">                </span><span class="comment-syntax">! nothing else is in the vicinity...</span>
 
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">take_all_rule</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">parser_results</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">INP1_PRES</span><span class="plain-syntax"> == </span><span class="identifier-syntax">actor</span><span class="plain-syntax">) {</span>
@@ -1425,7 +1426,7 @@ so that it may be reprinted by the parser later on.</p>
 <span class="plain-syntax">                    }</span>
 <span class="plain-syntax">                }</span>
 
-<span class="plain-syntax">                </span><span class="comment-syntax">! ...and to reset "it"-style objects to the first of these parameters, if</span>
+<span class="plain-syntax">                </span><span class="comment-syntax">! ...and to reset &quot;it&quot;-style objects to the first of these parameters, if</span>
 <span class="plain-syntax">                </span><span class="comment-syntax">! there is one (and it really is an object)...</span>
 
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameters</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">parser_results</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">INP1_PRES</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">)</span>
@@ -1445,13 +1446,13 @@ so that it may be reprinted by the parser later on.</p>
 
 <span class="plain-syntax">        .</span><span class="identifier-syntax">LineFailed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! The line has failed to match.</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! We continue the outer "for" loop, trying the next line in the grammar.</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! We continue the outer &quot;for&quot; loop, trying the next line in the grammar.</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">etype</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax">) </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">etype</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">etype</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">ASKSCOPE_PE</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">etype</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">nextbest_etype</span><span class="plain-syntax">) </span><span class="identifier-syntax">nextbest_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">etype</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax">! ...unless the line was something like "take all" which failed because</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! nothing matched the "all", in which case we stop and give an error now.</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! ...unless the line was something like &quot;take all&quot; which failed because</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! nothing matched the &quot;all&quot;, in which case we stop and give an error now.</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">take_all_rule</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">etype</span><span class="plain-syntax">==</span><span class="identifier-syntax">NOTHING_PE</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
@@ -1504,14 +1505,14 @@ in extensions, wn is left pointing at the first word not parsed as a command.</p
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Parser Letter I.</b>  Print best possible error message.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="comment-syntax">! If the player was the actor (eg, in "take dfghh") the error must be printed,</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! If the player was the actor (eg, in &quot;take dfghh&quot;) the error must be printed,</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! and fresh input called for.  In three cases the oops word must be jiggled.</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">etype</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">Routine</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">etype</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="reserved-syntax">String</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ParserError</span><span class="plain-syntax">(</span><span class="identifier-syntax">etype</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">ReType</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">etype</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CANTSEE_PE</span><span class="plain-syntax">) </span><span class="identifier-syntax">etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VERB_PE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">players_command</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WordCount</span><span class="plain-syntax">(); </span><span class="comment-syntax">! The snippet variable "player's command"</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">players_command</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WordCount</span><span class="plain-syntax">(); </span><span class="comment-syntax">! The snippet variable &quot;player's command&quot;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">BeginActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRINTING_A_PARSER_ERROR_ACT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ForActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRINTING_A_PARSER_ERROR_ACT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">SkipParserError</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
@@ -1599,7 +1600,7 @@ in extensions, wn is left pointing at the first word not parsed as a command.</p
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="comment-syntax">! At this point, the return value is all prepared, and we are only looking</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! to see if there is a "then" followed by subsequent instruction(s).</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! to see if there is a &quot;then&quot; followed by subsequent instruction(s).</span>
 
 <span class="plain-syntax">  .</span><span class="identifier-syntax">LookForMore</span><span class="plain-syntax">;</span>
 
@@ -1781,7 +1782,7 @@ break down others into elementary tokens</li>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">token</span><span class="plain-syntax">-&gt;0) &amp; </span><span class="constant-syntax">$10</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_PREPOSITION</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">        </span><span class="comment-syntax">! If we've run out of the player's input, but still have parameters to</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">! specify, we go into "infer" mode, remembering where we are and the</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! specify, we go into &quot;infer&quot; mode, remembering where we are and the</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! preposition we are inferring...</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">num_words</span><span class="plain-syntax">) {</span>
@@ -1848,9 +1849,15 @@ break down others into elementary tokens</li>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="comment-syntax">! There are now three possible ways we can be here:</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     parsing an elementary token other than "special" or "number";</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     parsing a scope token;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     parsing a noun-filter token (either by routine or attribute).</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing an elementary token other than &quot;special&quot; or &quot;number&quot;;
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing a scope token;
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing a noun-filter token (either by routine or attribute).
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! In each case, token holds the type of elementary parse to</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! perform in matching one or more objects, and</span>
@@ -1875,7 +1882,7 @@ break down others into elementary tokens</li>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parser_trace</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"  [Object list from word "</span><span class="plain-syntax">, </span><span class="identifier-syntax">wn</span><span class="plain-syntax">, </span><span class="string-syntax">"]^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! DEBUG</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Take an advance look at the next word: if it's "it" or "them", and these</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Take an advance look at the next word: if it's &quot;it&quot; or &quot;them&quot;, and these</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! are unset, set the appropriate error number and give up on the line</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (if not, these are still parsed in the usual way - it is not assumed</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! that they still refer to something in scope)</span>
@@ -1908,7 +1915,7 @@ break down others into elementary tokens</li>
 
 <span class="plain-syntax">  .</span><span class="identifier-syntax">TryAgain</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! First, we parse any descriptive words (like "the", "five" or "every"):</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! First, we parse any descriptive words (like &quot;the&quot;, &quot;five&quot; or &quot;every&quot;):</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Descriptors</span><span class="plain-syntax">(</span><span class="identifier-syntax">token_allows_multiple</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">l</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">l</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; }</span>
 
@@ -1923,7 +1930,7 @@ break down others into elementary tokens</li>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wn</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! So, two cases.  Case 1: token not equal to "held" (so, no implicit takes)</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! So, two cases.  Case 1: token not equal to &quot;held&quot; (so, no implicit takes)</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! but we may well be dealing with multiple objects</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! In either case below we use NounDomain, giving it the token number as</span>
@@ -2016,7 +2023,7 @@ break down others into elementary tokens</li>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Case 2: token is "held" (which fortunately can't take multiple objects)</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Case 2: token is &quot;held&quot; (which fortunately can't take multiple objects)</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! and may generate an implicit take</span>
 
 <span class="plain-syntax">        </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NounDomain</span><span class="plain-syntax">(</span><span class="identifier-syntax">actor</span><span class="plain-syntax">,</span><span class="identifier-syntax">actors_location</span><span class="plain-syntax">,</span><span class="identifier-syntax">token</span><span class="plain-syntax">,</span><span class="identifier-syntax">dont_ask_for_clarification</span><span class="plain-syntax">);       </span><span class="comment-syntax">! Same as above...</span>
@@ -2036,9 +2043,15 @@ break down others into elementary tokens</li>
 <span class="plain-syntax">        </span><span class="comment-syntax">! it on the right word afterwards).</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! The point of this last rule is that a sequence like</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">!</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     &gt; read newspaper</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     (taking the newspaper first)</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     The dwarf unexpectedly prevents you from taking the newspaper!</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> &gt; read newspaper
+</code></pre>
+</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> (taking the newspaper first)
+</code></pre>
+</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> The dwarf unexpectedly prevents you from taking the newspaper!
+</code></pre>
+</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">!</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! should not be allowed to go into an infinite repeat - read becomes</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! take then read, but take has no effect, so read becomes take then read...</span>
@@ -2055,9 +2068,13 @@ break down others into elementary tokens</li>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! The following moves the word marker to just past the named object...</span>
 
-<span class="comment-syntax">! </span><span class="plain-syntax">  </span><span class="comment-syntax">if (match_from ~= oops_from) print match_from, " vs ", oops_from, "^";</span>
+<span class="comment-syntax">!	<pre><code>if (match_from ~= oops_from) print match_from, &quot; vs &quot;, oops_from, &quot;^&quot;;
+</code></pre>
+</span>
 
-<span class="comment-syntax">!    wn = oops_from + match_length;</span>
+<span class="comment-syntax">!    <pre><code>wn = oops_from + match_length;
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">match_from</span><span class="plain-syntax"> + </span><span class="identifier-syntax">match_length</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
@@ -2065,7 +2082,7 @@ break down others into elementary tokens</li>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="comment-syntax">! Object(s) specified now: is that the end of the list, or have we reached</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! "and", "but" and so on?  If so, create a multiple-object list if we</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! &quot;and&quot;, &quot;but&quot; and so on?  If so, create a multiple-object list if we</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! haven't already (and are allowed to).</span>
 
 <span class="plain-syntax">  .</span><span class="identifier-syntax">NextInList</span><span class="plain-syntax">;</span>
@@ -2128,7 +2145,7 @@ break down others into elementary tokens</li>
 <span class="plain-syntax">  .</span><span class="identifier-syntax">FailToken</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! If we were only guessing about it being a plural, try again but only</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! allowing singulars (so that words like "six" are not swallowed up as</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! allowing singulars (so that words like &quot;six&quot; are not swallowed up as</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! Descriptors)</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allow_plurals</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">indef_guess_p</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
@@ -2413,9 +2430,13 @@ because we want to allow duplicates).</p>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! If i is non-zero here, one of two things is happening: either</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (a) an inference has been successfully made that object i is</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     the intended one from the user's specification, or</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> the intended one from the user's specification, or
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (b) the user finished typing some time ago, but we've decided</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     on i because it's the only possible choice.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> on i because it's the only possible choice.
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! In either case we have to keep the pattern up to date,</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! note that an inference has been made and return.</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (Except, we don't note which of a pile of identical objects.)</span>
@@ -2481,7 +2502,7 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">! Conveniently, parse2--&gt;1 is the first word in both ZCODE and GLULX.</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">first_word</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">parse2</span><span class="plain-syntax">--&gt;1);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Take care of "all", because that does something too clever here to do</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Take care of &quot;all&quot;, because that does something too clever here to do</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! later on:</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_word</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ALL1__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALL2__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALL3__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALL4__WD</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALL5__WD</span><span class="plain-syntax">) {</span>
@@ -2511,8 +2532,8 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">! assume that the player has ignored the question and given a new</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! command altogether.</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (This is one time when it's convenient that the directions are</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! not themselves verbs - thus, "north" as a reply to "Which, the north</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! or south door" is not treated as a fresh command but as an answer.)</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! not themselves verbs - thus, &quot;north&quot; as a reply to &quot;Which, the north</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! or south door&quot; is not treated as a fresh command but as an answer.)</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_word</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wn</span><span class="plain-syntax">; </span><span class="identifier-syntax">first_word</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LanguageIsVerb</span><span class="plain-syntax">(</span><span class="identifier-syntax">buffer2</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
@@ -2525,9 +2546,13 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">! Now we insert the answer into the original typed command, as</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! words additionally describing the same object</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (eg, &gt; take red button</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!      Which one, ...</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!      &gt; music</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! becomes "take music red button".  The parser will thus have three</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre><code>  Which one, ...
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre><code>  &gt; music
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! becomes &quot;take music red button&quot;.  The parser will thus have three</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! words to work from next time, not two.)</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -2567,7 +2592,7 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">REPARSE_CODE</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! Now we come to the question asked when the input has run out</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! and can't easily be guessed (eg, the player typed "take" and there</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! and can't easily be guessed (eg, the player typed &quot;take&quot; and there</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! were plenty of things which might have been meant).</span>
 
 <span class="plain-syntax">  .</span><span class="identifier-syntax">Incomplete</span><span class="plain-syntax">;</span>
@@ -2695,7 +2720,9 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! CHARSIZE</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! (3) we fill up the buffer with spaces, which is unnecessary, but may</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     help incorrectly-written interpreters to cope.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> help incorrectly-written interpreters to cope.
+</code></pre>
+</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">;</span>
@@ -3092,8 +3119,12 @@ evaluate the possibilities is discussed in detail in the DM4.)</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">number_matched</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">match_list</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> = </span><span class="reserved-syntax">parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">); </span><span class="identifier-syntax">its_score</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">met</span><span class="plain-syntax">=0;</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax">!      if (indef_type &amp; OTHER_BIT ~= 0</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!          &amp;&amp;  obj ~= itobj or himobj or herobj) met++;</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">!      <pre><code>  if (indef_type &amp; OTHER_BIT ~= 0
+</code></pre>
+</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">!          <pre><code>      &amp;&amp;  obj ~= itobj or himobj or herobj) met++;
+</code></pre>
+</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">MY_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> == </span><span class="identifier-syntax">actor</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">THAT_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> == </span><span class="identifier-syntax">actors_location</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">LIT_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;</span>
@@ -3209,11 +3240,21 @@ for some function \INWEBMATH(f\INWEBMATH).)</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">!  different.  If they have the same routine (which they probably got from</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!  a class definition) then the decision process is as follows:</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     the routine is called (with self being o1, not that it matters)</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       with noun and second being set to o1 and o2, and action being set</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       to the fake action TheSame.  If it returns -1, they are found</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       identical; if -2, different; and if &gt;=0, then the usual method</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       is used instead.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> the routine is called (with self being o1, not that it matters)
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   with noun and second being set to o1 and o2, and action being set
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   to the fake action TheSame.  If it returns -1, they are found
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   identical; if -2, different; and if &gt;=0, then the usual method
+</code></pre>
+</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   is used instead.
+</code></pre>
+</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">      </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
@@ -3224,14 +3265,14 @@ for some function \INWEBMATH(f\INWEBMATH).)</p>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">!  This is the default algorithm: do they have the same words in their</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!  "name" (i.e. property no. 1) properties.  (Note that the following allows</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!  &quot;name&quot; (i.e. property no. 1) properties.  (Note that the following allows</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!  for repeated words and words in different orders.)</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">p1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o1</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="identifier-syntax">n1</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.#</span><span class="identifier-syntax">name</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="identifier-syntax">n2</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o2</span><span class="plain-syntax">.#</span><span class="identifier-syntax">name</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">!   for (i=0 : i&lt;n1 : i++) { print (address) p1--&gt;i, " "; } new_line;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!   for (i=0 : i&lt;n2 : i++) { print (address) p2--&gt;i, " "; } new_line;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!   for (i=0 : i&lt;n1 : i++) { print (address) p1--&gt;i, &quot; &quot;; } new_line;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!   for (i=0 : i&lt;n2 : i++) { print (address) p2--&gt;i, &quot; &quot;; } new_line;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">n1</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">flag</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -3247,7 +3288,7 @@ for some function \INWEBMATH(f\INWEBMATH).)</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">flag</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">!   print "Which are identical!^";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">!   print &quot;Which are identical!^&quot;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -3585,7 +3626,7 @@ code doing so.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ScopeWithin</span><span class="plain-syntax"> </span><span class="identifier-syntax">domain</span><span class="plain-syntax"> </span><span class="identifier-syntax">nosearch</span><span class="plain-syntax"> </span><span class="identifier-syntax">context</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">domain</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! Look through the objects in the domain, avoiding "objectloop" in case</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Look through the objects in the domain, avoiding &quot;objectloop&quot; in case</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! movements occur.</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> = </span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">domain</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">) {</span>
@@ -3696,7 +3737,7 @@ cases, we pass the job down to <code>TryGivenObject</code>.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">match_from</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">num_words</span><span class="plain-syntax">) { </span><span class="comment-syntax">! If there's any text to match, that is</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">match_from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NounWord</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">player</span><span class="plain-syntax"> == </span><span class="identifier-syntax">item</span><span class="plain-syntax">)) </span><span class="identifier-syntax">MakeMatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">item</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="comment-syntax">! "me"</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">player</span><span class="plain-syntax"> == </span><span class="identifier-syntax">item</span><span class="plain-syntax">)) </span><span class="identifier-syntax">MakeMatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">item</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="comment-syntax">! &quot;me&quot;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">128</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">LanguagePronouns</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">item</span><span class="plain-syntax">)) </span><span class="identifier-syntax">MakeMatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">item</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
@@ -3708,13 +3749,13 @@ cases, we pass the job down to <code>TryGivenObject</code>.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_nspec_at</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">match_from</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">indef_nspec_at</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! This case arises if the player has typed a number in</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! which is hypothetically an indefinite descriptor:</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! e.g. "take two clubs".  We have just checked the object</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! against the word "clubs", in the hope of eventually finding</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! e.g. &quot;take two clubs&quot;.  We have just checked the object</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! against the word &quot;clubs&quot;, in the hope of eventually finding</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! two such objects.  But we also backtrack and check it</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! against the words "two clubs", in case it turns out to</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! against the words &quot;two clubs&quot;, in case it turns out to</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! be the 2 of Clubs from a pack of cards, say.  If it does</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! match against "two clubs", we tear up our original</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! assumption about the meaning of "two" and lapse back into</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! match against &quot;two clubs&quot;, we tear up our original</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! assumption about the meaning of &quot;two&quot; and lapse back into</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! definite mode.</span>
 
 <span class="plain-syntax">            </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">indef_nspec_at</span><span class="plain-syntax">;</span>

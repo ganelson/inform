@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/relations submodule.
 
-@ Our inventory |inv| already contains a list |inv->relation_nodes| of all packages
-in the tree with type |_relation|.
+@ Our inventory `inv` already contains a list `inv->relation_nodes` of all packages
+in the tree with type `_relation`.
 
 =
 void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -14,7 +14,7 @@ void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_invento
 	@<Define RPROPERTY function@>;
 }
 
-@ Each relation package contains a numeric constant with the symbol name |relation_id|.
+@ Each relation package contains a numeric constant with the symbol name `relation_id`.
 We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
 so we change the values of these constants accordingly.
 

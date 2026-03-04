@@ -59,7 +59,7 @@ void CompileConditions::compile(value_holster *VH, parse_node *cond) {
 
 @ Phrase options are stored as bits in a 16-bit map, so that each individual
 option is a power of two from $2^0$ to $2^15$. We test if this is valid by
-performing logical-and against the Inter local variable |phrase_options|, which
+performing logical-and against the Inter local variable `phrase_options`, which
 exists if and only if the enclosing Inter routine takes phrase options. The
 type-checker won't allow these specifications to be compiled anywhere else.
 
@@ -78,7 +78,7 @@ and here it is. An issue here is that they generally have a scope extending
 beyond that condition, and can't be left with kind-unsafe (or no) values. For
 example, if:
 
->> if a device (called the mechanism) is switched on: ...
+> if a device (called the mechanism) is switched on: ...
 
 turns out false, then "mechanism" has to be safely defused to some typesafe value.
 So, then, the model is that if some part of Inform wants to compile a condition
@@ -104,9 +104,9 @@ local_variable *callings_in_condition[MAX_CALLINGS_IN_MATCH];
 = (text)
 	((condition setting C1, ..., Ci) || (C1 = default, C2 = default, ..., Ci = default))
 =
-using the short-circuit property of |OR_BIP|: if the condition evaluates to false,
+using the short-circuit property of `OR_BIP`: if the condition evaluates to false,
 and therefore there is no consistent set of values written into the calling
-variables |C1| to |Ci|, then we evaluate the second clause, and set all of the
+variables `C1` to `Ci`, then we evaluate the second clause, and set all of the
 variables to default values for their kinds. In particular, if the condition
 fails halfway, with some callings set and some not, they are all defaulted out,
 so that you can never see partial results.
@@ -134,9 +134,9 @@ void CompileConditions::add_calling(local_variable *lvar) {
 	}
 }
 
-@ Now for the second operand of the |OR_BIP|. If there weren't any callings,
-we just compile |false|. (It looks wasteful to have compiled "if (... or false)",
-but in that event the use of |OP_BIP| will be optimised out later: see
+@ Now for the second operand of the `OR_BIP`. If there weren't any callings,
+we just compile `false`. (It looks wasteful to have compiled "if (... or false)",
+but in that event the use of `OP_BIP` will be optimised out later: see
 //pipeline: Eliminate Redundant Operations Stage//.) If there were callings,
 we default them.
 

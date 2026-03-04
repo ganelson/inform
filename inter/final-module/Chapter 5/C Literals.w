@@ -19,7 +19,7 @@ void CLiteralsModel::initialise(code_generator *gtr) {
 
 typedef struct C_generation_literals_model_data {
 	int text_count;
-	struct linked_list *texts; /* of |text_stream| */
+	struct linked_list *texts; /* of `text_stream` */
 } C_generation_literals_model_data;
 
 void CLiteralsModel::initialise_data(code_generation *gen) {
@@ -50,7 +50,7 @@ void CLiteralsModel::compile_literal_symbol(code_generator *gtr, code_generation
 }
 
 @h Integers.
-This is simple for once. A generator is not obliged to take the |hex_mode| hint
+This is simple for once. A generator is not obliged to take the `hex_mode` hint
 and show the number in hex in the code it generates; functionally, decimal would
 be just as good. But since we can easily do so, why not.
 
@@ -75,18 +75,18 @@ void CLiteralsModel::compile_literal_real(code_generator *gtr,
 }
 
 @h Texts.
-These are sometimes being used in |inv !print| or |inv !box|, in which case they
+These are sometimes being used in `inv !print` or `inv !box`, in which case they
 are never needed as values -- they're just printed. If that's the case, we
 render directly as a double-quoted C text literal.
 
-Otherwise, we are in |REGULAR_LTM| mode. In that case, a text must be represented
+Otherwise, we are in `REGULAR_LTM` mode. In that case, a text must be represented
 by a value which is "of the class String", meaning, a value in a range which
-begins at the constant |I7VAL_STRINGS_BASE|; subject to that requirement, we
+begins at the constant `I7VAL_STRINGS_BASE`; subject to that requirement, we
 have freedom to do more or less what we like, but we will make the smallest
 range of String values possible. Each text will have a unique ID number counting
-upwards from |I7VAL_STRINGS_BASE|. The actual text this represents will be an
-entry in the |i7_texts| array, which can be accessed using the
-|i7_text_to_C_string| function.
+upwards from `I7VAL_STRINGS_BASE`. The actual text this represents will be an
+entry in the `i7_texts` array, which can be accessed using the
+`i7_text_to_C_string` function.
 
 (This is in contrast to the Inform 6 situation, where texts are represented by
 addresses of compressed text in memory, so that the values are not consecutive
@@ -103,7 +103,7 @@ char *i7_text_to_C_string(i7word_t str) {
 }
 =
 
-The |i7_texts| array is written one entry at a time as we go along, and is
+The `i7_texts` array is written one entry at a time as we go along, and is
 started here:
 
 =
@@ -129,7 +129,7 @@ void CLiteralsModel::compile_literal_text(code_generator *gtr, code_generation *
 	else @<Print text expanding out at, caret and tilde@>;
 	WRITE("\"");
 
-@ Tabs become spaces, but there shouldn't be any tabs here anyway; |NEWLINE_IN_STRING|
+@ Tabs become spaces, but there shouldn't be any tabs here anyway; `NEWLINE_IN_STRING`
 characters become actual newlines, which is what they mean anyway. Otherwise, though,
 this simply prints out the text in a form which a C compiler will accept between
 double-quotes.
@@ -148,8 +148,8 @@ double-quotes.
 	}
 
 @ All of that is true here too, but we also convert the traditional Inform 6
-notations for |@dd...| or |@{hh...}| giving character literals in decimal or
-hex, and |~| for a double-quote, and |^| for a newline.
+notations for `@dd...` or `@{hh...}` giving character literals in decimal or
+hex, and `~` for a double-quote, and `^` for a newline.
 
 @<Print text expanding out at, caret and tilde@> =
 	for (int i=0; i<Str::len(S); i++) {
@@ -190,7 +190,7 @@ unsigned int CLiteralsModel::hex_val(inchar32_t c) {
 }
 
 @ At the end of the run, when there can be no further texts, we must close
-the |i7_texts| array:
+the `i7_texts` array:
 
 =
 void CLiteralsModel::end_text(code_generation *gen) {
@@ -248,7 +248,7 @@ have very little flexibility about this because code in CommandParserKit makes
 many assumptions about these arrays. So we will closely imitate what the Inform 6
 compiler would automatically do.
 
-In the array |DW|, the words |DW->1| to |DW->9| are the characters of the word,
+In the array `DW`, the words `DW->1` to `DW->9` are the characters of the word,
 with trailing nulls padding it out if the word is shorter than that. If it's
 longer, then the text is truncated to 9 characters only. This means printing
 out the text of a dictionary word is a somewhat faithless operation.[1] Still,

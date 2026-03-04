@@ -33,14 +33,14 @@ int Cinders::needs_to_be_cindered(parse_node *spec) {
 
 @ At any given moment, we can only be working on the compilation of a single
 deferred proposition function, so we store its identity in the following
-rather than waste space giving each |pcalc_term| a pointer to it:
+rather than waste space giving each `pcalc_term` a pointer to it:
 
 =
 pcalc_prop_deferral *current_pdef = NULL; /* used only in this section */
 
 @ Within any given proposition, the cinders are numbered 0, 1, 2, ...; these
-numbers are recorded in the |cinder| field of the relevant |pcalc_term| structure.
-A term with |cinder| set to $-1$ is not a cinder.
+numbers are recorded in the `cinder` field of the relevant `pcalc_term` structure.
+A term with `cinder` set to -1 is not a cinder.
 
 Here we count the cinders in a proposition, but compile nothing and change nothing:
 
@@ -62,7 +62,7 @@ int Cinders::count_in_term(pcalc_term *pt, int N) {
 	return N;
 }
 
-@ This more ambitious function sets the |cinder| field for each term, and also
+@ This more ambitious function sets the `cinder` field for each term, and also
 sets the kinds of the cinder values in the deferred function.
 
 =
@@ -131,7 +131,7 @@ int Cinders::cind_declare_in_term(int N, pcalc_term *pt) {
 	return N;
 }
 
-@ Given, say, |v == 2|, we return the local variable |const_2| holding cindered
+@ Given, say, `v == 2`, we return the local variable `const_2` holding cindered
 value 2. Speed is not critical here.
 
 =

@@ -2,8 +2,8 @@
 
 To renumber the extensions and construct suitable functions and arrays.
 
-@ Our inventory |inv| already contains a list |inv->extension_nodes| of packages
-with the type |_module| which derive from extensions.
+@ Our inventory `inv` already contains a list `inv->extension_nodes` of packages
+with the type `_module` which derive from extensions.
 
 =
 void SynopticExtensions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -13,7 +13,7 @@ void SynopticExtensions::compile(inter_tree *I, pipeline_step *step, tree_invent
 	@<Define SHOWONEEXTENSION function@>;
 }
 
-@ Each extension module contains a numeric constant with the symbol name |extension_id|.
+@ Each extension module contains a numeric constant with the symbol name `extension_id`.
 We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
 so we change the values of these constants accordingly.
 
@@ -79,7 +79,7 @@ would violate the CC license.
 
 @ This prints the name of a single extension, identified by a value which
 is its extension ID. Speed of execution here is quite unimportant, so it's
-just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
+just a run of `if (id == 1) ...`, then `if (id == 2) ...`, and so on.
 
 @<Define SHOWONEEXTENSION function@> =
 	inter_name *iname = HierarchyLocations::iname(I, SHOWONEEXTENSION_HL);

@@ -101,8 +101,8 @@ and for a table name, the second.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">adjective_meaning_data</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_defn_order</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |adjective_meaning| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_precedence_order</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |adjective_meaning| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_defn_order</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>adjective_meaning</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_precedence_order</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>adjective_meaning</code> */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">adjective_meaning_data</span><span class="plain-syntax">;</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveAmbiguity::new_set</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="identifier-syntax">adj</span><span class="plain-syntax">) {</span>
@@ -159,20 +159,14 @@ logically impossible outcomes -- we would say that it's acceptable to apply
 &quot;open&quot; to an animal, say -- but that is actually a good thing. It means
 that &quot;list of open things&quot; or &quot;something open&quot; are allowed. Source text
 such as:</p>
-</div>
 <blockquote>
-    <p>The labrador puppy is an open animal.</p>
+<p>The labrador puppy is an open animal.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>will successfully parse, but then result in higher-level problem messages.
 The following does compile:</p>
-</div>
 <blockquote>
-    <p>now the labrador puppy is open;</p>
+<p>now the labrador puppy is open;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>but results in a run-time problem message when it executes.</p>
 <p>It makes no difference what order we check the AMs in, so we can use the
 unsorted list, which is helpful since we may need to call this routine
@@ -314,12 +308,9 @@ author's source text.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  With that sorting done, we can begin to use an adjective. Suppose there has
 been an assertion sentence like this:</p>
-</div>
 <blockquote>
-    <p>The ormolu clock is fixed in place.</p>
+<p>The ormolu clock is fixed in place.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>&quot;Fixed in place&quot; is identified as an adjective, <code>adj</code>; the &quot;ormulo clock&quot; is
 what it applies to, stored in either <code>infs_to_assert_on</code>. <code>kind_domain</code> is what
 kind we think this has. <code>parity</code> is equal to <code>TRUE</code>.</p>

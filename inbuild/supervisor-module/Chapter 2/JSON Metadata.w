@@ -3,7 +3,7 @@
 Managing JSON-encoded metadata files for resources such as kits.
 
 @ Every //inbuild_copy// can optionally contain a pointer to a JSON value called
-|metadata_record|. The code in this section reads a file of JSON metadata into
+`metadata_record`. The code in this section reads a file of JSON metadata into
 that record, validating it (a) as syntactically correct JSON, (b) as JSON which
 matches the Inbuild schema for what copy metadata should look like, and (c) as
 identifying the copy which it purports to identify.
@@ -75,7 +75,7 @@ void JSONMetadata::read_metadata_file_helper(text_stream *text, text_file_positi
 	if (version_range) @<Forbid the use of a version range@>;
 
 @ So, for example, if this file is from what we think is a kit, then it needs
-to say that |is.type| is |"kit"|.
+to say that `is.type` is `"kit"`.
 
 @<Make sure the type is correct@> =
 	text_stream *type_text = type->if_string;

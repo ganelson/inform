@@ -95,7 +95,7 @@ more cumbersome &quot;Ganatus trying going east&quot;.</li>
 or global variables in action patterns.</li>
 <li>When <code>SCANNING_ANL_ONLY</code>, we do not perform a full parse, but only enough to
 get as far as the action name list.</li>
-<li>When we <code>SUPPRESS_AP_PARSING</code>, the nonterminal &lt;action-pattern-core&gt; is
+<li>When we <code>SUPPRESS_AP_PARSING</code>, the nonterminal <action-pattern-core> is
 rigged always to fail.</li>
 </ul>
 </div>
@@ -354,15 +354,12 @@ and makes use of the following voracious nonterminal to match the actor's
 name -- here, just &quot;Raffles&quot;.</p>
 <p>The following tries to break just before any &quot;-ing&quot; word (i.e., participle)
 which is not inside parentheses; but only if the resulting name matches
-&lt;s-ap-parameter&gt; as a constant, variable, or description; and there is no
+<s-ap-parameter> as a constant, variable, or description; and there is no
 match if the text is the name of an instance but the &quot;-ing&quot; word could also be
 read as part of that same name. For example, if we read the text</p>
-</div>
 <blockquote>
-    <p>angry waiting man taking the fish</p>
+<p>angry waiting man taking the fish</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;angry waiting man&quot; is the name of an individual person, then we don't
 break this after &quot;angry&quot; (with the action &quot;waiting&quot;) even though &quot;angry&quot;
 would match as an abbreviated form of the name of &quot;angry waiting man&quot;.</p>
@@ -474,11 +471,10 @@ refers by implication to whatever action pattern was previously discussed before
 this one. Parsing this accurately is a fool's errand, and allowing this syntax
 in Inform was not a good idea, because the potential for confusion is too great.
 That said, it does enable, for example, the cool rule:</p>
-</div>
 <blockquote>
-    <p>Instead of Raffles taking the box for the second time, try Bunny doing it.</p>
+<p>Instead of Raffles taking the box for the second time, try Bunny doing it.</p>
 </blockquote>
-
+</div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;ap-four-pronominal&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">doing</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">it</span>
@@ -541,7 +537,7 @@ special clause of its own.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-pap.html#SP14">&#167;14</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  &lt;ap-five-condition&gt; is really just &lt;s-condition&gt; in disguise -- i.e.,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  <ap-five-condition> is really just <s-condition> in disguise -- i.e.,
 it matches a standard Inform condition -- but it's implemented as an internal
 to enable Inform to set up a stack frame if there isn't one already, and so on.</p>
 </div>

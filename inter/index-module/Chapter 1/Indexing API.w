@@ -20,7 +20,7 @@ is more efficient than using two.
 - The //index// module probably works fine if multiple sessions are open at
 once (and indeed is probably threadsafe), but it hasn't been tested for that
 or written with that in mind: a safer way to make multiple indexes simultaneously
-is probably to run multiple independent |inter| processes, each making one index.
+is probably to run multiple independent `inter` processes, each making one index.
 
 @ So, then, opening:
 
@@ -67,8 +67,8 @@ void Indexing::generate_one_element(index_session *session, text_stream *OUT, wo
 @ This is used by the Inform GUI apps to "release along with an EPS file".
 Essentially it makes a print-suitable version of the Map element of the index,
 though there are also many bells and whistles for customising the appearance
-of this. This is written to the stream |F_alt| if that is non-null, and otherwise
-into a text file at |F| (which is created in the process).
+of this. This is written to the stream `F_alt` if that is non-null, and otherwise
+into a text file at `F` (which is created in the process).
 
 =
 void Indexing::generate_EPS_map(index_session *session, filename *F, text_stream *F_alt) {
@@ -99,11 +99,11 @@ typedef struct index_session {
 	struct tree_inventory *inv;
 	struct inter_lexicon *lexicon;
 	struct faux_instance_set *set_of_instances;
-	struct linked_list *list_of_scenes; /* of |simplified_scene| */
+	struct linked_list *list_of_scenes; /* of `simplified_scene` */
 	struct localisation_dictionary *localisation;
-	struct linked_list *list_of_EPS_map_levels; /* of |EPS_map_level| */
-	struct linked_list *list_of_submaps; /* of |connected_submap| */
-	struct linked_list *list_of_pages; /* of |index_page| */
+	struct linked_list *list_of_EPS_map_levels; /* of `EPS_map_level` */
+	struct linked_list *list_of_submaps; /* of `connected_submap` */
+	struct linked_list *list_of_pages; /* of `index_page` */
 	struct map_parameter_scope global_map_scope;
 	int changed_global_room_colour;
 	struct index_page_data page;

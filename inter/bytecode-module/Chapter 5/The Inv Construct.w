@@ -21,14 +21,14 @@ void InvInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |inv| instruction is laid out with the
+In bytecode, the frame of an `inv` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d METHOD_INV_IFLD  (DATA_IFLD + 0)
 @d INVOKEE_INV_IFLD (DATA_IFLD + 1)
 
-@ It's arguably the case that |inv| is three instructions, not one, but it is
-also arguable the other way, and here we are. The |METHOD_INV_IFLD| indicates
+@ It's arguably the case that `inv` is three instructions, not one, but it is
+also arguable the other way, and here we are. The `METHOD_INV_IFLD` indicates
 which variant we are looking at:
 
 @d PRIMITIVE_INVMETH 1
@@ -112,11 +112,11 @@ permissive language. The rules are:
 
 - An assembly opcode can have any number of arguments, of any category.
 - A function call can have any number of arguments, provided they all have
-category |val|.
+category `val`.
 - A primitive invocation must have exactly the number of arguments in its
 signature, whose categories must be exactly as given in the signature. For
-example, if the signature of the primitive invoked at |P| is |ref val val -> void|,
-then |P| needs to have exactly three children, of categories |ref|, |val|, |val|.
+example, if the signature of the primitive invoked at `P` is `ref val val -> void`,
+then `P` needs to have exactly three children, of categories `ref`, `val`, `val`.
 
 =
 void InvInstruction::verify_children(inter_construct *IC, inter_tree_node *P,
@@ -152,10 +152,10 @@ void InvInstruction::verify_children(inter_construct *IC, inter_tree_node *P,
 }
 
 @ This is the part which is not passive. If we observe an indirect function
-call made by invoking a primitive such as |!indirect0|, but with the wrong
+call made by invoking a primitive such as `!indirect0`, but with the wrong
 number of arguments, then we change it to the version with the right arity.
-(For example, if we see |!indirect1| with three arguments, we correct it to
-|!indirect3|.)
+(For example, if we see `!indirect1` with three arguments, we correct it to
+`!indirect3`.)
 
 @<Opportunistically improve the use of indirect function call primitives@> =
 	if (PrimitiveInstruction::arity(prim_s) != arity_as_invoked) {
@@ -186,8 +186,8 @@ number of arguments, then we change it to the version with the right arity.
 	}
 
 @ In effect, this is a limited form of typechecker for invocations. For example,
-if the invocation has the signature |ref val -> void|, then we expect its first
-child (operand 0) to be a |ref|, and its second (operand 1) to be a |val|.
+if the invocation has the signature `ref val -> void`, then we expect its first
+child (operand 0) to be a `ref`, and its second (operand 1) to be a `val`.
 
 @<Check that the category of the child matches what is expected@> =
 	inter_ti cat_found = InvInstruction::evaluated_category(C);
@@ -211,7 +211,7 @@ child (operand 0) to be a |ref|, and its second (operand 1) to be a |val|.
 	}
 
 @ So this is the category for the value produced (if any) by an instruction.
-The default is 0, which means |void|.
+The default is 0, which means `void`.
 
 =
 inter_ti InvInstruction::evaluated_category(inter_tree_node *P) {

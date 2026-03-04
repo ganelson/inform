@@ -28,16 +28,16 @@ compiled, is a file vertex.
 
 =
 typedef struct build_vertex {
-	int type; /* one of the |*_VERTEX| values above */
-	struct linked_list *build_edges; /* of |build_vertex| */
-	struct linked_list *use_edges; /* of |build_vertex| */
+	int type; /* one of the `*_VERTEX` values above */
+	struct linked_list *build_edges; /* of `build_vertex` */
+	struct linked_list *use_edges; /* of `build_vertex` */
 
-	struct inbuild_copy *as_copy; /* for |COPY_VERTEX| only */
-	struct filename *as_file; /* for |FILE_VERTEX| only */
-	struct inbuild_requirement *as_requirement; /* for |REQUIREMENT_VERTEX| only */
+	struct inbuild_copy *as_copy; /* for `COPY_VERTEX` only */
+	struct filename *as_file; /* for `FILE_VERTEX` only */
+	struct inbuild_requirement *as_requirement; /* for `REQUIREMENT_VERTEX` only */
 
-	struct text_stream *source_source; /* for |FILE_VERTEX| of a file of I7 source text */
-	struct source_file *as_source_file; /* for |FILE_VERTEX| of a file of I7 source text */
+	struct text_stream *source_source; /* for `FILE_VERTEX` of a file of I7 source text */
+	struct source_file *as_source_file; /* for `FILE_VERTEX` of a file of I7 source text */
 
 	int last_described_in_generation; /* used when recursively printing a graph */
 
@@ -135,7 +135,7 @@ int Graphs::can_be_built(build_vertex *V) {
 
 @h Writing.
 This is a suitably indented printout of the graph as seen from a given
-vertex: it's used by the Inbuild command |-graph|.
+vertex: it's used by the Inbuild command `-graph`.
 
 =
 int no_desc_generations = 1;
@@ -200,7 +200,7 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 	}
 }
 
-@ A similar but slightly different recursion for |-build-needs| and |-use-needs|.
+@ A similar but slightly different recursion for `-build-needs` and `-use-needs`.
 
 =
 int unique_graph_scan_count = 1;
@@ -258,7 +258,7 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 	else WRITE("?unlocated");
 	WRITE("\n");
 
-@ And for |-build-missing| and |-use-missing|.
+@ And for `-build-missing` and `-use-missing`.
 
 =
 int Graphs::show_missing(OUTPUT_STREAM, build_vertex *V, int uses_only) {
@@ -293,7 +293,7 @@ int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V,
 
 @h Archiving.
 This isn't simply a matter of printing out, of course, but very similar code
-handles |-archive| and |-archive-to N|.
+handles `-archive` and `-archive-to N`.
 
 Note that the English language definition, which lives in the internal nest,
 cannot be read from any other nest -- so we won't archive it.
@@ -323,7 +323,7 @@ void Graphs::archive_r(OUTPUT_STREAM, build_vertex *V, int true_depth, inbuild_n
 }
 
 @ The most delicate thing here is that we don't want to archive something
-to |N| if it's already there; but that is difficult to detect.
+to `N` if it's already there; but that is difficult to detect.
 
 @<Archive a single copy@> =
 	WRITE("%S: ", C->edition->work->genre->genre_name);

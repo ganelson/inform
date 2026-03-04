@@ -3,7 +3,7 @@
 Defining the version construct.
 
 @ This is a pseudo-construct: it looks like an instruction in textual Inter
-syntax, but specifies something else, and does not result in an |inter_tree_node|.
+syntax, but specifies something else, and does not result in an `inter_tree_node`.
 
 =
 void VersionInstruction::define_construct(void) {

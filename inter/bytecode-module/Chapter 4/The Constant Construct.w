@@ -19,10 +19,10 @@ void ConstantInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the
+In bytecode, the frame of an `comment` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by these fields. Note
 that the data then occupies a varying number of further data pairs, depending on
-the value of |FORMAT_CONST_IFLD|. As a result, the length of a |constant|
+the value of `FORMAT_CONST_IFLD`. As a result, the length of a `constant`
 instruction can be any odd number of words from 5 upwards.
 
 The simplest version, though, has a single value. The length is then 7 words.
@@ -49,7 +49,7 @@ inter_error_message *ConstantInstruction::new(inter_bookmark *IBM, inter_symbol 
 }
 
 @ All other forms have a flexible number of data pairs. The number of entries
-can therefore be calculated as half of (the instruction extent minus |DATA_CONST_IFLD|).
+can therefore be calculated as half of (the instruction extent minus `DATA_CONST_IFLD`).
 
 @d CONST_LIST_FORMAT_NONE 0
 @d CONST_LIST_FORMAT_WORDS 1
@@ -101,7 +101,7 @@ int ConstantInstruction::is_a_bounded_format(inter_ti format) {
 	return FALSE;
 }
 
-@ Note that the |type| argument here should be that of the list, not of the entries.
+@ Note that the `type` argument here should be that of the list, not of the entries.
 
 =
 inter_error_message *ConstantInstruction::new_list(inter_bookmark *IBM, inter_symbol *S,
@@ -399,7 +399,7 @@ lists. For example, if:
 	constant y = x
 	constant z = { x, y, 17 }
 =
-then |x| has depth 1, |y| has depth 1+1 = 2, and |z| has depth 1+(1+2+1) = 5.
+then `x` has depth 1, `y` has depth 1+1 = 2, and `z` has depth 1+(1+2+1) = 5.
 It is a requirement that every constant must always have finite depth. The
 point of this is to guarantee that if constant declarations are written in
 ascending order of depth then no definition will refer to a constant yet to
@@ -434,7 +434,7 @@ Some numerical constants can be evaluated at compile-time: for example, given
 	constant x = 23
 	constant y = x + 3
 =
-the following function would return 23 and 26 on |x| and |y| respectively. On
+the following function would return 23 and 26 on `x` and `y` respectively. On
 anything non-numerical the function aims to return 0, but this should probably
 not be relied on.
 

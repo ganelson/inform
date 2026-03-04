@@ -3,7 +3,7 @@
 To compile any dialogue details in the instances submodule.
 
 @h Compilation data for dialogue choices.
-Each |dialogue_choice| object contains this data:
+Each `dialogue_choice` object contains this data:
 
 =
 typedef struct dialogue_choice_compilation_data {

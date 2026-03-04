@@ -257,7 +257,7 @@ void IndexUtilities::show_definition_area(OUTPUT_STREAM, inter_package *heading_
 	HTML_TAG("br");
 }
 
-@ Here |pack| is the Inter package for a kind constructor.
+@ Here `pack` is the Inter package for a kind constructor.
 
 =
 void IndexUtilities::kind_name(OUTPUT_STREAM, inter_package *pack, int plural,

@@ -5,7 +5,7 @@ state of the world when play begins.
 
 @h Defensive moat.
 To enforce the doctrine that calls to //Assert::true// or //Assert::true_about//
-are the only way to change the model, we define a macro |PROTECTED_MODEL_PROCEDURE|
+are the only way to change the model, we define a macro `PROTECTED_MODEL_PROCEDURE`
 which can be used to guard a function so that it can only be called as a
 consequence of these. For example, //Instances::new// is defended this way.
 
@@ -14,7 +14,7 @@ consequence of these. For example, //Instances::new// is defended this way.
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
 = (early code)
-int assert_recursion_depth = 0; /* depth of recursion of |Assert::inner_slated| */
+int assert_recursion_depth = 0; /* depth of recursion of `Assert::inner_slated` */
 
 @h Entrance.
 //Assert::true// takes a proposition with no free variables and converts it
@@ -51,7 +51,7 @@ int prevailing_mood = UNKNOWN_CE;
 
 @ The true entrance, then, keeps track of the recursion depth but also ensures
 that the identification slate is always correct, stacking them so that an
-inner |Assert::inner_slated| has an independent slate from an outer one.
+inner `Assert::inner_slated` has an independent slate from an outer one.
 
 =
 void Assert::inner(pcalc_prop *prop, inference_subject *subject, int certainty) {
@@ -396,7 +396,7 @@ inferences which might wrongly be drawn about "in": this is a different
 kind of containment from the three-dimensional spatial one suggested by
 containers and rooms. It also complicates things that a backdrop can be
 "in" a region. So we play very safe and make no guesses about regions or
-the first term of |R_regional_containment|.
+the first term of `R_regional_containment`.
 
 We also never deduce "thing" as the kind by this mechanism. This is
 because instances of "object" with no apparent declared kind are made into
@@ -443,7 +443,7 @@ that they refer to the player object, not to the global variable "the player".
 
 Users tend to expect that they can talk about properties of things as
 values, when setting up the world, and since a property value might be
-an object, we are going to be careful to reject a |PROPERTY_VALUE_NT|
+an object, we are going to be careful to reject a `PROPERTY_VALUE_NT`
 type with a problem message. In practice the A-parser gets there first,
 but just in case.
 

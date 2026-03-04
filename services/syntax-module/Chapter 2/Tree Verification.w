@@ -90,9 +90,9 @@ void VerifyTree::verify_structure_from(parse_node *p) {
 	}
 }
 
-@ Note that on every call to the following routine, (i) |p| is a valid
-parse node and (ii) either |p| is the tree root, in which case |parent| is
-|NULL|, or |parent| is the unique node having |p| (or an alternative to |p|)
+@ Note that on every call to the following routine, (i) `p` is a valid
+parse node and (ii) either `p` is the tree root, in which case `parent` is
+`NULL`, or `parent` is the unique node having `p` (or an alternative to `p`)
 among its children.
 
 =

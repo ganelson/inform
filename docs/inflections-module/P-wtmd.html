@@ -103,8 +103,8 @@ For example:</p>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-regular-endings&gt;</span>
 </pre>
 <div class="lsmarkdown">
-<p>means try &lt;fiddle-with-exceptions&gt; first (on the whole text), then
-&lt;fiddle-with-irregular-endings&gt; (on the tail), and finally &lt;fiddle-with-regular-endings&gt;
+<p>means try <fiddle-with-exceptions> first (on the whole text), then
+<fiddle-with-irregular-endings> (on the tail), and finally <fiddle-with-regular-endings>
 (also on the tail).</p>
 </div>
 <div class="lsmarkdown">
@@ -170,7 +170,7 @@ exceptions.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Declensions.</b>  <a href="3-dcl.html" class="internal">Declensions</a> are sets of inflected forms of a noun or adjective according
 to their grammatical case. A language should list its cases in a special
-nonterminal called &lt;grammatical-case-names&gt;, in which &quot;nominative&quot; or its
+nonterminal called <grammatical-case-names>, in which &quot;nominative&quot; or its
 equivalent should always come first. For example:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -186,7 +186,7 @@ purposes.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  <a href="3-dcl.html#SP5" class="internal">Declensions::of_noun</a> and <a href="3-dcl.html#SP5" class="internal">Declensions::of_article</a> are functions to
 generate declensions, with one form for each case, from a given stem word.
-These are done with Preform NTs called &lt;noun-declension&gt; and &lt;article-declension&gt;
+These are done with Preform NTs called <noun-declension> and <article-declension>
 respectively; these are currently the only two &quot;declension NTs&quot;.</p>
 <p>The rule for a &quot;declension NT&quot; is that it must provide a list of possibilities
 in the form either <code>gender table</code> or <code>gender grouper table</code>, where <code>gender</code> is:</p>
@@ -204,7 +204,7 @@ then the <code>table</code> provides declensions for the different groups needed
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  A simple example of using the irregular forms table is provided by the
-English language definition of &lt;article-declension&gt;:</p>
+English language definition of <article-declension>:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -217,9 +217,9 @@ English language definition of &lt;article-declension&gt;:</p>
 <span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span>
 </pre>
 <div class="lsmarkdown">
-<p>Here the declension NT is &lt;article-declension&gt; and contains only one possibility,
+<p>Here the declension NT is <article-declension> and contains only one possibility,
 applying to all genders (hence the <code>*</code>). The <code>table</code> of irregular forms is then
-&lt;en-article-declension&gt;. Each production begins with the possibility against
+<en-article-declension>. Each production begins with the possibility against
 which the stem is matched -- here, it's going to have to be &quot;a&quot; or &quot;the&quot;. There
 are then one possibility for each case (nominative and accusative) in each of
 the two numbers (singular and plural), making four forms in all. English, of
@@ -283,7 +283,7 @@ For example, there's one group which goes something like:</p>
 </pre>
 <div class="lsmarkdown">
 <p>giving inflection rules for the four cases of German in singular and then
-in plural. In practice, of course, &lt;de-noun-grouper&gt; will need to sort out
+in plural. In practice, of course, <de-noun-grouper> will need to sort out
 nouns rather better than this, and there are about 12 groups. Groups are
 numbered upwards from 1 to, in principle, 99. See <a href="3-dcl.html#SP8" class="internal">Declensions::decline_from_groups</a>.</p>
 </div>
@@ -315,7 +315,7 @@ has to have that name.</p>
 <p>All lower-level tries used in the implementation should have names beginning
 with a language code: hence the names &quot;en-&quot; used in <a href="4-ei.html" class="internal">English Inflections</a>.
 There doesn't need to be any direct Spanish equivalent to
-&lt;en-trie-plural-assimilated-classical-inflections&gt;, for example.</p>
+<en-trie-plural-assimilated-classical-inflections>, for example.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-tai.html">2</a></li><li class="progresschapter"><a href="3-lc.html">3</a></li><li class="progresschapter"><a href="4-dl.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>

@@ -13,14 +13,14 @@ are stored in single bytes in a 16-bit world, but will occupy words in a
 There are also minor differences in how the Z-machine stores the result of
 identifying dictionary words in typed commands.
 
-In general, though, |#Iftrue CHARSIZE == 1;| will be used to conditionally
-compile code for the 16-bit parser, and its alternative -- that |CHARSIZE|
-equals |WORDSIZE| -- will mean the 32-bit parser.
+In general, though, `#Iftrue CHARSIZE == 1;` will be used to conditionally
+compile code for the 16-bit parser, and its alternative -- that `CHARSIZE`
+equals `WORDSIZE` -- will mean the 32-bit parser.
 
 Only when genuinely using some feature of the 16-bit architecture (i.e., of
-the Z-machine) will we write |#Ifdef TARGET_ZCODE;|. But this is only a
-convention: |TARGET_ZCODE| is defined here if and only if |CHARSIZE| is 1,
-and |TARGET_GLULX| is defined if and only if |CHARSIZE| is 4.
+the Z-machine) will we write `#Ifdef TARGET_ZCODE;`. But this is only a
+convention: `TARGET_ZCODE` is defined here if and only if `CHARSIZE` is 1,
+and `TARGET_GLULX` is defined if and only if `CHARSIZE` is 4.
 
 @h Identification.
 
@@ -65,7 +65,7 @@ It is a complex algorithm but one which is known to produce good results for
 the most part, and it is well understood from (at time of writing) fifteen
 years of use. A few I7 additions have been made, but none disrupting the
 basic method. For instance, I7's system for resolving ambiguities is
-implemented by providing a |ChooseObjects| routine, just as a user of the
+implemented by providing a `ChooseObjects` routine, just as a user of the
 I6 library would do.
 
 The I6 parser uses a huge number of global variables, which is not to modern
@@ -170,7 +170,7 @@ Constant comma_word = 'comma,';     ! An "untypeable word" used to substitute
 The most difficult tokens to match are those which refer to objects, since
 there is such a variety of names which can be given to any individual object,
 and we don't of course know which object or objects are meant. We store the
-possibilities (up to |MATCH_LIST_WORDS|, anyway) in a data structure called the match list.
+possibilities (up to `MATCH_LIST_WORDS`, anyway) in a data structure called the match list.
 
 =
 Constant MATCH_LIST_WORDS = WorldModelKit`MULTI_OBJ_LIST_SIZE_CFGV;
@@ -185,30 +185,30 @@ Global match_from;                  ! At what word of the input do they begin?
 @h Words.
 The player's command is broken down into a numbered sequence of words, which
 break at spaces or certain punctuation (see the DM4). The numbering runs
-upwards from 1 to |WordCount()|. The following utility routines provide
+upwards from 1 to `WordCount()`. The following utility routines provide
 access to words in the current command; because buffers have different
 definitions in Z and Glulx, so these routines must vary also.
 
 In Z, the actual text of each word is stored as a sequence of ZSCII values in
-a |->| (byte) array. In G, the text is a sequence of Unicode code counts in
-a |-->| (word) array. In either case, the array has address |WordAddress(x)|
-and character length |WordLength(x)|.
+a `->` (byte) array. In G, the text is a sequence of Unicode code counts in
+a `-->` (word) array. In either case, the array has address `WordAddress(x)`
+and character length `WordLength(x)`.
 
 We picture the command as a stream of words to be read one at a time, with
-the global variable |wn| being the "current word" marker. |NextWord|, which
+the global variable `wn` being the "current word" marker. `NextWord`, which
 takes no arguments, returns:
 
-- 0 if the word at |wn| is unrecognised by the dictionary or |wn| is out
+- 0 if the word at `wn` is unrecognised by the dictionary or `wn` is out
 of range,
-- |comma_word| if the word was a comma,
-- |THEN1__WD| if it was a full stop (because of the Infocom tradition that
+- `comma_word` if the word was a comma,
+- `THEN1__WD` if it was a full stop (because of the Infocom tradition that
 a full stop abbreviates for the word "then": e.g., TAKE BOX. EAST was read
 as two commands in succession),
 - or the dictionary address if the word was recognised.
 
-The current word marker |wn| is always advanced.
+The current word marker `wn` is always advanced.
 
-|NextWordStopped| does the same, but returns $-1$ when |wn| is out of range
+`NextWordStopped` does the same, but returns $-1$ when `wn` is out of range
 (e.g., by having advanced past the last word in the command).
 
 =
@@ -274,7 +274,7 @@ $$ C = 100 + N $$
 
 A careless bug in this code lasted for many years: on a 16-bit architecture
 we have to remember that addresses in byte-addressable memory are potentially
-signed, and the loop |for (i=from: i<=to: ...)| will fail if the addresses
+signed, and the loop `for (i=from: i<=to: ...)` will fail if the addresses
 are above 32K. This only rarely happens, but it can.
 
 =
@@ -431,7 +431,7 @@ uses a hacked version to allow TEST commands to work. (When a TEST is running,
 the text in the walk-through provided is fed into the buffer as if it had
 been typed at the keyboard.)
 
-If a |fn| is provided, it is called to redraw the status line at the top of
+If a `fn` is provided, it is called to redraw the status line at the top of
 the main text window.
 
 =
@@ -458,8 +458,8 @@ the main text window.
 ];
 
 @h Reading the Command.
-The |Keyboard| routine actually receives the player's words, putting the
-words in |a_buffer| and their dictionary addresses in |a_table|. It is
+The `Keyboard` routine actually receives the player's words, putting the
+words in `a_buffer` and their dictionary addresses in `a_table`. It is
 assumed that the table is the same one on each (standard) call. Much
 of the code handles the OOPS and UNDO commands, which are not actions and
 do not pass through the rest of the parser. The undo state is saved --
@@ -472,7 +472,7 @@ form of a return code from the relevant instruction, and this allows us
 to detect an undo. (We deal with it by printing the current location and
 asking another command.)
 
-|Keyboard| can also be used by miscellaneous routines in the game to ask
+`Keyboard` can also be used by miscellaneous routines in the game to ask
 yes/no questions and the like, without invoking the rest of the parser.
 
 The return value is the number of words typed.
@@ -643,8 +643,8 @@ been divided into 11 lettered parts:
 - (C) Is anyone being addressed?
 - (D) Get the command verb: try all the syntax lines for that verb
 - (E) Break down a syntax line into analysed tokens
-- (F) Look ahead for advance warning for |multiexcept|/|multiinside|
-- (G) Parse each token in turn (calling |ParseToken| to do most of the work)
+- (F) Look ahead for advance warning for `multiexcept`/`multiinside`
+- (G) Parse each token in turn (calling `ParseToken` to do most of the work)
 - (H) Cheaply parse otherwise unrecognised conversation and return
 - (I) Print best possible error message
 - (J) Retry the whole lot
@@ -656,7 +656,7 @@ now being the body of "Parser Letter A", "Parser Letter B" and so on.
 Note that there are three different places where a return can happen.
 The routine returns only when a sensible request has been made; for a
 fairly thorough description of its output, which is written into the
-|parser_results| array and also into several globals (see "OrderOfPlay.i6t").
+`parser_results` array and also into several globals (see "OrderOfPlay.i6t").
 
 =
 [ Parser__parse
@@ -1065,7 +1065,7 @@ Break down a syntax line into analysed tokens.
         wn = verb_wordnum+1;
 
 @h Parser Letter F.
-Look ahead for advance warning for |multiexcept|/|multiinside|.
+Look ahead for advance warning for `multiexcept`/`multiinside`.
 
 There are two special cases where parsing a token now has to be affected by
 the result of parsing another token later, and these two cases (multiexcept
@@ -1073,9 +1073,9 @@ and multiinside tokens) are helped by a quick look ahead, to work out the
 future token now. We can only carry this out in the simple (but by far the
 most common) case:
 
-	|multiexcept <one or more prepositions> noun|
+	`multiexcept <one or more prepositions> noun`
 
-and similarly for |multiinside|.
+and similarly for `multiinside`.
 
 =
         advance_warning = -1; indef_mode = false;
@@ -1195,9 +1195,9 @@ and similarly for |multiinside|.
         wn = verb_wordnum+1;
 
 @h Parser Letter G.
-Parse each token in turn (calling |ParseToken| to do most of the work).
+Parse each token in turn (calling `ParseToken` to do most of the work).
 
-The |pattern| gradually accumulates what has been recognised so far,
+The `pattern` gradually accumulates what has been recognised so far,
 so that it may be reprinted by the parser later on.
 
 =
@@ -1413,17 +1413,17 @@ Cheaply parse otherwise unrecognised conversation and return.
 was addressed to somebody else (eg, DWARF, SFGH) then it is taken as
 conversation which the parser has no business in disallowing.)
 
-The parser used to return the fake action |##NotUnderstood| when a
+The parser used to return the fake action `##NotUnderstood` when a
 command in the form PERSON, ARFLE BARFLE GLOOP is parsed, where a character
 is addressed but with an instruction which the parser can't understand.
 (If a command such as ARFLE BARFLE GLOOP is not an instruction to someone
 else, the parser prints an error and requires the player to type another
-command: thus |##NotUnderstood| was only returned when |actor| is not the
+command: thus `##NotUnderstood` was only returned when `actor` is not the
 player.) And I6 had elaborate object-oriented ways to deal with this, but we
-won't use any of that: we simply convert to a |##Answer| action, which
+won't use any of that: we simply convert to a `##Answer` action, which
 communicates a snippet of words to another character, just as if the
 player had typed ANSWER ARFLE BARFLE GLOOP TO PERSON. For I7 purposes, the
-fake action |##NotUnderstood| does not exist.
+fake action `##NotUnderstood` does not exist.
 
 In order to assist people who do want to parse that type of mistyped command
 in extensions, wn is left pointing at the first word not parsed as a command.
@@ -1586,24 +1586,24 @@ The main parsing routine above tried a sequence of "grammar lines" in turn,
 matching each against the text typed until one fitted. A grammar line is
 itself a sequence of "grammar tokens". Here we have to parse the tokens.
 
-|ParseToken(type, data)| tries the match text beginning at the current
-word marker |wn| against a token of the given |type|, with the given |data|.
-The optional further arguments |token_n| and |token| supply the token
+`ParseToken(type, data)` tries the match text beginning at the current
+word marker `wn` against a token of the given `type`, with the given `data`.
+The optional further arguments `token_n` and `token` supply the token
 number in the current grammar line (because some tokens do depend on what
 has happened before or is needed later) and the address of the dictionary
-word which makes up the |token|, in the case where it's a "preposition".
+word which makes up the `token`, in the case where it's a "preposition".
 
 The return values are:
-- |GPR_REPARSE| for "I have rewritten the command, please re-parse from scratch";
-- |GPR_PREPOSITION| for "token accepted with no result";
-- $-256 + x$ for "please parse |ParseToken(ELEMENTARY_TT, x)| instead";
-- |GPR_MULTIPLE| for "token accepted, result is the multiple object list";
-- 1 for "token accepted, result is the number in |parsed_number|";
+- `GPR_REPARSE` for "I have rewritten the command, please re-parse from scratch";
+- `GPR_PREPOSITION` for "token accepted with no result";
+- $-256 + x$ for "please parse `ParseToken(ELEMENTARY_TT, x)` instead";
+- `GPR_MULTIPLE` for "token accepted, result is the multiple object list";
+- 1 for "token accepted, result is the number in `parsed_number`";
 - an object number for "token accepted with this object as result";
 - $-1$ for "token rejected".
 
-Strictly speaking |ParseToken| is a shell routine which saves the current
-state on the stack, and calling |ParseToken__| to do the actual work.
+Strictly speaking `ParseToken` is a shell routine which saves the current
+state on the stack, and calling `ParseToken__` to do the actual work.
 
 Once again the routine is traditionally divided into six letters, here named under
 paragraphs "Parse Token Letter A", and so on.
@@ -2106,11 +2106,11 @@ to: for instance, {\it my} mirror, {\it the} dwarf, {\it that} woman.
 but the I6 parser doesn't handle them that way.)
 
 Slightly unfortunately, the bitmap constants used for descriptors in the
-I6 parser have names in the form |*_BIT|, coinciding with the names of
+I6 parser have names in the form `*_BIT`, coinciding with the names of
 style bits in the list-writer: but they never occur in the same context.
 
 The actual words used as descriptors are read from tables in the language
-definition. |ArticleDescriptors| uses this table to move current word
+definition. `ArticleDescriptors` uses this table to move current word
 marker past a run of one or more descriptors which refer to the definite
 or indefinite article.
 
@@ -2147,9 +2147,9 @@ Constant UNLIT_BIT  =  32;
 ];
 
 @h Parsing Descriptors.
-The |Descriptors()| routine parses the descriptors at the head of a noun
-phrase, leaving the current word marker |wn| at the first word of the
-noun phrase's body. It is allowed to set up for a plural only if |allow_p|
+The `Descriptors()` routine parses the descriptors at the head of a noun
+phrase, leaving the current word marker `wn` at the first word of the
+noun phrase's body. It is allowed to set up for a plural only if `allow_p`
 is set; it returns a parser error number, or 0 if no error occurred.
 
 =
@@ -2236,7 +2236,7 @@ A small utility for runs of prepositions.
 ];
 
 @h Creature.
-Will this object do for an I6 |creature| token? (In I7 terms, this affects
+Will this object do for an I6 `creature` token? (In I7 terms, this affects
 the tokens "[someone]", "[somebody]", "[anyone]" and "[anybody]".)
 
 =
@@ -2248,20 +2248,20 @@ the tokens "[someone]", "[somebody]", "[anyone]" and "[anybody]".)
 ];
 
 @h Noun Domain.
-|NounDomain| does the most substantial part of parsing an object name.
+`NounDomain` does the most substantial part of parsing an object name.
 It is given two "domains" -- usually a location and then the actor who is
 looking -- and a context (i.e. token type), and returns:
 
 - 0 if no match at all could be made,
 - 1 if a multiple object was made,
 - $k$ if object $k$ was the one decided upon,
-- |REPARSE_CODE| if it asked a question of the player and consequently
+- `REPARSE_CODE` if it asked a question of the player and consequently
 rewrote the player's input, so that the whole parser should start again
 on the rewritten input.
 
-In case (c), |NounDomain| also sets the variable |length_of_noun| to the
+In case (c), `NounDomain` also sets the variable `length_of_noun` to the
 number of words in the input text matched to the noun. In case (b),
-the multiple objects are added to |multiple_object| by hand (not by |MultiAdd|,
+the multiple objects are added to `multiple_object` by hand (not by `MultiAdd`,
 because we want to allow duplicates).
 
 =
@@ -2661,13 +2661,13 @@ because we want to allow duplicates).
 [ PARSER_CLARIF_INTERNAL_R; ];
 
 @h Adjudicate.
-The |Adjudicate| routine tries to see if there is an obvious choice, when
-faced with a list of objects (the |match_list|) each of which matches the
-player's specification equally well. To do this it makes use of the |context|
+The `Adjudicate` routine tries to see if there is an obvious choice, when
+faced with a list of objects (the `match_list`) each of which matches the
+player's specification equally well. To do this it makes use of the `context`
 (the token type being worked on).
 
 It counts up the number of obvious choices for the given context -- all to
-do with where a candidate is, except for 6 (|animate|) which is to
+do with where a candidate is, except for 6 (`animate`) which is to
 do with whether it is animate or not -- and then:
 
 - if only one obvious choice is found, that is returned;
@@ -2680,7 +2680,7 @@ choose one, it doesn't matter which;
 that the equivalence classes we've just worked out will be needed by other
 routines to clear up this mess, so we can't economise on working them out).
 
-|Adjudicate| returns $-1$ if an error occurred.
+`Adjudicate` returns $-1$ if an error occurred.
 
 =
 [ Adjudicate context i j k good_ones last n ultimate flag offset;
@@ -2903,7 +2903,7 @@ routines to clear up this mess, so we can't economise on working them out).
 ]; ! Adjudicate
 
 @h ReviseMulti.
-|ReviseMulti| revises the multiple object which already exists, in the
+`ReviseMulti` revises the multiple object which already exists, in the
 light of information which has come along since then (i.e., the second
 parameter).  It returns a parser error number, or else 0 if all is well.
 This only ever throws things out, never adds new ones.
@@ -2951,21 +2951,21 @@ This only ever throws things out, never adds new ones.
 ];
 
 @h Match List.
-The match list is an array, |match_list-->|, which holds the current best
+The match list is an array, `match_list-->`, which holds the current best
 guesses at what object(s) a portion of the command refers to. The global
-|number_matched| is set to the current length of the |match_list|.
+`number_matched` is set to the current length of the `match_list`.
 
-When the parser sees a possible match of object |obj| at quality level |q|,
-it calls |MakeMatch(obj, q)|. If this is the best quality match so far, then
+When the parser sees a possible match of object `obj` at quality level `q`,
+it calls `MakeMatch(obj, q)`. If this is the best quality match so far, then
 we wipe out all the previous matches and start a new list with this one.
 If it's only as good as the best so far, we add it to the list (provided
 we haven't run out of space, and provided it isn't in the list already).
 If it's worse, we ignore it altogether.
 
-I6 tokens in the form |noun=Filter| or |Attribute| are "noun filter tokens",
+I6 tokens in the form `noun=Filter` or `Attribute` are "noun filter tokens",
 and mean that the match list should be filtered to accept only nouns which
 are acceptable to the given routine, or have the given attribute. Such a
-token is in force if |token_filter| is used. (I7 makes no use of this in the
+token is in force if `token_filter` is used. (I7 makes no use of this in the
 attribute case, which is deprecated nowadays.)
 
 Quality is essentially the number of words in the command referring to
@@ -3009,7 +3009,7 @@ or "panic".
 ];
 
 @h ScoreMatchL.
-|ScoreMatchL| scores the match list for quality in terms of what the player
+`ScoreMatchL` scores the match list for quality in terms of what the player
 has vaguely asked for. Points are awarded for conforming with requirements
 like "my", and so on. Remove from the match list any entries which fail
 the basic requirements of the descriptors. (The scoring system used to
@@ -3106,7 +3106,7 @@ Constant SCORE__DIVISOR = 20;
 ];
 
 @h BestGuess.
-|BestGuess| makes the best guess it can out of the match list, assuming that
+`BestGuess` makes the best guess it can out of the match list, assuming that
 everything in the match list is textually as good as everything else;
 however it ignores items marked as $-1$, and so marks anything it chooses.
 It returns $-1$ if there are no possible choices.
@@ -3132,7 +3132,7 @@ It returns $-1$ if there are no possible choices.
 ];
 
 @h SingleBestGuess.
-|SingleBestGuess| returns the highest-scoring object in the match list
+`SingleBestGuess` returns the highest-scoring object in the match list
 if it is the clear winner, or returns $-1$ if there is no clear winner.
 
 =
@@ -3147,8 +3147,8 @@ if it is the clear winner, or returns $-1$ if there is no clear winner.
 ];
 
 @h Identical.
-|Identical| decides whether or not two objects can be distinguished from each
-other by anything the player can type. If not, it returns |true|. (This
+`Identical` decides whether or not two objects can be distinguished from each
+other by anything the player can type. If not, it returns `true`. (This
 routine is critical to the handling of plurals, and the list-writer
 requires it to be an equivalence relation between objects: but it is,
 because it is equivalent to $O_1\sim O_2$ if and only if $f(O_1) = f(O_2)$
@@ -3209,13 +3209,13 @@ for some function $f$.)
 ];
 
 @h Print Command.
-|PrintCommand| reconstructs the command as it presently reads, from the
+`PrintCommand` reconstructs the command as it presently reads, from the
 pattern which has been built up.
 
-If |from| is 0, it starts with the verb: then it goes through the pattern.
+If `from` is 0, it starts with the verb: then it goes through the pattern.
 
-The other parameter is |emptyf| -- a flag: if 0, it goes up to |pcount|:
-if 1, it goes up to |pcount|-1.
+The other parameter is `emptyf` -- a flag: if 0, it goes up to `pcount`:
+if 1, it goes up to `pcount`-1.
 
 Note that verbs and prepositions are printed out of the dictionary:
 and that since the dictionary may only preserve the first six characters
@@ -3223,8 +3223,8 @@ of a word (in a V3 game), we have to hand-code the longer words needed.
 At present, I7 doesn't do this, but it probably should.
 
 (Recall that pattern entries are 0 for "multiple object", 1 for "special
-word", 2 to |REPARSE_CODE-1| are object numbers and |REPARSE_CODE+n| means
-the preposition |n|.)
+word", 2 to `REPARSE_CODE-1` are object numbers and `REPARSE_CODE+n` means
+the preposition `n`.)
 
 =
 [ PrintInferredCommand from singleton_noun;
@@ -3269,7 +3269,7 @@ the preposition |n|.)
 ];
 
 @h CantSee.
-The |CantSee| routine returns a good error number for the situation where
+The `CantSee` routine returns a good error number for the situation where
 the last word looked at didn't seem to refer to any object in context.
 
 The idea is that: if the actor is in a location (but not inside something
@@ -3310,17 +3310,17 @@ Thus game objects always triumph over scenery.)
 ];
 
 @h Multiple Object List.
-The |MultiAdd| routine adds object |o| to the multiple-object-list. This is
-only allowed to hold |MATCH_LIST_WORDS| minus one objects at most, at which
+The `MultiAdd` routine adds object `o` to the multiple-object-list. This is
+only allowed to hold `MATCH_LIST_WORDS` minus one objects at most, at which
 point it ignores any new entries (and sets a global flag so that a warning
 may later be printed if need be).
 
-The |MultiSub| routine deletes object |o| from the multiple-object-list.
+The `MultiSub` routine deletes object `o` from the multiple-object-list.
 It returns 0 if the object was there in the first place, and 9 (because
-this is the appropriate error number in |Parser()|) if it wasn't.
+this is the appropriate error number in `Parser()`) if it wasn't.
 
-The |MultiFilter| routine goes through the multiple-object-list and throws
-out anything without the given attribute |attr| set.
+The `MultiFilter` routine goes through the multiple-object-list and throws
+out anything without the given attribute `attr` set.
 
 =
 [ MultiAdd o i j;
@@ -3358,54 +3358,54 @@ The scope of an actor is the set of objects which he can refer to in typed
 commands, which is normally the same as the set of visible objects; but this
 can be modified. This is how I7 handles tokens like "[any room]".
 
-Scope determination is done by calling |SearchScope| to iterate through the
+Scope determination is done by calling `SearchScope` to iterate through the
 objects in scope, and "visit" each one: which means, carry out some task
 for each as we get there. The task depends on the current value of
-|scope_reason|, which is |PARSING_REASON| when the parser is matching
+`scope_reason`, which is `PARSING_REASON` when the parser is matching
 command text against object names.
 
 The scope machinery is built on a number of levels, each making use only
 of lower levels:
 
-(0) Either |NounDomain|, |TestScope| or |LoopOverScope| makes one or more
-calls to |SearchScope| (on level 1). The point of making multiple calls
+(0) Either `NounDomain`, `TestScope` or `LoopOverScope` makes one or more
+calls to `SearchScope` (on level 1). The point of making multiple calls
 is to influence the order in which items in scope are visited, which improves
 the quality of "take all"-style multiple object lists, for instance.
 
-(1) |SearchScope| searches for the objects in scope which are within first
+(1) `SearchScope` searches for the objects in scope which are within first
 one domain, and then another: for instance, first within the current room
 but not within the current actor, and then within the current actor. It can
 be called either from level 0, or externally from the choose-objects
 machinery, but is not recursive. It works within the context of a given
-token in the parser (when called for |PARSING_REASON|) and in particular
-the |multiinside| token, and also handles testing commands, scope tokens,
+token in the parser (when called for `PARSING_REASON`) and in particular
+the `multiinside` token, and also handles testing commands, scope tokens,
 scope in darkness, and intervention by the I7 "deciding the scope of"
-activity. Most of its actual searches are delegated to |ScopeWithin| (level
-2), but it also uses |DoScopeActionAndRecurse| (level 3) and
-|DoScopeAction| (level 4) as necessary.
+activity. Most of its actual searches are delegated to `ScopeWithin` (level
+2), but it also uses `DoScopeActionAndRecurse` (level 3) and
+`DoScopeAction` (level 4) as necessary.
 
-(2) |ScopeWithin| iterates through the objects in scope which are within
+(2) `ScopeWithin` iterates through the objects in scope which are within
 one supplied domain, but not within another. It can be called either
 from level 1, or independently from rules in the "deciding the scope of"
 activity via the I7 "place the contents of X in scope" phrase. It calls
-|DoScopeActionAndRecurse| (level 3) on any unconcealed objects it finds.
+`DoScopeActionAndRecurse` (level 3) on any unconcealed objects it finds.
 
-(3) |DoScopeActionAndRecurse| visits a given object by calling down to
-|DoScopeAction| (level 4), and recurses to all unconcealed object-tree
+(3) `DoScopeActionAndRecurse` visits a given object by calling down to
+`DoScopeAction` (level 4), and recurses to all unconcealed object-tree
 contents and component parts of the object. The I7 phrase "place X in
 scope" uses this routine.
 
-(4) |DoScopeAction| simply visits a single object, taking whatever action
-is needed there -- which will depend on the |scope_reason|. The only use
-made by the parser of |TryGivenObject|, which tries to match command text
+(4) `DoScopeAction` simply visits a single object, taking whatever action
+is needed there -- which will depend on the `scope_reason`. The only use
+made by the parser of `TryGivenObject`, which tries to match command text
 against the name of a given object, is from here. The I7 phrase "place X
 in scope, but not its contents" uses this routine.
 
 Two routines are provided for code external to the parser to modify the
 scope. They should be called only during scope deliberations -- i.e.,
-in |scope=...| tokens or in rules for the "deciding the scope of"
-activity. (At present, |AddToScope| is not used in I7 at all.) Note
-that this I7 form of |PlaceInScope| has a slightly different specification
+in `scope=...` tokens or in rules for the "deciding the scope of"
+activity. (At present, `AddToScope` is not used in I7 at all.) Note
+that this I7 form of `PlaceInScope` has a slightly different specification
 to its I6 library counterpart of the same name: it can place a room in
 scope. (In I6, room names were not normally parsed.)
 
@@ -3454,11 +3454,11 @@ code above.
 @h SearchScope.
 Level 1. The method is:
 
--	If the context is a |scope=...| token, then the search is delegated
+-	If the context is a `scope=...` token, then the search is delegated
 	to "stage 2" of the scope routine. This was the old I6 way to override
 	the searching behaviour: while users probably won't be using it any more,
 	the template does, in order to give testing commands universal scope which
-	is exempt from the activity below; and the NI compiler creates |scope=...|
+	is exempt from the activity below; and the NI compiler creates `scope=...`
 	tokens to handle Understand grammar such as "[any room]". So the feature
 	remains very much still in use.
 
@@ -3468,27 +3468,27 @@ Level 1. The method is:
 
 -	And otherwise:
 
-	- The I6 |multiinside| token, used as the first noun of its grammar line,
+	- The I6 `multiinside` token, used as the first noun of its grammar line,
 	has as its scope all of the objects which are inside or on top of the
 	{\it second} noun of the grammar line. This provides a neat scope for the
 	ALL in a command like GET ALL FROM CUPBOARD, where the player clearly
 	does not intend ALL to refer to the cupboard itself, for instance. The
 	difficulty is that we don't yet know what the second object is, if we are
 	parsing left to right. But the parser code above has taken care of all of
-	that, and the |advance_warning| global is set to the object number of the
+	that, and the `advance_warning` global is set to the object number of the
 	second noun, or to $-1$ if that is not yet known. Note that we check that
 	the contents are visible before adding them to scope, because otherwise
 	an unscrupulous player could use such a command to detect the contents of
 	an opaque locked box. If this rule applies, we skip (c.2), (c.3) and (c.4).
-	- For all other tokens except |creature|, searching scope for the room
+	- For all other tokens except `creature`, searching scope for the room
 	holding the current actor always catches the compass directions unless a
 	definite article has already been typed. (Thus OPEN THE EAST would match
 	an object called "east door", but not the compass direction "east".)
-	- The contents of |domain1| which are not contents of |domain2| are
-	placed in scope, and so are any component parts of |domain1|. If |domain1|
+	- The contents of `domain1` which are not contents of `domain2` are
+	placed in scope, and so are any component parts of `domain1`. If `domain1`
 	is a container or supporter, it is placed in scope itself.
-	- The contents and component parts of |domain2| are placed in scope.
-	If |domain2| is a container or supporter, it is placed in scope itself.
+	- The contents and component parts of `domain2` are placed in scope.
+	If `domain2` is a container or supporter, it is placed in scope itself.
 	- In darkness, the actor and his component parts are in scope. If the
 	actor is inside or on top of something, then that thing is also in scope.
 	(This avoids a situation where the player gets into an opaque box, then
@@ -3539,14 +3539,14 @@ Level 1. The method is:
 ];
 
 @h ScopeWithin.
-Level 2. |ScopeWithin| puts objects visible from within the |domain| into scope.
-An item belonging to the |domain| is placed in scope unless it is being
-concealed by the |domain|: and even then, if the |domain| is the current
+Level 2. `ScopeWithin` puts objects visible from within the `domain` into scope.
+An item belonging to the `domain` is placed in scope unless it is being
+concealed by the `domain`: and even then, if the `domain` is the current
 actor. Suppose Zorro conceals a book beneath his cloak: then the book is
 not in scope to his lady friend The Black Whip, but it is in scope to Zorro
 himself. (Thus an actor is not allowed to conceal anything from himself.)
 
-Note that the |domain| object itself, and its component parts if any, are
+Note that the `domain` object itself, and its component parts if any, are
 not placed in scope by this routine, though nothing prevents some other
 code doing so.
 
@@ -3566,16 +3566,16 @@ code doing so.
 
 @h DoScopeActionAndRecurse.
 Level 3.
-In all cases, the |domain| itself is visited. There are then three possible
+In all cases, the `domain` itself is visited. There are then three possible
 forms of recursion:
 
 - To unconcealed objects which are inside, on top of, carried or worn by
-the |domain|: this is called "searching" in traditional I6 language and
-is suppressed if |domain| is the special value |nosearch|.
-- To unconcealed component parts of the |domain|.
-- To any other objects listed in the |add_to_scope| property array, or
-supplied by the |add_to_scope| property routine, if it has one. (I7 does
-not usually use |add_to_scope|, but it remains a useful hook in the parser,
+the `domain`: this is called "searching" in traditional I6 language and
+is suppressed if `domain` is the special value `nosearch`.
+- To unconcealed component parts of the `domain`.
+- To any other objects listed in the `add_to_scope` property array, or
+supplied by the `add_to_scope` property routine, if it has one. (I7 does
+not usually use `add_to_scope`, but it remains a useful hook in the parser,
 so it retains its old I6 library interpretation.)
 
 =
@@ -3651,11 +3651,11 @@ mechanism.
 
 @h Parsing Object Names.
 We now reach the final major block of code in the parser: the part which tries
-to match a given object's name(s) against the text at word position |match_from|
-in the player's command, and calls |MakeMatch| if it succeeds. There are
+to match a given object's name(s) against the text at word position `match_from`
+in the player's command, and calls `MakeMatch` if it succeeds. There are
 basically four possibilities: ME, a pronoun such as IT, a name which doesn't
 begin misleadingly with a number, and a name which does. In the latter two
-cases, we pass the job down to |TryGivenObject|.
+cases, we pass the job down to `TryGivenObject`.
 
 =
 [ MatchTextAgainstObject item i;
@@ -3694,9 +3694,9 @@ cases, we pass the job down to |TryGivenObject|.
 ];
 
 @h TryGivenObject.
-|TryGivenObject| tries to match as many words as possible in what has been
-typed to the given object, |obj|. If it manages any words matched at all,
-it calls |MakeMatch| to say so, then returns the number of words (or 1
+`TryGivenObject` tries to match as many words as possible in what has been
+typed to the given object, `obj`. If it manages any words matched at all,
+it calls `MakeMatch` to say so, then returns the number of words (or 1
 if it was a match because of inadequate input).
 
 =
@@ -3787,9 +3787,9 @@ if it was a match because of inadequate input).
 ];
 
 @h Refers.
-|Refers| works out whether the word at number wnum can refer to the object
-|obj|, returning true or false.  The standard method is to see if the word
-is listed under the |name| property for the object, but this is more
+`Refers` works out whether the word at number wnum can refer to the object
+`obj`, returning true or false.  The standard method is to see if the word
+is listed under the `name` property for the object, but this is more
 complex in languages other than English.
 
 =
@@ -3822,7 +3822,7 @@ complex in languages other than English.
 ];
 
 @h NounWord.
-|NounWord| (which takes no arguments) returns:
+`NounWord` (which takes no arguments) returns:
 
 - 0 if the next word is not in the dictionary or is but does not carry the
 "noun" bit in its dictionary entry,
@@ -3845,7 +3845,7 @@ if it is a pronoun,
 ];
 
 @h TryNumber.
-|TryNumber| takes word number |wordnum| and tries to parse it as an (unsigned)
+`TryNumber` takes word number `wordnum` and tries to parse it as an (unsigned)
 decimal number or the name of a small number, returning
 
 - $-1000$ if it is not a number
@@ -3902,7 +3902,7 @@ are parsed.)
 ];
 
 @h Gender.
-|GetGender| returns 0 if the given animate object is female, and 1 if male,
+`GetGender` returns 0 if the given animate object is female, and 1 if male,
 and is abstracted as a routine in case something more elaborate is ever
 needed.
 
@@ -4019,7 +4019,7 @@ Manual}, 4th edition.
 [ YES_OR_NO_QUESTION_INTERNAL_R; ];
 
 @h Numerical Choices.
-This crude function prompts the player for a number from 1 to |max|, waits for
+This crude function prompts the player for a number from 1 to `max`, waits for
 this to be typed at the keyboard, then returns the choice made.
 
 =
@@ -4112,18 +4112,18 @@ words (single words) and their numeric equivalents.
 @h Tracing.
 Uncomment this line and rebuild the kit to enable tracing of what the algorithm
 below is doing. (This constant should not be used anywhere except in this file,
-where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+where `#Ifdef` on it will have the expected effect: elsewhere, it might not.)
 
 =
 ! Constant LKTRACE_CHOOSE_OBJECTS;
 
 @h Choose Objects.
 This material, the final body of code in the parser, is an I7 addition.
-The I6 parser leaves it to the user to provide a |ChooseObjects| routine
+The I6 parser leaves it to the user to provide a `ChooseObjects` routine
 to decide between possibilities when the situation is ambiguous. For I7
-use, we provide a |ChooseObjects| which essentially runs the "does the
+use, we provide a `ChooseObjects` which essentially runs the "does the
 player mean" rulebook to decide, though this is not obvious from the
-code below because it is hidden in the |CheckDPMR| routine -- which
+code below because it is hidden in the `CheckDPMR` routine -- which
 is defined in the Standard Rules, not here.
 
 =
@@ -4279,8 +4279,8 @@ A default value for the I7 sort-of-kind "topic", which never matches.
 
 @h Recognition-only-GPR.
 An I6 general parsing routine to look at words from the position marker
-|wn| in the player's command to see if they match the contents of the
-text |txt|, returning either |GPR_PREPOSITION| or |GPR_FAIL|
+`wn` in the player's command to see if they match the contents of the
+text `txt`, returning either `GPR_PREPOSITION` or `GPR_FAIL`
 according to whether a match could be made. This is used when the an
 object's name is set to include one of its properties, and the property in
 question is a text: "A flowerpot is a kind of thing. A flowerpot
@@ -4289,8 +4289,8 @@ describing a flowerpot." When the player types EXAMINE STRIPED FLOWERPOT,
 and there is a flowerpot in scope, the following routine is called to
 test whether its pattern property -- a text -- matches any words
 at the position STRIPED FLOWERPOT. Assuming a pot does indeed have the
-pattern "striped", the routine advances |wn| by 1 and returns
-|GPR_PREPOSITION| to indicate a match.
+pattern "striped", the routine advances `wn` by 1 and returns
+`GPR_PREPOSITION` to indicate a match.
 
 This kind of GPR is called a "recognition-only-GPR", because it only
 recognises an existing value: it doesn't parse a new one.
@@ -4337,12 +4337,12 @@ recognises an existing value: it doesn't parse a new one.
 
 @h RunRoutines.
 This function may not be very well-named, but the idea is to take a property
-of a given object and either to print it (and return |true|) if it's a string,
+of a given object and either to print it (and return `true`) if it's a string,
 and call it (and pass along its return value) if it's a routine. If the
 object does not provide the property, we act on the default value for the
-property if it has one, and otherwise do nothing (and return |false|).
+property if it has one, and otherwise do nothing (and return `false`).
 
-The I6 pseudo-object |thedark| is used to give the impression that Darkness
+The I6 pseudo-object `thedark` is used to give the impression that Darkness
 is a room in its own right, which is not really true. Note that it is not
 permitted to have properties other than the three named here: all other
 properties are redirected to the current location's object.

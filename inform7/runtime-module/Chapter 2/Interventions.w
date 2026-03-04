@@ -4,7 +4,7 @@ Material written in low-level Inform 6 notation can be emitted for later
 linking, a distasteful process called "intervening".
 
 @ Interventions are a very low-level language feature. Just as some C compilers,
-such as |gcc|, allow assembly-language code to be inserted at crucial points
+such as `gcc`, allow assembly-language code to be inserted at crucial points
 in the middle of C, so Inform 7 source text allows fragments of I6 notation to
 be "included". This is done by embedding it, more or less in plain text, into
 the Inter hierarchy; it will only be compiled to Inter code by assimilation at
@@ -22,7 +22,7 @@ Include (-
 -).
 =
 See //assertions: Intervention Requests// for how such Include sentences are
-handled. Each one leads to the creation of a |source_text_intervention| object;
+handled. Each one leads to the creation of a `source_text_intervention` object;
 so now we work through those objects and take the necessary action to put the
 raw I6 matter into the Inter tree.
 
@@ -53,9 +53,9 @@ void Interventions::make_for_subject(inter_name *iname, inference_subject *infs)
 
 @ Not to digress,[1] but the following function has a surprising history. In the
 pre-2015 design of Inform, it was a formidably complex function. It was used
-to read |*.i6t| template files, as they were then: the precursors of today's
+to read `*.i6t` template files, as they were then: the precursors of today's
 kits. Those were allowed to use a wide range of complex markup commands which
-are now no longer supported. The special |Main.i6t| used this ability in order
+are now no longer supported. The special `Main.i6t` used this ability in order
 to serve as, essentially, the entire top-level logic of the compiler, calling
 hundreds of different functions.[2] There were also numerous features for
 having template files open each other, or switch output on and off: none of
@@ -64,16 +64,16 @@ also used to parse kind declarations (what we now call Neptune files) and
 index content, and it could read from a stream, or a directory, or a wide C
 string, and so on. This complicated matters further still.
 
-The function now has a single purpose: it takes a text such as |x = (+ time of day +);|
-and writes out an I6 stream in which any material in |(+| ... |+)| markers is
-replaced by an I6 paraphrase. For example, it might output |x = thetime;|.
+The function now has a single purpose: it takes a text such as `x = (+ time of day +);`
+and writes out an I6 stream in which any material in `(+` ... `+)` markers is
+replaced by an I6 paraphrase. For example, it might output `x = thetime;`.
 
 [1] I.e., to digress.
 
 [2] You can find this design pattern recommended by seminal books such as
 Eric Raymond's "The Art of Unix Programming" or Andy Hunt and Dave Thomas's
 "The Pragmatic Programmer", but I have come to distrust it. It left the
-compiler's specification ambiguous: if |Main.i6t| chose to skip steps, or
+compiler's specification ambiguous: if `Main.i6t` chose to skip steps, or
 perform them in the "wrong" order, what should the compiler do?
 
 =
@@ -124,7 +124,7 @@ text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 @ Our biggest complication is that I7 expressions can be included in the I6
-matter with the |(+| and |+)| notation. For example,
+matter with the `(+` and `+)` notation. For example,
 = (text)
 	Constant FROG_CL = (+ pond-dwelling amphibian +);
 =
@@ -134,7 +134,7 @@ I6 code like so:
 = (text as Inform 6)
 	if (++counter_of_some_kind > 0) ...
 =
-which can trigger an unwanted |(+|.
+which can trigger an unwanted `(+`.
 
 @<Read up to the next plus close-bracket as an I7 expression@> =
 	TEMPORARY_TEXT(i7_exp)

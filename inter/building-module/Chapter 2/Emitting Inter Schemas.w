@@ -6,27 +6,27 @@ To compile Inter code following the model in an Inter schema tree.
 Inter code from a schema. Though there are many arguments, this is still fairly
 simple to use:
 
-- |I| is the tree to compile code into. Code will appear at the current write
+- `I` is the tree to compile code into. Code will appear at the current write
 position in that tree.
-- |VH| is a value holster (see //Value Holsters//), but a simple one: it either
-says "generate code in a void context" (that's |INTER_VOID_VHMODE|) or "generate
-code in a value context" (|INTER_VAL_VHMODE|). The difference is that, say,
-statements such as |print "Hello";| cannot be compiled in a value context, only
+- `VH` is a value holster (see //Value Holsters//), but a simple one: it either
+says "generate code in a void context" (that's `INTER_VOID_VHMODE`) or "generate
+code in a value context" (`INTER_VAL_VHMODE`). The difference is that, say,
+statements such as `print "Hello";` cannot be compiled in a value context, only
 in a void one.
-- |sch| is the schema to compile from. It is unchanged by the process, except
+- `sch` is the schema to compile from. It is unchanged by the process, except
 that nodes made inaccessible by conditional compilation are marked as such.
-- If the schema mentions identifiers -- as for example |DoSomething(1, 2)|
-mentions the identifier |DoSomething| -- then these must somehow be matched up
-with |inter_symbol|s giving them a meaning. |finder| says how: see //Identifier Finders//.
+- If the schema mentions identifiers -- as for example `DoSomething(1, 2)`
+mentions the identifier `DoSomething` -- then these must somehow be matched up
+with `inter_symbol`s giving them a meaning. `finder` says how: see //Identifier Finders//.
 - As we have seen, schema notation is (almost) Inform 6 syntax, except for two
-big extensions: one is Inform 7 source text placed between |(+| and |+)| markers,
-and the other is braced commands like |{-by-reference: X}|. The code below cannot
+big extensions: one is Inform 7 source text placed between `(+` and `+)` markers,
+and the other is braced commands like `{-by-reference: X}`. The code below cannot
 deal with either of these. Instead, we must supply callback functions to deal
-with them as they arise. (Supplying |NULL| as either of these makes the relevant
+with them as they arise. (Supplying `NULL` as either of these makes the relevant
 notation do nothing.)
-- |opaque_state| is a pointer to any data which you, the caller, want to be
+- `opaque_state` is a pointer to any data which you, the caller, want to be
 passed through to those two callback functions. The code below otherwise makes
-no use of it; and it can of course be |NULL| if no state is needed.
+no use of it; and it can of course be `NULL` if no state is needed.
 
 So the simplest valid usage of the function would be something like:
 = (text as InC)
@@ -57,7 +57,7 @@ void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 
 @ This allows a very edgy edge case: schemas which make case constructions making
 sense only within a switch statement, but where the schema does not itself
-include the |switch| head or tail.
+include the `switch` head or tail.
 
 @<Reset the write position if we're in the middle of a switch statement@> =
 	if (sch->mid_case) Produce::set_level_to_current_code_block_plus(I, 4);
@@ -69,11 +69,11 @@ include the |switch| head or tail.
 	#endif
 =
 and strikes out any nodes which are not to be compiled from -- for example, the
-|print| statement here would be marked as |blocked_by_conditional| if the symbol
-|TARGET_GLULX| were not defined.
+`print` statement here would be marked as `blocked_by_conditional` if the symbol
+`TARGET_GLULX` were not defined.
 
 Note that this is done only once for each schema, so we are implicitly assuming
-that the outcome of |#ifdef TARGET_GLULX;| would be the same every time during the
+that the outcome of `#ifdef TARGET_GLULX;` would be the same every time during the
 same run of //inform7// or //inter//. But of course it must be, since although
 we may generate many times from the same schema, it will always be within the
 same machine architecture each time.
@@ -133,9 +133,9 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *dir
 		return TRUE; /* forcing this function to be called again */
 	}
 
-@ The aim here is to find an innermost conditional, setting |dir_node| to its
-head, |ifnot_node| to the position of the |#Ifnot| -- if there is one; they
-are optional in I6 -- and |endif_node| to the position of its |#Endif|, whose
+@ The aim here is to find an innermost conditional, setting `dir_node` to its
+head, `ifnot_node` to the position of the `#Ifnot` -- if there is one; they
+are optional in I6 -- and `endif_node` to the position of its `#Endif`, whose
 existence is mandatory. For example:
 = (text as Inform 6)
 	#ifdef TARGET_ZCODE;
@@ -237,7 +237,7 @@ all conditionals are resolved.
 @ Note that marking the clauses this way ensures that the next call to this
 function will not pick up this same conditional again. The repeated calling
 must therefore terminate, because the schema is finite in size and on each
-call returning |TRUE| at least 2 previously unblocked nodes are marked as blocked.
+call returning `TRUE` at least 2 previously unblocked nodes are marked as blocked.
 
 @<Mark the three clause nodes as blocked@> =
 	dir_node->blocked_by_conditional = TRUE;
@@ -261,14 +261,14 @@ call returning |TRUE| at least 2 previously unblocked nodes are marked as blocke
 @ That disposes of conditional compilation: finally we can emit unconditional
 code. We do that with a recursive function; since the many parameters have to
 be passed down through each call, using the following macro makes everything
-easier to read. |node| is the current node to compile, of course; |prim_cat|
+easier to read. `node` is the current node to compile, of course; `prim_cat`
 is the "primitive category", which is Inter jargon for context.
 
 The category at the top of the tree depends on whether we are compiling the
-schema in void or value context, which is signalled to us by |VH|. As we
-recurse downwards, though, the category will change. The schema |print n;|
-begins in |CODE_PRIM_CAT| (i.e., void context), but by the time the node for
-|n| is reached, we must be in |VAL_PRIM_CAT|.
+schema in void or value context, which is signalled to us by `VH`. As we
+recurse downwards, though, the category will change. The schema `print n;`
+begins in `CODE_PRIM_CAT` (i.e., void context), but by the time the node for
+`n` is reached, we must be in `VAL_PRIM_CAT`.
 
 @d EIS_RECURSE(node, prim_cat)
 	 EmitInterSchemas::emit_recursively(I, node, VH, sch, opaque_state, prim_cat,
@@ -318,7 +318,7 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 		default: internal_error("unknown schema node type");
 	}
 
-@ Assembly language can only appear in |CODE_PRIM_CAT| mode and looks like so:
+@ Assembly language can only appear in `CODE_PRIM_CAT` mode and looks like so:
 = (text)
 	ASSEMBLY_ISNT
 		EXPRESSION_ISNT
@@ -330,7 +330,7 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 		EXPRESSION_ISNT
 			z
 =
-Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
+Note that recursion in `VAL_PRIM_CAT` mode evaluates `x`, `y` and `z`.
 
 @<Assembly@> =
 	if (prim_cat != CODE_PRIM_CAT) { /* should never in fact happen */
@@ -357,10 +357,10 @@ Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 	}
 
 @ What looks syntactically like a function call may in Inform 6 be a use of
-one of the "built-in functions" -- for example, |y = child(O)|. But it is not
+one of the "built-in functions" -- for example, `y = child(O)`. But it is not
 in fact a function, in the traditional Inform 6 implementation, at least;
-and it is not legal to perform, say, |x = child; y = indirect(x, O);|
-because |child|, not really being a function, has no address.
+and it is not legal to perform, say, `x = child; y = indirect(x, O);`
+because `child`, not really being a function, has no address.
 
 The design of Inter has gone back and forth over whether to make these Inter
 functions in order to simplify the picture. But if so, they are a nuisance in
@@ -387,15 +387,15 @@ call to them must be compiled as a special case.
 	}
 
 @ Inform 6 syntax is surprisingly liberal in what it allows as a function call,
-and the |f| in |f(x)| does not have to be a function name; it can be a variable,
+and the `f` in `f(x)` does not have to be a function name; it can be a variable,
 for example, holding the address of a function.
 
-In the following, |to_call| should be set to the |inter_symbol| for the function
-to call, if the function is literally named; or |bip_for_builtin_fn| should be
+In the following, `to_call` should be set to the `inter_symbol` for the function
+to call, if the function is literally named; or `bip_for_builtin_fn` should be
 set to the primitive to invoke instead; and otherwise an indirect function call
 to an address will be compiled.
 
-With one exception: the |external__f(x)| notation, which does not occur in I6,
+With one exception: the `external__f(x)` notation, which does not occur in I6,
 but permits function calls outside of the target environment. See
 //inform7: Calling Inform from C// for more on this. Note that although the
 code here appears to amend the schema by changing a token type, it is in fact
@@ -477,8 +477,8 @@ somewhere (in fact, always in a property value).
 
 @ Note that inter schemas can contain code blocks which are half-open at either
 end, and this enables some fruity Inform 7 inline phrase definitions. So the
-following can generate the equivalent of |{ ...|  or |... }| as well as the
-more natural |{ ... }|.
+following can generate the equivalent of `{ ...`  or `... }` as well as the
+more natural `{ ... }`.
 
 @<Code block@> =
 	if (prim_cat != CODE_PRIM_CAT) {
@@ -520,7 +520,7 @@ Therefore:
 	}
 	Produce::provenance(I, Provenance::at_file_and_line(origfilename, origlinenum));
 
-@ An |EVAL_ISNT| node can have any number of children, they are sequentially
+@ An `EVAL_ISNT` node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.
 
 @<Eval block@> =
@@ -677,11 +677,11 @@ parsing the schema.)
 		EXPRESSION_ISNT
 			MyLabel
 =
-This places the label |MyLabel| at the current write position.
+This places the label `MyLabel` at the current write position.
 
 What makes this more complicated is that an inline command might be being used
 to determine the name of that label, and/or to amend a label numbering counter.
-For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
+For example, the schema `.{-label:Say}{-counter-up:Say};` results in:
 = (text)
 	LABEL_ISNT
 		EXPRESSION_ISNT
@@ -735,15 +735,15 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 @ Note the three pseudo-operations here -- that is, operators which do not
 directly correspond to Inter primitives. They are:
 
-- |HAS_XBIP|, which is done by performing a property lookup;
-- |HASNT_XBIP|, which is done by negating the same;
-- |OWNERKIND_XBIP|, which is a way to finesse that |PROPERTYVALUE_BIP| is
+- `HAS_XBIP`, which is done by performing a property lookup;
+- `HASNT_XBIP`, which is done by negating the same;
+- `OWNERKIND_XBIP`, which is a way to finesse that `PROPERTYVALUE_BIP` is
 ternary at the Inter level, but only binary in Inform 6 source code. When
-the code writes |obj.prop|, this is treated here as if it had been
-|OBJECT_TY>>obj.prop|; so the value |OBJECT_TY| is dropped in. But if the
-author had written |K>>obj.prop| -- giving the full ternary form -- we
-suppress the |>>| operator and take |K|, |obj|, |prop| as the three arguments
-to the primitive |PROPERTYVALUE_BIP|. (|>>| has no other purpose or use, and
+the code writes `obj.prop`, this is treated here as if it had been
+`OBJECT_TY>>obj.prop`; so the value `OBJECT_TY` is dropped in. But if the
+author had written `K>>obj.prop` -- giving the full ternary form -- we
+suppress the `>>` operator and take `K`, `obj`, `prop` as the three arguments
+to the primitive `PROPERTYVALUE_BIP`. (`>>` has no other purpose or use, and
 is not present in standard Inform 6 syntax.)
 
 @<Operation@> =
@@ -794,7 +794,7 @@ is not present in standard Inform 6 syntax.)
 	if (I6Operators::arity(node->isn_clarifier) == 2)
 		EIS_RECURSE(node->child_node->next_node, VAL_PRIM_CAT);
 
-@ The pseudo-statement |READ_XBIP| is handled as the assembly language |@aread|.
+@ The pseudo-statement `READ_XBIP` is handled as the assembly language `@aread`.
 We don't want to regard keyboard input as being a core feature of the Inter
 instruction set, but rather as something available on some platforms and not
 on others.
@@ -824,19 +824,19 @@ on others.
 		}
 	}
 
-@ As noted in //Inter Primitives//, the signature of |OBJECTLOOP_BIP| is
-|ref val val code -> void|, so it needs four operands:
+@ As noted in //Inter Primitives//, the signature of `OBJECTLOOP_BIP` is
+`ref val val code -> void`, so it needs four operands:
 
-- The |ref| is the variable.
-- The first |val| is the object class it ranges over. If we are unable to
-narrow this down, we will simply make that |Object|, the result being a
+- The `ref` is the variable.
+- The first `val` is the object class it ranges over. If we are unable to
+narrow this down, we will simply make that `Object`, the result being a
 potentially slow loop over all objects.
-- The second |val| is condition which must apply to any given |x| for the
+- The second `val` is condition which must apply to any given `x` for the
 code block to be executed.
-- The |code| is the code block.
+- The `code` is the code block.
 
 But it arrives here not with four child nodes, but just two, corresponding to
-the second |val| and the |code| respectively. We must find the first two as
+the second `val` and the `code` respectively. We must find the first two as
 subexpressions of the first child, by directly probing its subtree. Consider
 these possibilities:
 = (text)
@@ -895,7 +895,7 @@ these possibilities:
 	if (at->unclosed == FALSE) Produce::up(I);
 
 @ Last and least: a subexpression node gives one or more nodes to be evaluated,
-and if there's more than one, we use the |SEQUENTIAL_BIP| operator (which is
+and if there's more than one, we use the `SEQUENTIAL_BIP` operator (which is
 like the comma in C) to throw away the results of the non-final evaluations.
 
 @<Subexpression@> =

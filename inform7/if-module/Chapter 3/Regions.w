@@ -45,7 +45,7 @@ int Regions::new_base_kind_notify(kind *new_base, char *text_stream, wording W) 
 }
 
 @ As with the handling of the main spatial kinds, we need a placeholder for the
-"region" subject until |K_region| is ready to be created.
+"region" subject until `K_region` is ready to be created.
 
 =
 int Regions::create_inference_subjects(void) {
@@ -73,9 +73,9 @@ int Regions::set_subkind_notify(kind *sub, kind *super) {
 	return FALSE;
 }
 
-@ Note that because we use regular |parentage_inf| inferences to remember
+@ Note that because we use regular `parentage_inf` inferences to remember
 that one region is inside another, it follows that the progenitor of a
-region is either the next broadest region containing it, or else |NULL|.
+region is either the next broadest region containing it, or else `NULL`.
 
 =
 instance *Regions::enclosing(instance *reg) {
@@ -107,7 +107,7 @@ int Regions::more_specific(instance *I1, instance *I2) {
 }
 
 @ Detecting regions is easy. Note that if this feature is inactive then
-|K_region| will be null, and this will always return false.
+`K_region` will be null, and this will always return false.
 
 =
 int Regions::object_is_a_region(instance *I) {
@@ -214,7 +214,7 @@ int Regions::complete_model(int stage) {
 
 @ The following is needed in case somebody does something like this:
 
->> A desert room is a kind of room. The map region of a desert room is usually Sahara.
+> A desert room is a kind of room. The map region of a desert room is usually Sahara.
 
 @<Assert map-region properties of rooms and regions@> =
 	instance *I;

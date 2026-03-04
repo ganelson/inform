@@ -23,8 +23,8 @@ void Task::log_stopwatch(void) {
 
 @h The task.
 When Inbuild (a copy of which is included in the Inform 7 executable) decides
-that an Inform source text must be compiled, it calls |Task::carry_out|. By
-this point Inbuild will have set up an |inform_project| structure to
+that an Inform source text must be compiled, it calls `Task::carry_out`. By
+this point Inbuild will have set up an `inform_project` structure to
 represent the program we have to compile; but we will need additional data
 about that compilation, and it's stored in the following.
 
@@ -46,13 +46,13 @@ typedef struct compile_task_data {
 
 @ An early and perhaps arguable design decision for inform7 was that it would
 compile just one source text in its lifetime as a process: and because of that,
-|Task::carry_out| can only in fact be called once, and Inbuild only does so
+`Task::carry_out` can only in fact be called once, and Inbuild only does so
 once. But the following function allows in principle for multiple calls,
 against the day when we change our minds about all this.
 
-Something we will never do is attempt to make |inform7| thread-safe in the
+Something we will never do is attempt to make `inform7` thread-safe in the
 sense of being able to compile two source texts simultaneously. The global
-|inform7_task| is null when nothing is being compiled, or set to the unique
+`inform7_task` is null when nothing is being compiled, or set to the unique
 thing which is being compiled when it is.
 
 =
@@ -240,7 +240,7 @@ is provided: it is legal for there to be figures but no cover, and vice versa).
 Other figures, and sound effects, then mix freely as needed from ID number 3
 on upwards. We skip 2 so that it can be guaranteed that no sound resource
 has ID 1 or 2: this is to help people trying to play sounds in the Z-machine,
-where operand 1 or 2 in the |@sound| opcode signifies not a sound resource
+where operand 1 or 2 in the `@sound` opcode signifies not a sound resource
 number but a long or short beep. If a genuine sound effect had resource ID
 1 or 2, therefore, it would be unplayable on the Z-machine.
 
@@ -283,18 +283,18 @@ add-ins such as extensions are the business of Inbuild.)
 If a project is called, say, Wuthering Heights, and is a "bundle" as created
 and compiled by the Inform app, then:
 
-- The project path will be |Wuthering Heights.inform|. This looks opaque
+- The project path will be `Wuthering Heights.inform`. This looks opaque
 on MacOS, as if a file, but on all platforms it is in fact a directory.
-- Within it is |Wuthering Heights.inform/Build|, the "build folder".
-- Alongside it is |Wuthering Heights.materials|. This is also a directory,
+- Within it is `Wuthering Heights.inform/Build`, the "build folder".
+- Alongside it is `Wuthering Heights.materials`. This is also a directory,
 but is openly accessible even on MacOS.
 
 If Inform is working on a single source text file, not a bundle, then the
 project will be the current working directory, but now the build folder will
-be the folder |Build| in the same directory as the source file, and materials
+be the folder `Build` in the same directory as the source file, and materials
 (if present) will again be alongside.
 
-To begin: what's in the project area? |story.ni| and |auto.inf|, neither
+To begin: what's in the project area? `story.ni` and `auto.inf`, neither
 one very helpfully named, are defined in Inbuild rather than here: these
 are the I7 source text and its compilation down to I6, respectively.
 In addition we have:
@@ -304,7 +304,7 @@ is read-only for us.
 
 The iFiction record, manifest and blurb file are all files that we generate
 to give instructions to the releasing agent Inblorb. This means that they
-have no purpose unless Inform is in a release run (with |-release| set on
+have no purpose unless Inform is in a release run (with `-release` set on
 the command line), but they take no time to generate so we make them anyway.
 
 =
@@ -348,7 +348,7 @@ filename *Task::parse_tree_file(void) {
 @ The name of the unblorbed story file is chosen for us by Inbuild, so
 we have to extract it from the build graph.
 
-Note that this will return |NULL| if the current run of Inform is to
+Note that this will return `NULL` if the current run of Inform is to
 produce, say, a C program rather than a Glulx or Z-machine story file.
 
 =
@@ -359,11 +359,11 @@ filename *Task::storyfile_file(void) {
 	return V->as_file;
 }
 
-@ Deeper inside the|Build| subfolder is an (also ephemeral) |Index| subfolder,
+@ Deeper inside the`Build` subfolder is an (also ephemeral) `Index` subfolder,
 which holds the mini-website of the Index for a project.
 
-The main index files (|Phrasebook.html| and so on) live at the top level,
-details on actions live in the subfolder |Details|: see below.
+The main index files (`Phrasebook.html` and so on) live at the top level,
+details on actions live in the subfolder `Details`: see below.
 
 @d PATH_INDEX_CALLBACK Task::index_path
 
@@ -393,7 +393,7 @@ existing story file (for example a 1980s Infocom one) rather than on one
 that it has newly generated. This is the filename such a story file would
 have by default, if so.
 
-By default the story file will be called something like |story.z8|, but
+By default the story file will be called something like `story.z8`, but
 its leafname is actually declared from the source text of the Inform
 project created to do this wrapping-up. So we need a way to set as well
 as read this filename. Whatever the leafname, though, it lives in the top
@@ -421,7 +421,7 @@ filename *Task::existing_storyfile_file(void) {
 }
 
 @ Materials is also where cover art lives: it could have either the file
-extension |.jpg| or |.png|, and we generate both sets of filenames, even
+extension `.jpg` or `.png`, and we generate both sets of filenames, even
 though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
 Materials but outside Release which we write to.
@@ -479,20 +479,20 @@ pathname *Task::released_interpreter_path(void) {
 @ EPS-format files are vector art, rather than raster art, and are produced
 with the intention that authors can tidy them up afterwards using programs
 like Adobe Illustrator. By default they aren't produced, so that the following
-flag stays |FALSE|:
+flag stays `FALSE`:
 
 =
 int write_EPS_format_map = FALSE;
 
-int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
+int do_not_generate_index = FALSE; /* Set by the `-no-index` command line option */
 void Task::disable_or_enable_index(int which) {
 	do_not_generate_index = which;
 }
-int do_not_generate_problems = FALSE; /* Set by the |-no-problems| command line option */
+int do_not_generate_problems = FALSE; /* Set by the `-no-problems` command line option */
 void Task::disable_or_enable_problems(int which) {
 	do_not_generate_problems = which;
 }
-int do_not_update_extensions_index = FALSE; /* Also set by the |-no-index| command line option */
+int do_not_update_extensions_index = FALSE; /* Also set by the `-no-index` command line option */
 void Task::disable_or_enable_extensions_update(int which) {
 	do_not_update_extensions_index = which;
 }

@@ -21,10 +21,10 @@ syntax like so:
 Test pattern (internal) with putting the counter on the bench.
 =
 Internal tests are identified by name -- here, "pattern" -- and are marked
-|(internal)|. Optionally, they can supply some text to give them variation, as
+`(internal)`. Optionally, they can supply some text to give them variation, as
 here: "putting the counter on the bench".
 
-The Inform test group |:internal| runs a set of these.
+The Inform test group `:internal` runs a set of these.
 
 @ Each request of the "Test X (internal)" sort generates an //internal_test_case//
 object. See //assertions: Test Requests// for how sentences like the above are
@@ -91,8 +91,8 @@ internal_test *InternalTests::by_name(wording W) {
 }
 
 @ The output from a test is written to a file, and this is its filename, which
-is set at the command like with |-test-output|. (The Intest script for testing
-|inform7| shows how this works in practice.)
+is set at the command like with `-test-output`. (The Intest script for testing
+`inform7` shows how this works in practice.)
 
 It's a deliberate policy choice to run internal texts this way -- i.e., with
 the correct textual output stored in the Inform repository, and open to view --
@@ -149,9 +149,9 @@ int InternalTests::run(int stage) {
 }
 
 @ Some tests find it more convenient to write their output to the debugging
-log, not to an arbitrary file like |OUT|. For those (identified as |via_log|),
+log, not to an arbitrary file like `OUT`. For those (identified as `via_log`),
 we temporarily wire the two streams together, so that for a brief period
-|OUT| actually is the debugging log. This is a hack, but it'll do fine for
+`OUT` actually is the debugging log. This is a hack, but it'll do fine for
 testing purposes.
 
 @<Run the individual test case@> =

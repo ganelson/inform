@@ -4,7 +4,7 @@ To infer facts about the model world, or take other action, based on sentences
 asserted as being true in the source text.
 
 @h Existential assertions.
-These are very much simpler than coupling assertions, and the tree |py|
+These are very much simpler than coupling assertions, and the tree `py`
 can contain only a common noun together with requirements on it: for
 example, the subtree for "an open door".
 
@@ -56,7 +56,7 @@ void Assertions::make_appearance(parse_node *p) {
 	Properties::Appearance::infer(infs, spec);
 }
 
-@ The variable |global_pass_state.near_start_of_extension| is always 0 except
+@ The variable `global_pass_state.near_start_of_extension` is always 0 except
 at the start of an extension (immediately after the header line), when it is set
 to 1. The following increments it to 2 to allow for up to two quoted lines; the
 first is the rubric, the second the credit line.
@@ -87,12 +87,12 @@ first is the rubric, the second the credit line.
 
 @h Copula.
 We now come to the main business, which is to act on "copula", that is,
-couplings of two subtrees |px| and |py| representing things which are linked
+couplings of two subtrees `px` and `py` representing things which are linked
 by a copular verb. For example, in:
 
->> The white marble is a thing.
+> The white marble is a thing.
 
-|px| would be the proper noun "white marble", |py| the common noun "thing",
+`px` would be the proper noun "white marble", `py` the common noun "thing",
 and the sentence is telling is what kind of value something has.
 
 It is usually said that "to be" is the only copular verb in English, but it
@@ -100,7 +100,7 @@ got that way by blurring together several quite different meanings: consider
 "I am 5", "I am happy" and "I am Chloe". (In French, for example, one would
 say "I have five".) The definition of "to be" occupies 12 columns of the
 Oxford English Dictionary; most computer programming languages implement only
-|=| and |==|, which correspond to OED's meaning 10, "to exist as the thing
+`=` and `==`, which correspond to OED's meaning 10, "to exist as the thing
 known by a certain name; to be identical with". But Inform implements a much
 broader set of meanings. For example, its distinction between spatial and
 property knowledge reflects the OED's distinction between meanings 5a ("to
@@ -110,9 +110,9 @@ distinguished by a specified quality") respectively.
 Besides that, we expand the range of possible copula by considering sentences
 like:
 
->> The white marble is in the bamboo box.
+> The white marble is in the bamboo box.
 
-as also being copula, but where |py| is now a |RELATIONSHIP_NT| subtree
+as also being copula, but where `py` is now a `RELATIONSHIP_NT` subtree
 expressing the sense of being inside the box.
 
 So dealing with copula is not as simple as asserting that two things are
@@ -120,9 +120,9 @@ equal, and what we do falls into numerous cases.
 
 @h The Matrix.
 What we do depends in the first instance on the node types of the head nodes of
-the |px| and |py| subtrees. We want to be sure that we completely understand
+the `px` and `py` subtrees. We want to be sure that we completely understand
 this process and that no possibilities escape notice; we therefore use a matrix
-of possible cases, as follows. |py| specifies the row and |px| the column.
+of possible cases, as follows. `py` specifies the row and `px` the column.
 
 The record size of this matrix in Inform's history is $15\times 15$ with
 58 numbered cases, but today there are "only" 42 cases in a $12\times 12$
@@ -158,7 +158,7 @@ matrix_entry assertion_matrix[ASSERTION_MATRIX_DIM] = {
 { PROPER_NOUN_NT,   {  5,  2, 26, 12,  9, 18, 30, 19, 37, 16, 40, 41 } } };
 
 @ The following routine simply looks up which of the cases the current pair
-of |px| and |py| falls into. Speed is not very important here.
+of `px` and `py` falls into. Speed is not very important here.
 
 =
 int Assertions::which_assertion_case(parse_node *px, parse_node *py) {
@@ -331,7 +331,7 @@ in this section will be harder to understand.
 "An A with I is B" looks symmetrical with case 3, but is not. We might be
 looking at an implication, for example:
 
->> An open door is usually openable.
+> An open door is usually openable.
 
 We allow this provided the properties I are all adjectival, and so is the
 outcome B.
@@ -340,7 +340,7 @@ Otherwise we handle case 2 much like case 3, but more simply since the
 result will normally be problem messages -- not unreasonably given how
 strange sentences like this are:
 
->> A container with description "Solid." is the solid box.
+> A container with description "Solid." is the solid box.
 
 @<Case 2 - WITH vs Miscellaneous@> =
 	if ((Node::get_type(px->down) == COMMON_NOUN_NT) &&
@@ -365,19 +365,19 @@ strange sentences like this are:
 works nicely because we bend grammar to allow "is" in place of "has" when
 it comes to lists of property values.
 
->> The wickerwork box is a container with description "Pricy." The bat and ball are things with description "Cricket equipment." A trophy is a kind of container with score for finding 5.
+> The wickerwork box is a container with description "Pricy." The bat and ball are things with description "Cricket equipment." A trophy is a kind of container with score for finding 5.
 
 An exception occurs with sentences like:
 
->> South is a dead end with printed name "Collapsed Dead End".
+> South is a dead end with printed name "Collapsed Dead End".
 
-Here |px|, "south", refers not to the direction but to the room which lies
+Here `px`, "south", refers not to the direction but to the room which lies
 to the south of the location being talked about, which means that the printed
 name must be given to the dead end, not to the direction "south". In this
 case, on traverse 2 when properties are set, we process as "A is a B"
-followed by "B is I". (On traverse 1, B is still an |COMMON_NOUN_NT| node,
+followed by "B is I". (On traverse 1, B is still an `COMMON_NOUN_NT` node,
 since it hasn't yet been instantiated into an actual but nameless room --
-at which point it becomes a |PROPER_NOUN_NT| node.)
+at which point it becomes a `PROPER_NOUN_NT` node.)
 
 @<Case 3 - Miscellaneous vs WITH@> =
 	#ifdef IF_MODULE
@@ -400,7 +400,7 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 
 @h Case 4. "A with B is C with D" must be incorrect.
 
->> A container with description "White" is a container with description "Black".
+> A container with description "White" is a container with description "Black".
 
 @<Case 4 - WITH on both sides@> =
 	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_WithIsWith),
@@ -418,7 +418,7 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 		across = across->next;
 	}
 
-@h Case 6. Now to begin on the |XOFY_NT| cases, which look syntactically
+@h Case 6. Now to begin on the `XOFY_NT` cases, which look syntactically
 like properties.
 
 @<Case 6 - X OF Y on both sides@> =
@@ -441,11 +441,11 @@ like properties.
 @h Case 8. "A is a kind of B". Much of the work has already been done at
 refinement time. There are really four forms of this:
 
-- "Length is a kind of value". Here |px| doesn't refer to an instance.
-- "A figment is a kind". Here |px| refers to a possibly new-made kind,
-and |py| refers to "kind".
-- "A cart is a kind of vehicle". Ditto, and |py| refers to "vehicle".
-- "A food is a kind of thing which is edible". Ditto, except |py| refers
+- "Length is a kind of value". Here `px` doesn't refer to an instance.
+- "A figment is a kind". Here `px` refers to a possibly new-made kind,
+and `py` refers to "kind".
+- "A cart is a kind of vehicle". Ditto, and `py` refers to "vehicle".
+- "A food is a kind of thing which is edible". Ditto, except `py` refers
 of course to "thing", and also has a child node, containing a proposition
 specifying its edibility.
 
@@ -572,7 +572,7 @@ but it isn't a case where this would be legal. That doesn't mean it's hopeless:
 this is where we assign variables to specific gadgets, which is in a way the
 same thing.
 
->> The before rulebook has a text called the standard demurral.
+> The before rulebook has a text called the standard demurral.
 
 @<Case 10 - Miscellaneous vs ALLOWED@> =
 	if (Node::get_type(px) == KIND_NT)
@@ -583,7 +583,7 @@ same thing.
 @h Case 11. This is a catch-all sort of error. It might need narrowing into
 further sub-cases later.
 
->> The description of the Pitch is open.
+> The description of the Pitch is open.
 
 @<Case 11 - X OF Y vs PROPERTY LIST, ACTION, COMMON NOUN@> =
 	if (Node::get_type(py) == COMMON_NOUN_NT) {
@@ -643,7 +643,7 @@ further sub-cases later.
 @h Case 14. "In A is a B with I": process as "In A is a B" followed by
 "the newly created B is I".
 
->> In the Pitch is a container with description "Made of wood."
+> In the Pitch is a container with description "Made of wood."
 
 @<Case 14 - RELATIONSHIP vs WITH@> =
 	Assertions::make_coupling(px, py->down);
@@ -673,7 +673,7 @@ not "every room".
 		"and should be reserved for sentences like 'A coin is in every room'.");
 
 @h Case 18. This are unlikely to be called as a top-level sentence with "is",
-but will instead occur through recursion from |WITH_NT| nodes, or as part of the
+but will instead occur through recursion from `WITH_NT` nodes, or as part of the
 handling of "to have" rather than "to be".
 
 Property lists may contain references to things not yet created, if we
@@ -681,7 +681,7 @@ assert them during pass 1: so we wait until pass 2.
 
 The oddball exception for rulebooks is to add named outcomes:
 
->> Reaching inside rules have outcomes allow access (success) and deny access (failure).
+> Reaching inside rules have outcomes allow access (success) and deny access (failure).
 
 which syntactically resembles a property list, though in fact is not.
 
@@ -699,7 +699,7 @@ which syntactically resembles a property list, though in fact is not.
 @h Case 19. This usually occurs as a name-clash, since it's otherwise something
 pretty improbable:
 
->> Taking something is 100. The turn count is taking something.
+> Taking something is 100. The turn count is taking something.
 
 @<Case 19 - ACTION, KIND, PROPERTY LIST, ADJECTIVE vs PROPERTY LIST, ACTION, COMMON NOUN, PROPER NOUN@> =
 	if (Node::get_subject(py))
@@ -719,7 +719,7 @@ pretty improbable:
 @h Case 20. Hoovering up a variety of implausible things claimed to have
 a spatial location.
 
->> On the desk is 100. East of the Pitch is a rulebook.
+> On the desk is 100. East of the Pitch is a rulebook.
 
 @<Case 20 - Miscellaneous on both sides@> =
 	if (Refiner::turn_player_to_yourself(px)) { Assertions::make_coupling(px, py); return; }
@@ -735,7 +735,7 @@ a spatial location.
 
 @h Case 21.
 
->> The position of the weathervane is east of the church.
+> The position of the weathervane is east of the church.
 
 @<Case 21 - X OF Y vs RELATIONSHIP@> =
 	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_XofYRelated),
@@ -749,11 +749,11 @@ a spatial location.
 
 @h Case 22. Most of the time, we're here because of an implicatory sentence like:
 
->> Scenery is usually fixed in place.
+> Scenery is usually fixed in place.
 
 But just maybe we have something like
 
->> Guttering is inadequate.
+> Guttering is inadequate.
 
 where we are assigning a property ("inadequate") to a value ("guttering")
 which can be used as an adjective, but isn't being so used here. So if it's
@@ -776,7 +776,7 @@ possible to coerce the left side to a noun, we will.
 
 @h Case 24. Not as unlikely a mistake as it might seem:
 
->> Taking something is open.
+> Taking something is open.
 
 @<Case 24 - ACTION vs ADJECTIVE@> =
 	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ActionAdjective),
@@ -786,7 +786,7 @@ possible to coerce the left side to a noun, we will.
 @h Case 25. Here we are declaring a new property -- either to an object, a kind
 or a kind of value.
 
->> A container has a number called security rating.
+> A container has a number called security rating.
 
 @<Case 25 - EVERY, COMMON NOUN, PROPER NOUN vs ALLOWED@> =
 	if (Refiner::turn_player_to_yourself(px)) {
@@ -873,7 +873,7 @@ but not in this context.
 
 @h Case 26. At last, a correctly set property value.
 
->> The description of the Pitch is "Verdant." The desk is a container. The carrying capacity of the desk is 10.
+> The description of the Pitch is "Verdant." The desk is a container. The carrying capacity of the desk is 10.
 
 Property assignments fall into three sorts, which we handle in this order:
 
@@ -914,7 +914,7 @@ but in fact isn't one;
 
 @ This handles sentences like:
 
->> The specification of vehicle is "A kind of thing able to move between rooms."
+> The specification of vehicle is "A kind of thing able to move between rooms."
 
 Specification is not a real property and has no existence at run-time; it's used
 only to annotate the Index. For the most part it's set the way all other properties
@@ -1014,7 +1014,7 @@ tendency to make tentative reciprocal map connections, because even though
 they will only be listed as "likely", we know they are in fact impossible
 in this case.
 
->> (1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.
+> (1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.
 
 @<Case 28 - RELATIONSHIP on both sides@> =
 	#ifdef IF_MODULE
@@ -1036,7 +1036,7 @@ in this case.
 
 @h Case 29. Equating something to a single adjective.
 
->> The desk is fixed in place. A container is usually fixed in place.
+> The desk is fixed in place. A container is usually fixed in place.
 
 @<Case 29 - COMMON NOUN, PROPER NOUN vs ADJECTIVE@> =
 	if (Annotations::read_int(current_sentence->down, sentence_is_existential_ANNOT)) {
@@ -1124,7 +1124,7 @@ opera about a dog, "Collared Is Bowser".)
 it I suspect it may be disliked. I've always been in two minds about whether
 this ought to be allowed...
 
->> An animal is in the desk.
+> An animal is in the desk.
 
 @<Case 34 - COMMON NOUN vs RELATIONSHIP@> =
 	@<Possession of something is allowed@>;
@@ -1182,7 +1182,7 @@ this ought to be allowed...
 
 @ For example,
 
->> An animal is in every desk.
+> An animal is in every desk.
 
 @<Generalised relationships are allowed@> =
 	if ((py->down) && (Node::get_type(py->down) == EVERY_NT)) {
@@ -1192,7 +1192,7 @@ this ought to be allowed...
 
 @ For example,
 
->> Six animals are in the desk.
+> Six animals are in the desk.
 
 Note that the default multiplicity is 0, not 1; saying "one door" has a
 slightly different meaning from simply saying "a door", since it clarifies
@@ -1208,7 +1208,7 @@ in general.
 
 @ Further exceptions are made for sentences like:
 
->> A chair usually allows sitting. A thing usually weighs 1kg.
+> A chair usually allows sitting. A thing usually weighs 1kg.
 
 @<Certain non-spatial relationships are allowed too@> =
 	binary_predicate *bp = Node::get_relationship(py);
@@ -1220,7 +1220,7 @@ in general.
 
 @ And also for "There is..." sentences:
 
->> There is a coin in the strongbox.
+> There is a coin in the strongbox.
 
 @<There is... relationships are allowed too@> =
 	if (Annotations::read_int(current_sentence->down, sentence_is_existential_ANNOT)) {
@@ -1231,7 +1231,7 @@ in general.
 
 @h Case 35.
 
->> In the desk is a copy of Wisden. On the table is a container.
+> In the desk is a copy of Wisden. On the table is a container.
 
 @<Case 35 - RELATIONSHIP vs COMMON NOUN@> =
 	if ((px->down) && (Node::get_type(px->down) == EVERY_NT)) {
@@ -1243,7 +1243,7 @@ in general.
 
 @h Case 36. "A box is on the table." This makes "box" the subject of
 discussion. "The Gazebo is west of the Lawn" also falls into this case,
-since "west of the Lawn" parses to a |RELATIONSHIP_NT| subtree.
+since "west of the Lawn" parses to a `RELATIONSHIP_NT` subtree.
 
 @<Case 36 - PROPER NOUN vs RELATIONSHIP@> =
 	if (Refiner::turn_player_to_yourself(px)) {
@@ -1310,7 +1310,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
 
 @ For example,
 
->> A number that varies is a text that varies.
+> A number that varies is a text that varies.
 
 @<Produce a problem if two values that vary are equated@> =
 	if ((Specifications::is_new_variable_like(Node::get_evaluation(px))) &&
@@ -1349,11 +1349,11 @@ two whole domains. (We have the "kind of..." syntax instead.)
 @h Case 39. Sentences falling into this case have the form "X is a Y."; for
 instance,
 
->> The lacquered box is a container.
+> The lacquered box is a container.
 
 It might look as if
 
->> A dead end is a kind of room. The Pitch is a room. East is a dead end.
+> A dead end is a kind of room. The Pitch is a room. East is a dead end.
 
 would throw the last sentence into this case, which would be wrong, but we
 avoid this by having the IF model code intervene. (Clearly this is a quirk
@@ -1408,7 +1408,7 @@ allow one case, where the declaration is redundant and harmless.)
 
 @ For example,
 
->> The current prize value is a number that varies.
+> The current prize value is a number that varies.
 
 We silently allow the kind of a variable to be restated or narrowed, but not
 contradicted.
@@ -1546,11 +1546,11 @@ there's one exception: when the value is really an adjectival use implying
 a property, rather than a noun. This takes some setting up: only the last of
 these sentences falls into case 41.
 
->> Colour is a kind of value. Green and blue are colours. A thing has a colour. The barn door is green.
+> Colour is a kind of value. Green and blue are colours. A thing has a colour. The barn door is green.
 
 There is also one case in which an object can be set equal to another object:
 
->> East is the Pavilion.
+> East is the Pavilion.
 
 (Of course this will only be true if the map feature is active.)
 
@@ -1709,12 +1709,12 @@ suite: it would be annoying to verify this problem message otherwise.)
 @ Usually it makes no sense to equate two values: "5 is 10",
 for instance, and we produce a variety of more or less scornful errors.
 
->> 10 is 15. 14 is a number. "Fish" is text. The turn count is a text. 19 is a rulebook. "Frog" is a number. Before rules is a rule.
+> 10 is 15. 14 is a number. "Fish" is text. The turn count is a text. 19 is a rulebook. "Frog" is a number. Before rules is a rule.
 
 But we do take polite notice when X is a variable name and Y is an
 initial value with a compatible type, as in the second sentence here:
 
->> The innings total is a number that varies. The innings total is 101.
+> The innings total is a number that varies. The innings total is 101.
 
 We set such variables on traverse 2 because not all of the object values exist
 yet during traverse 1.
@@ -1756,12 +1756,12 @@ yet during traverse 1.
 
 @ Here we're watching out for assertions like:
 
->> The Abruzzi Spur route is grade 5.
+> The Abruzzi Spur route is grade 5.
 
 where "Abruzzi Spur route" is a value of kind "K2 ascent route", and values
 of this kind have been given a property "difficulty rating" which is also
 the name of a kind in turn, one value of which is "grade 5". To the A-parser
-both sides are |VALUE| nodes; "grade 5" is being used adjectivally here,
+both sides are `VALUE` nodes; "grade 5" is being used adjectivally here,
 but that's not evident without a lot of contextual checking.
 
 @<Allow the case where a constant value is being assigned a property value@> =
@@ -1790,7 +1790,7 @@ but that's not evident without a lot of contextual checking.
 
 @ This is to cope with text such as
 
->> Plastic is a material.
+> Plastic is a material.
 
 where "material" is the name of both a kind of value, and also a property.
 We find ourselves here because we've been considering "material" as the
@@ -1840,7 +1840,7 @@ need to switch interpretations to avoid the problem message.
 possible problem messages, because it usually occurs as a symptom of a failed
 attempt to create something. The following is used to pick up sentences like
 
->> Something called mauve is a colour.
+> Something called mauve is a colour.
 
 which fail because Inform reads "something" as "some thing", i.e., as
 referring to a thing which then can't be equated with a colour.
@@ -1861,7 +1861,7 @@ referring to a thing which then can't be equated with a colour.
 @h Case 42. This is possibly a variation on 41 where an adjective is also
 in some contexts a noun. For example:
 
->> Hostile hates friendly.
+> Hostile hates friendly.
 
 where "hostile" and "friendly" are values of an enumerated kind but which
 can also be used adjectivally.

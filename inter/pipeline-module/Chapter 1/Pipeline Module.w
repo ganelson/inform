@@ -31,7 +31,7 @@ DECLARE_CLASS(attachment_instruction)
 DECLARE_CLASS(tree_inventory)
 DECLARE_CLASS(tree_inventory_item)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 void PipelineModule::start(void) {

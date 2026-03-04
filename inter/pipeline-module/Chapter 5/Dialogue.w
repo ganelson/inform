@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/dialogue submodule.
 
-@ Our inventory |inv| already contains a list |inv->instance_nodes| of all packages
-in the tree with type |_instance|.
+@ Our inventory `inv` already contains a list `inv->instance_nodes` of all packages
+in the tree with type `_instance`.
 
 For the moment, at least, it seems too ambitious to dynamically renumber instances
 in the linking stage. Until then, this section is something of a placeholder,

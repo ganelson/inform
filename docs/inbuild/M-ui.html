@@ -269,31 +269,23 @@ release only, or for debugging only.</p>
 these: <code>-debug</code> for debugging features, <code>-release</code> for a release run, and
 <code>-format=X</code> to select a virtual machine. (See the <code>inform7</code> documentation.)</p>
 </div>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b> </p>
-
-<blockquote>
-    <p>Include Xylophones by Jimmy Stewart.</p>
-</blockquote>
-
 <div class="lsmarkdown">
-<p>Now suppose that the project asks for something impossible, with a line
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Now suppose that the project asks for something impossible, with a line
 such as:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include Xylophones by Jimmy Stewart.</p>
+</blockquote>
 <p>No such extension exists. If we look at the graph, or the <code>-build-needs</code> list
 for the project, we see that it includes:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    missing extension: Xylophones by Jimmy Stewart, any version will do</span>
 </pre>
-<blockquote>
-    <p>Include version 6.2 of Xylophones by Jimmy Stewart.</p>
-</blockquote>
-
 <div class="lsmarkdown">
 <p>If we had instead written:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include version 6.2 of Xylophones by Jimmy Stewart.</p>
+</blockquote>
 <p>we would see:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -458,23 +450,17 @@ Thus, we can have e.g.:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">/</span><span class="identifier-syntax">Emily</span><span class="plain-syntax"> </span><span class="identifier-syntax">Short</span><span class="plain-syntax">/</span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">-</span><span class="identifier-syntax">v3_2</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7x</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">/</span><span class="identifier-syntax">Emily</span><span class="plain-syntax"> </span><span class="identifier-syntax">Short</span><span class="plain-syntax">/</span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">-</span><span class="identifier-syntax">v4_0_0</span><span class="plain-syntax">-</span><span class="identifier-syntax">prealpha_13</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7x</span>
 </pre>
-<blockquote>
-    <p>Include Locksmith by Emily Short.</p>
-</blockquote>
-
-<blockquote>
-    <p>Include version 3 Locksmith by Emily Short.</p>
-</blockquote>
-
 <div class="lsmarkdown">
 <p>co-existing side by side. If the user asks to</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include Locksmith by Emily Short.</p>
+</blockquote>
 <p>then version <code>4.0.0-prealpha.13</code> will be chosen, as the one with highest
 precedence in this nest (but see below for how Inbuild chooses between
 versions in the same nest). But if the user asks for</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include version 3 Locksmith by Emily Short.</p>
+</blockquote>
 <p>then version <code>3.2</code> is the winner, as the highest-numbered extension in the
 nest with the right major version number (3).</p>
 </div>
@@ -500,18 +486,8 @@ nest is of course not present.</li>
 </ul>
 <p>In addition, extra nests can be specified with <code>-nest N</code>.</p>
 </div>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b> </p>
-
-<blockquote>
-    <p>Include Locksmith by Emily Short.</p>
-</blockquote>
-
-<blockquote>
-    <p>Include version 4 of Locksmith by Emily Short.</p>
-</blockquote>
-
 <div class="lsmarkdown">
-<p>When Inbuild searches for some resource needed by Inform -- let's continue
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  When Inbuild searches for some resource needed by Inform -- let's continue
 to use the Locksmith extension as an example -- it always has some range of
 version numbers in mind: it will only accept a version in that range. (The
 range can be unlimited, in which case any version is acceptable.)</p>
@@ -529,12 +505,14 @@ copy had precedence.</li>
 <p>Suppose the Materials folder for our project contains <code>Locksmith-v3_2.i7x</code>,
 while the external folder contains <code>Locksmith-v3_3.i7x</code> and <code>Locksmith-v4.i7x</code>.
 Then the sentence:</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include Locksmith by Emily Short.</p>
+</blockquote>
 <p>would result in <code>Locksmith-v3_2.i7x</code> from Materials being used, even though
 there's a later version in the external area: Materials always wins. But</p>
-</div>
-<div class="lsmarkdown">
+<blockquote>
+<p>Include version 4 of Locksmith by Emily Short.</p>
+</blockquote>
 <p>would use <code>Locksmith-v4.i7x</code> from the external area, because the copy in the
 Materials folder doesn't qualify.</p>
 </div>

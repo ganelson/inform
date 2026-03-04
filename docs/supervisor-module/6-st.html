@@ -240,9 +240,9 @@ potential errors, and these will also convert into copy errors, but now we
 have a more elegant way to keep track of the copy; <a href="../syntax-module/index.html" class="internal">syntax</a> can be passed
 a sort of &quot;your ref&quot; pointer to it.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROBLEM_REF_SYNTAX_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the "your ref" is a pointer to this type */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROBLEM_REF_SYNTAX_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> </span><span class="comment-syntax">/* the &quot;your ref&quot; is a pointer to this type */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROJECT_REF_SYNTAX_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> </span><span class="comment-syntax">/* similarly but for the "project ref" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROJECT_REF_SYNTAX_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> </span><span class="comment-syntax">/* similarly but for the &quot;project ref&quot; */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROBLEM_SYNTAX_CALLBACK</span> <a href="6-st.html#SP6" class="function-link"><span class="function-syntax">SourceText::syntax_problem_handler</span></a>
 </pre>
@@ -309,13 +309,13 @@ Inform users: it increases output to the debugging log.)</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">BIBLIOGRAPHIC_NT</span> <span class="comment-syntax">/* For the initial title sentence */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">IMPERATIVE_NT</span> <span class="comment-syntax">/* "Instead of taking something, ..." */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">IMPERATIVE_NT</span> <span class="comment-syntax">/* &quot;Instead of taking something, ...&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">INFORM6CODE_NT</span> <span class="comment-syntax">/* "Include (- ... -) */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">INFORM6CODE_NT</span> <span class="comment-syntax">/* &quot;Include (- ... -) */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TABLE_NT</span> <span class="comment-syntax">/* "Table 1 - Counties of England" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TABLE_NT</span> <span class="comment-syntax">/* &quot;Table 1 - Counties of England&quot; */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EQUATION_NT</span> <span class="comment-syntax">/* "Equation 2 - Newton's Second Law" */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EQUATION_NT</span> <span class="comment-syntax">/* &quot;Equation 2 - Newton's Second Law&quot; */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TRACE_NT</span> <span class="comment-syntax">/* A sentence consisting of an asterisk and optional quoted text */</span><span class="plain-syntax"> </span>
 </pre>
@@ -340,28 +340,21 @@ the source into different forms (standard text, tables, equations, I6 matter,
 and so on); nonstructural sentences, which make grammatical definitions and
 give Inform other more or less direct instructions; rule declarations; and
 regular sentences, those which use the standard verbs. Examples:</p>
-</div>
 <blockquote>
-    <p>Volume II [dividing]</p>
+<p>Volume II [dividing]</p>
 </blockquote>
-
 <blockquote>
-    <p>Include Locksmith by Emily Short [structural]</p>
+<p>Include Locksmith by Emily Short [structural]</p>
 </blockquote>
-
 <blockquote>
-    <p>Release along with a website [nonstructural]</p>
+<p>Release along with a website [nonstructural]</p>
 </blockquote>
-
 <blockquote>
-    <p>Instead of looking [rule]</p>
+<p>Instead of looking [rule]</p>
 </blockquote>
-
 <blockquote>
-    <p>The cushion is on the wooden chair [regular]</p>
+<p>The cushion is on the wooden chair [regular]</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Dividing sentences are always read, whereas the others may be skipped in
 sections of source not being included for one reason or another.</p>
 <p><a href="../syntax-module/index.html" class="internal">syntax</a> requires us to define the nonterminal <code>&lt;dividing-sentence&gt;</code>,
@@ -435,11 +428,10 @@ rest: colons are not otherwise legal in Inform. But there's an exception. If the
 sentence consists of text matching the following grammar, followed by comma,
 followed by more text, then the comma is read as if it's a colon and the
 sentence becomes a rule. For example:</p>
-</div>
 <blockquote>
-    <p>Instead of going north, try entering the cage</p>
+<p>Instead of going north, try entering the cage</p>
 </blockquote>
-
+</div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;comma-divisible-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">instead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
@@ -483,12 +475,9 @@ or beat.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  Lastly, this callback is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it hits a sentence like:</p>
-</div>
 <blockquote>
-    <p>Use interactive fiction language element.</p>
+<p>Use interactive fiction language element.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This feature of Inform has been withdrawn (it has moved lower down the software
 stack into the new world of kits), so we issue a syntax error.</p>
 </div>

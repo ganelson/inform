@@ -18,16 +18,16 @@ void PrimitiveInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |primitive| instruction is laid out with the
+In bytecode, the frame of a `primitive` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by a variable number of
 words depending on the length of the signature.
 
-Note that |cat1 cat2 ... catN -> result| takes N+1 words, one for each primitive
-category: but that |void -> result| takes only 1. (Thus the not-really-a-category
-|void| is not stored when it is an argument, though it is stored -- as 0 -- when
+Note that `cat1 cat2 ... catN -> result` takes N+1 words, one for each primitive
+category: but that `void -> result` takes only 1. (Thus the not-really-a-category
+`void` is not stored when it is an argument, though it is stored -- as 0 -- when
 it is the result: the result is always stored.) It follows that the shortest
-possible signature, say |void -> void|, occupies 1 word, so the minimum extent of
-a |primitive| instruction is 4.
+possible signature, say `void -> void`, occupies 1 word, so the minimum extent of
+a `primitive` instruction is 4.
 
 @d DEFN_PRIM_IFLD      (DATA_IFLD + 0)
 @d BIP_PRIM_IFLD       (DATA_IFLD + 1)

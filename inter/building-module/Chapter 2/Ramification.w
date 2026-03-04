@@ -15,7 +15,7 @@ really a tree, but a linked list in all but name --
 =
 So, there is no internal structure yet. "Ramification" performs a series of
 transformations on this tree, gradually shaking out the (sometimes ambiguous)
-syntactic markers such as |COMMA_ISTT| and replacing them with semantically
+syntactic markers such as `COMMA_ISTT` and replacing them with semantically
 clear subtrees.
 
 =
@@ -44,8 +44,8 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::sanity_check);
 }
 
-@ Each transformation will be applied until it returns |FALSE| to say that
-it could see nothing to do, or |NOT_APPLICABLE| to say that it did but
+@ Each transformation will be applied until it returns `FALSE` to say that
+it could see nothing to do, or `NOT_APPLICABLE` to say that it did but
 that it doesn't want to be called again. Some transformations make use
 of temporary markers attached to nodes or tokens in the tree, so we clear
 these out at the start of each iteration.
@@ -178,7 +178,7 @@ int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 	}
 
 @h The unbrace schema ramification.
-We now remove braces used to delimit code blocks and replace them with |CODE_ISNT|
+We now remove braces used to delimit code blocks and replace them with `CODE_ISNT`
 subtrees. So for example
 = (text)
 	EXPRESSION_ISNT
@@ -200,7 +200,7 @@ becomes
 	EXPRESSION_ISNT
 		T4
 =
-In this way, all matching pairs of |OPEN_BRACE_ISTT| and |CLOSE_BRACE_ISTT| tokens
+In this way, all matching pairs of `OPEN_BRACE_ISTT` and `CLOSE_BRACE_ISTT` tokens
 are removed.
 
 =
@@ -263,7 +263,7 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 }
 
 @h The divide schema ramification.
-A |DIVIDER_ISTT| token represents a semicolon used to divide I6 statements.
+A `DIVIDER_ISTT` token represents a semicolon used to divide I6 statements.
 We want to represent them, however, by independent subtrees. So:
 = (text)
 	EXPRESSION_ISNT
@@ -285,7 +285,7 @@ becomes
 		T4
 		DIVIDER_ISTT
 =
-After this stage, therefore, each statement occupies its own |EXPRESSION_ISNT|.
+After this stage, therefore, each statement occupies its own `EXPRESSION_ISNT`.
 
 =
 int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) {
@@ -318,7 +318,7 @@ int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) 
 }
 
 @h The undivide schema ramification.
-The expression nodes for statements now tend to end with |DIVIDER_ISTT| tokens
+The expression nodes for statements now tend to end with `DIVIDER_ISTT` tokens
 which no longer have any useful meaning. We remove them. For example:
 = (text)
 	EXPRESSION_ISNT
@@ -339,7 +339,7 @@ becomes
 		T3
 		T4
 =
-After this, then, there are no further |DIVIDER_ISTT| tokens in the tree.
+After this, then, there are no further `DIVIDER_ISTT` tokens in the tree.
 
 =
 int Ramification::undivide_schema(inter_schema_node *par, inter_schema_node *isn) {
@@ -366,7 +366,7 @@ int Ramification::undivide_schema(inter_schema_node *par, inter_schema_node *isn
 @h The resolve halfopen blocks ramification.
 At this point, all matching pairs of open and close braces have been removed.
 But that doesn't quite solve the problem of code blocks, because an inline
-phrase in Inform 7 can use the notations |{-open-brace}| or |{-close-brace}|
+phrase in Inform 7 can use the notations `{-open-brace}` or `{-close-brace}`
 to indicate that a code block must be opened or closed, in a way which does
 not pair up.
 
@@ -374,11 +374,11 @@ There is clearly no way for a tree structure to encode a half-open subtree,
 so the schema itself has to have a special annotation made in this case, which
 is done by calling //InterSchemas::mark_unclosed// or //InterSchemas::mark_unopened//.
 It is inconvenient to delete the brace command node (we might end up with an
-empty |EXPRESSION_ISNT| list), so instead we convert it to a harmless piece
+empty `EXPRESSION_ISNT` list), so instead we convert it to a harmless piece
 of white space.
 
 At the end of this process, then, all code blocks are correctly handled, and
-all statements are held as single |EXPRESSION_ISNT| nodes. So the coarse
+all statements are held as single `EXPRESSION_ISNT` nodes. So the coarse
 structure of the code is correctly handled -- we have a clear tree structure
 of statements (or expressions), hierarchically arranged in code blocks.
 
@@ -503,8 +503,8 @@ int Ramification::strip_leading_white_space(inter_schema_node *par, inter_schema
 }
 
 @h The split switches into cases ramification.
-Unlike most C-like languages, Inform 6 does not have a |case| reserved word to
-introduce cases in a |switch| statement. For example:
+Unlike most C-like languages, Inform 6 does not have a `case` reserved word to
+introduce cases in a `switch` statement. For example:
 = (text as Inform 6)
 	switch (x) {
 		1, 2, 3: print "Do one thing.";
@@ -512,7 +512,7 @@ introduce cases in a |switch| statement. For example:
 		default: print "Otherwise, do this other thing.";
 	}
 =
-Here, the colons and the reserved word |default| are the important syntactic markers.
+Here, the colons and the reserved word `default` are the important syntactic markers.
 We break this up as three code blocks:
 = (text)
 	STATEMENT_ISNT "case"
@@ -678,10 +678,10 @@ We break this up as three individual prints:
 		WHITE_SPACE_ISTT
 		DQUOTED_ISTT "."
 =
-Note that, for obvious reasons, in the |print_ret| case only the third of the
+Note that, for obvious reasons, in the `print_ret` case only the third of the
 prints should perform a return.
 
-The point of this stage is to get rid of one source of |COMMA_ISTT| tokens;
+The point of this stage is to get rid of one source of `COMMA_ISTT` tokens;
 commas can mean a number of different things in Inform 6 syntax and it makes
 our work simpler to take one of those meanings out of the picture.
 
@@ -727,12 +727,12 @@ int Ramification::split_print_statements(inter_schema_node *par, inter_schema_no
 
 @h The identify constructs ramification.
 At this point each individual expression or statement is represented by the
-tokens under an |EXPRESSION_ISNT| node. It's legal to give an expression as
+tokens under an `EXPRESSION_ISNT` node. It's legal to give an expression as
 a statement in Inform 6, i.e., in void context, just as it is in C. But we
 can tell the difference because statements are introduced by reserved words
-such as |while|; and this is where we do that.
+such as `while`; and this is where we do that.
 
-Here |par| is the parent node, and |cons| the construct, presumably an |EXPRESSION_ISNT|.
+Here `par` is the parent node, and `cons` the construct, presumably an `EXPRESSION_ISNT`.
 
 =
 int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node *cons) {
@@ -768,9 +768,9 @@ int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node 
 	return FALSE;
 }
 
-@ To have the node converted from |EXPRESSION_ISNT| to |STATEMENT_ISNT|, we must
-set |which_statement| to the BIP of the Inter primitive which will implement it.
-If we set |dangle_number| to some non-negative value, then that will be added
+@ To have the node converted from `EXPRESSION_ISNT` to `STATEMENT_ISNT`, we must
+set `which_statement` to the BIP of the Inter primitive which will implement it.
+If we set `dangle_number` to some non-negative value, then that will be added
 as an argument. Thus:
 = (text)
 	EXPRESSION_ISNT
@@ -782,9 +782,9 @@ becomes:
 		EXPRESSION_ISNT
 			0
 =
-The |0| is an invention -- in that it never occurs in the original text -- and
-its expression dangles beneath the |STATEMENT_ISNT| node; and similarly for
-a |dangle_text|, of course.
+The `0` is an invention -- in that it never occurs in the original text -- and
+its expression dangles beneath the `STATEMENT_ISNT` node; and similarly for
+a `dangle_text`, of course.
 
 The set of Inform 6 statements is a mixed bag, to put it mildly, and some have
 oddball syntaxes. Here goes:
@@ -818,7 +818,7 @@ oddball syntaxes. Here goes:
 		case WHILE_I6RW:      which_statement = WHILE_BIP; break;
 	}
 
-@ The Inform 6 syntax |do ...; until ...;| currently appears as two consecutive
+@ The Inform 6 syntax `do ...; until ...;` currently appears as two consecutive
 nodes, which we want to fold into just one:
 
 @<This is a do statement@> =
@@ -846,10 +846,10 @@ nodes, which we want to fold into just one:
 		return FALSE;
 	}
 
-@ Here |give O P| sets attribute |P| for object |O|, and |give O ~P| takes
+@ Here `give O P` sets attribute `P` for object `O`, and `give O ~P` takes
 it away again; this looks like a use of the bitwise-not operator but is not.
 
-There is actually no statement node corresponding to |STORE_BIP|; that's
+There is actually no statement node corresponding to `STORE_BIP`; that's
 just a device to be picked up below.
 
 @<This is a give statement@> =
@@ -864,7 +864,7 @@ just a device to be picked up below.
 		operand2 = n;
 	}
 
-@ Here Inform 6 might use |if ...; else ...;|, or might not have the |else|
+@ Here Inform 6 might use `if ...; else ...;`, or might not have the `else`
 clause at all. We split these possibilities into two different statement nodes.
 
 @<This is an if statement@> =
@@ -881,7 +881,7 @@ clause at all. We split these possibilities into two different statement nodes.
 		cons->next_node = else_node->next_node;
 	}
 
-@ The syntax here is |move ... to ...|, where the keyword |to| is compulsory.
+@ The syntax here is `move ... to ...`, where the keyword `to` is compulsory.
 
 @<This is a move statement@> =
 	operand1 = InterSchemas::second_dark_token(cons);
@@ -900,9 +900,9 @@ clause at all. We split these possibilities into two different statement nodes.
 	to->next = NULL;
 	if ((operand1) && (operand2)) which_statement = MOVE_BIP;
 
-@ Inform 6 in fact only supports |style| followed by one of these four keywords,
+@ Inform 6 in fact only supports `style` followed by one of these four keywords,
 but we are extending it to allow for more interesting stylistics when away from
-the traditional IF virtual machines. So we will allow |style X|, where |X| is
+the traditional IF virtual machines. So we will allow `style X`, where `X` is
 anything else, too.
 
 @<This is a style statement@> =
@@ -922,8 +922,8 @@ we only have three possibilities:
 	print "Some text";
 	print (some_rule) some_value;
 =
-(or the same but with |print_ret| instead of |print|). The first two cases
-are straightforward and become usages of |PRINTNUMBER_BIP| or |PRINT_BIP|
+(or the same but with `print_ret` instead of `print`). The first two cases
+are straightforward and become usages of `PRINTNUMBER_BIP` or `PRINT_BIP`
 respectively.
 
 @<This is a print statement@> =
@@ -995,9 +995,9 @@ turned into function calls too, leaving:
 	which_statement = 0;
 	operand1 = NULL;
 
-@ This is the difference between a |print| and a |print_ret|: the latter
+@ This is the difference between a `print` and a `print_ret`: the latter
 gets two additional statement nodes added after it, one to print a newline
-character, and one to return |true|.
+character, and one to return `true`.
 
 @<Add printing a newline and returning true to the schema@> =
 	inter_schema_node *save_next = cons->next_node;
@@ -1019,8 +1019,8 @@ character, and one to return |true|.
 
 	cons->next_node->next_node->next_node = save_next;
 
-@ |read| is an awkward sod of a statement because of the way it is handled
-differently on 16-bit vs 32-bit platforms. |READ_XBIP| is a sort of placeholder
+@ `read` is an awkward sod of a statement because of the way it is handled
+differently on 16-bit vs 32-bit platforms. `READ_XBIP` is a sort of placeholder
 for worrying about this only later; it means that this schema does not need
 to know about the difference.
 
@@ -1059,10 +1059,10 @@ becomes
 
 @ Assembly language is basically simple, but with a couple of wrinkles:
 
-- |@push| and |@pull| are converted to Inter statement nodes;
-- we must be careful about unary minus signs, in |@hypothetical -1|,
-which would be tokenised as |@hypothetical - 1|;
-- the special notations |sp| (stack pointer), |->| and |?labelname| need
+- `@push` and `@pull` are converted to Inter statement nodes;
+- we must be careful about unary minus signs, in `@hypothetical -1`,
+which would be tokenised as `@hypothetical - 1`;
+- the special notations `sp` (stack pointer), `->` and `?labelname` need
 to be recognised for what they are.
 
 @<If this expression opens with an opcode keyword, it is an assembly line@> =
@@ -1110,9 +1110,9 @@ to be recognised for what they are.
 		cons->expression_tokens = NULL;
 	}
 
-@ Finally! In the case where we do want to make a |STATEMENT_ISNT| node --
-either through recognising an I6 statement word like |while|, or one of the
-assembly instructions |@push| or |@pull| -- we do the following.
+@ Finally! In the case where we do want to make a `STATEMENT_ISNT` node --
+either through recognising an I6 statement word like `while`, or one of the
+assembly instructions `@push` or `@pull` -- we do the following.
 
 @<Make this a STATEMENT_ISNT node@> =
 	cons->isn_clarifier = which_statement;
@@ -1134,7 +1134,7 @@ assembly instructions |@push| or |@pull| -- we do the following.
 	first_child->parent_node = cons;
 	cons->expression_tokens = NULL;
 
-@ Ordinarily, |operand1| provides the content for the first child expression,
+@ Ordinarily, `operand1` provides the content for the first child expression,
 but in the case of a dangling number or text, we use that instead. (Note that
 they cannot both apply.)
 
@@ -1177,12 +1177,12 @@ they cannot both apply.)
 		InterSchemas::changed_tokens_on( operand2_node->child_node);
 	}
 
-@ It was noted above that the |STORE_BIP| value was being somewhat abused in
-the one special case of |give O P| or |give O ~P|. This won't be a statement
+@ It was noted above that the `STORE_BIP` value was being somewhat abused in
+the one special case of `give O P` or `give O ~P`. This won't be a statement
 at all -- instead we rewrite this as the setting of a property value either
-to 1 or 0 respectively. And that makes it an |EXPRESSION_ISNT| node after all.
+to 1 or 0 respectively. And that makes it an `EXPRESSION_ISNT` node after all.
 
-It would not have been legal in I6 to use |O.P = 1| as an alternative to |give O P|.
+It would not have been legal in I6 to use `O.P = 1` as an alternative to `give O P`.
 But it is legal to do so in this schema, and that is what our expression node does.
 
 @<The special case of giving an attribute@> =
@@ -1204,7 +1204,7 @@ But it is legal to do so in this schema, and that is what our expression node do
 	InterSchemas::changed_tokens_on(cons);
 
 @h The break for statements ramification.
-This is where we dismantle |for (X: Y: Z) ...| into its constituent parts,
+This is where we dismantle `for (X: Y: Z) ...` into its constituent parts,
 removing the colon and bracket tokens. Thus:
 = (text)
 	STATEMENT_ISNT = FOR_BIP
@@ -1319,7 +1319,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 
 @h The add missing bodies ramification.
 You do this at your own peril, but it is legal in Inform 6 to write, say,
-|if (...) { ; }| or |while (...) ;|. In our schema, those statement nodes will
+`if (...) { ; }` or `while (...) ;`. In our schema, those statement nodes will
 have one fewer child node, because there will be nothing where the final child
 node ought to be. We add an empty code node if so, and this saves the schema
 from failing its lint test.
@@ -1360,7 +1360,7 @@ int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *
 }
 
 @h The remove empty expressions ramification.
-If an |EXPRESSION_ISNT| contains no tokens, remove it from the tree. (The
+If an `EXPRESSION_ISNT` contains no tokens, remove it from the tree. (The
 parsing process has a tendency to leave these around, especially at the end of
 code blocks. They mean nothing, but it's tidy to remove them.)
 
@@ -1379,7 +1379,7 @@ int Ramification::remove_empties(inter_schema_node *par, inter_schema_node *isn)
 }
 
 @h The outer subexpressions ramification.
-If an expression looks like |( ... )|, but not |( ... ) ... ( ... )| -- in
+If an expression looks like `( ... )`, but not `( ... ) ... ( ... )` -- in
 other words, if the entire expression lies inside a matching pair of round
 brackets...
 
@@ -1413,7 +1413,7 @@ int Ramification::outer_subexpressions(inter_schema_node *par, inter_schema_node
 }
 
 @ ...then we move the bracketed content under a new subexpression node, so
-that |(x+1)| would now become:
+that `(x+1)` would now become:
 = (text)
 	SUBEXPRESSION_ISNT
 		EXPRESSION_ISNT
@@ -1439,8 +1439,8 @@ that |(x+1)| would now become:
 Commas are now used in just two different ways: to divide up function arguments,
 and as the serial evaluation operator. Because we have already performed the outer
 subexpressions ramification, we can tell which meaning applies by seeing if a comma
-occurs at the top level or inside of brackets. Thus |a, b, c| must be serial
-evaluation -- evaluate |a|, then |b|, then |c| -- whereas |a + f(b, c)| cannot be.
+occurs at the top level or inside of brackets. Thus `a, b, c` must be serial
+evaluation -- evaluate `a`, then `b`, then `c` -- whereas `a + f(b, c)` cannot be.
 
 This changes
 = (text)
@@ -1499,10 +1499,10 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 }
 
 @h The multiple case values ramification.
-In Inform 6, a case in a |switch| can contain multiple values, divided by commas.
-So the expression node underneath a case might for example have the tokens |1 , 2 , 6|,
+In Inform 6, a case in a `switch` can contain multiple values, divided by commas.
+So the expression node underneath a case might for example have the tokens `1 , 2 , 6`,
 and the top level commas ramification will have made those into serial evaluations.
-We correct those to uses of the special |ALTERNATIVECASE_BIP| operator instead.
+We correct those to uses of the special `ALTERNATIVECASE_BIP` operator instead.
 
 =
 int Ramification::multiple_case_values(inter_schema_node *par, inter_schema_node *isn) {
@@ -1529,7 +1529,7 @@ int Ramification::multiple_case_values(inter_schema_node *par, inter_schema_node
 @h The strip all white space ramification.
 White space has an important role to play earlier on in the process, but once
 our tree structure contains the information it carries, we can discard it.
-This simply deletes every token of type |WHITE_SPACE_ISTT|.
+This simply deletes every token of type `WHITE_SPACE_ISTT`.
 
 =
 int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_node *isn) {
@@ -1555,12 +1555,12 @@ int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_nod
 
 @h The debracket ramification.
 It's finally time to remove all round bracket tokens from the schema, and this
-means understanding which ones clarify the order of operations, as in |a * ( b + c)|,
-and which signal function calls, as in |f ( a , b )|. At each node:
+means understanding which ones clarify the order of operations, as in `a * ( b + c)`,
+and which signal function calls, as in `f ( a , b )`. At each node:
 
-- we use //Ramification::outer_subexpressions// to dispose of the |( ... )| case;
-- then //Ramification::op_subexpressions// to look for the |a * ( b + c)| case;
-- and finally //Ramification::place_calls// to take care of |f ( a , b )|.
+- we use //Ramification::outer_subexpressions// to dispose of the `( ... )` case;
+- then //Ramification::op_subexpressions// to look for the `a * ( b + c)` case;
+- and finally //Ramification::place_calls// to take care of `f ( a , b )`.
 
 =
 int Ramification::debracket(inter_schema_node *par, inter_schema_node *isn) {
@@ -1571,10 +1571,10 @@ int Ramification::debracket(inter_schema_node *par, inter_schema_node *isn) {
 }
 
 @ So, then, operations. We detect these because they have an operator at the
-top level. Thus, |f(x*y) + 2| must be an operation because of the top-level |+|.
-We split this into a left and right operand: |f(x*y)| and |2| in this example.
-Those become the children of an |OPERATION_ISNT| node, which replaces the
-original |EXPRESSION_ISNT|.
+top level. Thus, `f(x*y) + 2` must be an operation because of the top-level `+`.
+We split this into a left and right operand: `f(x*y)` and `2` in this example.
+Those become the children of an `OPERATION_ISNT` node, which replaces the
+original `EXPRESSION_ISNT`.
 
 =
 int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *isn) {
@@ -1600,14 +1600,14 @@ int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 	return FALSE;
 }
 
-@ For example, the final operator in |1 + 3 * ( x . y )| is the |+|, in that
+@ For example, the final operator in `1 + 3 * ( x . y )` is the `+`, in that
 this is the operation which will be performed last. It's the one with the
-lowest precedence out of the two top-level operators here, the |+| and |*|.
+lowest precedence out of the two top-level operators here, the `+` and `*`.
 
-|in| is not a reserved word in Inform 6, though it probably should be. It can
-be used as an operator, as in the condition |if (x in y) ...|, but it can also
+`in` is not a reserved word in Inform 6, though it probably should be. It can
+be used as an operator, as in the condition `if (x in y) ...`, but it can also
 be a variable name. So we will detect it only when it is used infix, and will
-otherwise convert it from an |OPERATOR_ISTT| to an |IDENTIFIER_ISTT|.
+otherwise convert it from an `OPERATOR_ISTT` to an `IDENTIFIER_ISTT`.
 
 @<Find the lowest-precedence top level operator, if any@> =
 	int bl = 0;
@@ -1631,7 +1631,7 @@ otherwise convert it from an |OPERATOR_ISTT| to an |IDENTIFIER_ISTT|.
 	
 @ Well... so actually we have to be a bit more careful about left vs right
 associativity if there are two least-precedence operators both at the top
-level, as in the case of |x - y + z| or (horrifically) |x = y = z|.
+level, as in the case of `x - y + z` or (horrifically) `x = y = z`.
 
 =
 int Ramification::prefer_over(inter_ti p, inter_ti existing) {
@@ -1644,7 +1644,7 @@ int Ramification::prefer_over(inter_ti p, inter_ti existing) {
 	return FALSE;
 }
 
-@ So the basic plan is to turn out example |x + y * z| into
+@ So the basic plan is to turn out example `x + y * z` into
 = (text)
 	OPERATION_ISNT = PLUS_BIP
 		EXPRESSION_ISNT
@@ -1662,7 +1662,7 @@ Recursion of the above then turns this into
 				y
 				z
 =
-Here the final operator is the |+|, and there are both left and right operands.
+Here the final operator is the `+`, and there are both left and right operands.
 
 @<Make the left operand expression@> =
 	inter_schema_node *left_operand_node =
@@ -1689,13 +1689,13 @@ Here the final operator is the |+|, and there are both left and right operands.
 	right_operand_node->parent_node = isn;
 	has_right_operand = TRUE;
 
-@ It's only now that we can clarify the meaning of |++|, for example, which
+@ It's only now that we can clarify the meaning of `++`, for example, which
 is one operation used as a prefix, and another used as a suffix.
 
-Note that Inform 6 does allow labels to be used as a value, but only in |jump|
-statements or assembly language. Since labels begin with a |.|, as in |.Example|,
+Note that Inform 6 does allow labels to be used as a value, but only in `jump`
+statements or assembly language. Since labels begin with a `.`, as in `.Example`,
 we need to be careful not to misread that as a use of the property-value
-operation |a.b|.
+operation `a.b`.
 
 @<Work out which operation is implied by the operator@> =
 	isn->isn_type = OPERATION_ISNT;
@@ -1741,7 +1741,7 @@ int Ramification::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 	return FALSE;
 }
 
-@ This is to catch the super-annoying possibility |(array->2)(7)|, where an
+@ This is to catch the super-annoying possibility `(array->2)(7)`, where an
 array lookup is performed to find the address of the function to call.
 
 @<Maybe the function is itself a bracketed term@> =
@@ -1829,7 +1829,7 @@ array lookup is performed to find the address of the function to call.
 	}
 
 @h The implied return values ramification.
-A bare |return;| statement in Inform 6 means "return true", i.e., the numerical value 1.
+A bare `return;` statement in Inform 6 means "return true", i.e., the numerical value 1.
 
 =
 int Ramification::implied_return_values(inter_schema_node *par, inter_schema_node *isn) {
@@ -1850,11 +1850,11 @@ int Ramification::implied_return_values(inter_schema_node *par, inter_schema_nod
 }
 
 @h The message calls ramification.
-Here we look for the configuration |x.y(z)|, which is a message call -- i.e. a
-function call to |x.y|, of a special kind -- rather than a lookup of the property
-|y(z)| on the object |x|. We clarify using |MESSAGE_ISNT.
+Here we look for the configuration `x.y(z)`, which is a message call -- i.e. a
+function call to `x.y`, of a special kind -- rather than a lookup of the property
+`y(z)` on the object `x`. We clarify using `MESSAGE_ISNT`.
 
-There is also the oddball syntax |f.call(y)|, which performs a function call too.
+There is also the oddball syntax `f.call(y)`, which performs a function call too.
 This is almost useless, but we pick it up anyway.
 
 =

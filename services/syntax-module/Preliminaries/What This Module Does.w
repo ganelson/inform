@@ -11,7 +11,7 @@ presented as a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than |add_by_name|.
+and where functions have names like `Tags::add_by_name` rather than `add_by_name`.
 - This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
@@ -24,7 +24,7 @@ thus the word "orange", as an adjective, might be growing from a branch
 which represents a noun clause ("the orange envelope"), growing in turn from
 a trunk which in turn might represent a assertion sentence:
 
->> The card is in the orange envelope.
+> The card is in the orange envelope.
 
 The Inform tools represent syntax trees by //parse_node_tree// structures
 (see //SyntaxTree::new//), but there are very few of these: the entire
@@ -59,11 +59,11 @@ at all.
 
 @ Meaning is an ambiguous thing, and so the tree needs to be capable of
 representing multiple interpretations of the same wording. So nodes have not
-only |next| and |down| links to other nodes, but also |next_alternative| links,
+only `next` and `down` links to other nodes, but also `next_alternative` links,
 which -- if used -- fork the syntax tree into different possible readings.
 
 These are not added to the tree by grafting: that's only done for definite
-meanings. Instead, multiple ambiguous readings mostly lie beneath |AMBIGUITY_NT|
+meanings. Instead, multiple ambiguous readings mostly lie beneath `AMBIGUITY_NT`
 nodes -- see //SyntaxTree::add_reading//. For example, we might have:
 = (text)
 	sun is orange
@@ -87,8 +87,8 @@ Each node carries three essential pieces of information with it:
 
 - The text giving rise to it (say, "Section Five - Fruit").
 - A node type ID, which in broad terms says what kind of reference is being
-made (say, |HEADING_NT|). The possible node types are stored in the C type
-|node_type_t|, which corresponds to some metadata in a //node_type_metadata//
+made (say, `HEADING_NT`). The possible node types are stored in the C type
+`node_type_t`, which corresponds to some metadata in a //node_type_metadata//
 object: see //Node::get_type// and //NodeType::get_metadata//.
 - A list of optional annotations, which are either integer or object-valued,
 and which give specifics about the meaning (say, the level number in the
@@ -103,13 +103,13 @@ but also strict verification tests on every tree made (see //Tree Verification//
 by //NodeType::new//: more generally, see //Node Types// on metadata associated
 with these.
 
-- A node of type |A| can only be a child of a node of type |B| if
+- A node of type `A` can only be a child of a node of type `B` if
 //NodeType::parentage_allowed// says so, and this is (mostly) a matter
 of calling //NodeType::allow_parentage_for_categories// -- parentage depends
 not on the type per se, but on the category of the type, which groups types
 together.
 
-- A node of type |A| can only have an annotation with ID |I| if
+- A node of type `A` can only have an annotation with ID `I` if
 //Annotations::is_allowed// says so. To declare an annotation legal,
-call |Annotations::allow(A, I)|, or |Annotations::allow_for_category(C, I)|
-for the category |C| of |A|.
+call `Annotations::allow(A, I)`, or `Annotations::allow_for_category(C, I)`
+for the category `C` of `A`.

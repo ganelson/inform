@@ -11,7 +11,7 @@ int Metadata::valid_key(text_stream *key) {
 	return FALSE;
 }
 
-@ ...then their symbols are given the |METADATA_KEY_ISYMF| flag: see
+@ ...then their symbols are given the `METADATA_KEY_ISYMF` flag: see
 //InterSymbol::new_for_symbols_table//. These symbols never code-generate: see
 //final: Vanilla Constants//. It follows that metadata cannot be part of the
 program at runtime. Nor can metadata be wired to anything else, either way
@@ -26,7 +26,7 @@ read its values, we clearly need an API for doing that, and this is the point
 of the present section.
 
 @ Some metadata keys are expected, and others are optional. The following
-determines whether a given package |pack| contains a value for metadata |key|: 
+determines whether a given package `pack` contains a value for metadata `key`: 
 
 =
 inter_tree_node *Metadata::value_node(inter_package *pack, text_stream *key) {

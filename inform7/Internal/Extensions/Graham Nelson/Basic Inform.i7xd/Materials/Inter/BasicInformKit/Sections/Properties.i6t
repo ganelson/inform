@@ -4,7 +4,7 @@ Runtime access to property values.
 
 @h Whether Provides.
 This routine defines the phrase "if O provides P": there are three tests
-to pass, and if any of the three fail, we return |false|. (The |issue_rtp|
+to pass, and if any of the three fail, we return `false`. (The `issue_rtp`
 flag, causing RTPs to be issued depending on which test fails, is never set
 when the routine is simply testing the condition.)
 
@@ -63,11 +63,11 @@ The following searches from a given offset.
 
 @h Read Property.
 Some value properties belong to other values (those created in tables), and
-these are stored indirectly through a pseudo-object |V| -- an I6 object which
+these are stored indirectly through a pseudo-object `V` -- an I6 object which
 is not part of the world model, and not a valid I7 "object" value, but which is
 used in order that properties belonging to values
-are still I6 property numbers. |V.P| is the table column address for this
-property; |obj| is then a value for the kind of value created by the table, so
+are still I6 property numbers. `V.P` is the table column address for this
+property; `obj` is then a value for the kind of value created by the table, so
 it is used as an index into the table column to get the address of the memory
 location storing the property value.
 
@@ -81,7 +81,7 @@ location storing the property value.
 
 @h Write Property.
 This routine's name must consist of the read-value-property routine's name
-with the prefix |Write|, as that is how a reference to such a property is
+with the prefix `Write`, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 
 =

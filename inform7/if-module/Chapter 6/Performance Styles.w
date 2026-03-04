@@ -2,7 +2,7 @@
 
 Manners of speaking, used in dialogue.
 
-@ This feature, |performance styles|, is technically part of |dialogue|, not part of |if|.
+@ This feature, `performance styles`, is technically part of `dialogue`, not part of `if`.
 
 =
 void PerformanceStyles::start(void) {
@@ -17,7 +17,7 @@ void PerformanceStyles::start(void) {
 
 @ Performance styles are the instances of a built-in enumeration kind, created by a
 Neptune file belonging to //DialogueKit//, and this is recognised by its Inter
-identifier |PERFORMANCE_STYLE_TY|.
+identifier `PERFORMANCE_STYLE_TY`.
 
 = (early code)
 kind *K_performance_style = NULL;
@@ -62,7 +62,7 @@ int PerformanceStyles::compare_CONSTANT(parse_node *spec1, parse_node *spec2, in
 
 @ This feature needs one extra syntax tree annotation:
 
-@e constant_performance_style_ANNOT /* |performance_style|: for constant values */
+@e constant_performance_style_ANNOT /* `performance_style`: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(constant_performance_style, performance_style)
@@ -102,8 +102,8 @@ performance_style *PerformanceStyles::default(void) {
 	return PS_spoken_normally;
 }
 
-@ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
-so we would normally have a structure called |performance_styles_data|, but in fact that
+@ A feature called `xyzzy` generally has a hunk of subject data called `xyzzy_data`,
+so we would normally have a structure called `performance_styles_data`, but in fact that
 structure is just going to be //performance_style//. So:
 
 @d performance_styles_data performance_style

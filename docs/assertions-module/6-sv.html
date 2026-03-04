@@ -87,7 +87,7 @@ placed on a nonlocal variable (for which, see <a href="../knowledge-module/2-nv.
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assigned_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* sentence creating the variable */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">underlying_var</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable in question */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_wording_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* matching text (relevant for action variables only) */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* set only for the special "actor" variable */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* set only for the special &quot;actor&quot; variable */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">shared_variable</span><span class="plain-syntax">;</span>
 </pre>
@@ -161,7 +161,7 @@ that it is unique among all variable sets in the executable.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">shared_variable_set</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">recognition_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variables</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |shared_variable| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variables</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>shared_variable</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">shared_variable_set</span><span class="plain-syntax">;</span>
 
@@ -211,7 +211,7 @@ variables which have one.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">shared_variable_access_list</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sets</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |shared_variable_set| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sets</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>shared_variable_set</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">shared_variable_access_list</span><span class="plain-syntax">;</span>
 

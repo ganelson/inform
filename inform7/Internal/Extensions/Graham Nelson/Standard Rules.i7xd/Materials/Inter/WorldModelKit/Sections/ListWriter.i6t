@@ -6,39 +6,39 @@ various formats and so on.
 @h Specification.
 The list-writer is called by one of the following function calls:
 
--	 |WriteListOfMarkedObjects(style)|, where the set of objects listed is
-	understood to be exactly those with the |workflag2| attribute set, and
+-	 `WriteListOfMarkedObjects(style)`, where the set of objects listed is
+	understood to be exactly those with the `workflag2` attribute set, and
 
-	- the |style| is a sum of |*_BIT| constants as defined in "Definitions.i6t".
+	- the `style` is a sum of `*_BIT` constants as defined in "Definitions.i6t".
 
-- 	|WriteListFrom(obj, style, depth, noactivity, iterator)|, where only the
+- 	`WriteListFrom(obj, style, depth, noactivity, iterator)`, where only the
 	first two parameters are compulsory:
 
-	- the set of objects listed begins with |obj|;
-	- the |style| is a sum of |*_BIT| constants as defined in "Definitions.i6t";
-	- the |depth| is the recursion depth within the list -- ordinarily 0, but
+	- the set of objects listed begins with `obj`;
+	- the `style` is a sum of `*_BIT` constants as defined in "Definitions.i6t";
+	- the `depth` is the recursion depth within the list -- ordinarily 0, but
 	by supplying a higher value, we can simulate a sublist of another list;
-	- |noactivity| is a flag which forces the list-writer to ignore the
+	- `noactivity` is a flag which forces the list-writer to ignore the
 	"listing the contents of" activity (in cases where it would otherwise consult
-	this): by default this is |false|;
-	- |iterator| is an iterator function which provides the objects in sequence.
+	this): by default this is `false`;
+	- `iterator` is an iterator function which provides the objects in sequence.
 
-|WriteListOfMarkedObjects| is simply a front-end which supplies suitable
-parameters for |WriteListFrom|.
+`WriteListOfMarkedObjects` is simply a front-end which supplies suitable
+parameters for `WriteListFrom`.
 
-The iterator function is by default |ObjectTreeIterator|. This defines the
-sequence of objects as being the children of the parent of |obj|, in object
-tree sequence (that is: |child(parent(obj))| is first). Moreover, when using
-|ObjectTreeIterator|, the "listing the contents of" activity is carried out,
-unless |noactivity| is set.
+The iterator function is by default `ObjectTreeIterator`. This defines the
+sequence of objects as being the children of the parent of `obj`, in object
+tree sequence (that is: `child(parent(obj))` is first). Moreover, when using
+`ObjectTreeIterator`, the "listing the contents of" activity is carried out,
+unless `noactivity` is set.
 
-We also provide the iterator function |MarkedListIterator|, which defines
+We also provide the iterator function `MarkedListIterator`, which defines
 the sequence of objects as being the list in the word array
-|MarkedObjectArray| with length |MarkedObjectLength|. Here the "listing
+`MarkedObjectArray` with length `MarkedObjectLength`. Here the "listing
 the contents of" activity is never used, since the objects are not
 necessarily the contents of any single thing. This of course is the
-iterator used by |WriteListOfMarkedObjects(style)|: it works by filling
-this array with all the objects having |workflag2| set.
+iterator used by `WriteListOfMarkedObjects(style)`: it works by filling
+this array with all the objects having `workflag2` set.
 
 The full specification for iterator functions is given below.
 
@@ -49,16 +49,16 @@ as "You can see a cake, three coins, an onion, and two coins here",
 where the five coins are mentioned in two clauses because they happen not
 to be adjacent in the list. The list-writer therefore carries out the activity
 "grouping together" to see if the user would like to tie certain objects
-together into a single entry: what this does is to set suitable |list_together|
+together into a single entry: what this does is to set suitable `list_together`
 properties for the objects. Inform has already given plural objects a similar
-|list_together| property. The net effect is that any entries in the list with
-a non-blank value of |list_together| must be adjacent to each other.
+`list_together` property. The net effect is that any entries in the list with
+a non-blank value of `list_together` must be adjacent to each other.
 
-We could achieve that by sorting the list in order of |list_together| value,
+We could achieve that by sorting the list in order of `list_together` value,
 but that would result in drastic movements, whereas we want to upset the
 original ordering as little as possible. So instead we use a process called
 {\it coalescing} the list. This is such that for every value $L\neq 0$
-of |list_together|, every entry with that value is moved back in the list
+of `list_together`, every entry with that value is moved back in the list
 to follow the first entry with that value. Thus if the original order is
 $x_1, x_2, ..., x_N$ then $x_j$ still precedes $x_k$ in coalesced order
 unless there exists $i<j<k$ such that $L(i) = L(k) \neq 0$ and $L(j)\neq L(i)$.
@@ -69,10 +69,10 @@ We therefore obtain text such as "You can see a cake, five coins, the tiles
 W, X, Y and Z from a Scrabble set, and an onion here." where the coins and
 the Scrabble tiles have been coalesced together in the list.
 
-It's important to note that the default |ObjectTreeIterator| has the
+It's important to note that the default `ObjectTreeIterator` has the
 side-effect of actually reordering the object tree: it rearranges the children
 being listed so that they appear in the tree in coalesced order. The
-|MarkedListIterator| used by |WriteListOfMarkedObjects| has the same
+`MarkedListIterator` used by `WriteListOfMarkedObjects` has the same
 side-effect if the marked objects all happen to share a common parent.
 It might seem odd for a list-writer to have side effects at all, but the
 idea is that occasional coalescing improves the quality of play in many
@@ -91,14 +91,14 @@ so that it can safely be used while the parser is working, and
 (iv) it manages this memory more flexibly and without silently failing by
 buffer overruns on unexpectedly large lists.
 
-The I7 version of |WriteListFrom|, when using |ObjectTreeIterator|, differs
-from the I6 version in that the object |o| is required to be the |child| of
-its |parent|, that is, to be the eldest child. (So in effect it's a function
+The I7 version of `WriteListFrom`, when using `ObjectTreeIterator`, differs
+from the I6 version in that the object `o` is required to be the `child` of
+its `parent`, that is, to be the eldest child. (So in effect it's a function
 of parents, not children, but we retain the form for familiarity's sake.)
-In practice this was invariably the way |WriteListFrom| was used even in
+In practice this was invariably the way `WriteListFrom` was used even in
 I6 days.
 
-Finally, the |ISARE_BIT| is differently interpreted in I7: instead of printing
+Finally, the `ISARE_BIT` is differently interpreted in I7: instead of printing
 something like " are ducks and drakes", as it would have done in I6, the
 initial space is now suppressed and we instead print "are ducks and drakes".
 
@@ -133,12 +133,12 @@ Global requisition_stack_pointer = 0;
 ];
 
 @h WriteListOfMarkedObjects.
-This routine will use the |MarkedListIterator|. That means it has to create
-an array containing the object numbers of every object with the |workflag2|
-attribute set, placing the address of this array in |MarkedObjectArray| and
-the length in |MarkedObjectLength|. Note that we preserve any existing
-marked list on the stack (using the assembly-language instructions |@push|
-and |@pull|) for the duration of our use.
+This routine will use the `MarkedListIterator`. That means it has to create
+an array containing the object numbers of every object with the `workflag2`
+attribute set, placing the address of this array in `MarkedObjectArray` and
+the length in `MarkedObjectLength`. Note that we preserve any existing
+marked list on the stack (using the assembly-language instructions `@push`
+and `@pull`) for the duration of our use.
 
 While the final order of this list will depend on what it looks like after
 coalescing, the initial order is also important. If all of the objects have
@@ -256,38 +256,38 @@ From which:
 ];
 
 @h About Iterator Functions.
-Suppose |Iter| is an iterator function and that we have a "raw list"
+Suppose `Iter` is an iterator function and that we have a "raw list"
 $x_1, x_2, ..., x_n$ of objects. Of these, the iterator function will
 choose a sublist of "qualifying" objects. It is called with arguments
 = (text as Inform 6)
 	Iter(obj, depth, L, function)
 =
-where the |obj| is required to be $x_j$ for some $j$ and the function is one
-of the |*_ITF| constants defined below:
+where the `obj` is required to be $x_j$ for some $j$ and the function is one
+of the `*_ITF` constants defined below:
 
-- On |START_ITF|, we return $x_1$, or |nothing| if the list is empty.
+- On `START_ITF`, we return $x_1$, or `nothing` if the list is empty.
 
-- On |SEEK_ITF|, we return the smallest $k\geq j$ such that $x_k$ qualifies,
-or |nothing| if none of $x_j, x_{j+1}, ..., x_n$ qualify.
+- On `SEEK_ITF`, we return the smallest $k\geq j$ such that $x_k$ qualifies,
+or `nothing` if none of $x_j, x_{j+1}, ..., x_n$ qualify.
 
-- On |ADVANCE_ITF|, we return the smallest $k > j$ such that $x_k$ qualifies,
-or |nothing| if none of $x_{j+1}, x_{j+2} ..., x_n$ qualify.
+- On `ADVANCE_ITF`, we return the smallest $k > j$ such that $x_k$ qualifies,
+or `nothing` if none of $x_{j+1}, x_{j+2} ..., x_n$ qualify.
 
-- On |COALESCE_ITF|, we coalesce the entire list (not merely the qualifying
-entries) and return the new $x_1$, or |nothing| if the list is empty.
+- On `COALESCE_ITF`, we coalesce the entire list (not merely the qualifying
+entries) and return the new $x_1$, or `nothing` if the list is empty.
 
 Thus, given any $x_i$, we can produce the sublist of qualifying entries by
-performing |START_ITF| on $x_i$, then |SEEK_ITF|, to produce $q_1$; then
-|ADVANCE_ITF| to produce $q_2$, and so on until |nothing| is returned, when
-there are no more qualifying entries. |SEEK_ITF| and |ADVANCE_ITF| always
-return qualifying objects, or |nothing|; but |START_ITF| and |COALESCE_ITF|
+performing `START_ITF` on $x_i$, then `SEEK_ITF`, to produce $q_1$; then
+`ADVANCE_ITF` to produce $q_2$, and so on until `nothing` is returned, when
+there are no more qualifying entries. `SEEK_ITF` and `ADVANCE_ITF` always
+return qualifying objects, or `nothing`; but `START_ITF` and `COALESCE_ITF`
 may return a non-qualifying object, since there's no reason why $x_1$ should
 qualify in any ordering.
 
 The iterator can make its own choice of which entries qualify, and of what
-the raw list is; |depth| is supplied to help in that decision. But if |L|
+the raw list is; `depth` is supplied to help in that decision. But if `L`
 is non-zero then the iterator is required to disqualify any entry whose
-|list_together| value is not |L|.
+`list_together` value is not `L`.
 
 =
 Constant SEEK_ITF = 0;
@@ -298,14 +298,14 @@ Constant START_ITF = 3;
 @h Tracing.
 Uncomment this line and rebuild the kit to enable tracing of what the algorithm
 below is doing. (This constant should not be used anywhere except in this file,
-where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+where `#Ifdef` on it will have the expected effect: elsewhere, it might not.)
 
 =
 ! Constant LKTRACE_LIST_WRITER;
 
 @h Marked List Iterator.
-Here the raw list is provided by the |MarkedObjectArray|, which is convenient
-for coalescing, but not so helpful for translating the |obj| parameter into
+Here the raw list is provided by the `MarkedObjectArray`, which is convenient
+for coalescing, but not so helpful for translating the `obj` parameter into
 the $i$ such that it is $x_i$. We simply search from the beginning to do
 this, which combined with other code using the iterator makes for some
 unnecessary $O(n^2)$ calculations. But it saves memory and nuisance, and the
@@ -403,8 +403,8 @@ The return value is the new first entry in the raw list.
 
 @h Object Tree Iterator.
 Here the raw list is the list of all children of a given parent: since the
-argument |obj| is required to be a member of the raw list, we can use
-|parent(obj)| to find it. Now seeking and advancing are fast, but coalescing
+argument `obj` is required to be a member of the raw list, we can use
+`parent(obj)` to find it. Now seeking and advancing are fast, but coalescing
 is slower.
 
 =
@@ -465,12 +465,12 @@ Again, the return value is the new first entry in the raw list.
 ];
 
 @h GroupChildren.
-The following runs through the child-objects of |par| in the I6 object tree,
-and moves those having a given |list_property| property value together, to
+The following runs through the child-objects of `par` in the I6 object tree,
+and moves those having a given `list_property` property value together, to
 become the eldest children. It preserves the ordering in between those
 objects, and also in between those not having that property value.
 
-We do this by temporarily moving objects into and out of |in_obj| and |out_obj|,
+We do this by temporarily moving objects into and out of `in_obj` and `out_obj`,
 objects which in all other circumstances never have children in the tree.
 
 =
@@ -532,7 +532,7 @@ variables detailing the current list-writing process, and begin.
 The default for the listing contents activity is to call this rule in its
 "for" stage: note that this suppresses the use of the activity, to avoid
 an infinite regress. The activity is used only for the default
-|ObjectTreeIterator|, so there is no need to specify which is used.
+`ObjectTreeIterator`, so there is no need to specify which is used.
 
 =
 [ STANDARD_CONTENTS_LISTING_R;
@@ -543,7 +543,7 @@ an infinite regress. The activity is used only for the default
 Given qualifying objects $x_1, ..., x_j$, we partition them into classes of
 the equivalence relation $x_i\sim x_j$ if and only
 
-- they both have a |plural| property (not necessarily the same), and
+- they both have a `plural` property (not necessarily the same), and
 - neither will cause the list-maker to recurse downwards to show the
 objects inside or on top of them, and
 - if they cause the list-maker to add information about whether they
@@ -554,8 +554,8 @@ that X matches one and not the other.
 
 The equivalence classes are numbered consecutively upwards from 1 to $n$,
 in order of first appearance in the list. For each object $x_i$,
-|partition_classes->(i-1)| is the number of its equivalence class. For each
-equivalence class number $c$, |partition_class_sizes->c| is the number of
+`partition_classes->(i-1)` is the number of its equivalence class. For each
+equivalence class number $c$, `partition_class_sizes->c` is the number of
 objects in this class.
 
 =
@@ -575,7 +575,7 @@ Global DBLW_no_classes; Global DBLW_no_objs;
 #Endif;
 
 @h Partition List.
-The following creates the |partition_classes| and |partition_class_sizes|
+The following creates the `partition_classes` and `partition_class_sizes`
 accordingly. We return $n$, the number of classes.
 
 =
@@ -605,9 +605,9 @@ accordingly. We return $n$, the number of classes.
 ];
 
 @h Equivalence Relation.
-The above algorithm will fail unless |ListEqual| is indeed reflexive, symmetric
-and transitive, which ultimately depends on the care with which |Identical|
-is implemented, which in turn hangs on the |parse_noun| properties compiled
+The above algorithm will fail unless `ListEqual` is indeed reflexive, symmetric
+and transitive, which ultimately depends on the care with which `Identical`
+is implemented, which in turn hangs on the `parse_noun` properties compiled
 by Inform. But this seems to be sound.
 
 =
@@ -634,16 +634,16 @@ by Inform. But this seems to be sound.
 @h Grouping.
 A "group" is a maximally-sized run of one or more adjacent partition
 classes in the list whose first members have a common value of
-|list_together| which is a routine or string, and which is not equal to
-|lt_value|, the current grouping value. (As we see below, it's by setting
-|lt_value| that we restrict attention to a particular group: if we reacted
-to that as a |list_together| value here, then we would simply go around in
+`list_together` which is a routine or string, and which is not equal to
+`lt_value`, the current grouping value. (As we see below, it's by setting
+`lt_value` that we restrict attention to a particular group: if we reacted
+to that as a `list_together` value here, then we would simply go around in
 circles, and never be able to see the individual objects in the group.)
 
-For instance, suppose we have objects with |list_together| values as follows,
+For instance, suppose we have objects with `list_together` values as follows,
 where $R_1$ and $R_2$ are addresses of routines:
 
-|coin| ($R_1$), |coin| ($R_1$), |box| ($R_2$), |statuette| (0), |coin| ($R_1$), |box| ($R_2$)
+`coin` ($R_1$), `coin` ($R_1$), `box` ($R_2$), `statuette` (0), `coin` ($R_1$), `box` ($R_2$)
 
 Then the partition is 1, 1, 2, 3, 1, 2, so that the final output will be
 something like "three coins, two boxes and a statuette" -- with three
@@ -655,25 +655,25 @@ not every iterator function will be able to coalesce fully.)
 
 But if we have something like this:
 
-|coin| ($R_1$), |Q| ($R_2$), |W| ($R_2$), |coin| ($R_1$), |statuette| (0), |E| ($R_2$), |R| ($R_2$)
+`coin` ($R_1$), `Q` ($R_2$), `W` ($R_2$), `coin` ($R_1$), `statuette` (0), `E` ($R_2$), `R` ($R_2$)
 
 then the partition is 1, 2, 3, 1, 4, 5, 6 and we have six classes in all.
 But classes 2 and 3 are grouped together, as are classes 5 and 6, so we
 end up with a list having just four groups: "two coins, the letters Q and
 W from a Scrabble set, a statuette and the letters E and R from a Scrabble
 set". (Again, this list has not been fully coalesced: if it had been, it
-would be reordered |coin|, |coin|, |Q|, |W|, |E|, |R|, |statuette|, with
+would be reordered `coin`, `coin`, `Q`, `W`, `E`, `R`, `statuette`, with
 partition 1, 1, 2, 3, 4, 5, 6, and three groups: "two coins, the letters Q,
 W, E and R from a Scrabble set and a statuette".)
 
 The reason we do not group together classes with a common non-zero
-|list_together| which is {\it not} a routine or string is that low values
-of |list_together| are used in coalescing the list into a pleasing order
+`list_together` which is {\it not} a routine or string is that low values
+of `list_together` are used in coalescing the list into a pleasing order
 (say, moving all of the key-like items together) but not in grouping: see
-|list_together| in the {\it Inform Designer's Manual}, 4th edition.
+`list_together` in the {\it Inform Designer's Manual}, 4th edition.
 
 We calculate the number of groups by starting with the number of classes
-and then subtracting one each time two adjacent classes share |list_together|
+and then subtracting one each time two adjacent classes share `list_together`
 in the above sense.
 
 =
@@ -716,7 +716,7 @@ in the above sense.
 ];
 
 @h Write List Recursively.
-The big one: |WriteListR| is the heart of the list-writer.
+The big one: `WriteListR` is the heart of the list-writer.
 
 =
 [ WriteListR o depth from_start
@@ -821,12 +821,12 @@ We carry out the "grouping together" activity, so that the user can add
 text fore and aft -- this is how groups of objects such as "X, Y and Z"
 can be fluffed up to "the letters X, Y and Z from a Scrabble set" --
 but the default is simple: we print the grouped items by calling
-|WriteListR| once again, but this time starting from X, and where
-|lt_value| is set to the common |list_together| value of X, Y and Z.
+`WriteListR` once again, but this time starting from X, and where
+`lt_value` is set to the common `list_together` value of X, Y and Z.
 (That restricts the list to just the objects in this group.) Because
-|lt_value| is set to this value, the grouping code won't then group X, Y
+`lt_value` is set to this value, the grouping code won't then group X, Y
 and Z again, and they will instead be individual classes in the new
-list -- so each will end up being sent, in turn, to |WriteSingleClassGroup|
+list -- so each will end up being sent, in turn, to `WriteSingleClassGroup`
 below, and {\it that} is where they are printed.
 
 =
@@ -930,7 +930,7 @@ name of an object is printed, at long last.
 Each entry can be followed by supplementary, usually parenthetical, information:
 exactly what, depends on the style. The extreme case is when the style, and
 the object, call for recursion to list the object-tree contents: this is
-achieved by calling |WriteListR|, using the |ObjectTreeIterator| (whatever
+achieved by calling `WriteListR`, using the `ObjectTreeIterator` (whatever
 the iterator used at the top level) and increasing the depth by 1.
 
 =

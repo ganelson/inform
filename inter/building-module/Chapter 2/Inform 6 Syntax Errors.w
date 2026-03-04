@@ -8,7 +8,7 @@ hacking should be part of the outside-facing Inform language; but if you leave
 power tools just lying around, people will eventually pick them up and wonder
 what the red button marked "danger" does.
 
-Note that |i6_syntax_error_location| is initially uninitialised and thus has
+Note that `i6_syntax_error_location` is initially uninitialised and thus has
 undefined contents, so we take care to blank it out if it is read before being
 written to for the first time.
 
@@ -74,7 +74,7 @@ int I6Errors::errors_occurred(void) {
 @ The functions below are for errors detected when parsing text into schemas, or
 when emitting code from them.
 
-Note that the |parsing_errors| field  of a schema is null until the first error
+Note that the `parsing_errors` field  of a schema is null until the first error
 is detected -- which, of course, it usually isn't. It holds a linked list of these:
 
 =
@@ -108,7 +108,7 @@ void I6Errors::issue_at_node(inter_schema_node *at, text_stream *message) {
 
 @ That function of course caches schema errors for playback later: well, here's
 the later. Unless the main Inform compiler takes over from us, the result will
-be drastic, halting what is presumably the |inter| tool:
+be drastic, halting what is presumably the `inter` tool:
 
 =
 void I6Errors::internal_error_on_schema_errors(inter_schema *sch) {

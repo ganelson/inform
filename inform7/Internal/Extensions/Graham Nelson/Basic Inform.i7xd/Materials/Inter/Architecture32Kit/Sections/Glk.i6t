@@ -32,7 +32,7 @@ Array Cached_Glulx_Gestalts --> (13 + 1);
 ];
 
 @h Glk object recovery.
-|GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
+`GGRecoverObjects` handles recovering the Glk objects after restarting or restoring.
 
 =
 Global current_glk_object_rock = 0;
@@ -445,9 +445,9 @@ event BVs.
 	return text;
 ];
 
-@ |GLK_EVENT_TY_From_Struct| takes a Glk event struct and conforms a Glk event
+@ `GLK_EVENT_TY_From_Struct` takes a Glk event struct and conforms a Glk event
 BV to it. This does not have to be a new Glk event - this function will usually
-be used by |glk_select|. It also handles a few event maintenance tasks.
+be used by `glk_select`. It also handles a few event maintenance tasks.
 
 =
 [ GLK_EVENT_TY_From_Struct ev event_struct
@@ -484,7 +484,7 @@ be used by |glk_select|. It also handles a few event maintenance tasks.
 	return ev;
 ];
 
-@ |GLK_EVENT_TY_To_Struct| then does the reverse, applying a Glk event BV back onto
+@ `GLK_EVENT_TY_To_Struct` then does the reverse, applying a Glk event BV back onto
 the event struct.
 
 =
@@ -500,7 +500,7 @@ the event struct.
 	event_struct-->3 = ev-->GLK_EVENT_VALUE2_SF;
 ];
 
-@ |GLK_EVENT_TY_Handle_Instead| applies a glk event onto the current glk event, and
+@ `GLK_EVENT_TY_Handle_Instead` applies a glk event onto the current glk event, and
 tells glk_select to re-run the glk event handling rules. It also ensures that
 if there are any pending keyboard input requests they will be cancelled if the
 new event is a keyboard event.
@@ -553,7 +553,7 @@ Global glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
 	glk_event_handling_status = GLK_EVENT_HANDLING_REHANDLING;
 ];
 
-@ To handle events we intercept the |glk_select| function. This allows us to handle
+@ To handle events we intercept the `glk_select` function. This allows us to handle
 events early and consistently.
 
 =

@@ -103,9 +103,9 @@ we don't, it remains 0.</p>
 <p>The NTI for a word will be a bitmap of the incidence bits for each NT whose
 grammar includes that word.</p>
 <p>So, for example, if the word &quot;plus&quot; appears in the grammar defining
-&lt;edwardian-trousers&gt; and &lt;arithmetic-operation&gt;, but no others, then
-its NTI would be the incidence bit for &lt;edwardian-trousers&gt; together
-with that for &lt;arithmetic-operation&gt;.</p>
+<edwardian-trousers> and <arithmetic-operation>, but no others, then
+its NTI would be the incidence bit for <edwardian-trousers> together
+with that for <arithmetic-operation>.</p>
 <p>To build that, we'll use the following:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -168,11 +168,11 @@ doomed matches quickly when parsing. For example, suppose we have grammar:</p>
 <div class="lsmarkdown">
 <p>and we are trying to match the text &quot;galvanised zinc&quot;. The Optimiser has
 already determined that the word &quot;galvanised&quot; is not used anywhere in the
-grammar for &lt;fish&gt;, and similarly the word &quot;zinc&quot; -- so neither word has
-the incidence bit for &lt;fish&gt; in its NTI. But the Optimiser can also see that
-each of the three productions involves &lt;fish&gt; somewhere -- not always in
+grammar for <fish>, and similarly the word &quot;zinc&quot; -- so neither word has
+the incidence bit for <fish> in its NTI. But the Optimiser can also see that
+each of the three productions involves <fish> somewhere -- not always in
 the same position, but somewhere. It therefore knows that for a wording to
-match, one of the words must have the &lt;fish&gt; incidence bit. And since
+match, one of the words must have the <fish> incidence bit. And since
 neither &quot;galvanised&quot; nor &quot;zinc&quot; have it, the wording &quot;galvanised zinc&quot;
 cannot be a match.</p>
 </div>
@@ -641,14 +641,14 @@ ptokens.</p>
 <p class="commentary firstcommentary"><a id="SP25_2_1_1" class="paragraph-anchor"></a><b>&#167;25.2.1.1. </b>  We're down to atoms, now, and:</p>
 <ul>
 <li>We must ignore an empty ptoken, that is, one which matches text of width
-0, as some positional internal NTs like &lt;if-start-of-paragraph&gt; do. Such a
+0, as some positional internal NTs like <if-start-of-paragraph> do. Such a
 ptoken can't constrain the wording of a match at all.</li>
 <li>For a ptoken which is a non-negated word, the NTIC is that the word
 matching it has to have the current NT's bit. In other words, if <code>zephyr</code>
-occurs in the grammar for the NT &lt;wind&gt;, then the atomic NTIC for this word
+occurs in the grammar for the NT <wind>, then the atomic NTIC for this word
 where it comes up is just a requirement that the word it matches against must
-have the &lt;wind&gt; bit. (Which the word &quot;zephyr&quot; certainly does, because we
-marked all the words in the &lt;wind&gt; grammar with the &lt;wind&gt; bit already.)</li>
+have the <wind> bit. (Which the word &quot;zephyr&quot; certainly does, because we
+marked all the words in the <wind> grammar with the <wind> bit already.)</li>
 <li>For a ptoken which is a non-negated use of another NT, the constraint
 is just the constraint of that NT.</li>
 <li>Nothing can be deduced from a negated ptoken: for example, all we know
@@ -686,7 +686,7 @@ a chance to add NTI constraints to nonterminals.</p>
 out more or less at random, dividing the stock of NTs into about 26 roughly
 equal subsets. But it turns out to be efficient to fix the NTI bits for some
 internal NTs so that they are in common: for example, in Inform, making sure
-&lt;definite-article&gt; and &lt;indefinite-article&gt; have the same NTI bit as each
+<definite-article> and <indefinite-article> have the same NTI bit as each
 other means that a single bit means &quot;an article&quot;.</p>
 <p>This is what the six reserved bits are for: the parent can use these in any
 way it pleases, of course, but the names are meant to be suggestive of some

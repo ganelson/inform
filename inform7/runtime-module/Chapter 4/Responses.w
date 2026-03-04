@@ -32,7 +32,7 @@ When play begins:
 Here, "actor" has to be read in the context of the standard report taking rule's
 stack frame, not in the stack for the "when play begins" rule.
 
-Each time a cue is found, a |response_message| object is created, as follows:
+Each time a cue is found, a `response_message` object is created, as follows:
 
 =
 typedef struct response_message {
@@ -64,7 +64,7 @@ through a sentence like:
 = (text as Inform 7)
 The print empty inventory rule response (A) is "I got nothing."
 =
-This would cause |RW|, the replacement wording, below to be |"I got nothing."|.
+This would cause `RW`, the replacement wording, below to be `"I got nothing."`.
 
 =
 response_message *Responses::response_cue(rule *R, int marker, wording W, stack_frame *frame) {
@@ -270,7 +270,7 @@ source text defines a rule only as an Inter function. For example:
 The hack mode rule translates into Inter as "HACK_MODE_ON_R" with "Hack mode on." (A).
 =
 Responses like this one are "via Inter", and they cause us to create a handler
-function for the rule, called (say) |HACK_MODE_ON_RM|. The rule then calls:
+function for the rule, called (say) `HACK_MODE_ON_RM`. The rule then calls:
 = (text as Inform 6)
 	HACK_MODE_ON_RM('A');
 =

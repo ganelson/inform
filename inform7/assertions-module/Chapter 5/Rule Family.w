@@ -216,7 +216,7 @@ Now we take a closer look at the rule preamble.
 
 @ The crucial nonterminal in the above grammar is <rulebook-stem>, which tries
 to make the longest match it can of a rulebook name; if it matches successfully,
-then calling |Rulebooks::match| produces a detailed rundown of its findings,
+then calling `Rulebooks::match` produces a detailed rundown of its findings,
 which are too elaborate to pass back in a simple pointer.
 
 =
@@ -333,15 +333,15 @@ clauses are therefore better recognised.
 		rfd->whenwhile = EMPTY_WORDING;
 	}
 
-@ Every rule corresponds to a |rule| structure. If the rule is an anonymous
+@ Every rule corresponds to a `rule` structure. If the rule is an anonymous
 one, such as:
 
->> Instead of jumping: say "Don't."
+> Instead of jumping: say "Don't."
 
-then we need to call |Rules::obtain| to create a nameless |rule| structure
+then we need to call `Rules::obtain` to create a nameless `rule` structure
 to be connected to it. But if the phrase has an explicit name:
 
->> Instead of swimming (this is the avoid water rule): say "Don't."
+> Instead of swimming (this is the avoid water rule): say "Don't."
 
 then we have a predeclared rule called "avoid water rule" already, so we
 connect this existing one to the phrase.
@@ -492,7 +492,7 @@ large undertaking, because the situation as we currently know it is just that
 something's wrong with the rule preamble -- which covers an enormous range of
 different faults.
 
-The |pap_failure_reason| is a sort of error code set by the action pattern
+The `pap_failure_reason` is a sort of error code set by the action pattern
 parser, recording how it most recently failed.
 
 @<Issue a problem message for a bad action@> =

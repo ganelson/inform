@@ -4,8 +4,8 @@ To cope with promotions from integer to floating-point arithmetic.
 
 @ In principle, we could recognise integer and real versions of any
 dimensionless kind (if we really wanted, say, to distinguish "integer weight"
-from "real weight"), but at present we allow only one such pair: |number|
-and |real number|.
+from "real weight"), but at present we allow only one such pair: `number`
+and `real number`.
 
 =
 kind *Kinds::FloatingPoint::real_equivalent(kind *K) {
@@ -33,7 +33,7 @@ demotion (from real to int) quite carefully, and needs the following concept:
 =
 typedef struct generalised_kind {
 	struct kind *valid_kind; /* must be non-null */
-	int promotion; /* |0| for no change, |1| for "a real version", |-1| for "an int version" */
+	int promotion; /* `0` for no change, `1` for "a real version", `-1` for "an int version" */
 } generalised_kind;
 
 @ =

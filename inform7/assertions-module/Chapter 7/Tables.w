@@ -232,7 +232,7 @@ paragraph break.
 
 If a table is declared as
 
->> Table 12 - Chemical Elements
+> Table 12 - Chemical Elements
 
 then it can be referred to elsewhere in the source either as "Table 12"
 or as "Table of Chemical Elements", so both excerpts are registered
@@ -271,7 +271,7 @@ and as Table of Chemical Elements.
 	table of ...
 
 @ Optionally, tables can have a footer line specifying additional entirely
-blank rows. In (b), the |...| is eventually required to be a kind, but this
+blank rows. In (b), the `...` is eventually required to be a kind, but this
 happens later on, since the bare bones of tables are parsed very early in
 Inform's run, when kinds haven't yet been created.
 
@@ -585,9 +585,9 @@ a node in the parse tree representing the column's use within this table.
 
 @ We assume that columns in the new and old tables will be partial permutations
 of each other: for example the old might have columns "fish", "mammals", "birds"
-(index |j| running from 0 to 2) and the new "mammals", "reptiles", "fish",
-"fungi" (index |i| running from 0 to 3). We're going to store both the permutation
-and its inverse, with the index |-1| meaning that the column doesn't appear in
+(index `j` running from 0 to 2) and the new "mammals", "reptiles", "fish",
+"fungi" (index `i` running from 0 to 3). We're going to store both the permutation
+and its inverse, with the index `-1` meaning that the column doesn't appear in
 the other table at all. The result will be:
 = (text)
 	old_to_new: 2, 0, -1
@@ -845,7 +845,7 @@ void Tables::stock_table(table *t, int phase) {
 	}
 }
 
-@ All of that is delegated to "Table Columns" except for the |Tables::stock_table_cell|
+@ All of that is delegated to "Table Columns" except for the `Tables::stock_table_cell`
 routine, which comes next. It will parse the text of the entry in a cell
 and act accordingly; the grammar returns one of the following:
 
@@ -1148,14 +1148,14 @@ reads:
 =
 If the main table has exactly one row with 62 in the first column, we choose
 that; if it contains more than one, we look for rows which begin with
-|62| and then |"lampstand"|; and so on. (Recall that amendment tables have
+`62` and then `"lampstand"`; and so on. (Recall that amendment tables have
 exactly the same columns as their originals, and in the same order.)
 
-In the following, |col| is the rightmost column used in the initial string
-being tried: so when it's 0, we're just trying to match |62|, when it's 1
-we're trying to match |62| and |"lampstand"|; and so on. But of course each
+In the following, `col` is the rightmost column used in the initial string
+being tried: so when it's 0, we're just trying to match `62`, when it's 1
+we're trying to match `62` and `"lampstand"`; and so on. But of course each
 such search is narrower than the one before, so we only need to look at the
-rows which passed last time, and test their values in column |col|.
+rows which passed last time, and test their values in column `col`.
 
 In fact, we do this in reverse: we start with every row in the main table
 marked as a possible match, and then exclude rows as they fail to match.

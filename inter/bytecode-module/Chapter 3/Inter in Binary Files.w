@@ -7,8 +7,8 @@ To read or write inter between memory and binary files.
 header:
 
 - The first four bytes store a big-endian 32-bit word. Its numerical value
-is given by the |INTER_SHIBBOLETH| constant, but in fact this is the same as
-the ASCII encoding of the letters |intr|.
+is given by the `INTER_SHIBBOLETH` constant, but in fact this is the same as
+the ASCII encoding of the letters `intr`.
 
 - The second four bytes are all 0. This enables us to distinguish a binary
 Inter file from a random text file which just happens to begin with those letters.
@@ -79,7 +79,7 @@ a series of 1 to 5 bytes.
 =
 This is a little like UTF-8, but because there is no need to synchronise from an
 arbitrary mid-file position, we can be more economical with bits; and we then
-also optimise for the range just above |40000000| because this is |SYMBOL_BASE_VAL|,
+also optimise for the range just above `40000000` because this is `SYMBOL_BASE_VAL`,
 and means that references in Inter bytecode to symbols cluster there. See
 //Symbols Tables//.
 
@@ -101,9 +101,9 @@ trade-off for complexity. At some point enough is good enough.
 @ Compressed data exists only in files: decompression happens as data is read
 into memory, and compression happens as it is written to the file.
 
-This is the decoder. It stores the 32-bit unsigned value read in |result|,
-and returns |TRUE| if all went well; if a file system error, or end of file,
-occurs, then it returns |FALSE| and the contents of |result| are undefined.
+This is the decoder. It stores the 32-bit unsigned value read in `result`,
+and returns `TRUE` if all went well; if a file system error, or end of file,
+occurs, then it returns `FALSE` and the contents of `result` are undefined.
 
 =
 int BinaryInter::read_word(FILE *binary_file, unsigned int *result) {
@@ -155,8 +155,8 @@ unsigned int BinaryInter::read_next(FILE *binary_file, inter_error_location *elo
 	return X;
 }
 
-@ And this is the encoder. (Define the symbol |MEASURE_INTER_COMPRESSION| to
-see measurements like those above.) We return |FALSE| if some file system error
+@ And this is the encoder. (Define the symbol `MEASURE_INTER_COMPRESSION` to
+see measurements like those above.) We return `FALSE` if some file system error
 occurred, making it impossible to write the data.
 
 =
@@ -304,8 +304,8 @@ void BinaryInter::write(filename *F, inter_tree *I) {
 	@<Write the symbol wirings@>;
 	@<Write the bytecode@>;
 
-@ The header is uncompressed, so we call |BinaryFiles::read_int32| and
-|BinaryFiles::write_int32| from //foundation//.
+@ The header is uncompressed, so we call `BinaryFiles::read_int32` and
+`BinaryFiles::write_int32` from //foundation//.
 
 @<Read the header@> =
 	unsigned int X = 0;
@@ -353,9 +353,9 @@ This block is a sequence of records like so:
 = (text)
 	Word	Annotation ID
 	Text	Name
-	Word	Annotation type (a |*_IATYPE| value)
+	Word	Annotation type (a `*_IATYPE` value)
 =
-terminated by the sentinel word |INVALID_IANN|. There cannot be two blocks with
+terminated by the sentinel word `INVALID_IANN`. There cannot be two blocks with
 the same annotation ID; the order of blocks is not meaningful. In particular,
 they are not necessarily in increasing order of ID.
 
@@ -407,16 +407,16 @@ numbers. As we read in this data, we can and will mimic the texts that those
 numbers were referring to: but we cannot expect them to have the same IDs in
 our warehouse that they had in the original.
 
-For example, suppose a tree contained the text |"passacaglia"| at warehouse ID 34;
+For example, suppose a tree contained the text `"passacaglia"` at warehouse ID 34;
 that this tree was then saved out as a binary Inter file; and that we are now
-reading that binary file in. We can certainly make a text reading |"passacaglia"|,
+reading that binary file in. We can certainly make a text reading `"passacaglia"`,
 but there is no reason to expect (and no way to oblige) it to have warehouse ID 34
-in our tree |I|.
+in our tree `I`.
 
 Because of that we will need to keep careful track of how IDs in the binary file
-compare to those in our tree in memory. This is the purpose of the |grid| array.
-So, for example, |grid[34]| is the ID for the string where our copy of
-|"passacaglia"| goes.
+compare to those in our tree in memory. This is the purpose of the `grid` array.
+So, for example, `grid[34]` is the ID for the string where our copy of
+`"passacaglia"` goes.
 
 The grid is read in from a table whose first word is the maximum warehouse ID
 ever used in the original file, plus 1; and then is a list of words giving
@@ -454,7 +454,7 @@ the warehouse IDs for the resources in turn.
 		BinaryInter::write_word(fh, (unsigned int) n);
 
 @ The table of resources is then a series of records, one for each resource.
-Each record begins with a type word, which must be one of the |*_IRSRC| values.
+Each record begins with a type word, which must be one of the `*_IRSRC` values.
 After that, the content (and record length) depends on the type.
 
 The first two resources in this table are always:
@@ -499,7 +499,7 @@ resources will be in increasing warehouse ID order.
 		}
 	}
 
-@ A text resource is |TEXT_IRSRC| followed by a single text, giving its content.
+@ A text resource is `TEXT_IRSRC` followed by a single text, giving its content.
 
 @<Read a string resource@> =
 	text_stream *txt = Str::new();
@@ -510,11 +510,11 @@ resources will be in increasing warehouse ID order.
 	text_stream *txt = InterWarehouse::get_text(warehouse, ID);
 	BinaryInter::write_text(fh, txt);
 
-@ A symbols table resource is |SYMBOLS_TABLE_IRSRC| followed by a list of records,
+@ A symbols table resource is `SYMBOLS_TABLE_IRSRC` followed by a list of records,
 one for each symbol:
 = (text)
 	word	ID within the symbols table (always SYMBOL_BASE_VAL or greater, so nonzero)
-	word	symbol type (one of the |*_ISYMT| values)
+	word	symbol type (one of the `*_ISYMT` values)
 	word	persistent flags
 	text	identifier of the symbol
 	table	annotations table (see below)
@@ -568,10 +568,10 @@ one for each symbol:
 	BinaryInter::write_word(fh, 0);
 
 @ The annotations table for a single symbol begins with a word in the form
-|(bm << 6) + n|, where |bm| is the bitmap of its boolean annotations, and |n|
+`(bm << 6) + n`, where `bm` is the bitmap of its boolean annotations, and `n`
 is the number of non-boolean ones it has -- which might be 0.
 
-This word is then followed by |n| pairs:
+This word is then followed by `n` pairs:
 = (text)
 	word	non-boolean annotation ID
 	word	non-boolean annotation value
@@ -608,7 +608,7 @@ The meaning of the value depends on the annotation type.
 		}
 	}
 
-@ A package resource is |PACKAGE_REF_IRSRC| followed by:
+@ A package resource is `PACKAGE_REF_IRSRC` followed by:
 = (text)
 	word	warehouse ID of parent package, or 0 for the root package
 	word	persistent package flags
@@ -617,7 +617,7 @@ The meaning of the value depends on the annotation type.
 =
 The name isn't used much here, and it's arguably wasteful to store it: the
 alternative would be to use some further flags marking the identity of certain
-special packages (such as |connectors|). But having the names of packages be
+special packages (such as `connectors`). But having the names of packages be
 easy to determine from the binary Inter file seems no bad thing, and it doesn't
 consume so very many extra bytes. Package names are short and compress well.
 
@@ -657,7 +657,7 @@ consume so very many extra bytes. Package names are short and compress well.
 	BinaryInter::write_word(fh, P->package_scope->resource_ID);
 	BinaryInter::write_text(fh, InterPackage::name(P));
 
-@ A node list resource consists only of the word |NODE_LIST_IRSRC|, with no
+@ A node list resource consists only of the word `NODE_LIST_IRSRC`, with no
 further data. That's because node lists are built fresh as instructions are
 read in. So on writing we need do nothing, and on reading, we only need to
 create the empty node list.
@@ -672,11 +672,11 @@ create the empty node list.
 
 @ Now for the symbol wiring block. This has to be here, after all the symbols
 tables and packages have been made, so that cross-references can be sorted out.
-The block records all pairs |S1| and |S2| such that |S1 ~~> S2|; note that it
+The block records all pairs `S1` and `S2` such that `S1 ~~> S2`; note that it
 does not record wirings to names, only wirings to symbols.
 
 Rather than storing these pairs in no order, we group them by the origin table,
-that is, by the symbols table holding |S1|. So the block consists of one record
+that is, by the symbols table holding `S1`. So the block consists of one record
 for each table which needs to make some wirings:
 = (text)
 	word	warehouse ID of symbols table holding S1
@@ -690,7 +690,7 @@ ID: see //The Warehouse//. The sub-table of wirings is then a sequence of these:
 		word	symbol ID in that table of S2
 =
 Again, this is null-terminated, which is safe since all symbol IDs are at least
-|SYMBOL_BASE_VAL|, a huge number.
+`SYMBOL_BASE_VAL`, a huge number.
 
 @<Read the symbol wirings@> =
 	unsigned int S1_table_ID = 0;
@@ -794,14 +794,14 @@ void BinaryInter::frame_writer(inter_tree *I, inter_tree_node *P, void *state) {
 @ That just leaves the process of correction. We do two things:
 
 - Transposition: this means correcting all references to warehouse IDs in the
-old tree into references to those in the new, by performing |id = grid[id]|.
+old tree into references to those in the new, by performing `id = grid[id]`.
 We cannot do this without knowing which words in the bytecode are warehouse IDs,
 though, so we must call a method of the construct for the instruction.
 
 - Verification: also construct-specific, also done via a method call, this not
 only performs sanity checks on the bytecode for the instruction but also
 completes the process of embedding the instruction by, for example, setting
-the definition of any symbol created in the instruction to |P|.
+the definition of any symbol created in the instruction to `P`.
 
 @<Correct and verify the frame@> =
 	inter_error_message *E = NULL;

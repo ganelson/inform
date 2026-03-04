@@ -8,12 +8,12 @@ properties, and can have inferences drawn about them: see //Instance Subjects//.
 
 Most instances are created by assertions in the source text. For example:
 
->> Colour is a kind of value. The colours are red, blue and green.
+> Colour is a kind of value. The colours are red, blue and green.
 
 creates three instances: "red", "blue" and "green", which enumerate the
 possible range of "colour". Objects are instances too:
 
->> Peter carries a blue ball.
+> Peter carries a blue ball.
 
 "Peter" and "blue ball" are initially created as instances of the kind "object",
 but will later be deduced to be of kind "person" and "thing" respectively.
@@ -26,7 +26,7 @@ changed to a subkind of its current kind) after creation: see //Instances::set_k
 but these are hard-wired into Inform and are not instances, because "truth state"
 is not an enumeration.
 
-@ Note that the kind is not explicitly stored in the |instance| structure: it
+@ Note that the kind is not explicitly stored in the `instance` structure: it
 has to be deduced from the position of the instance's subject in the subjects
 hierarchy. See //Instances::to_kind//.
 
@@ -177,7 +177,7 @@ source_file *Instances::get_creating_file(instance *I) {
 @h Coincidence with property names.
 Suppose, as always, we have:
 
->> Colour is a kind of value. The colours are red, white and blue. A door has a colour.
+> Colour is a kind of value. The colours are red, white and blue. A door has a colour.
 
 The third sentence causes the following to be called, for the kind "colour"
 and the property "colour", whose names coincide:
@@ -195,7 +195,7 @@ are covered by suitable adjectives. For instance, "red" must be registered
 as an adjectival constant to cover doors. We will call this again if a further
 use of colour turns up subsequently, e.g., in response to:
 
->> A vehicle has a colour.
+> A vehicle has a colour.
 
 =
 void Instances::update_adjectival_forms(property *P) {
@@ -212,7 +212,7 @@ void Instances::update_adjectival_forms(property *P) {
 specifying colour. And we will also call this if a further instance of colour
 turns up subsequently, e.g., in response to
 
->> Mauve is a colour.
+> Mauve is a colour.
 
 =
 void Instances::register_as_adjectival_constant(instance *I, property *P) {
@@ -227,7 +227,7 @@ void Instances::register_as_adjectival_constant(instance *I, property *P) {
 By this of course we mean the most specific kind to which an instance
 belongs: if we write
 
->> Kathy is a woman.
+> Kathy is a woman.
 
 then the Kathy instance is also a person, a thing, an object and a value,
 but when we talk about the kind of Kathy, we mean "woman".
@@ -406,7 +406,7 @@ void Instances::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	instance *I = (instance *) vI;
 	if (I == NULL) WRITE("nothing");
 	else switch (format_string[0]) {
-		case 'I': /* bare |%I| means the same as |%+I|, so fall through to... */
+		case 'I': /* bare `%I` means the same as `%+I`, so fall through to... */
 		case '+': @<Write the instance raw@>; break;
 		case '-': @<Write the instance with normalised casing@>; break;
 		case '~': {

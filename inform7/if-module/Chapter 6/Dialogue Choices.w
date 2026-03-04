@@ -248,7 +248,7 @@ int DialogueChoices::flow_direction(dialogue_choice *dc) {
 	step through and stop |                           ==> { STEP_THROUGH_AND_STOP_DSEL, - }
 	or                                                ==> { OR_DSEL, - }
 
-@ Each choice produces an instance of the kind |dialogue choice|, using the name
+@ Each choice produces an instance of the kind `dialogue choice`, using the name
 given in its clauses if one was.
 
 @<Add the choice to the world model@> =

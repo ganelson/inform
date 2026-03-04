@@ -139,12 +139,9 @@ variable, by inheritance. So fundamental subjects have their uses.<a href="#fnre
 These subjects form a hierarchy.<sup id="fnred:2"><a href="#fn:2" rel="footnote">1</a></sup> I &quot;inherits from&quot; J if a fact about J
 is necessarily also a fact about I, unless directly contradicted by specific
 information about I. For example,</p>
-</div>
 <blockquote>
-    <p>The plastic bag is a container. A container is usually opaque. The bag is transparent.</p>
+<p>The plastic bag is a container. A container is usually opaque. The bag is transparent.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The inference subject for the bag inherits from that for the container, so
 without that final sentence, the bag would have been opaque.</p>
 <p>Each subject has a link to the narrowest subject which is broader than it is.
@@ -201,12 +198,12 @@ one and only subject with no broader subject:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">represents</span><span class="plain-syntax">; </span><span class="comment-syntax">/* family-specific data */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">additional_data_for_features</span><span class="plain-syntax">[</span><span class="identifier-syntax">MAX_COMPILER_FEATURES</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* and managed by those features */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* contingently true: each |inference| drawn about this */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">imp_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* necessarily true: each |implication| applying to this  */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* contingently true: each <code>inference</code> drawn about this */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">imp_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* necessarily true: each <code>implication</code> applying to this  */</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">permissions_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |property_permission| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">permissions_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>property_permission</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">assemblies_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">assemblies</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what generalisations have been made about this? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alias_variable</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the way that "player" aliases "yourself" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alias_variable</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the way that &quot;player&quot; aliases &quot;yourself&quot; */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_created_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which sentence created this */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_name_in_log</span><span class="plain-syntax">; </span><span class="comment-syntax">/* solely to make the debugging log more legible */</span>
@@ -640,7 +637,7 @@ returning a pointer to it.</p>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  Then, to access that same data, the following -- though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
 the features from the <a href="../if-module/index.html" class="internal">if</a> module are concerned only with instances -- rooms
-and doors, say -- so <code>DATA_ON_INSTANCE</code>_PCALL pays its way.</p>
+and doors, say -- so <code>DATA_ON_INSTANCE_PCALL</code> pays its way.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT(name,</span> <span class="identifier-syntax">S</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    ((</span><span class="identifier-syntax">name</span><span class="plain-syntax">##</span><span class="identifier-syntax">_data</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">S</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">additional_data_for_features</span><span class="plain-syntax">[</span><span class="identifier-syntax">name</span><span class="plain-syntax">##</span><span class="identifier-syntax">_feature</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">])</span>

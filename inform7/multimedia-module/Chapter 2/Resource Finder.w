@@ -10,8 +10,8 @@ internal data files. When Inform reads a sentence such as:
 =
 it needs to find this file, which will either be in the materials for the
 project, or in materials for the extension in which this sentence occurs
-(if it occurs in an extension). In either case, it'll be in the |Sounds|
-subdirectory. Here |"Sounds"| is what we will call the department name for
+(if it occurs in an extension). In either case, it'll be in the `Sounds`
+subdirectory. Here `"Sounds"` is what we will call the department name for
 sound effects.
 
 This code was introduced as part of the implementation of IE-0001, and for
@@ -21,7 +21,7 @@ the first time throws problem messages if named resources do not exist.
 int check_resources_are_present = TRUE;
 
 void ResourceFinder::set_mode(int val) {
-	check_resources_are_present = val; /* set by |-resource-checking| at command line */
+	check_resources_are_present = val; /* set by `-resource-checking` at command line */
 }
 
 filename *ResourceFinder::find_resource(text_stream *department, text_stream *leaf, wording W) {
@@ -52,12 +52,12 @@ filename *ResourceFinder::find_resource(text_stream *department, text_stream *le
 	return NULL;
 }
 
-@ So here we're reading the line from an extension, say |Leipzig Organ Recitals|.
+@ So here we're reading the line from an extension, say `Leipzig Organ Recitals`.
 We first look for an audio file called something like
-|Leipzig Organ Recitals-v1/Materials/Sounds/Passacaglia.aiff|. If that exists, then we
+`Leipzig Organ Recitals-v1/Materials/Sounds/Passacaglia.aiff`. If that exists, then we
 know this is a resource which the extension provides; but we still give the 
 project a chance to override that with a file
-|Project.materials/Sounds/Leipzig Organ Recitals/Passacaglia.aiff|,
+`Project.materials/Sounds/Leipzig Organ Recitals/Passacaglia.aiff`,
 which would be used in preference.
 
 @<Look for an extension resource@> =
@@ -73,7 +73,7 @@ which would be used in preference.
 @ Otherwise the resource is not provided by the extension in which the sentence
 occurs, or else, the sentence does not occur in an extension. (Of course, this is
 by far the most likely thing.) Here we just look in the project's materials folder,
-so for example |Project.materials/Sounds/Passacaglia.aiff|.
+so for example `Project.materials/Sounds/Passacaglia.aiff`.
 
 @<Look for a regular materials resource@> =
 	filename *F = Filenames::in(materials_dept, leaf);

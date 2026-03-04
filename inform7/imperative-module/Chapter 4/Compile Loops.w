@@ -5,8 +5,8 @@ To compile loop headers from a range of values expressed by a proposition.
 @h Domains of loops.
 This function ccmpiles the header (and in effect therefore the structure)
 of a loop through all values $x$ such that $\phi(x)$ is true, where $\phi$
-is the proposition inside the description |desc|. The loop variable will
-be |v1|.
+is the proposition inside the description `desc`. The loop variable will
+be `v1`.
 
 =
 void CompileLoops::through_matches(parse_node *spec, local_variable *v1) {
@@ -32,15 +32,15 @@ ability to move quickly to the next object in a given kind. This requires a
 loop construction a little too complex for a schema, so we generate the code
 by hand.
 
-In fact we secretly make a second loop variable |v2| as well, though it is
+In fact we secretly make a second loop variable `v2` as well, though it is
 invisible from source text, and construct a loop analogous to:
 = (text)
 	for (v1=D(0), v2=D(v1); v1; v1=v2, v2=D(v1))
 =
-where |D| is a function deferred from the proposition which is such that:
+where `D` is a function deferred from the proposition which is such that:
 
-- |D(0)| produces the first $x$ such that $\phi(x)$, and otherwise
-- |D(x)| produces either the next match after $x$, or 0 to indicate that
+- `D(0)` produces the first $x$ such that $\phi(x)$, and otherwise
+- `D(x)` produces either the next match after $x$, or 0 to indicate that
 there are no further matches.
 
 This arrangement is possible because object values, and enumerated values, are
@@ -50,13 +50,13 @@ The reason we do not simply compile
 = (text)
 	for (v1=D(0); v1; v1=D(v1))
 =
-is to protects us in case the body of the loop takes action which moves |v1| out
+is to protects us in case the body of the loop takes action which moves `v1` out
 of the domain -- e.g., in the case of:
 = (text as Inform 7)
 	repeat with T running through items on the table:
 		now T is in the box.
 =
-This is the famous "broken |objectloop|" hazard of Inform 6. Experience shows
+This is the famous "broken `objectloop`" hazard of Inform 6. Experience shows
 that authors value safety over the slight speed overhead incurred.
 
 @<Exploit the runtime representation of objects@> =
@@ -160,8 +160,8 @@ We can optimise out the "if" part in the case when $\phi(x) = {\it kind}_K(x)$.
 		"running through numbers' because numbers are without end.");
 	Problems::issue_problem_end();
 
-@ Here we compile code to call |D(v)|, on the variable |fromv|, or |D(0)| if
-|fromv| is |NULL|. As in //Deciding to Defer//, we are forced to call |D| as
+@ Here we compile code to call `D(v)`, on the variable `fromv`, or `D(0)` if
+`fromv` is `NULL`. As in //Deciding to Defer//, we are forced to call `D` as
 a multipurpose description function if it is not known at compile time; but
 we can more efficiently defer for this single purpose if it is.
 
@@ -205,8 +205,8 @@ void CompileLoops::iterate(parse_node *spec, local_variable *fromv) {
 }
 
 @h Loop schemas over a whole kind.
-If |K| is a kind, this function generates a schema for a loop over all instances
-of the kind, or returns |FALSE| if that is impossible or unreasonable.
+If `K` is a kind, this function generates a schema for a loop over all instances
+of the kind, or returns `FALSE` if that is impossible or unreasonable.
 
 In the situation above, this function was needed only for non-object kinds; but
 other parts of Inform also use it, so it needs to work for object kinds too.
@@ -258,11 +258,11 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 This is a quite different kind of loop: for iterating through the members of
 a list (whose contents are not known at compile time).
 
-We need three variables, of which only |val_var| is visible in source text:
+We need three variables, of which only `val_var` is visible in source text:
 
-- |index_var_s| is the position in the list -- 0, 1, 2, ...;
-- |val_var_s| is the entry at that position;
-- |copy_var_s| is the list itself -- which we stash into this temporary
+- `index_var_s` is the position in the list -- 0, 1, 2, ...;
+- `val_var_s` is the entry at that position;
+- `copy_var_s` is the list itself -- which we stash into this temporary
 variable to avoid having to evaluate it more than once.
 
 =

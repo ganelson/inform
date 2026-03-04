@@ -31,7 +31,7 @@ Inline definitions are written in a highly annotated and marked-up version of
 Inform 6 notation, but are not actually I6 code.
 
 That second example is a case where the definition has a "back" as well as a
-"front". All definitions have a front; only if the text contains a |{-block}|
+"front". All definitions have a front; only if the text contains a `{-block}`
 marker is there a back as well. The front is the material up to the marker, the
 back is the material after it. The idea, of course, is that for inline
 definitions of control structures involving blocks of code, we compile the
@@ -88,9 +88,9 @@ int CSIInline::csi_inline(value_holster *VH, parse_node *inv, source_location *w
 }
 
 @ The 10 variable registers hold the identities of local variables created inside
-the inline definition using |{-my:0}| to |{-my:9}|: they're |NULL| until used, and
-are mostly not used. The "repeat" example above uses |{-my:1}|, |{-my:2}|, and
-|{-my:3}|, but leaves the others null. Most definitions use none of them.
+the inline definition using `{-my:0}` to `{-my:9}`: they're `NULL` until used, and
+are mostly not used. The "repeat" example above uses `{-my:1}`, `{-my:2}`, and
+`{-my:3}`, but leaves the others null. Most definitions use none of them.
 
 @<Initialise the CSI state@> =
 	CSIS.where_from = where_from;
@@ -125,7 +125,7 @@ When play begins:
 =
 This will end horribly unless 26201 happens to be a valid object number, and it
 almost certainly is not. But the Inform compiler throws no problem message, because
-the code is legal. See the discussion of |{-initialise:...}| for how to deal with
+the code is legal. See the discussion of `{-initialise:...}` for how to deal with
 this issue.
 
 @<Create any new local variables explicitly called for@> =
@@ -159,7 +159,7 @@ this issue.
 		}
 	}
 
-@ As we will see (in the discussion of |{-my:...}| below), any variables made
+@ As we will see (in the discussion of `{-my:...}` below), any variables made
 as scratch values for the invocation are deallocated as soon as we're finished,
 unless a code block is opened: if it is, then they're deallocated when it ends.
 
@@ -180,13 +180,13 @@ void CSIInline::csi_inline_back(inter_schema *back, csi_state *CSIS) {
 We can now forget about fronts and backs, and work on expanding a single
 inline definition into a single stream.
 
-We do this by calling the very powerful |EmitInterSchemas::emit| function,
+We do this by calling the very powerful `EmitInterSchemas::emit` function,
 which parses the schema and calls us back to do something at each point in it.
 In particular, it calls //CSIInline::from_schema_token// on each "token" of
 the schema, and calls //CSIInline::from_source_text// on any material enclosed
-in |(+ ... +)| notation.
+in `(+ ... +)` notation.
 
-|CSIS| is passed to this function as our "opaque state" -- meaning that it is
+`CSIS` is passed to this function as our "opaque state" -- meaning that it is
 passed through unchanged to our callback functions, and means that the code
 below can share some private state variables.
 
@@ -200,7 +200,7 @@ void CSIInline::from_schema(parse_node *from, inter_schema *sch, csi_state *CSIS
 	}
 }
 
-@ So we now have to write the function compiling code to implement |ist|.
+@ So we now have to write the function compiling code to implement `ist`.
 See //building: Inter Schemas// for a specification of Inter schema tokens,
 but roughly speaking each is either a command or a "bracing".
 
@@ -229,10 +229,10 @@ void CSIInline::from_schema_token(value_holster *VH,
 }
 
 @h Bracings for tokens.
-For example, if the phrase prototype is |print (something to say - text)|, then the
-bracing |{something to say}| refers to the token value at that point.
+For example, if the phrase prototype is `print (something to say - text)`, then the
+bracing `{something to say}` refers to the token value at that point.
 
-Such tokens can also be "annotated" with commands. |{-by-reference:something to say}|
+Such tokens can also be "annotated" with commands. `{-by-reference:something to say}`
 means the same but indicates that it should be compiled without copying.
 
 Lastly, though this is much less common, the bracing can compile to the bitmap value
@@ -313,7 +313,7 @@ charlatans" and what they "deserve". I'm a better person now.
 		}
 	}
 
-@ At this point, the bracing text is the name of token number |tok|. Usually
+@ At this point, the bracing text is the name of token number `tok`. Usually
 we compile the value of that argument as drawn from the tokens packet, but
 the presence of annotations can change what we do.
 
@@ -405,7 +405,7 @@ copy and using that instead. This means a definition like:
 To zap (L - a list of numbers):
 	(- Zap({-by-reference:L}, 10); -).
 =
-will call |Zap| on the actual list supplied to it. If |Zap| chooses to change
+will call `Zap` on the actual list supplied to it. If `Zap` chooses to change
 this list, the original will change.
 
 @<Inline annotation "by-reference"@> =
@@ -426,7 +426,7 @@ this list, the original will change.
 
 @ This is a variant which checks that the reference is to an lvalue, that is,
 to something which can be changed. If this weren't done, then
-|remove 2 from {1, 2, 3}| would compile without problem messages, though it
+`remove 2 from {1, 2, 3}` would compile without problem messages, though it
 would behave pretty oddly at run-time.
 
 @<Inline annotation "lvalue-by-reference"@> =
@@ -448,7 +448,7 @@ way to make it come true rather than to test it.
 	CompileBlocksAndLines::compile_a_now(XW);
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
-@ This is used only for compiling down to the |box| statement in I6, which has
+@ This is used only for compiling down to the `box` statement in I6, which has
 slightly different textual requirements than regular text. We could get rid of
 this by making a kind for box-quotation-text, and casting regular text to it,
 but honestly having this annotation seems the smaller of the two warts.
@@ -477,11 +477,11 @@ of "decide on ...", which is:
 	(- return {-return-value:something}; -)
 =
 We clearly need to police this: if the phrase is deciding a number, we need to
-object to |decide on "fish fingers"|.
+object to `decide on "fish fingers"`.
 
 That's one purpose of this annotation: it checks the value to see if it's suitable
 to be returned. But we also might have to cast the value, or check that it's valid
-at run-time. For instance, in a phrase to decide a container, given |decide on the item|
+at run-time. For instance, in a phrase to decide a container, given `decide on the item`
 we may need to check "item" at run-time: at compile-time we know it's an object,
 but not necessarily that it's a container.
 
@@ -783,7 +783,7 @@ We'll start with a suite of details about kinds:
 	if (C == object_kind_ISINC)      @<Inline command "object-kind"@>;
 
 @ The following produces a new value of the given kind. If it's stored as a
-word value, this will just be the default value, so |{-new:time}| will output
+word value, this will just be the default value, so `{-new:time}` will output
 540, that being the Inform 6 representation of 9:00 AM. If it's a block value,
 we compile code which creates a new value stored on the heap. This comes into
 its own when kind variables are in play.
@@ -891,7 +891,7 @@ proposition.
 
 @h Typographic commands.
 These rather clumsy commands are a residue from earlier forms of the markup
-language, really. |{-open-brace}| and |{-close-brace}| are handled for us
+language, really. `{-open-brace}` and `{-close-brace}` are handled for us
 elsewhere, so we need do nothing. The other two have actually been withdrawn.
 
 @<Expand a bracing containing a typographic command@> =
@@ -938,7 +938,7 @@ which should be supplied as the argument. For example:
 =
 generates the current label in the "pineapple" set. (Sets don't need to be
 declared: they can be mentioned the first time they are used.) These label
-names take the form |L_pineapple_0|, |L_pineapple_1|, and so on; each named
+names take the form `L_pineapple_0`, `L_pineapple_1`, and so on; each named
 set has its own counter (0, 1, 2, ...). So this inline definition works
 safely:
 = (text)
@@ -998,7 +998,7 @@ useful trick is to allocate storage at run-time. Invoking
 	{-counter-makes-array:pineapple}
 =
 at any time during compilation (once or many times over, it makes no
-difference) causes Inform to generate an array called |I7_ST_pineapple|
+difference) causes Inform to generate an array called `I7_ST_pineapple`
 guaranteed to contain one entry for each counter value reached. Thus:
 = (text as Inform 7)
 To remember (N - a number) for later: ...
@@ -1027,7 +1027,7 @@ made with different numbers here, the maximum is taken.)
 @h High-level commands.
 This category is intended for powerful and flexible commands, allowing for
 invocations which behave like control statements in other languages. (See
-also |{-block}| above, though that is syntactically a divider rather than
+also `{-block}` above, though that is syntactically a divider rather than
 a command, which is why it isn't here.)
 
 @<Expand a bracing containing a high-level command@> =
@@ -1043,7 +1043,7 @@ a command, which is why it isn't here.)
 	if (C == say_ISINC)                     @<Inline command "say"@>;
 	if (C == show_me_ISINC)                 @<Inline command "show-me"@>;
 
-@ The |{-my:name}| command creates a local variable for use in the invocation,
+@ The `{-my:name}` command creates a local variable for use in the invocation,
 and then prints the variable's name. (If the same variable is created twice,
 the second time it's simply printed.)
 
@@ -1074,8 +1074,8 @@ the ones we create will be different from those made by any other invocation
 			CodeBlocks::set_scope_to_block_about_to_open(lvar);
 	}
 
-@ The second form is simpler. |{-my:1}| and such make locals with names like
-|tmp_3|, which we have no control over. Here we get to make a local with
+@ The second form is simpler. `{-my:1}` and such make locals with names like
+`tmp_3`, which we have no control over. Here we get to make a local with
 exactly the name we want. This can't be reallocated, of course; it's there
 throughout the routine, so there's no question of setting its scope. For example:
 = (text as Inform 7)
@@ -1084,7 +1084,7 @@ To be warned:
 To decide if we have been warned:
 	(- ({-my:warn}) -).
 =
-The net result here is that if either phrase is used, then |warn| becomes a
+The net result here is that if either phrase is used, then `warn` becomes a
 local variable. The second phrase tests if the first has been used.
 
 Nothing, of course, stops some other invocation from using a variable of
@@ -1095,7 +1095,7 @@ why the numbered scheme above is mostly better.
 	lvar = LocalVariables::new_internal(ist->operand);
 	@<Set the kind of the new variable@>;
 
-@ Finally, it's possible to set the I7 kind of a variable created by |{-my:...}|,
+@ Finally, it's possible to set the I7 kind of a variable created by `{-my:...}`,
 though there are hardly any circumstances where this is necessary, since Inter
 is typeless. But in a few cases where I7 is embedded inside Inter inside I7,
 or when a block value is needed, or where we need to match against descriptions
@@ -1115,7 +1115,7 @@ or when a block value is needed, or where we need to match against descriptions
 @ Variables created by phrases are by default protected from being changed
 by other phrases. So that, for example, within:
 
->> repeat with X running from 1 to 5:
+> repeat with X running from 1 to 5:
 
 it's a problem message to say something like "let X be 7". This protection
 only extends to changes made at the I7 source text level, of course; our own
@@ -1123,9 +1123,9 @@ I6 code can do anything it likes. Protection looks like a good idea,
 especially for loop counters like X, but of course it would make phrases
 like:
 
->> let Y be 2;
+> let Y be 2;
 
-unable to make variables, only constants. So the |{-unprotect:...}| command
+unable to make variables, only constants. So the `{-unprotect:...}` command
 lifts the protection on the variable named:
 
 @<Inline command "unprotect"@> =
@@ -1137,11 +1137,11 @@ lifts the protection on the variable named:
 	else @<Issue a no-such-local problem message@>;
 	return;
 
-@ Something to be careful of is that a variable created with |{-my:...}|,
+@ Something to be careful of is that a variable created with `{-my:...}`,
 or indeed a variable created explicitly by the phrase, may not begin with
 contents which are typesafe for the kind you intend it to hold. Usually this
 doesn't matter because it is immediately written with some value which is
-indeed typesafe, and there's no problem. But if not, |{-initialise:var:kind}|
+indeed typesafe, and there's no problem. But if not, `{-initialise:var:kind}`
 takes the named local variable and gives it the default value for that kind.
 If the kind is omitted, the default is to use the kind of the variable. For example,
 = (text)
@@ -1161,17 +1161,17 @@ in this program:
 		let C be a cat;
 		...
 =
-...it is legal to construct the variable |C| with kind |cat|, even though there
-are no cats in the world, so that a call to |DefaultValues::val| would
-generate a problem message. But we call |DefaultValues::val_allowing_nothing|
-instead, so that |C| is created but with the value |nothing|.
+...it is legal to construct the variable `C` with kind `cat`, even though there
+are no cats in the world, so that a call to `DefaultValues::val` would
+generate a problem message. But we call `DefaultValues::val_allowing_nothing`
+instead, so that `C` is created but with the value `nothing`.
 
 This would be easier to understand if Inform's kinds system supported "optionals".
 In the Swift language, for example, there would be a clear distinction between
-the types |Cat| (runtime values must be instances of cat) and |Cat?| (runtime
-values must be instances of cat or else |nothing|). In Inform, cat-valued global
-variables and properties have the type |Cat|, but cat-valued locals have the
-type |Cat?|. We do this to make it more convenient to write functions about
+the types `Cat` (runtime values must be instances of cat) and `Cat?` (runtime
+values must be instances of cat or else `nothing`). In Inform, cat-valued global
+variables and properties have the type `Cat`, but cat-valued locals have the
+type `Cat?`. We do this to make it more convenient to write functions about
 cats which will compile whether or not any cats exist; an extension might provide
 such functions, for example, providing functionality which is only used if cats
 do exist, but which should still compile without errors even if they do not.
@@ -1216,7 +1216,7 @@ do exist, but which should still compile without errors even if they do not.
 	}
 	return;
 
-@ The |{-copy:...}| command allows us to copy the content in a token or variable
+@ The `{-copy:...}` command allows us to copy the content in a token or variable
 into any storage item (a local variable, a global, a table entry, a list entry),
 regardless of its kind of value. For example:
 = (text as Inform 7)
@@ -1224,14 +1224,14 @@ To let (t - nonexisting variable) be (u - value) (assignment operation):
 	(- {-unprotect:t}{-copy:t:u} -).
 =
 This may look superfluous: for example, in response to "let X be 10" it generates
-code equivalent to |tmp_0 = 10;|, which could have been achieved equally well with:
+code equivalent to `tmp_0 = 10;`, which could have been achieved equally well with:
 = (text)
 	(- {-unprotect:t}{t} = {u}; -)
 =
 But it makes something much more elaborate in response to, say, "let Y be the
 list of people in dark rooms", where it's important to keep track of the allocation
 and deallocation of dynamic lists, since Y is a block value. The point of the
-|{-copy:to:from}| command is to hide all that complexity from the definition.
+`{-copy:to:from}` command is to hide all that complexity from the definition.
 
 @<Inline command "copy"@> =
 	int copy_form = 0;
@@ -1253,16 +1253,16 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 	DISCARD_TEXT(prototype)
 	return;
 
-@ If the |from| part is prefaced with a plus sign |+|, the new value is added
-to the current value rather than replacing it; if |-|, it's subtracted. For
+@ If the `from` part is prefaced with a plus sign `+`, the new value is added
+to the current value rather than replacing it; if `-`, it's subtracted. For
 example,
 = (text as Inform 7)
 To increase (S - storage) by (w - value) (assignment operation):
 	(- {-copy:S:+w} -).
 =
-Lastly, it's also legal to write just a |+| or |-| sign alone, which increments
-or decrements. But be wary here, because |{-copy:S:+}| adds 1 to S, whereas
-|{-copy:S:+1}| adds the value of the variable {-my:1} to S.
+Lastly, it's also legal to write just a `+` or `-` sign alone, which increments
+or decrements. But be wary here, because `{-copy:S:+}` adds 1 to S, whereas
+`{-copy:S:+1}` adds the value of the variable {-my:1} to S.
 
 @<Find what we are copying from, to and how@> =
 	TEMPORARY_TEXT(from_p)
@@ -1290,7 +1290,7 @@ or decrements. But be wary here, because |{-copy:S:+}| adds 1 to S, whereas
 	}
 	DISCARD_TEXT(from_p)
 
-@ Use of |{-copy:...}| will produce problem messages if the target is a protected
+@ Use of `{-copy:...}` will produce problem messages if the target is a protected
 local variable, or a global which isn't allowed to change in play (such as the
 story title).
 
@@ -1360,9 +1360,9 @@ There are two forms according to which domain is implied.
 
 @ The next command generates code able to test if a token in the invocation,
 or an Inter variable, matches a given description -- which need not be constant.
-For example, if the phrase prototype includes the token |(OS - description of objects)|
-then the bracing |{-matches-description:1:OS}| compiles a condition testing whether
-the object in variable |{-my:1}| matches the description or not.
+For example, if the phrase prototype includes the token `(OS - description of objects)`
+then the bracing `{-matches-description:1:OS}` compiles a condition testing whether
+the object in variable `{-my:1}` matches the description or not.
 
 @<Inline command "matches-description"@> =
 	parse_node *to_match =
@@ -1426,7 +1426,7 @@ variable matches the given description.
 
 @ This prints a token or variable using the correct format for its kind. The
 code below optimises this so that constant text is printed directly, rather
-than stored as a constant text value and printed by a call to |TEXT_TY_Say|:
+than stored as a constant text value and printed by a call to `TEXT_TY_Say`:
 this saves 2 words of memory and a function call at print time. But the
 result would be the same without the optimisation.
 
@@ -1719,7 +1719,7 @@ Two ways. First, as an identifier name, which stands for a local Inter variable
 or for a token in the phrase being invoked. There are three ways we can
 write this:
 
-- the operands "0" to "9", a single digit, mean the |{-my:...}| variables
+- the operands "0" to "9", a single digit, mean the `{-my:...}` variables
 with those numbers, if they exist;
 - otherwise if we have the name of a token in the phrase being invoked,
 then the operand refers to its value in the current invocation;
@@ -1787,7 +1787,7 @@ kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand,
 @h Bracket-plus notation.
 An early compromise measure in the design of Inform 7, when the language was not
 as expressive as it is today, was that "template files" of Inform 6 code, and
-inline phrase definitions, could use the notation |(+ ... +)| to reinsert
+inline phrase definitions, could use the notation `(+ ... +)` to reinsert
 high-level Inform 7 source text inside lower-level Inform 6 notation. Thus, for
 example,
 = (text)
@@ -1799,7 +1799,7 @@ This is not (yet) deprecated, but is inelegant, and is used very little in Infor
 standard distribution. Requests to extend its abilities are very unlikely to be
 heeded: it is more likely that we will curtail or abolish it.
 
-The source text inside the |(+| and |+)| markers is evaluated as an expression,
+The source text inside the `(+` and `+)` markers is evaluated as an expression,
 rather than in void context, except that property names evaluate as nouns
 referring to the property in the abstract rather than as conditions testing
 those properties. Names of kinds of object (only) evaluate to Inter class
@@ -1812,7 +1812,7 @@ void CSIInline::from_source_text(value_holster *VH, text_stream *p, void *opaque
 }
 
 @ This case, where orthodox compilation is happening, is more tolerable. Run the
-test case |BracketPlus| to exercise every part of this function.
+test case `BracketPlus` to exercise every part of this function.
 
 =
 void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {

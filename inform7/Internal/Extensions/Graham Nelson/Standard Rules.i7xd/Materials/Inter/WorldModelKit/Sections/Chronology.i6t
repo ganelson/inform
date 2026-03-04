@@ -66,7 +66,7 @@ before the current action began. Such key moments -- when things are just
 about to happen -- are called "chronology points". There is a CP just
 before each action begins; there is a CP in the startup process; and there
 is a CP at the end of each turn, for good measure. CPs happen when somebody
-calls |ChronologyPoint()|. The action machinery does this directly, while
+calls `ChronologyPoint()`. The action machinery does this directly, while
 the startup CP and the CP at end of turn happen in the course of the
 update chronological records rule (below).
 
@@ -84,7 +84,7 @@ calm down again and we come to another chronology point.
 
 @h Update Chronological Records Rule.
 It might seem odd that a routine to, supposedly, update something would only
-call another routine called |TestSinglePastState|: but in this setting, any
+call another routine called `TestSinglePastState`: but in this setting, any
 test updates the state, because it changes the number of times something has
 been found true, and so on.
 
@@ -96,19 +96,19 @@ been found true, and so on.
 ];
 
 @h Test Single Past State.
-|TestSinglePastState| is called with four arguments:
-- |past_flag| is true if we want to test a condition like "if the well was
+`TestSinglePastState` is called with four arguments:
+- `past_flag` is true if we want to test a condition like "if the well was
 dry" or "if the well had been dry", which concern only the state as it was
-at the last chronology point -- in other words, the |past_chronological_record|,
-which we must not change; whereas |past_flag| is false if we want to test
+at the last chronology point -- in other words, the `past_chronological_record`,
+which we must not change; whereas `past_flag` is false if we want to test
 a present tense like "if the well is dry" or "if the well has been dry",
-because then we deal with the |present_chronological_record| which must be
+because then we deal with the `present_chronological_record` which must be
 kept continuously updated.
-- |pt| is the PT number for the condition.
-- |turn_end| is true if we are making the test at the end of a turn, as
+- `pt` is the PT number for the condition.
+- `turn_end` is true if we are making the test at the end of a turn, as
 part of the update chronological records rule, and false otherwise. (For these
 purposes the start of play is a turn end since the UCRR runs then, too.)
-- |wanted| describes what information the function should return, as
+- `wanted` describes what information the function should return, as
 detailed in its code below.
 
 @h Scheme II.
@@ -116,8 +116,8 @@ Actions discussed in the past tense -- "if we have taken the ball" or,
 more subtly, "Instead of waiting for the third turn" (which also refers
 to the past) -- are handled in a related but simpler way. Inform counts such
 references, just as with other past tense conditions above, but this time
-stores a state in two simple word arrays: |TimesActionHasHappened| and
-|TurnsActionHasBeenHappening|.
+stores a state in two simple word arrays: `TimesActionHasHappened` and
+`TurnsActionHasBeenHappening`.
 
 It might reasonably be asked why we don't simply use all of the clever
 machinery above: why have an entirely different system here? One reason is
@@ -140,18 +140,18 @@ past tense actions.)
 Actions can be quite complicated to test even in the present, and this is
 much more conveniently done in a routine with its own Inform-generated stack
 frame; so each past tense action has its own testing routine, with a name
-like |PAPR_41|, which returns true or false depending on whether the action
-is going on now. The word array |PastActionsI6Routines| then contains a
+like `PAPR_41`, which returns true or false depending on whether the action
+is going on now. The word array `PastActionsI6Routines` then contains a
 null-terminated list of these routines.
 
 @h Track Actions.
-The routine |TrackActions| then updates the two arrays, and is the
-equivalent for past tense actions of |ChronologyPoint|. It's called
-twice for each in-world action: |TrackActions(false)| just as a new
-action is about to begin, and then |TrackActions(true)| just after it
+The routine `TrackActions` then updates the two arrays, and is the
+equivalent for past tense actions of `ChronologyPoint`. It's called
+twice for each in-world action: `TrackActions(false)` just as a new
+action is about to begin, and then `TrackActions(true)` just after it
 has finished -- note in particular that if action B happens in the
 middle of action A, for instance because of a try phrase, then the
-|TrackActions(true)| call for B happens when A is back as the current
+`TrackActions(true)` call for B happens when A is back as the current
 action. In fact, that's the point: because it tells us that B was not
 the main action for the turn, but only a phase which has now passed
 again.
@@ -184,13 +184,13 @@ the opening action takes place, and that it causes a further (non-silent)
 action, say examining the lid: and suppose that the action pattern we track the
 turn count for is "examining something". Then the following calls take place:
 
-- |TrackActions(false)| while the action is "opening the box".
+- `TrackActions(false)` while the action is "opening the box".
 Turn count zeroed by rule (1).
-- |TrackActions(false)| while the action is "examining the lid".
+- `TrackActions(false)` while the action is "examining the lid".
 Turn count incremented by rule (1).
-- |TrackActions(true)| while the action is "opening the box".
+- `TrackActions(true)` while the action is "opening the box".
 Turn count zeroed by rule (2).
-- |TrackActions(true)| while the action is "opening the box".
+- `TrackActions(true)` while the action is "opening the box".
 Turn count zeroed by rule (2).
 
 Thus rule (2) prevents us from counting this turn as the first of a sequence
@@ -200,7 +200,7 @@ main action of the turn.
 A further complication is that we need to record the qualification, or not,
 even of silent actions, because testing rules like
 
->> Instead of taking the top hat less than three times...
+> Instead of taking the top hat less than three times...
 
 works by checking that (a) we are currently taking the top hat, and (b) have
 done so fewer than three times before. (b) uses the turn count described
@@ -212,18 +212,18 @@ happening in this turn, silent or not.
 And a still further complication is that out-of-world actions should never
 affect counts of turns for in-world actions. Thus,
 
->> Every turn jumping for three turns: say "A demon appears!"
+> Every turn jumping for three turns: say "A demon appears!"
 
 must not have the count to three broken by the player typing SAVE, which
 causes an out-of-world action but doesn't use a turn. The simplest way to
-deal with that would be to make |TrackActions| do nothing when |oow|
+deal with that would be to make `TrackActions` do nothing when `oow`
 is set, but then we would get rules like this wrong:
 
->> Check requesting the pronoun meanings for the first time: ...
+> Check requesting the pronoun meanings for the first time: ...
 
 because it {\it does} make sense for OOW actions to have a count of how
 many times they've happened, even though they don't occur in simulated
-time. An OOW action can cause its own |ActionCurrentlyHappeningFlag|
+time. An OOW action can cause its own `ActionCurrentlyHappeningFlag`
 to be set, but it can't cause any other action's flag to be cleared, and nor
 can it zero the turns count for another action.
 

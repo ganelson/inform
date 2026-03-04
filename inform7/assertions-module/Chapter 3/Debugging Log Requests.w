@@ -4,7 +4,7 @@ Special sentences for changing what goes into the debugging log.
 
 @ These are the special meaning functions for the sentences:
 
->> Include ... in the debugging log. Omit ... from the debugging log.
+> Include ... in the debugging log. Omit ... from the debugging log.
 
 Which have identical semantics except for the positive or negative sense.
 The object phrase has to be exactly "the debugging log", so:

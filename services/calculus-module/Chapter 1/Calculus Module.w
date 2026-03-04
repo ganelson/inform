@@ -29,7 +29,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e PREDICATE_CALCULUS_DA
 @e PREDICATE_CALCULUS_WORKINGS_DA
@@ -61,7 +61,7 @@ void CalculusModule::end(void) {
 
 @ //calculus// provides one extra annotation for the syntax tree:
 
-@e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
+@e subject_term_ANNOT /* `pcalc_term`: what the subject of the subtree was */
 
 @ =
 DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)

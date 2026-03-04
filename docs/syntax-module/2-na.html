@@ -78,9 +78,9 @@ see below).</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_level_ANNOT</span> <span class="comment-syntax">/* int: for DIALOGUE_CUE and DIALOGUE_LINE nodes, indendation level */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_during_text_w1_ANNOT</span> <span class="comment-syntax">/* |int|: first word of during scene wording */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_during_text_w1_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: first word of during scene wording */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_during_text_w2_ANNOT</span> <span class="comment-syntax">/* |int|: first word of during scene wording */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">dialogue_during_text_w2_ANNOT</span> <span class="comment-syntax">/* <code>int</code>: first word of during scene wording */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_ANNOT_NUMBER</span> <span class="plain-syntax">(</span><span class="identifier-syntax">NO_DEFINED_ANNOT_VALUES</span><span class="plain-syntax">+1)</span>
 </pre>
@@ -180,7 +180,7 @@ these must be declared before use.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node_annotation</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">annotation_id</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_ANNOT| values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">annotation_id</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_ANNOT</code> values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">annotation_integer</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if this is an integer annotation, or ... */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">annotation_pointer</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ... if it holds an object */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node_annotation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_annotation</span><span class="plain-syntax">;</span>

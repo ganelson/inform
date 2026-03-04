@@ -3,7 +3,7 @@
 Names of either-or properties when used as adjectives.
 
 @ Names of either-or properties can be used adjectivally in Inform: thus,
-"an open door", or "a transparent container". They form the |either_or_property_amf|
+"an open door", or "a transparent container". They form the `either_or_property_amf`
 family of adjectives, which we now declare.
 
 =

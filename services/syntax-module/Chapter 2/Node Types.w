@@ -4,8 +4,8 @@ Each node in a syntax tree has a type, which informs whether it can have
 child nodes, and what in general terms it means.
 
 @h Node types.
-Each node has a "node type". Some of those are defined here with |*_NT|
-names -- these are the "enumerated" node types. But every |*_MC| code,
+Each node has a "node type". Some of those are defined here with `*_NT`
+names -- these are the "enumerated" node types. But every `*_MC` code,
 as defined in the //words// module and by its clients, is also a valid
 node type. (See //words: Vocabulary//.) The following is guaranteed to
 be able to hold any node type:
@@ -15,7 +15,7 @@ be able to hold any node type:
 
 @ In practice, then, we hold node types as unsigned integers, and we will
 assume that these are at least 32 bits wide but perhaps no wider. Our
-enumerated codes all have bit 32 set, and therefore no |*_MC| can have.
+enumerated codes all have bit 32 set, and therefore no `*_MC` can have.
 
 @d ENUMERATED_NT_BASE 0x80000000
 
@@ -40,15 +40,15 @@ information about them, and here it is:
 =
 typedef struct node_type_metadata {
 	node_type_t identity;
-	struct text_stream *node_type_name; /* name such as |"HEADING_NT"| */
+	struct text_stream *node_type_name; /* name such as `"HEADING_NT"` */
 	int min_children; /* minimum legal number of child nodes */
-	int max_children; /* maximum legal number of child nodes, or |INFTY| */
-	int category; /* one of the |*_NCAT| values below */
+	int max_children; /* maximum legal number of child nodes, or `INFTY` */
+	int category; /* one of the `*_NCAT` values below */
 	int node_flags; /* bitmap of node flags */
 } node_type_metadata;
 
 @ The following categories certainly exist, and //core: Inform-Only Nodes and Annotations//
-adds further ones. The idea is that |L1_NCAT|, |L2_NCAT| and so on down are nodes
+adds further ones. The idea is that `L1_NCAT`, `L2_NCAT` and so on down are nodes
 of different "levels", with lower numbers being higher in the tree and more
 structurally significant. Categories are used to decide which nodes are allowed
 to be children of which others, thus enforcing this hierarchy.
@@ -77,7 +77,7 @@ void NodeType::make_parentage_allowed_table(void) {
 	#endif
 }
 
-@ The callback function |PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK| should
+@ The callback function `PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK` should
 call this as needed to fill in more permissions:
 
 =
@@ -94,9 +94,9 @@ the syntax module, but we'll reserve two others for use by other modules:
 @d ASSERT_NFLAG     0x00000008 /* allow this on either side of an assertion? */
 
 @ And the metadata is stored in this table, whose indexes are offset by
-|ENUMERATED_NT_BASE|. We can therefore only retrieve metadata on
-enumerated node types, not on meaning codes such as |RULE_MC|, for which
-the following function will return |NULL|.
+`ENUMERATED_NT_BASE`. We can therefore only retrieve metadata on
+enumerated node types, not on meaning codes such as `RULE_MC`, for which
+the following function will return `NULL`.
 
 =
 int any_node_types_created = FALSE;

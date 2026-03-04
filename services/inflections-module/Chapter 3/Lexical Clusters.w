@@ -7,7 +7,7 @@ or in multiple languages, which have in common that they share a meaning.
 A cluster is a linked list of declensions, annotated with linguistic roles. For
 example, the cluster of forms for the common noun "man" might be:
 
->> man (En, neuter singular), men (En, neuter plural), homme (Fr, masculine singular), hommes (Fr, masculine plural)
+> man (En, neuter singular), men (En, neuter plural), homme (Fr, masculine singular), hommes (Fr, masculine plural)
 
 We will call each of these four an "individual form" of the cluster. Each of
 the four is in turn given a declension into cases, but for English or indeed
@@ -20,7 +20,7 @@ which it would be fairly easy to convert our //lexical_cluster// objects to.
 
 =
 typedef struct lexical_cluster {
-	struct linked_list *listed; /* of |individual_form| */
+	struct linked_list *listed; /* of `individual_form` */
 	CLASS_DEFINITION
 } lexical_cluster;
 

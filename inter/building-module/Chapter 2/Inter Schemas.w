@@ -16,7 +16,7 @@ typedef struct inter_schema {
 	struct inter_schema_node *node_tree; /* the structure */
 	int mid_case; /* does this seem to be used inside a switch case? */
 	int dereference_mode; /* emit from this in dereference-pointers mode */
-	struct linked_list *parsing_errors; /* of |schema_parsing_error| */
+	struct linked_list *parsing_errors; /* of `schema_parsing_error` */
 	struct text_provenance provenance;
 	CLASS_DEFINITION
 } inter_schema;
@@ -33,8 +33,8 @@ inter_schema *InterSchemas::new(text_stream *source, text_provenance provenance)
 	return sch;
 }
 
-@ Each node has one of the following |*_ISNT| types. (For a while eliminated nodes
-were retained in the tree but given the no-op type |OH_NO_IT_ISNT|, but unfortunately
+@ Each node has one of the following `*_ISNT` types. (For a while eliminated nodes
+were retained in the tree but given the no-op type `OH_NO_IT_ISNT`, but unfortunately
 we now more efficiently remove them.)
 
 @e EXPRESSION_ISNT from 1
@@ -59,14 +59,14 @@ typedef struct inter_schema_node {
 	struct inter_schema_node *next_node;
 	int node_marked;								/* used fleetingly during traverses */
 
-	int isn_type;									/* one of the |*_ISNT| values */
-	inter_ti isn_clarifier;							/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
-	int dir_clarifier;								/* for |DIRECTIVE_ISNT| only */
-	struct inter_schema_token *expression_tokens;	/* for |EXPRESSION_ISNT| only */
+	int isn_type;									/* one of the `*_ISNT` values */
+	inter_ti isn_clarifier;							/* for `STATEMENT_ISNT` and `OPERATION_ISNT` only */
+	int dir_clarifier;								/* for `DIRECTIVE_ISNT` only */
+	struct inter_schema_token *expression_tokens;	/* for `EXPRESSION_ISNT` only */
 
-	int semicolon_terminated;						/* for |EXPRESSION_ISNT| only */
-	int unclosed;									/* for |CODE_ISNT| only */
-	int unopened;									/* for |CODE_ISNT| only */
+	int semicolon_terminated;						/* for `EXPRESSION_ISNT` only */
+	int unclosed;									/* for `CODE_ISNT` only */
+	int unopened;									/* for `CODE_ISNT` only */
 
 	int blocked_by_conditional;						/* used in code generation */
 
@@ -108,13 +108,13 @@ inter_schema_node *InterSchemas::new_node_near_node(inter_schema *sch, int isnt,
 	return isn;
 }
 
-@ Ordinarily, a |CODE_ISNT| node represents a complete block of I6 code.
+@ Ordinarily, a `CODE_ISNT` node represents a complete block of I6 code.
 For example, in
 = (text as Inform 6)
 	if (x == 1) { print "Hello!"; }
 =
 the print statement occurs inside a complete block, which will eventually
-be represented as a |CODE_ISNT|. But some inline phrase definitions leave
+be represented as a `CODE_ISNT`. But some inline phrase definitions leave
 blocks half-open. For example,
 = (text as Inform 6)
 	if (x == 1)
@@ -123,7 +123,7 @@ is a legal phrase definition: we read it as
 = (text as Inform 6)
 	if (x == 1) {
 =
-and the schema has to contain a |CODE_ISNT| marked as having been left
+and the schema has to contain a `CODE_ISNT` marked as having been left
 unclosed. Similarly, some definitions close an I6 block which is assumed
 as having been opened by an earlier phrase invocation.
 
@@ -181,7 +181,7 @@ void InterSchemas::mark_case_closed(inter_schema_node *isn) {
 	if (isn) isn->parent_schema->mid_case = TRUE;
 }
 
-@ |EXPRESSION_ISNT| nodes carry a linked list of tokens with them. When we
+@ `EXPRESSION_ISNT` nodes carry a linked list of tokens with them. When we
 begin compiling a schema, we form a single expression node with a long list
 of tokens: gradually this is transformed into a tree of nodes with more,
 but much shorter, expression nodes, and in the process most of the token
@@ -190,8 +190,8 @@ compilation process, and never survive into the final schema:
 
 @e RAW_ISTT from 1			/* something unidentified as yet */
 @e WHITE_SPACE_ISTT			/* a stretch of white space */
-@e RESERVED_ISTT			/* am I6 reserved word such as |while| */
-@e OPERATOR_ISTT			/* an I6 operator such as |-->| or |+| */
+@e RESERVED_ISTT			/* am I6 reserved word such as `while` */
+@e OPERATOR_ISTT			/* an I6 operator such as `-->` or `+` */
 @e DIVIDER_ISTT				/* a semicolon used to divide I6 statements */
 @e OPEN_ROUND_ISTT			/* open round bracket */
 @e CLOSE_ROUND_ISTT			/* close round bracket */
@@ -203,37 +203,37 @@ compilation process, and never survive into the final schema:
 
 @ Whereas these token types do make it into the compiled schema:
 
-@e IDENTIFIER_ISTT			/* an I6 identifier such as |my_var12| */
-@e OPCODE_ISTT				/* an Inform assembly language opcode such as |@pull| */
-@e DIRECTIVE_ISTT			/* an Inform compiler directive such as |#iftrue| */
+@e IDENTIFIER_ISTT			/* an I6 identifier such as `my_var12` */
+@e OPCODE_ISTT				/* an Inform assembly language opcode such as `@pull` */
+@e DIRECTIVE_ISTT			/* an Inform compiler directive such as `#iftrue` */
 @e NUMBER_ISTT				/* a constant number */
 @e BIN_NUMBER_ISTT			/* a constant number */
 @e HEX_NUMBER_ISTT			/* a constant number */
 @e REAL_NUMBER_ISTT			/* a constant number */
-@e DQUOTED_ISTT				/* a constant piece of text |"like this"| */
-@e SQUOTED_ISTT				/* a constant piece of text such as |'x'| */
-@e I7_ISTT					/* I7 material in |(+ ... +)| notation */
-@e INLINE_ISTT				/* an inline command such as |{-my:1}| */
-@e ASM_ARROW_ISTT			/* the arrow sign |->| used in assembly language only */
-@e ASM_SP_ISTT				/* the stack pointer pseudo-variable |sp| */
-@e ASM_LABEL_ISTT			/* the label sign |?| used in assembly language only */
-@e ASM_NEGATED_LABEL_ISTT   /* the label sign |?~| used in assembly language only */
+@e DQUOTED_ISTT				/* a constant piece of text `"like this"` */
+@e SQUOTED_ISTT				/* a constant piece of text such as `'x'` */
+@e I7_ISTT					/* I7 material in `(+ ... +)` notation */
+@e INLINE_ISTT				/* an inline command such as `{-my:1}` */
+@e ASM_ARROW_ISTT			/* the arrow sign `->` used in assembly language only */
+@e ASM_SP_ISTT				/* the stack pointer pseudo-variable `sp` */
+@e ASM_LABEL_ISTT			/* the label sign `?` used in assembly language only */
+@e ASM_NEGATED_LABEL_ISTT   /* the label sign `?~` used in assembly language only */
 
 =
 typedef struct inter_schema_token {
 	struct inter_schema_node *owner;			/* these form a linked list attached to the owner node */
 	struct inter_schema_token *next;
 
-	int ist_type;								/* one of the |*_ISTT| values above */
+	int ist_type;								/* one of the `*_ISTT` values above */
 	struct text_stream *material;				/* textual form of token */
 
-	inter_ti operation_primitive;				/* |OPERATOR_ISTT| only: e.g. |PLUS_BIP| for |+| */
-	int reserved_word;							/* |RESERVED_ISTT| only: which one */
-	int constant_number;						/* |NUMBER_ISTT| only: if non-negative, value of number */
-	struct inter_name *as_quoted;				/* |IDENTIFIER_ISTT| only: the identified symbol if known */
-	int inline_command;							/* |INLINE_ISTT| only: one of the |*_ISINC| values */
+	inter_ti operation_primitive;				/* `OPERATOR_ISTT` only: e.g. `PLUS_BIP` for `+` */
+	int reserved_word;							/* `RESERVED_ISTT` only: which one */
+	int constant_number;						/* `NUMBER_ISTT` only: if non-negative, value of number */
+	struct inter_name *as_quoted;				/* `IDENTIFIER_ISTT` only: the identified symbol if known */
+	int inline_command;							/* `INLINE_ISTT` only: one of the `*_ISINC` values */
 	int inline_modifiers;
-	int inline_subcommand;						/* |INLINE_ISTT| only: one of the |*_ISINSC| values */
+	int inline_subcommand;						/* `INLINE_ISTT` only: one of the `*_ISINSC` values */
 	struct text_stream *bracing;
 	struct text_stream *command;
 	struct text_stream *operand;
@@ -277,7 +277,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 	return t;
 }
 
-@ The value of |reserved_word|, in a |RESERVED_ISTT| node, must be one of:
+@ The value of `reserved_word`, in a `RESERVED_ISTT` node, must be one of:
 
 @e IF_I6RW from 1
 @e ELSE_I6RW
@@ -316,7 +316,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e ENDIF_I6RW
 @e ORIGSOURCE_I6RW
 
-@ The value of |inline_command|, in an |INLINE_ISTT| node, must be one of:
+@ The value of `inline_command`, in an `INLINE_ISTT` node, must be one of:
 
 @e no_ISINC from 1
 @e primitive_definition_ISINC
@@ -375,7 +375,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e substitute_ISINC
 @e combine_ISINC
 
-@ The value of |inline_subcommand|, in an |INLINE_ISTT| node, must be one of:
+@ The value of `inline_subcommand`, in an `INLINE_ISTT` node, must be one of:
 
 @e no_ISINSC from 1
 @e unarticled_ISINSC
@@ -599,7 +599,7 @@ void InterSchemas::log_ist(inter_schema_token *t) {
 }
 
 @h Lint.
-As can be seen, the |inter_schema| structure is quite complicated, and there
+As can be seen, the `inter_schema` structure is quite complicated, and there
 are numerous invariants it has to satisfy. As a precaution, then, we check that
 all of these invariants hold before shipping out a compiled schema. This is
 where the check is done:

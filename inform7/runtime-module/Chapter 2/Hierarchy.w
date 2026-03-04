@@ -42,18 +42,18 @@ easy to read with practice.
 
 We are going to give a series of declarations about what can go into a given
 position in the hierarchy (a "location requirement"). Each will be a block
-beginning either |H_BEGIN| or |H_BEGIN_AP|, and ending |H_END|. These can
+beginning either `H_BEGIN` or `H_BEGIN_AP`, and ending `H_END`. These can
 be nested, so we store the requirements on a stack.
 
-An |H_BEGIN(location)| block declares what can go into a position in the
-hierarchy matching the |location|.
+An `H_BEGIN(location)` block declares what can go into a position in the
+hierarchy matching the `location`.
 
-An |H_BEGIN_AP(id, name, type)| block can only be given inside another block, and
+An `H_BEGIN_AP(id, name, type)` block can only be given inside another block, and
 says that there is an "attachment position" at this location. This means that
 a family of similarly-structured packages there, and each one has the contents
-which follow. Attachment positions like |id| are numbered with the |*_HAP|
-enumeration. Names for the packages are generated using |name| (they will then
-be numbered in sequence |name_0|, |name_1| and so on), and they have |type|
+which follow. Attachment positions like `id` are numbered with the `*_HAP`
+enumeration. Names for the packages are generated using `name` (they will then
+be numbered in sequence `name_0`, `name_1` and so on), and they have `type`
 as their package type.
 
 For example, this:
@@ -65,12 +65,12 @@ For example, this:
 		H_END
 	H_END
 =
-declares that each compilation unit will have a package called |activities| of
-type |_submodule|. Inside that will be a numbered series of packages called
-|activity_0|, |activity_1|, ..., each one of type |_activity|. And inside each
-of those packages will be the ingredients specified by |...|.
+declares that each compilation unit will have a package called `activities` of
+type `_submodule`. Inside that will be a numbered series of packages called
+`activity_0`, `activity_1`, ..., each one of type `_activity`. And inside each
+of those packages will be the ingredients specified by `...`.
 
-Note that |H_BEGIN_AP| ... |H_END| blocks can be nested inside each other; in
+Note that `H_BEGIN_AP` ... `H_END` blocks can be nested inside each other; in
 principle to any depth, though as it happens we never exceed 3.
 
 @d MAX_H_REQUIREMENTS_DEPTH 10
@@ -92,18 +92,18 @@ principle to any depth, though as it happens we never exceed 3.
 @d H_END_DECLARATIONS
 	if (req_sp != 0) internal_error("hierarchy misaligned");
 
-@ So, other than |H_BEGIN_AP| ... |H_END| blocks, what can appear inside a
+@ So, other than `H_BEGIN_AP` ... `H_END` blocks, what can appear inside a
 block? The answer is that we can define four different things.
 
-@ A package can appear. |id| is the location ID, one of the |*_HL| enumerated
-values. |name| and |type| are then the package name and type.
+@ A package can appear. `id` is the location ID, one of the `*_HL` enumerated
+values. `name` and `type` are then the package name and type.
 
 @d H_PKG(id, name, type) HierarchyLocations::pkg(I, id, name, type, H_CURRENT);
 
 @ A constant can appear. Constants, like cats, have three different
-names: the |id| is one of the |*_HL| enumeration values; the |identifier| is
+names: the `id` is one of the `*_HL` enumeration values; the `identifier` is
 the identifier this constant will have within its Inter package; and the
-|translation| is the identifier that will be translated to when the Inter code
+`translation` is the identifier that will be translated to when the Inter code
 is eventually converted to, say, Inform 6 code in our final output.
 
 An important difference here is that Inter identifiers only have to be unique
@@ -111,19 +111,19 @@ within their own packages, which are in effect namespaces. But translated
 identifiers have to be unique across the whole compiled program. Several
 different strategies are used to concoct these translated identifiers:
 
-- |H_C_T| means the constant is a one-off, and the translation is the same
+- `H_C_T` means the constant is a one-off, and the translation is the same
 as the Inter identifier, unless Inform source text has intervened to change
 that translation.
-- |H_C_G| means that the constant will appear in multiple packages, and that
+- `H_C_G` means that the constant will appear in multiple packages, and that
 Inform should generate unique names for it based on the one given, e.g., by
-suffixing |_1|, |_2|, ...
-- |H_C_S| is like |H_C_G|, except that the name is taken from the parent
+suffixing `_1`, `_2`, ...
+- `H_C_S` is like `H_C_G`, except that the name is taken from the parent
 package with a suffix;
-- |H_C_P| is like |H_C_G|, except that the name is taken from the parent
+- `H_C_P` is like `H_C_G`, except that the name is taken from the parent
 package with a prefix;
-- |H_C_U| is like |H_C_G|, except that this "unique-ization" should be done
+- `H_C_U` is like `H_C_G`, except that this "unique-ization" should be done
 at the linking stage, not in the main compiler.
-- |H_C_I| says that Inform will impose a choice of its own which is not
+- `H_C_I` says that Inform will impose a choice of its own which is not
 expressible here. This is used very little, but for example to make sure that
 kind IDs for kinds supplied by kits have the names given for them in Neptune files.
 
@@ -142,7 +142,7 @@ kind IDs for kinds supplied by kits have the names given for them in Neptune fil
 @d H_F_P(id, n, t) HierarchyLocations::fun(I, id, n, Translation::prefix(t),   H_CURRENT);
 @d H_F_U(id, n)    HierarchyLocations::fun(I, id, n, Translation::uniqued(),   H_CURRENT);
 
-@ Last and least, a datum can appear. |id| is the location ID, one of the |*_HL| enumerated
+@ Last and least, a datum can appear. `id` is the location ID, one of the `*_HL` enumerated
 values.
 
 @d H_D_T(id, ident, final) HierarchyLocations::dat(I, id, ident, Translation::to(final), H_CURRENT);
@@ -2043,7 +2043,7 @@ void Hierarchy::establish(void) {
 	H_END
 
 @h Architectural symbols.
-These are built-in constants (and one built-in variable, |self|) which come
+These are built-in constants (and one built-in variable, `self`) which come
 from the platform we are compiling to. See //building: Large-Scale Structure//.
 
 There are other architectural symbols besides these, but these are the only
@@ -2063,8 +2063,8 @@ ones which the //inform7//-compiled code needs to refer to.
 	H_END
 
 @ Note that because these are automatically created by the building machinery
-anyway, we need to make sure that a call to |Hierarchy::find| does not
-create a duplicate with a name like |NULL_1|. This is a race condition, and
+anyway, we need to make sure that a call to `Hierarchy::find` does not
+create a duplicate with a name like `NULL_1`. This is a race condition, and
 the easiest way to avoid it is to force the issue now:
 
 @<Prevent architectural symbols from being doubly defined@> =
@@ -2078,14 +2078,14 @@ the easiest way to avoid it is to force the issue now:
 files inside kits -- which define built-in kinds like "number" -- need to make
 reference to constants in those kits which give their default values. For
 example, the "description of K" kind constructor is created by //BasicInformKit//,
-and its default value compiles to the value |Prop_Falsity|. This is a function
-also defined in //BasicInformKit//. But there is no id |PROP_FALSITY_HL| because
+and its default value compiles to the value `Prop_Falsity`. This is a function
+also defined in //BasicInformKit//. But there is no id `PROP_FALSITY_HL` because
 the main compiler doesn't want to hardwire this: perhaps the implementation in
 the kit will change at some point, after all.
 
 So the compiler reserves a block of location IDs to be used by default values
 of kinds in kits. On demand, it then allocates these to be used; so, for
-example, |Prop_Falsity| might be given |KIND_DEFAULT5_HL|.
+example, `Prop_Falsity` might be given `KIND_DEFAULT5_HL`.
 
 There are only a few of these, and the absolute limit here doesn't seem
 problematic right now.
@@ -2141,7 +2141,7 @@ package_request *Hierarchy::exotic_package(int x) {
 }
 
 @h Finding where to put things.
-So, for example, |Hierarchy::find(ACTIVITY_VAR_CREATORS_HL)| returns the iname
+So, for example, `Hierarchy::find(ACTIVITY_VAR_CREATORS_HL)` returns the iname
 at which this array should be placed, by calling, e.g., //EmitArrays::begin_word//.
 
 =
@@ -2156,23 +2156,23 @@ inter_name *Hierarchy::find(int id) {
 			H_C_U(IFID_HL,                    I"ifid")
 		H_END
 =
-...and we are compiling a file, so that we need a |FILE_HL| iname. To get that,
-we call |Hierarchy::make_iname_in(FILE_HL, P)|, where |P| represents the |_external_file|
-package holding it. (|P| can in turn be obtained using the functions below.)
+...and we are compiling a file, so that we need a `FILE_HL` iname. To get that,
+we call `Hierarchy::make_iname_in(FILE_HL, P)`, where `P` represents the `_external_file`
+package holding it. (`P` can in turn be obtained using the functions below.)
 
-If this is called where |P| is some other package -- i.e., not of package type
-|_external_file| -- an internal error is thrown, in order to enforce the rules.
+If this is called where `P` is some other package -- i.e., not of package type
+`_external_file` -- an internal error is thrown, in order to enforce the rules.
 
 =
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
 	return HierarchyLocations::make_iname_in(Emit::tree(), id, P);
 }
 
-@ There are then some variations on this function. This version adds the wording |W|
+@ There are then some variations on this function. This version adds the wording `W`
 to the name, just to make the Inter code more comprehensible. An example would be
-|ACTIVITY_VALUE_HL|, declared abover as |H_C_G(ACTIVITY_VALUE_HL, I"V")|. The resulting name
-"generated" (hence the |G| in |H_C_G|) might be, for example, |V1_starting_the_virtual_mach|.
-The number |1| guarantees uniqueness; the (truncated) text following is purely for
+`ACTIVITY_VALUE_HL`, declared abover as `H_C_G(ACTIVITY_VALUE_HL, I"V")`. The resulting name
+"generated" (hence the `G` in `H_C_G`) might be, for example, `V1_starting_the_virtual_mach`.
+The number `1` guarantees uniqueness; the (truncated) text following is purely for
 the reader's convenience.
 
 =
@@ -2183,9 +2183,9 @@ inter_name *Hierarchy::make_iname_with_shorter_memo(int id, package_request *P, 
 	return HierarchyLocations::make_iname_with_shorter_memo(Emit::tree(), id, P, W);
 }
 
-@ And this further elaboration supplies the number to use, in place of the |1|.
+@ And this further elaboration supplies the number to use, in place of the `1`.
 This is needed only for kinds, where the kits expect to find classes called, e.g.,
-|K7_backdrop|, even though in some circumstances this may not be number |7| in
+`K7_backdrop`, even though in some circumstances this may not be number `7` in
 class inheritance tree order.
 
 =
@@ -2259,15 +2259,15 @@ Consider the following example piece of declaration:
 	H_END
 =
 Here, the "attachment point" (AP) is a place where multiple packages can be
-placed, each with the same internal structure (defined by the |...| part
-omitted here). |kinds| is a submodule name, and the "local" part means that
+placed, each with the same internal structure (defined by the `...` part
+omitted here). `kinds` is a submodule name, and the "local" part means that
 each compilation unit will become its own module, which will have its own
-individual |kinds| submodule. Each of those will have multiple packages inside
-of package type |_kind|.
+individual `kinds` submodule. Each of those will have multiple packages inside
+of package type `_kind`.
 
-Well, given that picture, |Hierarchy::package(C, KIND_HAP)| will create a new
-such |_kind| package inside C. For example, it might return a new package
-|main/locksmith_by_emily_short/kinds/K_lock|.
+Well, given that picture, `Hierarchy::package(C, KIND_HAP)` will create a new
+such `_kind` package inside C. For example, it might return a new package
+`main/locksmith_by_emily_short/kinds/K_lock`.
 
 =
 package_request *Hierarchy::package(compilation_unit *C, int hap_id) {
@@ -2286,7 +2286,7 @@ package_request *Hierarchy::local_package_to(int hap_id, parse_node *at) {
 	return Hierarchy::package(CompilationUnits::find(at), hap_id);
 }
 
-@ There is just one package called |synoptic|, so there's no issue of what
+@ There is just one package called `synoptic`, so there's no issue of what
 compilation unit is meant: that's why it's "synoptic".
 
 =
@@ -2299,7 +2299,7 @@ package_request *Hierarchy::completion_package(int hap_id) {
 }
 
 @ Attachment points do not always have to be at the top level of submodules,
-as the |KIND_HAP| example was. For example:
+as the `KIND_HAP` example was. For example:
 = (text as InC)
 		H_BEGIN_AP(VERBS_HAP,                 I"verb", I"_verb")
 			...
@@ -2308,9 +2308,9 @@ as the |KIND_HAP| example was. For example:
 			H_END
 		H_END
 =
-Here a |_verb_form| package has to be created inside a |_verb| package. Calling
-|Hierarchy::package_within(VERB_FORMS_HAP, P)| indeed constructs a new one
-inside the package |P|; if |P| does not have type |_verb|, an internal error
+Here a `_verb_form` package has to be created inside a `_verb` package. Calling
+`Hierarchy::package_within(VERB_FORMS_HAP, P)` indeed constructs a new one
+inside the package `P`; if `P` does not have type `_verb`, an internal error
 will automatically trip, in order to enforce the layout rules.
 
 =
@@ -2319,7 +2319,7 @@ package_request *Hierarchy::package_within(int hap_id, package_request *super) {
 }
 
 @h Adding packages not at attachment points. 
-Just a handful of packages are made other than with the |*_HAP| attachment
+Just a handful of packages are made other than with the `*_HAP` attachment
 point system, and for those:
 
 =

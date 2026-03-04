@@ -250,14 +250,14 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="comment-syntax">! no value was understood.</span>
 <span class="comment-syntax">!</span>
 <span class="comment-syntax">! The recognized format, if you'll pardon a slightly bastardized regexp</span>
-<span class="comment-syntax">! syntax, is "S?D*(PD*)?(ES?D+)?" where S is a sign character "+" or "-",</span>
-<span class="comment-syntax">! D is a decimal digit "0" to "9", P is a decimal point ".",</span>
-<span class="comment-syntax">! and E is the exponential modifier "E" or "e".</span>
+<span class="comment-syntax">! syntax, is &quot;S?D*(PD*)?(ES?D+)?&quot; where S is a sign character &quot;+&quot; or &quot;-&quot;,</span>
+<span class="comment-syntax">! D is a decimal digit &quot;0&quot; to &quot;9&quot;, P is a decimal point &quot;.&quot;,</span>
+<span class="comment-syntax">! and E is the exponential modifier &quot;E&quot; or &quot;e&quot;.</span>
 <span class="comment-syntax">!</span>
-<span class="comment-syntax">! For flexibility, the string "M10^" is also accepted for E, where M is</span>
-<span class="comment-syntax">! "X", "x", "*", or the multiplication sign @{D7}. Optional spaces are</span>
-<span class="comment-syntax">! allowed before and after the M sign. (But only for the "10^" form of</span>
-<span class="comment-syntax">! the exponent, not the "e" form.)</span>
+<span class="comment-syntax">! For flexibility, the string &quot;M10^&quot; is also accepted for E, where M is</span>
+<span class="comment-syntax">! &quot;X&quot;, &quot;x&quot;, &quot;*&quot;, or the multiplication sign @{D7}. Optional spaces are</span>
+<span class="comment-syntax">! allowed before and after the M sign. (But only for the &quot;10^&quot; form of</span>
+<span class="comment-syntax">! the exponent, not the &quot;e&quot; form.)</span>
 <span class="comment-syntax">!</span>
 <span class="comment-syntax">! This routine does not try to recognize special names for infinity or NaN,</span>
 <span class="comment-syntax">! but it can return FLOAT_INFINITY or FLOAT_NINFINITY if the exponent is too</span>
@@ -277,9 +277,15 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">res</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> </span><span class="identifier-syntax">ten</span><span class="plain-syntax"> </span><span class="identifier-syntax">negative</span><span class="plain-syntax"> </span><span class="identifier-syntax">intpart</span><span class="plain-syntax"> </span><span class="identifier-syntax">fracpart</span><span class="plain-syntax"> </span><span class="identifier-syntax">fracdiv</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">expon</span><span class="plain-syntax"> </span><span class="identifier-syntax">expnegative</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">;</span>
 
-<span class="comment-syntax">! </span><span class="plain-syntax">  </span><span class="comment-syntax">print "FloatParse &lt;";</span>
-<span class="comment-syntax">! </span><span class="plain-syntax">  </span><span class="comment-syntax">for (ix=0: ix&lt;len: ix++) print (char) buf--&gt;ix;</span>
-<span class="comment-syntax">! </span><span class="plain-syntax">  </span><span class="comment-syntax">print "&gt;^";</span>
+<span class="comment-syntax">!	<pre><code>print &quot;FloatParse &lt;&quot;;
+</code></pre>
+</span>
+<span class="comment-syntax">!	<pre><code>for (ix=0: ix&lt;len: ix++) print (char) buf--&gt;ix;
+</code></pre>
+</span>
+<span class="comment-syntax">!	<pre><code>print &quot;&gt;^&quot;;
+</code></pre>
+</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">len</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_NAN</span><span class="plain-syntax">;</span>
@@ -328,7 +334,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">        @</span><span class="identifier-syntax">fdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">fracpart</span><span class="plain-syntax"> </span><span class="identifier-syntax">fracdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">fracpart</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! If there are no digits before *or* after the decimal point, fail.</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! If there are no digits before <em>or</em> after the decimal point, fail.</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_NAN</span><span class="plain-syntax">;</span>
 
@@ -344,7 +350,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_NAN</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">! any number of spaces, "*", any number of spaces more, "10^"</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! any number of spaces, &quot;*&quot;, any number of spaces more, &quot;10^&quot;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">len</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">buf</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> == </span><span class="character-syntax">' '</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ix</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> == </span><span class="identifier-syntax">len</span><span class="plain-syntax">)</span>
@@ -413,9 +419,9 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="comment-syntax">! Floating-point printing routines. (These are based on code in</span>
 <span class="comment-syntax">! Glulxercise.inf, but modified.)</span>
 
-<span class="comment-syntax">! Print a float. This uses exponential notation ("[-]N.NNNe[+-]NN") if</span>
+<span class="comment-syntax">! Print a float. This uses exponential notation (&quot;[-]N.NNNe[+-]NN&quot;) if</span>
 <span class="comment-syntax">! the exponent is not between 6 and -4. If it is (that is, if the</span>
-<span class="comment-syntax">! absolute value is near 1.0) then it uses decimal notation ("[-]NNN.NNNNN").</span>
+<span class="comment-syntax">! absolute value is near 1.0) then it uses decimal notation (&quot;[-]NNN.NNNNN&quot;).</span>
 <span class="comment-syntax">! The precision is the number of digits after the decimal point</span>
 <span class="comment-syntax">! (at least one, no more than eight). The default is five, because</span>
 <span class="comment-syntax">! beyond that rounding errors creep in, and even exactly-represented</span>
@@ -436,7 +442,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">PowersOfTen</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> </span><span class="constant-syntax">100000</span><span class="plain-syntax"> </span><span class="constant-syntax">1000000</span><span class="plain-syntax"> </span><span class="constant-syntax">10000000</span><span class="plain-syntax"> </span><span class="constant-syntax">100000000</span><span class="plain-syntax"> </span><span class="constant-syntax">1000000000</span><span class="plain-syntax">;</span>
 
-<span class="comment-syntax">! Print a float in exponential notation: "[-]N.NNNe[+-]NN".</span>
+<span class="comment-syntax">! Print a float in exponential notation: &quot;[-]N.NNNe[+-]NN&quot;.</span>
 <span class="comment-syntax">! The precision is the number of digits after the decimal point</span>
 <span class="comment-syntax">! (at least one, no more than eight). The default is five, because</span>
 <span class="comment-syntax">! beyond that rounding errors creep in, and even exactly-represented</span>
@@ -465,7 +471,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! Take as an example val=123.5, with precision=6. The desired</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! result is "1.23000e+02".</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! result is &quot;1.23000e+02&quot;.</span>
 
 <span class="plain-syntax">    @</span><span class="identifier-syntax">log</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">fdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="constant-syntax">$40135D8E</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax">; </span><span class="comment-syntax">! $40135D8E is log(10)</span>
@@ -519,7 +525,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! Print the exponent. There are two conventions coded here: the</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! engineering notation ("1.0e+00") and the mathematical ("1.0 x 10^0").</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! engineering notation (&quot;1.0e+00&quot;) and the mathematical (&quot;1.0 x 10^0&quot;).</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">PRINT_ENGINEER_EXPS_CFGF</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PrintMultiplicationSign</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        @</span><span class="identifier-syntax">streamchar</span><span class="plain-syntax"> </span><span class="character-syntax">'1'</span><span class="plain-syntax">;</span>
@@ -552,7 +558,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="comment-syntax">! Print a float in decimal notation: "[-]NNN.NNNNN".</span>
+<span class="comment-syntax">! Print a float in decimal notation: &quot;[-]NNN.NNNNN&quot;.</span>
 <span class="comment-syntax">! The precision is the number of digits after the decimal point</span>
 <span class="comment-syntax">! (at least one, no more than eight). The default is five, because</span>
 <span class="comment-syntax">! beyond that rounding errors creep in, and even exactly-represented</span>
@@ -575,7 +581,7 @@ cases used to check the floating-point extensions to Glulx.</p>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">jisinf</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">IsInf</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! Take as an example val=123.5, with precision=6. The desired result</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! is "123.50000".</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! is &quot;123.50000&quot;.</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">extra0</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">fmod</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">$3F800000</span><span class="plain-syntax"> </span><span class="identifier-syntax">frac</span><span class="plain-syntax"> </span><span class="identifier-syntax">fint</span><span class="plain-syntax">; </span><span class="comment-syntax">! $3F800000 is 1.0.</span>
@@ -667,18 +673,18 @@ cases used to check the floating-point extensions to Glulx.</p>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintInfinity</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$221E</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! print "Inf";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! print &quot;Inf&quot;;</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintNan</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$26a0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! print "NaN";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! print &quot;NaN&quot;;</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintMultiplicationSign</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$D7</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! print "x";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! print &quot;x&quot;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

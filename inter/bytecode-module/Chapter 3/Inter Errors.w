@@ -67,7 +67,7 @@ inter_error_message *InterErrors::plain(text_stream *err, inter_error_location *
 	return iem;
 }
 
-@ The textual form of an error can be output to |STDERR| and also the Inform 7
+@ The textual form of an error can be output to `STDERR` and also the Inform 7
 debugging log at the same time, if there is one:
 
 =

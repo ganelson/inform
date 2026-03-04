@@ -174,12 +174,9 @@ first is the rubric, the second the credit line.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Copula.</b>  We now come to the main business, which is to act on &quot;copula&quot;, that is,
 couplings of two subtrees <code>px</code> and <code>py</code> representing things which are linked
 by a copular verb. For example, in:</p>
-</div>
 <blockquote>
-    <p>The white marble is a thing.</p>
+<p>The white marble is a thing.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p><code>px</code> would be the proper noun &quot;white marble&quot;, <code>py</code> the common noun &quot;thing&quot;,
 and the sentence is telling is what kind of value something has.</p>
 <p>It is usually said that &quot;to be&quot; is the only copular verb in English, but it
@@ -195,12 +192,9 @@ have or occupy a place somewhere&quot;) and 9b (&quot;to have a place among the 
 distinguished by a specified quality&quot;) respectively.</p>
 <p>Besides that, we expand the range of possible copula by considering sentences
 like:</p>
-</div>
 <blockquote>
-    <p>The white marble is in the bamboo box.</p>
+<p>The white marble is in the bamboo box.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>as also being copula, but where <code>py</code> is now a <code>RELATIONSHIP_NT</code> subtree
 expressing the sense of being inside the box.</p>
 <p>So dealing with copula is not as simple as asserting that two things are
@@ -432,22 +426,18 @@ in this section will be harder to understand.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_2" class="paragraph-anchor"></a><b>&#167;6.3.2. Case 2.</b>  &quot;An A with I is B&quot; looks symmetrical with case 3, but is not. We might be
 looking at an implication, for example:</p>
-</div>
 <blockquote>
-    <p>An open door is usually openable.</p>
+<p>An open door is usually openable.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We allow this provided the properties I are all adjectival, and so is the
 outcome B.</p>
 <p>Otherwise we handle case 2 much like case 3, but more simply since the
 result will normally be problem messages -- not unreasonably given how
 strange sentences like this are:</p>
-</div>
 <blockquote>
-    <p>A container with description "Solid." is the solid box.</p>
+<p>A container with description &quot;Solid.&quot; is the solid box.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 2 - WITH vs Miscellaneous</span><span class="named-paragraph-number">6.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -473,19 +463,13 @@ strange sentences like this are:</p>
 <p class="commentary firstcommentary"><a id="SP6_3_3" class="paragraph-anchor"></a><b>&#167;6.3.3. Case 3.</b>  &quot;A is a B with I&quot;: process as &quot;A is a B&quot; followed by &quot;A is I&quot;, which
 works nicely because we bend grammar to allow &quot;is&quot; in place of &quot;has&quot; when
 it comes to lists of property values.</p>
-</div>
 <blockquote>
-    <p>The wickerwork box is a container with description "Pricy." The bat and ball are things with description "Cricket equipment." A trophy is a kind of container with score for finding 5.</p>
+<p>The wickerwork box is a container with description &quot;Pricy.&quot; The bat and ball are things with description &quot;Cricket equipment.&quot; A trophy is a kind of container with score for finding 5.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>An exception occurs with sentences like:</p>
-</div>
 <blockquote>
-    <p>South is a dead end with printed name "Collapsed Dead End".</p>
+<p>South is a dead end with printed name &quot;Collapsed Dead End&quot;.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Here <code>px</code>, &quot;south&quot;, refers not to the direction but to the room which lies
 to the south of the location being talked about, which means that the printed
 name must be given to the dead end, not to the direction &quot;south&quot;. In this
@@ -516,12 +500,12 @@ at which point it becomes a <code>PROPER_NOUN_NT</code> node.)</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
+<div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_4" class="paragraph-anchor"></a><b>&#167;6.3.4. Case 4. "A with B is C with D" must be incorrect.</b> </p>
-
 <blockquote>
-    <p>A container with description "White" is a container with description "Black".</p>
+<p>A container with description &quot;White&quot; is a container with description &quot;Black&quot;.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 4 - WITH on both sides</span><span class="named-paragraph-number">6.3.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -728,11 +712,10 @@ specifying its edibility.</li>
 but it isn't a case where this would be legal. That doesn't mean it's hopeless:
 this is where we assign variables to specific gadgets, which is in a way the
 same thing.</p>
-</div>
 <blockquote>
-    <p>The before rulebook has a text called the standard demurral.</p>
+<p>The before rulebook has a text called the standard demurral.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 10 - Miscellaneous vs ALLOWED</span><span class="named-paragraph-number">6.3.10</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -745,11 +728,10 @@ same thing.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_11" class="paragraph-anchor"></a><b>&#167;6.3.11. Case 11.</b>  This is a catch-all sort of error. It might need narrowing into
 further sub-cases later.</p>
-</div>
 <blockquote>
-    <p>The description of the Pitch is open.</p>
+<p>The description of the Pitch is open.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 11 - X OF Y vs PROPERTY LIST, ACTION, COMMON NOUN</span><span class="named-paragraph-number">6.3.11</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -816,11 +798,10 @@ further sub-cases later.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_14" class="paragraph-anchor"></a><b>&#167;6.3.14. Case 14.</b>  &quot;In A is a B with I&quot;: process as &quot;In A is a B&quot; followed by
 &quot;the newly created B is I&quot;.</p>
-</div>
 <blockquote>
-    <p>In the Pitch is a container with description "Made of wood."</p>
+<p>In the Pitch is a container with description &quot;Made of wood.&quot;</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 14 - RELATIONSHIP vs WITH</span><span class="named-paragraph-number">6.3.14</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -864,12 +845,9 @@ handling of &quot;to have&quot; rather than &quot;to be&quot;.</p>
 <p>Property lists may contain references to things not yet created, if we
 assert them during pass 1: so we wait until pass 2.</p>
 <p>The oddball exception for rulebooks is to add named outcomes:</p>
-</div>
 <blockquote>
-    <p>Reaching inside rules have outcomes allow access (success) and deny access (failure).</p>
+<p>Reaching inside rules have outcomes allow access (success) and deny access (failure).</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which syntactically resembles a property list, though in fact is not.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 18 - PROPERTY LIST, COMMON NOUN, PROPER NOUN on both sides</span><span class="named-paragraph-number">6.3.18</span></span> =</p>
@@ -889,11 +867,10 @@ assert them during pass 1: so we wait until pass 2.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_19" class="paragraph-anchor"></a><b>&#167;6.3.19. Case 19.</b>  This usually occurs as a name-clash, since it's otherwise something
 pretty improbable:</p>
-</div>
 <blockquote>
-    <p>Taking something is 100. The turn count is taking something.</p>
+<p>Taking something is 100. The turn count is taking something.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 19 - ACTION, KIND, PROPERTY LIST, ADJECTIVE vs PROPERTY LIST, ACTION, COMMON NOUN, PROPER NOUN</span><span class="named-paragraph-number">6.3.19</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -915,11 +892,10 @@ pretty improbable:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_20" class="paragraph-anchor"></a><b>&#167;6.3.20. Case 20.</b>  Hoovering up a variety of implausible things claimed to have
 a spatial location.</p>
-</div>
 <blockquote>
-    <p>On the desk is 100. East of the Pitch is a rulebook.</p>
+<p>On the desk is 100. East of the Pitch is a rulebook.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 20 - Miscellaneous on both sides</span><span class="named-paragraph-number">6.3.20</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -935,12 +911,12 @@ a spatial location.</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"('In the box is a thing called text')."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
+<div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_21" class="paragraph-anchor"></a><b>&#167;6.3.21. Case 21.</b> </p>
-
 <blockquote>
-    <p>The position of the weathervane is east of the church.</p>
+<p>The position of the weathervane is east of the church.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 21 - X OF Y vs RELATIONSHIP</span><span class="named-paragraph-number">6.3.21</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -956,19 +932,13 @@ a spatial location.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_22" class="paragraph-anchor"></a><b>&#167;6.3.22. Case 22.</b>  Most of the time, we're here because of an implicatory sentence like:</p>
-</div>
 <blockquote>
-    <p>Scenery is usually fixed in place.</p>
+<p>Scenery is usually fixed in place.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>But just maybe we have something like</p>
-</div>
 <blockquote>
-    <p>Guttering is inadequate.</p>
+<p>Guttering is inadequate.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where we are assigning a property (&quot;inadequate&quot;) to a value (&quot;guttering&quot;)
 which can be used as an adjective, but isn't being so used here. So if it's
 possible to coerce the left side to a noun, we will.</p>
@@ -994,11 +964,10 @@ possible to coerce the left side to a noun, we will.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_24" class="paragraph-anchor"></a><b>&#167;6.3.24. Case 24.</b>  Not as unlikely a mistake as it might seem:</p>
-</div>
 <blockquote>
-    <p>Taking something is open.</p>
+<p>Taking something is open.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 24 - ACTION vs ADJECTIVE</span><span class="named-paragraph-number">6.3.24</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1010,11 +979,10 @@ possible to coerce the left side to a noun, we will.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_25" class="paragraph-anchor"></a><b>&#167;6.3.25. Case 25.</b>  Here we are declaring a new property -- either to an object, a kind
 or a kind of value.</p>
-</div>
 <blockquote>
-    <p>A container has a number called security rating.</p>
+<p>A container has a number called security rating.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 25 - EVERY, COMMON NOUN, PROPER NOUN vs ALLOWED</span><span class="named-paragraph-number">6.3.25</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1115,13 +1083,11 @@ but not in this context.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_10">&#167;6.3.10</a> and <a href="4-ass.html#SP6_3_25">&#167;6.3.25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3_26" class="paragraph-anchor"></a><b>&#167;6.3.26. Case 26. At last, a correctly set property value.</b> </p>
-
-<blockquote>
-    <p>The description of the Pitch is "Verdant." The desk is a container. The carrying capacity of the desk is 10.</p>
-</blockquote>
-
 <div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6_3_26" class="paragraph-anchor"></a><b>&#167;6.3.26. Case 26. At last, a correctly set property value.</b> </p>
+<blockquote>
+<p>The description of the Pitch is &quot;Verdant.&quot; The desk is a container. The carrying capacity of the desk is 10.</p>
+</blockquote>
 <p>Property assignments fall into three sorts, which we handle in this order:</p>
 <ul>
 <li>The specification pseudo-property, which looks syntactically like a property
@@ -1165,12 +1131,9 @@ but in fact isn't one;</li>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_26_1" class="paragraph-anchor"></a><b>&#167;6.3.26.1. </b>  This handles sentences like:</p>
-</div>
 <blockquote>
-    <p>The specification of vehicle is "A kind of thing able to move between rooms."</p>
+<p>The specification of vehicle is &quot;A kind of thing able to move between rooms.&quot;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Specification is not a real property and has no existence at run-time; it's used
 only to annotate the Index. For the most part it's set the way all other properties
 are set, but exceptions are made for action names (which otherwise don't have
@@ -1285,11 +1248,10 @@ non-reciprocal map connection: &quot;D of the R is E of the S&quot; is construed
 tendency to make tentative reciprocal map connections, because even though
 they will only be listed as &quot;likely&quot;, we know they are in fact impossible
 in this case.</p>
-</div>
 <blockquote>
-    <p>(1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.</p>
+<p>(1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 28 - RELATIONSHIP on both sides</span><span class="named-paragraph-number">6.3.28</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1311,12 +1273,12 @@ in this case.</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"'East of Fissure'.)"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
+<div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_29" class="paragraph-anchor"></a><b>&#167;6.3.29. Case 29. Equating something to a single adjective.</b> </p>
-
 <blockquote>
-    <p>The desk is fixed in place. A container is usually fixed in place.</p>
+<p>The desk is fixed in place. A container is usually fixed in place.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 29 - COMMON NOUN, PROPER NOUN vs ADJECTIVE</span><span class="named-paragraph-number">6.3.29</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1418,11 +1380,10 @@ opera about a dog, &quot;Collared Is Bowser&quot;.)</p>
 <p class="commentary firstcommentary"><a id="SP6_3_34" class="paragraph-anchor"></a><b>&#167;6.3.34. Case 34.</b>  The &quot;Genevieve&quot; problem message is a finicky stylistic one, and
 it I suspect it may be disliked. I've always been in two minds about whether
 this ought to be allowed...</p>
-</div>
 <blockquote>
-    <p>An animal is in the desk.</p>
+<p>An animal is in the desk.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 34 - COMMON NOUN vs RELATIONSHIP</span><span class="named-paragraph-number">6.3.34</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1483,11 +1444,10 @@ this ought to be allowed...</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_34">&#167;6.3.34</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_34_2" class="paragraph-anchor"></a><b>&#167;6.3.34.2. </b>  For example,</p>
-</div>
 <blockquote>
-    <p>An animal is in every desk.</p>
+<p>An animal is in every desk.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generalised relationships are allowed</span><span class="named-paragraph-number">6.3.34.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1499,12 +1459,9 @@ this ought to be allowed...</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_34">&#167;6.3.34</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_34_3" class="paragraph-anchor"></a><b>&#167;6.3.34.3. </b>  For example,</p>
-</div>
 <blockquote>
-    <p>Six animals are in the desk.</p>
+<p>Six animals are in the desk.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Note that the default multiplicity is 0, not 1; saying &quot;one door&quot; has a
 slightly different meaning from simply saying &quot;a door&quot;, since it clarifies
 that we're discussing a number of actual objects, not the category of doors
@@ -1522,11 +1479,10 @@ in general.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_34">&#167;6.3.34</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_34_4" class="paragraph-anchor"></a><b>&#167;6.3.34.4. </b>  Further exceptions are made for sentences like:</p>
-</div>
 <blockquote>
-    <p>A chair usually allows sitting. A thing usually weighs 1kg.</p>
+<p>A chair usually allows sitting. A thing usually weighs 1kg.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Certain non-spatial relationships are allowed too</span><span class="named-paragraph-number">6.3.34.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1540,11 +1496,10 @@ in general.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_34">&#167;6.3.34</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_34_5" class="paragraph-anchor"></a><b>&#167;6.3.34.5. </b>  And also for &quot;There is...&quot; sentences:</p>
-</div>
 <blockquote>
-    <p>There is a coin in the strongbox.</p>
+<p>There is a coin in the strongbox.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">There is... relationships are allowed too</span><span class="named-paragraph-number">6.3.34.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1555,12 +1510,12 @@ in general.</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_34">&#167;6.3.34</a>.</li></ul>
+<div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_35" class="paragraph-anchor"></a><b>&#167;6.3.35. Case 35.</b> </p>
-
 <blockquote>
-    <p>In the desk is a copy of Wisden. On the table is a container.</p>
+<p>In the desk is a copy of Wisden. On the table is a container.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 35 - RELATIONSHIP vs COMMON NOUN</span><span class="named-paragraph-number">6.3.35</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1650,11 +1605,10 @@ two whole domains. (We have the &quot;kind of...&quot; syntax instead.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_38_1" class="paragraph-anchor"></a><b>&#167;6.3.38.1. </b>  For example,</p>
-</div>
 <blockquote>
-    <p>A number that varies is a text that varies.</p>
+<p>A number that varies is a text that varies.</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce a problem if two values that vary are equated</span><span class="named-paragraph-number">6.3.38.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1698,19 +1652,13 @@ two whole domains. (We have the &quot;kind of...&quot; syntax instead.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_39" class="paragraph-anchor"></a><b>&#167;6.3.39. Case 39.</b>  Sentences falling into this case have the form &quot;X is a Y.&quot;; for
 instance,</p>
-</div>
 <blockquote>
-    <p>The lacquered box is a container.</p>
+<p>The lacquered box is a container.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>It might look as if</p>
-</div>
 <blockquote>
-    <p>A dead end is a kind of room. The Pitch is a room. East is a dead end.</p>
+<p>A dead end is a kind of room. The Pitch is a room. East is a dead end.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>would throw the last sentence into this case, which would be wrong, but we
 avoid this by having the IF model code intervene. (Clearly this is a quirk
 only occurring when we have named directions, an IF-like thing.)</p>
@@ -1766,12 +1714,9 @@ allow one case, where the declaration is redundant and harmless.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_39_1" class="paragraph-anchor"></a><b>&#167;6.3.39.1. </b>  For example,</p>
-</div>
 <blockquote>
-    <p>The current prize value is a number that varies.</p>
+<p>The current prize value is a number that varies.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We silently allow the kind of a variable to be restated or narrowed, but not
 contradicted.</p>
 </div>
@@ -1931,19 +1876,13 @@ message.</p>
 there's one exception: when the value is really an adjectival use implying
 a property, rather than a noun. This takes some setting up: only the last of
 these sentences falls into case 41.</p>
-</div>
 <blockquote>
-    <p>Colour is a kind of value. Green and blue are colours. A thing has a colour. The barn door is green.</p>
+<p>Colour is a kind of value. Green and blue are colours. A thing has a colour. The barn door is green.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>There is also one case in which an object can be set equal to another object:</p>
-</div>
 <blockquote>
-    <p>East is the Pavilion.</p>
+<p>East is the Pavilion.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(Of course this will only be true if the map feature is active.)</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 41 - PROPER NOUN on both sides</span><span class="named-paragraph-number">6.3.41</span></span> =</p>
@@ -2121,20 +2060,14 @@ suite: it would be annoying to verify this problem message otherwise.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_41_3" class="paragraph-anchor"></a><b>&#167;6.3.41.3. </b>  Usually it makes no sense to equate two values: &quot;5 is 10&quot;,
 for instance, and we produce a variety of more or less scornful errors.</p>
-</div>
 <blockquote>
-    <p>10 is 15. 14 is a number. "Fish" is text. The turn count is a text. 19 is a rulebook. "Frog" is a number. Before rules is a rule.</p>
+<p>10 is 15. 14 is a number. &quot;Fish&quot; is text. The turn count is a text. 19 is a rulebook. &quot;Frog&quot; is a number. Before rules is a rule.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>But we do take polite notice when X is a variable name and Y is an
 initial value with a compatible type, as in the second sentence here:</p>
-</div>
 <blockquote>
-    <p>The innings total is a number that varies. The innings total is 101.</p>
+<p>The innings total is a number that varies. The innings total is 101.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>We set such variables on traverse 2 because not all of the object values exist
 yet during traverse 1.</p>
 </div>
@@ -2181,12 +2114,9 @@ yet during traverse 1.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_41">&#167;6.3.41</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_41_5" class="paragraph-anchor"></a><b>&#167;6.3.41.5. </b>  Here we're watching out for assertions like:</p>
-</div>
 <blockquote>
-    <p>The Abruzzi Spur route is grade 5.</p>
+<p>The Abruzzi Spur route is grade 5.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;Abruzzi Spur route&quot; is a value of kind &quot;K2 ascent route&quot;, and values
 of this kind have been given a property &quot;difficulty rating&quot; which is also
 the name of a kind in turn, one value of which is &quot;grade 5&quot;. To the A-parser
@@ -2225,12 +2155,9 @@ but that's not evident without a lot of contextual checking.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_41">&#167;6.3.41</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_41_7" class="paragraph-anchor"></a><b>&#167;6.3.41.7. </b>  This is to cope with text such as</p>
-</div>
 <blockquote>
-    <p>Plastic is a material.</p>
+<p>Plastic is a material.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;material&quot; is the name of both a kind of value, and also a property.
 We find ourselves here because we've been considering &quot;material&quot; as the
 property name (a proper noun), not the kind name (a common noun), and we
@@ -2286,12 +2213,9 @@ need to switch interpretations to avoid the problem message.</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Equating values in an assertion is never allowed, but there are a variety of
 possible problem messages, because it usually occurs as a symptom of a failed
 attempt to create something. The following is used to pick up sentences like</p>
-</div>
 <blockquote>
-    <p>Something called mauve is a colour.</p>
+<p>Something called mauve is a colour.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>which fail because Inform reads &quot;something&quot; as &quot;some thing&quot;, i.e., as
 referring to a thing which then can't be equated with a colour.</p>
 </div>
@@ -2315,12 +2239,9 @@ referring to a thing which then can't be equated with a colour.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_3_42" class="paragraph-anchor"></a><b>&#167;6.3.42. Case 42.</b>  This is possibly a variation on 41 where an adjective is also
 in some contexts a noun. For example:</p>
-</div>
 <blockquote>
-    <p>Hostile hates friendly.</p>
+<p>Hostile hates friendly.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>where &quot;hostile&quot; and &quot;friendly&quot; are values of an enumerated kind but which
 can also be used adjectivally.</p>
 </div>

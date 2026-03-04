@@ -13,7 +13,7 @@ typedef struct inform_template {
 	CLASS_DEFINITION
 } inform_template;
 
-@ This is called as soon as a new copy |C| of the language genre is created.
+@ This is called as soon as a new copy `C` of the language genre is created.
 
 =
 void Templates::scan(inbuild_copy *C) {

@@ -37,8 +37,8 @@ And here is the one service. We must provide Inter functions, one for a
 (property-owning) kind and one for an instance, which print out useful
 diagnostic data about the current state of those properties.
 
-object in the local variable |t_0| and prints out useful diagnostic data
-about its current state. We get to use a local variable |na|, which stands
+object in the local variable `t_0` and prints out useful diagnostic data
+about its current state. We get to use a local variable `na`, which stands
 for "number of attributes", though that's really I6-speak: what we mean
 is "number of either-or properties in the semicolon-separated list we
 are currently printing out".
@@ -113,10 +113,10 @@ void RTShowmeCommand::compile_instance_showme_fn(inter_name *iname, instance *I)
 	Functions::end(save);
 }
 
-@ Those call the following once each, with |val| set to |TRUE| to show value
-properties, |FALSE| to show either/or.
+@ Those call the following once each, with `val` set to `TRUE` to show value
+properties, `FALSE` to show either/or.
 
-The local variable |t_0| is the property owner, and |na_s| is a count of the
+The local variable `t_0` is the property owner, and `na_s` is a count of the
 number of annotations made, which is used to keep the punctuation straight.
 
 =
@@ -135,7 +135,7 @@ void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj,
 	EmitCode::up();
 }
 
-@ This simply avoids compiling redundant empty |if| statements.
+@ This simply avoids compiling redundant empty `if` statements.
 
 @<Skip if this object's definition has nothing to offer SHOWME@> =
 	int todo = FALSE;
@@ -146,7 +146,7 @@ void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj,
 				todo = TRUE;
 	if (todo == FALSE) return;
 
-@ In the code running at this point, |na_s| holds the number of either/or
+@ In the code running at this point, `na_s` holds the number of either/or
 properties listed since the last time it was zeroed. If it's positive, we
 need either a semicolon or a line break. If we're about to work on another
 definition contributing either/or properties, the former; otherwise the
@@ -337,7 +337,7 @@ routine for colours; and the best thing is to print nothing at all.
 	EmitCode::up();
 
 @ Code in the kits is allowed to bar certain either/or properties using
-|AllowInShowme|; it typically uses this to block distracting temporary-workspace
+`AllowInShowme`; it typically uses this to block distracting temporary-workspace
 properties like "marked for listing" whose values have no significance
 turn by turn.
 

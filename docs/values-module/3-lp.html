@@ -84,12 +84,9 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Literal patterns (LPs) allow an author to create new notations for
 quasi-numerical kinds of value. For example,</p>
-</div>
 <blockquote>
-    <p>16:9 specifies an aspect ratio.</p>
+<p>16:9 specifies an aspect ratio.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>establishes a new notation for writing literals of the kind &quot;aspect ratios&quot;.</p>
 <p>Each kind of value has a linked list of literal notations which can specify
 it, if any. We sometimes need to iterate through the this list, and can do
@@ -156,12 +153,9 @@ tokens -- element, fixed <code>:</code>, element.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  There are three sorts of token: character, word and element. Each token can
 be a whole word, or only part of a word. For instance, in</p>
-</div>
 <blockquote>
-    <p>28kg net specifies a weight.</p>
+<p>28kg net specifies a weight.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>we have a sequence of four tokens: an element token, marked as beginning a
 word; a character token <code>k</code>; a character token <code>g</code>; and a word token <code>net</code>,
 which necessarily begins a word. Word boundaries in the source text must
@@ -178,8 +172,8 @@ match those in the specification, so this notation does not match the text
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern_token</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_word_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* does token start a new word? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lpt_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the three constants defined above */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_char</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |CHARACTER_LPT| only; the character to match */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_wn</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |WORD_LPT| only; word number in source text of the prototype */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_char</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CHARACTER_LPT</code> only; the character to match */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_wn</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>WORD_LPT</code> only; word number in source text of the prototype */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">literal_pattern_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_pattern_token is private to this section.</li></ul>
@@ -204,10 +198,10 @@ The rightmost element \INWEBMATH(e_{n-1}\INWEBMATH) is the least significant num
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern_element</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_index</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value $i$ placing this within its LP, where $0\leq i&lt;n$ */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_index</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value \INWEBMATH(i\INWEBMATH) placing this within its LP, where \INWEBMATH(0\leq i&lt;n\INWEBMATH) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_offset</span><span class="plain-syntax">; </span><span class="comment-syntax">/* amount by which outward values differ from stored ones */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_range</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value $r_i$ for this LP */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_multiplier</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value $m_i$ for this LP */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_range</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value \INWEBMATH(r_i\INWEBMATH) for this LP */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_multiplier</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the value \INWEBMATH(m_i\INWEBMATH) for this LP */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">element_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if we define a name for the element */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">corresponding_to</span><span class="plain-syntax">;</span>
@@ -245,27 +239,21 @@ The rightmost element \INWEBMATH(e_{n-1}\INWEBMATH) is the least significant num
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,</p>
-</div>
 <blockquote>
-    <p>1 tonne (in tonnes, singular) specifies a mass scaled up by 1000.</p>
+<p>1 tonne (in tonnes, singular) specifies a mass scaled up by 1000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>assigns the name &quot;in tonnes&quot; to this notation for writing a mass. There can
 be several notation associated with &quot;in tonnes&quot;:</p>
-</div>
 <blockquote>
-    <p>2 tonnes (in tonnes, plural) specifies a mass scaled up by 1000.</p>
+<p>2 tonnes (in tonnes, plural) specifies a mass scaled up by 1000.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and hence the linked list of LPs associated with a single &quot;literal pattern
 name&quot;. Moreover, a given kind of value can support multiple named notations;
 mass might also support &quot;in kilograms&quot; and &quot;in grams&quot;, for instance.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern_name</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name for this notation, if any; e.g. "in centimetres" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name for this notation, if any; e.g. &quot;in centimetres&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">can_use_this_lp</span><span class="plain-syntax">; </span><span class="comment-syntax">/* list of LPs used under this name */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* other names for the same kind */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_with_rp</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in parsing only: list applied to one notation */</span>
@@ -1311,12 +1299,9 @@ set.</p>
 for the result <code>NULL</code> -- so that it doesn't already mean something else.
 During this process, we waive checking of numerical overflows in matching
 an LP: this is done so that</p>
-</div>
 <blockquote>
-    <p>3/13 specifies a bar. 2/19 specifies a foo.</p>
+<p>3/13 specifies a bar. 2/19 specifies a foo.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>reports &quot;2/19&quot; as a duplicate using the following problem message, but
 does not throw a problem message as being a bar which is out of range
 (because in the bar notation, the number after the slash can be at most
@@ -1520,7 +1505,7 @@ material or else names for parts about which nothing else is said.</p>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on angle-bracketed escape</span><span class="named-paragraph-number">27.7.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="comment-syntax">// LOG("Scan escape </span><span class="function-syntax">&lt;%S&gt;</span><span class="comment-syntax">\n", angles);</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">// LOG(&quot;Scan escape &lt;%S&gt;\n&quot;, angles);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Str::trim_white_space</span><span class="plain-syntax">(</span><span class="identifier-syntax">angles</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">AW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">angles</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;quoted-text&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">AW</span><span class="plain-syntax">)) {</span>
@@ -1555,8 +1540,10 @@ character ones.</p>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile unescaped notation between from and to</span><span class="named-paragraph-number">27.7.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="comment-syntax">// LOG("Scan word %W, %d to %W, %d\n",</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">// </span><span class="plain-syntax"> </span><span class="comment-syntax">Wordings::one_word(from.wn), from.char_pos, Wordings::one_word(to.wn), to.char_pos);</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">// LOG(&quot;Scan word %W, %d to %W, %d\n&quot;,</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">//	<pre><code>Wordings::one_word(from.wn), from.char_pos, Wordings::one_word(to.wn), to.char_pos);
+</code></pre>
+</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">from</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">to</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax">) || ((</span><span class="identifier-syntax">from</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax"> == </span><span class="identifier-syntax">to</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">from</span><span class="plain-syntax">.</span><span class="element-syntax">char_pos</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">to</span><span class="plain-syntax">.</span><span class="element-syntax">char_pos</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">NW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">.</span><span class="element-syntax">wn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
@@ -1977,16 +1964,12 @@ names. For instance, &quot;in tonnes&quot; produces a text substitution which ta
 in both the LP for &quot;1 tonne&quot; and for &quot;2 tonnes&quot;, deciding at run-time
 which to use. And on the other hand, &quot;in metric units&quot; may produce text
 substitutions for many different kinds, distinguished by type-checking:</p>
-</div>
 <blockquote>
-    <p>To say (val - mass) in metric units: ...</p>
+<p>To say (val - mass) in metric units: ...</p>
 </blockquote>
-
 <blockquote>
-    <p>To say (val - length) in metric units: ...</p>
+<p>To say (val - length) in metric units: ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The following creates one text substitution for each different kind among
 the LPs under each named possibility.</p>
 </div>

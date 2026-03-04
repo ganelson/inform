@@ -54,7 +54,7 @@ various reasons, but with considerable variations affecting (mainly) the
 initial setup and the returned value.
 
 Note that the unchecked array bounds of 26 are safe here because propositions
-may only use 26 different variables at most (|x|, |y|, |z|, |a|, ..., |w|). Only
+may only use 26 different variables at most (`x`, `y`, `z`, `a`, ..., `w`). Only
 in very contrived circumstances are there ever more than three quantifiers, so
 this is plenty large enough:
 
@@ -160,7 +160,7 @@ moved outside of negation where possible, and it is almost always possible.)
 	@<Declare one pair of locals for each quantifier@>;
 	@<Declare the Inter locals needed by adaptations to particular deferral cases@>;
 
-@ If the proposition uses |x| and |y|, we will define locals called |x| and |y|
+@ If the proposition uses `x` and `y`, we will define locals called `x` and `y`
 to hold their current values, and so on.
 
 @<Declare locals corresponding to predicate calculus variables@> =
@@ -181,7 +181,7 @@ to hold their current values, and so on.
 			var_ix_lv[j] = NULL;
 		}
 
-@ The first quantifier gets |qcy_0|, |qcn_0|; the second |qcy_1|, |qcn_1|;
+@ The first quantifier gets `qcy_0`, `qcn_0`; the second `qcy_1`, `qcn_1`;
 and so on.
 
 @<Declare one pair of locals for each quantifier@> =
@@ -200,8 +200,8 @@ and so on.
 			no_extras++;
 		}
 
-@ A multipurpose function |f(x)| has to test whether $\phi(x)$ is true if $x \geq 0$,
-but if $x < 0$ then it will be one of the |*_DUSAGE| values, and we switch on which
+@ A multipurpose function `f(x)` has to test whether $\phi(x)$ is true if $x \geq 0$,
+but if $x < 0$ then it will be one of the `*_DUSAGE` values, and we switch on which
 it is. Each of those switch cases contains code for one of the possibilities;
 whereas for a single-purpose function, we just compile the code for that single
 possibility.
@@ -274,8 +274,8 @@ What these different cases have in common is that each is basically a search
 of all possible values of the bound variables in the expression. There will
 be some initialisation, something to do with each successfully found
 combination, and eventually some winding-up code. For example, "number of..."
-initialises by setting |counter| to 0, on each success it performs |counter++|,
-and at the end of the search it performs |return counter|.
+initialises by setting `counter` to 0, on each success it performs `counter++`,
+and at the end of the search it performs `return counter`.
 
 @<Compile body of deferred proposition for the given reason@> =
 	property *prn = NULL;
@@ -325,8 +325,8 @@ might compile to code in the form:
 	    M
 	} rhubarb, rhubarb
 =
-such that execution reaches |M| exactly once for each combination of open
-door $x$ and room $y$ such that $x$ is in $y$. (Position |M| is where we
+such that execution reaches `M` exactly once for each combination of open
+door $x$ and room $y$ such that $x$ is in $y$. (Position `M` is where we
 will place the case-dependent code for what to do on a successful match.)
 In the language of model theory, this is a loop over all interpretations
 of the variables in which $\phi$ is true.
@@ -342,34 +342,34 @@ counting the start and the end. We maintain the following:
 Invariant. Let $\psi$ be any syntactically valid subproposition
 of $\phi$ (that is, a contiguous sequence of atoms from $\psi$ which would
 be a valid proposition in its own right). Then there are before and after
-positions |B| and |A| in the compiled Inter code for searching $\phi$ such that
+positions `B` and `A` in the compiled Inter code for searching $\phi$ such that
 
-- |A| cannot be reached except from |B|, and
-- at execution time, on every occasion |B| is reached, |A| is then reached
+- `A` cannot be reached except from `B`, and
+- at execution time, on every occasion `B` is reached, `A` is then reached
 exactly once for each combination of possible substitutions into the
 $\exists$-bound variables of $\psi$ such that $\psi$ is then true.
 
-In particular, in the case when $\psi = \phi$, |B| is the start of our
-compiled Inter code (before anything is done) and |A| is the magic match
-position |M|.
+In particular, in the case when $\psi = \phi$, `B` is the start of our
+compiled Inter code (before anything is done) and `A` is the magic match
+position `M`.
 
 @ Lemma: If the Invariant holds for two adjacent syntactically valid
 subpropositions $\mu$ and $\nu$, then it holds for the subproposition $\mu\nu$.
 
-Proof of lemma: There are now three positions in the code: |B1|, before $\mu$;
-|B2|, before $\nu$, which is the same position as after $\mu$; and |A|, after
-$\nu$. Execution reaches |B2| $m$ times for each visit to |B1|, where $m$
+Proof of lemma: There are now three positions in the code: `B1`, before $\mu$;
+`B2`, before $\nu$, which is the same position as after $\mu$; and `A`, after
+$\nu$. Execution reaches `B2` $m$ times for each visit to `B1`, where $m$
 is the number of combinations of viable bound variable values in $\mu$.
-Execution reaches |A| $n$ times for each visit to |B2|, where $n$ is the
-similar number for $\nu$. Therefore execution reaches |A| a total of $nm$
-times for each visit to |B1|, the product of the number of variable combinations
+Execution reaches `A` $n$ times for each visit to `B2`, where $n$ is the
+similar number for $\nu$. Therefore execution reaches `A` a total of $nm$
+times for each visit to `B1`, the product of the number of variable combinations
 in $\mu$ and $\nu$, which is exactly the number of combinations in total.
 
 Corollary: If the Invariant holds for subpropositions in each of
 the following forms, then it will hold overall:
 
-- |Exists v|, for some variable $v$, or |Q v IN[ ... IN]|, for some quantifier other than $\exists$.
-- |NOT[ ... NOT]|.
+- `Exists v`, for some variable $v$, or `Q v IN[ ... IN]`, for some quantifier other than $\exists$.
+- `NOT[ ... NOT]`.
 - Any single predicate-like atom.
 
 Proof of corollary: All valid subpropositions are concatenations of (a) to (c),
@@ -377,7 +377,7 @@ and we then apply the Lemma inductively.
 
 It follows that if we can prove our algorithm maintains the invariant in
 cases (a) to (c), we can be sure it will correctly construct code leading
-to the match point |M|.
+to the match point `M`.
 
 @ We will make use of four stacks:
 
@@ -386,7 +386,7 @@ by the Inter code currently being compiled.
 - The Q-stack, which holds details of quantifiers being searched on.
 - The C-stack, which holds details of callings of variables.
 - The L-stack, which records hierarchical levels in the Inter code generated.
-The current stack pointer |L_sp| for this is equivalent to the depth of nesting
+The current stack pointer `L_sp` for this is equivalent to the depth of nesting
 of the Inter code being generated.
 
 Each stack begins empty: we want to be absolutely sure that this algorithm
@@ -404,8 +404,8 @@ give them all a capacity of 27.
 
 =
 typedef struct r_stack_data {
-	int reason;                /* what task are we performing? A |*_DEFER| value */
-	int parity;                /* |TRUE| if we want a match, |FALSE| if we want no match */
+	int reason;                /* what task are we performing? A `*_DEFER` value */
+	int parity;                /* `TRUE` if we want a match, `FALSE` if we want no match */
 } r_stack_data;
 
 typedef struct q_stack_data {
@@ -436,7 +436,7 @@ typedef struct l_stack_data {
 	@<Compile the proposition into a search algorithm@>;
 	while (Q_sp > 0) @<Pop the Q-stack@>;
 	while (C_sp > 0) @<Pop the C-stack@>;
-	/* we are now at the magic match point |M| in the search code */
+	/* we are now at the magic match point `M` in the search code */
 	@<Pop the R-stack@>;
 	while (L_sp > 0) @<Pop the L-stack@>;
 	/* we have now finished compiling the search code */
@@ -450,7 +450,7 @@ typedef struct l_stack_data {
 This is a sort of "split goals into sub-goals" mechanism. In order to
 determine, say, "if all but one of the closed doors are unlocked", the main
 goal is to determine the truth of the "are unlocked" part. For that example,
-|reason| will be |CONDITION_DEFER|, and it is pushed onto the R-stack at the
+`reason` will be `CONDITION_DEFER`, and it is pushed onto the R-stack at the
 start of the compilation:
 
 @<Push initial reason onto the R-stack@> =
@@ -460,7 +460,7 @@ start of the compilation:
 	R_sp++;
 
 @ But in order to work this out, we have to work out which doors are closed,
-and this is a subgoal to which we give the pseudo-reason |FILTER_DEFER|. We
+and this is a subgoal to which we give the pseudo-reason `FILTER_DEFER`. We
 push this new sub-goal onto the R-stack, leaving the original to be resumed
 when we're done.
 
@@ -476,7 +476,7 @@ when we're done.
 the Inter code we are compiling has reached a point which will be executed when
 its goal has been accomplished).
 
-In the case of |FILTER_DEFER|, when scanning domains of quantifiers, we increment
+In the case of `FILTER_DEFER`, when scanning domains of quantifiers, we increment
 the count of the domain set size -- the number of closed doors, in the above
 example. (See below.)
 
@@ -588,7 +588,7 @@ Note that if $\phi$ contains $\lnot(\psi)$ then $\psi$ must be a
 conjunction of predicate-like atoms. (Otherwise a problem message would be
 issued and in that case it doesn't matter what code we compile, so long as
 we don't crash: it will never be run.) Thus we can assume that between
-|NEGATION_OPEN_ATOM| and |NEGATION_CLOSE_ATOM| is a predicate run.
+`NEGATION_OPEN_ATOM` and `NEGATION_CLOSE_ATOM` is a predicate run.
 
 Between negation brackets, then, we must interpret X, Y, Z as
 $\lnot(X\land Y\land Z)$, and we need to compile that to
@@ -603,7 +603,7 @@ rather than
 =
 which gets de Morgan's laws wrong.
 
-@ That means a little fancy footwork to start and finish the compound |if|
+@ That means a little fancy footwork to start and finish the compound `if`
 statement properly:
 
 @<Compile code to test the atom@> =
@@ -630,7 +630,7 @@ statement properly:
 		@<Open a block in the Inter code compiled to perform the search, if variant@>;
 	}
 
-@ The |NOW_ASSERTION_DEFER| reason is different from all of the others,
+@ The `NOW_ASSERTION_DEFER` reason is different from all of the others,
 because rather than searching for a given situation it tries force it to
 happen (or not to). Forcing rather than testing is easy here: we just supply
 a different task when calling //CompileAtoms::code_to_perform//.
@@ -695,18 +695,18 @@ doors are unlocked" we count both the domain size (the number of doors)
 and the number of valid cases (the number of unlocked doors), but only need
 the latter. This might be worth optimising some day, to save local variables.
 
-@ The domain size and valid case counts are stored in locals called |qcn_N|
-and |qcy_N| respectively, where |N| is the index of the quantifier -- 0 for
+@ The domain size and valid case counts are stored in locals called `qcn_N`
+and `qcy_N` respectively, where `N` is the index of the quantifier -- 0 for
 the first one in the proposition, 1 for the second and so on.
 
-On reading a non-existence |QUANTIFIER| atom, we compile code to zero the
+On reading a non-existence `QUANTIFIER` atom, we compile code to zero the
 counts, and push details of the quantifier onto the Q-stack, so that we
 can recover them later. We then compile a loop header exactly as above.
 
 The test of $\psi$, which acts as a filter on the domain set -- e.g.,
 only doors, not all objects -- is handled by pushing a suitable goal onto
 the R-stack, but we don't need to do anything to make that happen here,
-because the |DOMAIN_OPEN| atom does it.
+because the `DOMAIN_OPEN` atom does it.
 
 @<Push the Q-stack@> =
 	if (R_stack[R_sp-1].reason == NOW_ASSERTION_DEFER)
@@ -756,8 +756,8 @@ $\not\exists x: {\it person}(x)\land{\it likes}(x, W)$.
 	QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> theta
 =
 We zeroed the counters, compiled the loop headers and pushed details to the
-Q-stack at the |QUANTIFIER| atom; pushed a filtering goal onto the R-stack
-at the |DOMAIN_OPEN| atom; popped it again as accomplished at |DOMAIN_CLOSE|,
+Q-stack at the `QUANTIFIER` atom; pushed a filtering goal onto the R-stack
+at the `DOMAIN_OPEN` atom; popped it again as accomplished at `DOMAIN_CLOSE`,
 compiling a line which increments the domain size to celebrate; and then
 compiled code to test $\theta$.
 
@@ -776,14 +776,14 @@ this proposition function: see below. That leaves just this part:
 	if the counts are such that the quantifier is satisfied {
 	    ...
 =
-left to compile, and we will be done: execution will reach the |...| if and
+left to compile, and we will be done: execution will reach the `...` if and
 only if it is true at run-time that three or more of the doors is unlocked.
 
 Thus this elaborate generalised-quantifier case satisfies the Invariant
-because it transfers execution from before to |...| either 0 times (if the
+because it transfers execution from before to `...` either 0 times (if the
 counts don't satisfy us), or once. Unlike in the $\exists v$ case, it's
 not a question of enumerating which $v$ work and which do not; the whole
-thing works, or doesn't, and is more like testing a single |if|.
+thing works, or doesn't, and is more like testing a single `if`.
 
 @<Pop the Q-stack@> =
 	if (Q_sp <= 0) internal_error("Q stack underflow");
@@ -803,8 +803,8 @@ thing works, or doesn't, and is more like testing a single |if|.
 
 @ Note that if there is an existential quantifier inside the quantifier we
 are counting solutions for, then we halt the search as soon as a solution is found;
-we don't want to rack up |qcy_s[Q_sp]| to artificially high levels by finding
-multiple solutions. See test case |CountInnerExistential|.
+we don't want to rack up `qcy_s[Q_sp]` to artificially high levels by finding
+multiple solutions. See test case `CountInnerExistential`.
 
 @<Count this as a success@> =
 	EmitCode::inv(POSTINCREMENT_BIP);
@@ -820,7 +820,7 @@ transcribe that to the stash of callings for the benefit of the code
 calling this proposition function. Each time we discover that a term $t$ is
 to be given a name, we stack it up. These are not always variables:
 
->> if a person (called the dupe) is in a dark room (called the lair), ...
+> if a person (called the dupe) is in a dark room (called the lair), ...
 
 gives names to $x$ ("dupe") and $f_{\it in}(x)$ ("lair"), because
 simplification has eliminated the variable $y$ which appears to be being
@@ -838,13 +838,13 @@ In two situations:
 - when a domain-search has successfully found a viable case for a quantifier,
 the values of any variables called in that domain are recorded;
 - and otherwise the values of called variables are recorded just before
-point |M|, that is, immediately before acting on a successful match.
+point `M`, that is, immediately before acting on a successful match.
 
 For example, when reading:
 
->> if a person (called the dupe) is in a lighted room which is adjacent to exactly one dark room (called the lair), ...
+> if a person (called the dupe) is in a lighted room which is adjacent to exactly one dark room (called the lair), ...
 
-the value of "dupe" is transferred just before |M|, but the value of "lair"
+the value of "dupe" is transferred just before `M`, but the value of "lair"
 is transferred as soon as a dark room is found. The code looks like this:
 = (text)
 	set count of domain size to 1
@@ -857,8 +857,8 @@ is transferred as soon as a dark room is found. The code looks like this:
 	    M
 	}
 =
-If we waited until point |M| to record the lair value, it would have disappeared,
-because |M| is outside the loop which searches the domain of the "exactly one"
+If we waited until point `M` to record the lair value, it would have disappeared,
+because `M` is outside the loop which searches the domain of the "exactly one"
 quantifier.
 
 @<Pop the C-stack@> =
@@ -907,7 +907,7 @@ each case, some setting-up code; some code to execute when a viable set
 of variable values is found; and some winding-up code.
 
 In some of the cases, additional local variables are needed within the
-|Prop_N| function, to keep track of counters or totals. These are they:
+`Prop_N` function, to keep track of counters or totals. These are they:
 
 @<Declare the Inter locals needed by adaptations to particular deferral cases@> =
 	if (multipurpose_function) {
@@ -950,18 +950,18 @@ In some of the cases, additional local variables are needed within the
 
 @h Adaptation to CONDITION.
 The first and simplest of our cases to understand: where $\phi$ is a sentence,
-with all variables bound, and we have to return |true| if it is true and
-|false| if it is false. There is no initialisation:
+with all variables bound, and we have to return `true` if it is true and
+`false` if it is false. There is no initialisation:
 
 @<Initialisation before CONDITION search@> =
 	;
 
-@ As soon as we find any valid combination of the variables, we return |true|:
+@ As soon as we find any valid combination of the variables, we return `true`:
 
 @<Act on successful match in CONDITION search@> =
 	EmitCode::rtrue();
 
-@ So we only reach winding-up if every case failed, and then we return |false|:
+@ So we only reach winding-up if every case failed, and then we return `false`:
 
 @<Winding-up after CONDITION search@> =
 	EmitCode::rfalse();
@@ -974,7 +974,7 @@ the winding-up code, and therefore completely encloses the code generated
 by the searching mechanism above.
 
 In the first case, we want to count the number of $x$ for which $\phi(x)$
-is true. The local |counter| holds the count so far; it starts out automatically
+is true. The local `counter` holds the count so far; it starts out automatically
 at 0, since all Inter locals do.
 
 @<Initialisation before NUMBER search@> =
@@ -983,10 +983,10 @@ at 0, since all Inter locals do.
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
-$\phi$. But we only want to increment |counter| once, so having done so, we
+$\phi$. But we only want to increment `counter` once, so having done so, we
 exit the searching code and continue the outer loop.
 
-The |jump| to a label is forced on us since Inter, unlike, say, Perl, has no
+The `jump` to a label is forced on us since Inter, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in NUMBER search@> =
@@ -1031,7 +1031,7 @@ not have clashing names.
 
 @h Adaptation to LIST.
 In the next case, we want to form the list of all $x$ for which $\phi(x)$
-is true. The local |list| holds the list so far, and already exists.
+is true. The local `list` holds the list so far, and already exists.
 
 @<Initialisation before LIST search@> =
 	EmitCode::call(Hierarchy::find(WRITEPVFIELD_HL));
@@ -1055,10 +1055,10 @@ is true. The local |list| holds the list so far, and already exists.
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
-$\phi$. But we only want to increment |counter| once, so having done so, we
+$\phi$. But we only want to increment `counter` once, so having done so, we
 exit the searching code and continue the outer loop.
 
-The |jump| to a label is forced on us since Inter, unlike, say, Perl, has no
+The `jump` to a label is forced on us since Inter, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in LIST search@> =
@@ -1174,8 +1174,8 @@ its random $x$ than it ideally would, but we accept the trade-off.
 @ Again we exit the searcher as soon as a match is found, since that guarantees
 that $\phi(x)$.
 
-Note that we can only return here on the second pass, since |selection| is $-1$
-throughout the first pass, whereas |counter| is non-negative.
+Note that we can only return here on the second pass, since `selection` is $-1$
+throughout the first pass, whereas `counter` is non-negative.
 
 @<Act on successful match in RANDOM search@> =
 	EmitCode::inv(POSTINCREMENT_BIP);
@@ -1201,8 +1201,8 @@ throughout the first pass, whereas |counter| is non-negative.
 
 	@<Jump to next outer loop for this reason@>;
 
-@ We return |nothing| -- the non-object -- if |counter| is zero, since that
-means the set of possible $x$ is empty. But we also return if |selection|
+@ We return `nothing` -- the non-object -- if `counter` is zero, since that
+means the set of possible $x$ is empty. But we also return if `selection`
 has been made already, because that means that the second pass has been
 completed without a return -- something which in theory cannot happen, but
 just might do if testing part of the proposition had some side-effect changing
@@ -1262,7 +1262,7 @@ should be totalling. If we know that ourselves, we can compile in a direct
 reference. But if we are compiling a multipurpose deferred proposition, then
 it might be used to total any property over the domain, and we won't know
 which until runtime -- when its identity will be found in the Inter variable
-|property_to_be_totalled|.
+`property_to_be_totalled`.
 
 @<Act on successful match in TOTAL search@> =
 	EmitCode::inv(STORE_BIP);
@@ -1327,20 +1327,20 @@ which until runtime -- when its identity will be found in the Inter variable
 @h Adaptation to EXTREMAL.
 This is rather similar. We find the member of $\lbrace x\mid \phi(x)\rbrace$
 which either minimises, or maximises, the value of some property $P$. We use
-two local variables: |best|, the extreme $P$ value found so far; and |best_with|,
+two local variables: `best`, the extreme $P$ value found so far; and `best_with`,
 the member of the domain set which achieves that.
 
 If two or more $x$ achieve the optimal $P$-value, it is deliberately left
 undefined which one is returned. The user may be typing "the heaviest thing
 on the table", but what he gets is "a heaviest thing on the table".
 
-We open the search with |best_with| equal to |nothing|, the non-object, which
+We open the search with `best_with` equal to `nothing`, the non-object, which
 is what we will return if the domain set turns out to be empty; and with
-|best| set to the furthest-from-optimal value possible. For a search maximising
-$P$, |best| starts at the lowest number representable in the virtual machine;
+`best` set to the furthest-from-optimal value possible. For a search maximising
+$P$, `best` starts at the lowest number representable in the virtual machine;
 for a minimisation, it starts at the highest. That way, if any member of the
 domain is found, its $P$-value must be at least as good as the starting
-value of |best|.
+value of `best`.
 
 Again the only nuisance is that sometimes we know $P$, and whether we are
 maximising or minimising, at compile time; but for a multipurpose function
@@ -1399,9 +1399,9 @@ we don't, and have to look that up at run-time.
 		proposition, FALSE, FALSE, pdef);
 
 @ It might look as if we could speed up the multipurpose case by
-multiplying by |property_loop_sign|, thus combining the max and min
-versions into one, and saving an |if|. But (a) the multiplication is as
-expensive as the |if| (remember that on a VM there's no real branch
+multiplying by `property_loop_sign`, thus combining the max and min
+versions into one, and saving an `if`. But (a) the multiplication is as
+expensive as the `if` (remember that on a VM there's no real branch
 penalty), and (b) we need to watch out because $-1$ times $-32768$, on a
 16-bit machine, is $-1$, not $32768$: so it is not always true that
 multiplying by $-1$ is order-reversing.
@@ -1512,26 +1512,26 @@ multiplying by $-1$ is order-reversing.
 
 @h Adaptation to LOOP.
 Here the proposition is used to iterate through the members of the domain
-set $\lbrace x\mid \phi(x)\rbrace$. Two local variables exist: |x| and |x_ix|.
+set $\lbrace x\mid \phi(x)\rbrace$. Two local variables exist: `x` and `x_ix`.
 One of the following is true:
 
-- The domain set contains only objects, so that |x| is non-zero if it
-represents a member of that set. In this case |x_ix| may or may not be used,
+- The domain set contains only objects, so that `x` is non-zero if it
+represents a member of that set. In this case `x_ix` may or may not be used,
 and we will not rely on it.
-- The domain set contains only values, and then |x| might easily be zero,
-but |x_ix| is always the index within the domain set: 1 if |x| is the first
+- The domain set contains only values, and then `x` might easily be zero,
+but `x_ix` is always the index within the domain set: 1 if `x` is the first
 value, 2 for the second and so on.
 
-The proposition is called with a pair of values |x|, |x_ix| and returns
-the next value |x| in the domain set, or 0 if the domain is exhausted. (In
+The proposition is called with a pair of values `x`, `x_ix` and returns
+the next value `x` in the domain set, or 0 if the domain is exhausted. (In
 case (2) it's not safe to regard 0 as an end-of-set sentinel value because
 0 can be a valid member of the set; so in looping through (2) we should
 first find the size of the set using NUMBER OF, then keep calling for
 members until the index reaches the size.) There is no need to return the
-next |x_ix| value since it is always the present value plus 1.
+next `x_ix` value since it is always the present value plus 1.
 
-If the proposition is called with |x| set to |nothing|, in case (1), or
-with |x_ix| equal to 0, in case (2), it returns the first value in the
+If the proposition is called with `x` set to `nothing`, in case (1), or
+with `x_ix` equal to 0, in case (2), it returns the first value in the
 domain.
 
 @ Snarkily, this is how we do it:
@@ -1547,8 +1547,8 @@ initial value or the successor value from a loop header.[1]
 
 [1] This trick caused some consternation for I6 hackers when early drafts of
 I7 came out, because they had been experimenting with a patch to I6 which
-protected |objectloop| from object-tree rearrangements but which assumed that
-nobody ever used |jump| to enter a loop body bypassing its header. But the DM4,
+protected `objectloop` from object-tree rearrangements but which assumed that
+nobody ever used `jump` to enter a loop body bypassing its header. But the DM4,
 which defines I6, does not forbid this, and nor does Inter.
 
 @<Initialisation before LOOP search@> =
@@ -1643,7 +1643,7 @@ in fact it can be applied to any suitable relation $R$.
 Parent optimisation cannot be used if we are compiling code to force a proposition,
 rather than test it, because then $R(v, t)$ is not an accomplished fact but is
 something we have yet to make come true. This is why the function below needs a
-flag |avoid_parent_optimisation|. Case (1) doesn't suffer from this since
+flag `avoid_parent_optimisation`. Case (1) doesn't suffer from this since
 kinds cannot be changed at run-time.
 
 =
@@ -1683,14 +1683,14 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 
 @ The following looks more complicated than it really is. Sometimes it's
 called to compile a loop arising from a quantifier with a domain, in
-which case |grouped| is set and |proposition| points to:
+which case `grouped` is set and `proposition` points to:
 = (text)
 	QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> ...
 =
 so that $\psi$, the part in the domain group, defines the range of the
 variable. But sometimes the call is to compile a loop not arising from a
 quantifier, so there is no domain group to scan; instead the whole
-proposition makes up $\psi$, and now |grouped| is clear.
+proposition makes up $\psi$, and now `grouped` is clear.
 
 @<Scan the proposition to find the domain of the loop, and look for opportunities@> =
 	int bl = 0, enabled = FALSE;
@@ -1727,7 +1727,7 @@ parent-optimisable relations $R$.
 
 @ We give the relation $R$ an opportunity to write a loop which runs $v$
 through all possible $x$ such that $R(x, t)$, by writing a schema for the
-loop in which |*1| denotes the variable $v$ and |*2| the term $t$.
+loop in which `*1` denotes the variable $v$ and `*2` the term $t$.
 
 For example, the worn-by relation writes the schema:
 = (text)
@@ -1738,7 +1738,7 @@ carried rather than worn are skipped.
 
 We have to check three possible cases: $R(v, t)$ direct, and then
 ${\it is}(f_R(v), t)$ or ${\it is}(t, f_R(v))$, which can arise from
-simplifications. We set |optimise_on| to $R$ and |parent| to $t$.
+simplifications. We set `optimise_on` to $R$ and `parent` to $t$.
 
 @<Consider parent optimisation on this binary predicate@> =
 	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(pl->predicate);

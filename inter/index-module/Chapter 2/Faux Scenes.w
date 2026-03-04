@@ -31,8 +31,8 @@ typedef struct simplified_connector {
 } simplified_connector;
 
 @ This three-deck structure of objects matches a similar hierarchy of Inter
-packages, where |_scene_connector| packages are inside |_scene_end| packages
-which are inside |_scene| packages.
+packages, where `_scene_connector` packages are inside `_scene_end` packages
+which are inside `_scene` packages.
 
 =
 void FauxScenes::list_of_faux_scenes(index_session *session) {
@@ -68,7 +68,7 @@ int FauxScenes::scene_order(const void *ent1, const void *ent2) {
 	return Str::cmp(SW1, SW2);
 }
 
-@ The following returns a valid |simplified_scene| for each |_scene| package,
+@ The following returns a valid `simplified_scene` for each `_scene` package,
 together with its connectors and ends.
 
 =

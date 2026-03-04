@@ -7,7 +7,7 @@ Inter kit can perform the test, with the following syntax.
 
 This is an old Inform feature which may now be somewhat redundant: it's better
 to use //Adjectives by Inter Function//. The distinction is that here the
-function is expected to return |true| or |false| and takes no arguments.
+function is expected to return `true` or `false` and takes no arguments.
 
 =
 <inform6-condition-adjective-definition> ::=

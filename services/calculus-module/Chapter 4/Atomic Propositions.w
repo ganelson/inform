@@ -6,19 +6,19 @@ propositions are built up.
 @h Elements and groups.
 Propositions are built up from "atoms": see //What This Module Does// for
 more. Those atoms are themselves //pcalc_prop// objects: what makes them
-atomic is simply that their |next| links lead nowhere yet.
+atomic is simply that their `next` links lead nowhere yet.
 
 @d MAX_ATOM_ARITY 2
 
 =
 typedef struct pcalc_prop {
-	int element; /* one of the |*_ATOM| constants below: always 1 or greater */
+	int element; /* one of the `*_ATOM` constants below: always 1 or greater */
 	int arity; /* 1 for quantifiers and unary predicates; 2 for BPs; 0 otherwise */
 	struct general_pointer predicate; /* indicates which predicate structure is meant */
 	struct binary_predicate *saved_bp; /* for problem messages only */
 	struct pcalc_term terms[MAX_ATOM_ARITY]; /* terms to which the predicate applies */
-	struct quantifier *quant; /* |QUANTIFIER_ATOM|: which one */
-	int quantification_parameter; /* |QUANTIFIER_ATOM|: e.g., the 3 in "all three" */
+	struct quantifier *quant; /* `QUANTIFIER_ATOM`: which one */
+	int quantification_parameter; /* `QUANTIFIER_ATOM`: e.g., the 3 in "all three" */
 	struct pcalc_prop *next; /* next atom in the list for this proposition */
 } pcalc_prop;
 
@@ -76,8 +76,8 @@ pcalc_prop *Atoms::new(int element) {
 @h Quantifiers.
 These have arity 1, and the single term must always be a variable, the one
 which is being bound.[1] The parameter is a number needed for some
-|quantifier| types to identify the range: for instance, it would be 7 in the
-case of |Card= 7|.
+`quantifier` types to identify the range: for instance, it would be 7 in the
+case of `Card= 7`.
 
 [1] Tying specific variables to quantifiers seems to be out of fashion in
 modern computer science. Contemporary theorem-proving assistants mostly
@@ -200,7 +200,7 @@ int Atoms::is_equality_predicate(pcalc_prop *prop) {
 	return FALSE;
 }
 
-@ Given $C$, return the proposition |(x == C)|:
+@ Given $C$, return the proposition `(x == C)`:
 
 =
 pcalc_prop *Atoms::prop_x_is_constant(parse_node *C) {

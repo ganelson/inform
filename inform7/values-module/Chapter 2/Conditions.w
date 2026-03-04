@@ -8,36 +8,36 @@ conditions: we therefore need to provide the logical operations of AND, OR,
 and NOT structurally in the parse tree rather than implementing them as phrases
 like the arithmetic operators.
 
-So |LOGICAL_AND_NT| and |LOGICAL_OR_NT| imitate the effect of logical
+So `LOGICAL_AND_NT` and `LOGICAL_OR_NT` imitate the effect of logical
 operators. They have two arguments which must themselves be CONDITIONs;
-and similarly for the unary |LOGICAL_NOT_NT|. A unique feature of Inform
-among programming languages is that it has a fourth: |LOGICAL_TENSE_NT|,
+and similarly for the unary `LOGICAL_NOT_NT`. A unique feature of Inform
+among programming languages is that it has a fourth: `LOGICAL_TENSE_NT`,
 which expresses that a condition holds at a different time from the present.
 
-@ |TEST_PROPOSITION_NT| contains a predicate calculus sentence in the
-|proposition| field of its SP: there are no arguments.
+@ `TEST_PROPOSITION_NT` contains a predicate calculus sentence in the
+`proposition` field of its SP: there are no arguments.
 
-@ |TEST_PHRASE_OPTION_NT| tests the use of a phrase option, and is the
+@ `TEST_PHRASE_OPTION_NT` tests the use of a phrase option, and is the
 actual SP parsed for the second usage of the word "thoroughly" in
 the following example:
 
->> To prognosticate, swiftly or thoroughly: ...; if thoroughly, ...
+> To prognosticate, swiftly or thoroughly: ...; if thoroughly, ...
 
 It uses the SP's data field to refer to the option in question: its value is the
 bitmap value of the option, which will usually be $2^n$ where the option
 is the $n$-th in the list for this phrase, counting upwards from 0.
 
-@ |TEST_VALUE_NT| tests the value beneath it in a condition context. For
-truth state values, this does the obvious thing: |true| passes and
-|false| fails. For stored actions or descriptions of actions, the current
+@ `TEST_VALUE_NT` tests the value beneath it in a condition context. For
+truth state values, this does the obvious thing: `true` passes and
+`false` fails. For stored actions or descriptions of actions, the current
 action is tested to see if it matches.
 
 For constant descriptions, whatever is currently being discussed (the I6 value
-|self|, generally speaking) is tested to see if it matches. But in order to
+`self`, generally speaking) is tested to see if it matches. But in order to
 make definitions like this one work, we also need to treat descriptions as
 values:
 
->> To decide which number is total (P - property) of (D - description):
+> To decide which number is total (P - property) of (D - description):
 
 The way this is done is that type-checking a description (say, "closed doors
 in lighted rooms") against the expectation of finding the kind constructor
@@ -82,7 +82,7 @@ parse_node *Conditions::negate(parse_node *cond) {
 }
 
 @ Testing propositions is also straightforward. There's no creator for
-|NOW_PREPOSITION_VNT|, since this is formed only by coercion of one of these.
+`NOW_PREPOSITION_VNT`, since this is formed only by coercion of one of these.
 
 =
 parse_node *Conditions::new_TEST_PROPOSITION(pcalc_prop *prop) {

@@ -15,7 +15,7 @@ typedef struct inter_construct {
 
 	int min_level; /* min node tree depth within its package */
 	int max_level; /* max node tree depth within its package */
-	int usage_permissions; /* a bitmap of the |*_ICUP| values */
+	int usage_permissions; /* a bitmap of the `*_ICUP` values */
 
 	int min_extent; /* min number of words in the frame for this instruction */
 	int max_extent; /* max number of words in the frame for this instruction */
@@ -60,7 +60,7 @@ void InterInstruction::defines_symbol_in_fields(inter_construct *IC, int s, int 
 }
 
 @ Several fields specify restrictions on where, in an Inter tree, instructions
-using this construct can appear. |min_level| to |max_level|, inclusive, give
+using this construct can appear. `min_level` to `max_level`, inclusive, give
 the range of hierarchical levels within their packages which such instructions
 can occur at.
 
@@ -221,11 +221,11 @@ instructions out again; it's just not worth the bother of doing it that way,
 elegant as it might be. So note that if a syntax changes, the corresponding
 function to write an instruction must change too.
 
-So: |syntax| specifies the textual format of the construct for parsing purposes.
+So: `syntax` specifies the textual format of the construct for parsing purposes.
 It needs to be set up so that no two different constructs can match the same
-line of text. The |syntax| is easier to read than a regular expression, which is
-what we turn it into. So for example |deploy !IDENTIFIER| would match the
-literal word |deploy|, then any amount of white space, then a literal |!| and
+line of text. The `syntax` is easier to read than a regular expression, which is
+what we turn it into. So for example `deploy !IDENTIFIER` would match the
+literal word `deploy`, then any amount of white space, then a literal `!` and
 immediately following it an identifier.
 
 Note that it is legal not to call this function, i.e., to create a construct
@@ -413,7 +413,7 @@ void InterInstruction::create_language(void) {
 	SplatInstruction::define_construct();
 }
 
-@ The result is printed when //inter// is run with the |-constructs| switch.
+@ The result is printed when //inter// is run with the `-constructs` switch.
 
 =
 void InterInstruction::show_constructs(OUTPUT_STREAM) {
@@ -439,7 +439,7 @@ nodes to that instruction of a kind it expects.
 
 //InterInstruction::verify// should be called only by //VerifyingInter::instruction//,
 which ensures that //InterInstruction::verify// is never called twice on the same
-instruction. |CONSTRUCT_VERIFY_MTID| methods for the constructs can therefore
+instruction. `CONSTRUCT_VERIFY_MTID` methods for the constructs can therefore
 safely assume that.
 
 @e CONSTRUCT_VERIFY_MTID
@@ -558,7 +558,7 @@ void InterInstruction::instruction_writer(OUTPUT_STREAM, char *format_string, vo
 
 @ Conversely, the function //InterInstruction::match// takes a line of textual Inter
 source code, uses the regular expressions for each construct to find which one
-is being used, and then calls its |CONSTRUCT_READ_MTID| method to ask for the
+is being used, and then calls its `CONSTRUCT_READ_MTID` method to ask for the
 job to be completed.
 
 @e CONSTRUCT_READ_MTID

@@ -70,7 +70,7 @@ a convenient holder for such composites.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">word_assemblage</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_indiv_words</span><span class="plain-syntax">; </span><span class="comment-syntax">/* should be between 0 and |MAX_WORDS_IN_ASSEMBLAGE| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_indiv_words</span><span class="plain-syntax">; </span><span class="comment-syntax">/* should be between 0 and <code>MAX_WORDS_IN_ASSEMBLAGE</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">indiv_words</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* some may be null */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">word_assemblage</span><span class="plain-syntax">;</span>
 </pre>

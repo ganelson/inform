@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/use_options submodule.
 
-@ Our inventory |inv| already contains a list |inv->use_option_nodes| of all packages
-in the tree with type |_use_option|.
+@ Our inventory `inv` already contains a list `inv->use_option_nodes` of all packages
+in the tree with type `_use_option`.
 
 =
 void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
@@ -15,7 +15,7 @@ void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_invent
 }
 
 @ Each use option package contains a numeric constant with the symbol name
-|use_option_id|. We want to ensure that these ID numbers are contiguous from 0
+`use_option_id`. We want to ensure that these ID numbers are contiguous from 0
 and never duplicated, so we change the values of these constants accordingly.
 
 @<Assign unique use option ID numbers@> =

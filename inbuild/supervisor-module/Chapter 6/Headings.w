@@ -4,10 +4,10 @@ To keep track of the hierarchy of headings and subheadings found
 in the source text.
 
 @h The hierarchy.
-Headings in the source text correspond to |HEADING_NT| nodes in syntax
+Headings in the source text correspond to `HEADING_NT` nodes in syntax
 trees, and mostly occur when the user has explicitly typed a heading such as:
 
->> Part VII - The Ghost of the Aragon
+> Part VII - The Ghost of the Aragon
 
 Source text can make whatever headings it likes: no sequence is illegal. It
 is not for Inform to decide on behalf of the author that it is eccentric to
@@ -76,7 +76,7 @@ typedef struct heading_tree {
 	struct heading heading_root;
 	int assembled_at_least_once;
 	int last_indentation_above_level[NO_HEADING_LEVELS];
-	struct linked_list *subordinates; /* of |heading| */
+	struct linked_list *subordinates; /* of `heading` */
 	int damaged; /* i.e., failed verification */
 	CLASS_DEFINITION
 } heading_tree;
@@ -199,8 +199,8 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 
 @h Declarations.
 The following callback function is called by //syntax// each time a new
-|HEADING_NT| node is created in the syntax tree for a project. It has to
-return |TRUE| or |FALSE| to say whether sentences falling under the current
+`HEADING_NT` node is created in the syntax tree for a project. It has to
+return `TRUE` or `FALSE` to say whether sentences falling under the current
 heading should be included in the project's source text. (For instance,
 sentences under a heading with the disclaimer "(for Glulx only)" will not be
 included if the target virtual machine on this run of Inform is the Z-machine.)
@@ -235,7 +235,7 @@ heading *Headings::from_node(parse_node *pn) {
 	return Node::get_embodying_heading(pn);
 }
 
-@ So, then, each |HEADING_NT| node in the parse tree produces a call to this
+@ So, then, each `HEADING_NT` node in the parse tree produces a call to this
 function, which attaches a new //heading// object to it, and populates that
 with the result of parsing any caveats in its wording.
 
@@ -321,7 +321,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn, inbuild_copy *for_
 <heading-qualifier> to see if it ends with text telling us what to do with
 the source text it governs. For example,
 
->> Section 21 - Frogs (unindexed) (not for Glulx)
+> Section 21 - Frogs (unindexed) (not for Glulx)
 
 would match twice, first registering the VM requirement, then the unindexedness.
 
@@ -397,7 +397,7 @@ is determined.
 	==> { R[0] + 4, - };
 
 @ This nonterminal matches any description of a virtual machine, and produces
-the result |TRUE| if the VM we are building for fits that description, |FALSE|
+the result `TRUE` if the VM we are building for fits that description, `FALSE`
 otherwise.
 
 =
@@ -469,8 +469,8 @@ we have a heading:
 = (text as Inform 7)
 	Chapter 7 - Into the Woods (see "woods.i7")
 =
-and if we then have further headings inside the file |woods.i7|, those
-further headings |h2| won't be adjacent to the original heading |h| in
+and if we then have further headings inside the file `woods.i7`, those
+further headings `h2` won't be adjacent to the original heading `h` in
 the list. So we fix this up here.
 
 There is a nameless level zero heading marking the change of source file:
@@ -526,7 +526,7 @@ runs in linear time.)
 		Headings::move_below(subseq, h); /* all lesser headings in the run become h's children */
 	}
 
-@ The above function, then, calls |Headings::move_below| to attach a heading
+@ The above function, then, calls `Headings::move_below` to attach a heading
 to the tree as a child of a given parent:
 
 =
@@ -856,7 +856,7 @@ void Headings::write_as_XML(parse_node_tree *T, filename *F) {
 		"<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
 		"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
 
-@ Note that a level of 0, and a title of |--|, signifies a File (0) level
+@ Note that a level of 0, and a title of `--`, signifies a File (0) level
 heading: external tools can probably ignore such records. Similarly, it is
 unlikely that they will ever see a record without a "Filename" key, but they
 are optional all the same.

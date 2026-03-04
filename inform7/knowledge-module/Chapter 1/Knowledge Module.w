@@ -8,7 +8,7 @@ which use this module:
 
 @d KNOWLEDGE_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 COMPILE_WRITER(booking *, RuleBookings::log)

@@ -190,17 +190,17 @@ value <code>pi</code>.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">equation_node</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">eqn_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_EQN| values */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">eqn_operation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_OPERATION| values (see "Dimensions.w") */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">eqn_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_EQN</code> values */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">eqn_operation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_OPERATION</code> values (see &quot;Dimensions.w&quot;) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">enode_arity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 for a leaf */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">equation_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">enode_operands</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_EQN_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* the operands */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leaf_constant</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if e.g. "21" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">equation_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leaf_symbol</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if e.g. "G" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leaf_constant</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if e.g. &quot;21&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">equation_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leaf_symbol</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if e.g. &quot;G&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">generalised_kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">gK_before</span><span class="plain-syntax">; </span><span class="comment-syntax">/* result of the node as it is */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">generalised_kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">gK_after</span><span class="plain-syntax">; </span><span class="comment-syntax">/* result of the node as we need it to be */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">enode_promotion</span><span class="plain-syntax">; </span><span class="comment-syntax">/* promote this from an integer to a real number? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_n</span><span class="plain-syntax">; </span><span class="comment-syntax">/* represents the rational number |n/m|... */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_m</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...unless |m| is zero */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_n</span><span class="plain-syntax">; </span><span class="comment-syntax">/* represents the rational number <code>n/m</code>... */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_m</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...unless <code>m</code> is zero */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">equation_node</span><span class="plain-syntax">;</span>
 </pre>
@@ -219,12 +219,9 @@ value <code>pi</code>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The above catches all of the named expressions written out in the
 source text, but not the ones written &quot;inline&quot;, in phrases like</p>
-</div>
 <blockquote>
-    <p>let F be given by F = ma;</p>
+<p>let F be given by F = ma;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>Those equations are created by calling <code>Equations::new</code> direct from the
 S-parser: such equations are called &quot;anonymous&quot;, as they have no name. But in
 either case, an equation begins here:</p>
@@ -312,18 +309,14 @@ We know that this begins with the word &quot;equation&quot;, or we wouldn't be h
 <ul class="endnotetexts"><li>This code is used in <a href="7-eqt.html#SP9">&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  An equation can be referred to by its number, or by its name. Thus</p>
-</div>
 <blockquote>
-    <p>Equation 64 - Distribution of Cheese</p>
+<p>Equation 64 - Distribution of Cheese</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>could be referred to elsewhere in the text by any of three names:</p>
-</div>
 <blockquote>
-    <p>equation 64, Distribution of Cheese, Distribution of Cheese equation</p>
+<p>equation 64, Distribution of Cheese, Distribution of Cheese equation</p>
 </blockquote>
-
+</div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;equation-names-construction&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">equation</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
@@ -410,12 +403,9 @@ then type-checking it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Declaring symbols.</b>  Equations are allowed to end with a &quot;where...&quot; clause, explaining what
 the symbols in it mean. For example:</p>
-</div>
 <blockquote>
-    <p>where F is a force, a = 9.801 m/ss, m1 and m2 are masses;</p>
+<p>where F is a force, a = 9.801 m/ss, m1 and m2 are masses;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>At the earlier stages of parsing, we simply split the &quot;where&quot; text away
 using this:</p>
 </div>
@@ -457,12 +447,9 @@ is expected to declare every symbol occurring in it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  But the following routine is also used with the &quot;where&quot; text supplied in
 a phrase like so:</p>
-</div>
 <blockquote>
-    <p>let F be given by Newton's Second Law, where m = 101kg;</p>
+<p>let F be given by Newton's Second Law, where m = 101kg;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>In this context the &quot;where&quot; text sets explicit values for symbols occurring
 in the equation; these are temporary settings only and will not change the
 equation's behaviour elsewhere.</p>
@@ -479,12 +466,9 @@ issued.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  The following grammar is later used to parse the text after &quot;where&quot;. For
 example:</p>
-</div>
 <blockquote>
-    <p>F is a force, a = 9.801 m/ss, m1 and m2 are masses</p>
+<p>F is a force, a = 9.801 m/ss, m1 and m2 are masses</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>This is split into four clauses, of which the trickiest is the third, reading
 just &quot;m1&quot;. This abbreviated form is allowed only in permanent declarations
 (i.e., not in equations defined inside &quot;let&quot; phrases) and gives the symbol
@@ -620,19 +604,15 @@ mass, too.</p>
 ones; or to quasinumerical constants; or to global variables which contain
 quasinumerical values. The latter are included to make it easier for extensions
 to set up sets of equations for, say, gravity, defining</p>
-</div>
 <blockquote>
-    <p>The acceleration due to gravity is an acceleration that varies.</p>
+<p>The acceleration due to gravity is an acceleration that varies.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>and thus letting the extension's user decide how strong gravity is, but
 still using it in equations:</p>
-</div>
 <blockquote>
-    <p>let F be given by Newton's Second Law, where a = the acceleration due to gravity;</p>
+<p>let F be given by Newton's Second Law, where a = the acceleration due to gravity;</p>
 </blockquote>
-
+</div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the actual value, or kind of value, which the symbol is to match</span><span class="named-paragraph-number">19.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -704,12 +684,9 @@ hurly-burly is done, the following is called:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  As we saw, permanent symbol declarations cause <code>Equations::eqn_add_symbol</code> to be called.
 But what about the symbols for an inline equation, like this one?</p>
-</div>
 <blockquote>
-    <p>let F be given by F = ma;</p>
+<p>let F be given by F = ma;</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>These are not explicitly declared. What happens is that any local variable
 on the current stack frame, whose name could plausibly be that of a symbol,
 is made into one. Sometimes the locals won't be symbols in the equation at all,
@@ -937,7 +914,7 @@ has to be issued, or else a pointer to the parsed tree if we succeed.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">), </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">Wordings::last_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) || (</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lexer::word_raw_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">++); }</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/* we are now at character |i| in string |p|, while |wn| is the next word */</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">/* we are now at character <code>i</code> in string <code>p</code>, while <code>wn</code> is the next word */</span>
 
 <span class="plain-syntax">        </span><span class="type-syntax">equation_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-eqt.html#SP29_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Break off a token from the current position</span></span><span class="named-paragraph-number">29.1</span></a></span><span class="plain-syntax">;</span>
@@ -988,7 +965,7 @@ allow implicit multiplication.)</p>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-eqt.html#SP29_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Look for this symbol name</span></span><span class="named-paragraph-number">29.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">token</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax">=1; (</span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;15) &amp;&amp; (</span><span class="identifier-syntax">Characters::isalnum</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">+</span><span class="identifier-syntax">j</span><span class="plain-syntax">-1])) &amp;&amp; (</span><span class="identifier-syntax">token</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">); </span><span class="identifier-syntax">j</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">/* copy the first |j| characters into a C string: */</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">/* copy the first <code>j</code> characters into a C string: */</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_of_symbol</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">k</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">j</span><span class="plain-syntax">; </span><span class="identifier-syntax">k</span><span class="plain-syntax">++) </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_of_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">+</span><span class="identifier-syntax">k</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">/* try to identify this as one of the declared symbols: */</span>
@@ -1932,7 +1909,7 @@ we fail property (i) but achieve property (ii).</p>
 <span class="plain-syntax">        </span><span class="comment-syntax">/* ...the former RHS being the operand replacing the promoted one... */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">old_LHS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_operands</span><span class="plain-syntax">[0] = </span><span class="identifier-syntax">old_RHS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">old_LHS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_operands</span><span class="plain-syntax">[1] = </span><span class="identifier-syntax">E</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/* ...except that the operator reverses in "sense" */</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">/* ...except that the operator reverses in &quot;sense&quot; */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">old_LHS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">eqn_operation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_op</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>

@@ -77,7 +77,7 @@ Definition: Something is touchable rather than untouchable if the player can tou
 
 @ While many of the world-modelling assumptions in I7 are carried over from
 those tried and tested by I6, the idea of concealment is an exception. The
-old I6 attribute |concealed| simply marked some objects (which we would
+old I6 attribute `concealed` simply marked some objects (which we would
 call "things") as being hidden from view in some way, but was never very
 satisfactory. What does hidden mean, exactly -- to whose eyes, and in what
 way? Should you be able to take something which is hidden, if you happen to
@@ -562,12 +562,12 @@ The carrying capacity of a container is usually 100.
 
 @ The most interesting thing to note here (and we will see it again in the
 definition of "people") is that "transparent" the I7 property is not
-a direct match onto |transparent| the I6 attribute. In I7, the term is
+a direct match onto `transparent` the I6 attribute. In I7, the term is
 applicable only to containers (a reform made in January 2008, but clarifying
-what was already de facto the case). In I6, the |transparent| attribute
+what was already de facto the case). In I6, the `transparent` attribute
 means that child-objects in the object tree are in scope whenever the parent
 object is: in the I7 world model that's always true for supporters, so we
-oblige all supporters to have the attribute |transparent| in their I6
+oblige all supporters to have the attribute `transparent` in their I6
 compiled forms. The same will be true for people. That doesn't in practice
 mean that I7 never has high shelves or people with daggers concealed
 beneath cloaks -- just that we no longer use I6's mechanism for hiding
@@ -599,7 +599,7 @@ But then again, what does D conceptually represent? Surely we aren't saying
 there's a natural concept of "basketball player/skyscraper"?
 
 There are various responses, of which the most widely used now is probably
-that of |C++|'s notion of templates. We would define our top-ten business
+that of `C++`'s notion of templates. We would define our top-ten business
 by writing a function applying to a list of objects of any class $T$ such
 that $T$ provided a height: there would then be no need for "basketball
 player/skyscraper" to be a class in its own right. Instead, we would
@@ -717,10 +717,10 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
-The Inform compiler automatically applies the either-or property |animate|
-and the valued property |before| to a person, giving that value as just
-|NULL|. This allows any person to become the protagonist during play
-(using I6's |ChangePlayer| routine).
+The Inform compiler automatically applies the either-or property `animate`
+and the valued property `before` to a person, giving that value as just
+`NULL`. This allows any person to become the protagonist during play
+(using I6's `ChangePlayer` routine).
 
 =
 Section 11 - People
@@ -739,19 +739,19 @@ A person can be transparent. A person is always transparent.
 
 @ One among the people is special: the enigmatic default protagonist, whose
 name is not "player" but "yourself". (The I6 library requires this object to
-be created as |selfobj|, but that's not a name that is ever printed or parsed:
+be created as `selfobj`, but that's not a name that is ever printed or parsed:
 it's a constant value used only in I6 source code.)
 
-The |yourself| object has to be proper-named to prevent the I6 library
+The `yourself` object has to be proper-named to prevent the I6 library
 from talking about "the yourself", as it otherwise might. "Undescribed"
 in this context means that "yourself" is not described as being present
 in room descriptions: this would be redundant and annoying.
 
-The I6 property |saved_short_name| property is an implementation convenience
+The I6 property `saved_short_name` property is an implementation convenience
 for use if there is ever a change of player, in which case the printed name
 of the object will cease to be "yourself" and become "your former self"
-instead. When this happens, the previous printed name (or |short_name| in
-I6 terms) is stored in |saved_short_name| so that it can recovered later.
+instead. When this happens, the previous printed name (or `short_name` in
+I6 terms) is stored in `saved_short_name` so that it can recovered later.
 (We can't assume it was necessarily "yourself" because the source text
 might have overridden this with a sentence like "The printed name of the
 player is "your dreary self".") The Inform compiler automatically generates
@@ -898,8 +898,8 @@ the going action would rely on a pretty complicated interlacing of rules
 as between this extension and the Standard Rules.
 
 Turning to implementation, I6 -- surprisingly, perhaps -- doesn't have
-a |vehicle| attribute: a vehicle is an object which is |enterable| and
-whose |before| rule for the I6 |##Go| action returns the magic value 1.
+a `vehicle` attribute: a vehicle is an object which is `enterable` and
+whose `before` rule for the I6 `##Go` action returns the magic value 1.
 A troublesome point here is that I6 makes no distinction between vehicles
 which contain and vehicles which support. But we do, because once we have
 decided to make "vehicle" a kind, it has to be either a kind of container
@@ -975,22 +975,22 @@ be compiled by Inform into an I6 property called something like
 	P73_astral_significance
 =
 whereas a new either/or property might become either an I6 attribute or an
-I6 property holding only |true| or |false|, at the compiler's discretion.
+I6 property holding only `true` or `false`, at the compiler's discretion.
 (It needs to use this discretion because I6 has a hard limit on the number
 of attributes, whereas there are no limits on the number of properties used
 in I7.) And if "astral significance" is a concept handled only by I7
 source text, that's fine.
 
 But we want our "printed name" property, for instance, to be the text
-which the I6 library prints out whenever it uses the |short_name| of an
-object: so we want the Inform compiler to use the I6 identifier |short_name|
+which the I6 library prints out whenever it uses the `short_name` of an
+object: so we want the Inform compiler to use the I6 identifier `short_name`
 for "printed name", not to invent a new one. Inform therefore maintains a
 dictionary of equivalents, and here it is. (Any I7 property not named is
 handled purely by I7 source text in the remainder of the Standard Rules.)
 
 @ First, equivalents where I7 either/or properties map directly onto
 I6 attributes. Note the way "lit" (for things) and "lighted" (for rooms)
-both map onto the same I6 attribute, |light|. Attributes were in scarce
+both map onto the same I6 attribute, `light`. Attributes were in scarce
 supply in I6 (with a limit of 32 in the early days, later raised to 48) and
 this sort of reuse seemed sensible in the early 1990s, especially as the
 meanings were basically similar.
@@ -1023,7 +1023,7 @@ The marked for listing property is defined by Inter as "workflag".
 The list grouping key property is defined by Inter as "list_together".
 
 @ Second, the I7 value properties mapping onto I6 properties. Again,
-|map_region| is a new I6 property of our own, while the rest are I6 staples.
+`map_region` is a new I6 property of our own, while the rest are I6 staples.
 And see also "other side", which is translated above for timing reasons.
 
 =

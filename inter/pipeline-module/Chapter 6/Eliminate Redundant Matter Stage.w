@@ -28,7 +28,7 @@ int EliminateRedundantMatterStage::run(pipeline_step *step) {
 }
 
 @ We operate on a presumption of guilt: any package which we cannot prove is
-needed will be deleted. |Main_fn| is clearly needed, since it is where
+needed will be deleted. `Main_fn` is clearly needed, since it is where
 execution will begin. A handful of other functions, not called yet but
 needed in the final compilation stage (and which replace stubs which would
 otherwise be provided by the veneer), must also be included. Command

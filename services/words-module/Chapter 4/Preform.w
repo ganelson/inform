@@ -13,14 +13,14 @@ into
 = (text as C)
 	if (Preform::parse_nt_against_word_range(aquarium_name_NTM, W, NULL, NULL)) ...
 =
-Those last two parameters, |result| and |result_p|, are set only when we are
+Those last two parameters, `result` and `result_p`, are set only when we are
 recursively calling the function from inside itself. Recall that a match against
 a NT either succeeds or fails, and that produces the return value of this
-function, |TRUE| or |FALSE|; but if it succeeds it also produces both an integer
+function, `TRUE` or `FALSE`; but if it succeeds it also produces both an integer
 and a pointer result, though in any given situation either or both may be
-irrelevant. When |result| and |result_p| are set, those results are copied
+irrelevant. When `result` and `result_p` are set, those results are copied
 into the variables these pointers point to. In all cases, they are also
-written to the global variables |most_recent_result| and |most_recent_result_p|.
+written to the global variables `most_recent_result` and `most_recent_result_p`.
 
 =
 int ptraci = FALSE; /* in this mode, we trace parsing to the debugging log */
@@ -61,8 +61,8 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 	ptraci = teppic;
 	return FALSE;
 
-@ ...unless a match was made, in which case it ends here. At this point |Q|
-and |QP| will hold the results of the match.
+@ ...unless a match was made, in which case it ends here. At this point `Q`
+and `QP` will hold the results of the match.
 
 @<The nonterminal has successfully parsed@> =
 	Instrumentation::note_nonterminal_match(nt, W);
@@ -72,7 +72,7 @@ and |QP| will hold the results of the match.
 	return success_rval;
 
 @ Here we see that a successful voracious NT returns the word number it got
-to, rather than |TRUE|. Otherwise this is straightforward: we delegate to
+to, rather than `TRUE`. Otherwise this is straightforward: we delegate to
 an internal NT, or try all possible productions for a regular one.
 
 @d RANGE_OPTIMISATION_LENGTH 10
@@ -125,7 +125,7 @@ an internal NT, or try all possible productions for a regular one.
 So from here on down we look only at the regular case, where we're parsing the
 text against a production. Recall that a production's NTIC has the "ditto flag"
 if it is the same constraint as the previous production's NTIC; in which
-case we have no need to recompute |violates|.
+case we have no need to recompute `violates`.
 
 @<Try to match to a production@> =
 	int violates = FALSE;
@@ -201,8 +201,8 @@ function for the nonterminal, we call it.
 If there's no compositor then the integer result is the production's number,
 and the pointer result is null.
 
-This is the range of fail nonterminal values -- |FAIL_NONTERMINAL| to one
-less than |FAIL_NONTERMINAL_TO|:
+This is the range of fail nonterminal values -- `FAIL_NONTERMINAL` to one
+less than `FAIL_NONTERMINAL_TO`:
 
 @d FAIL_NONTERMINAL -100000
 @d FAIL_NONTERMINAL_TO FAIL_NONTERMINAL+1000
@@ -335,7 +335,7 @@ possible position for $s_0$, then the earliest position from $s_0+\ell_0$ for
 $s_1$, and so on. (Our wildcards are not greedy: we match with shortest possible
 text rather than longest.)
 
-In all of the code below, the general case with |NS| greater than 1 is actually
+In all of the code below, the general case with `NS` greater than 1 is actually
 valid code for all cases, but experiment shows about a 5\% speed gain from
 handling the popular case of one strut separately.
 
@@ -544,14 +544,14 @@ probably gives the wrong answer.)
 		} else wt = wn;
 	}
 
-@ Here we find the next possible match position for the strut beginning |start|
-and of width |len| in words, which begins at word |from| or after. Note that
+@ Here we find the next possible match position for the strut beginning `start`
+and of width `len` in words, which begins at word `from` or after. Note that
 the strut might run up right to the end of the input text: for example, in
 = (text as Preform)
 	neckties ... tied ***
 =
-the word "tied" is a strut, because the |***| makes its position uncertain,
-but since |***| might match the empty text, "tied" might legally be the
+the word "tied" is a strut, because the `***` makes its position uncertain,
+but since `***` might match the empty text, "tied" might legally be the
 last word in the input text.
 
 =

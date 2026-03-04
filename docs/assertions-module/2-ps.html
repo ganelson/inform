@@ -65,12 +65,9 @@ function togglePopup(material_id) {
 of the box&quot;, say. Because of this, the word &quot;of&quot; is structurally significant
 when diagramming assertion sentences. Unfortunately &quot;of&quot; also occurs in many
 other situations:</p>
-</div>
 <blockquote>
-    <p>Yett of Ptarmigan is a room.</p>
+<p>Yett of Ptarmigan is a room.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>(It's a lookout point on the West Highland Way, not far from the village of
 Milton of Buchanan.) We therefore want to subdivide the parse tree at &quot;of&quot;
 only when it is preceded by a property name, but this means we need to know
@@ -123,12 +120,9 @@ sentence will be properly parsed later on.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  A tricky point in detecting property declarations is that they share the
 syntax used for action, activity and rulebook variables. For instance:</p>
-</div>
 <blockquote>
-    <p>The taking action has a number called the hazard level.</p>
+<p>The taking action has a number called the hazard level.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>...creates not a property name but an action variable. Fortunately, the names
 of such owners have a distinctive look to them:</p>
 </div>
@@ -158,7 +152,7 @@ a noun, we write it in the formal way &quot;taking action&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Assuming the owner passes that sanity check, the following grammar is then
 applied to the presumed property name: note the side-effect of the final
-production of &lt;has-property-name&gt;.</p>
+production of <has-property-name>.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;has-properties-called-sentence-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>

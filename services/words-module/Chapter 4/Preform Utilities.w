@@ -5,7 +5,7 @@ text, and word inflection.
 
 @h Specifying generated text.
 Our main operation here is a "merge". This extracts the text from a production,
-substituting the ingredient text in place of any |...| it finds. (Other
+substituting the ingredient text in place of any `...` it finds. (Other
 wildcards and nonterminals are ignored.) For example, merging the production
 = (text as Preform)
 	fried ... tomatoes
@@ -127,7 +127,7 @@ the production:
 	(4)   pattern-word instructions-word
 =
 Cases (1), (2) and (3) are allowed only in list grammars; case (4) is allowed
-only in content grammars. The |...| indicates whether the trie in the named
+only in content grammars. The `...` indicates whether the trie in the named
 nonterminal will act on the start or end of a word -- this is needed only to
 override the normal convention.
 
@@ -206,7 +206,7 @@ void PreformUtilities::production_error(nonterminal *nt, production *pr, char *m
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PREFORM_ERROR_WORDS_CALLBACK|
+texts in HTML. So the client is allowed to define `PREFORM_ERROR_WORDS_CALLBACK`
 to some routine of her own, gazumping this one.
 
 =

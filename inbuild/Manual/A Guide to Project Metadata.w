@@ -48,7 +48,7 @@ work of IF, but that it also needs an unusual extra kit called "ChoraleKit".
 Moreover, it will build only with a version of that kit compatible (in the semantic
 version number sense) with v4.1.1.
 
-@ The |is| object identifies the project. Note that the type must be |"project"|,
+@ The `is` object identifies the project. Note that the type must be `"project"`,
 and that the title and author must both be given, and must exactly match what
 the bibliographic sentence at the top of the source text. (If the work is
 anonymous or untitled, the author or title must be the empty text, but they
@@ -56,10 +56,10 @@ must still be given.) It is an error for the source text and the metadata file
 to disagree about this, and inbuild and inform7 will halt with a problem message
 if they do.
 
-The |is.version| is optional. If given, it must be a valid semantic version
+The `is.version` is optional. If given, it must be a valid semantic version
 number. The major part of that semver is then used as the value of the
 "release number" variable; this must not contradict what the source text says.
-For example, if |is.version| is |"3.2"|, then an IF story if built from this
+For example, if `is.version` is `"3.2"`, then an IF story if built from this
 project would identify itself as Release 3. If the sentence contained
 = (text as Inform 7)
 The release number is 3.
@@ -70,12 +70,12 @@ The release number is 5.
 =
 then Inform would halt with a problem message about the contradiction.
 
-@ The |needs| object identifies any kits to be included with the project when
+@ The `needs` object identifies any kits to be included with the project when
 it is built, other than BasicInformKit.
 
 So for a Basic Inform only project, which uses a version of the Inform language
 with no IF-like ingredients, no command parser, and no world model, there is
-no need to have a |needs| object at all. But for a more standard use of Inform
+no need to have a `needs` object at all. But for a more standard use of Inform
 to make command-parser IF, CommandParserKit must be included, like so:
 = (text)
     "needs": [ {
@@ -95,18 +95,18 @@ not need to be specified.
 
 @ Project metadata can also specify that given named compiler features should
 be active or inactive when compiling this project. For example, suppose the
-compiler has an experimental feature called |fruit cultivation|, switched
+compiler has an experimental feature called `fruit cultivation`, switched
 off by default, and a project needs to test this. It can do so by specifying:
 = (text)
     "activates": [ "fruit cultivation" ],
 =
-Similarly for |"deactivates"|. Both clauses are optional and take a list of
+Similarly for `"deactivates"`. Both clauses are optional and take a list of
 feature names: those features must all exist inside the compiler, or a
 problem will be thrown on compilation. (Note that the JSON here is identical
 to that which kits can also offer: kits can also turn features on or off.)
 
-@ Finally, note that the |-basic| switch at the Inbuild or Inform command line,
+@ Finally, note that the `-basic` switch at the Inbuild or Inform command line,
 which signals that the project being compiled is for the Basic Inform language,
 is still legal to use if a project metadata file exists, but only so long as
 the metadata does not specify CommandParserKit or WorldModelKit: if it does,
-use of |-basic| throws a problem.
+use of `-basic` throws a problem.

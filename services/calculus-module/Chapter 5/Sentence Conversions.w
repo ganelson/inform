@@ -30,19 +30,19 @@ convert these subtrees into logical propositions.
 @h S-subtrees.
 To begin with: S-subtrees.
 
-- If |SV_not_SN| is set, then this expects a complete sentence, and produces
+- If `SV_not_SN` is set, then this expects a complete sentence, and produces
 a proposition with no free variables; otherwise this expects a relative phrase
 and produces a proposition $\phi(x)$ with a single free variable $x$. Thus,
 "an animal which can see the player" produces a proposition which expresses
 that $x$ is such an animal without specifying a value of $x$.
 
-- Rather than being given just one tree location, we have two, |A| and |B|.
-|A| is the subject phrase and |B| either the object phrase or some relationship
+- Rather than being given just one tree location, we have two, `A` and `B`.
+`A` is the subject phrase and `B` either the object phrase or some relationship
 beneath which is the object phrase. Again, see //linguistics: About Sentence Diagrams//
 for the idea.
 
 - A side-effect of the function is to record a copy of the subject term of
-the resulting proposition by writing to the term pointed to by |subject_of_sentence|,
+the resulting proposition by writing to the term pointed to by `subject_of_sentence`,
 if this is not null.
 
 =
@@ -185,10 +185,10 @@ parse descriptions. Consider:
 =
 Here (1) is legal in Inform, (2) is not, because it implies a requirement about
 the list which will probably not be satisfied. (Maybe there are three open
-doors there, maybe none.) In case (1), |NPstp| applied to "open doors" will
+doors there, maybe none.) In case (1), `NPstp` applied to "open doors" will
 return ${\it open}(x)\land{\it door}(x)$, whose free variable $x$ can
 become any single object we might want to test for open-door-ness. But in
-case (2), |NPstp| applied to "two open doors" will return
+case (2), `NPstp` applied to "two open doors" will return
 $V_{=2} x: {\it open}(x)\land{\it door}(x)$, and here $x$ is bound, and
 can't be set equal to some object being tested.
 
@@ -197,7 +197,7 @@ Or to put this more informally: it's possible for a single item to be an
 than three open doors". So $\phi$ contains a free variable if and only if
 the NP describes a single but vague thing.
 
-@ The First Rule is implemented by |SentencePropositions::NP_subtree| below, and
+@ The First Rule is implemented by `SentencePropositions::NP_subtree` below, and
 we apply it independently to the SP and OP:
 
 @<Find meanings of the SP and OP as propositions and terms@> =
@@ -229,7 +229,7 @@ the first point at which the placement as subject rather than object will
 start to make a difference:
 
 - we always bind a free variable in the object, but
-- we only bind a free variable in the subject in |SV_not_SN|-mode, i.e.,
+- we only bind a free variable in the subject in `SV_not_SN`-mode, i.e.,
 when our text represents an entire sentence rather than a relative clause.
 
 The SP is called the "subject phrase" because it contributes the subject of
@@ -272,10 +272,10 @@ variables so that there are no accidental clashes with variables in $\phi_S$.
 so it may be worth a little discussion:
 
 (a) The Second Rule is a generalisation of the way comparison operators like
-|==| or |>=| work in conventional programming languages. For if
+`==` or `>=` work in conventional programming languages. For if
 $t_S$ and $t_O$ are both constants, and $\phi_S$ and $\phi_O$ both
 empty, we obtain just $B(t_S, t_O)$ and $\lnot(B(t_S, t_O))$. For instance,
-"s is 10" becomes just ${\it is}(s, 10)$, which compiles just to |(s == 10)|.
+"s is 10" becomes just ${\it is}(s, 10)$, which compiles just to `(s == 10)`.
 
 (b) In general, though, the meaning of an English sentence is not just that
 the verb is true, but also that the subject and object make sense. For
@@ -467,7 +467,7 @@ and a proposition $\phi$. We read this as "$t$ such that $\phi$ is true".
 For reasons explained below, a small amount of context is supplied: if the
 term will need to have a particular kind of value, then that kind is given
 to us. (But if it only needs to be an object, or if we don't know anything
-about its kind, the |K| argument will be |NULL|.)
+about its kind, the `K` argument will be `NULL`.)
 
 As can be seen, an NP subtree consists either of an SN subtree representing
 two further NPs joined by a verb to make a relative clause, or one of
@@ -556,7 +556,7 @@ one arising below, which is to do with enumerated value properties.)
 	}
 	#endif
 
-@ If |SentencePropositions::from_spec| is given a constant value $C$ then it returns the
+@ If `SentencePropositions::from_spec` is given a constant value $C$ then it returns the
 proposition ${\it is}(x, C)$: we look out for this and translate it to
 $t=C, \phi = T$. Otherwise, $\phi$ can be exactly the proposition returned,
 and the first term occurring in it will be chosen as the subject $t$. (In
@@ -587,13 +587,13 @@ it binds.)
 the verb have been left out, it assumes the verb is "to be" and that the
 subject will be whatever is being worked on. For instance,
 
->> if an unlocked container, ...
+> if an unlocked container, ...
 
-is read as the verb phrase "is" with |ABSENT_SUBJECT_NT| as SP
+is read as the verb phrase "is" with `ABSENT_SUBJECT_NT` as SP
 and "an unlocked container" as OP.
 
-|ABSENT_SUBJECT_NT| nodes are easy to deal with since they translate to the I6
-variable |self| in the final compiled code. From a predicate calculus point
+`ABSENT_SUBJECT_NT` nodes are easy to deal with since they translate to the I6
+variable `self` in the final compiled code. From a predicate calculus point
 of view, this is just another constant.
 
 @<This NP is only a ghostly presence@> =
@@ -634,7 +634,7 @@ the bottle provides the property closed
 where the presence of the words "the property" needs to alert us that
 "closed" is a noun referring to the property itself, not to a nameless
 object possessing that property. When the S-parser matches a property in
-that way, it assigns a score value of |TRUE| to the relevant ML entry to
+that way, it assigns a score value of `TRUE` to the relevant ML entry to
 show this. (Score values otherwise aren't used for property names.)
 
 @<If we have a single adjective which could also be a noun, and a value is required, convert it to a noun@> =
@@ -653,8 +653,8 @@ For instance, if we are working on the OP "the box in a room" from this:
 = (text as Inform 7)
 a thing in the box in a room
 =
-then the constant is $C = |box|$, and Sstp returned
-$\phi = \exists x: {\it room}(x)\land{\it is}(x, |ContainerOf(box)|)$.
+then the constant is $C = `box`$, and Sstp returned
+$\phi = \exists x: {\it room}(x)\land{\it is}(x, `ContainerOf(box)`)$.
 
 @<If we have a constant qualified by a substantive proposition, rewrite in terms of variable@> =
 	if ((subject_of_NP->constant) && (NP_prop)) {
@@ -672,10 +672,10 @@ $\phi = \exists x: {\it room}(x)\land{\it is}(x, |ContainerOf(box)|)$.
 	}
 
 @ If the NP was something like "at least four open doors", we will so far
-have built |QUANTIFIER --> DOMAIN_OPEN --> KIND --> PREDICATE|, and now that
-we have reached the end of the noun phrase we need to add a |DOMAIN_CLOSE|
+have built `QUANTIFIER --> DOMAIN_OPEN --> KIND --> PREDICATE`, and now that
+we have reached the end of the noun phrase we need to add a `DOMAIN_CLOSE`
 atom. The following is written in a way that guarantees all such open groups
-are closed, but in fact there should only ever be one open, so |nq| should
+are closed, but in fact there should only ever be one open, so `nq` should
 always evaluate to 0 or 1.
 
 @<Close any open domain group@> =

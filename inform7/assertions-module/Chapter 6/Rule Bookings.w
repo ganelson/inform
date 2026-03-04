@@ -23,7 +23,7 @@ And each //booking// records which of these sections it belongs to.
 =
 typedef struct booking {
 	struct rule *rule_being_booked; /* what appears on this page */
-	int placement; /* one of the |*_PLACEMENT| values above */
+	int placement; /* one of the `*_PLACEMENT` values above */
 	int place_automatically; /* should this be inserted automatically? */
 
 	struct booking_commentary commentary; /* used only for indexing and code comments */
@@ -77,7 +77,7 @@ process of putting it into such a list is called "placement".
 
 Most rules declare a single rulebook to belong to in their definitions:
 
->> Before eating something: ...
+> Before eating something: ...
 
 This nameless rule is to go into the "before eating" rulebook. When Inform
 reads this, it creates a booking, but does not immediately place this into
@@ -117,9 +117,9 @@ void RuleBookings::make_automatic_placements(void) {
 }
 
 @h Specificity of bookings.
-This |strcmp|-like function is intended to be used in sorting algorithms,
-and returns 1 if |br1| is more specific than |br2|, -1 if |br2| is more specific
-than |br1|, or 0 if they are equally good.
+This `strcmp`-like function is intended to be used in sorting algorithms,
+and returns 1 if `br1` is more specific than `br2`, -1 if `br2` is more specific
+than `br1`, or 0 if they are equally good.
 
 =
 int RuleBookings::cmp(booking *br1, booking *br2, int log_this) {

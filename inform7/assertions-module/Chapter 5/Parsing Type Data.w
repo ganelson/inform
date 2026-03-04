@@ -81,7 +81,7 @@ Note that <k-kind-prototype> parses <k-kind>, but in a mode which causes
 the kind variables to be read as formal prototypes and not as their values.
 This allows for tricky definitions like:
 
->> To decide which K is (name of kind of value K) which relates to (Y - L) by (R - relation of Ks to values of kind L)
+> To decide which K is (name of kind of value K) which relates to (Y - L) by (R - relation of Ks to values of kind L)
 
 where <k-kind-prototype> needs to recognise "K" even though the tokens
 haven't yet been parsed, so that we don't yet know it will be meaningful.
@@ -241,7 +241,7 @@ wording ParsingIDTypeData::phtd_parse_doodads(id_type_data *idtd, wording W, int
 	return W;
 }
 
-@ For example, if the preamble is "To while...", then this sets |only_in|
+@ For example, if the preamble is "To while...", then this sets `only_in`
 to the word number of "while".
 
 @<Set only-in to the first keyword@> =
@@ -317,7 +317,7 @@ void ParsingIDTypeData::phtd_main_prototype(id_type_data *idtd) {
 	wording W = idtd->registration_text;
 	int i = Wordings::first_wn(W);
 	while (i <= Wordings::last_wn(W)) {
-		int word_to_add = 0; /* redundant assignment to keep |gcc| happy */
+		int word_to_add = 0; /* redundant assignment to keep `gcc` happy */
 		<phrase-definition-word-or-token>(Wordings::from(W, i));
 		switch (<<r>>) {
 			case NOT_APPLICABLE:	return; /* a problem message has been issued */
@@ -452,19 +452,19 @@ void ParsingIDTypeData::phtd_main_prototype(id_type_data *idtd) {
 @ This following process is much less mysterious than it sounds. Suppose we
 have the phrase:
 
->> To add (purchase - K) to (shopping list - list of arithmetic values of kind K): ...
+> To add (purchase - K) to (shopping list - list of arithmetic values of kind K): ...
 
 This tells us that the matcher should accept any list of arithmetic values,
 and then set K equal to the kind of the entries, and require that the purchase
-agree. According to the |declarations| array already made, K is declared as a
+agree. According to the `declarations` array already made, K is declared as a
 kind of "arithmetic value". What the code in this paragraph does is to change
-the |to_match| specifications as if the phrase had read:
+the `to_match` specifications as if the phrase had read:
 
->> To add (purchase - arithmetic value) to (shopping list - list of arithmetic values): ...
+> To add (purchase - arithmetic value) to (shopping list - list of arithmetic values): ...
 
 In other words, we substitute "arithmetic value" in place of K, and thus get
 rid of variables from the match specifications entirely. We can safely do
-this because the |token_kind| for these two tokens remain
+this because the `token_kind` for these two tokens remain
 "K" and "list of K" respectively.
 
 @<Substitute for any kind variables in the match specification@> =
@@ -501,7 +501,7 @@ int ParsingIDTypeData::find_kind_variable_domains(kind *K, int *usages, kind **d
 @ We count how many times each variable appears. It should be given a domain
 in exactly one place: for example,
 
->> To amaze (alpha - an arithmetic value of kind K) with (beta - an enumerated value of kind K): ...
+> To amaze (alpha - an arithmetic value of kind K) with (beta - an enumerated value of kind K): ...
 
 produces the following problem, because the domain of K has been given twice.
 
@@ -522,7 +522,7 @@ produces the following problem, because the domain of K has been given twice.
 fixed single words, which are not brackets, and bracketed token definitions,
 occurring in any quantity and any order. For example:
 
->> begin the (A - activity on value of kind K) activity with (val - K)
+> begin the (A - activity on value of kind K) activity with (val - K)
 
 is a sequence of word, word, token, word, word, token.
 

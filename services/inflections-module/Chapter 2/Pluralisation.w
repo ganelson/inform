@@ -68,8 +68,8 @@ of phrases found only in the singular in the source. For instance, if the
 designer says that "A wicker basket is a kind of container" then Inform will
 need to recognise not only "wicker basket" but also "wicker baskets", a
 pair of words not found in the source text anywhere. So the following
-routine takes the text |(w1, w2)| and feeds a suitable plural into the
-lexer, emerging with the text |(plw1, plw2)|.
+routine takes the text `(w1, w2)` and feeds a suitable plural into the
+lexer, emerging with the text `(plw1, plw2)`.
 
 We do not write the new plural into the dictionary: there is no need, as
 it can be rebuilt quickly whenever needed again.

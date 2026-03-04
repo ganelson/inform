@@ -8,23 +8,23 @@ want to use semantic versioning to compare the language as we understand it
 (the "current version") with the language as it was understood by whoever
 wrote the Inter file we are loading (the "file version").
 
-If we consider the version as having the traditional form |major.minor.patch|,
-the |major| version should change on any of the following:
+If we consider the version as having the traditional form `major.minor.patch`,
+the `major` version should change on any of the following:
 
-- Removal of an Inter construct, or any renumbering of |*_IST| constants.
+- Removal of an Inter construct, or any renumbering of `*_IST` constants.
 - Change of bytecode representation of an instruction.
 - Change of the binary file format in //Inter in Binary Files//. Note that
 changing some of the defined constants in this module could have the same effect,
 since these constants are used as distinguishing values in binary Inter files.
 - Change of the textual file format in //Inter in Text Files// and elsewhere
-in the |CONSTRUCT_READ_MTID| methods for the constructs.
+in the `CONSTRUCT_READ_MTID` methods for the constructs.
 - Removal of one of the standard annotations, or any renumbering of existing
 ones. See //Annotations//.
 - Removal of one of the standard primitives, or any renumbering of existing
 ones. See //building: Inter Primitives//.
 
-This may result in ungainly, high |major| version numbers: so be it. However,
-the following need only mean a bump of the |minor| version --
+This may result in ungainly, high `major` version numbers: so be it. However,
+the following need only mean a bump of the `minor` version --
 
 - Addition of a new Inter construct, provided the existing ones are not
 renumbered.
@@ -33,12 +33,12 @@ renumbered.
 - Addition of a new Inter primitive, provided the existing ones are not
 renumbered.
 
-The |patch| version number should always remain 0 -- this is not a version for
+The `patch` version number should always remain 0 -- this is not a version for
 the implementation of anything, just for the specification itself, so in some
 sense it cannot be bug-fixed, only changed.
 
-Modifiers of the |+| and |-| sort are also best avoided here, so we will deal only
-with SVNs in the traditional |x.y.z| format.
+Modifiers of the `+` and `-` sort are also best avoided here, so we will deal only
+with SVNs in the traditional `x.y.z` format.
 
 @ 1.0.0 (28 April 2022) was the baseline Inter implementation used in the beta of
 Inform 10.1.0.
@@ -46,7 +46,7 @@ Inform 10.1.0.
 2.0.0 (24 May 2022) introduced a new base type constructor for "activity on T".
 This renumbers the binary representation of types, so it is a major not minor bump.
 
-3.0.0 (9 October 2022) added a new optional field to |SPLAT_IST| instructions,
+3.0.0 (9 October 2022) added a new optional field to `SPLAT_IST` instructions,
 which holds I6 annotations in the sense of Inform evolution proposal IE-0006.
 Note that these are not Inter annotations, which apply to symbols: these apply
 to directives.
@@ -55,13 +55,13 @@ to directives.
 represent new data structures with custom kind constructors from Neptune files
 in Inform kits.
 
-5.0.0 (24 April 2023) added (further) new fields to |SPLAT_IST| instructions, to
+5.0.0 (24 April 2023) added (further) new fields to `SPLAT_IST` instructions, to
 record their provenance and so make better error reporting possible.
 
-6.0.0 (25 May 2023) added the |ORIGSOURCE_IST| instruction.
+6.0.0 (25 May 2023) added the `ORIGSOURCE_IST` instruction.
 
-7.0.0 (11 June 2023) renamed |ORIGSOURCE_IST| to |PROVENANCE_IST|, and added the
-|ORIGIN_IST| instruction.
+7.0.0 (11 June 2023) renamed `ORIGSOURCE_IST` to `PROVENANCE_IST`, and added the
+`ORIGIN_IST` instruction.
 
 8.0.0 (12 November 2023) added further indirection primitives for functions of
 six arguments.

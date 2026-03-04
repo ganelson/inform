@@ -3,38 +3,38 @@ Choices
 Runtime support for dialogue choices.
 
 @h Runtime representation.
-Values representing choices are enumerated from 1 to |NO_DIALOGUE_CHOICES|. Choices
+Values representing choices are enumerated from 1 to `NO_DIALOGUE_CHOICES`. Choices
 have certain properties stored by Inform just as it would for any other
-enumerated kind, and which this kit deals with by calls to |GProperty| and
-|WriteGProperty|: in particular, |performed| and |recurring|.
+enumerated kind, and which this kit deals with by calls to `GProperty` and
+`WriteGProperty`: in particular, `performed` and `recurring`.
 
 In addition, though, the compiler (or more accurately the linker) generates
-a table called |TableOfDialogueChoices|. If |dc| is an enumerated value then
-|TableOfDialogueChoices-->dc| is the address of the metadata table for |dc|.
-(And |TableOfDialogueChoices-->0| is set to |NO_DIALOGUE_CHOICES|.)
+a table called `TableOfDialogueChoices`. If `dc` is an enumerated value then
+`TableOfDialogueChoices-->dc` is the address of the metadata table for `dc`.
+(And `TableOfDialogueChoices-->0` is set to `NO_DIALOGUE_CHOICES`.)
 
 These choice data arrays occupy 3 words each, with fields as follows:
 
--	|TYPE_DCMETADATA| must be one of the |*_DSEL| values, which in turn
-	determines the meaning of the |CONTENT_DCMETADATA| field.
+-	`TYPE_DCMETADATA` must be one of the `*_DSEL` values, which in turn
+	determines the meaning of the `CONTENT_DCMETADATA` field.
 
--	|AVAILABILITY_DCMETADATA| is a function to test whether any |if| or |unless|
-	conditions attached to the choice are met; this returns |true| if the choice is
-	available, |false| if not. If the |AVAILABILITY_DCMETADATA| is 0, the choice is
+-	`AVAILABILITY_DCMETADATA` is a function to test whether any `if` or `unless`
+	conditions attached to the choice are met; this returns `true` if the choice is
+	available, `false` if not. If the `AVAILABILITY_DCMETADATA` is 0, the choice is
 	always available.
 
--	What's held in |CONTENT_DCMETADATA| depends on the |TYPE_DCMETADATA|:
+-	What's held in `CONTENT_DCMETADATA` depends on the `TYPE_DCMETADATA`:
 
-	- For |TEXTUAL_DSEL| it's an Inform 7 |text| value for what is being offered
+	- For `TEXTUAL_DSEL` it's an Inform 7 `text` value for what is being offered
 	to the player (say, "Run out of the room screaming").
 	
-	- For |ENDING_DSEL| and the other ending types, it's the value of |deadflag|
-	to set, which will sometimes be a |text| and sometimes just the value 3: see
+	- For `ENDING_DSEL` and the other ending types, it's the value of `deadflag`
+	to set, which will sometimes be a `text` and sometimes just the value 3: see
 	WorldModelKit for why this is.
 	
-	- For |PERFORM_DSEL| it's the dialogue beat to perform.
+	- For `PERFORM_DSEL` it's the dialogue beat to perform.
 	
-	- For |INSTEAD_OF_DSEL|, |AFTER_DSEL| and |BEFORE_DSEL|, it's a function which
+	- For `INSTEAD_OF_DSEL`, `AFTER_DSEL` and `BEFORE_DSEL`, it's a function which
 	looks to see if the current action matches the given action pattern.
 	
 	- For everything else, it's 0 and meaningless.

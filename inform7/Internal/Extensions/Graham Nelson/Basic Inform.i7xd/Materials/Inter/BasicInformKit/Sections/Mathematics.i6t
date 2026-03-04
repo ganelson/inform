@@ -20,8 +20,8 @@ normal I6 operation % is signed, which is why we need this function.
 We only calculate by hand if we have to.
 
 The slower integer method is an old algorithm for extracting binary square
-roots, taking 2 bits at a time. We start out with |one| at the highest bit
-which isn't the sign bit; that used to be worked out as |WORD_HIGHBIT/2|, but
+roots, taking 2 bits at a time. We start out with `one` at the highest bit
+which isn't the sign bit; that used to be worked out as `WORD_HIGHBIT/2`, but
 this caused unexpected portability problems (exposing a minor bug in Inform
 and also glulxe) because of differences in how C compilers handle signed
 division of constants in the case where the dividend is $-2^{31}$, the unique
@@ -77,7 +77,7 @@ Of an integer:
 [ NUMBER_TY_Abs x; if (x<0) return -x; return x; ];
 
 @h IntegerDivide.
-We can't simply use I6's |/| operator, as that translates directly into a
+We can't simply use I6's `/` operator, as that translates directly into a
 virtual machine opcode which crashes on divide by zero.
 
 =

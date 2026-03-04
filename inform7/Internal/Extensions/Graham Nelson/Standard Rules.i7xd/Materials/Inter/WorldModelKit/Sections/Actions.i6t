@@ -8,7 +8,7 @@ To review: an action is an impulse to do something by a person in the model
 world. Commands such as DROP POTATO are converted into actions ("dropping
 the Idaho potato"); sometimes they succeed, sometimes they fail. While
 they run, the fairly complicated details are stored in a suite of I6
-global variables such as |actor|, |noun|, |inp1|, and so on (see
+global variables such as `actor`, `noun`, `inp1`, and so on (see
 "OrderOfPlay.i6t" for details); the running of an action is mainly a
 matter of processing many rulebooks, chief among them they "action processing
 rules".
@@ -19,13 +19,13 @@ In general, actions can come from five different sources:
 this can happen, one if the command calls for a single action, and another
 if it calls for a whole run of them (like TAKE ALL). See the rules in
 "OrderOfPlay.i6t".
-- From an I7 "try" phrase, in which case |TryAction| is called.
-- From an I6 angle-bracket-notation such as |<Wait>|, though this is a
+- From an I7 "try" phrase, in which case `TryAction` is called.
+- From an I6 angle-bracket-notation such as `<Wait>`, though this is a
 syntax which is deprecated now, and is never normally used in I7. The I6
-compiler converts such a syntax into a call to the |R_Process| below.
+compiler converts such a syntax into a call to the `R_Process` below.
 - Through conversion of an existing action. For instance, "removing the
 cup from the table" is converted in the Standard Rules to "taking the cup".
-This is done via a routine called |GVS_Convert|.
+This is done via a routine called `GVS_Convert`.
 - When a request is successful, the "carry out requested actions" rule
 turns the original action -- a request by the player, such as is produced
 by CHOPIN, PLAY POLONAISE -- into an action by the person asked, such as
@@ -39,7 +39,7 @@ he can see, but is not currently holding.
 - A partial but intentionally incomplete form of the "looking" action is
 generated when describing the new location at the end of a "going" action.
 
-In every case except the last, the action is carried out by |BeginAction|, the
+In every case except the last, the action is carried out by `BeginAction`, the
 single routine which unifies all of these approaches. Except the last one.
 
 @h Fake Actions.
@@ -52,8 +52,8 @@ represent both actions and fake actions while protecting each from confusion
 with the other.
 
 The following fake actions from the I6 library have been dropped here:
-|##LetGo|, |##Receive|, |##ThrownAt|, |##Prompt|, |##Places|, |##Objects|,
-|##Order|, |##NotUnderstood|.
+`##LetGo`, `##Receive`, `##ThrownAt`, `##Prompt`, `##Places`, `##Objects`,
+`##Order`, `##NotUnderstood`.
 
 =
 Fake_Action ListMiscellany;
@@ -62,13 +62,13 @@ Fake_Action PluralFound;
 Fake_Action TheSame;
 
 @h Action Data.
-This is perhaps a good place to document the |ActionData| array, a convenient
+This is perhaps a good place to document the `ActionData` array, a convenient
 table of metadata about the actions. Since this is compiled by Inform, the
 following structure can't be modified here without making matching changes
-in Inform. |ActionData| is an I6 |table| containing a series of fixed-length
+in Inform. `ActionData` is an I6 `table` containing a series of fixed-length
 records, one on each action.
 
-The routine |FindAction| locates the record in this table for a given
+The routine `FindAction` locates the record in this table for a given
 action number, returning its word offset within the table: the argument $-1$
 means "the current action".
 
@@ -98,7 +98,7 @@ Constant AD_RECORD_SIZE = 6;
 ];
 
 @h Requirements Bitmap.
-As noted above, the |AD_REQUIREMENTS| field is a bitmap of flags for
+As noted above, the `AD_REQUIREMENTS` field is a bitmap of flags for
 various possible action requirements:
 
 =
@@ -266,22 +266,22 @@ when the room description was called for. We also set "abbreviated form
 allowed" to "true": when the ordinary looking action is running, this
 is "false".
 
-The actual description occurs during |LookSub|, which is the specific
+The actual description occurs during `LookSub`, which is the specific
 action processing stage for the "looking" action: thus, we use the
 check, carry out, after and report rules as if we were "looking", but
 are unaffected by before or instead rules.
 
-Uniquely, this pseudo-action does not use |BeginAction|: it works only
+Uniquely, this pseudo-action does not use `BeginAction`: it works only
 through the specific action processing rules, not the main action-processing
 ones, though that is not easy to see from the code below because it is
-hidden in the call to |LookSub|. The |-Sub| suffix is an I6 usage identifying
-this as the routine to go along with the action |##Look|, and so it is,
-but it looks nothing like the |LookSub| of the old I6 library. Inform compiles
-|-Sub| routines like so:
+hidden in the call to `LookSub`. The `-Sub` suffix is an I6 usage identifying
+this as the routine to go along with the action `##Look`, and so it is,
+but it looks nothing like the `LookSub` of the old I6 library. Inform compiles
+`-Sub` routines like so:
 = (text as Inform 6)
 	[ LookSub; return GenericVerbSub(153,154,155); ];
 =
-(with whatever rulebook numbers are appropriate). |GenericVerbSub| then
+(with whatever rulebook numbers are appropriate). `GenericVerbSub` then
 runs through the specific action processing stage.
 
 =
@@ -313,7 +313,7 @@ actions -- numbered upwards in order of creation -- from what I6 calls
 used at all in I7, and certainly shouldn't get here, but it's possible
 nonetheless using I6 angled-brackets, so... In other respects all we do
 is to save details of whatever current action is happening onto the stack,
-and then call |ActionPrimitive|.
+and then call `ActionPrimitive`.
 
 =
 [ BeginAction a n s moi notrack  rv;
@@ -340,7 +340,7 @@ information if ACTIONS is in force, etc., with all of the actual work
 delegated to the action processing rulebook.
 
 We use a rather sneaky device to handle out-of-world actions, those for
-which the |meta| flag is set: we make it look to the system as if the
+which the `meta` flag is set: we make it look to the system as if the
 "action processing rulebook" is being followed, so that all its variables
 are created and placed in scope, but at the crucial moment we descend to
 the specific action processing rules directly instead of processing the
@@ -421,13 +421,13 @@ Some basic action requirements have to be met before we can go any further:
 if they aren't, then it isn't type-safe even to run the action processing
 rulebook.
 
-- For an out of world action, we set the |meta| flag. Otherwise:
+- For an out of world action, we set the `meta` flag. Otherwise:
 
 - If either the noun or second noun is a topic, then this is an action
 arising from parsing (such actions do not arise through the "try" phrase,
 unless by stored actions in which case this has all happened before and
 doesn't need to be done again) -- the parser places details of which words
-make up the topic in the I6 global variables |consult_words| and |consult_from|.
+make up the topic in the I6 global variables `consult_words` and `consult_from`.
 We convert them to a valid I7 snippet value.
 
 - If either the first or second noun is supposed to be an object but
@@ -439,7 +439,7 @@ difficult to arrange without I6 subterfuges.)
 required to exist, yet is missing, we use the "supplying a missing noun"
 or "supplying a missing second noun" activities to fill the void.
 
-We return |true| if type safety is violated, |false| if all is well.
+We return `true` if type safety is violated, `false` if all is well.
 
 =
 [ ActionVariablesNotTypeSafe mask noun_kova second_kova at;
@@ -685,12 +685,12 @@ see the account in the Standard Rules for details.
 ];
 
 @h Generic Verb Subroutine.
-In I6, actions are carried out by routines with names like |TakeSub|,
-consisting of |-Sub| tacked on to the action name |Take|. |Sub| stands for
+In I6, actions are carried out by routines with names like `TakeSub`,
+consisting of `-Sub` tacked on to the action name `Take`. `Sub` stands for
 "subroutine": this is all a convention going back to Inform 1, which was
 in 1993 practically an assembler. In the I6 code generated by I7, every
-|-Sub| routine corresponding to an I7 action consists only of a call to
-|GenericVerbSub| which specifies the three rulebooks it owns: its check,
+`-Sub` routine corresponding to an I7 action consists only of a call to
+`GenericVerbSub` which specifies the three rulebooks it owns: its check,
 carry out and report rulebooks.
 
 =
@@ -717,8 +717,8 @@ Array Details_of_Specific_Action-->5;
 @h Descend To Specific Action Rule.
 There are 100 or so actions, typically, and this rule is for efficiency's
 sake: rather than perform 100 or so comparisons to see which routine to
-call, we indirect through a jump table. The routines called are the |-Sub|
-routines: thus, for instance, if |action| is |##Wait| then |WaitSub| is
+call, we indirect through a jump table. The routines called are the `-Sub`
+routines: thus, for instance, if `action` is `##Wait` then `WaitSub` is
 called. It is essential that this routine not be called for fake actions:
 in I7 use this is guaranteed, since fake actions are not allowed into the
 action machinery at all.
@@ -732,7 +732,7 @@ action machinery at all.
 @h Work Out Details Of Specific Action Rule.
 This is one of the I6 primitive rules in the specific action processing
 rulebook, and it's basically a trick to allow information known to the
-|GenericVerbSub| routine to be passed down as rulebook variables for the
+`GenericVerbSub` routine to be passed down as rulebook variables for the
 specific action-processing rules -- in effect allowing us to pass not
 one but five parameters to the rulebook: the out-of-world and silence
 flags, plus the three specific rulebooks needed to process the action.

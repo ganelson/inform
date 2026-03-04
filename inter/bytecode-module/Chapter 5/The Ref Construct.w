@@ -18,7 +18,7 @@ void RefInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |ref| instruction is laid out with the
+In bytecode, the frame of a `ref` instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
 @d TYPE_REF_IFLD (DATA_IFLD + 0)

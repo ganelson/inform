@@ -20,7 +20,13 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -56,45 +62,46 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-ut.html#SP1">&#167;1. Minimal Preform grammar</a></li><li><a href="1-ut.html#SP2">&#167;2. Syntax tree</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Minimal Preform grammar.</b>Only <span class="extract"><span class="extract-syntax">&lt;dividing-sentence&gt;</span></span> can ever match, since the others are wired to match
-any text but then fail.
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Minimal Preform grammar.</b>  Only <code>&lt;dividing-sentence&gt;</code> can ever match, since the others are wired to match
+any text but then fail.</p>
+</div>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;dividing-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">volume</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 1, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">book</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 2, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">part</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 3, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">chapter</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 4, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dialog</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 6, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dialogue</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 6, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 5, - }</span>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="function-syntax">&lt;dividing-sentence&gt;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">volume</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">book</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">part</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">chapter</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">section</span><span class="plain-syntax"> ... ( </span><span class="identifier-syntax">dialog</span><span class="plain-syntax"> ) |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">section</span><span class="plain-syntax"> ... ( </span><span class="identifier-syntax">dialogue</span><span class="plain-syntax"> ) |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">section</span><span class="plain-syntax"> ...</span>
+<span class="Preform-function-syntax">&lt;structural-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail }</span>
 
-<span class="function-syntax">&lt;structural-sentence&gt;</span>
-<span class="plain-syntax">    ...</span>
+<span class="Preform-function-syntax">&lt;language-modifying-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail }</span>
 
-<span class="function-syntax">&lt;language-modifying-sentence&gt;</span>
-<span class="plain-syntax">    ...</span>
-
-<span class="function-syntax">&lt;comma-divisible-sentence&gt;</span>
-<span class="plain-syntax">    ...</span>
+<span class="Preform-function-syntax">&lt;comma-divisible-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail }</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Syntax tree.</b></p>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Syntax tree.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_tree</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Unit::test_tree</span></span>:<br/>Program Control - <a href="1-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_tree</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Unit::test_tree</span></span>:<br/>Program Control - <a href="1-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">feed_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">FD</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP2" class="function-link"><span class="function-syntax">Feeds::begin</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sf</span><span class="plain-syntax"> = </span><a href="../words-module/3-tff.html#SP3" class="function-link"><span class="function-syntax">TextFromFiles::feed_into_lexer</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP2" class="function-link"><span class="function-syntax">Feeds::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="type-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sf</span><span class="plain-syntax"> = </span><a href="../words-module/3-tff.html#SP3" class="function-link"><span class="function-syntax">TextFromFiles::feed_into_lexer</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="type-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP2" class="function-link"><span class="function-syntax">Feeds::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FD</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sf</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"File has failed to open\n"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax"> = </span><a href="../syntax-module/2-st.html#SP2" class="function-link"><span class="function-syntax">SyntaxTree::new</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Read %d words\n"</span><span class="plain-syntax">, </span><a href="../words-module/3-wrd.html#SP7" class="function-link"><span class="function-syntax">Wordings::length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/3-snt.html#SP5" class="function-link"><span class="function-syntax">Sentences::break</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">save_DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">save_DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation/2-str.html#SP20" class="function-link"><span class="function-syntax">Streams::enable_debugging</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>

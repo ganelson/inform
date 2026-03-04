@@ -127,15 +127,15 @@ This sequence will be in "declaration order", that is, it will match the order
 in which instances are declared in Inter. This is not the same as their creation
 order in Inform 7 source text, though it tends to be roughly similar.[1]
 
-The following function abstracts the list, returning the first instance if |I|
-is |NULL|, and otherwise the next after |I|. Note that it excludes instances which
+The following function abstracts the list, returning the first instance if `I`
+is `NULL`, and otherwise the next after `I`. Note that it excludes instances which
 have been "diverted".[2]
 
 [1] Declaration order is more trouble to arrange, but we do it so that an optimised
 and an unoptimised loop to perform the same search will not only iterate through
 the same set of objects, but in the same order.
 
-[2] This is used to get rid of the |selfobj| object in cases where the source text
+[2] This is used to get rid of the `selfobj` object in cases where the source text
 creates an explicit player.
 
 =
@@ -148,7 +148,7 @@ instance *InstanceCounting::next_in_IK_sequence(instance *I, kind *k) {
 		resuming = TRUE;
 		if (I == NULL) break;
 		if (InferenceSubjects::aliased_but_diverted(Instances::as_subject(I)))
-			continue; /* |selfobj| may not count */
+			continue; /* `selfobj` may not count */
 		if (Instances::of_kind(I, k)) return I;
 	}
 	return NULL;
@@ -226,7 +226,7 @@ int InstanceCounting::counting_complete_model(int stage) {
 	return FALSE;
 }
 
-@ The |vector| property provides workspace for the relation-route-finding code
+@ The `vector` property provides workspace for the relation-route-finding code
 at runtime: it doesn't actually have anything to do with instance counting as
 such, but then again it doesn't deserve its own section of code.
 
@@ -241,7 +241,7 @@ such, but then again it doesn't deserve its own section of code.
 @ For each subkind of object K to which an instance I belongs, we will store the
 IK-count in a numerical property. So the red car, for example, would be given two
 property values: one for (red car, thing), one for (red car, vehicle). The
-properties in question are the |IK_count_prop| for thing and vehicle.
+properties in question are the `IK_count_prop` for thing and vehicle.
 
 Similarly for the next terms in the IK-sequences.
 
@@ -262,7 +262,7 @@ Similarly for the next terms in the IK-sequences.
 					RTKindConstructors::kind_package(K), next_iname);
 		}
 
-@ For any object instance, the property |KD_Count| holds the KD-count for its
+@ For any object instance, the property `KD_Count` holds the KD-count for its
 immediate kind. For a red car which was both vehicle and thing, therefore, this
 would be the number for "vehicle", not for "thing".
 
@@ -287,9 +287,9 @@ would be the number for "vehicle", not for "thing".
 
 @ And otherwise, for every kind that the instance belongs to (directly or
 indirectly) it gets the relevant instance count as a property value. For
-example, the red door might have |IK4_Count| set to 3 -- it's door number 3,
-let's suppose -- and |IK2_Count| set to 19 -- it's thing number 19. It doesn't
-have an |IK7_Count| property at all, since it isn't a backdrop (kind number 7),
+example, the red door might have `IK4_Count` set to 3 -- it's door number 3,
+let's suppose -- and `IK2_Count` set to 19 -- it's thing number 19. It doesn't
+have an `IK7_Count` property at all, since it isn't a backdrop (kind number 7),
 and so on for all other kinds.
 
 @<Fill in this IK-count property@> =
@@ -314,10 +314,10 @@ records the next instance in compilation order:
 @h Loop optimisation.
 Lastly, then, the coup de grace: here's where we define loop schemas to
 perform loops through kinds quickly at run-time. We start from the First
-constants, and use the Next constants to progress; and we stop at |nothing|.
+constants, and use the Next constants to progress; and we stop at `nothing`.
 
 There is no actual need to compile the schema differently in the case of
-an empty loop, where there are no instances of the kind |K| to loop over:
+an empty loop, where there are no instances of the kind `K` to loop over:
 the regular schema would work fine. But it would make the code somehow
 misleading to a human reader.
 

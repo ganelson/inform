@@ -7,7 +7,7 @@ Literal lists arise from source text such as:
 = (text as Inform 7)
 	let Q be { 60, 168 };
 =
-The data to hold |{ 60, 168 }| has to be stored somehow. As with all
+The data to hold `{ 60, 168 }` has to be stored somehow. As with all
 kinds for which values cannot be stored in a single word, we use a double
 pointer:
 = (text)
@@ -87,7 +87,7 @@ To return to the example:
 = (text as Inform 7)
 	let Q be { 60, 168 };
 =
-Each list literal like |{ 60, 168 }| in imperative code results in a |literal_list|
+Each list literal like `{ 60, 168 }` in imperative code results in a `literal_list`
 object, and here we return its value:
 
 =
@@ -133,8 +133,8 @@ void ListLiterals::compilation_agent(compilation_subtask *t) {
 @h The instance list for a kind.
 For kinds of object and enumerations, Inform sometimes chooses to compile its
 own literal list, even though this is not specified anywhere in the source text.
-Not all kinds have these: obviously, there can be no instance list for |K_real_number|.
-The following returns -1 if |K| is similarly unsuitable, or a non-negative value
+Not all kinds have these: obviously, there can be no instance list for `K_real_number`.
+The following returns -1 if `K` is similarly unsuitable, or a non-negative value
 for the number of instances it has:
 
 =
@@ -165,7 +165,7 @@ inter_name *ListLiterals::get_instance_list(kind *K) {
 }
 
 @ Note that the instances are given in the order preferred by //Instance Counting//,
-not in creation order, as a simple |LOOP_OVER_INSTANCES| would have done.
+not in creation order, as a simple `LOOP_OVER_INSTANCES` would have done.
 
 @<Compile entries for a kind of object@> =
 	instance *I = InstanceCounting::next_in_IK_sequence(NULL, K);

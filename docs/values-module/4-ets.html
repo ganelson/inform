@@ -90,9 +90,9 @@ equals sign as one of its characters.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Top-level nonterminals.</b>  These five nonterminals are the most useful and powerful, so they're the
 main junction between the S-parser and the rest of Inform.</p>
 <p>These are coded as internals for efficiency's sake. We will often reparse the
-same wording over and over, so we cache the results. But &lt;s-value&gt; matches
-exactly the same text as &lt;s-value-uncached&gt;, and so on for the other four.</p>
-<p>&lt;s-value&gt; looks for source text which can be evaluated -- a constant, a
+same wording over and over, so we cache the results. But <s-value> matches
+exactly the same text as <s-value-uncached>, and so on for the other four.</p>
+<p><s-value> looks for source text which can be evaluated -- a constant, a
 variable or other storage object, or a phrase to decide a value.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -105,7 +105,7 @@ variable or other storage object, or a phrase to decide a value.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  &lt;s-condition&gt; looks for a condition -- anything legal after an
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  <s-condition> looks for a condition -- anything legal after an
 &quot;if&quot;, in short. This includes sentence-like excerpts such as &quot;six
 animals have been in the Stables&quot;.</p>
 </div>
@@ -120,7 +120,7 @@ animals have been in the Stables&quot;.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  &lt;s-non-action-condition&gt; is the same, but disallowing action patterns
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  <s-non-action-condition> is the same, but disallowing action patterns
 as conditions, so for example &quot;taking something&quot; would not match.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -140,7 +140,7 @@ as conditions, so for example &quot;taking something&quot; would not match.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  &lt;s-type-expression&gt; is for where we expect to find the &quot;type&quot; of something
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  <s-type-expression> is for where we expect to find the &quot;type&quot; of something
 -- for instance, the kind of value to be stored in a variable, or the
 specification of a phrase argument.</p>
 </div>
@@ -154,13 +154,13 @@ specification of a phrase argument.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  &lt;s-descriptive-type-expression&gt; is the same thing, with one difference: it
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  <s-descriptive-type-expression> is the same thing, with one difference: it
 allows nounless descriptions, such as &quot;open opaque fixed in place&quot;, and to
 this end it treats bare adjective names as descriptions rather than values. If
 we have said &quot;Colour is a kind of value. The colours are red, green and taupe.
-A thing has a colour.&quot;, then &quot;green&quot; is parsed by &lt;s-descriptive-type-expression&gt;
-as a description meaning &quot;any thing which is green&quot;, but by &lt;s-type-expression&gt;
-and &lt;s-value&gt; as a constant value of the kind &quot;colour&quot;.</p>
+A thing has a colour.&quot;, then &quot;green&quot; is parsed by <s-descriptive-type-expression>
+as a description meaning &quot;any thing which is green&quot;, but by <s-type-expression>
+and <s-value> as a constant value of the kind &quot;colour&quot;.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-descriptive-type-expression&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
@@ -173,7 +173,7 @@ and &lt;s-value&gt; as a constant value of the kind &quot;colour&quot;.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The following internal is just a shell for &lt;s-descriptive-type-expression&gt;,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The following internal is just a shell for <s-descriptive-type-expression>,
 but it temporarily changes the parsing mode to phrase token parsing, so that
 kind variables will be read as formal prototypes.</p>
 </div>
@@ -201,7 +201,7 @@ a new name will clash with some existing meaning.</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Void phrases.</b>  The S-parser is also used by the main code compiler to turn phrases into
-S-nodes, using &lt;s-command&gt; and &lt;s-say-command&gt;. These however need a
+S-nodes, using <s-command> and <s-say-command>. These however need a
 wrapper: instead of turning text into an S-node, we take text from an
 existing node (in the structural parse tree for a routine), turn that
 into a new S-node with an invocation list below it, then glue the list

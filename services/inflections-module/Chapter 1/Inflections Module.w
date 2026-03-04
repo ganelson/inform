@@ -21,7 +21,7 @@ DECLARE_CLASS(lexical_cluster)
 DECLARE_CLASS(plural_dictionary_entry)
 DECLARE_CLASS(verb_conjugation)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e CONSTRUCTED_PAST_PARTICIPLES_DA
 @e CONSTRUCTED_PLURALS_DA

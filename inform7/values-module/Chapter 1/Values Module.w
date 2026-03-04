@@ -8,7 +8,7 @@ which use this module:
 
 @d VALUES_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e LITERAL_NOTATIONS_DA
 @e OBJECT_CREATIONS_DA

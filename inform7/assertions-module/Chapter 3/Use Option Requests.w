@@ -28,7 +28,7 @@ int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
 @ "Use" sentences are simple in structure. Their object noun phrases are
 articled lists:
 
->> Use American dialect and the serial comma.
+> Use American dialect and the serial comma.
 
 =
 void UseOptions::set_use_options(parse_node *p, int task) {
@@ -40,7 +40,7 @@ void UseOptions::set_use_options(parse_node *p, int task) {
 	@<Set a single use option@>;
 }
 
-@ Needed to provide a structured response from |<use-setting>|:
+@ Needed to provide a structured response from `<use-setting>`:
 
 =
 typedef struct parsed_use_option_setting {
@@ -83,7 +83,7 @@ parsed_use_option_setting *UseOptions::parse_setting(wording W) {
 }
 
 @ Each of the entries in this list must match the following; the text of the
-option name is taken from the |...| or |###| as appropriate:
+option name is taken from the `...` or `###` as appropriate:
 
 =
 <use-inter-pipeline> ::=

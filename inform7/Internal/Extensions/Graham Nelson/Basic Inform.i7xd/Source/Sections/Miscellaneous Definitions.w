@@ -106,8 +106,8 @@ if there is one, and sets some essential I6 variables. If there is any rule
 not to meddle with, this is it.
 
 - The "seed random number generator rule" seeds the RNG to a fixed value
-if Inform has requested this (which it does in response to the |-rng| command
-line switch, which is in turn used by the |intest| testing utility: it's a
+if Inform has requested this (which it does in response to the `-rng` command
+line switch, which is in turn used by the `intest` testing utility: it's a
 way to make deterministic tests of programs which use random values).
 
 - The "recover Glk objects rule" runs the object recovery process in order to

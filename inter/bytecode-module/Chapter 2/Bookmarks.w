@@ -3,11 +3,11 @@
 Write positions for inter code being generated.
 
 @ A bookmark does not record an actual position in an Inter tree -- if we needed
-that, a pointer to the relevant |inter_tree_node| would do fine -- but to a
+that, a pointer to the relevant `inter_tree_node` would do fine -- but to a
 hypothetical position. It describes where to put a node which has not yet been
 put into position.
 
-It does this by recording not only a reference node |R| but a relationship
+It does this by recording not only a reference node `R` but a relationship
 which the hypothetical new position will have with respect to it:
 
 @e BEFORE_NODEPLACEMENT from 0
@@ -19,7 +19,7 @@ which the hypothetical new position will have with respect to it:
 =
 typedef struct inter_bookmark {
 	struct inter_tree_node *R;
-	int placement_wrt_R; /* one of the |*_NODEPLACEMENT| values */
+	int placement_wrt_R; /* one of the `*_NODEPLACEMENT` values */
 } inter_bookmark;
 
 @ Bookmarks are used to mark positions in an Inter tree, though they are often
@@ -28,11 +28,11 @@ a bookmark will migrate through a book as it is slowly read.
 
 Because of this, the bookmark structure is one of the few in the Inform tool
 chain to be used sometimes as a value and sometimes a reference -- that is,
-we make use both of |inter_bookmark| and |inter_bookmark *| as types. So a
+we make use both of `inter_bookmark` and `inter_bookmark *` as types. So a
 function which simply needs to know where to do something will take the
-type |inter_bookmark| as an argument -- see //NodePlacement::move_to//, for
+type `inter_bookmark` as an argument -- see //NodePlacement::move_to//, for
 example -- whereas a function which does something but then nudges the
-bookmark onwards will take an |inter_bookmark *|, as in the case of
+bookmark onwards will take an `inter_bookmark *`, as in the case of
 //NodePlacement::move_to_moving_bookmark//.
 
 Dereferencing a bookmark pointer to a bookmark value is called taking a
@@ -115,8 +115,8 @@ void InterBookmark::move_into_package(inter_bookmark *IBM, inter_package *P) {
 
 @ Following the same conventions, this function returns the package into which
 a node moved to the bookmark would then live. In particular,
-|InterBookmark::package(InterBookmark::move_into_package(IBM, P))| is always
-equal to |P|.
+`InterBookmark::package(InterBookmark::move_into_package(IBM, P))` is always
+equal to `P`.
 
 =
 inter_package *InterBookmark::package(inter_bookmark *IBM) {

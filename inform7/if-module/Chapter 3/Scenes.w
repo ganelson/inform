@@ -23,7 +23,7 @@ void Scenes::start(void) {
 
 @ This feature needs one extra syntax tree annotation:
 
-@e constant_scene_ANNOT /* |scene|: for constant values */
+@e constant_scene_ANNOT /* `scene`: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
@@ -42,7 +42,7 @@ void Scenes::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
 
 @ Scenes are the instances of a built-in enumeration kind, created by a
 Neptune file belonging to //WorldModelKit//, and this is recognised by its
-Inter identifier |SCENE_TY|.
+Inter identifier `SCENE_TY`.
 
 = (early code)
 kind *K_scene = NULL;
@@ -153,8 +153,8 @@ instance *Scenes::get_instance(scene *sc) {
 	return sc->as_instance;
 }
 
-@ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
-so we would normally have a structure called |scenes_data|, but in fact that
+@ A feature called `xyzzy` generally has a hunk of subject data called `xyzzy_data`,
+so we would normally have a structure called `scenes_data`, but in fact that
 structure is just going to be //scene//. So:
 
 @d scenes_data scene
@@ -399,8 +399,9 @@ scene *scene_end_of_which_parsed = NULL;
 
 @ Sentences giving scene boundaries have a simple form:
 
->> The Ballroom Dance begins when the Hallway Greeting ends.
->> The Ballroom Dance ends dramatically when we have dropped the glass slipper.
+> The Ballroom Dance begins when the Hallway Greeting ends.
+
+> The Ballroom Dance ends dramatically when we have dropped the glass slipper.
 
 The sentence has a subject noun phrase (here "Ballroom Dance") and an
 object NP: "the Hallway Greeting ends" or "we have dropped the glass
@@ -505,7 +506,7 @@ never fails.
 
 @ In a sentence like
 
->> The Ballroom Dance begins when the Hallway Greeting ends.
+> The Ballroom Dance begins when the Hallway Greeting ends.
 
 we will call "the Ballroom Dance begins" this end, and "the Hallway Greeting
 ends" the other end.

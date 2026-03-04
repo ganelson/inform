@@ -8,7 +8,7 @@ which use this module:
 
 @d IMPERATIVE_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e INV_LIST_MREASON
 @e DESCRIPTION_COMPILATION_DA

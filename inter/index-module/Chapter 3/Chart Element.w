@@ -404,7 +404,7 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 		}
 	}
 
-@ Here |pack| can be either an instance or a kind package.
+@ Here `pack` can be either an instance or a kind package.
 
 =
 void ChartElement::index_inferences(OUTPUT_STREAM, inter_package *pack, int brief) {

@@ -715,12 +715,9 @@ it binds.)</p>
 <p class="commentary firstcommentary"><a id="SP9_5" class="paragraph-anchor"></a><b>&#167;9.5. </b>  When Inform reads a condition so abbreviated that both the subject and
 the verb have been left out, it assumes the verb is &quot;to be&quot; and that the
 subject will be whatever is being worked on. For instance,</p>
-</div>
 <blockquote>
-    <p>if an unlocked container, ...</p>
+<p>if an unlocked container, ...</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>is read as the verb phrase &quot;is&quot; with <code>ABSENT_SUBJECT_NT</code> as SP
 and &quot;an unlocked container&quot; as OP.</p>
 <p><code>ABSENT_SUBJECT_NT</code> nodes are easy to deal with since they translate to the I6
@@ -797,8 +794,8 @@ For instance, if we are working on the OP &quot;the box in a room&quot; from thi
 <span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span>
 </pre>
 <div class="lsmarkdown">
-<p>then the constant is \INWEBMATH(C = \hbox{\tt box}\INWEBMATH), and Sstp returned
-\INWEBMATH(\phi = \exists x: {\it room}(x)\land{\it is}(x, \hbox{\tt ContainerOf(box)})\INWEBMATH).</p>
+<p>then the constant is \INWEBMATH(C = `box`\INWEBMATH), and Sstp returned
+\INWEBMATH(\phi = \exists x: {\it room}(x)\land{\it is}(x, `ContainerOf(box)`)\INWEBMATH).</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If we have a constant qualified by a substantive proposition, rewrite in terms of variable</span><span class="named-paragraph-number">9.7</span></span> =</p>
 

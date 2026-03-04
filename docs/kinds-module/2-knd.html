@@ -85,10 +85,10 @@ MathJax = {
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">construct</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which can never be |NULL| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_variable_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only used if construct is |CON_KIND_VARIABLE| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">unit_sequence</span><span class="plain-syntax"> *</span><span class="identifier-syntax">intermediate_result</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only used if construct is |CON_INTERMEDIATE| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc_args</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* used if arity positive, or for |CON_KIND_VARIABLE| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">construct</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which can never be <code>NULL</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_variable_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only used if construct is <code>CON_KIND_VARIABLE</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">unit_sequence</span><span class="plain-syntax"> *</span><span class="identifier-syntax">intermediate_result</span><span class="plain-syntax">; </span><span class="comment-syntax">/* only used if construct is <code>CON_INTERMEDIATE</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc_args</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* used if arity positive, or for <code>CON_KIND_VARIABLE</code> */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">kind</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure kind is accessed in 2/fk, 2/tlok, 2/uk, 3/dmn, 3/fv, 4/st, 4/kc2 and here.</li></ul>
@@ -554,12 +554,9 @@ referring to their values, and these have different kinds. So:</p>
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Creating new base kind constructors.</b>  Inform's whole stock of constructors comes from two routes: this one, from the
 source text, and another we shall see later, from the Kind Interpreter. The
 following is called in response to sentences like:</p>
-</div>
 <blockquote>
-    <p>Texture is a kind of value. A musical instrument is a kind of thing.</p>
+<p>Texture is a kind of value. A musical instrument is a kind of thing.</p>
 </blockquote>
-
-<div class="lsmarkdown">
 <p>The word range is the name (&quot;texture&quot;, &quot;musical instrument&quot;), and <code>super</code>
 is the super-kind (&quot;value&quot;, &quot;thing&quot;).</p>
 </div>

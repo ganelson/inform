@@ -12,7 +12,7 @@ and we would not ordinarily write "the ball is 4".[1]
 These instances make "enumerative adjectives" because they arise from
 enumerations such as:
 
->> The ball can be red, green or blue.
+> The ball can be red, green or blue.
 
 [1] A quirk in English does allow this, implicitly construing number as an
 age property, but we don't go there in Inform.
@@ -38,11 +38,11 @@ a single piece of litmus paper. Each of these three is an inference subject,
 so //InferenceSubjects::make_adj_const_domain// was called for each in turn.
 
 By different means, those calls all ended up by passing the buck onto the
-following function: twice with the domain |set| being a kind ("door" and then
-"scene"), once with |set| being null and |singleton| an instance ("litmus paper").
+following function: twice with the domain `set` being a kind ("door" and then
+"scene"), once with `set` being null and `singleton` an instance ("litmus paper").
 
-So, then, we make the instance |I| have an adjectival use setting the property
-|P| when applied to either |set| or |singleton|, whichever is not null.
+So, then, we make the instance `I` have an adjectival use setting the property
+`P` when applied to either `set` or `singleton`, whichever is not null.
 
 =
 void InstanceAdjectives::make_adjectival(instance *I, property *P,

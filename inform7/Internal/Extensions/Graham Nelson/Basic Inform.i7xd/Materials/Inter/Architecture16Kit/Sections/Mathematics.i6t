@@ -4,7 +4,7 @@ Mathematical functions.
 
 @h Unsigned integer comparison.
 Comparison of integers is normally signed, that is, treating the word as
-a twos-complement signed number, so that |$FFFF| is less than |0|, for
+a twos-complement signed number, so that `$FFFF` is less than `0`, for
 instance. If we want to construe words as being unsigned integers, or as
 addresses, we need to compare them with the following routine, which returns
 1 if $x>y$, 0 if $x=y$ and $-1$ if $x<y$.
@@ -21,7 +21,7 @@ addresses, we need to compare them with the following routine, which returns
 
 @h Fully random word.
 This should be our best try at a single word consisting of 16 uniformly
-random bits. |random($100)-1| is a fully random byte.
+random bits. `random($100)-1` is a fully random byte.
 
 =
 [ FullyRandomWord;

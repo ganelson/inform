@@ -6,7 +6,7 @@ Creating a top-level module of synoptic resources.
 in the link: which is a fancy way of saying, it contains one module for the
 main source text, one for each extension, and one each for each kit included.
 
-We now add one final module, |/main/synoptic|, which contains resources compiled
+We now add one final module, `/main/synoptic`, which contains resources compiled
 together from all of the others.
 
 =
@@ -46,12 +46,12 @@ int MakeSynopticModuleStage::run(pipeline_step *step) {
 }
 
 @ The inventory for an Inter tree is an itemisation of packages with particular
-types: for example, we can ask it to hold a list of |_activity| packages.
+types: for example, we can ask it to hold a list of `_activity` packages.
 
 =
 typedef struct tree_inventory {
 	struct inter_tree *of_tree;
-	struct linked_list *items; /* of |tree_inventory_item| */
+	struct linked_list *items; /* of `tree_inventory_item` */
 	inter_node_array *text_nodes;
 	inter_node_array *module_nodes;
 	inter_node_array *response_nodes;

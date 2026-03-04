@@ -12,11 +12,11 @@ as used in a typical run of Inform 7 -- see //inform7: Performance Metrics//.
 
 @h Incidence bits.
 Each NT is assigned an "incidence bit", but this is generated on demand;
-|nt_incidence_bit| is -1 until it is allocated, and is otherwise an integer in
+`nt_incidence_bit` is -1 until it is allocated, and is otherwise an integer in
 which only one bit is set, and always in the lowest 31 bits (since we won't
 assume integers are any larger than that). We avoid use of bit 32 because
-these are signed integers and |1 << 31| has undefined behaviour in C;
-compiling |-fsanitize=undefined| produces errors in the function below if it
+these are signed integers and `1 << 31` has undefined behaviour in C;
+compiling `-fsanitize=undefined` produces errors in the function below if it
 is used.
 
 The lowest 6 bits are reserved -- see //NTI::give_nt_reserved_incidence_bit//
@@ -137,7 +137,7 @@ And a rule can apply to the NTI bits in two ways:
 
 That makes six combinations in all: DW, DS, CW, CS, FW, and FS.
 
-For example, suppose a NTIC has |DS_req| set to |0x280| -- i.e., to a bitmap
+For example, suppose a NTIC has `DS_req` set to `0x280` -- i.e., to a bitmap
 in which bits 7 and 9 are set (counting upwards from 0). This is then saying
 that a word range such as "sense and prejudice" can only be a match if one
 of the three words "sense", "and" or "prejudice" has both bits 7 and 9 set.
@@ -156,7 +156,7 @@ typedef struct nti_constraint {
 
 @ And the following applies the NTIC test. Speed is critical here: we perform
 only those tests which can have any effect, where the bitmap is non-zero. Note
-that a return value of |TRUE| means that the wording does not match.
+that a return value of `TRUE` means that the wording does not match.
 
 =
 int NTI::nt_bitmap_violates(wording W, nti_constraint *ntic) {
@@ -260,8 +260,8 @@ nti_constraint NTI::each_word_must_have(nonterminal *nt) {
 
 @h Concatenation of range requirements.
 Suppose we are going to match some words X, then some more words Y.
-The X words have to satisfy |X_ntic| and the Y words |Y_ntic|. The following
-function alters |X_ntic| so that it is now a requirement for "match X and
+The X words have to satisfy `X_ntic` and the Y words `Y_ntic`. The following
+function alters `X_ntic` so that it is now a requirement for "match X and
 then Y", or XY for short.
 
 =
@@ -274,8 +274,8 @@ void NTI::concatenate_rreq(nti_constraint *X_ntic, nti_constraint *Y_ntic) {
 	X_ntic->FW_req = NTI::concatenate_fw(X_ntic->FW_req, Y_ntic->FW_req);
 }
 
-@ The strong requirements are well-defined. Suppose all of the bits of |m1|
-are found in X, and all of the bits of |m2| are found in Y. Then clearly
+@ The strong requirements are well-defined. Suppose all of the bits of `m1`
+are found in X, and all of the bits of `m2` are found in Y. Then clearly
 all of the bits in the union of these two sets are found in XY, and that's
 the strongest requirement we can make. So:
 
@@ -284,8 +284,8 @@ int NTI::concatenate_ds(int m1, int m2) {
 	return m1 | m2;
 }
 
-@ Similarly, suppose all of the bits of |m1| are found in every word of X,
-and all of those of |m2| are in every word of Y. The most which can be said
+@ Similarly, suppose all of the bits of `m1` are found in every word of X,
+and all of those of `m2` are in every word of Y. The most which can be said
 about every word of XY is to take the intersection, so:
 
 =
@@ -293,10 +293,10 @@ int NTI::concatenate_cs(int m1, int m2) {
 	return m1 & m2;
 }
 
-@ Now suppose that at least one bit of |m1| can be found in X, and one bit
-of |m2| can be found in Y. This gives us two pieces of information about
-XY, and we can freely choose which to go for: we may as well pick |m1| and
-say that one bit of |m1| can be found in XY. In principle we ought to choose
+@ Now suppose that at least one bit of `m1` can be found in X, and one bit
+of `m2` can be found in Y. This gives us two pieces of information about
+XY, and we can freely choose which to go for: we may as well pick `m1` and
+say that one bit of `m1` can be found in XY. In principle we ought to choose
 the rarest for best effect, but that's too much work.
 
 =
@@ -306,8 +306,8 @@ int NTI::concatenate_dw(int m1, int m2) {
 	return m1; /* the general case discussed above */
 }
 
-@ Now suppose that each word of X matches at least one bit of |m1|, and
-similarly for Y and |m2|. Then each word of XY matches at least one bit of
+@ Now suppose that each word of X matches at least one bit of `m1`, and
+similarly for Y and `m2`. Then each word of XY matches at least one bit of
 the union, so:
 
 =
@@ -330,7 +330,7 @@ int NTI::concatenate_fw(int m1, int m2) {
 
 @h Disjunction of range requirements.
 The second operation is disjunction. Again we have words X with requirement
-|X_ntic| and Y with |Y_ntic|, but this time we want to change |X_ntic| so that
+`X_ntic` and Y with `Y_ntic`, but this time we want to change `X_ntic` so that
 it is the requirement for "match either X or Y", or X/Y for short.
 
 This amounts to a disguised form of de Morgan's laws.
@@ -345,7 +345,7 @@ void NTI::disjoin_rreq(nti_constraint *X_ntic, nti_constraint *Y_ntic) {
 	X_ntic->FW_req = NTI::disjoin_fw(X_ntic->FW_req, Y_ntic->FW_req);
 }
 
-@ Suppose all of the bits of |m1| are found in X, and all of the bits of |m2|
+@ Suppose all of the bits of `m1` are found in X, and all of the bits of `m2`
 are found in Y. Then the best we can say is that all of the bits in the
 intersection of these two sets are found in X/Y. (If they have no bits in
 common, we can't say anything.)
@@ -355,8 +355,8 @@ int NTI::disjoin_ds(int m1, int m2) {
 	return m1 & m2;
 }
 
-@ Similarly, suppose all of the bits of |m1| are found in every word of X,
-and all of those of |m2| are in every word of Y. The most which can be said
+@ Similarly, suppose all of the bits of `m1` are found in every word of X,
+and all of those of `m2` are in every word of Y. The most which can be said
 about every word of XY is to take the intersection, so:
 
 =
@@ -364,8 +364,8 @@ int NTI::disjoin_cs(int m1, int m2) {
 	return m1 & m2;
 }
 
-@ Now suppose that at least one bit of |m1| can be found in X, and one bit
-of |m2| can be found in Y. All we can say is that one of these various bits
+@ Now suppose that at least one bit of `m1` can be found in X, and one bit
+of `m2` can be found in Y. All we can say is that one of these various bits
 must be found in X/Y, so:
 
 =
@@ -445,10 +445,10 @@ of A. Then the first, weak, test can go, since it is implied by the strong one.
 	if ((ntic->CW_req & ntic->CS_req) == ntic->CW_req) ntic->CW_req = 0;
 
 @ The "ditto flag" on a requirement is used when there are two requirements,
-here |prev| then |ntic|, representing alternatives for parsing the same text --
-i.e., it must match either |prev| or |ntic|. If these two requirements are
+here `prev` then `ntic`, representing alternatives for parsing the same text --
+i.e., it must match either `prev` or `ntic`. If these two requirements are
 the same, we needn't check the second one after the first has been checked.
-So we give |ntic| the ditto flag, to say "same as the one before".
+So we give `ntic` the ditto flag, to say "same as the one before".
 
 =
 void NTI::simplify_pair(nti_constraint *ntic, nti_constraint *prev) {
@@ -530,7 +530,7 @@ ptokens.
 0, as some positional internal NTs like <if-start-of-paragraph> do. Such a
 ptoken can't constrain the wording of a match at all.
 - For a ptoken which is a non-negated word, the NTIC is that the word
-matching it has to have the current NT's bit. In other words, if |zephyr|
+matching it has to have the current NT's bit. In other words, if `zephyr`
 occurs in the grammar for the NT <wind>, then the atomic NTIC for this word
 where it comes up is just a requirement that the word it matches against must
 have the <wind> bit. (Which the word "zephyr" certainly does, because we
@@ -538,7 +538,7 @@ marked all the words in the <wind> grammar with the <wind> bit already.)
 - For a ptoken which is a non-negated use of another NT, the constraint
 is just the constraint of that NT.
 - Nothing can be deduced from a negated ptoken: for example, all we know
-about the ptoken |^mistral| is that it matches something which is not the
+about the ptoken `^mistral` is that it matches something which is not the
 word "mistral", and that tells us nothing about the bits that it has.
 
 @<Calculate requirement for ptoken@> =

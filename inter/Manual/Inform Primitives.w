@@ -26,46 +26,46 @@ these primitives are defined.)
 The following are standard integer arithmetic operations, using signed
 twos-complement integers:
 
-- |primitive !plus val val -> val|. 16 or 32-bit integer addition.
-- |primitive !minus val val -> val|. 16 or 32-bit integer subtraction.
-- |primitive !unaryminus val -> val|. Equivalent to performing |0 - x|.
-- |primitive !times val val -> val|.  16 or 32-bit integer multiplication.
-- |primitive !divide val val -> val|. 16 or 32-bit integer division.
-- |primitive !modulo val val -> val|. Remainder after such a division.
+- `primitive !plus val val -> val`. 16 or 32-bit integer addition.
+- `primitive !minus val val -> val`. 16 or 32-bit integer subtraction.
+- `primitive !unaryminus val -> val`. Equivalent to performing `0 - x`.
+- `primitive !times val val -> val`.  16 or 32-bit integer multiplication.
+- `primitive !divide val val -> val`. 16 or 32-bit integer division.
+- `primitive !modulo val val -> val`. Remainder after such a division.
 
 @h Logical operators.
 In general, the value 0 is false, and all other values are true.
 
-- |primitive !not val -> val|. True if the value is false, and vice versa.
-- |primitive !and val val -> val|. True if both are true: doesn't evaluate the
+- `primitive !not val -> val`. True if the value is false, and vice versa.
+- `primitive !and val val -> val`. True if both are true: doesn't evaluate the
 second if the first is false.
-- |primitive !or val val -> val|. True if either is true: doesn't evaluate the
+- `primitive !or val val -> val`. True if either is true: doesn't evaluate the
 second if the first is true.
 
 @h Bitwise operators.
 These differ in that they do not "short circuit", and do not squash values
 down to just 0 or 1.
 
-- |primitive !bitwiseand val val -> val|.
-- |primitive !bitwiseor val val -> val|. 
-- |primitive !bitwisenot val -> val|. 
+- `primitive !bitwiseand val val -> val`.
+- `primitive !bitwiseor val val -> val`. 
+- `primitive !bitwisenot val -> val`. 
 
 @h Numerical comparison.
 These are comparisons of signed integers. (If Inform needs to compare unsigned
 integers, it calls a routine in the I6 template.)
 
-- |primitive !eq val val -> val|. 
-- |primitive !ne val val -> val|. 
-- |primitive !gt val val -> val|. 
-- |primitive !ge val val -> val|. 
-- |primitive !lt val val -> val|. 
-- |primitive !le val val -> val|. 
+- `primitive !eq val val -> val`. 
+- `primitive !ne val val -> val`. 
+- `primitive !gt val val -> val`. 
+- `primitive !ge val val -> val`. 
+- `primitive !lt val val -> val`. 
+- `primitive !le val val -> val`. 
 
 This is a special operation allowing the comparisons to test for multiple
 possibilities at once. (Old-school Inform 6 users will recognise it as the
-|or| operator.)
+`or` operator.)
 
-- |!alternative val val -> val|
+- `!alternative val val -> val`
 
 For example,
 = (text as Inter)
@@ -75,56 +75,56 @@ For example,
 			val 2
 			val 7
 =
-tests whether |x| equals either 2 or 7.
+tests whether `x` equals either 2 or 7.
 
 @h Sequential evaluation.
-The reason for the existence of |!ternarysequential| is that it's a convenient
+The reason for the existence of `!ternarysequential` is that it's a convenient
 shorthand, and also that it helps the code generator with I6 generation,
 because I6 has problems with the syntax of complicated sequential evals.
 
-- |primitive !sequential val val -> val|. Evaluates the first, then the second
+- `primitive !sequential val val -> val`. Evaluates the first, then the second
 value, producing that second value.
-- |primitive !ternarysequential val val val -> val|.  Evaluates the first,
+- `primitive !ternarysequential val val val -> val`.  Evaluates the first,
 then the second, then the third value, producing that third value.
 
 @h Random.
-This is essentially the built-in |random| function of Inform 6, given an Inter
+This is essentially the built-in `random` function of Inform 6, given an Inter
 disguise. See the Inform 6 Designer's Manual for a specification.
 
-- |!primitive random val -> val|. 
+- `!primitive random val -> val`. 
 
 @h Printing.
 These print data of various kinds:
 
-- |primitive !print val -> void|. Print text.
-- |primitive !printnumber val -> void|. Print a (signed) number in decimal.
-- |primitive !printchar val -> void|. Print a character value.
-- |primitive !printnl void -> void|. Print a newline. (This is needed because
+- `primitive !print val -> void`. Print text.
+- `primitive !printnumber val -> void`. Print a (signed) number in decimal.
+- `primitive !printchar val -> void`. Print a character value.
+- `primitive !printnl void -> void`. Print a newline. (This is needed because
 some of our VMs use character 10 for newline, and crash on 13, and others vice versa.)
-- |primitive !printdword val -> void|. Print a dictionary word.
-- |primitive !printstring val -> void|. Print a packed string.
+- `primitive !printdword val -> void`. Print a dictionary word.
+- `primitive !printstring val -> void`. Print a packed string.
 
 There are also two primitive ways to change the visual style of text:
 
-- |primitive !font val -> void|. Change to fixed-width font if value is 1, or regular if 0.
-- |primitive !style val -> void|. Change to this text style.
+- `primitive !font val -> void`. Change to fixed-width font if value is 1, or regular if 0.
+- `primitive !style val -> void`. Change to this text style.
 
 The effect of these will depend on the platform the final Inter code is generated
-for. If the value supplied to |!style| is 0, 1, 2 or 3, then this should make an
+for. If the value supplied to `!style` is 0, 1, 2 or 3, then this should make an
 effort to achieve roman, bold, italic, or reverse-video type, respectively, and
 that should apply across all platforms. Use of any other value is likely to be
-less portable. On C, for example, all other uses of |!style| are (Inform) text
+less portable. On C, for example, all other uses of `!style` are (Inform) text
 values which supply names for styles.
 
 Then there is a primitive for a rum feature of Inform 6 allowing for the display of
 "box quotations" on screen:
 
-- |primitive !box val -> void|. 
+- `primitive !box val -> void`. 
 
 And another largely pointless primitive for issuing a run of a certain number of
 spaces, for users too lazy to write their own loops:
 
-- |primitive !spaces val -> void|.
+- `primitive !spaces val -> void`.
 
 On some platforms, active steps need to be taken before text can actually appear:
 for example, those using the Glk input/output framework. As a convenience, this
@@ -138,82 +138,82 @@ this opcode for making small Inter test cases work:
 The stack is not directly accessible anywhere in memory, so the only access
 is via the following.
 
-- |primitive !push val -> void|. Push value onto the stack.
-- |primitive !pull ref -> void|. Pull value from the stack and write it into
+- `primitive !push val -> void`. Push value onto the stack.
+- `primitive !pull ref -> void`. Pull value from the stack and write it into
 the storage referred to. Values on the stack have unchecked kinds: it's up to
 the author not to pull an inappropriate value.
 
 @h Accessing storage.
-Here the |ref| term is a reference to a piece of storage: a property of an
+Here the `ref` term is a reference to a piece of storage: a property of an
 instance, or a global variable, or an entry in memory, for example.
 
-- |primitive !store ref val -> val|. Put the value in |ref|.
-- |primitive !setbit ref val -> void|. Set bits in the mask |val| in |ref|.
-- |primitive !clearbit ref val -> void|. Clear bits in the mask |val| in |ref|.
-- |primitive !postincrement ref -> val|. Performs the equivalent of |ref++|.
-- |primitive !preincrement ref -> val|. Performs the equivalent of |++ref|.
-- |primitive !postdecrement ref -> val|. Performs the equivalent of |ref--|.
-- |primitive !predecrement ref -> val|. Performs the equivalent of |--ref|.
+- `primitive !store ref val -> val`. Put the value in `ref`.
+- `primitive !setbit ref val -> void`. Set bits in the mask `val` in `ref`.
+- `primitive !clearbit ref val -> void`. Clear bits in the mask `val` in `ref`.
+- `primitive !postincrement ref -> val`. Performs the equivalent of `ref++`.
+- `primitive !preincrement ref -> val`. Performs the equivalent of `++ref`.
+- `primitive !postdecrement ref -> val`. Performs the equivalent of `ref--`.
+- `primitive !predecrement ref -> val`. Performs the equivalent of `--ref`.
 
 Memory can be accessed with the following. The first value is the address of
 the array; the second is an offset, that is, with 0 being the first entry,
-1 the second, and so on. "Word" in this context means either an |int16| or
-an |int32|, depending on what virtual machine are compiling to.
+1 the second, and so on. "Word" in this context means either an `int16` or
+an `int32`, depending on what virtual machine are compiling to.
 
-- |primitive !lookup val val -> val|. Find word at this word offset.
-- |primitive !lookupbyte val val -> val|. Find byte at this byte offset.
+- `primitive !lookup val val -> val`. Find word at this word offset.
+- `primitive !lookupbyte val val -> val`. Find byte at this byte offset.
 
-Properties, like memory, can be converted to |ref| in order to write to them,
-and are accessible with |propertyvalue|. Their existence can be tested with
-|propertyexists|; the other two opcodes here are for the handful of "inline
+Properties, like memory, can be converted to `ref` in order to write to them,
+and are accessible with `propertyvalue`. Their existence can be tested with
+`propertyexists`; the other two opcodes here are for the handful of "inline
 property values", where a property stores not a single value but a small array.
-In each of the four ternary property primitives, the operands are |K|, the
-weak kind ID of the owner; |O|, the owner; and |P|, the property. For properties
-of objects, |K| will always be |OBJECT_TY|.
+In each of the four ternary property primitives, the operands are `K`, the
+weak kind ID of the owner; `O`, the owner; and `P`, the property. For properties
+of objects, `K` will always be `OBJECT_TY`.
 
-|propertyarray| and |propertylength| both produce 0 (but not a run-time error)
+`propertyarray` and `propertylength` both produce 0 (but not a run-time error)
 if called on a property value which does not exist, or is not an inline array.
-In particular, they always produce 0 if the owner |O| is not an object, since
+In particular, they always produce 0 if the owner `O` is not an object, since
 only objects can have inline property values.
 
-- |primitive !propertyvalue  val val val -> val|.
-- |primitive !propertyarray  val val val -> val|. 
-- |primitive !propertylength val val val -> val|. 
-- |primitive !propertyexists val val val -> val|. 
+- `primitive !propertyvalue  val val val -> val`.
+- `primitive !propertyarray  val val val -> val`. 
+- `primitive !propertylength val val val -> val`. 
+- `primitive !propertyexists val val val -> val`. 
 
 @h Indirect function calls.
-Invocations of functions can only be made with |inv| when the function is
+Invocations of functions can only be made with `inv` when the function is
 specified as a constant, and when its signature is therefore known. If
 we need to call "whatever function this variable refers to", we have to
 use one of the following. They differ only in their signatures. The
 first value is the function address, and subsequent ones are arguments.
 
-- |primitive !indirect0v val -> void|. 
-- |primitive !indirect1v val val -> void|. 
-- |primitive !indirect2v val val val -> void|. 
-- |primitive !indirect3v val val val val -> void|. 
-- |primitive !indirect4v val val val val val -> void|. 
-- |primitive !indirect5v val val val val val val -> void|. 
-- |primitive !indirect0 val -> val|. 
-- |primitive !indirect1 val val -> val|. 
-- |primitive !indirect2 val val val -> val|. 
-- |primitive !indirect3 val val val val -> val|. 
-- |primitive !indirect4 val val val val val -> val|. 
-- |primitive !indirect5 val val val val val val -> val|. 
+- `primitive !indirect0v val -> void`. 
+- `primitive !indirect1v val val -> void`. 
+- `primitive !indirect2v val val val -> void`. 
+- `primitive !indirect3v val val val val -> void`. 
+- `primitive !indirect4v val val val val val -> void`. 
+- `primitive !indirect5v val val val val val val -> void`. 
+- `primitive !indirect0 val -> val`. 
+- `primitive !indirect1 val val -> val`. 
+- `primitive !indirect2 val val val -> val`. 
+- `primitive !indirect3 val val val val -> val`. 
+- `primitive !indirect4 val val val val val -> val`. 
+- `primitive !indirect5 val val val val val val -> val`. 
 
 @h Message function calls.
 These are the special form of function call from Inform 6 with the syntax
-|a.b()|, |a.b(c)|, |a.b(c, d)| or |a.b(c, d, e)|. In effect, they look up a
+`a.b()`, `a.b(c)`, `a.b(c, d)` or `a.b(c, d, e)`. In effect, they look up a
 property value which is a function, and call it. But because they have very
 slightly different semantics from indirect function calls, they appear here
 as primitives of their own. Inform 7 never compiles these, but kit assimilation
 may do. To get an idea of how to handle these, see for example
 //final: C Function Model//, which compiles them to C.
 
-- |primitive !message0 val val -> val|.
-- |primitive !message1 val val val -> val|.
-- |primitive !message2 val val val val -> val|.
-- |primitive !message3 val val val val val -> val|.
+- `primitive !message0 val val -> val`.
+- `primitive !message1 val val val -> val`.
+- `primitive !message2 val val val val -> val`.
+- `primitive !message3 val val val val val -> val`.
 
 @h External function calls.
 The following calls a function which is not part of the program itself, and
@@ -226,49 +226,49 @@ The first value must be a literal double-quoted text, and is the name of
 the external function. The second value is an argument to pass to it; and
 the result is whatever value it returns.
 
-- |primitive !externalcall val val -> val|.
+- `primitive !externalcall val val -> val`.
 
 @h Control flow.
 The simplest control statement is an "if". Note that a different primitive
 is used if there is an "else" attached: it would be impossible to use the
 same primitive for both because they couldn't have the same signature.
 
-|!ifdebug| is an oddity: it executes the code only if the program is
+`!ifdebug` is an oddity: it executes the code only if the program is
 being compiled in "debugging mode". (In Inform, that would mean that the
 story file is being made inside the application, or else released in a
 special testing configuration.) While the same effect could be achieved
 using conditional compliation splats, this is much more efficient.
-Similarly for |!ifstrict|, which tests for "strict mode", in which run-time
+Similarly for `!ifstrict`, which tests for "strict mode", in which run-time
 checking of program correctness is performed, but at some performance cost.
 
-- |primitive !if val code -> void|. 
-- |primitive !ifelse val code code -> void|. 
-- |primitive !ifdebug code -> void|. 
-- |primitive !ifstrict code -> void|. 
+- `primitive !if val code -> void`. 
+- `primitive !ifelse val code code -> void`. 
+- `primitive !ifdebug code -> void`. 
+- `primitive !ifstrict code -> void`. 
 
 There are then several loops.
 
-- |primitive !while val code -> void|. Similar to |while| in C.
-- |primitive !do val code -> void|. A do/until loop, where the test of |val|
+- `primitive !while val code -> void`. Similar to `while` in C.
+- `primitive !do val code -> void`. A do/until loop, where the test of `val`
 comes at the end of each iteration. Note that this is do/until, not do/while.
-- |primitive !for val val val code -> void|. Similar to |for| in C.
-- |primitive !objectloopx ref val code -> void|. A loop over instances,
-stored in the variable |ref|, of the kind of object |val|.
-- |primitive !objectloop ref val val code -> void|. A more general form,
-where the second |val| is a condition to be evaluated which decides whether
-to execute the code for given |ref| value.
+- `primitive !for val val val code -> void`. Similar to `for` in C.
+- `primitive !objectloopx ref val code -> void`. A loop over instances,
+stored in the variable `ref`, of the kind of object `val`.
+- `primitive !objectloop ref val val code -> void`. A more general form,
+where the second `val` is a condition to be evaluated which decides whether
+to execute the code for given `ref` value.
 
 A switch statement takes a value, and then executes at most one of an
 arbitrary number of possible code segments. This can't be implemented with
 a single primitive, because its signature would have to be of varying
 lengths with different uses (since some switches have many cases, some few).
-Instead: a |switch| takes a single |code|, but that |code| can in turn
-contain only invocations of |!case|, followed optionally by one of |!default|.
+Instead: a `switch` takes a single `code`, but that `code` can in turn
+contain only invocations of `!case`, followed optionally by one of `!default`.
 
-- |primitive !switch val code -> void|. 
-- |primitive !case val code -> void|. 
-- |primitive !default code -> void|. 
-- |primitive !alternativecase val val -> val|.
+- `primitive !switch val code -> void`. 
+- `primitive !case val code -> void`. 
+- `primitive !default code -> void`. 
+- `primitive !alternativecase val val -> val`.
 
 This looks a little baroque, but it works in practice:
 = (text as Inter)
@@ -294,45 +294,45 @@ This looks a little baroque, but it works in practice:
 =
 As in most C-like languages, there are primitives for:
 
-- |primitive !break void -> void|. Exit the innermost switch case or loop.
-- |primitive !continue void -> void|. Complete the current iteration of
+- `primitive !break void -> void`. Exit the innermost switch case or loop.
+- `primitive !continue void -> void`. Complete the current iteration of
 the innermost loop.
 
 Two ways to terminate what's happening:
 
-- |primitive !return val -> void|. Finish the current function, giving the
+- `primitive !return val -> void`. Finish the current function, giving the
 supplied value as the result if the function is being executed in a value
 context, and throwing it away if not.
-- |primitive !quit void -> void|. Halt the whole program immediately.
+- `primitive !quit void -> void`. Halt the whole program immediately.
 
 This is a sort of termination, too, loading in a fresh program state from a
 file; something which may not be very meaningful in all platforms. Note that
-there is no analogous |!restart| or |!save| primitive: those are handled by
+there is no analogous `!restart` or `!save` primitive: those are handled by
 assembly language instead. This may eventually go, too.
 
-- |primitive !restore lab -> void|.
+- `primitive !restore lab -> void`.
 
 And, lastly, the lowest-level way to travel:
 
-- |primitive !jump lab -> void|. Jump to this label in the current function.
+- `primitive !jump lab -> void`. Jump to this label in the current function.
 
 @h Interactive fiction-only primitives.
 The following would make no sense in a general-purpose program. Most mirror
 very low-level I6 features. First, the spatial containment object tree:
 
-- |primitive !move val val -> void|. Moves first to second (both are objects).
-- |primitive !remove val -> void|. Removes object from containment tree.
-- |primitive !in val val -> val|. Tests if first is in second (both are objects).
-- |primitive !notin val val -> val|. Negation of same.
-- |primitive !child val -> val|. Finds the child node of an object.
-- |primitive !children val -> val|. The number of children: which may be 0.
-- |primitive !parent val -> val|. Finds the parent of an object.
-- |primitive !sibling val -> val|. Finds the sibling of an object.
+- `primitive !move val val -> void`. Moves first to second (both are objects).
+- `primitive !remove val -> void`. Removes object from containment tree.
+- `primitive !in val val -> val`. Tests if first is in second (both are objects).
+- `primitive !notin val val -> val`. Negation of same.
+- `primitive !child val -> val`. Finds the child node of an object.
+- `primitive !children val -> val`. The number of children: which may be 0.
+- `primitive !parent val -> val`. Finds the parent of an object.
+- `primitive !sibling val -> val`. Finds the sibling of an object.
 
 Object class membership:
 
-- |primitive !ofclass val val -> val|. Does the first belong to the enumerated
+- `primitive !ofclass val val -> val`. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
-- |primitive !metaclass val -> val|. Returns |Class|, |Object|, |Routine|,
-|String| or 0 depending on the value supplied: see the Inform 6 Designer's Manual
+- `primitive !metaclass val -> val`. Returns `Class`, `Object`, `Routine`,
+`String` or 0 depending on the value supplied: see the Inform 6 Designer's Manual
 for more on this.

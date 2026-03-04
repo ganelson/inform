@@ -10,7 +10,7 @@ a convenient holder for such composites.
 
 =
 typedef struct word_assemblage {
-	int no_indiv_words; /* should be between 0 and |MAX_WORDS_IN_ASSEMBLAGE| */
+	int no_indiv_words; /* should be between 0 and `MAX_WORDS_IN_ASSEMBLAGE` */
 	struct vocabulary_entry *indiv_words[MAX_WORDS_IN_ASSEMBLAGE]; /* some may be null */
 } word_assemblage;
 

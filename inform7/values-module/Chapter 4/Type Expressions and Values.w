@@ -39,13 +39,13 @@ parameter in a phrase definition should be, though it has other uses elsewhere.
 That certainly includes cases which traditional programming languages would
 call types, so
 
->> To adjust (X - closed door) by (N - number): ...
+> To adjust (X - closed door) by (N - number): ...
 
 includes two type expressions, "closed door" and "number". But a type
 expression can also be a constant, which languages like C (for instance) would
 consider a value and not a type at all:
 
->> To adjust (X - closed door) by (N - 11): ...
+> To adjust (X - closed door) by (N - 11): ...
 
 gives a definition to be used only where the second parameter evaluates to
 11. In this way any constant value is regarded as being a type -- the narrow
@@ -78,7 +78,7 @@ does not make clear what kind of object is to be opaque -- but once again we
 are up against the problem that Inform needs to allow some slightly noun-like
 adjectives. For instance, this:
 
->> To adjust (X - scenery): ...
+> To adjust (X - scenery): ...
 
 is allowed even though "scenery" is an adjective in Inform.
 
@@ -95,7 +95,7 @@ To allow this, we have a minor variation:
 
 @ And now we parse descriptions of variables such as the one appearing in
 
->> To increment (V - existing number variable)
+> To increment (V - existing number variable)
 
 where <s-variable-scope> matches "existing number variable".
 
@@ -143,7 +143,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 Two pieces of context. "Let" mode is in operation when we are in an equation
 written out in the phrase, such as here:
 
->> let V be given by V = fl;
+> let V be given by V = fl;
 
 =
 int let_equation_mode = FALSE;

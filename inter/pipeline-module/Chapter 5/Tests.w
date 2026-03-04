@@ -2,8 +2,8 @@
 
 To compile the main/synoptic/tests submodule.
 
-@ Our inventory |inv| already contains a list |inv->test_nodes| of all packages
-in the tree with type |_test|.
+@ Our inventory `inv` already contains a list `inv->test_nodes` of all packages
+in the tree with type `_test`.
 
 =
 void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {

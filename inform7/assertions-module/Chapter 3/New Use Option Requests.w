@@ -2,7 +2,7 @@
 
 Special sentences for creating new use options.
 
-@ Use options in Inform are akin to |#pragma| directives for the C family of
+@ Use options in Inform are akin to `#pragma` directives for the C family of
 compilers: they are written in the source code of the program being compiled,
 but they're not really part of that program, and are instead instructions to
 the compiler (or more often, the Inter kits which the program is linked to)
@@ -10,11 +10,11 @@ to do something in a different way.
 
 Use options have natural-language names, and are created with sentences like:
 
->> Use American dialect translates as the configuration flag AMERICAN_DIALECT in BasicInformKit.
+> Use American dialect translates as the configuration flag AMERICAN_DIALECT in BasicInformKit.
 
 or with the more old-fashioned (and soon to be deprecated)
 
->> Use American dialect translates as (- Constant US_DIALECT = 1; -).
+> Use American dialect translates as (- Constant US_DIALECT = 1; -).
 
 @ A "... translates as ..." sentence has this special meaning if its SP and
 OP match the following:
@@ -94,13 +94,13 @@ int NewUseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) 
 typedef struct use_option {
 	struct wording name; /* word range where name is stored */
 	struct wording expansion; /* inline definition as given in source */
-	int definition_form; /* one of the |*_UTAS| constants above */
+	int definition_form; /* one of the `*_UTAS` constants above */
 	struct text_stream *symbol_name; /* if not defined as inline code */
 	struct text_stream *kit_name; /* null if no kit specified */
 	struct parse_node *where_created;
 	int source_file_scoped; /* scope is the current source file only? */
 	struct parsed_use_option_setting *default_value;
-	struct linked_list *settings_made; /* of |parsed_use_option_setting| */
+	struct linked_list *settings_made; /* of `parsed_use_option_setting` */
 	int is_explicitly_numerical; /* must a Use sentence give a number? */
 	int notable_option_code; /* or negative if not notable */
 	struct use_option_compilation_data compilation_data;
@@ -178,7 +178,7 @@ typedef struct use_option {
 		MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
 
 @ At some point this will cease to be allowed, but simple inline definitions
-are still supported, and the call to |RTUseOptions::check_deprecated_definition|
+are still supported, and the call to `RTUseOptions::check_deprecated_definition`
 checks that the one here is simple enough to deal with. If it isn't, a problem
 message is thrown.
 
@@ -340,7 +340,7 @@ void NewUseOptions::set(parsed_use_option_setting *puos) {
 
 @ Target pragma settings arise from sentences like
 
->> Use Ada compiler option "!check-boundaries".
+> Use Ada compiler option "!check-boundaries".
 
 which tell Inform that the Inter it produces should be marked so that any
 hypothetical translation of that code to Ada could (if the translation code
@@ -355,8 +355,8 @@ typedef struct target_pragma_setting {
 } target_pragma_setting;
 
 @ We handle the case of Inform 6 ICL memory limit settings specially:
-|$MAX_WHATEVER=200| must be able to raise the numerical value to the largest
-set, if multiple sentences set |$MAX_WHATEVER|.
+`$MAX_WHATEVER=200` must be able to raise the numerical value to the largest
+set, if multiple sentences set `$MAX_WHATEVER`.
 
 =
 void NewUseOptions::pragma_setting(parsed_use_option_setting *puos) {
@@ -400,7 +400,7 @@ they mostly are.)
 =
 typedef struct i6_memory_setting {
 	struct text_stream *ICL_identifier; /* see the DM4 for the I6 memory setting names */
-	int number; /* e.g., |50000| means "at least 50,000" */
+	int number; /* e.g., `50000` means "at least 50,000" */
 	CLASS_DEFINITION
 } i6_memory_setting;
 

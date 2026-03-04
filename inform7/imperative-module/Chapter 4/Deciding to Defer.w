@@ -26,7 +26,7 @@ at runtime.
 
 =
 typedef struct pcalc_prop_deferral {
-	int reason; /* what we intend to do with it: one of the |*_DEFER| values above */
+	int reason; /* what we intend to do with it: one of the `*_DEFER` values above */
 	struct pcalc_prop *proposition_to_defer;
 	struct parse_node *deferred_from; /* remember where it came from, for Problem reports */
 	struct general_pointer defn_ref; /* sometimes we must remember other things too */
@@ -74,12 +74,12 @@ pcalc_prop_deferral *Deferrals::defer_loop_domain(pcalc_prop *prop) {
 
 @h Testing, or deferring a test.
 This is the first of several functions serving //Compile Propositions//. In
-each case we decide whether or not to defer: if so we return |TRUE| and compile
-the necessary code to call the deferred function; and if not return |FALSE| and
-do nothing. (If we issue a problem message, we should then return |TRUE|.)
+each case we decide whether or not to defer: if so we return `TRUE` and compile
+the necessary code to call the deferred function; and if not return `FALSE` and
+do nothing. (If we issue a problem message, we should then return `TRUE`.)
 
 We defer the proposition to a test function of its own if and only if it contains
-quantification. The test function returns the verdict |true| or |false|, so to
+quantification. The test function returns the verdict `true` or `false`, so to
 evaluate the condition we just need to call it.
 
 =
@@ -127,16 +127,16 @@ applied to. We are therefore going to need to call it as:
 = (text)
 	f(c_1, ..., c_n, t)
 =
-where |t| is the term, and |c_1| to |c_n| are any local variables which the
+where `t` is the term, and `c_1` to `c_n` are any local variables which the
 proposition mentions. (We want to avoid the misery of //Local Parking//.)
-Those passed values |c_1|, ..., |c_n| are called "cinders", and are covered
-more fully in //Cinders and Deferrals//. It is possible, of course, that |n| is
+Those passed values `c_1`, ..., `c_n` are called "cinders", and are covered
+more fully in //Cinders and Deferrals//. It is possible, of course, that `n` is
 zero, in which case there are no cinders at all.
 
-Note that the term value |t| -- it it exists -- becomes the initial value of
-the local variable |x| in the deferred function |f|. This is correct, because
-|x| is the free variable in the proposition, so calling the function with |t|
-in the |x| argument neatly effects a substitution of $x = t$.
+Note that the term value `t` -- it it exists -- becomes the initial value of
+the local variable `x` in the deferred function `f`. This is correct, because
+`x` is the free variable in the proposition, so calling the function with `t`
+in the `x` argument neatly effects a substitution of $x = t$.
 
 @<Compile the call to the deferred function@> =
 	EmitCode::call(pdef->ppd_iname);
@@ -153,12 +153,12 @@ then we will need to defer the proposition, since it involves quantification
 and therefore an implicit search loop. But it is supposed to set two local
 variables, "moll" and "gun", with its findings; and they have to end up in
 the caller's stack frame, not in the deferred function. Somehow, they need
-to be return values of a sort from |f|, but Inter's lack of memory access to
+to be return values of a sort from `f`, but Inter's lack of memory access to
 the call stack means that it is impossible for an Inter function to return
 multiple values. What to do?
 
-The answer is that |f| copies these values onto a special array called the
-"stash of callings". The very last thing that |f| does before it returns
+The answer is that `f` copies these values onto a special array called the
+"stash of callings". The very last thing that `f` does before it returns
 is to fill in this list; the very first thing we do on receiving that return
 is to extract what we want from it. Because no other activity takes place in
 between, there is no risk that some recursive use of propositions will
@@ -168,10 +168,10 @@ For example, our call might then become
 = (text)
 	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
 =
-which safely transfers the values to locals |t_2| and |t_3| of |R|. Note that
-Inter evaluates conditions joined by |&&| from left to right, so we can be
-certain that |f| has been called and has returned |true| before we get to the
-setting of |t_2| and |t_3|.
+which safely transfers the values to locals `t_2` and `t_3` of `R`. Note that
+Inter evaluates conditions joined by `&&` from left to right, so we can be
+certain that `f` has been called and has returned `true` before we get to the
+setting of `t_2` and `t_3`.
 
 @ Here we find out what size of deferred list we will need:
 
@@ -187,17 +187,17 @@ int Deferrals::count_callings_in_condition(pcalc_prop *prop) {
 
 @ In both cases (a test, or something other), we will compile an expression
 whose side-effects of evaluation will set the necessary calling locals. But
-the details differ. Here |f| is a test; |g| is some other function returning
+the details differ. Here `f` is a test; `g` is some other function returning
 a value.
 = (text)
 	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
 	(stash-->26 = g(c_1, ..., c_n, t), t_2=stash-->0, t_3=stash-->1, stash-->26)
 =
-The return value of |g|, which must emerge unscathed from this expression, is
-stored temporarily in |stash-->26|.
+The return value of `g`, which must emerge unscathed from this expression, is
+stored temporarily in `stash-->26`.
 
 The retrieval must be done in two stages. First, call this; then, in the
-case which isn't |as_test|, compile the return value of |g|.
+case which isn't `as_test`, compile the return value of `g`.
 
 =
 void Deferrals::prepare_to_retrieve_callings_in_test_context(pcalc_prop *prop) {
@@ -334,7 +334,7 @@ might not be a constant. The following gives a general way to call a deferred
 function for one of those other purposes, allowing for callings.
 
 Callings can indeed occur, as in the example "a random person in a room (called
-the haven)". |RandomCalling| is a useful test case for this function.
+the haven)". `RandomCalling` is a useful test case for this function.
 
 =
 void Deferrals::call_deferred_fn(pcalc_prop *prop,
@@ -366,8 +366,8 @@ void Deferrals::call_deferred_fn(pcalc_prop *prop,
 @h Multipurpose descriptions.
 Descriptions in the form $\phi(x)$, where $x$ is free, are also sometimes
 converted into values -- this is the kind of value "description". The
-Inter representation is (the address of) a function |D| which, in general,
-performs task $u$ on value $v$ when called as |D(u, v)|, where $u$ is
+Inter representation is (the address of) a function `D` which, in general,
+performs task $u$ on value $v$ when called as `D(u, v)`, where $u$ is
 expected to be one of the following values. (Note that $v$ is only needed
 in the first two cases.)
 
@@ -375,7 +375,7 @@ These numbers must be negative, since they need to be different from
 every valid member of a quantifiable domain (objects, enumerated kinds, truth
 states, times of day, and so on).
 
-@d CONDITION_DUSAGE -1   /* return |true| iff $\phi(v)$ */
+@d CONDITION_DUSAGE -1   /* return `true` iff $\phi(v)$ */
 @d LOOP_DOMAIN_DUSAGE -2 /* return the next $x$ after $v$ such that $\phi(x)$ */
 @d NUMBER_OF_DUSAGE -3   /* return the number of $w$ such that $\phi(w)$ */
 @d RANDOM_OF_DUSAGE -4   /* return a random $w$ such that $\phi(w)$, or 0 if none exists */
@@ -447,13 +447,13 @@ consider:
 =
 where S, in (1), is a description which appears as a parameter in a phrase.
 In (1) we have no way of knowing what S might be, but we can safely assume
-that it has been compiled as a multi-purpose description function |D|, and
+that it has been compiled as a multi-purpose description function `D`, and
 therefore compile the function call:
 = (text as Inform 6)
 	D(NUMBER_OF_DUSAGE)
 =
 But in case (2) it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
-defer it to function |f| with reason |NUMBER_OF_DEFER|, and then compile just |f()|
+defer it to function `f` with reason `NUMBER_OF_DEFER`, and then compile just `f()`
 to perform the calculation. We never need a multi-purpose description routine for
 $\phi(x)$ because it only occurs in this one context.
 

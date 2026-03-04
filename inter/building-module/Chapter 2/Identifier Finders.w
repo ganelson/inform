@@ -4,7 +4,7 @@ Suppose we have an identifier name which we think refers to some symbol in an
 Inter tree. Where do we look for it?
 
 @ The answer must depend on context, so the question really has to be "with
-the conventions given by this |identifier_finder|, what |inter_symbol|
+the conventions given by this `identifier_finder`, what `inter_symbol`
 does this name correspond to?".
 
 @d MAX_IDENTIFIER_PRIORITIES 3
