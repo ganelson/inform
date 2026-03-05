@@ -231,7 +231,7 @@ map connection between \INWEBMATH(R_i\INWEBMATH) and \INWEBMATH(R_j\INWEBMATH): 
 \INWEBMATH(R_{y}\INWEBMATH) can be used to shorten the best known path from \INWEBMATH(R_{x}\INWEBMATH) to anywhere
 else: that is, we look for cases where \INWEBMATH(a_{xy} + a_{yj} &lt; a_{xj}\INWEBMATH), since
 those show that going from \INWEBMATH(R_x\INWEBMATH) to \INWEBMATH(R_j\INWEBMATH) via \INWEBMATH(R_y\INWEBMATH) takes fewer steps than
-going directly. See for instance Robert Sedgewick, {\it Algorithms} (1988),
+going directly. See for instance Robert Sedgewick, <em>Algorithms</em> (1988),
 chapter 32.</p>
 <p>The trouble with the Floyd-Warshall algorithm is not so much that it takes
 in principle \INWEBMATH(O(n^3)\INWEBMATH) time to construct the matrix: it does, but the
@@ -352,7 +352,7 @@ tree, but that's the only way we need to traverse it.)</p>
 <ul>
 <li>Begin with every vector blank except that of \INWEBMATH(R_y\INWEBMATH), the destination.</li>
 <li>Repeatedly: For every room in the domain set, try each direction: if this
-leads to a room whose vector was determined on the last round ({\it not} on
+leads to a room whose vector was determined on the last round (<em>not</em> on
 this one, as that may be a suboptimal route), set the vector to point to that
 room.</li>
 <li>Stop as soon as the vector from the origin is set, or when a round happens

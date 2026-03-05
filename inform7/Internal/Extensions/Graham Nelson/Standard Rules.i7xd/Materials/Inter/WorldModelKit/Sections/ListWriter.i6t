@@ -57,7 +57,7 @@ a non-blank value of `list_together` must be adjacent to each other.
 We could achieve that by sorting the list in order of `list_together` value,
 but that would result in drastic movements, whereas we want to upset the
 original ordering as little as possible. So instead we use a process called
-{\it coalescing} the list. This is such that for every value $L\neq 0$
+_coalescing_ the list. This is such that for every value $L\neq 0$
 of `list_together`, every entry with that value is moved back in the list
 to follow the first entry with that value. Thus if the original order is
 $x_1, x_2, ..., x_N$ then $x_j$ still precedes $x_k$ in coalesced order
@@ -667,10 +667,10 @@ partition 1, 1, 2, 3, 4, 5, 6, and three groups: "two coins, the letters Q,
 W, E and R from a Scrabble set and a statuette".)
 
 The reason we do not group together classes with a common non-zero
-`list_together` which is {\it not} a routine or string is that low values
+`list_together` which is _not_ a routine or string is that low values
 of `list_together` are used in coalescing the list into a pleasing order
 (say, moving all of the key-like items together) but not in grouping: see
-`list_together` in the {\it Inform Designer's Manual}, 4th edition.
+`list_together` in the _Inform Designer's Manual_, 4th edition.
 
 We calculate the number of groups by starting with the number of classes
 and then subtracting one each time two adjacent classes share `list_together`
@@ -827,7 +827,7 @@ but the default is simple: we print the grouped items by calling
 `lt_value` is set to this value, the grouping code won't then group X, Y
 and Z again, and they will instead be individual classes in the new
 list -- so each will end up being sent, in turn, to `WriteSingleClassGroup`
-below, and {\it that} is where they are printed.
+below, and _that_ is where they are printed.
 
 =
 [ WriteMultiClassGroup cl memb depth partition_class_sizes pv q k2 l;

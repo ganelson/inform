@@ -167,7 +167,7 @@ Following Floyd and Warshall we test if each known shortest path $R_{x}$ to
 $R_{y}$ can be used to shorten the best known path from $R_{x}$ to anywhere
 else: that is, we look for cases where $a_{xy} + a_{yj} < a_{xj}$, since
 those show that going from $R_x$ to $R_j$ via $R_y$ takes fewer steps than
-going directly. See for instance Robert Sedgewick, {\it Algorithms} (1988),
+going directly. See for instance Robert Sedgewick, _Algorithms_ (1988),
 chapter 32.
 
 The trouble with the Floyd-Warshall algorithm is not so much that it takes
@@ -291,7 +291,7 @@ The method can be summed up thus:
 
 - Begin with every vector blank except that of $R_y$, the destination.
 - Repeatedly: For every room in the domain set, try each direction: if this
-leads to a room whose vector was determined on the last round ({\it not} on
+leads to a room whose vector was determined on the last round (_not_ on
 this one, as that may be a suboptimal route), set the vector to point to that
 room.
 - Stop as soon as the vector from the origin is set, or when a round happens

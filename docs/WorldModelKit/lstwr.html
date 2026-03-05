@@ -125,7 +125,7 @@ a non-blank value of <code>list_together</code> must be adjacent to each other.<
 <p>We could achieve that by sorting the list in order of <code>list_together</code> value,
 but that would result in drastic movements, whereas we want to upset the
 original ordering as little as possible. So instead we use a process called
-{\it coalescing} the list. This is such that for every value \INWEBMATH(L\neq 0\INWEBMATH)
+<em>coalescing</em> the list. This is such that for every value \INWEBMATH(L\neq 0\INWEBMATH)
 of <code>list_together</code>, every entry with that value is moved back in the list
 to follow the first entry with that value. Thus if the original order is
 \INWEBMATH(x_1, x_2, ..., x_N\INWEBMATH) then \INWEBMATH(x_j\INWEBMATH) still precedes \INWEBMATH(x_k\INWEBMATH) in coalesced order
@@ -726,10 +726,10 @@ would be reordered <code>coin</code>, <code>coin</code>, <code>Q</code>, <code>W
 partition 1, 1, 2, 3, 4, 5, 6, and three groups: &quot;two coins, the letters Q,
 W, E and R from a Scrabble set and a statuette&quot;.)</p>
 <p>The reason we do not group together classes with a common non-zero
-<code>list_together</code> which is {\it not} a routine or string is that low values
+<code>list_together</code> which is <em>not</em> a routine or string is that low values
 of <code>list_together</code> are used in coalescing the list into a pleasing order
 (say, moving all of the key-like items together) but not in grouping: see
-<code>list_together</code> in the {\it Inform Designer's Manual}, 4th edition.</p>
+<code>list_together</code> in the <em>Inform Designer's Manual</em>, 4th edition.</p>
 <p>We calculate the number of groups by starting with the number of classes
 and then subtracting one each time two adjacent classes share <code>list_together</code>
 in the above sense.</p>
@@ -885,7 +885,7 @@ but the default is simple: we print the grouped items by calling
 <code>lt_value</code> is set to this value, the grouping code won't then group X, Y
 and Z again, and they will instead be individual classes in the new
 list -- so each will end up being sent, in turn, to <code>WriteSingleClassGroup</code>
-below, and {\it that} is where they are printed.</p>
+below, and <em>that</em> is where they are printed.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WriteMultiClassGroup</span><span class="plain-syntax"> </span><span class="identifier-syntax">cl</span><span class="plain-syntax"> </span><span class="identifier-syntax">memb</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> </span><span class="identifier-syntax">partition_class_sizes</span><span class="plain-syntax"> </span><span class="identifier-syntax">pv</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax"> </span><span class="identifier-syntax">k2</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax">;</span>

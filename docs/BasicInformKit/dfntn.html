@@ -308,13 +308,13 @@ to match (so, basically, they must not be altered at all).</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. GPR Return Values.</b>  GRP stands for &quot;General Parsing Routine&quot;, an I6 routine which acts as a
-grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
+grammar token: again, see the <em>Inform Designer's Manual</em>, 4th edition,
 for details.</p>
 <p>In Library 6/11, <code>GPR_NOUN</code> is defined as <code>$ff00</code>, but this would fail on
 Glulx: it needs to be <code>$ffffff00</code> on 32-bit virtual machines. It appears that
-<code>GPR_NOUN</code> to <code>GPR_CREATURE</code>, though documented in the old {\it Inform
-Translator's Manual}, were omitted when this was consolidated into the DM4,
-so that they effectively disappeared from view. But they might still be
+<code>GPR_NOUN</code> to <code>GPR_CREATURE</code>, though documented in the old
+<em>Inform Translator's Manual</em>, were omitted when this was consolidated into
+the DM4, so that they effectively disappeared from view. But they might still be
 useful for implementing inflected forms of nouns, so we have retained them
 here regardless.</p>
 </div>

@@ -24,7 +24,7 @@ details see the "Printing.i6t" section.
 
 - (3) `standard_interpreter` is used only for the Z-machine VM, and is always
 0 for Glulx. For Z, a non-zero value here is the version number of the
-{\it Z-Machine Standards Document} which the interpreter claims to support,
+_Z-Machine Standards Document_ which the interpreter claims to support,
 in the form (upper byte).(lower). `undo_flag`, similarly, behaves slightly
 differently on the two platforms according to whether they support multiple
 consecutive UNDOs. UNDO basically works by taking memory snapshots of the

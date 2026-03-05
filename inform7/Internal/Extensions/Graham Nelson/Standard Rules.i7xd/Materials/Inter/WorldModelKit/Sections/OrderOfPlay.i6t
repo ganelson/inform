@@ -432,7 +432,7 @@ long step time, say in which each turn equates to 20 minutes).
 
 Because an event is struck out of the table just before it is fired, it
 will not continue to go off the rest of the half-hour. Moreover, because
-the striking out happens {\it before} rather than after the rule fires, a
+the striking out happens _before_ rather than after the rule fires, a
 rule can re-time itself to go off again later, somewhat like the snooze
 feature on an alarm clock, without the risk of it going off again
 immediately in the same use of the timed events rule: there is guaranteed

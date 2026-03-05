@@ -9,7 +9,7 @@ properties to provide a second tree which defines the "part of" relation.
 These two trees interact in a subtle way, and it took a very long time to
 work out the simplest way to express this.
 
-The {\it core} of an object is the root of its subtree in the component
+The _core_ of an object is the root of its subtree in the component
 relation tree. So for a television set with a control panel which has a
 button on, the core for the button (and also for the panel and the set)
 will be the set. When X is a part of Y, it must be spatially in the same
@@ -20,7 +20,7 @@ parts of each other, but it would waste memory to construct such a tree:
 `CoreOfParentOfCoreOf` simulates what the `parent` operation would be in
 such a tree if it existed, wasting a little time instead.)
 
-The {\it holder} of an object is its component parent, if it is part of
+The _holder_ of an object is its component parent, if it is part of
 something, or its object-tree parent if it has one. It is illegal for both
 of these to be non-`nothing`, so this is unambiguous.
 

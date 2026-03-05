@@ -12,7 +12,7 @@ Object thedark "(darkness object)";
 
 @h Light Measurement.
 These two routines, `OffersLight` and `HasLightSource`, are largely unchanged
-from their I6 definitions; see the {\it Inform Designer's Manual}, 4th edition,
+from their I6 definitions; see the _Inform Designer's Manual_, 4th edition,
 for a commentary. In terms of how they are used in I7, `OffersLight` is called
 only by the two rules below; `HasLightSource` is called also in determining
 the scope, that is, what is visible to the player.
@@ -260,7 +260,7 @@ yes in such cases. The question would only be asked in the case of a
 "try" action deliberately caused by the author, or by an instruction made
 by the player to someone not in the same room: in the first case, we will
 assume that the author knows what he is doing, and in the second case, the
-circumstances in which saying yes would be a wrong call are {\it highly}
+circumstances in which saying yes would be a wrong call are _highly_
 improbable.
 
 =

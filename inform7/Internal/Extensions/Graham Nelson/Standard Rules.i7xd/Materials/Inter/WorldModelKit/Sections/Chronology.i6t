@@ -157,7 +157,7 @@ the main action for the turn, but only a phase which has now passed
 again.
 
 For each of the action patterns we track, we need to count the number of
-times such an action has been tried ({\it not} the number of times it
+times such an action has been tried (_not_ the number of times it
 succeeded), and also the number of consecutive turns on which it has been
 "the" action. The count of the number of tries is unambiguous and easy to
 keep: it is incremented at the start-of-action call only, and only if the
@@ -221,7 +221,7 @@ is set, but then we would get rules like this wrong:
 
 > Check requesting the pronoun meanings for the first time: ...
 
-because it {\it does} make sense for OOW actions to have a count of how
+because it _does_ make sense for OOW actions to have a count of how
 many times they've happened, even though they don't occur in simulated
 time. An OOW action can cause its own `ActionCurrentlyHappeningFlag`
 to be set, but it can't cause any other action's flag to be cleared, and nor

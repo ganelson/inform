@@ -333,3 +333,11 @@ div.lsmarkdown th, div.lsmarkdown td {
 div.lsmarkdown p {
 	width: 60em;
 }
+
+div.lsmarkdown p {
+	width: 60em;
+}
+
+div.lsmarkdown p.inwebfootnote {
+	width: 100%;
+}

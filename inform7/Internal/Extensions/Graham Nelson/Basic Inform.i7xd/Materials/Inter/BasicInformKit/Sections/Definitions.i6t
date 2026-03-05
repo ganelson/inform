@@ -229,14 +229,14 @@ Constant ENDIT_TOKEN        = 15;   ! Value used to mean "end of grammar line"
 
 @h GPR Return Values.
 GRP stands for "General Parsing Routine", an I6 routine which acts as a
-grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
+grammar token: again, see the _Inform Designer's Manual_, 4th edition,
 for details.
 
 In Library 6/11, `GPR_NOUN` is defined as `$ff00`, but this would fail on
 Glulx: it needs to be `$ffffff00` on 32-bit virtual machines. It appears that
-`GPR_NOUN` to `GPR_CREATURE`, though documented in the old {\it Inform
-Translator's Manual}, were omitted when this was consolidated into the DM4,
-so that they effectively disappeared from view. But they might still be
+`GPR_NOUN` to `GPR_CREATURE`, though documented in the old
+_Inform Translator's Manual_, were omitted when this was consolidated into
+the DM4, so that they effectively disappeared from view. But they might still be
 useful for implementing inflected forms of nouns, so we have retained them
 here regardless.
 

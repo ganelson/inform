@@ -157,7 +157,7 @@ Unusually, this function can print the value in one of several formats:
 0 for a comma-separated list; 1 for a braced, set-notation list; 2 for
 a comma-separated list with definite articles, which only makes sense if
 the list contains objects; 3 for a comma-separated list with indefinite
-articles. Note that a list in this sense is {\it not} printed using the
+articles. Note that a list in this sense is _not_ printed using the
 "ListWriter.i6t" code for elaborate lists of objects, and it doesn't
 use the "listing contents of..." activity in any circumstances.
 

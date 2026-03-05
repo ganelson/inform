@@ -2101,8 +2101,8 @@ Return the conclusion of parsing an object list.
 @h Descriptors.
 In grammatical terms, a descriptor appears at the front of an English noun
 phrase and clarifies the quantity or specific identity of what is referred
-to: for instance, {\it my} mirror, {\it the} dwarf, {\it that} woman.
-(Numbers, as in {\it four} duets, are also descriptors in linguistics:
+to: for instance, _my_ mirror, _the_ dwarf, _that_ woman.
+(Numbers, as in _four_ duets, are also descriptors in linguistics:
 but the I6 parser doesn't handle them that way.)
 
 Slightly unfortunately, the bitmap constants used for descriptors in the
@@ -3470,7 +3470,7 @@ Level 1. The method is:
 
 	- The I6 `multiinside` token, used as the first noun of its grammar line,
 	has as its scope all of the objects which are inside or on top of the
-	{\it second} noun of the grammar line. This provides a neat scope for the
+	_second_ noun of the grammar line. This provides a neat scope for the
 	ALL in a command like GET ALL FROM CUPBOARD, where the player clearly
 	does not intend ALL to refer to the cupboard itself, for instance. The
 	difficulty is that we don't yet know what the second object is, if we are
@@ -3906,8 +3906,8 @@ are parsed.)
 and is abstracted as a routine in case something more elaborate is ever
 needed.
 
-For GNAs -- gender/noun/animation combinations -- see the {\it Inform Designer's
-Manual}, 4th edition.
+For GNAs -- gender/noun/animation combinations -- see the _Inform Designer's
+Manual_, 4th edition.
 
 =
 [ GetGender person;

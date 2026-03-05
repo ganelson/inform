@@ -89,7 +89,7 @@ except that if the top bit is set then we know this isn't a flex-allocated
 block, which turns out to be convenient. Thus the largest block representable
 is \INWEBMATH(2^{127}\INWEBMATH) bytes long, but somehow I think we can live with that. The second
 byte contains a bitmap of (at present) four flags, whose meanings will be
-explained below. The second {\it word} of the block, which might be at byte
+explained below. The second <em>word</em> of the block, which might be at byte
 offset 2 or 4 from the start of the block depending on the word-size of the
 VM, is a number specifying the kind of value (if any) which the block contains
 data of.</p>
@@ -547,7 +547,7 @@ but it can't be before all of them because the head-free-block is kept
 lowest in memory of all possible blocks. (Note that Glulx can't allocate
 memory dynamically which undercuts the ordinary array space created by I6:
 I6 arrays fill up memory from the bottom.)</p>
-<p>Certain blocks {\it outside} the heap are marked as &quot;resident&quot; in memory,
+<p>Certain blocks <em>outside</em> the heap are marked as &quot;resident&quot; in memory,
 that is, are indestructible. This enables Inform to compile constant values.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

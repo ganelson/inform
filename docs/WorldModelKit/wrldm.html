@@ -78,7 +78,7 @@ support, carrying and so on, the I7 template also uses the <code>component_*</co
 properties to provide a second tree which defines the &quot;part of&quot; relation.
 These two trees interact in a subtle way, and it took a very long time to
 work out the simplest way to express this.</p>
-<p>The {\it core} of an object is the root of its subtree in the component
+<p>The <em>core</em> of an object is the root of its subtree in the component
 relation tree. So for a television set with a control panel which has a
 button on, the core for the button (and also for the panel and the set)
 will be the set. When X is a part of Y, it must be spatially in the same
@@ -88,7 +88,7 @@ found by contracting together all nodes corresponding to objects which are
 parts of each other, but it would waste memory to construct such a tree:
 <code>CoreOfParentOfCoreOf</code> simulates what the <code>parent</code> operation would be in
 such a tree if it existed, wasting a little time instead.)</p>
-<p>The {\it holder} of an object is its component parent, if it is part of
+<p>The <em>holder</em> of an object is its component parent, if it is part of
 something, or its object-tree parent if it has one. It is illegal for both
 of these to be non-<code>nothing</code>, so this is unambiguous.</p>
 <p>It is just possible for <code>HolderOf</code> to be called before the player has been

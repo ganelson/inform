@@ -424,7 +424,7 @@ the text "per". We return 2 since that's the number of nodes in the tree.
 But in general we need to compile a regular expression string into a tree
 of the kind described above, and here is the routine which does that,
 returning the number of nodes used to build the tree. The syntax it accepts
-is very fully documented in {\it Writing with Inform}, so no details are
+is very fully documented in _Writing with Inform_, so no details are
 given here.
 
 =
@@ -1607,7 +1607,7 @@ only to be a simple string of characters taken literally, such as `frog`.
 Each match found is replaced with the contents of `rtxt`, except
 that if the blob type is `REGEXP_BLOB` then we recognise a few syntaxes
 as special: for instance, `\2` expands to the value of subexpression 2
-as it was matched -- see {\it Writing with Inform} for details.
+as it was matched -- see _Writing with Inform_ for details.
 
 The optional argument `insens` is a flag which, if set, causes the matching
 to be done case insensitively; the optional argument `exactly`, if set,

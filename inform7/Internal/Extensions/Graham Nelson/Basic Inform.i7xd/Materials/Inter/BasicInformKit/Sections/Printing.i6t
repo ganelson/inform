@@ -127,8 +127,8 @@ Global caps_mode = false;
 
 @h Object Names II.
 The second level of the system for printing object names handles the placing
-of articles in front of them: {\it the} red herring, {\it an} elephant,
-{\it Some} bread. The following routine allows us to choose:
+of articles in front of them: _the_ red herring, _an_ elephant,
+_Some_ bread. The following routine allows us to choose:
 
 - `obj`, the object whose name is to be printed;
 - `acode`, the kind of article needed: capitalised definite (0), lower case
