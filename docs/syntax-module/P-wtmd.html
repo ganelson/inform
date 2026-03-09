@@ -82,7 +82,7 @@ a trunk which in turn might represent a assertion sentence:</p>
 (see <a href="2-st.html#SP2" class="internal">SyntaxTree::new</a>), but there are very few of these: the entire
 source text compiled by <a href="../inform7/index.html" class="internal">inform7</a> is just one syntax tree. When <a href="../supervisor-module/index.html" class="internal">supervisor</a>
 manages extensions, it may generate one <a href="2-st.html#SP2" class="internal">parse_node_tree</a> object for each
-extension whose text it reads. Still -- there are few trees.</p>
+extension whose text it reads. Still — there are few trees.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The trunk of the tree can be grown in any sequence: call <a href="2-st.html#SP3" class="internal">SyntaxTree::push_bud</a>
@@ -90,26 +90,20 @@ to begin &quot;budding&quot; from a particular branch, and <a href="2-st.html#SP
 to where you were. These are also used automatically to ensure that sentences
 arriving at <a href="2-st.html#SP4" class="internal">SyntaxTree::graft_sentence</a> are grafted under the headings to
 which they belong. Thus, the sentences</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cardboard</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ball</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">yarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cardboard</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax">.
+	</span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ball</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">yarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">.
+</span></pre>
 <p>would actually be grafted like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">RESULT</span><span class="plain-syntax">                                      </span><span class="identifier-syntax">BUD</span><span class="plain-syntax"> </span><span class="identifier-syntax">STACK</span><span class="plain-syntax"> </span><span class="identifier-syntax">BEFORE</span><span class="plain-syntax"> </span><span class="identifier-syntax">THIS</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax">                                  (</span><span class="identifier-syntax">empty</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">                               </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cardboard</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax">.    </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">                               </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ball</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">yarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">.           </span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	RESULT                                      BUD STACK BEFORE THIS
+	Chapter 20                                  (empty)
+	    Section 1                               Chapter 20
+            The cat is in the cardboard box.    Chapter 20 &gt; Section 1
+	    Section 2                               Chapter 20 &gt; Section 1
+            The ball of yarn is here.           Chapter 20 &gt; Section 2
+</span></pre>
 <p>But it is also possible to graft smaller (not-whole-sentence) cuttings onto
 each other using <a href="2-st.html#SP6" class="internal">SyntaxTree::graft</a>, which doesn't involve the bud stack
 at all.</p>
@@ -118,18 +112,17 @@ at all.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Meaning is an ambiguous thing, and so the tree needs to be capable of
 representing multiple interpretations of the same wording. So nodes have not
 only <code>next</code> and <code>down</code> links to other nodes, but also <code>next_alternative</code> links,
-which -- if used -- fork the syntax tree into different possible readings.</p>
+which — if used — fork the syntax tree into different possible readings.</p>
 <p>These are not added to the tree by grafting: that's only done for definite
 meanings. Instead, multiple ambiguous readings mostly lie beneath <code>AMBIGUITY_NT</code>
-nodes -- see <a href="2-st.html#SP21" class="internal">SyntaxTree::add_reading</a>. For example, we might have:</p>
+nodes — see <a href="2-st.html#SP21" class="internal">SyntaxTree::add_reading</a>. For example, we might have:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	sun is orange
+	    sun
+	    AMBIGUITY
+	        orange (read as being a fruit)
+	        orange (read as being a colour)
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">sun</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">orange</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">sun</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">AMBIGUITY</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">orange</span><span class="plain-syntax"> (</span><span class="identifier-syntax">read</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">fruit</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">orange</span><span class="plain-syntax"> (</span><span class="identifier-syntax">read</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">colour</span><span class="plain-syntax">)</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  An extensive suite of functions is provided to make it easy to traverse
 a syntax tree, calling a visitor function on each node: see <a href="2-st.html#SP10" class="internal">SyntaxTree::traverse</a>.</p>
@@ -165,7 +158,7 @@ with these.</p>
 <li>
 <p>A node of type <code>A</code> can only be a child of a node of type <code>B</code> if
 <a href="2-nt.html#SP13" class="internal">NodeType::parentage_allowed</a> says so, and this is (mostly) a matter
-of calling <a href="2-nt.html#SP5" class="internal">NodeType::allow_parentage_for_categories</a> -- parentage depends
+of calling <a href="2-nt.html#SP5" class="internal">NodeType::allow_parentage_for_categories</a> — parentage depends
 not on the type per se, but on the category of the type, which groups types
 together.</p>
 </li>

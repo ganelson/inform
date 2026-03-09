@@ -98,11 +98,10 @@ void Map::create_inference(void) {
 	METHOD_ADD(direction_inf, COMPARE_INF_MTID, Map::cmp_direction_inf);
 }
 
-typedef struct direction_inference_data {
+classdef direction_inference_data {
 	struct inference_subject *to;
 	struct inference_subject *dir;
-	CLASS_DEFINITION
-} direction_inference_data;
+}
 
 inference *Map::new_direction_inference(inference_subject *infs_from,
 	inference_subject *infs_to, instance *o_dir) {
@@ -340,7 +339,7 @@ profiling suggests that it really isn't.
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
-typedef struct map_data {
+classdef map_data {
 	/* these are meaningful for doors only */
 	struct instance *map_connection_a;
 	struct instance *map_connection_b;
@@ -355,9 +354,7 @@ typedef struct map_data {
 	/* these are meaningful for rooms only */
 	struct instance *exits[MAX_DIRECTIONS];
 	struct parse_node *exits_set_at[MAX_DIRECTIONS];
-
-	CLASS_DEFINITION
-} map_data;
+}
 
 @ =
 int Map::new_subject_notify(inference_subject *subj) {
@@ -919,14 +916,14 @@ trust that there is nothing surprising here.
 	Map::set_found_in(I, val);
 
 @ Here `door_dir` is a routine looking at the current location and returning
-always the way to the other room -- the one we are not in.
+always the way to the other room — the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
 	parse_node *val = RTDoors::door_dir_for_2_sided(I, R1, D1, D2);
 	ValueProperties::assert(P_door_dir, Instances::as_subject(I), val, CERTAIN_CE);
 
 @ Here `door_to` is a routine looking at the current location and returning
-always the other room -- the one we are not in.
+always the other room — the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
 	parse_node *val = RTDoors::door_to_for_2_sided(I, R1, R2);

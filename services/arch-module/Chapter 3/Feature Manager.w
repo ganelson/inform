@@ -17,15 +17,14 @@ know exactly how many there are.
 @d MAX_COMPILER_FEATURES 32
 
 =
-typedef struct compiler_feature {
+classdef compiler_feature {
 	struct text_stream *textual_name;
 	struct compiler_feature *parent_feature;
 	void (*activation_function)(void);
 	int active;
 	int permanently_active;
 	int activation_function_run;
-	CLASS_DEFINITION
-} compiler_feature;
+}
 
 compiler_feature *Features::new(void (*starter)(void), text_stream *tname, compiler_feature *set) {
 	compiler_feature *F = CREATE(compiler_feature);
@@ -73,7 +72,7 @@ void Features::list(OUTPUT_STREAM, int state, compiler_feature *except) {
 		}
 }
 
-@ In the code above, features are set up as inactive by default -- even "core",
+@ In the code above, features are set up as inactive by default — even "core",
 which the compiler absolutely cannot live without. So //supervisor: Project Services//
 calls the following before switching on optional things that it wants.
 

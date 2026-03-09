@@ -59,29 +59,23 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">runtime</a></li><li><a href="index.html#4">Chapter 4: Enclosed Resources</a></li><li><b>Version Number Literals</b></li></ul></div>
 <p class="purpose">Explicit actions stored in memory as literals.</p>
 
-<ul class="toc"><li><a href="4-vnl.html#SP1">&#167;1. Runtime representation</a></li></ul><hr class="tocbar">
-
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Runtime representation.</b>  Literal version numbers arise from source text such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">v2</span><span class="plain-syntax">.31.1;</span>
-</pre>
-<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Literal version numbers arise from source text such as:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">v2</span><span class="plain-syntax">.31.1;
+</span></pre>
 <p>This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.</p>
 <p>Version numbers are stored in small blocks, always of size 3. There are no
 long blocks.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">major</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">minor</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">patch</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:
+	V ----------------&gt; major version
+	                    minor version
+	                    patch version
+</span></pre>
 <p>See <a href="../Architecture32Kit/index.html" class="internal">Architecture32Kit</a> for more.</p>
-<p>The default is &quot;v0.0.0&quot;:</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The default is <code>v0.0.0</code>:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberLiterals::default</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">VersionNumberLiterals::default</span></span>:<br/>Default Values - <a href="2-dv.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>

@@ -8,23 +8,6 @@ which use this module:
 
 @d WORDS_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e source_file_CLASS
-@e vocabulary_entry_CLASS
-@e nonterminal_CLASS
-@e production_CLASS
-@e production_list_CLASS
-@e ptoken_CLASS
-
-=
-DECLARE_CLASS(source_file)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(vocabulary_entry, 100)
-DECLARE_CLASS(nonterminal)
-DECLARE_CLASS(production_list)
-DECLARE_CLASS(production)
-DECLARE_CLASS(ptoken)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 @e LEXER_TEXT_MREASON

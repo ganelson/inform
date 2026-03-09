@@ -5,9 +5,11 @@ To find resources such as sound and image files.
 @h Resource finder.
 This simple function is shared by the code for figures, sound effects and
 internal data files. When Inform reads a sentence such as:
-= (text as Inform 7)
+
+``` Inform7
 	Sound of Organ is the file "Passacaglia.aiff".
-=
+```
+
 it needs to find this file, which will either be in the materials for the
 project, or in materials for the extension in which this sentence occurs
 (if it occurs in an extension). In either case, it'll be in the `Sounds`

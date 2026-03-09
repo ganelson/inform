@@ -23,10 +23,10 @@ the ones students draw in school grammar classes. For example,
 
 > most of the heavy bricks have been on top of the wall
 
-becomes a "diagram" -- a fragment of the tree provided by the //syntax//
-module -- showing the linguistic structure of the sentence.
+becomes a "diagram" — a fragment of the tree provided by the //syntax//
+module — showing the linguistic structure of the sentence.
 
-This work is done by the nonterminal <sentence> -- see //Verb Phrases//.
+This work is done by the nonterminal <sentence> — see //Verb Phrases//.
 Many examples of sentence diagrams can be seen in //About Sentence Diagrams//;
 read that first.
 
@@ -34,7 +34,7 @@ To be in a position to parse like this, the module needs a way to accumulate
 knowledge about the possible nouns, verbs, adjectives, prepositions and so on
 which might appear in such sentences. Where sensible, a design goal here is
 for each of these grammatical categories to correspond closely to an object
-class of the same name -- that is, //noun//, //verb//, //adjective// and so on.
+class of the same name — that is, //noun//, //verb//, //adjective// and so on.
 For example, "brick" and "wall" correspond to two different instances of //noun//,
 and "to be" to //verb//. The instances of these grammatical classes, taken
 together, form what is called the "stock".
@@ -58,7 +58,7 @@ stock, and the linguistics module tries to impose as few constraints as possible
 about those meanings.[2]
 
 - Only "for the most part", because certain "fixed" grammatical categories
-are an exception -- for example, articles, or cardinal and ordinal
+are an exception — for example, articles, or cardinal and ordinal
 numbers, or determiners. In these categories, the linguistics module provides
 the stock and the user cannot change or add to it; and the linguistics
 module provides the meanings, too, which the user can read but cannot change.[3]
@@ -68,7 +68,7 @@ for example, the first sentence causes it to create the //noun// for brick,
 so that the second sentence is read with a stock which is one term larger.
 
 [2] Verbs are a partial exception in that we need to make some minimal
-assumptions about how verb meanings will work -- this is abstracted out in
+assumptions about how verb meanings will work — this is abstracted out in
 the section //Verb Meanings//. Even there, though, the user will have to find
 her own way to define what verbs actually mean.
 
@@ -82,7 +82,7 @@ about the meaning or usage of words, while //linguistics// is largely free
 to ignore the complications brought in by inflected forms of words.
 
 For example, a single //verb// object represents "to carry", even though it
-has many different expressions in words -- "has not carried", "will carry",
+has many different expressions in words — "has not carried", "will carry",
 and so on. A single //noun// representing "brick" would include its plural
 "bricks" and indeed its declension into other cases, in a language which has
 noun cases. Our goal here is that the stock should never contain two different
@@ -115,7 +115,7 @@ categories used in noun phrases, and provided by //Chapter 2//; and those
 used in verb phrases, //Chapter 3//. In alphabetical order:
 
 @ Each adjective in the stock is an instance of //adjective//. All senses of
-the same adjectival word -- "empty", say -- are represented by the same
+the same adjectival word — "empty", say — are represented by the same
 //adjective//: it's for the user to manage multiple meanings, and to deduce
 which one applies from the context.[1]
 
@@ -131,7 +131,7 @@ at two, both automatically created: the definite and the indefinite article.
 See //Articles//.
 
 @ The determiners are a fixed stock of roughly 20, each being an instance of
-the class //determiner//. Properly speaking some are families of determiners --
+the class //determiner//. Properly speaking some are families of determiners —
 "all but three" and "all but six" are the same //determiner// but with a
 different numerical parameter. But others, like "most of", have fixed wording.
 The meaning of each determiner is a logical //quantifier//.[1]
@@ -178,13 +178,13 @@ the //preposition// class. See //Prepositions//.
 
 The user creates the stock of prepositions by calling //Prepositions::make//,
 but note that this function is also called when verbs are created, in order
-to implement participles like "carrying" as prepositions -- which is not
+to implement participles like "carrying" as prepositions — which is not
 linguistically ideal, but makes it possible to parse auxiliary uses of 
 "to be" efficiently, as in "X is carried by Y".
 
 @ Each verb in the stock is an instance of //verb//. For example, "to carry"
 or "to be" might be verbs. One verb in the stock is special and is the
-copular verb -- in English, that's "to be". A copular verb is one which has two
+copular verb — in English, that's "to be". A copular verb is one which has two
 interacting subject phrases rather than a subject and an object.[1]
 
 The user creates the stock of adjectives by calling //Verbs::new_verb// or

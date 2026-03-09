@@ -68,36 +68,30 @@ this into an Inter function; the stack frame for that has been sorted out, and
 the function begun. Now we must compile the actual code to go into the function;
 the test group <code>:invocations</code> exercises all of this.</p>
 <p>Here is a typical example rule, taken from the Standard Rules:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">waiting</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">waiting</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">silent</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior</span><span class="plain-syntax"> </span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Time [pass]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">otherwise</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [wait]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">waiting</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">waiting</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):
+	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">silent</span><span class="plain-syntax">:
+			</span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior</span><span class="plain-syntax"> </span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">;
+			</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Time [pass]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [wait]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).
+</span></pre>
 <p>In the parse tree, this now looks like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">IMPERATIVE_NT</span><span class="character-syntax">'report an actor waiting ( this is the standard report waiting'</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">INVOCATION_LIST_NT</span><span class="character-syntax">'if the actor is the player'</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">INVOCATION_LIST_NT</span><span class="character-syntax">'if the action is not silent'</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">INVOCATION_LIST_NT</span><span class="character-syntax">'now the prior named object is nothing'</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="character-syntax">'say "Time [pass]." ( a )'</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">INVOCATION_LIST_SAY_NT</span><span class="character-syntax">'"Time [pass]." ( a )'</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="character-syntax">'otherwise'</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="character-syntax">'say "[The actor] [wait]." ( b )'</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">INVOCATION_LIST_SAY_NT</span><span class="character-syntax">'"[The actor] [wait]." ( b )'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
+	CODE_BLOCK_NT
+		CODE_BLOCK_NT
+			INVOCATION_LIST_NT'if the actor is the player'
+			CODE_BLOCK_NT
+				CODE_BLOCK_NT
+					INVOCATION_LIST_NT'if the action is not silent'
+					CODE_BLOCK_NT
+						INVOCATION_LIST_NT'now the prior named object is nothing'
+						CODE_BLOCK_NT'say "Time [pass]." ( a )'
+							INVOCATION_LIST_SAY_NT'"Time [pass]." ( a )'
+			CODE_BLOCK_NT'otherwise'
+				CODE_BLOCK_NT'say "[The actor] [wait]." ( b )'
+					INVOCATION_LIST_SAY_NT'"[The actor] [wait]." ( b )'
+</span></pre>
 <p>This diagram has been simplified to remove the child nodes of the <code>INVOCATION_LIST_NT</code>
 and <code>INVOCATION_LIST_SAY_NT</code> nodes; the point is to show the structure of the code
 blocks here.</p>
@@ -144,14 +138,11 @@ most &quot;likely&quot; interpretation.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  There's nothing special about singleton blocks except that we want to issue
 problem messages for something like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hall</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mirrors</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">court</span><span class="plain-syntax"> </span><span class="identifier-syntax">favourite</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">Moliere</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">Louis</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hall</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mirrors</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">court</span><span class="plain-syntax"> </span><span class="identifier-syntax">favourite</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">Moliere</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">Louis</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">:
+		...
+</span></pre>
 <p>...where the &quot;let&quot; phrase can have no meaningful effect, since &quot;court favourite&quot;
 is destroyed immediately after its creation. So in order to check for that, we
 keep the following state variable:</p>
@@ -332,25 +323,21 @@ need bespoke handling:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4_4_3" class="paragraph-anchor"></a><b>&#167;4.4.3. </b>  When an &quot;if&quot; node has two children, they are the condition to test and then
 the code block of what to execute if the condition is true:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">        </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="plain-syntax"> {</span><span class="identifier-syntax">control</span><span class="plain-syntax"> </span><span class="identifier-syntax">structure:</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">INVOCATION_LIST_NT</span><span class="character-syntax">'if ...'</span><span class="plain-syntax"> {</span><span class="identifier-syntax">colon_block_command</span><span class="plain-syntax">} {</span><span class="identifier-syntax">indent:</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">                ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		CODE_BLOCK_NT {control structure: IF}
+			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
+			CODE_BLOCK_NT
+				...
+</span></pre>
 <p>When it has three children, the extra block is what to execute if the condition
 is false:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		CODE_BLOCK_NT {control structure: IF}
+			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
+			CODE_BLOCK_NT
+				...
+			CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
+				...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">        </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="plain-syntax"> {</span><span class="identifier-syntax">control</span><span class="plain-syntax"> </span><span class="identifier-syntax">structure:</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">INVOCATION_LIST_NT</span><span class="character-syntax">'if ...'</span><span class="plain-syntax"> {</span><span class="identifier-syntax">colon_block_command</span><span class="plain-syntax">} {</span><span class="identifier-syntax">indent:</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">CODE_BLOCK_NT</span>
-<span class="plain-syntax">                ...</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">CODE_BLOCK_NT</span><span class="character-syntax">'otherwise'</span><span class="plain-syntax"> {</span><span class="identifier-syntax">colon_block_command</span><span class="plain-syntax">} {</span><span class="identifier-syntax">indent:</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">} {</span><span class="identifier-syntax">control</span><span class="plain-syntax"> </span><span class="identifier-syntax">structure:</span><span class="plain-syntax"> </span><span class="identifier-syntax">O</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">                ...</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile an if midriff</span><span class="named-paragraph-number">4.4.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -481,20 +468,17 @@ one is the &quot;non-pointery&quot; case.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_4_4">&#167;4.4.4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4_4_4_2" class="paragraph-anchor"></a><b>&#167;4.4.4.2. </b>  Okay, so here's the code for a pointery switch. We generate something like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">sw_v</span><span class="plain-syntax"> = ... </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Equals</span><span class="plain-syntax">(</span><span class="identifier-syntax">sw_v</span><span class="plain-syntax">, </span><span class="identifier-syntax">v1</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        ... </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Equals</span><span class="plain-syntax">(</span><span class="identifier-syntax">sw_v</span><span class="plain-syntax">, </span><span class="identifier-syntax">v2</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            ... </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">v2</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            ... </span><span class="reserved-syntax">default</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	sw_v = ... switch value ...
+	if (Equals(sw_v, v1)) {
+		... case for v1 ...
+	} else {
+		if (Equals(sw_v, v2)) {
+			... case for v2 ...
+		} else {
+			... default case ...
+		}
+	}
+</span></pre>
 <p>We begin by ensuring that the function has a scratch local variable called <code>sw_v</code>,
 and store the switch value in it. We need not use <code>CopyPV</code> to make an
 independent copy, since <code>sw_v</code> will be read-only: we can just copy the address of
@@ -823,14 +807,11 @@ type-checks it, and finally, all being well, compiles it.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Validating sequences of say invocations.</b>  Test substitutions result in &quot;say&quot; invocations with multiple things to do:
-here are examples, increasing in difficulty --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="string-syntax">"Estates are worth at least [N]."</span>
-<span class="string-syntax">"Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."</span>
-<span class="string-syntax">"The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."</span>
-</pre>
-<div class="lsmarkdown">
+here are examples, increasing in difficulty —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="string-syntax">"Estates are worth at least [N]."</span><span class="plain-syntax">
+</span><span class="string-syntax">"Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."</span><span class="plain-syntax">
+</span><span class="string-syntax">"The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."</span><span class="plain-syntax">
+</span></pre>
 <p>These imply 3, 5 and 9 individual invocations, respectively. The second and
 third examples involve &quot;say control structures&quot;, which means that those
 invocations have to connect properly with each other: thus &quot;[if...]&quot; can be

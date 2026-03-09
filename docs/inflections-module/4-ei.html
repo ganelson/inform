@@ -229,7 +229,7 @@ fiscal&quot;, &quot;postmaster general&quot;). Otherwise we omit only two cases,
 involving capitalised proper nouns: nationality adjectives used as if they were
 nouns (&quot;I saw two Japanese walking into the airport&quot;) and names of people used
 as if they were count nouns for a category of people like the one named (&quot;We
-need more Wills, more Henrys.&quot;) -- these are not likely to arise much in Inform
+need more Wills, more Henrys.&quot;) — these are not likely to arise much in Inform
 usage, and they are awkward to implement with our tries because they depend on
 prefix as well as suffix and require case-dependency.</p>
 <p>In its written form (as of November 2009, anyway), Conway's paper omits an
@@ -597,7 +597,7 @@ there's just one class of verb, and then irregular exceptions.</p>
 Like Greenbaum, we will use the term &quot;form type&quot; for the different possible
 inflected versions of a verb word. The verb &quot;to be&quot; has eight form
 types (be, am, is, are, was, were, been, being), but it's unique in that
-respect -- so this is one we will consider to be &quot;too irregular&quot;, and will
+respect — so this is one we will consider to be &quot;too irregular&quot;, and will
 handle as a special case.</p>
 <p>All other English verbs have five form types, though in many cases two or more
 of these have the same spelling. These we will number as follows, for reasons
@@ -614,7 +614,7 @@ he flaunted (past); he had flaunted (past participle). But English has around
 600 commonly occurring irregular verbs in which they are different, sometimes
 unpredictably so: he went (past); he had gone (past participle). Irregularity
 sometimes makes these forms coincide rather than making them different: for
-example, to set has just three distinct forms -- to set, he sets, he set, he
+example, to set has just three distinct forms — to set, he sets, he set, he
 had set, setting.</p>
 </div>
 <div class="lsmarkdown">
@@ -670,7 +670,7 @@ for example, <code>-er</code> detects first-conjugation verbs such as &quot;donn
 </ul>
 <p>Note that we have to make sure every possible infinitive text matches at
 least one line, and the best way to ensure that is to finish up with <code>...</code>
-as the last pattern -- this matches anything.</p>
+as the last pattern — this matches anything.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  The instructions for English are quite concise, except for the presence
@@ -732,9 +732,9 @@ modified form of &quot;to have&quot;, which we'll call &quot;to auxiliary-have&q
 differs only in its negative forms. We're only going to give this present
 and past tenses since it's never needed except as an auxiliary.</p>
 <p>Anyway, this is an example of a &quot;conjugation&quot;. The purpose of this is to
-set a few special verb forms -- such as the present and past participles --
+set a few special verb forms — such as the present and past participles —
 and then give a recipe to make all of the many forms which the verb can
-take within sentences. The verb forms are numbered -- see above -- and
+take within sentences. The verb forms are numbered — see above — and
 the recipe is called a &quot;tabulation&quot;. We'll specify the format for this
 below, when we get to a more complicated example, but briefly: this one
 sets the present participle (2) to &quot;having&quot;, the past participle (3) to
@@ -829,11 +829,8 @@ For example, 2 expands into the present participle for the verb. If the
 number is followed by an open bracket, then an infinitive, then a close
 bracket, then it expands to the verb form for that verb. For example, the
 following expands to &quot;sought&quot;:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> ( </span><span class="Preform-identifier-syntax">seek</span><span class="Preform-plain-syntax"> )</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">seek</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>(b) Text in the form <code>1+xyz</code> expands into verb form 1 but with the letters
 &quot;xyz&quot; added. For example, <code>1+ed</code> for the verb &quot;to mark&quot; would expand to
 &quot;marked&quot;, since 1 is the infinitive form. This feature is much more useful
@@ -846,7 +843,7 @@ the matching persons are used, i.e., if we're expanding this to make the
 first person singular, we use the first person singular of the verb we're
 borrowing. Finally, we can change the tense by placing a tense marker inside
 the open brackets: <code>a3+ ( t1 have ) grabbed</code> sets the perfects to &quot;I have
-grabbed&quot;, &quot;you have grabbed&quot;, and so on -- without the tense marker it
+grabbed&quot;, &quot;you have grabbed&quot;, and so on — without the tense marker it
 would have been &quot;I have have had grabbed&quot;, because &quot;have&quot; would expand
 to its perfect tense and not its present tense. The <code>t1</code> means present tense;
 <code>t2</code> means past tense, and so on.</p>
@@ -876,23 +873,17 @@ they have. (This is more excitingly varied in other languages, of course.)</p>
 <p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  Next we have &quot;to do&quot;, which is like &quot;to have&quot; in being fairly regular,
 as irregular verbs go. But we treat this as a special case because, again,
 we're going to need as an auxiliary verb when forming negatives (&quot;Peter
-does not wear the hat&quot; -- note the &quot;does not&quot;). But this time we give
+does not wear the hat&quot; — note the &quot;does not&quot;). But this time we give
 the full treatment, creating all 60 active forms.</p>
 <p>For the passive, though, we do something new. The selector <code>p*</code> is actually
 a way to set all 60 passive forms (which would normally be written <code>p</code>), but
 it tells Inform to use &quot;to be&quot; as an auxiliary. When we write the <code>p*</code>
 step:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">*     </span><span class="Preform-identifier-syntax">done</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">by</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">p*</span><span class="Preform-plain-syntax">     </span><span class="Preform-constant-syntax">done</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">by</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>the effect is the same as writing:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">      ( </span><span class="Preform-identifier-syntax">be</span><span class="Preform-plain-syntax"> ) </span><span class="Preform-identifier-syntax">done</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">by</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">p</span><span class="Preform-plain-syntax">      </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">done</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">by</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>The difference is that Inform more efficiently implements the <code>p*</code> version,
 by implementing &quot;done by&quot; as if it were a preposition rather than as part
 of a verb. This parses more quickly and makes English passive forms play
@@ -935,17 +926,14 @@ may have to revisit this for languages other than English.)</p>
 make heavy use of our numbered verb forms: for example, for the verb
 &quot;to take&quot;, they would be &quot;take&quot; (1), &quot;taking&quot; (2), &quot;taken&quot; (3),
 &quot;takes&quot; (5) and &quot;took&quot; (6). We start with the infinitive (&quot;take&quot;)
-in verb form 1, but (2), (3), (5) and (6) are initially blank -- we have
+in verb form 1, but (2), (3), (5) and (6) are initially blank — we have
 to make them somehow.</p>
 <p>We do this by giving their definitions not as fixed wording, as we did
 for the verbs above, but as tries which act on the infinitive to produce
 a wording. For example, <code>&lt;en-trie-present-participle&gt;</code> is a trie which
 performs:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">take</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax">-&gt; </span><span class="Preform-identifier-syntax">taking</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">take</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">--&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">taking</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>We will have to define these tries below. Note that the infinitive can consist
 of multiple words; if so, the first word is run through the tries, and the
 remaining words are left alone. For example, &quot;grab onto&quot; would be inflected
@@ -963,10 +951,10 @@ to &quot;grabs onto&quot;, &quot;grabbing onto&quot; and so on.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  Here we see our auxiliary verbs in use. For the negated present tense,
 &quot;Peter does not carry the ball&quot;; for the negated past tense, &quot;Peter did
-not carry the ball&quot; -- in both cases, this is &quot;to do&quot; plus the infinitive
-&quot;take&quot;. For the perfect tenses, &quot;to have&quot; plus the past participle --
+not carry the ball&quot; — in both cases, this is &quot;to do&quot; plus the infinitive
+&quot;take&quot;. For the perfect tenses, &quot;to have&quot; plus the past participle —
 &quot;Peter has carried the ball&quot;, &quot;Peter had carried the ball&quot;. For the
-future tense, &quot;will&quot; plus the infinitive -- &quot;Peter will carry the ball&quot;.
+future tense, &quot;will&quot; plus the infinitive — &quot;Peter will carry the ball&quot;.
 (We're actually not going to implement this as a verb because all its
 forms are just &quot;will&quot;, and because &quot;to will&quot; also means &quot;to leave
 a bequest&quot;.)</p>
@@ -1072,11 +1060,8 @@ the instructions grammar, right back at the start of this discussion of
 verbs, chooses which conjugation to use, it converts the text matching
 the wild-card <code>...</code> into the &quot;adjoint infinitive&quot; form (4). We get to
 this conjugation by matching</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">to</span><span class="Preform-plain-syntax"> ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>so, for example, &quot;be able to reach&quot; results in 4 being set to &quot;reach&quot;.</p>
 <p>Note also the construction <code>3 ( 4 )</code> in the passive. The 3 means &quot;take the
 past participle of the verb in brackets&quot;, and the 4 means that the text of
@@ -1123,7 +1108,7 @@ being modified should appear in verb form 1, and so on: for example,
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  That completes our basic kit of verbs nicely. What's left is used only
-for generating text at run-time -- for printing adaptive messages, that is;
+for generating text at run-time — for printing adaptive messages, that is;
 none of these oddball exceptional cases is otherwise used as a verb in
 Inform source text. None of them has any meaning to Inform.</p>
 <p>Inform could fairly easily support the contractions &quot;isn't&quot;, &quot;aren't&quot;,
@@ -1141,9 +1126,9 @@ like</p>
 <p>and have them adapt to other tenses and viewpoints?</p>
 <p>First we'll tackle &quot;to 's&quot;, the contracted form of &quot;to be&quot;: I'm, you're,
 and so on. Exactly how these contractions are used in different tenses is
-something that varies with different dialects of English -- for example,
+something that varies with different dialects of English — for example,
 &quot;you'll not take the ball&quot; is now a little obsolete except in rural
-dialects -- and we aren't even going to try to cope with that.</p>
+dialects — and we aren't even going to try to cope with that.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;contracted-to-be-conjugation&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -1227,7 +1212,7 @@ it to conjugate it as if it were a verb in its own right. So &quot;to aren't&quo
 conjugated &quot;I am not&quot;, &quot;you aren't&quot;, &quot;he isn't&quot;, and so on. (We don't
 say &quot;I amn't&quot;, possibly because the &quot;mn&quot; is too awkward, but possibly
 also because we'd more likely say &quot;I'm not&quot;. Because this would make the
-spacing awkwardly difficult -- we would need to backspace -- we won't take
+spacing awkwardly difficult — we would need to backspace — we won't take
 that option here.)</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1349,7 +1334,7 @@ signs can be used if we absolutely have to introduce spaces.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  That's the end of the conjugations -- the easy part, it turns out. We now
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  That's the end of the conjugations — the easy part, it turns out. We now
 need to create the four tries to make verb forms out of the infinitive:
 the present participle, the past participle, the third-person singular
 present tense, and the past tense.</p>
@@ -1400,7 +1385,7 @@ version of Greenbaum's rules above.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  First of all there are some irregular cases -- some for the usual suspects,
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  First of all there are some irregular cases — some for the usual suspects,
 but others for oddball verbs where English breaks the normal phonetic rules
 for the sake of clarity. For example, the participle of &quot;singe&quot; ought to
 be &quot;singing&quot;, but in fact we write &quot;singeing&quot;, purely to make it different
@@ -1853,7 +1838,7 @@ removed.</p>
 <p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>  That's the mandatory participles sorted out; so now we move on to the two
 additional verb forms used by English. First, the present form: a curiosity
 of English is that this is almost always formed as if it were the plural of the
-infinitive -- thus &quot;touch&quot; becomes &quot;touches&quot;. There are just a handful
+infinitive — thus &quot;touch&quot; becomes &quot;touches&quot;. There are just a handful
 of exceptions to this.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -2516,8 +2501,8 @@ This time the base text is the present participle (&quot;smoothing&quot;); the o
 inflection we need is the past participle (&quot;smoothed&quot;), and we need a trie
 which generates it from the present. This process is called &quot;pasturising&quot;,
 which is, er, not actually an approved term from linguistics.</p>
-<p>English is replete with exceptions -- &quot;catching&quot; must become &quot;caught&quot;,
-not &quot;catched&quot;, for instance -- so this trie consists of about 460 special
+<p>English is replete with exceptions — &quot;catching&quot; must become &quot;caught&quot;,
+not &quot;catched&quot;, for instance — so this trie consists of about 460 special
 cases followed by two general rules.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">

@@ -122,12 +122,11 @@ following minimal structure, though it will only be relevant for instances of
 @d REGIONS_DATA(I) FEATURE_DATA_ON_INSTANCE(regions, I)
 
 =
-typedef struct regions_data {
+classdef regions_data {
 	struct instance *in_region; /* smallest region containing me (rooms only) */
 	struct parse_node *in_region_set_at; /* where this is decided */
 	struct inter_name *in_region_iname; /* for testing regional containment found-ins */
-	CLASS_DEFINITION
-} regions_data;
+}
 
 int Regions::new_subject_notify(inference_subject *subj) {
 	regions_data *rd = CREATE(regions_data);

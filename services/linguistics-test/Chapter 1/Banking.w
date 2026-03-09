@@ -5,7 +5,7 @@ Filling a vocabulary bank with nouns, verbs, prepositions and so on.
 @h Keeping the syntax module happy.
 We are going to need to use the sentence-breaking apparatus from the //syntax//
 module, which means that the following four nonterminals need to exist. But in
-fact they are really just placeholders -- they are wired so that they can never
+fact they are really just placeholders — they are wired so that they can never
 match any text.
 
 =
@@ -52,13 +52,15 @@ below. This is not parsed by the //linguistics// module at all: we do it all
 with the facilities offered by the //syntax// and //words// modules.
 
 Typical lines in the vocabulary look like this:
-= (text)
+
+``` None
 	CARRIES = relationship.
 	be = copular verb with priority 2.
 	-- be on -- = CARRIES-reversed.
 	Beth = feminine proper noun.
 	sailor = neuter common noun.
-=
+```
+
 And these are parsed by the following simple Preform grammar:
 
 =

@@ -21,7 +21,7 @@ void LabelInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `label` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d DEFN_LABEL_IFLD (DATA_IFLD + 0)
 

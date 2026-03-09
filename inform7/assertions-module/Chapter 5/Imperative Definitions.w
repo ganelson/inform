@@ -3,13 +3,15 @@
 Each IMPERATIVE node in the syntax tree makes a definition using imperative code.
 
 @h The head.
-Inform has several features -- most obviously rules and "To ..." phrases --
+Inform has several features — most obviously rules and "To ..." phrases —
 where something is created with top-level syntax with a shape like so:
-= (text as Inform 7)
+
+``` Inform7
 Some preamble text ending in a colon:
 	a body of instructions;
 	like so;
-=
+```
+
 These are called "imperative definitions", and each one in the source text
 is given its own //imperative_defn//: see //ImperativeDefinitions::new// below.
 
@@ -24,14 +26,13 @@ definition makes a "To..." phrase if its family is the one looked after by
 //To Phrase Family//.
 
 =
-typedef struct imperative_defn {
+classdef imperative_defn {
 	struct imperative_defn_family *family; /* what manner of thing is defined */
 	struct general_pointer family_specific_data;
 	struct parse_node *at; /* where this occurs in the syntax tree */
 	struct id_body *body_of_defn;
 	struct wording log_text;
-	CLASS_DEFINITION
-} imperative_defn;
+}
 
 @ This creator function is called on each `IMPERATIVE_NT` node in the syntax
 tree, which is to say, at each place where the punctuation looks like the
@@ -153,17 +154,16 @@ void ImperativeDefinitions::compile_first_block(void) {
 
 @h The body.
 During assessment, then, each //imperative_defn// is given a body, which
-is one of these. It represents the body of the definition -- that is, the
+is one of these. It represents the body of the definition — that is, the
 Inform 7 source text written underneath the heading.
 
 =
-typedef struct id_body {
+classdef id_body {
 	struct imperative_defn *head_of_defn;
 	struct id_type_data type_data;
 	struct id_runtime_context_data runtime_context_data;
 	struct id_compilation_data compilation_data;
-	CLASS_DEFINITION
-} id_body;
+}
 
 id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
 	LOGIF(PHRASE_CREATIONS, "Creating body: <%W>\n", id->log_text);
@@ -177,11 +177,13 @@ id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
 
 @ Definition bodies can be written in two different ways. In one way, the
 body is a list of instructions to follow. For example:
-= (text as Inform 7)
+
+``` Inform7
 To decide which real number is the hyperbolic arccosine of (R - a real number):
 	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
 	decide on x.
-=
+```
+
 Here there are two instructions. Each is an "invocation" of a "To..." phrase;
 and the whole definition will ultimately be compiled to an Inter function.[1]
 Invoking this phrase with source text like "hyperbolic arccosine of pi" then
@@ -190,23 +192,27 @@ compiles to a call to that function.
 In the other way, the body has just one entry, written in `(-` and `-)`
 markers, showing directly what Inter code the definition would create if
 it were invoked. For example:
-= (text as Inform 7)
+
+``` Inform7
 To decide which real number is the hyperbolic sine of (R - a real number):
 	(- REAL_NUMBER_TY_Sinh({R}) -).
-=
+```
+
 Here the definition itself compiles nothing: there is no Inter function at
 run-time to perform "hyperbolic sine". Instead, an invocation such as
 "hyperbolic sine of pi" results in Inter code being compiled which follows
 the pattern in the `(-` and `-)` markers. See //imperative// for how this is done.
 
 The second sort of definition is called "inline", because an invocation of it
-results in code being compiled inline -- i.e., within the current function,
+results in code being compiled inline — i.e., within the current function,
 rather than calling out to an another function. Inline definitions can do
 things which regular definitions can't. For example:
-= (text as Inform 7)
+
+``` Inform7
 To decide yes
 	(- rtrue; -) - in to decide if only.
-=
+```
+
 Invoking this compiles to a single instruction, returning `true` from the
 current Inter function. But it would make no sense to do that if the function
 were required to return, say, an object. So this particular inline definition
@@ -261,9 +267,9 @@ void ImperativeDefinitions::detect_inline(imperative_defn *id) {
 		"only 'to...' phrases can be given inline Inform 6 definitions",
 		"and in particular rules and adjective definitions can't.");
 
-@ It is not clear that this restriction is needed any longer -- the compiler
-works fine if it is removed -- but it keeps us on the side of sanity. Long
-inline definitions would be very inefficient -- those should use code in an
+@ It is not clear that this restriction is needed any longer — the compiler
+works fine if it is removed — but it keeps us on the side of sanity. Long
+inline definitions would be very inefficient — those should use code in an
 Inter kit instead.
 
 @d MAX_INLINE_DEFN_LENGTH 1024

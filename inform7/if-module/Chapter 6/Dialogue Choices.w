@@ -4,15 +4,18 @@ To manage dialogue choices.
 
 @h Scanning the dialogue choices in pass 0.
 Choices have already been parsed a little. For example,
-= (text as Inform 7)
+
+``` Inform7
 	-- (if the shortbread is carried) "Offer the shortbread"
-=
+```
+
 will have become:
-= (text)
+
+``` None
 	DIALOGUE_CHOICE_NT
 		DIALOGUE_SELECTION_NT ""Offer the shortbread""
 		DIALOGUE_CLAUSE_NT "if the shortbread is carried"
-=
+```
 
 @
 
@@ -30,7 +33,7 @@ dialogue_choice *DialogueChoices::new(parse_node *PN) {
 }
 
 @ =
-typedef struct dialogue_choice {
+classdef dialogue_choice {
 	struct parse_node *choice_at;
 	struct wording choice_name;
 	struct instance *as_instance;
@@ -41,8 +44,7 @@ typedef struct dialogue_choice {
 	struct parse_node *to_perform_expression;
 	struct dialogue_choice_compilation_data compilation_data;
 	int selection_type;
-	CLASS_DEFINITION
-} dialogue_choice;
+}
 
 @<Initialise the choice@> =
 	dc->choice_at = PN;

@@ -4,7 +4,7 @@ Packages which contain all the resources any of their subpackages will need are
 called "enclosures".
 
 @ The idea of "enclosure" lets us create something "nearby". We are generally
-creating bytecode at a particular position in the hierarchy -- say, in the
+creating bytecode at a particular position in the hierarchy — say, in the
 current function being compiled. We then want to create some associated local
 resource, which can't be at that exact position, but which we want to keep
 nearby. (For example, a constant list mentioned in the function will need an
@@ -23,25 +23,29 @@ inter_name *Enclosures::new_iname(int hap, int hl) {
 @ As noted above, literal values for constants which cannot be stored in a
 single word are a case in point. In general, these are represented in memory
 like so:
-= (text)
+
+``` None
 	                    small block:
 	  ----------------> data
 	                    data
 	                    ...
-=
+```
+
 The size of the small block varies from kind to kind,[1] but for any given
 kind this size is fixed. For example, a text has a small block of 2 words.
 
 Often, but not always, the small block points to a larger and flexibly-sized
 block of data elsewhere:
-= (text)
+
+``` None
 	                    small block:              large block:
 	  ----------------> metadata
 	  					...
 	  					pointer ----------------> block value header
 	                    ...                       data
 	                                              ...
-=
+```
+
 The size of the large block, and the format of the small block and the "actual
 data", vary from kind to kind.
 

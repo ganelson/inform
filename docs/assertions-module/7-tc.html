@@ -87,7 +87,7 @@ imitate printed tables in books or scientific papers, and the data inside
 them is arranged in columns, each of which is headed by a name.</p>
 <p>Data in a given column must have a definite kind, such as &quot;number&quot;. Where
 this is unspecified in any explicit way, it is inferred by performing a
-join on the kinds of the values quoted in the column -- that is, the result
+join on the kinds of the values quoted in the column — that is, the result
 is the narrowest kind capable of holding all of the observed values.</p>
 <p>Inform has a limited ability to link tables together, as in a relational
 database, but this relies on an unusual design decision: if a column in
@@ -95,19 +95,18 @@ two different tables has the same name, then it must have the same kind
 in both tables.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table_column</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">table_column</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name of column (without &quot;entry&quot; suffix) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_stored_in_column</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what kind of value is stored in this column */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">table_from_which_kind_inferred</span><span class="plain-syntax">; </span><span class="comment-syntax">/* usually the earliest use */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">listed_in_predicate</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see below */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_column_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">table_column</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure table_column is accessed in 3/nuor, 3/dbtr, 3/rpr, 4/ass, 5/id, 5/idf, 5/adf, 5/tpf, 5/po, 5/rf, 5/rcd, 6/rls, 6/rlb, 6/fao, 6/act, 6/sv, 7/tbl, 7/eqt and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The predicate calculus engine often finds conditions equivalent to &quot;if A
-is a C listed in T&quot;, and we implement this as a binary predicate -- see
+is a C listed in T&quot;, and we implement this as a binary predicate — see
 <a href="8-lr.html" class="internal">Listed-In Relations</a>. There is one such relation for each column, and
 a pointer is stored in <code>listed_in_predicate</code>.</p>
 </div>
@@ -157,7 +156,7 @@ of any existing column.</p>
 table should have an identifier given to it which is accessible to Inter:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tables::Columns::translates</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Tables::Columns::translates</span></span>:<br/>Translation Requests - <a href="3-tr.html#SP9_1_2">&#167;9.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tables::Columns::translates</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Tables::Columns::translates</span></span>:<br/>Translation Requests - <a href="3-tr.html#SP8_2_2">&#167;8.2.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-value&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">table_column</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_table_column</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tc</span><span class="plain-syntax">) {</span>
@@ -286,7 +285,7 @@ by looking through the column-heading lines of tables. Each one makes:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The heading of a table column is the text in its entry in the first
 (titling-only) row of the table. Usually that consists only of the column's
-name, but optionally the kind can also be supplied in brackets -- Inform
+name, but optionally the kind can also be supplied in brackets — Inform
 otherwise infers the kind from the contents below. The kind will subsequently
 be parsed using <code>&lt;k-kind-articled&gt;</code>, but for timing reasons that happens later,
 so the grammar below allows any text in the brackets. A &quot;topic&quot; column
@@ -354,8 +353,8 @@ what looks like text into grammar for parsing.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-tc.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  When a column is found with a name not seen before -- say, &quot;merit points&quot;
--- the following grammar is used to construct a proper noun to refer to this
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  When a column is found with a name not seen before — say, &quot;merit points&quot;
+— the following grammar is used to construct a proper noun to refer to this
 column; thus, &quot;merit points column&quot;.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -416,7 +415,7 @@ hasn't been created yet; but we'll catch it later.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;table-column-heading-bare&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-tc.html#SP7" class="function-link"><span class="function-syntax">Assertions::Creator::vet_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">tc</span><span class="plain-syntax"> = </span><a href="7-tc.html#SP4" class="function-link"><span class="function-syntax">Tables::Columns::new_table_column</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-tc.html#SP6" class="function-link"><span class="function-syntax">Assertions::Creator::vet_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">tc</span><span class="plain-syntax"> = </span><a href="7-tc.html#SP4" class="function-link"><span class="function-syntax">Tables::Columns::new_table_column</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-tc.html#SP12">&#167;12</a>.</li></ul>

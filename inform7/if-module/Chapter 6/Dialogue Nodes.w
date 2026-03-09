@@ -5,7 +5,8 @@ either a line or a choice.
 
 @ Inside any given beat, we have to keep track of the indentation of material
 in order to see what is subordinate to what. For example:
-= (text as Inform 7)
+
+``` Inform7
 (About Elsinore.)
 
 Marcellus: "What, has this thing appear'd again to-night?"
@@ -13,7 +14,8 @@ Marcellus: "What, has this thing appear'd again to-night?"
 Bernardo: "I have seen naught but [list of things in the Battlements]."
 
     Marcellus: "Horatio says 'tis but our fantasy."
-=
+```
+
 Here the lines are at levels 0, 0 and 1. We actually allow them to go in as
 far as `MAX_DIALOGUE_NODE_NESTING`, which is a lot of tab stops: no human
 author would want that many.
@@ -35,7 +37,7 @@ void DialogueNodes::clear_precursors(int from) {
 union type: it can either be a line, a choice or a decision.
 
 =
-typedef struct dialogue_node {
+classdef dialogue_node {
 	struct dialogue_line *if_line;
 	struct dialogue_choice *if_choice;
 	struct dialogue_decision *if_decision;
@@ -44,8 +46,7 @@ typedef struct dialogue_node {
 	struct dialogue_node *parent_node;
 	struct dialogue_node *child_node;
 	struct dialogue_node *next_node;
-	CLASS_DEFINITION
-} dialogue_node;
+}
 
 @ The following should be called with exactly one non-`NULL` pointer. (Decision
 nodes are created later.)
@@ -129,11 +130,10 @@ impossible to hit.
 @e STEP_STOP_CONTROL_DDT
 
 =
-typedef struct dialogue_decision {
-	CLASS_DEFINITION
+classdef dialogue_decision {
 	int decision_type; /* one of the `*_DDT` constants above */
 	struct dialogue_node *as_node;
-} dialogue_decision;
+}
 
 @
 

@@ -138,7 +138,7 @@ forms are equal as strings.</p>
 it has more entries, it must have entries deliberately added by the source:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">IndexingData::indexing_occurred</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">IndexingData::indexing_occurred</span></span>:<br/>Documentation Compiler - <a href="7-dc.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">compiled_documentation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cd</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">IndexingData::indexing_occurred</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">IndexingData::indexing_occurred</span></span>:<br/>Documentation Compiler - <a href="7-dc.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">compiled_documentation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LinkedLists::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">cd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">id</span><span class="plain-syntax">.</span><span class="element-syntax">lemma_list</span><span class="plain-syntax">) &gt; </span><span class="identifier-syntax">LinkedLists::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">cd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">examples</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -193,7 +193,7 @@ with no special notation attached comes out in the category <code>standard</code
 added:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">indexing_category</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">indexing_category</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cat_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cat_glossed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if set, print the style as a gloss */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat_inverted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if set, apply name inversion */</span>
@@ -203,8 +203,7 @@ added:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat_unbracketed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if set, also prune brackets */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cat_under</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for automatic subentries */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat_alsounder</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for automatic subentries */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">indexing_category</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure indexing_category is accessed in 7/it, 7/il, 7/gi and here.</li></ul>
 <div class="lsmarkdown">

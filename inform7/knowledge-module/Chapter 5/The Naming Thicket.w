@@ -353,7 +353,7 @@ together in lists.
 	}
 
 @ We needed the following utility above. Note that only printed names
-inferred from sentences matter here -- not printed names added in model
+inferred from sentences matter here — not printed names added in model
 completion. (This is important because we might be working on these objects
 in any order, and might have completed X but not Y where either X is named
 after Y or vice versa.)

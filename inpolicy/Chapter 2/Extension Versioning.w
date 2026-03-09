@@ -106,7 +106,7 @@ semantic_version_number ExtensionVersioning::read_version(pathname *X, text_stre
 
 @ The following test used to be just `VersionNumbers::ne(set_to, V)`, but this,
 because it properly followed the semver standard, regarded them as equal if they
-differed only in the build code -- so `10.1.0-beta+6V20` would not be updated to
+differed only in the build code — so `10.1.0-beta+6V20` would not be updated to
 `10.1.0-beta+6V44`, for example. We now force a sync if there is any textual
 difference at all.
 

@@ -67,12 +67,9 @@ function togglePopup(material_id) {
 source text to show what they do. (It's also possible to create rules which
 are implemented by Inter-level functions only, and those do not fall under
 this section, because they have no <a href="5-id.html#SP1" class="internal">imperative_defn</a>.) For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Every</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"The grandfather clock ticks reprovingly."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Every</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"The grandfather clock ticks reprovingly."</span><span class="plain-syntax">
+</span></pre>
 <p>Some rules have names, some do not; some indicate explicitly what rulebook
 they belong to, and others are placed in rulebooks with separate sentences.
 So there's quite a lot to do.</p>
@@ -94,20 +91,19 @@ So there's quite a lot to do.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Each family member gets one of the following. In splitting up preambles,
 the &quot;usage preamble&quot; is the part indicating when the rule should happen, and
 this is divided up into smaller excerpts of text, as in the following examples:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">rule instead    of          taking or dropping when Miss Bianca is in the Embassy:
+&lt;---------------------------- usage_preamble -----------------------------------&gt;
+     &lt;- stem ----&gt;          &lt;------------------ applicability ------------------&gt;
+     &lt;- ps -&gt;   &lt;- bud -&gt;   &lt;--- prewhile ---&gt;      &lt;-------- whenwhile --------&gt;
+
+after examining    an open door during the Hurricane (this is the exit hunting rule):
+&lt;----------------- usage preamble -----------------&gt;              &lt;- const name --&gt;
+&lt;---- stem -----&gt;  &lt;-- appl --&gt;        &lt;- during --&gt;
+&lt;- pruned stem -&gt;  &lt;-- pw ----&gt;
+</span></pre>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax">    </span><span class="identifier-syntax">of</span><span class="plain-syntax">          </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">dropping</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">Miss</span><span class="plain-syntax"> </span><span class="identifier-syntax">Bianca</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Embassy:</span>
-<span class="plain-syntax">&lt;---------------------------- </span><span class="identifier-syntax">usage_preamble</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">----------------------------------&gt;</span>
-<span class="plain-syntax">     &lt;- </span><span class="identifier-syntax">stem</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---&gt;          &lt;------------------ </span><span class="identifier-syntax">applicability</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-----------------&gt;</span>
-<span class="plain-syntax">     &lt;- </span><span class="identifier-syntax">ps</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt;   &lt;- </span><span class="identifier-syntax">bud</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt;   &lt;--- </span><span class="identifier-syntax">prewhile</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">--&gt;      &lt;-------- </span><span class="identifier-syntax">whenwhile</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-------&gt;</span>
-
-<span class="identifier-syntax">after</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax"> </span><span class="identifier-syntax">during</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hurricane</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit</span><span class="plain-syntax"> </span><span class="identifier-syntax">hunting</span><span class="plain-syntax"> </span><span class="type-syntax">rule</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">&lt;----------------- </span><span class="identifier-syntax">usage</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">----------------&gt;              &lt;- </span><span class="type-syntax">const</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt;</span>
-<span class="plain-syntax">&lt;---- </span><span class="identifier-syntax">stem</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">----&gt;  &lt;-- </span><span class="identifier-syntax">appl</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt;        &lt;- </span><span class="identifier-syntax">during</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt;</span>
-<span class="plain-syntax">&lt;- </span><span class="identifier-syntax">pruned</span><span class="plain-syntax"> </span><span class="identifier-syntax">stem</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt;  &lt;-- </span><span class="identifier-syntax">pw</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---&gt;</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rule_family_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">rule_family_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">usage_preamble</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">pruned_stem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant_name</span><span class="plain-syntax">;</span>
@@ -123,8 +119,7 @@ this is divided up into smaller excerpts of text, as in the following examples:<
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permit_all_outcomes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* waive the usual restrictions on rule outcomes */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">feature_rfd</span><span class="plain-syntax">[</span><span class="identifier-syntax">MAX_COMPILER_FEATURES</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* storage for features to attach, if they want to */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">rule_family_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">rule_family_data</span><span class="plain-syntax"> *</span><span class="function-syntax">RuleFamily::new_data</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">RuleFamily::new_data</span></span>:<br/><a href="5-rf.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">rule_family_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rfd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">rule_family_data</span><span class="plain-syntax">);</span>
@@ -156,7 +151,7 @@ this is divided up into smaller excerpts of text, as in the following examples:<
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Identification.</b>  We are going to claim as our own any definition whose name matches the
-following nonterminal -- and because of the last production, this will always
+following nonterminal — and because of the last production, this will always
 happen. (That's why it is important that we are the last family to claim.)</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -311,7 +306,7 @@ which are too elaborate to pass back in a simple pointer.</p>
 <span class="plain-syntax">        </span><span class="function-syntax">&lt;rule-preamble-fine&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">during_spec</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_when</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="type-syntax">rulebook_match</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax"> = </span><a href="6-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::match</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="type-syntax">rulebook_match</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax"> = </span><a href="6-rlb.html#SP15" class="function-link"><span class="function-syntax">Rulebooks::match</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;rule-preamble-finer&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">has_when</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;unrecognised-rule-stem-diagnosis&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
@@ -400,19 +395,13 @@ so we have to be very careful:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP7">&#167;7</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3. </b>  This unobvious manoeuvre puts the when/while text back again, so that:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">dropping</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">Miss</span><span class="plain-syntax"> </span><span class="identifier-syntax">Bianca</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Embassy:</span>
-<span class="plain-syntax">                &lt;----- </span><span class="identifier-syntax">appl</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">----&gt; &lt;---------- </span><span class="identifier-syntax">whenwhile</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">----------&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">rule instead of taking or dropping when Miss Bianca is in the Embassy:
+                &lt;----- appl -----&gt; &lt;---------- whenwhile -----------&gt;
+</span></pre>
 <p>becomes:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">dropping</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">Miss</span><span class="plain-syntax"> </span><span class="identifier-syntax">Bianca</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Embassy:</span>
-<span class="plain-syntax">                &lt;----- </span><span class="identifier-syntax">appl</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------------------------------&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">rule instead of taking or dropping when Miss Bianca is in the Embassy:
+                &lt;----- appl ----------------------------------------&gt;
+</span></pre>
 <p>This is done only where we now know that the stem specified a rulebook based
 on actions, and the reason it's done is that action applicabilities are parsed
 with a grammar much more sensitive to ambiguities, and in which &quot;when...&quot;
@@ -422,8 +411,8 @@ clauses are therefore better recognised.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><a href="6-rlb.html#SP12" class="function-link"><span class="function-syntax">Rulebooks::runs_during_activities</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><a href="6-rlb.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::action_focus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><a href="6-rlb.html#SP8" class="function-link"><span class="function-syntax">Rulebooks::runs_during_activities</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><a href="6-rlb.html#SP2_2" class="function-link"><span class="function-syntax">Rulebooks::action_focus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whenwhile</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax"> =</span>
@@ -522,7 +511,7 @@ normally limited to the use of rules in particular rulebooks.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  At the end of the assessment process, we can finally put the rules into their
-rulebooks. We make &quot;automatic placements&quot; first -- i.e., those where the usage
+rulebooks. We make &quot;automatic placements&quot; first — i.e., those where the usage
 preamble specified which rulebook the rule belonged to; and then we make manual
 placements, which may move or remove rules already place. See <a href="3-rpr.html" class="internal">Rule Placement Requests</a>
 for how sentences specifying this are parsed.</p>
@@ -550,7 +539,7 @@ for how sentences specifying this are parsed.</p>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) == </span><span class="identifier-syntax">VERB_NT</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">verbal_certainty_ANNOT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-ptmn.html#SP4" class="function-link"><span class="function-syntax">MajorNodes::try_special_meaning</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TRAVERSE_FOR_RULE_FILING_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ptmn.html#SP3_1_3" class="function-link"><span class="function-syntax">MajorNodes::try_special_meaning</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TRAVERSE_FOR_RULE_FILING_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -581,13 +570,13 @@ whichever way works.</p>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the applicability text into the PHRCD</span><span class="named-paragraph-number">11.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-rlb.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::action_focus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-rlb.html#SP2_2" class="function-link"><span class="function-syntax">Rulebooks::action_focus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">save_cs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ActionRules::set_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">, </span><span class="identifier-syntax">ActionPatterns::parse_action_based</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save_cs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for a bad action</span></span><span class="named-paragraph-number">11.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pk</span><span class="plain-syntax"> = </span><a href="6-rlb.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::get_focus_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pk</span><span class="plain-syntax"> = </span><a href="6-rlb.html#SP2_2" class="function-link"><span class="function-syntax">Rulebooks::get_focus_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ActionRules::set_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">, </span><span class="identifier-syntax">ActionPatterns::parse_parametric</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">, </span><span class="identifier-syntax">pk</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whenwhile</span><span class="plain-syntax">)) {</span>
@@ -606,7 +595,7 @@ whichever way works.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11_1_1" class="paragraph-anchor"></a><b>&#167;11.1.1. </b>  All that's left is to issue a &quot;good&quot; problem message, but this is quite a
 large undertaking, because the situation as we currently know it is just that
-something's wrong with the rule preamble -- which covers an enormous range of
+something's wrong with the rule preamble — which covers an enormous range of
 different faults.</p>
 <p>The <code>pap_failure_reason</code> is a sort of error code set by the action pattern
 parser, recording how it most recently failed.</p>

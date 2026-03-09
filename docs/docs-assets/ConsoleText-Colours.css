@@ -27,7 +27,7 @@ span.ConsoleText-named-paragraph-container {
 
 /* This is the box into which multi-line stretches of code are put: */
 
-pre.ConsoleText-displayed-code {
+pre.ConsoleText-displayed-code, div.lsmarkdown pre.ConsoleText-displayed-code {
 	background: #222222;
 	border: 1px solid #008000;
 }

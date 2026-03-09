@@ -294,9 +294,9 @@ end (if true).
 ];
 
 @h Serialising Tables.
-The most important data structures to "serialise" -- that is, to convert
+The most important data structures to "serialise" — that is, to convert
 from their binary representations in memory into text representations in an
-external file -- are Tables. Here we only carry out the file-handling; the
+external file — are Tables. Here we only carry out the file-handling; the
 actual translations are in "Tables.i6t".
 
 =

@@ -64,7 +64,7 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  See <a href="P-wtmd.html" class="internal">What This Module Does</a> for a fuller explanation, but briefly, an
 <a href="1-in.html#SP3" class="internal">inter_name</a> or &quot;iname&quot; represents a symbol which will eventually exist,
-but which may not exist at the moment -- indeed, may be placed inside a
+but which may not exist at the moment — indeed, may be placed inside a
 package which also does not yet exist.</p>
 <p><a href="../inform7/index.html" class="internal">inform7</a> and other code-generation tools can make many such inames, living
 in equally shadowy <a href="1-pck.html#SP1" class="internal">package_request</a>s, before any actual Inter is made at all.
@@ -85,13 +85,13 @@ and others still derive new names from existing ones (for example, turning
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">DERIVED_INGEN</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ingen</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_stem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_generated</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only for <code>MULTIPLE_INGEN</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">derived_prefix</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only for <code>DERIVED_INGEN</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">derived_suffix</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only for <code>DERIVED_INGEN</code> */</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">inter_name_generator</span><span class="plain-syntax"> *</span><span class="function-syntax">InterNames::single_use_generator</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InterNames::single_use_generator</span></span>:<br/><a href="1-in.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax">);</span>
@@ -121,21 +121,25 @@ required to generate that text. (The memo field, which in principle allows
 any text to be stored, is used only for a small proportion of inames.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name_generator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">generated_by</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unique_number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">location_in_hierarchy</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">memo</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">derived_from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inter_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_iname</span><span class="plain-syntax">, </span><span class="type-syntax">inter_name</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_name is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  This implements the <code>%n</code> escape, which prints an iname:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterNames::writer</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">InterNames::writer</span></span>:<br/>Building Module - <a href="1-bm.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vI</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterNames::writer</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">InterNames::writer</span></span>:<br/>Building Module - <a href="1-bm.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vI</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = (</span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vI</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;no-inter-name&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>

@@ -67,8 +67,8 @@ function togglePopup(material_id) {
 text to be read in by <a href="../words-module/index.html" class="internal">words</a> and has made a rudimentary parse tree for
 it using <a href="../syntax-module/index.html" class="internal">syntax</a>. Certain &quot;structural&quot; sentences, such as headings, have
 been taken care of, and turned into nodes with types like <code>HEADING_NT</code>.</p>
-<p>But the assertions we want to read -- such as &quot;The Mona Lisa is in the Louvre&quot;,
-or &quot;The plural of major general is majors general&quot; -- are all simply
+<p>But the assertions we want to read — such as &quot;The Mona Lisa is in the Louvre&quot;,
+or &quot;The plural of major general is majors general&quot; — are all simply
 <code>SENTENCE_NT</code> nodes with no children. The following traverse begins Inform's
 compilation process in earnest: for each such <code>SENTENCE_NT</code> node, it asks
 the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module to identify a primary verb, noun phrases and so
@@ -76,7 +76,7 @@ on, placing them in a subtree.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Textual sentences.</b>  &quot;Textual&quot; sentences are not really sentences at all, and are just double-quoted
-text used in isolation -- Inform sometimes recognises these as being implicit
+text used in isolation — Inform sometimes recognises these as being implicit
 property values, as for the description of a room just created. These sentences
 are necessarily exempt from having a primary verb.</p>
 </div>
@@ -95,7 +95,7 @@ and we ask the <a href="../linguistics-module/index.html" class="internal">lingu
 <p>See <a href="../linguistics-module/P-asd.html" class="internal">About Sentence Diagrams (in linguistics)</a> for many examples.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Classifying::sentence</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Classifying::sentence</span></span>:<br/><a href="2-cs.html#SP7">&#167;7</a><br/>Passes through Major Nodes - <a href="2-ptmn.html#SP3_1_2">&#167;3.1.2</a>, <a href="2-ptmn.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Classifying::sentence</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Classifying::sentence</span></span>:<br/><a href="2-cs.html#SP7">&#167;7</a><br/>Passes through Major Nodes - <a href="2-ptmn.html#SP3_1_2">&#167;3.1.2</a>, <a href="2-ptmn.html#SP3_1_4">&#167;3.1.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">classified_ANNOT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">classified_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>

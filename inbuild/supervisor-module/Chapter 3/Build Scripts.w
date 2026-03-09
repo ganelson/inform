@@ -8,10 +8,9 @@ Suppose the incremental build algorithm has decided it wants to build node
 attached to `V`. This is only a list of steps:
 
 =
-typedef struct build_script {
+classdef build_script {
 	struct linked_list *steps; /* of `build_step` */
-	CLASS_DEFINITION
-} build_script;
+}
 
 build_script *BuildScripts::new(void) {
 	build_script *BS = CREATE(build_script);

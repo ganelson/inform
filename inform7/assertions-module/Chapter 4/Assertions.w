@@ -337,7 +337,7 @@ We allow this provided the properties I are all adjectival, and so is the
 outcome B.
 
 Otherwise we handle case 2 much like case 3, but more simply since the
-result will normally be problem messages -- not unreasonably given how
+result will normally be problem messages — not unreasonably given how
 strange sentences like this are:
 
 > A container with description "Solid." is the solid box.
@@ -376,7 +376,7 @@ to the south of the location being talked about, which means that the printed
 name must be given to the dead end, not to the direction "south". In this
 case, on traverse 2 when properties are set, we process as "A is a B"
 followed by "B is I". (On traverse 1, B is still an `COMMON_NOUN_NT` node,
-since it hasn't yet been instantiated into an actual but nameless room --
+since it hasn't yet been instantiated into an actual but nameless room —
 at which point it becomes a `PROPER_NOUN_NT` node.)
 
 @<Case 3 - Miscellaneous vs WITH@> =
@@ -662,8 +662,8 @@ further sub-cases later.
 		"'every' (or 'always') can't be used in that way",
 		"and should be reserved for sentences like 'A coin is in every room'.");
 
-@h Case 17. In fact one sentence like this can make sense -- "The mist is
-everywhere", or similar -- but is handled by the spatial feature, if active.
+@h Case 17. In fact one sentence like this can make sense — "The mist is
+everywhere", or similar — but is handled by the spatial feature, if active.
 Even then, of course, "everywhere" implicitly means "in every room",
 not "every room".
 
@@ -783,7 +783,7 @@ possible to coerce the left side to a noun, we will.
 		"that is already the name of a property",
 		"so it will only confuse things if we use it for a kind of action.");
 
-@h Case 25. Here we are declaring a new property -- either to an object, a kind
+@h Case 25. Here we are declaring a new property — either to an object, a kind
 or a kind of value.
 
 > A container has a number called security rating.
@@ -1490,8 +1490,8 @@ file: this may possibly be useful to I6 hackers.
 	return;
 
 @ Creation has already taken place, in that X does now exist, but any
-stipulations on X -- that it should have certain properties, or be in a
-certain place, for instance -- will not yet be enforced. These will be in
+stipulations on X — that it should have certain properties, or be in a
+certain place, for instance — will not yet be enforced. These will be in
 the "creation proposition" of Y, and we now assert this to be true about X.
 
 @<Assert that X is an instance of Y@> =

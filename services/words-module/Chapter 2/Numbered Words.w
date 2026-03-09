@@ -14,7 +14,7 @@ function call, we perform this with macros.
 @d compare_words_cs(w1, w2) (Wide::cmp(Lexer::word_raw_text(w1), Lexer::word_raw_text(w2)) == 0)
 
 @ We can also, more slowly, perform a direct string comparison. If carried
-out on the original, raw, text, this will be case sensitive -- which is
+out on the original, raw, text, this will be case sensitive — which is
 usually wrong for Inform purposes. On the treated text, however, we are
 comparing a case-normalised version of the original word, which is likely
 to be safely case insensitive comparison, provided that the content of `t`
@@ -158,7 +158,7 @@ Optionally, a dictionary word can end with a pair of slashes and then,
 optionally again, markers to indicate that the word is (for instance) a
 plural: thus `'newts//p'`. Using no markers, as in `'toads//'`, makes a
 word equivalent to that without a marker, but avoids the single-letter
-problem -- so the preferred modern way to write a single-character I6
+problem — so the preferred modern way to write a single-character I6
 dictionary word is `'t//'`, and this is what the following routine does.
 (Note the exceptional case where the word consists only of a `'/'`: here
 we cannot write `'///'` because I6 reads this as `//` plus an invalid
@@ -166,8 +166,8 @@ marker `/`, and throws an error. We escape the single `/` to avoid this.
 In all other cases there's no need to escape a `/`.)
 
 Dictionary words with a literal `~` in are, as it happens, not parsable
-by the Z-machine, but the code below -- employing the `@{7E}`
-escape -- is in principle legal, and it does work on Glulx.
+by the Z-machine, but the code below — employing the `@{7E}`
+escape — is in principle legal, and it does work on Glulx.
 
 Very long words can safely be truncated since the virtual machines do not
 have indefinitely long dictionary resolution anyway, and we had better do

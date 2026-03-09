@@ -30,7 +30,7 @@ When lexicon entries are registered (see //lexicon: Lexicon//), they are
 assigned "meaning codes", and these affect the way that parsing is done.
 The user should define `EXACT_PARSING_BITMAP`, `SUBSET_PARSING_BITMAP`
 and `PARAMETRISED_PARSING_BITMAP` to be sums of the meaning codes for
-which these methods are used -- see //Parse Excerpts//.
+which these methods are used — see //Parse Excerpts//.
 
 For example, the parent could define `INGREDIENTS_MC` and `RECIPES_MC` to
 have two different namespaces, and then define `EXACT_PARSING_BITMAP` to
@@ -50,14 +50,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_LEXICON_CALLBACK Emotions::gosh
 	
 	=
 	void Emotions::gosh(text_stream *OUT) {
 	    WRITE("Zowie!\n");
 	}
-=
+```
+
 The lexicon module has many callbacks, but they are all optional. The
 following alphabetical list has references to fuller explanations:
 
@@ -68,7 +70,7 @@ for say phrases, and `FALSE` for everything else. See //Lexicon::retrieve//
 and //Lexicon::register//.
 
 - `PARSE_EXACTLY_LEXICON_CALLBACK` is called when an excerpt is about to be
-parsed in "subset mode" -- allowing just a subset of its words to be used,
+parsed in "subset mode" — allowing just a subset of its words to be used,
 i.e., not requiring exact wording. This function can refuse to allow that in
 certain cases. See //Lexicon::retrieve//.
 

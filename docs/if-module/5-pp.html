@@ -120,11 +120,10 @@ and in particular, to every object instance and every kind of object.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PARSING_DATA_FOR_SUBJ(S)</span> <span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">parsing</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parsing_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">parsing_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">understand_as_this_subject</span><span class="plain-syntax">; </span><span class="comment-syntax">/* grammar for parsing the name at run-time */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsing_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">parsing_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">parsing_data</span><span class="plain-syntax"> *</span><span class="function-syntax">ParsingPlugin::new_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">parsing_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">parsing_data</span><span class="plain-syntax">);</span>

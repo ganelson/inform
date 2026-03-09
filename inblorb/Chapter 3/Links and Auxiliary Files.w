@@ -9,14 +9,13 @@ needs to know about these only when releasing a website; they are also recorded
 in an iFiction record, but Inblorb doesn't create that, Inform 7 does.
 
 =
-typedef struct auxiliary_file {
+classdef auxiliary_file {
 	struct filename *full_filename;
 	struct text_stream *aux_leafname;
 	struct text_stream *aux_subfolder;
 	struct text_stream *description;
 	struct text_stream *format; /* e.g., "jpg", "pdf" */
-	CLASS_DEFINITION
-} auxiliary_file;
+}
 
 @h Registration.
 The format text is set to a lower-case version of the filename extension,
@@ -132,7 +131,7 @@ remote.
 
 @h Cover image.
 Note that if the large cover image is a PNG, so is the small (thumbnail)
-version, and vice versa -- supplying "Cover.jpg" and "Small Cover.png"
+version, and vice versa — supplying "Cover.jpg" and "Small Cover.png"
 will not work.
 
 =

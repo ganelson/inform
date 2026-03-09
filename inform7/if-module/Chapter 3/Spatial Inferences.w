@@ -68,10 +68,9 @@ void SpatialInferences::infer_contains_things(inference_subject *R, int certitud
 @ Details for `parentage_inf`:
 
 =
-typedef struct parentage_inference_data {
+classdef parentage_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_inference_data;
+}
 
 void SpatialInferences::infer_parentage(inference_subject *inner, int certitude,
 	inference_subject *outer) {
@@ -128,10 +127,9 @@ int SpatialInferences::parentage_explain_contradiction(inference_family *f, infe
 @ Details for `parentage_here_inf`:
 
 =
-typedef struct parentage_here_inference_data {
+classdef parentage_here_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_here_inference_data;
+}
 
 void SpatialInferences::infer_parentage_here(inference_subject *inner, int certitude,
 	inference_subject *outer) {
@@ -184,11 +182,9 @@ void SpatialInferences::infer_part_of(inference_subject *inner, int certitude,
 	Inferences::join_inference(i, inner);
 }
 
-typedef struct part_of_inference_data {
+classdef part_of_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} part_of_inference_data;
-
+}
 
 void SpatialInferences::log_part_of(inference_family *f, inference *inf) {
 	part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);

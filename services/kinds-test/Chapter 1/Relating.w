@@ -3,13 +3,12 @@
 Providing a sense of meaning for relationships.
 
 @ This test tool uses the //linguistics// module, and it needs to have some
-concept of what relationships are -- that is, of what might be meant by
+concept of what relationships are — that is, of what might be meant by
 "X sees Y" or "X is on top of Y".
 
 Inform uses a class called `binary_predicate` for this, but we will use a
 class simply called `rel`.
 
-@e rel_CLASS
 @d VERB_MEANING_LINGUISTICS_TYPE struct rel
 
 @ //linguistics// also needs us to make annotation functions for one special
@@ -20,18 +19,16 @@ we don't need to create the annotation or give it permissions.
 DECLARE_ANNOTATION_FUNCTIONS(relationship, rel)
 
 @ =
-DECLARE_CLASS(rel)
 MAKE_ANNOTATION_FUNCTIONS(relationship, rel)
 
 @ There isn't much to this, since all we want to be able to do is to
 print out a name.
 
 =
-typedef struct rel {
+classdef rel {
 	struct text_stream *debugging_log_name;
 	struct rel *reversed;
-	CLASS_DEFINITION
-} rel;
+}
 
 @ //linguistics// requires that whatever this is, it has to be "reversible".
 (This transposes the two terms. The reversal of "X sees Y" is "X is seen by Y".)

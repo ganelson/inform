@@ -63,26 +63,20 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Runtime representation.</b>  Literal stored actions arise from source text such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">harmonium</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">harmonium</span><span class="plain-syntax">;
+</span></pre>
 <p>This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.</p>
 <p>Stored actions are stored in small blocks, always of size 6. There are no
 long blocks.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">actor</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">request</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:
+	Q ----------------&gt; action name
+	                    first noun
+	                    second noun
+	                    actor
+	                    request
+	                    command text
+</span></pre>
 <p>See <a href="../WorldModelKit/strdc.html" class="internal">StoredAction (in WorldModelKit)</a> for more. Note that literals do not arise
 from typed commands, so they have no command text, and the final word is
 therefore always 0 for literal actions.</p>

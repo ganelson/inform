@@ -50,11 +50,13 @@ void CFunctionModel::predeclare_function(code_generator *gtr, code_generation *g
 
 @ And this expresses what the C prototype for that function will be. For example,
 suppose we have an Inter function which arises from a kit function reading like so:
-= (text as Inform 6)
+
+``` Inform6
 	[ HelloThere greeting x y;
 		...
 	];
-=
+```
+
 Now in practice this function may always be called as `HelloThere("Aloha!")` or
 similar, with the local variable `greeting` being an argument, and the other two
 locals `x` and `y` being used only internally. But Inter does not distinguish between
@@ -66,12 +68,14 @@ Because of this, our C analogue must also be callable with a variable number of
 arguments. Now, of course, C does have a crude mechanism for this (used for `printf`
 and similar), but it's nowhere near flexible enough to handle what we need.
 Instead we declare our C function like so:
-= (text as Inform 6)
+
+``` Inform6
 	i7word_t i7_fn_HelloThere(i7process_t *proc, i7word_t i7_mgl_local_greeting,
 		i7word_t i7_mgl_local_x, 7word_t i7_mgl_local_y) {
 		...
 	}
-=
+```
+
 And we then make calls like `i7_fn_HelloThere(proc, X, 0, 0)` or
 `i7_fn_HelloThere(proc, X, Y, 0)` to simulate calling this with one or two
 arguments respectively. Because unsupplied arguments are filled in as 0, we achieve
@@ -156,18 +160,20 @@ void CFunctionModel::invoke_function(code_generator *gtr, code_generation *gen,
 
 @ A handful of functions, always supplied by kits (i.e., never compiled directly
 by Inform 7), use a stack-based calling mechanism instead. For example:
-= (text as Inform 6)
+
+``` Inform6
 [ whatever _vararg_count ret;
     ...
 ];
-=
+```
+
 The significant thing here is that the first local variable is called `_vararg_count`.
 The Inform 6 compiler reacts to that by using a different function call mechanism;
 the function call `whatever(x, y, z)` will then result in `x`, `y`, `z` being pushed
 onto the stack, while execution in the function begins with `_vararg_count` equal
 to 3 (the number of things pushed), and `ret` equal to 0.
 
-Note that the arguments must be pushed in reverse order -- `z`, `y`, `x` -- in
+Note that the arguments must be pushed in reverse order — `z`, `y`, `x` — in
 order to ensure that the first one, `x`, is at the top of the stack when execution
 of the function begins.
 
@@ -203,13 +209,15 @@ i7word_t i7_gen_call(i7process_t *proc, i7word_t id, i7word_t *args, int argc);
 =
 
 The structure is basically one big switch. In simplified pseudocode it looks like so:
-= (text as C)
+
+``` C
 	switch (function_id_number) {
 		case id1: rv = fn1(proc, arg1); break;
 		case id2: rv = fn2(proc, arg1, arg2, arg3); break;
 		...
 	}
-=
+```
+
 That seems inefficient: instead, why not store the addresses of the relevant
 functions in a lookup table? After all, the case ID numbers are just a consecutive
 run of integers.
@@ -515,8 +523,8 @@ Most function calls are made explicitly: see //CFunctionModel::invoke_function//
 above. But the Inter primitives below offer a way to call functions whose identities
 are not known at compile time, or which are not even part of the Inter program.
 
-The following primitives all simply call functions `i7_call_0`, and so on -- see
-below for their definitions -- except for `!externalcall`.
+The following primitives all simply call functions `i7_call_0`, and so on — see
+below for their definitions — except for `!externalcall`.
 
 =
 int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {

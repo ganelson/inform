@@ -131,8 +131,8 @@ equal to Glulx style numbers as conventionally used. (The Z-machine renders
 some as roman, some as bold, but for instance makes <code>HEADER_VMSTY</code> and
 <code>SUBHEADER_VMSTY</code> indistinguishable to the eye.) Glulx's system of styles
 is one of its weakest points from an IF author's perspective, since it is
-all but impossible to achieve the text effects one might want -- boldface,
-for instance, or red text -- and text rendering is almost the only area
+all but impossible to achieve the text effects one might want — boldface,
+for instance, or red text — and text rendering is almost the only area
 in which it is clearly inferior to the Z-machine, which it was designed
 to replace. Still, using these styles when we can will get the most out of
 it, and for unornamental works Glulx is fine in practice.</p>
@@ -275,23 +275,23 @@ to match (so, basically, they must not be altered at all).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ILLEGAL_TT</span><span class="plain-syntax">         = </span><span class="constant-syntax">0</span><span class="plain-syntax">;    </span><span class="comment-syntax">! Types of grammar token: illegal</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ELEMENTARY_TT</span><span class="plain-syntax">      = </span><span class="constant-syntax">1</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> (one of those below)
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ELEMENTARY_TT</span><span class="plain-syntax">      = </span><span class="constant-syntax">1</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> (</span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">those</span><span class="plain-syntax"> </span><span class="identifier-syntax">below</span><span class="plain-syntax">)
+</span></pre>
 </span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREPOSITION_TT</span><span class="plain-syntax">     = </span><span class="constant-syntax">2</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> e.g. 'into'
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREPOSITION_TT</span><span class="plain-syntax">     = </span><span class="constant-syntax">2</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">.</span><span class="identifier-syntax">g</span><span class="plain-syntax">. </span><span class="character-syntax">'into'</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROUTINE_FILTER_TT</span><span class="plain-syntax">  = </span><span class="constant-syntax">3</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> e.g. noun=CagedCreature
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROUTINE_FILTER_TT</span><span class="plain-syntax">  = </span><span class="constant-syntax">3</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">.</span><span class="identifier-syntax">g</span><span class="plain-syntax">. </span><span class="identifier-syntax">noun</span><span class="plain-syntax">=</span><span class="identifier-syntax">CagedCreature</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ATTR_FILTER_TT</span><span class="plain-syntax">     = </span><span class="constant-syntax">4</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> e.g. edible
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ATTR_FILTER_TT</span><span class="plain-syntax">     = </span><span class="constant-syntax">4</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">.</span><span class="identifier-syntax">g</span><span class="plain-syntax">. </span><span class="identifier-syntax">edible</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SCOPE_TT</span><span class="plain-syntax">           = </span><span class="constant-syntax">5</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> e.g. scope=Spells
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SCOPE_TT</span><span class="plain-syntax">           = </span><span class="constant-syntax">5</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">.</span><span class="identifier-syntax">g</span><span class="plain-syntax">. </span><span class="identifier-syntax">scope</span><span class="plain-syntax">=</span><span class="identifier-syntax">Spells</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_TT</span><span class="plain-syntax">             = </span><span class="constant-syntax">6</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre><code> a general parsing routine
-</code></pre>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_TT</span><span class="plain-syntax">             = </span><span class="constant-syntax">6</span><span class="plain-syntax">;    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">general</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsing</span><span class="plain-syntax"> </span><span class="identifier-syntax">routine</span><span class="plain-syntax">
+</span></pre>
 </span>
 
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_TOKEN</span><span class="plain-syntax">         = </span><span class="constant-syntax">0</span><span class="plain-syntax">;    </span><span class="comment-syntax">! The elementary grammar tokens, and</span>

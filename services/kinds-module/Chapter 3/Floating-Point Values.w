@@ -96,8 +96,8 @@ generalised_kind Kinds::FloatingPoint::to_real(generalised_kind gK) {
 }
 
 @h Flotations.
-This is where we compile Inter code to perform "flotation" -- promotion to real --
-or "deflotation" -- demotion, but taking into account scale factors since the
+This is where we compile Inter code to perform "flotation" — promotion to real —
+or "deflotation" — demotion, but taking into account scale factors since the
 integer versions may have been scaled.
 
 =

@@ -78,10 +78,9 @@ void Annotations::do_not_write_dialogue_during_text_ANNOT(text_stream *OUT, pars
 these must be declared before use.
 
 =
-typedef struct parse_node_annotation_type {
+classdef parse_node_annotation_type {
 	void (*writer_function)(text_stream *, parse_node *p);
-	CLASS_DEFINITION
-} parse_node_annotation_type;
+}
 
 int known_annotation_types_started = FALSE;
 parse_node_annotation_type *known_annotation_types[MAX_ANNOT_NUMBER];
@@ -113,12 +112,12 @@ void Annotations::write_annotations(text_stream *OUT, parse_node *PN) {
 @h Annotations.
 
 =
-typedef struct parse_node_annotation {
+classdef parse_node_annotation in 500s {
 	int annotation_id; /* one of the `*_ANNOT` values */
 	int annotation_integer; /* if this is an integer annotation, or ... */
 	general_pointer annotation_pointer; /* ... if it holds an object */
 	struct parse_node_annotation *next_annotation;
-} parse_node_annotation;
+}
 
 @ A new annotation is like a blank luggage ticket, waiting to be filled out
 and attached to some suitcase. All is has is its ID:
@@ -278,7 +277,7 @@ void Annotations::copy(parse_node *to, parse_node *from) {
 As a piece of defensive coding, //syntax// will not allow arbitrary annotations
 to be made: only annotations appropriate to the type of the node in question.
 For example, attempting to give an `heading_level_ANNOT` to a `SENTENCE_NT`
-node will throw an internal error -- it must mean a bug in Inform.
+node will throw an internal error — it must mean a bug in Inform.
 
 =
 void Annotations::make_annotation_allowed_table(void) {

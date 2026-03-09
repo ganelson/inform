@@ -82,7 +82,7 @@ really an interchange format for programs to use.
 
 A blank line is treated as a comment, so we rewrite it with the explicit `#`
 notation. If it is printed back, it will actually be printed back as empty
-anyway -- see //CommentInstruction::write//. So nobody will ever know our little
+anyway — see //CommentInstruction::write//. So nobody will ever know our little
 deception.
 
 @<Find indentation@> =
@@ -115,7 +115,7 @@ root package of the tree.)
 
 @ A line ending, e.g., `... _bar _foo=2` has those annotations parsed and trimmed
 away. The result of the parsing goes into the annotation set `ilp.set`. Note
-that we do nothing with that result here -- it will be up to the `CONSTRUCT_READ_MTID`
+that we do nothing with that result here — it will be up to the `CONSTRUCT_READ_MTID`
 method for the construct used on the line to make use of the set, or not, as it
 pleases.
 
@@ -197,7 +197,7 @@ reference, or even a reference to something in another tree which is to be
 linked in later on. So if we see a URL which does not (yet) exist, we wire
 a plug to it. For example, given `/some/enchanted/evening`, we make a local
 symbol `evening ~~> "/some/enchanted/evening"`. This is then fixed up when we
-resolve forward references at the end of the parsing process -- see below.
+resolve forward references at the end of the parsing process — see below.
 
 @<Search using URL conventions@> =
 	S = InterSymbolsTable::URL_to_symbol(InterPackage::tree(InterSymbolsTable::package(T)), name);
@@ -283,14 +283,18 @@ void TextualInter::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 
 @ The unexpected case here is where our unresolved symbol `S` is itself a socket,
 having been declared by a line of Inter like
-= (text as Inter)
+
+``` Inter
 	socket hypothetical ~~> /ultima/thule
-=
+```
+
 at a position in the text file where `/ultima/thule` has not yet been defined.
 This then becomes that most heretical thing, a socket wired to a name:
-= (text as Inter)
+
+``` Inter
 	socket hypothetical ~~> "/ultima/thule"
-=
+```
+
 ...until we correct that heresy here by calling //Wiring::make_socket_to//.
 (It was already a socket: but now it's a socket to `S_to`.)
 

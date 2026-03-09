@@ -11,16 +11,18 @@ duplicates.
 This is not done to save memory, though it does that too, but because we want
 runtime code to be able to compare literal texts by performing an unsigned
 comparison on their addresses. The following works:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be "Rhayader";
 	if Q is "Rhayader":
 		say "Q is still Q, so you can relax."
-=
+```
+
 because the two instances of `"Rhayader"` compile to the same data in memory.
 Dynamic texts must of course be compared more expensively.
 
 This cannot be arranged in the main body of the Inform compiler because these
-two instances might be much further apart than in this example -- one might be
+two instances might be much further apart than in this example — one might be
 in a kit, and the other in an unrelated extension, say.
 
 Our inventory `inv` already contains a list `inv->text_nodes` of constant
@@ -51,11 +53,12 @@ void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *i
 @ If the list reads `"apple", "apple", "banana", "cauliflower", "cauliflower"`,
 this will be executed on the first `"apple"`, on `"banana"` and the first
 `"cauliflower"`. They will lead to definitions in the texts module like so:
-= (text as Inter)
+
+``` Inter
 	constant alphabetised_text_0 K_unchecked = "apple" __text_literal=1
 	constant alphabetised_text_1 K_unchecked = "banana" __text_literal=1
 	constant alphabetised_text_2 K_unchecked = "cauliflower" __text_literal=1
-=
+```
 
 @<A new entry, not a duplicated one@> =
 	TEMPORARY_TEXT(A)
@@ -67,13 +70,17 @@ this will be executed on the first `"apple"`, on `"banana"` and the first
 	latest_text = S;
 
 @ This is run on every P in the list. It begins as, for example,
-= (text as Inter)
+
+``` Inter
 	constant (text_literal) whatever = "banana"
-=
+```
+
 and becomes:
-= (text as Inter)
+
+``` Inter
 	constant whatever = ref_to_text
-=
+```
+
 where `ref_text_2` in the current package is equated to `alphabetised_text_1`
 in `texts`.
 

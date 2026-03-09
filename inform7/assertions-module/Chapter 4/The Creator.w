@@ -5,7 +5,7 @@ value and global variables are made.
 
 @h Creations to match unrecognised names.
 The model contains objects, their properties and their relationships, and
-this section is where all of the objects are created -- not only world
+this section is where all of the objects are created — not only world
 objects (like rooms and people) but also named values.
 
 The model world is initially empty. It grows gradually as sentences are
@@ -15,14 +15,18 @@ pass through assertions. For example, we reach:
 > Fifi is in the wicker basket.
 
 The two sides of the assertion are, respectively, `px`:
-= (text)
+
+``` None
 	node:PROPER_NOUN_NT  <fifi> (no article)
-=
+```
+
 And `py`:
-= (text)
+
+``` None
 	node:RELATIONSHIP_NT  <in> (type:standard)
 	    node:PROPER_NOUN_NT  <wicker basket> (definite)
-=
+```
+
 The Creator is not alas a cultured gentleman with a white-pointed beard, a
 roll of architect's plans and a set square, perhaps played by an American
 character actor in a movie like "The Matrix". It's just a routine which
@@ -217,7 +221,7 @@ information moves across the tree rather than upwards. When `Assertions::Creator
 is applied to a given node, it is allowed access to that node and all its
 children, and can otherwise see only two pieces of information: the kind
 for any creation ("animal" or "number", above) and, in some cases, also
-a reference to which node in the tree determined this -- the "governor".
+a reference to which node in the tree determined this — the "governor".
 
 We recurse downwards, looking only for `CALLED_NT` and `CREATED_NT` nodes,
 both of which are excised and replaced with `COMMON_NOUN_NT` or
@@ -245,7 +249,7 @@ void Assertions::Creator::noun_creator(parse_node *p, kind *create_as, parse_nod
 			"not that they don't.");
 	}
 
-@ CALLED nodes allow a much more generous range of names to be used -- that's
+@ CALLED nodes allow a much more generous range of names to be used — that's
 the whole point of them. Really they contain the whole language in miniature,
 because a "called" clause can specify not only the name but also its kind,
 some properties which it has, and so forth. For example:
@@ -279,8 +283,8 @@ an object, but we know locally that Peter must further have the kind "man".
 	@<If the CALLED name used the definite article, make a note of that@>;
 
 @ This is where we act on the miniature sentence implied by the CALLED
-subtree. We replace the subtree with a single node -- the result of creation
-on the `called_name_node` side -- but then apply to it any kind, proposition
+subtree. We replace the subtree with a single node — the result of creation
+on the `called_name_node` side — but then apply to it any kind, proposition
 or adjectives specified in the `what_to_make_node` side.
 
 @<Replace the CALLED subtree with the new creation, mutatis mutandis@> =
@@ -1037,7 +1041,7 @@ When the kind is created, the following function makes instances for whichever
 languages we might need to print in at runtime: which will be English, perhaps
 with one other, if the language of play is not English.
 
-We do this exactly as we would to create any other instance -- we write a logical
+We do this exactly as we would to create any other instance — we write a logical
 proposition claiming its existence, then assert it to be true.
 
 @d NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK Assertions::Creator::stock_nl_kind

@@ -34,9 +34,11 @@ by hand.
 
 In fact we secretly make a second loop variable `v2` as well, though it is
 invisible from source text, and construct a loop analogous to:
-= (text)
+
+``` None
 	for (v1=D(0), v2=D(v1); v1; v1=v2, v2=D(v1))
-=
+```
+
 where `D` is a function deferred from the proposition which is such that:
 
 - `D(0)` produces the first $x$ such that $\phi(x)$, and otherwise
@@ -47,15 +49,19 @@ This arrangement is possible because object values, and enumerated values, are
 never equal to 0 at runtime.
 
 The reason we do not simply compile
-= (text)
+
+``` None
 	for (v1=D(0); v1; v1=D(v1))
-=
+```
+
 is to protects us in case the body of the loop takes action which moves `v1` out
-of the domain -- e.g., in the case of:
-= (text as Inform 7)
+of the domain — e.g., in the case of:
+
+``` Inform7
 	repeat with T running through items on the table:
 		now T is in the box.
-=
+```
+
 This is the famous "broken `objectloop`" hazard of Inform 6. Experience shows
 that authors value safety over the slight speed overhead incurred.
 
@@ -107,11 +113,13 @@ that authors value safety over the slight speed overhead incurred.
 @ It would be nice to generate the whole loop from the schema for the kind,
 but of course our description is unlikely to be just ${\it kind}_K(x)$. So
 the idea is roughly:
-= (text)
+
+``` None
 	loop over each v1 in K
 	    if phi(v1)
 	        ...
-=
+```
+
 We can optimise out the "if" part in the case when $\phi(x) = {\it kind}_K(x)$.
 
 @<Compile from the kind's loop schema@> =
@@ -260,9 +268,9 @@ a list (whose contents are not known at compile time).
 
 We need three variables, of which only `val_var` is visible in source text:
 
-- `index_var_s` is the position in the list -- 0, 1, 2, ...;
+- `index_var_s` is the position in the list — 0, 1, 2, ...;
 - `val_var_s` is the entry at that position;
-- `copy_var_s` is the list itself -- which we stash into this temporary
+- `copy_var_s` is the list itself — which we stash into this temporary
 variable to avoid having to evaluate it more than once.
 
 =

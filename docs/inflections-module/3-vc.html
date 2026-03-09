@@ -63,15 +63,15 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="3-vc.html#SP2">&#167;2. Finding</a></li><li><a href="3-vc.html#SP6">&#167;6. Making conjugations</a></li><li><a href="3-vc.html#SP7">&#167;7. Follow instructions</a></li><li><a href="3-vc.html#SP8">&#167;8. Merge verb material</a></li><li><a href="3-vc.html#SP11">&#167;11. Parsing verb form numbers</a></li><li><a href="3-vc.html#SP12">&#167;12. Parsing tense and sense indicators</a></li><li><a href="3-vc.html#SP13">&#167;13. Parsing utilities</a></li><li><a href="3-vc.html#SP15">&#167;15. Errors</a></li><li><a href="3-vc.html#SP16">&#167;16. Testing</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  We will need to turn a base form of a verb -- in English, this is always the
-infinitive -- into up to 123 variants; we manage this with quite an extensive
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  We will need to turn a base form of a verb — in English, this is always the
+infinitive — into up to 123 variants; we manage this with quite an extensive
 data structure. There will typically only be a few dozen fully conjugated
 verbs in any source text, though, so the memory cost isn't too extreme. For
 English it looks wasteful, since so many forms are the same, but for French
 (say) they are almost all different.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">infinitive</span><span class="plain-syntax">; </span><span class="comment-syntax">/* not counting the &quot;to&quot;, in English */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">past_participle</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">present_participle</span><span class="plain-syntax">;</span>
@@ -85,8 +85,7 @@ English it looks wasteful, since so many forms are the same, but for French
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">auxiliary_only</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only as an auxiliary, e.g. the &quot;have&quot; in &quot;I have gone&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_of_verb</span><span class="plain-syntax">; </span><span class="comment-syntax">/* defines an instance of kind &quot;verb&quot; at run-time */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb_conjugation</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_tabulation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_be_auxiliary</span><span class="plain-syntax">; </span><span class="comment-syntax">/* use this if non-empty */</span>
@@ -290,11 +289,8 @@ anybody else try this one on.)</p>
 <p class="commentary firstcommentary"><a id="SP6_3_2" class="paragraph-anchor"></a><b>&#167;6.3.2. </b>  A tabulation is a sort of program laying out what to put in which slots,
 active or passive. Each production is a step in this program, and it consists
 of a &quot;selector&quot; followed by a &quot;line&quot;. For example, the production:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">avoir</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3+*</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">a3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">avoir</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3+*</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>contains six tokens; the selector is <code>a3</code>, and the line is made up from the
 rest. (The selector is always just a single token.)</p>
 </div>
@@ -437,19 +433,13 @@ participles and then chooses the tabulation <code>&lt;to-do-tabulation&gt;</code
 <p class="commentary firstcommentary"><a id="SP7_1_1" class="paragraph-anchor"></a><b>&#167;7.1.1. </b>  Each production in this language's <code>&lt;verb-conjugation-instructions&gt;</code> grammar
 consists of a (possibly empty) pattern to match, followed by the name of a
 nonterminal to use as the conjugation if it matches. For example, in</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">-querir</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fr-querir-conjugation&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">-querir</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fr-querir-conjugation&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>the pattern part is a single token, <code>-querir</code>, which matches if the base text
 is a single word whose last six characters are &quot;querir&quot;. A more complicated
 case is:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;to-be-able-to-auxiliary&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;to-be-able-to-auxiliary&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>Here the wildcard <code>...</code> matches one or more words, and the &quot;auxiliary
 infinitive&quot; form is set to the part matched by <code>...</code>: for example,
 &quot;be able to see&quot; matches with auxiliary infinitive &quot;see&quot;.</p>
@@ -576,17 +566,11 @@ and we have to copy that text into a word assemblage and return it.</p>
 <p>In theory that's a one-line routine, but it's made complicated by the number
 of special syntaxes which can go into the row of text. For example, if <code>row</code>
 is only</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">will</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">will</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>then the word assemblage comes out to just &quot;will not do&quot;; but if it is</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">auxiliary-have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">done</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">auxiliary-have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">done</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>then we consult tense 1 (present) of the verb &quot;auxiliary-have&quot;, extract
 the relevant slot, then append &quot;done&quot;. (This might produce &quot;have done&quot;
 or &quot;has done&quot; or &quot;haven't done&quot; or &quot;hasn't done&quot;, depending on the
@@ -658,12 +642,9 @@ make use of the same fancy features we're allowing here.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vc.html#SP8">&#167;8</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3. </b>  A number followed by a verb in brackets, like so:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">avoir</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<p>expands to verb form 3 of this verb -- the past participle of &quot;avoir&quot;, which
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">avoir</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax">
+</span></pre>
+<p>expands to verb form 3 of this verb — the past participle of &quot;avoir&quot;, which
 is &quot;eu&quot;, as it happens. This is a special kind of lift. It isn't actually
 performed now; we make a note and carry it out when we reach the brackets,
 on the next iteration.</p>
@@ -683,11 +664,8 @@ on the next iteration.</p>
 set, in which case we should lift a verb form, or we might not, in which case
 we should lift an ordinary usage, such as third-person singular in a particular
 tense. A lift can optionally change tense or sense: for example,</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">t1</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>lifts from the present tense of &quot;to have&quot;. If there's no tense indicator,
 the tense remains the current one. (It's also possible to change the sense from
 positive to negative or vice versa with this, though I can't think of a
@@ -786,30 +764,18 @@ joining but with a space. Thus <code>fish~to~fry</code> becomes three words.</p>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The final step in merging verb material is to pass the result through the
 following, which attends to contractions. (Most of the time it does nothing.)
 For example, suppose we have:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">ne-'</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ai</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">ne-'</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ai</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>The <code>-'</code> marker tells us that the word it attaches to should contract if a
 vowel follows it. In this case that's what happens, so we convert to:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">n'ai</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">n'ai</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>On the other hand,</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">ne-'</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">jette</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">ne-'</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">jette</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>would convert to</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">ne</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">jette</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">ne</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">jette</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pas</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>with no contraction. Either way, though, we have to take some action when
 we see a <code>-'</code> marker.</p>
 </div>

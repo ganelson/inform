@@ -235,7 +235,7 @@ int Kinds::Behaviour::has_named_constant_values(kind *K) {
 }
 
 @ And some kinds have values which are implicit in the source text, but never
-spelled out with direct assertions -- dialogue beats, for example.
+spelled out with direct assertions — dialogue beats, for example.
 
 =
 int Kinds::Behaviour::forbid_assertion_creation(kind *K) {
@@ -334,8 +334,8 @@ text_stream *Kinds::Behaviour::get_identifier(kind *K) {
 }
 
 @h (I) Storing values at run-time.
-Recall that values are stored at run-time either as "word values" -- a
-single I6 word -- or "pointer values" (sometimes "block values"), where
+Recall that values are stored at run-time either as "word values" — a
+single I6 word — or "pointer values" (sometimes "block values"), where
 the I6 word is a pointer to a block of data on the heap. Numbers and times
 are word values, texts and lists are pointer values. Which form a value
 takes depends on its kind:
@@ -507,7 +507,7 @@ int Kinds::Behaviour::indexed_grey_if_empty(kind *K) {
 	return K->construct->indexed_grey_if_empty;
 }
 
-@ And every kind is allowed to have the specification pseudo-property -- a little
+@ And every kind is allowed to have the specification pseudo-property — a little
 text used only on the index pages, and not existing at run-time.
 
 =

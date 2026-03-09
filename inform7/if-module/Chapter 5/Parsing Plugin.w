@@ -58,11 +58,10 @@ and in particular, to every object instance and every kind of object.
 @d PARSING_DATA_FOR_SUBJ(S) FEATURE_DATA_ON_SUBJECT(parsing, S)
 
 =
-typedef struct parsing_data {
+classdef parsing_data {
 	struct command_grammar *understand_as_this_subject; /* grammar for parsing the name at run-time */
 	struct parsing_compilation_data compilation_data;
-	CLASS_DEFINITION
-} parsing_data;
+}
 
 parsing_data *ParsingPlugin::new_data(inference_subject *subj) {
 	parsing_data *pd = CREATE(parsing_data);

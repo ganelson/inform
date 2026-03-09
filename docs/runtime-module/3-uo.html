@@ -245,7 +245,7 @@ we have already read all the offending inline definitions.</p>
 <span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="constant-syntax">USED_IN_OPTIONS_MD_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">efo</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="constant-syntax">USED_IN_EXTENSION_MD_HL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><a href="2-cu.html#SP5" class="function-link"><span class="function-syntax">CompilationUnits::extension_id</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">efo</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                </span><a href="2-cu.html#SP4" class="function-link"><span class="function-syntax">CompilationUnits::extension_id</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">efo</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="constant-syntax">USE_OPTION_CV_MD_HL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">value_to_use</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -345,19 +345,13 @@ dictionary of the symbol names being declared to keep track.</p>
 <p class="commentary firstcommentary"><a id="SP1_6_1" class="paragraph-anchor"></a><b>&#167;1.6.1. </b>  The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
 notation inside <code>(-</code> and <code>-)</code> markers: for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">feverish</span><span class="plain-syntax"> </span><span class="identifier-syntax">dreams</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEVERISH_DREAMS</span><span class="plain-syntax">; -).</span>
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">hallucination</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}+3; -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">feverish</span><span class="plain-syntax"> </span><span class="identifier-syntax">dreams</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEVERISH_DREAMS</span><span class="plain-syntax">; -).
+</span><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">hallucination</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax">
+	(- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}+3; -).
+</span></pre>
 <p>The <code>{N}</code> marker, if present, is converted to the value, producing, say:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = </span><span class="constant-syntax">4096</span><span class="plain-syntax">+3;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = </span><span class="constant-syntax">4096</span><span class="plain-syntax">+3;
+</span></pre>
 <p>All this form of notation is deprecated now, but in the mean time we can still
 read almost all such definitions, because almost all users write them in a simple
 enough way that we can tell what they want and achieve it by better means.</p>
@@ -557,19 +551,13 @@ declared?</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Deprecated inclusion notation.</b>  The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
 notation inside <code>(-</code> and <code>-)</code> markers: for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">feverish</span><span class="plain-syntax"> </span><span class="identifier-syntax">dreams</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEVERISH_DREAMS</span><span class="plain-syntax">; -).</span>
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">hallucination</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}+3; -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">feverish</span><span class="plain-syntax"> </span><span class="identifier-syntax">dreams</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEVERISH_DREAMS</span><span class="plain-syntax">; -).
+</span><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">hallucination</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax">
+	(- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}+3; -).
+</span></pre>
 <p>The <code>{N}</code> marker, if present, is converted to the value, producing, say:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = </span><span class="constant-syntax">4096</span><span class="plain-syntax">+3;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DREAMY_TIME</span><span class="plain-syntax"> = </span><span class="constant-syntax">4096</span><span class="plain-syntax">+3;
+</span></pre>
 <p>All this form of notation is deprecated now, but in the mean time we can still
 read almost all such definitions, because almost all users write them in a simple
 enough way that we can tell what they want and achieve it by better means.</p>

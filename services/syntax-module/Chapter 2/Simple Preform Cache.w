@@ -94,10 +94,10 @@ change, so that the same text now has to be read differently.
 
 The first problem can't be fixed here. It's tempting to try something like
 flagging S-nodes which have been altered, and then ensuring that the
-cache never serves up an altered result. But that fails for timing reasons --
+cache never serves up an altered result. But that fails for timing reasons —
 by the time the S-node might be altered, pointers to it may exist
 in multiple data structures already, because the cache might have served
-it more than once by that time. (Not just a theoretical possibility -- tests
+it more than once by that time. (Not just a theoretical possibility — tests
 show that this does, albeit rarely, happen.) The brute force solution is to
 serve a copy of the cache entry, and thus never send out the same pointer
 twice. But this more than doubles the memory required to store S-nodes,

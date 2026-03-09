@@ -13,13 +13,12 @@ note that A is quite restricted in what it can be: it must be a simple-to-test
 description only, whereas B could be any subtree of an assertion.
 
 =
-typedef struct implication {
+classdef implication {
 	struct pcalc_prop *if_proposition; /* which objects are affected */
 	struct parse_node *then_pn; /* what assertion is implied about them */
 	struct parse_node *where_declared;
 	int implied_likelihood; /* with what certainty level */
-	CLASS_DEFINITION
-} implication;
+}
 
 @ We also need a little piece of storage attached to each property name:
 
@@ -118,7 +117,7 @@ object X individually.
 
 We begin by checking implications associated with X and applying to X,
 but in fact because `Assertions::Implications::check_implications_of` recurses depth-first through
-the kinds, a typical object X -- a container, say -- will first have
+the kinds, a typical object X — a container, say — will first have
 implications associated with "thing" applied to it, then with
 those associated with "container", and only then its own implications.
 

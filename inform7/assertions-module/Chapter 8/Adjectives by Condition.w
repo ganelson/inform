@@ -2,10 +2,12 @@
 
 Adjectives defined by a one-line I7 condition.
 
-@ These are adjectives for when the condition is given in a single line, like so --
-= (text as Inform 7)
+@ These are adjectives for when the condition is given in a single line, like so —
+
+``` Inform7
 Definition: A container is roomy if its carrying capacity is greater than 10.
-=
+```
+
 ...but has no special form. The high priority number in the call to
 //AdjectiveMeanings::new_family// means that this family is the last in line
 when claiming adjectives; it accepts any that are left unclaimed.

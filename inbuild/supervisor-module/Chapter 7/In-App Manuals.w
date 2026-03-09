@@ -58,7 +58,7 @@ void Manuals::duplex_contents_page(OUTPUT_STREAM, compiled_documentation *cd) {
 	HTML_CLOSE("td");
 
 @ The lines linking to sections within a chapter are grouped into a `<div>` for
-that chapter, which can be hidden or revealed -- it contains "extra" material,
+that chapter, which can be hidden or revealed — it contains "extra" material,
 as we put it.
 
 We assume here that there are fewer than 1000 chapters in each volume;

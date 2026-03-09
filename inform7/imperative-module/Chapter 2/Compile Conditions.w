@@ -101,9 +101,11 @@ int callings_session_number[MAX_CALLINGS_IN_MATCH];
 local_variable *callings_in_condition[MAX_CALLINGS_IN_MATCH];
 
 @ The basic strategy here is to compile this:
-= (text)
+
+``` None
 	((condition setting C1, ..., Ci) || (C1 = default, C2 = default, ..., Ci = default))
-=
+```
+
 using the short-circuit property of `OR_BIP`: if the condition evaluates to false,
 and therefore there is no consistent set of values written into the calling
 variables `C1` to `Ci`, then we evaluate the second clause, and set all of the

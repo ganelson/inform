@@ -7,15 +7,14 @@ untrue and with some degree of certainty.
 This is quite a lightweight structure:
 
 =
-typedef struct inference {
+classdef inference {
 	struct inference_family *family; /* see above */
 	general_pointer data; /* details specific to the family */
 	int certainty; /* any `*_CE` value other than `UNKNOWN_CE` */
 	struct parse_node *inferred_from; /* from what sentence was this drawn? */
 	int drawn_during_stage; /* or was this drawn during the model completion stage? */
 	int drawn_from_metadata; /* or from the project's metadata file? */
-	CLASS_DEFINITION
-} inference;
+}
 
 @ The following routine coins a newly minted inference which is not yet attached
 to any subject: but it will not stay unattached for long. Note that if nothing
@@ -236,18 +235,22 @@ the same basic fact, i.e., what the carrying capacity of the jar is.
 @ In general, if two inferences give different content on the same topic, then
 they contradict each other if they are both positive, but not if only one of
 them is:
-= (text as Inform 7)
+
+``` Inform7
 North of Oxford is Banbury. North of Oxford is Abingdon.      CONTRADICTION!
 East of Oxford is Cowley. East of Oxford is not Kidlington.   NO CONTRADICTION!
-=
+```
+
 But there is a subtlety when both inferences are negative: it comes down to
 whether one value being false forces any alternative to be true, i.e., to
 whether the details are Boolean. Consider:
-= (text as Inform 7)
+
+``` Inform7
 The box is not open. The box is not closed.                   CONTRADICTION!
 The bag can be red, blue or green.
 The bag is not green. The bag is not blue.                    NO CONTRADICTION!
-=
+```
+
 In practice, Inform steers authors away from making negative assertions, so
 this last subtlety doesn't arise in that form, but it does matter for inferences
 drawn in world-modelling. For example, a single object O may have three
@@ -342,11 +345,10 @@ Every inference belongs to a family, and different families have different
 rules, provided by method calls.
 
 =
-typedef struct inference_family {
+classdef inference_family {
 	struct method_set *methods;
 	struct text_stream *log_name;
-	CLASS_DEFINITION
-} inference_family;
+}
 
 inference_family *Inferences::new_family(text_stream *name) {
 	inference_family *f = CREATE(inference_family);

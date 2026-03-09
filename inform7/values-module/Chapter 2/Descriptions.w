@@ -141,7 +141,7 @@ parse_node *Descriptions::to_rvalue(parse_node *spec) {
 @h Testing.
 Descriptions are "qualified" when adjectives, or relative clauses, make
 them dependent on context. For instance, "a vehicle" is unqualified, but
-"an even number" or "a vehicle in Trafalgar Square" are qualified --
+"an even number" or "a vehicle in Trafalgar Square" are qualified —
 the same value might satisfy the description at some times but not others
 during play.
 
@@ -352,7 +352,7 @@ we would need a way to determine, given two propositions A and B, whether one
 implied the other or not. Since predicate calculus is complete, and our
 domains are mostly finite, there do in fact exist (slow and difficult)
 algorithms which could determine this. But there would be real problems with
-larger domains not amenable to model-checking, such as "number", and anyway --
+larger domains not amenable to model-checking, such as "number", and anyway —
 why not cheat?
 
 Proposition length is admittedly a crude measure, but because of the fact that

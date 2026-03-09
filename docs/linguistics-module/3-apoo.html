@@ -76,10 +76,10 @@ really only meaningful for turn-based simulations, as in: &quot;for three turns&
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  And the following constants are used to record how to measure the
-threshold value -- &quot;for more than three turns&quot; would be <code>GT_REPM</code>, and so
+threshold value — &quot;for more than three turns&quot; would be <code>GT_REPM</code>, and so
 on. The default, <code>NO_REPM</code>, means that nothing is specified by way of
-comparison -- &quot;four times&quot; -- and the meaning of that may depend on
-context; Inform treats a <code>NO_REPM</code> occurrence quite carefully -- see
+comparison — &quot;four times&quot; — and the meaning of that may depend on
+context; Inform treats a <code>NO_REPM</code> occurrence quite carefully — see
 <a href="../runtime-module/5-chr.html" class="internal">Chronology (in runtime)</a>.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EQ_REPM</span> <span class="constant-syntax">1</span>
@@ -100,22 +100,21 @@ a time period. For example, &quot;X is 7 for the second time&quot; would have as
 its used wording &quot;for the second time&quot;, and unused wording &quot;X is 7&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">time_period</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">time_period</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">units</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the two above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the duration or else the lower limit of an interval */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">until</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>-1</code> or else the upper limit of an interval */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_operator</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_REPM</code> constants */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">used_wording</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">unused_wording</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">time_period</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure time_period is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Logging:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Occurrence::log</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Occurrence::log</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3_2">&#167;3.2</a><br/>Diagrams - <a href="1-dgr.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vtp</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Occurrence::log</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Occurrence::log</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP2_2">&#167;2.2</a><br/>Diagrams - <a href="1-dgr.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vtp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">time_period</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tp</span><span class="plain-syntax"> = (</span><span class="type-syntax">time_period</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vtp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">test_operator</span><span class="plain-syntax">) {</span>
@@ -163,7 +162,7 @@ its used wording &quot;for the second time&quot;, and unused wording &quot;X is 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_wording</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Occurrence::unused_wording</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Occurrence::unused_wording</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP5_3_1_1_1_3_4">&#167;5.3.1.1.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">time_period</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tp</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Occurrence::unused_wording</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Occurrence::unused_wording</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP5_4_1_1_1_3_4">&#167;5.4.1.1.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">time_period</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no time period"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unused_wording</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -263,7 +262,7 @@ cannot contain any HR; this cuts down our parsing time considerably.</p>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And so, finally, here is code to parse using the above grammar:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">time_period</span><span class="plain-syntax"> *</span><span class="function-syntax">Occurrence::parse</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Occurrence::parse</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP5_3_1_1_1_3_4">&#167;5.3.1.1.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">time_period</span><span class="plain-syntax"> *</span><span class="function-syntax">Occurrence::parse</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Occurrence::parse</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP5_4_1_1_1_3_4">&#167;5.4.1.1.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;historical-reference-possible&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_THROUGH_WORDING</span><span class="plain-syntax">(</span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="function-syntax">&lt;&lt;to&gt;&gt;</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">;</span>

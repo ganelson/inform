@@ -9,7 +9,7 @@ which use this module:
 @d HTML_MODULE TRUE
 
 @ Like all modules, this one must define a `start` and `end` function; the
-following have been thoroughly debugged and only rarely give trouble --
+following have been thoroughly debugged and only rarely give trouble —
 
 @e DOC_FRAGMENT_MREASON
 
@@ -20,12 +20,3 @@ void HTMLModule::start(void) {
 
 void HTMLModule::end(void) {
 }
-
-@
-
-@e documentation_ref_CLASS
-@e localisation_dictionary_CLASS
-
-=
-DECLARE_CLASS(documentation_ref)
-DECLARE_CLASS(localisation_dictionary)

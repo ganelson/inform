@@ -67,17 +67,14 @@ duplicates.</p>
 <p>This is not done to save memory, though it does that too, but because we want
 runtime code to be able to compare literal texts by performing an unsigned
 comparison on their addresses. The following works:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"Rhayader"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"Rhayader"</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Q is still Q, so you can relax."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"Rhayader"</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"Rhayader"</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Q is still Q, so you can relax."</span><span class="plain-syntax">
+</span></pre>
 <p>because the two instances of <code>&quot;Rhayader&quot;</code> compile to the same data in memory.
 Dynamic texts must of course be compared more expensively.</p>
 <p>This cannot be arranged in the main body of the Inform compiler because these
-two instances might be much further apart than in this example -- one might be
+two instances might be much further apart than in this example — one might be
 in a kit, and the other in an unrelated extension, say.</p>
 <p>Our inventory <code>inv</code> already contains a list <code>inv-&gt;text_nodes</code> of constant
 definitions whose value is a literal text.</p>
@@ -108,12 +105,11 @@ definitions whose value is a literal text.</p>
 <p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>  If the list reads <code>&quot;apple&quot;, &quot;apple&quot;, &quot;banana&quot;, &quot;cauliflower&quot;, &quot;cauliflower&quot;</code>,
 this will be executed on the first <code>&quot;apple&quot;</code>, on <code>&quot;banana&quot;</code> and the first
 <code>&quot;cauliflower&quot;</code>. They will lead to definitions in the texts module like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_0 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"apple"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_1 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"banana"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_2 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"cauliflower"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_0 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"apple"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_1 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"banana"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> alphabetised_text_2 </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> = </span><span class="string-syntax">"cauliflower"</span><span class="plain-syntax"> </span><span class="identifier-syntax">__text_literal</span><span class="plain-syntax">=1</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">A new entry, not a duplicated one</span><span class="named-paragraph-number">1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,17 +124,11 @@ this will be executed on the first <code>&quot;apple&quot;</code>, on <code>&quo
 <ul class="endnotetexts"><li>This code is used in <a href="5-lt.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  This is run on every P in the list. It begins as, for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> (text_literal) whatever = </span><span class="string-syntax">"banana"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> (text_literal) whatever = </span><span class="string-syntax">"banana"</span><span class="plain-syntax">
+</span></pre>
 <p>and becomes:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> whatever = ref_to_text</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> whatever = ref_to_text
+</span></pre>
 <p>where <code>ref_text_2</code> in the current package is equated to <code>alphabetised_text_1</code>
 in <code>texts</code>.</p>
 </div>

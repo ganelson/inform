@@ -185,7 +185,7 @@ into an action.
 
 The unusual notation "(future action)" here allows Inform to parse rule
 preambles for these activities in a way which would refer to the action which
-might, at some point in the future, be generated -- during parsing we don't of
+might, at some point in the future, be generated — during parsing we don't of
 course yet know what that action is, but there is always a current guess at
 what it might be.
 
@@ -350,7 +350,7 @@ able to vary the set of choices available.
 We do this by reading the options from the Table of Final Question Options.
 (See below for its default contents.) Each row is an option, whose wording
 must be placed in the topic column. The final question wording entry can
-either be text describing the option -- e.g., "perform a RESTART" -- or
+either be text describing the option — e.g., "perform a RESTART" — or
 can be left blank, making the option a secret one, omitted from the question
 but still recognised as an answer. The only if victorious entry can be set
 to make the option available only after a victorious ending, not after a loss;
@@ -425,25 +425,28 @@ A "locale description" is a segment of the text produced by LOOK: the
 "locale" is a clutch of objects at a given level in the object tree. Most
 room descriptions consist of a top line, a description of the place, and
 then a single (though often, as here, multi-paragraph) locale:
-= (text)
+
+``` None
 	Sentier Le Corbusier
 	A coastal walk along the rocky shore between Nice and Menton.
 	    ...now the locale for the room Sentier Le Corbusier:
 	A translucent jellyfish has been washed up by the waves.
 	    
 	You can also see a bucket and a spade here.
-=
+```
+
 A locale typically contains a run of paragraphs specific to interesting
 items, especially those not yet picked up, followed by a paragraph which
-lists the "nondescript" items -- those not given paragraphs of their own,
-such as the bucket and spade. (Some items, though -- typically scenery,
-but also for instance the player -- are not even nondescript and do not
+lists the "nondescript" items — those not given paragraphs of their own,
+such as the bucket and spade. (Some items, though — typically scenery,
+but also for instance the player — are not even nondescript and do not
 appear at all.) A locale can contain no interesting paragraphs, or no list
 of nondescript items, or can even contain neither: that is, it can be
 entirely empty.
 
 When the player is in or on top of something, multiple locales are described:
-= (text)
+
+``` None
 	Sentier Le Corbusier (in the golf cart)
 	A coastal walk along the rocky shore between Nice and Menton.
 	    ...now the locale for the room Sentier Le Corbusier:
@@ -452,14 +455,15 @@ When the player is in or on top of something, multiple locales are described:
 	You can also see a bucket and a spade here.
 	    ...now the locale for the golf cart:
 	In the golf cart you can see a map of Villefranche-sur-Mer.
-=
+```
+
 To sum up, the text produced by LOOK consists of a header (produced by
 the carry out looking rules) followed by one or more locale descriptions
 (produced by the activity below).
 
 @h Locale Implementation.
 When describing a locale, we keep a Table of interesting objects, each
-associated with a priority -- a number indicating how important, and
+associated with a priority — a number indicating how important, and
 therefore how near to the top of the description, the object is. A special
 syntax allows us to create the Table with exactly the same number of rows
 as there are things in the model world: thus, in the worst case where
@@ -529,7 +533,7 @@ contents" activity will be going on. Provided that the notable objects
 chosen in (2) are all children of the locale domain, this will always
 happen. If the user should add rules to make quite different objects also
 notable, then the "you-can-also-see rule" has to resort to listing in
-a way which doesn't use the "listing contents" activity -- since the
+a way which doesn't use the "listing contents" activity — since the
 list is not in fact a list of the contents of anything.
 
 =
@@ -639,18 +643,18 @@ named by a previous paragraph, but also if it has been explicitly marked
 as such to get rid of it. In considering an item, we have three basic
 options:
 
-- Print a paragraph about the item and mark it as mentioned -- this
+- Print a paragraph about the item and mark it as mentioned — this
 is good for interesting items deserving a paragraph of their own.
-- Print a paragraph, but do not mark it as mentioned -- this is only
+- Print a paragraph, but do not mark it as mentioned — this is only
 likely to be useful if we want to print information related to the
 item without mentioning the thing itself. (For instance, if the presence
 of a mysterious parcel resulted in a ticking noise, we could print a
 paragraph about the ticking noise without mentioning the parcel, which
 would then appear later.)
-- Mark the item as mentioned but print nothing -- this gets rid of the
+- Mark the item as mentioned but print nothing — this gets rid of the
 item, ensuring that it will not appear in the final "you can also see"
 sentence, and will not be considered by subsequent rules.
-- Do nothing at all -- the item then becomes "nondescript" and appears
+- Do nothing at all — the item then becomes "nondescript" and appears
 in the final "you can also see" sentence, unless somebody else mentions
 it in the mean time.
 

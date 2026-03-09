@@ -112,7 +112,7 @@ void Supervisor::start(void) {
 @h Configuration phase.
 Initially, then, we are in the configuration phase. When the parent defines
 its command-line options, we expect it to call `Supervisor::declare_options`
-so that we can define further options -- this provides the large set of
+so that we can define further options — this provides the large set of
 common options found in both `inform7` and `inbuild`, our two possible parents.
 
 =

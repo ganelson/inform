@@ -4,21 +4,25 @@ In this section we compile text constants.
 
 @h Runtime representation.
 Literal texts arise from source text such as:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be "the quick brown fox";
 	say "Where has that indolent hound got to?";
-=
+```
+
 Note that only `"the quick brown fox"` is actually a constant value here; the
 text concerning the hound is turned directly into operands for Inter instructions
 for printing text, and never needs to be a value. The fox text, on the other hand,
 is being stored in `Q`, and you can only store values.
 
 Text at runtime is stored in small blocks, always of size 2:
-= (text)
+
+``` None
 	                    small block:
 	Q ----------------> format
 	                    content
-=
+```
+
 The format can be one of four possible alternatives at runtime, and the runtime
 system may dynamically switch between them; essentially it uses this to
 decompress text from its "packed" form to a character-accessible form only

@@ -54,7 +54,7 @@ used in assertions like:
 > The Bakery is east of Pudding Lane.
 
 In fact, the assertion parser reads sentences like that by looking out specially
-for direction names plus "of" -- so this is parsed without using the mapping
+for direction names plus "of" — so this is parsed without using the mapping
 predicate for "east". But it cannot read:
 
 > The Flour Cellar is below the Bakery.
@@ -172,7 +172,7 @@ int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 
 @h Assertion.
 Note that the following will infer `IS_ROOM_INF` for any source of a map
-connection -- which will include doors. That doesn't matter, because the
+connection — which will include doors. That doesn't matter, because the
 Spatial feature uses these inferences only for objects whose kind is not
 explicitly given in the source text; and doors must always be specified as
 such.

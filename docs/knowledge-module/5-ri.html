@@ -85,11 +85,10 @@ and therefore the need to set up an initial state for those relations.</p>
 exactly one of these pairs of pointers is <code>NULL</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">relation_inference_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">relation_inference_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">terms_as_subjects</span><span class="plain-syntax">[2];</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">terms_as_values</span><span class="plain-syntax">[2];</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">relation_inference_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">inference</span><span class="plain-syntax"> *</span><span class="function-syntax">RelationInferences::new</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">RelationInferences::new</span></span>:<br/><a href="5-ri.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj0</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj1</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val0</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val1</span><span class="plain-syntax">) {</span>

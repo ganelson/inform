@@ -11,16 +11,20 @@ applications, the Source panel opens at the appropriate line.
 This is done with a non-standard HTML protocol called `source:`, one of
 two which the Inform UI apps must provide special handling for. For instance,
 line 21 of file `Bits and Pieces/marbles.txt` has URL:
-= (text)
+
+``` None
 	source:Bits and Pieces/marbles.txt#line14
-=
+```
+
 When an Inform app is viewing an extension project, there can also be
 references to individual examples in that extension, and these are referred
 to as "cases" since they are test cases when the app is testing the extension.
 For example,
-= (text)
+
+``` None
 	source:Locksmith.i7x?case=B#line7
-=
+```
+
 refers to line 7 of Example B of `Locksmith.i7x`.
 
 @ Locations are given relative to the current project bundle. However, if
@@ -29,9 +33,11 @@ subfolder of the project bundle. (Thus it is not possible to have a
 source link to a source file at the root of the project bundle: but this is
 no loss, since source is not allowed to be kept there.) For instance,
 line 14 of file `Source/story.ni` has URL
-= (text)
+
+``` None
 	source:story.ni#line14
-=
+```
+
 The following routine writes the clickable source-reference icon, and
 is the only place in Inform where `source:` URLs are generated.
 

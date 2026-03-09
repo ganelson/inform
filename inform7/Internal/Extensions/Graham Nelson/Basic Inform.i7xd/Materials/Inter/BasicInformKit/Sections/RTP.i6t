@@ -97,7 +97,7 @@ Array LatestRTPData -->
 @h The VeneerError RTP.
 The following function, confusingly called `RunTimeError` and not to be
 confused with `IssueRTP` above, is a residue from the old I6 library. Most of
-its possible messages can't be seen in I7 use -- for instance I7 has no timers
+its possible messages can't be seen in I7 use — for instance I7 has no timers
 or daemons, so error 4 is out of the question. We retain it only because the
 veneer code added by I6 requires it to be present.
 

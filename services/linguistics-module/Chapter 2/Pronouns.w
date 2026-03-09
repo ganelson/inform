@@ -12,22 +12,19 @@ Pronoun objects contain no interesting data: in effect, the //pronoun// class
 is an enumeration.
 
 =
-typedef struct pronoun {
+classdef pronoun {
 	struct text_stream *name;
 	struct linguistic_stock_item *in_stock;
-
-	CLASS_DEFINITION
-} pronoun;
+}
 
 @ A //pronoun_usage// object is what a lexicon search returns when text is
 matched against some form of a pronoun.
 
 =
-typedef struct pronoun_usage {
+classdef pronoun_usage {
 	struct pronoun *pronoun_used;
 	struct grammatical_usage *usage;
-	CLASS_DEFINITION
-} pronoun_usage;
+}
 
 @ =
 void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
@@ -38,8 +35,8 @@ void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
 
 @ The stock of pronouns is fixed, as follows. We are going to regard the three
 persons as being different pronouns, since they make different references,
-though not every grammarian would agree. So we have three "agent pronouns" --
-those standing for subject or object -- and then three possessives, and "here",
+though not every grammarian would agree. So we have three "agent pronouns" —
+those standing for subject or object — and then three possessives, and "here",
 which stands in the place of a noun referring to a location, and is thus also
 a pronoun.
 

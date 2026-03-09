@@ -78,7 +78,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../services.html">Services</a></li><li><a href="index.html">lexicon</a></li><li><a href="index.html#2">Chapter 2: Excerpts</a></li><li><b>Excerpt Meanings</b></li></ul></div>
 <p class="purpose">To register and deregister meanings for excerpts of text as nouns, adjectives, imperative phrases and other usages.</p>
 
-<ul class="toc"><li><a href="2-em.html#SP1">&#167;1. Excerpt meanings</a></li><li><a href="2-em.html#SP2">&#167;2. Meaning codes</a></li><li><a href="2-em.html#SP3">&#167;3. Annotating words</a></li><li><a href="2-em.html#SP5">&#167;5. Creating EMs</a></li><li><a href="2-em.html#SP6">&#167;6. Debugging log</a></li><li><a href="2-em.html#SP7">&#167;7. Hashing excerpts</a></li><li><a href="2-em.html#SP11">&#167;11. EM Listing</a></li><li><a href="2-em.html#SP13">&#167;13. Registration</a></li><li><a href="2-em.html#SP14">&#167;14. Errors</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-em.html#SP1">&#167;1. Excerpt meanings</a></li><li><a href="2-em.html#SP2">&#167;2. Meaning codes</a></li><li><a href="2-em.html#SP3">&#167;3. Annotating words</a></li><li><a href="2-em.html#SP5">&#167;5. Creating EMs</a></li><li><a href="2-em.html#SP6">&#167;6. Debugging log</a></li><li><a href="2-em.html#SP7">&#167;7. Hashing excerpts</a></li><li><a href="2-em.html#SP10">&#167;10. EM Listing</a></li><li><a href="2-em.html#SP12">&#167;12. Registration</a></li><li><a href="2-em.html#SP13">&#167;13. Errors</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Excerpt meanings.</b>  We now define the <a href="2-em.html#SP1" class="internal">excerpt_meaning</a> data structure, which holds a single
@@ -88,11 +88,8 @@ pointers to specific vocabulary, or can be null, which implies that
 arbitrary non-empty text can appear in the given position. It is forbidden
 for the token list to contain two nulls in a row.</p>
 <p>For instance, the token list:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">drink</span><span class="plain-syntax"> # </span><span class="identifier-syntax">milk</span><span class="plain-syntax"> #</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	drink # milk #
+</span></pre>
 <p>matches &quot;drink more milk today and every day&quot;, but not &quot;drink milk&quot;. The
 sharp symbol <code>#</code> is printed in place of a null token, both here and in the
 debugging log.</p>
@@ -102,14 +99,13 @@ generated from its token list, and a pointer to some structure.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_TOKENS_PER_EXCERPT_MEANING</span> <span class="constant-syntax">32</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what kind of meaning: a single MC, not a bitmap */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">; </span><span class="comment-syntax">/* data structure being referred to */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_em_tokens</span><span class="plain-syntax">; </span><span class="comment-syntax">/* length of token list */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* token list */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">excerpt_hash</span><span class="plain-syntax">; </span><span class="comment-syntax">/* hash code generated from the token list */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure excerpt_meaning is accessed in 1/lxc, 2/pe and here.</li></ul>
 <div class="lsmarkdown">
@@ -177,7 +173,7 @@ an object of the following class:</p>
 as yet.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">ExcerptMeanings::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::new</span></span>:<br/><a href="2-em.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">ExcerptMeanings::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::new</span></span>:<br/><a href="2-em.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">meaning_code</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">data</span><span class="plain-syntax">;</span>
@@ -190,7 +186,7 @@ as yet.</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Debugging log.</b>  First to log a general bitmap made up from meaning codes:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::log</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::log</span></span>:<br/>Lexicon Module - <a href="1-lm.html#SP3">&#167;3</a>, <a href="1-lm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vem</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::log</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::log</span></span>:<br/>Lexicon Module - <a href="1-lm.html#SP2">&#167;2</a>, <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vem</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax"> = (</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;null-em&gt;"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"{"</span><span class="plain-syntax">);</span>
@@ -204,7 +200,7 @@ as yet.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::log_all</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::log_all</span></span>:<br/>Parse Excerpts - <a href="2-pe.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::log_all</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::log_all</span></span>:<br/>Parse Excerpts - <a href="2-pe.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">, </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax">)</span>
@@ -240,13 +236,13 @@ bits 31 and 32 left clear.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">w1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">cached_hash_w1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">w2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">cached_hash_w2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cached_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">w1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">w2</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">v</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow this vocabulary entry to contribute to the excerpt's hash code</span></span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow this vocabulary entry to contribute to the excerpt's hash code</span></span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Second, when a new excerpt meaning is to be registered, we want to hash
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1. </b>  Second, when a new excerpt meaning is to be registered, we want to hash
 code its token list. But only some of the tokens are vocabulary entries,
 while others instead represent gaps where arbitrary text can appear (referred
 to with a null pointer). Note that we simply ignore that gaps when hashing,
@@ -262,7 +258,7 @@ same meaning as in the first case above.)</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CAPITALISED_VARIANT_FORM</span> <span class="plain-syntax">(1 &lt;&lt; </span><span class="constant-syntax">30</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span></span>:<br/><a href="2-em.html#SP11_1">&#167;11.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span></span>:<br/><a href="2-em.html#SP10_1">&#167;10.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Empty text when registering"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0])) {</span>
@@ -274,19 +270,19 @@ same meaning as in the first case above.)</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;em-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v</span><span class="plain-syntax"> = </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow this vocabulary entry to contribute to the excerpt's hash code</span></span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow this vocabulary entry to contribute to the excerpt's hash code</span></span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">excerpt_hash</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1. </b>  Now each vocabulary entry <code>v</code>, i.e., each distinct word identity, itself has
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2. </b>  Now each vocabulary entry <code>v</code>, i.e., each distinct word identity, itself has
 a hash code to identify it. These are stored in <code>v-&gt;hash</code> and, except for
 literals, are more or less evenly distributed in about the range 0 to 1000.</p>
 <p>The contribution made by a single word's individual hash to the bitmap hash
 for the whole excerpt is as follows.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Allow this vocabulary entry to contribute to the excerpt's hash code</span><span class="named-paragraph-number">8.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Allow this vocabulary entry to contribute to the excerpt's hash code</span><span class="named-paragraph-number">8.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">flags</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">NUMBER_MC</span><span class="plain-syntax">)    </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax"> | </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -294,9 +290,9 @@ for the whole excerpt is as follows.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">flags</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">I6_MC</span><span class="plain-syntax">)   </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax"> | </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">                           </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax"> | (8 &lt;&lt; ((</span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">hash</span><span class="plain-syntax">) % </span><span class="constant-syntax">27</span><span class="plain-syntax">));</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP8">&#167;8</a> and <a href="2-em.html#SP9">&#167;9</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP8">&#167;8</a> and <a href="2-em.html#SP8_1">&#167;8.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  To sum up: the excerpt hash is a bitmap indicating what categories of
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  To sum up: the excerpt hash is a bitmap indicating what categories of
 words are present in the excerpt. It ignores &quot;gaps&quot; in token lists, and
 it ignores the order of the words and repetitions. The three least
 significant bits indicate whether numbers, text or I6 verbatims are
@@ -313,8 +309,8 @@ thought. But it is optimised for the trickiest parsing cases where the
 rewards of saving unnecessary tests are greatest.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. EM Listing.</b>  We are clearly not going to store the excerpt meanings in a hash table
-keyed by the hash values of excerpts -- with hash values as large as
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. EM Listing.</b>  We are clearly not going to store the excerpt meanings in a hash table
+keyed by the hash values of excerpts — with hash values as large as
 \INWEBMATH(2^{31}-1\INWEBMATH), that would be practically impossible.</p>
 <p>Instead we key using the actual words. Each vocabulary entry has four
 linked lists of EMs: its subset list, its start list, its middle list,
@@ -362,51 +358,51 @@ resort; happily phrases both starting and ending with <code>#</code> are uncommo
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">blank_says_p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::register_em</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::register_em</span></span>:<br/><a href="2-em.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::register_em</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::register_em</span></span>:<br/><a href="2-em.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PreformCache::warn_of_changes</span><span class="plain-syntax">(); </span><span class="comment-syntax">/* the existence of new meanings jeopardises any cached parsing results */</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compute the new excerpt's hash code from its token list</span></span><span class="named-paragraph-number">11.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Watermark each word in the token list with the meaning code being applied</span></span><span class="named-paragraph-number">11.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compute the new excerpt's hash code from its token list</span></span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Watermark each word in the token list with the meaning code being applied</span></span><span class="named-paragraph-number">10.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">EXCERPT_MEANINGS</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"Logging meaning: $M with hash %08x, mc=%d, %d tokens\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">em</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">excerpt_hash</span><span class="plain-syntax">, </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">SUBSET_PARSING_BITMAP</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the subset list for each non-article word</span></span><span class="named-paragraph-number">11.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the subset list for each non-article word</span></span><span class="named-paragraph-number">10.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0] == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the say-blank list</span></span><span class="named-paragraph-number">11.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the say-blank list</span></span><span class="named-paragraph-number">10.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0]) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the start list of the first word</span></span><span class="named-paragraph-number">11.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the start list of the first word</span></span><span class="named-paragraph-number">10.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1]) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the end list of the last word</span></span><span class="named-paragraph-number">11.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the end list of the last word</span></span><span class="named-paragraph-number">10.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;em-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]) { </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP11_7" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the middle list of word i</span></span><span class="named-paragraph-number">11.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]) { </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP10_7" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Place the new meaning under the middle list of word i</span></span><span class="named-paragraph-number">10.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"registered meaning of two or more #s"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1. </b>  See above.</p>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1. </b>  See above.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the new excerpt's hash code from its token list</span><span class="named-paragraph-number">11.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the new excerpt's hash code from its token list</span><span class="named-paragraph-number">10.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="2-em.html#SP9" class="function-link"><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-em.html#SP8_1" class="function-link"><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2. </b>  Another important optimisation is to flag each word in the meaning with
-the given meaning code -- this is why vocabulary flags and excerpt meaning
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2. </b>  Another important optimisation is to flag each word in the meaning with
+the given meaning code — this is why vocabulary flags and excerpt meaning
 codes share the same numbering space. If we register &quot;Table of Surgical
 Instruments&quot; as a table name, the word &quot;surgical&quot;, for instance, picks
 up the <code>TABLE_MC</code> bit in its <code>flags</code> bitmap.</p>
@@ -417,7 +413,7 @@ one of the words never occurs in a table name, so the answer must be
 &quot;no&quot;. This produces rapid, definite negatives with only a few false
 positives.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Watermark each word in the token list with the meaning code being applied</span><span class="named-paragraph-number">11.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Watermark each word in the token list with the meaning code being applied</span><span class="named-paragraph-number">10.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -425,13 +421,13 @@ positives.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">])</span>
 <span class="plain-syntax">            ((</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">])-&gt;</span><span class="identifier-syntax">flags</span><span class="plain-syntax">) |= </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3. </b>  Note that articles (a, an, the, some) are excluded: this means we don't
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3. </b>  Note that articles (a, an, the, some) are excluded: this means we don't
 waste time trying to see if the excerpt &quot;the&quot; might be a reference to the
 object &quot;Gregory the Great&quot;.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the subset list for each non-article word</span><span class="named-paragraph-number">11.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the subset list for each non-article word</span><span class="named-paragraph-number">10.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -442,21 +438,21 @@ object &quot;Gregory the Great&quot;.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"# in registration of subset meaning"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">NTI::test_vocabulary</span><span class="plain-syntax">(</span><span class="identifier-syntax">v</span><span class="plain-syntax">, </span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">)) </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax"> = </span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">subset_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">subset_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">subset_list_length</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4. </b>  To register <code>#</code>, which is what &quot;To say (N - a number)&quot; and similar
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4. </b>  To register <code>#</code>, which is what &quot;To say (N - a number)&quot; and similar
 constructions translate to.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the say-blank list</span><span class="named-paragraph-number">11.4</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the say-blank list</span><span class="named-paragraph-number">10.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">blank_says_p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">blank_says_p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax">) </span><span class="identifier-syntax">p2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax">;</span>
@@ -466,50 +462,50 @@ constructions translate to.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">EXCERPT_MEANINGS</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"The blank list with $M is now:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">, </span><span class="identifier-syntax">blank_says_p</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_5" class="paragraph-anchor"></a><b>&#167;11.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the start list of the first word</span><span class="named-paragraph-number">11.5</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the start list of the first word</span><span class="named-paragraph-number">10.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax"> = </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">start_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">start_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_6" class="paragraph-anchor"></a><b>&#167;11.6. </b>  ...and similarly...</p>
+<p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6. </b>  ...and similarly...</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the end list of the last word</span><span class="named-paragraph-number">11.6</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the end list of the last word</span><span class="named-paragraph-number">10.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax"> = </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">end_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">end_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_7" class="paragraph-anchor"></a><b>&#167;11.7. </b>  ...and similarly again:</p>
+<p class="commentary firstcommentary"><a id="SP10_7" class="paragraph-anchor"></a><b>&#167;10.7. </b>  ...and similarly again:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the middle list of word i</span><span class="named-paragraph-number">11.7</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the middle list of word i</span><span class="named-paragraph-number">10.7</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax"> = </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">middle_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">middle_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Parse nodes are only created from excerpt meanings for storage inside the
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Parse nodes are only created from excerpt meanings for storage inside the
 excerpt parser, so these never live on into trees.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExcerptMeanings::new_em_pnode</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></span>:<br/><a href="2-em.html#SP11_3">&#167;11.3</a>, <a href="2-em.html#SP11_4">&#167;11.4</a>, <a href="2-em.html#SP11_5">&#167;11.5</a>, <a href="2-em.html#SP11_6">&#167;11.6</a>, <a href="2-em.html#SP11_7">&#167;11.7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExcerptMeanings::new_em_pnode</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::new_em_pnode</span></span>:<br/><a href="2-em.html#SP10_3">&#167;10.3</a>, <a href="2-em.html#SP10_4">&#167;10.4</a>, <a href="2-em.html#SP10_5">&#167;10.5</a>, <a href="2-em.html#SP10_6">&#167;10.6</a>, <a href="2-em.html#SP10_7">&#167;10.7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">meaning_code</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_meaning</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Registration.</b>  The following is the main routine used throughout Inform to register new
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Registration.</b>  The following is the main routine used throughout Inform to register new
 meanings.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -528,26 +524,26 @@ meanings.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax"> = </span><a href="2-em.html#SP5" class="function-link"><span class="function-syntax">ExcerptMeanings::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">data</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Unless this is parametrised, skip any initial article</span></span><span class="named-paragraph-number">13.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Unless this is parametrised, skip any initial article</span></span><span class="named-paragraph-number">12.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP13_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Detect use of upper case on the first word of this new text substitution</span></span><span class="named-paragraph-number">13.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Detect use of upper case on the first word of this new text substitution</span></span><span class="named-paragraph-number">12.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP13_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Build the token list for the new EM</span></span><span class="named-paragraph-number">13.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Build the token list for the new EM</span></span><span class="named-paragraph-number">12.3</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><a href="2-em.html#SP11" class="function-link"><span class="function-syntax">ExcerptMeanings::register_em</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-em.html#SP10" class="function-link"><span class="function-syntax">ExcerptMeanings::register_em</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1. </b>  Articles are preserved at the front of phrase definitions, mainly because
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1. </b>  Articles are preserved at the front of phrase definitions, mainly because
 text substitutions need to distinguish (for instance) &quot;say [the X]&quot; from
 &quot;say [an X]&quot;.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unless this is parametrised, skip any initial article</span><span class="named-paragraph-number">13.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unless this is parametrised, skip any initial article</span><span class="named-paragraph-number">12.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">PARAMETRISED_PARSING_BITMAP</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
@@ -557,9 +553,9 @@ text substitutions need to distinguish (for instance) &quot;say [the X]&quot; fr
 <span class="plain-syntax">                </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"registered a meaning which was only an article"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13">&#167;13</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2. </b>  Because an open bracket fails <code>isupper</code>, the following looks at the first
+<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2. </b>  Because an open bracket fails <code>isupper</code>, the following looks at the first
 letter of the first word only if it's not a blank. If it finds upper case, as
 it would when reading the &quot;T&quot; in:</p>
 <blockquote>
@@ -575,7 +571,7 @@ from the one in:</p>
 <p>(These are the only circumstances in which phrase parsing has any case
 sensitivity.)</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Detect use of upper case on the first word of this new text substitution</span><span class="named-paragraph-number">13.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Detect use of upper case on the first word of this new text substitution</span><span class="named-paragraph-number">12.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tx</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lexer::word_raw_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">));</span>
@@ -588,43 +584,40 @@ sensitivity.)</p>
 <span class="plain-syntax">                </span><span class="identifier-syntax">tx</span><span class="plain-syntax">, </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13">&#167;13</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_3" class="paragraph-anchor"></a><b>&#167;13.3. </b>  We read the text in something like:</p>
+<p class="commentary firstcommentary"><a id="SP12_3" class="paragraph-anchor"></a><b>&#167;12.3. </b>  We read the text in something like:</p>
 <blockquote>
 <p>award (P - a number) points</p>
 </blockquote>
 <p>and transcribe it into the token list, collapsing bracketed parts into <code>#</code>
 tokens denoting gaps, to result in something like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">award</span><span class="plain-syntax"> # </span><span class="identifier-syntax">points</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	award # points
+</span></pre>
 <p>with a token count of 3.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the token list for the new EM</span><span class="named-paragraph-number">13.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the token list for the new EM</span><span class="named-paragraph-number">12.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tc</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP13_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Complain of excessive length of the new excerpt</span></span><span class="named-paragraph-number">13.3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Complain of excessive length of the new excerpt</span></span><span class="named-paragraph-number">12.3.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">compare_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) + </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">OPENBRACKET_V</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">tc</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP13_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Skip over bracketed token description</span></span><span class="named-paragraph-number">13.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Skip over bracketed token description</span></span><span class="named-paragraph-number">12.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">tc</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) + </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tc</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13">&#167;13</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_3_1" class="paragraph-anchor"></a><b>&#167;13.3.1. </b>  This is all a little defensive, but syntax bugs higher up tend to find
+<p class="commentary firstcommentary"><a id="SP12_3_1" class="paragraph-anchor"></a><b>&#167;12.3.1. </b>  This is all a little defensive, but syntax bugs higher up tend to find
 their way down to this plughole:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Skip over bracketed token description</span><span class="named-paragraph-number">13.3.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Skip over bracketed token description</span><span class="named-paragraph-number">12.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bl</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++;</span>
@@ -643,9 +636,9 @@ their way down to this plughole:</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax">--;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13_3">&#167;13.3</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12_3">&#167;12.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_3_2" class="paragraph-anchor"></a><b>&#167;13.3.2. </b>  In practice, nobody ever hits this message except deliberately. It has
+<p class="commentary firstcommentary"><a id="SP12_3_2" class="paragraph-anchor"></a><b>&#167;12.3.2. </b>  In practice, nobody ever hits this message except deliberately. It has
 a tendency to fire twice or more on the same source text because of
 registering multiple inflected forms of the same text; but it's not worth
 going to any trouble to prevent this.</p>
@@ -653,20 +646,20 @@ going to any trouble to prevent this.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TooLongName_LEXICONERROR</span> <span class="constant-syntax">1</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complain of excessive length of the new excerpt</span><span class="named-paragraph-number">13.3.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complain of excessive length of the new excerpt</span><span class="named-paragraph-number">12.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="2-em.html#SP14" class="function-link"><span class="function-syntax">ExcerptMeanings::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TooLongName_LEXICONERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-em.html#SP13" class="function-link"><span class="function-syntax">ExcerptMeanings::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TooLongName_LEXICONERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP13_3">&#167;13.3</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12_3">&#167;12.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Errors.</b>  Some tools using this module will want to push simple error messages out to
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Errors.</b>  Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
 texts in HTML. So the client is allowed to define <code>PROBLEM_LEXICON_CALLBACK</code>
 to some routine of her own, gazumping this one.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::problem_handler</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::problem_handler</span></span>:<br/><a href="2-em.html#SP13_3_2">&#167;13.3.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExcerptMeanings::problem_handler</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">ExcerptMeanings::problem_handler</span></span>:<br/><a href="2-em.html#SP12_3_2">&#167;12.3.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROBLEM_LEXICON_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROBLEM_LEXICON_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>

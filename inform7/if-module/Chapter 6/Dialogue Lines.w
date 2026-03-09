@@ -4,16 +4,20 @@ To manage dialogue lines.
 
 @h Scanning the dialogue lines in pass 0.
 Lines have already been parsed a little. For example,
-= (text as Inform 7)
+
+``` Inform7
 	Marcellus (this is the phantom line): "What, has this thing appear'd again to-night?"
-=
+```
+
 will have become:
-= (text)
+
+``` None
 	DIALOGUE_LINE_NT
 		DIALOGUE_SPEAKER_NT "Marcellus"
 		DIALOGUE_SPEECH_NT ""What, has this thing appear'd again to-night?""
 		DIALOGUE_CLAUSE_NT "this is the phantom line"
-=
+```
+
 Here we have a simple tree where the beat node has at least two child nodes:
 exactly one each of `DIALOGUE_SPEAKER_NT` and `DIALOGUE_SPEECH_NT`, and then
 any number of `DIALOGUE_CLAUSE_NT` nodes (including none at all).
@@ -33,7 +37,7 @@ dialogue_line *DialogueLines::new(parse_node *PN) {
 }
 
 @ =
-typedef struct dialogue_line {
+classdef dialogue_line {
 	struct wording line_name;
 	struct instance *as_instance;
 	struct parse_node *line_at;
@@ -51,8 +55,7 @@ typedef struct dialogue_line {
 	struct performance_style *how_performed;
 	struct dialogue_node *as_node;
 	struct dialogue_line_compilation_data compilation_data;
-	CLASS_DEFINITION
-} dialogue_line;
+}
 
 @<Initialise the line@> =
 	dl->line_name = EMPTY_WORDING;

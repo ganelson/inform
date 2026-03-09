@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">imperative</a></li><li><a href="index.html#5">Chapter 5: Invocations</a></li><li><b>Compile Invocations</b></li></ul></div>
 <p class="purpose">Generating code to perform an invocation.</p>
 
-<ul class="toc"><li><a href="5-ci.html#SP1">&#167;1. Upper level: compiling from whole lists</a></li><li><a href="5-ci.html#SP4">&#167;4. Lower level: compiling single invocations</a></li><li><a href="5-ci.html#SP5">&#167;5. Tokens packets</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-ci.html#SP1">&#167;1. Upper level: compiling from whole lists</a></li><li><a href="5-ci.html#SP2">&#167;2. Lower level: compiling single invocations</a></li><li><a href="5-ci.html#SP3">&#167;3. Tokens packets</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Upper level: compiling from whole lists.</b>  Here, we are given an invocation list <code>invl</code>, and we must generate Inter code
@@ -83,7 +83,7 @@ test group <code>:invocations</code> may be helpful when maintaining it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>  The invocation list has already been typechecked by <a href="../values-module/5-dsh.html" class="internal">Dash (in values)</a>. This
 means that any invocation which could be disproved has been removed, and what's
-left is either &quot;proven&quot; -- i.e., certain to be applicable -- or &quot;unproven&quot; --
+left is either &quot;proven&quot; — i.e., certain to be applicable — or &quot;unproven&quot; —
 i.e., only applicable if certain runtime checks are performed.</p>
 <p>Here we check that the list does indeed contain 0 or more unproven invocations
 followed by 0 or 1 proven ones, and that all invocations have the same number
@@ -136,8 +136,8 @@ is the only one, and therefore no runtime resolution will be needed.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Invocations::is_marked_unproven</span><span class="plain-syntax">(</span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile using runtime resolution to choose between invocations</span></span><span class="named-paragraph-number">1.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP6" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-ci.html#SP2" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1">&#167;1</a>.</li></ul>
@@ -156,50 +156,43 @@ will be expressions being evaluated.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">void_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idb</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">type_data</span><span class="plain-syntax">.</span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax"> == </span><span class="identifier-syntax">DECIDES_NOTHING_MOR</span><span class="plain-syntax">) </span><span class="identifier-syntax">void_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution</span></span><span class="named-paragraph-number">1.3.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution</span></span><span class="named-paragraph-number">1.3.1.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3">&#167;1.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Our basic idea is best explained in void mode, where it's much simpler to
+<p class="commentary firstcommentary"><a id="SP1_3_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1. </b>  Our basic idea is best explained in void mode, where it's much simpler to
 carry out. Suppose we have invocations I1, ..., In, and tokens T1, ..., Tm.
 (In a group like this, every invocation will have the same number of tokens.)
 We want each invocation in turn to try to handle the situation, and to stop
 as soon as one of them does. The first thought is this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax">(</span><span class="identifier-syntax">T1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Tm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax">(</span><span class="identifier-syntax">T1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Tm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">runtime</span><span class="plain-syntax">-</span><span class="identifier-syntax">error</span><span class="plain-syntax">-</span><span class="identifier-syntax">message</span><span class="plain-syntax">();</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
+	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
+	...
+	else runtime-error-message();
+</span></pre>
 <p>where the chain of execution runs into the error message code only if none
 of I1, ..., In can be applied. In the case where the final invocation is
 proven, we can more simply do this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
+	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
+	else invoke In(T1, ..., Tm);
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax">(</span><span class="identifier-syntax">T1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Tm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax">(</span><span class="identifier-syntax">T1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Tm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">In</span><span class="plain-syntax">(</span><span class="identifier-syntax">T1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Tm</span><span class="plain-syntax">);</span>
-</pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1. </b>  That's almost what we do, but not quite. The problem lies in the fact that
+<p class="commentary firstcommentary"><a id="SP1_3_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2. </b>  That's almost what we do, but not quite. The problem lies in the fact that
 the tokens <code>T1</code>, ..., <code>Tm</code> are evaluated multiple times - not in the invocations
 (since only one is reached in execution) but in the condition tests. This
 multiple evaluation would be incorrect if token evaluation had side-effects,
 as it easily might, and would also waste time if the tokens were slow to evaluate.
 So in fact we modify our scheme like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">F1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">F2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax">(</span><span class="identifier-syntax">F1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Fm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) </span><span class="identifier-syntax">invoke</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax">(</span><span class="identifier-syntax">F1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">Fm</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">runtime</span><span class="plain-syntax">-</span><span class="identifier-syntax">error</span><span class="plain-syntax">-</span><span class="identifier-syntax">message</span><span class="plain-syntax">();</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	F1 = T1;
+	F2 = T2;
+	...
+	if (condition for I1 to be valid) invoke I1(F1, ..., Fm);
+	else if (condition for I2 to be valid) invoke I2(F1, ..., Fm);
+	...
+	else runtime-error-message();
+</span></pre>
 <p>Here <code>F1, ..., Fn</code> are called the &quot;formal parameters&quot;. But now we have a tricky
 issue to contend with: where can they be stored?</p>
 <p>Here are the answers I thought of in turn:</p>
@@ -230,7 +223,7 @@ kernel, and then pull these saved values back afterwards. This one, finally,
 works in all cases, and is what we do.</li>
 </ul>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution</span><span class="named-paragraph-number">1.3.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution</span><span class="named-paragraph-number">1.3.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::get_no_tokens</span><span class="plain-syntax">(</span><span class="identifier-syntax">first_inv</span><span class="plain-syntax">); </span><span class="comment-syntax">/* must be &gt; 0, or we would be proven */</span>
@@ -242,16 +235,16 @@ works in all cases, and is what we do.</li>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total</span><span class="plain-syntax"> = </span><a href="3-tv.html#SP2" class="function-link"><span class="function-syntax">TemporaryVariables::claim_formal_parameters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-sf.html#SP12" class="function-link"><span class="function-syntax">Frames::need_at_least_this_many_formals</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">total</span><span class="plain-syntax">); </span><span class="comment-syntax">/* forces the existence of a shell function */</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">void_mode</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution in void mode</span></span><span class="named-paragraph-number">1.3.1.1.1</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution in value mode</span></span><span class="named-paragraph-number">1.3.1.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">void_mode</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution in void mode</span></span><span class="named-paragraph-number">1.3.1.2.1</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the resolution in value mode</span></span><span class="named-paragraph-number">1.3.1.2.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-tv.html#SP2" class="function-link"><span class="function-syntax">TemporaryVariables::release_formal_parameters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1">&#167;1.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution in void mode</span><span class="named-paragraph-number">1.3.1.1.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution in void mode</span><span class="named-paragraph-number">1.3.1.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">N</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the ith formal parameter to the ith token value</span></span><span class="named-paragraph-number">1.3.1.1.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the ith formal parameter to the ith token value</span></span><span class="named-paragraph-number">1.3.1.2.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">if_depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, *</span><span class="identifier-syntax">last_inv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">invl</span><span class="plain-syntax">) {</span>
@@ -262,35 +255,35 @@ works in all cases, and is what we do.</li>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP6" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Substitute the formal parameters into the tokens packet</span></span><span class="named-paragraph-number">1.3.1.1.1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Substitute the formal parameters into the tokens packet</span></span><span class="named-paragraph-number">1.3.1.2.1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Invocations::is_marked_unproven</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">IFELSE_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Put the condition check here</span></span><span class="named-paragraph-number">1.3.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Put the condition check here</span></span><span class="named-paragraph-number">1.3.1.2.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">if_depth</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-ci.html#SP2" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Invocations::is_marked_unproven</span><span class="plain-syntax">(</span><span class="identifier-syntax">last_inv</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile call to function throwing an RTP</span></span><span class="named-paragraph-number">1.3.1.1.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile call to function throwing an RTP</span></span><span class="named-paragraph-number">1.3.1.2.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">if_depth</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">(); </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">if_depth</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1">&#167;1.3.1.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2">&#167;1.3.1.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1.1. </b>  There may be checks needed on several tokens, so we accumulate these into
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1.1. </b>  There may be checks needed on several tokens, so we accumulate these into
 a list divided by logical-and <code>&amp;&amp;</code> operators.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Put the condition check here</span><span class="named-paragraph-number">1.3.1.1.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Put the condition check here</span><span class="named-paragraph-number">1.3.1.2.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">check_needed</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -307,18 +300,18 @@ a list divided by logical-and <code>&amp;&amp;</code> operators.</p>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">AND_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a check that this formal variable matches the token</span></span><span class="named-paragraph-number">1.3.1.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a check that this formal variable matches the token</span></span><span class="named-paragraph-number">1.3.1.2.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">check_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"this should not be marked unproven"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">check_count</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1.1.1. </b>  The check is either against a general description, such as &quot;even number&quot;, or
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1.1.1. </b>  The check is either against a general description, such as &quot;even number&quot;, or
 a specific value, such as &quot;10&quot;.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a check that this formal variable matches the token</span><span class="named-paragraph-number">1.3.1.1.1.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a check that this formal variable matches the token</span><span class="named-paragraph-number">1.3.1.2.1.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">formal_vars</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
@@ -334,12 +327,12 @@ a specific value, such as &quot;10&quot;.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"bad check-against in runtime type check"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_1_1">&#167;1.3.1.1.1.1</a> and <a href="5-ci.html#SP1_3_1_1_2_2_1_1_1">&#167;1.3.1.1.2.2.1.1.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_1_1">&#167;1.3.1.2.1.1</a> and <a href="5-ci.html#SP1_3_1_2_2_3_1_1_1">&#167;1.3.1.2.2.3.1.1.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1.2. </b>  A parameter corresponding to the name of a kind has no meaningful value
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1.2. </b>  A parameter corresponding to the name of a kind has no meaningful value
 at runtime; we assign 0 to it for the sake of tidiness.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the ith formal parameter to the ith token value</span><span class="named-paragraph-number">1.3.1.1.1.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the ith formal parameter to the ith token value</span><span class="named-paragraph-number">1.3.1.2.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
@@ -356,8 +349,8 @@ at runtime; we assign 0 to it for the sake of tidiness.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a> and <a href="5-ci.html#SP1_3_1_1_2_1">&#167;1.3.1.1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1_3" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Substitute the formal parameters into the tokens packet</span><span class="named-paragraph-number">1.3.1.1.1.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a> and <a href="5-ci.html#SP1_3_1_2_2_2">&#167;1.3.1.2.2.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1_3" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Substitute the formal parameters into the tokens packet</span><span class="named-paragraph-number">1.3.1.2.1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">.</span><span class="element-syntax">tokens_count</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
@@ -366,8 +359,8 @@ at runtime; we assign 0 to it for the sake of tidiness.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">tokens</span><span class="plain-syntax">.</span><span class="element-syntax">token_vals</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">Lvalues::new_actual_NONLOCAL_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a> and <a href="5-ci.html#SP1_3_1_1_2_2_1">&#167;1.3.1.1.2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_1_4" class="paragraph-anchor"></a><b>&#167;1.3.1.1.1.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile call to function throwing an RTP</span><span class="named-paragraph-number">1.3.1.1.1.4</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a> and <a href="5-ci.html#SP1_3_1_2_2_3_1">&#167;1.3.1.2.2.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_1_4" class="paragraph-anchor"></a><b>&#167;1.3.1.2.1.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile call to function throwing an RTP</span><span class="named-paragraph-number">1.3.1.2.1.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::call</span><span class="plain-syntax">(</span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">ARGUMENTTYPEFAILED_HL</span><span class="plain-syntax">));</span>
@@ -377,9 +370,9 @@ at runtime; we assign 0 to it for the sake of tidiness.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">((</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a> and <a href="5-ci.html#SP1_3_1_1_2_2">&#167;1.3.1.1.2.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a> and <a href="5-ci.html#SP1_3_1_2_2_3">&#167;1.3.1.2.2.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2. </b>  In value mode we want the same strategy and code paths, but all in the context
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2. </b>  In value mode we want the same strategy and code paths, but all in the context
 of a value. This means we can only use Inter opcodes which are legal in a value
 context, making everything harder.</p>
 <p>The <code>TERNARYSEQUENTIAL_BIP</code> opcode is similar to evaluating <code>x, y, z</code> in C: it
@@ -390,61 +383,55 @@ to test the conditions for invocation and invoke one of them into a dummy
 variable called <code>formal_rv</code>; and <code>z</code> will simply evaluate <code>formal_rv</code>, thus
 producing the answer.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution in value mode</span><span class="named-paragraph-number">1.3.1.1.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the resolution in value mode</span><span class="named-paragraph-number">1.3.1.2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">TERNARYSEQUENTIAL_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">/* Here is x: */</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the formal parameters in value mode</span></span><span class="named-paragraph-number">1.3.1.1.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the formal parameters in value mode</span></span><span class="named-paragraph-number">1.3.1.2.2.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">/* Here is y: */</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform the tests and invocations in value mode</span></span><span class="named-paragraph-number">1.3.1.1.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform the tests and invocations in value mode</span></span><span class="named-paragraph-number">1.3.1.2.2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">/* Here is z: */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">FORMAL_RV_HL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1">&#167;1.3.1.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2">&#167;1.3.1.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  In Inter, as in C, assignments return a value and are therefore legal here.
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.1. </b>  In Inter, as in C, assignments return a value and are therefore legal here.
 But because Inter does not provide a binary sequential opcode, we will fold
-our run of assignments into a single value by adding them up -- the result
+our run of assignments into a single value by adding them up — the result
 doesn't matter, since it will be thrown away anyway. So if there are, say,
 four formal parameters then our <code>x</code> will be:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (</span><span class="identifier-syntax">F4</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T4</span><span class="plain-syntax">) + ((</span><span class="identifier-syntax">F3</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T3</span><span class="plain-syntax">) + ((</span><span class="identifier-syntax">F2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T2</span><span class="plain-syntax">) + (</span><span class="identifier-syntax">F1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T1</span><span class="plain-syntax">)))</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(F4 = T4) + ((F3 = T3) + ((F2 = T2) + (F1 = T1)))
+</span></pre>
 <p>It isn't really important that we count downwards from 4 to 1 here, but we do
 it because the Inform 6 compiler happens to evaluate operands of <code>+</code> in the
 order right then left. So this actually causes <code>T1</code> to evaluate first, then <code>T2</code>
 and so on, provided Inform 6 is the eventual code generator.</p>
 </div>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the formal parameters in value mode</span><span class="named-paragraph-number">1.3.1.1.2.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the formal parameters in value mode</span><span class="named-paragraph-number">1.3.1.2.2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">--) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUS_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">(); }</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the ith formal parameter to the ith token value</span></span><span class="named-paragraph-number">1.3.1.1.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the ith formal parameter to the ith token value</span></span><span class="named-paragraph-number">1.3.1.2.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">--) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">()) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"misimplemented"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_2">&#167;1.3.1.1.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_2">&#167;1.3.1.2.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2_2" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2.2. </b>  Now the fun really begins. We compile <code>y</code> to an expression like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I1</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I2</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">In</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">In</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">    (</span><span class="identifier-syntax">issue</span><span class="plain-syntax"> </span><span class="identifier-syntax">run</span><span class="plain-syntax">-</span><span class="identifier-syntax">time</span><span class="plain-syntax">-</span><span class="identifier-syntax">problem</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_3" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.3. </b>  Now the fun really begins. We compile <code>y</code> to an expression like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	((condition for I1 to be valid) &amp;&amp; ((formal_rv = I1) bitwise-or 1)) ||
+	((condition for I2 to be valid) &amp;&amp; ((formal_rv = I2) bitwise-or 1)) ||
+	...
+	((condition for In to be valid) &amp;&amp; ((formal_rv = In) bitwise-or 1)) ||
+	(issue run-time-problem)
+</span></pre>
 <p>The key here is that Inter, like C, evaluates operands of <code>&amp;&amp;</code> left to right
 and short-circuits: if the left operand is false, the right is never evaluated,
 and its side-effect (of invoking a phrase and setting <code>formal_rv</code>) never
@@ -456,14 +443,13 @@ any condition is valid, no subsequent conditions will even be tested.</p>
 <p>Note that all functions return values in Inter, so the function call to issue
 the run-time problem is indeed legal in a value context.</p>
 <p>Matters are a little simpler if the final invocation is proven:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I1</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||
+	((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I2</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||
+	...
+	((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">In</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I1</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">valid</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I2</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    ((</span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">In</span><span class="plain-syntax">) </span><span class="identifier-syntax">bitwise</span><span class="plain-syntax">-</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
-</pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the tests and invocations in value mode</span><span class="named-paragraph-number">1.3.1.1.2.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the tests and invocations in value mode</span><span class="named-paragraph-number">1.3.1.2.2.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">();</span>
@@ -476,15 +462,15 @@ the run-time problem is indeed legal in a value context.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">OR_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform the tests and invocations without RTP in value mode</span></span><span class="named-paragraph-number">1.3.1.1.2.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform the tests and invocations without RTP in value mode</span></span><span class="named-paragraph-number">1.3.1.2.2.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">last_is_unproven</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile call to function throwing an RTP</span></span><span class="named-paragraph-number">1.3.1.1.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile call to function throwing an RTP</span></span><span class="named-paragraph-number">1.3.1.2.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">()) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"misimplemented"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_2">&#167;1.3.1.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2_2_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the tests and invocations without RTP in value mode</span><span class="named-paragraph-number">1.3.1.1.2.2.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_2">&#167;1.3.1.2.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the tests and invocations without RTP in value mode</span><span class="named-paragraph-number">1.3.1.2.2.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">();</span>
@@ -495,35 +481,35 @@ the run-time problem is indeed legal in a value context.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">OR_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP6" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Substitute the formal parameters into the tokens packet</span></span><span class="named-paragraph-number">1.3.1.1.1.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2_2_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile code to apply this invocation if it's applicable, value mode</span></span><span class="named-paragraph-number">1.3.1.1.2.2.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax"> = </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Substitute the formal parameters into the tokens packet</span></span><span class="named-paragraph-number">1.3.1.2.1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile code to apply this invocation if it's applicable, value mode</span></span><span class="named-paragraph-number">1.3.1.2.2.3.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">InvocationLists::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">invl</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">()) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"misimplemented"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_2_2">&#167;1.3.1.1.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2_2_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2.2.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile code to apply this invocation if it's applicable, value mode</span><span class="named-paragraph-number">1.3.1.1.2.2.1.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_2_3">&#167;1.3.1.2.2.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_3_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.3.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile code to apply this invocation if it's applicable, value mode</span><span class="named-paragraph-number">1.3.1.2.2.3.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ands_made</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_2_2_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the check on invocation applicability, value mode</span></span><span class="named-paragraph-number">1.3.1.1.2.2.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_2_3_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile the check on invocation applicability, value mode</span></span><span class="named-paragraph-number">1.3.1.2.2.3.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">BITWISEOR_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::ref_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">FORMAL_RV_HL</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><a href="5-ci.html#SP4" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="5-ci.html#SP2" class="function-link"><span class="function-syntax">CompileInvocations::single</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sl</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">ands_made</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">()) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"misimplemented"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_2_2_1">&#167;1.3.1.1.2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1_1_2_2_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.2.2.1.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the check on invocation applicability, value mode</span><span class="named-paragraph-number">1.3.1.1.2.2.1.1.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_2_3_1">&#167;1.3.1.2.2.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2_2_3_1_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.2.2.3.1.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the check on invocation applicability, value mode</span><span class="named-paragraph-number">1.3.1.2.2.3.1.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Invocations::is_marked_unproven</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) {</span>
@@ -533,18 +519,18 @@ the run-time problem is indeed legal in a value context.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">check_against</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">AND_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">(); </span><span class="identifier-syntax">ands_made</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a check that this formal variable matches the token</span></span><span class="named-paragraph-number">1.3.1.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP1_3_1_2_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a check that this formal variable matches the token</span></span><span class="named-paragraph-number">1.3.1.2.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">checks_made</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">checks_made</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"this should not be marked unproven"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_1_2_2_1_1">&#167;1.3.1.1.2.2.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Lower level: compiling single invocations.</b> </p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP1_3_1_2_2_3_1_1">&#167;1.3.1.2.2.3.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Lower level: compiling single invocations.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileInvocations::single</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CompileInvocations::single</span></span>:<br/><a href="5-ci.html#SP1_3">&#167;1.3</a>, <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a>, <a href="5-ci.html#SP1_3_1_1_2_2_1_1">&#167;1.3.1.1.2.2.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">,</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileInvocations::single</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CompileInvocations::single</span></span>:<br/><a href="5-ci.html#SP1_3">&#167;1.3</a>, <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a>, <a href="5-ci.html#SP1_3_1_2_2_3_1_1">&#167;1.3.1.2.2.3.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_location</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_from</span><span class="plain-syntax">, </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Compiling single invocation: $e\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_say_verb</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) {</span>
@@ -555,16 +541,16 @@ the run-time problem is indeed legal in a value context.</p>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_say_adjective</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTAdjectives::invoke</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_say_adjective</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Invoke a phrasal invocation</span></span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Invoke a phrasal invocation</span></span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>  Note that the phrases which compile to Inter jump or return instructions can
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b>  Note that the phrases which compile to Inter jump or return instructions can
 never be marked to save <code>self</code>, or the code here would lead to slow stack overflow
 errors, since <code>self</code> would be pushed but not pulled.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Invoke a phrasal invocation</span><span class="named-paragraph-number">4.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Invoke a phrasal invocation</span><span class="named-paragraph-number">2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DONT_KNOW_MOR</span><span class="plain-syntax">;</span>
@@ -578,8 +564,8 @@ errors, since <code>self</code> would be pushed but not pulled.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP4_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">The art of invocation is delegation</span></span><span class="named-paragraph-number">4.1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP4_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a newline if the phrase implicitly requires one</span></span><span class="named-paragraph-number">4.1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP2_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">The art of invocation is delegation</span></span><span class="named-paragraph-number">2.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP2_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile a newline if the phrase implicitly requires one</span></span><span class="named-paragraph-number">2.1.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">save_self</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">PULL_BIP</span><span class="plain-syntax">);</span>
@@ -591,15 +577,15 @@ errors, since <code>self</code> would be pushed but not pulled.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax"> != </span><span class="identifier-syntax">DONT_KNOW_MOR</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Single invocation return manner: %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-fnc.html#SP4" class="function-link"><span class="function-syntax">Functions::defn_being_compiled</span></a><span class="plain-syntax">()) &amp;&amp; (</span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax"> != </span><span class="identifier-syntax">DONT_KNOW_MOR</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP4_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">If the invocation compiled to a return from a function, check this is allowed</span></span><span class="named-paragraph-number">4.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ci.html#SP2_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">If the invocation compiled to a return from a function, check this is allowed</span></span><span class="named-paragraph-number">2.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP4">&#167;4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP2">&#167;2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1. </b>  For example, the definition of the phrase &quot;To begin&quot; isn't allowed to contain the
+<p class="commentary firstcommentary"><a id="SP2_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1. </b>  For example, the definition of the phrase &quot;To begin&quot; isn't allowed to contain the
 invocation &quot;decide on 178&quot;, since it isn't a phrase to decide anything. This is
 where that's checked:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the invocation compiled to a return from a function, check this is allowed</span><span class="named-paragraph-number">4.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the invocation compiled to a return from a function, check this is allowed</span><span class="named-paragraph-number">2.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_idb</span><span class="plain-syntax"> = </span><a href="3-fnc.html#SP4" class="function-link"><span class="function-syntax">Functions::defn_being_compiled</span></a><span class="plain-syntax">();</span>
@@ -627,16 +613,16 @@ where that's checked:</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP4_1">&#167;4.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP2_1">&#167;2.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4_1_2" class="paragraph-anchor"></a><b>&#167;4.1.2. </b>  The real work is done by one of the two sections following this one. Note that
-only inline invocations are allowed to produce an exotic manner of return -- it's
+<p class="commentary firstcommentary"><a id="SP2_1_2" class="paragraph-anchor"></a><b>&#167;2.1.2. </b>  The real work is done by one of the two sections following this one. Note that
+only inline invocations are allowed to produce an exotic manner of return — it's
 not possible to define a high-level I7 phrase which effects, say, an immediate
 end to the rule it's used in. Similarly, only inline invocations are allowed
-to be followed by blocks of other phrases -- that is, are allowed to define
+to be followed by blocks of other phrases — that is, are allowed to define
 control structures.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The art of invocation is delegation</span><span class="named-paragraph-number">4.1.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The art of invocation is delegation</span><span class="named-paragraph-number">2.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
@@ -646,22 +632,18 @@ control structures.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><a href="5-ciac.html#SP1" class="function-link"><span class="function-syntax">CallingFunctions::csi_by_call</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">where_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">tokens</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP4_1">&#167;4.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP2_1">&#167;2.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4_1_3" class="paragraph-anchor"></a><b>&#167;4.1.3. </b>  If <code>allow_implied_newlines</code> is set, we understand the final part of a
+<p class="commentary firstcommentary"><a id="SP2_1_3" class="paragraph-anchor"></a><b>&#167;2.1.3. </b>  If <code>allow_implied_newlines</code> is set, we understand the final part of a
 text literal to be allowed to print an implied newline. For example, here it's on:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"At [time of day], I like to serve afternoon tea. Indian or Chinese?"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"At [time of day], I like to serve afternoon tea. Indian or Chinese?"</span><span class="plain-syntax">;
+</span></pre>
 <p>Here the question mark has an implied newline after it. But there are other
 contexts in which newlines are not implied:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">warning</span><span class="plain-syntax"> </span><span class="identifier-syntax">rubric</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"Snakes!"</span><span class="plain-syntax">;
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">warning</span><span class="plain-syntax"> </span><span class="identifier-syntax">rubric</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"Snakes!"</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a newline if the phrase implicitly requires one</span><span class="named-paragraph-number">4.1.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a newline if the phrase implicitly requires one</span><span class="named-paragraph-number">2.1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">IDTypeData::is_a_say_phrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">))) {</span>
@@ -678,18 +660,15 @@ contexts in which newlines are not implied:</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP4_1">&#167;4.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ci.html#SP2_1">&#167;2.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Tokens packets.</b>  This structure is a convenient holder for the token values being used when
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Tokens packets.</b>  This structure is a convenient holder for the token values being used when
 invoking a phrase, and for what we think their kinds are.</p>
 <p>In many cases that will not be much of an issue, but suppose the phrase to be
-invoked is polymorphic, like so --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">discuss</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> - </span><span class="identifier-syntax">sayable</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"You discourse about [V]."</span>
-</pre>
-<div class="lsmarkdown">
+invoked is polymorphic, like so —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">discuss</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> - </span><span class="identifier-syntax">sayable</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">):
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"You discourse about [V]."</span><span class="plain-syntax">
+</span></pre>
 <p>If the invocation is &quot;discuss 16&quot;, then the token has kind <code>K_number</code> not
 <code>K_sayable_value</code>, because we derive the kind from what the phrase was actually
 invoked on rather than the full range of what it might have been. Similarly,
@@ -705,12 +684,12 @@ the <code>fn_kind</code> is <code>function number -&gt; nothing</code>, not <cod
 </pre>
 <ul class="endnotetexts"><li>The structure tokens_packet is accessed in 3/cb, 5/ciac, 5/cii and here.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  This is all easy to unpack from the invocation subtree.</p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  This is all easy to unpack from the invocation subtree.</p>
 <p>If a token holds the name of a kind rather than a value as such, we use the
 <code>nothing</code> constant as the &quot;token value&quot;, just as a placeholder. It won't be compiled.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="function-syntax">CompileInvocations::new_tokens_packet</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></span>:<br/><a href="5-ci.html#SP1_3">&#167;1.3</a>, <a href="5-ci.html#SP1_3_1_1_1">&#167;1.3.1.1.1</a>, <a href="5-ci.html#SP1_3_1_1_2_2_1">&#167;1.3.1.1.2.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="function-syntax">CompileInvocations::new_tokens_packet</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompileInvocations::new_tokens_packet</span></span>:<br/><a href="5-ci.html#SP1_3">&#167;1.3</a>, <a href="5-ci.html#SP1_3_1_2_1">&#167;1.3.1.2.1</a>, <a href="5-ci.html#SP1_3_1_2_2_3_1">&#167;1.3.1.2.2.3.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">tokens_packet</span><span class="plain-syntax"> </span><span class="identifier-syntax">tokens</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tokens</span><span class="plain-syntax">.</span><span class="element-syntax">tokens_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::get_no_tokens_needed</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>

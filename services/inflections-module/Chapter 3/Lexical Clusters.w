@@ -19,15 +19,13 @@ by the XML frameworks used in the Lexical Markup Framework standard ISO 24613,
 which it would be fairly easy to convert our //lexical_cluster// objects to.
 
 =
-typedef struct lexical_cluster {
+classdef lexical_cluster {
 	struct linked_list *listed; /* of `individual_form` */
-	CLASS_DEFINITION
-} lexical_cluster;
+}
 
-typedef struct individual_form {
+classdef individual_form {
 	struct declension declined; /* text of form */
-	CLASS_DEFINITION
-} individual_form;
+}
 
 @ A cluster begins empty.
 

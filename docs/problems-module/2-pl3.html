@@ -77,21 +77,20 @@ occur, whatever the provocation: if they do, they are symptoms of a bug.</p>
 in order that they can supply the current filename and line number
 automatically to the actual internal error functions. The result is, for
 instance,</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">&gt;--&gt; Problem. An internal error has occurred: Unknown verb code. The current
+  sentence is "A room is a kind"; the error was detected at line 133 of
+  "Chapter 5/Traverse for Objects.w". This should never happen, and I am
+  now halting in abject failure.
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">&gt;--&gt; Problem. An internal error has occurred: Unknown verb code. The current</span>
-<span class="ConsoleText-plain-syntax">  sentence is "A room is a kind"; the error was detected at line 133 of</span>
-<span class="ConsoleText-plain-syntax">  "Chapter 5/Traverse for Objects.w". This should never happen, and I am</span>
-<span class="ConsoleText-plain-syntax">  now halting in abject failure.</span>
-</pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">internal_error_tree_unsafe(X)</span> 
-<span class="ConsoleText-plain-syntax">    </span><a href="2-pl3.html#SP5" class="function-link"><span class="ConsoleText-function-syntax">StandardProblems::internal_error_tu_fn</span></a><span class="ConsoleText-plain-syntax">(</span><span class="ConsoleText-identifier-syntax">NULL</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">X</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__FILE__</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__LINE__</span><span class="ConsoleText-plain-syntax">)</span>
+<span class="plain-syntax">    </span><a href="2-pl3.html#SP5" class="function-link"><span class="function-syntax">StandardProblems::internal_error_tu_fn</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">__FILE__</span><span class="plain-syntax">, </span><span class="identifier-syntax">__LINE__</span><span class="plain-syntax">)</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">internal_error_if_node_type_wrong(T,</span> <span class="ConsoleText-identifier-syntax">X</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">Y</span><span class="ConsoleText-plain-syntax">)</span>
-<span class="ConsoleText-plain-syntax">    </span><a href="2-pl3.html#SP7" class="function-link"><span class="ConsoleText-function-syntax">StandardProblems::nodal_check</span></a><span class="ConsoleText-plain-syntax">(</span><span class="ConsoleText-identifier-syntax">T</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">X</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">Y</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__FILE__</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__LINE__</span><span class="ConsoleText-plain-syntax">)</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">internal_error_if_node_type_wrong(T,</span> <span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><a href="2-pl3.html#SP7" class="function-link"><span class="function-syntax">StandardProblems::nodal_check</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="identifier-syntax">__FILE__</span><span class="plain-syntax">, </span><span class="identifier-syntax">__LINE__</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">internal_error_on_node_type(X)</span> 
-<span class="ConsoleText-plain-syntax">    </span><a href="2-pl3.html#SP8" class="function-link"><span class="ConsoleText-function-syntax">StandardProblems::internal_error_on_node_type_fn</span></a><span class="ConsoleText-plain-syntax">(</span><span class="ConsoleText-identifier-syntax">NULL</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">X</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__FILE__</span><span class="ConsoleText-plain-syntax">, </span><span class="ConsoleText-identifier-syntax">__LINE__</span><span class="ConsoleText-plain-syntax">)</span>
+<span class="plain-syntax">    </span><a href="2-pl3.html#SP8" class="function-link"><span class="function-syntax">StandardProblems::internal_error_on_node_type_fn</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">__FILE__</span><span class="plain-syntax">, </span><span class="identifier-syntax">__LINE__</span><span class="plain-syntax">)</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Internal errors are generated much like any other problem message, except
@@ -112,7 +111,7 @@ code 1:</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  And now for the functions which the above macros invoke. There are two
 versions: one which cites the current sentence, and another which doesn't,
 for use if either there is no current sentence (because Inform wasn't traversing
-the parse tree at the time) or if the parse tree is unsafe -- it's possible
+the parse tree at the time) or if the parse tree is unsafe — it's possible
 that the internal error occurred during parse tree construction, so we need
 to be cautious.</p>
 </div>

@@ -121,14 +121,14 @@ layer has now gone, and all of its bugs and edge cases went with it.<a href="#fn
 </li>
 <li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
 The main demerit is that while all specifications are <code>parse_node</code>s, not
-all <code>parse_node</code>s are specifications -- chapter subheadings, for example. So
+all <code>parse_node</code>s are specifications — chapter subheadings, for example. So
 the use of the <code>parse_node</code> type in source code does not communicate whether
 we're trying to work with specifications, or doing general parsing.<a href="#fnref:4" title="return to text"> &#x21A9;</a></p>
 </li></ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Given that these disparate ideas are hard to unify, it might seem clearer
-not to unify them at all -- if they are different concepts, represent that
+not to unify them at all — if they are different concepts, represent that
 by using different C types inside Inform.</p>
 <p>The reason we need to unify is that Inform's concept of a phrase is much
 broader than the concept of a function in a C-like language. Whereas an
@@ -165,22 +165,22 @@ Here <code>v</code> is on the left and is an l-value: it's a variable, that is, 
 place to store data. The <code>5</code> is an r-value, and is the data which will be
 stored. Of course, <code>v</code> can also occur on the right, as in the assignment
 <code>w = v</code> where one variable is copied into another. But in this source code
-we would call <code>v</code> an lvalue wherever it appears -- we mean only that it has
+we would call <code>v</code> an lvalue wherever it appears — we mean only that it has
 the potential to be written to.<sup id="fnred:5"><a href="#fn:5" rel="footnote">1</a></sup></p>
 <li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
 We have to treat lvalues in this slightly unusual way because, contrary to
 C-like languages, we have no syntactic way to mark that the name of a variable
-means its value rather than its identity -- in C, this would be <code>name</code> versus
+means its value rather than its identity — in C, this would be <code>name</code> versus
 <code>&amp;name</code>, with the &quot;pointer to&quot; marker <code>&amp;</code> distinguishing the cases. We must
-instead look to the context. Even C sometimes does that -- when C writes <code>v = 5</code>,
+instead look to the context. Even C sometimes does that — when C writes <code>v = 5</code>,
 it would arguably be more consistent to say something like <code>store(&amp;v, 5)</code>.<a href="#fnref:5" title="return to text"> &#x21A9;</a></p>
 </li></ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  &quot;Conditions&quot; express a state of being which might, or might not, be true:
 Inform allows these to be tested with &quot;if&quot; and brought about with &quot;now&quot;.</p>
-<p>Whereas in C-like languages conditions are rvalues and vice versa --
-you can write <code>a = b == c</code>, or <code>if (7)</code> -- this often feels a little rum,
+<p>Whereas in C-like languages conditions are rvalues and vice versa —
+you can write <code>a = b == c</code>, or <code>if (7)</code> — this often feels a little rum,
 and in natural language even more so. In Inform, then, a condition is not an
 rvalue, and an rvalue is not a condition.</p>
 <p>Possible states are stored as propositions in predicate calculus with no
@@ -213,7 +213,7 @@ to verify individual specifications with direct function calls: for example,
 specification is indeed a condition or an lvalue/rvalue of a given kind.</p>
 <p>Dash aims to be pragmatic rather than clever<sup id="fnred:6"><a href="#fn:6" rel="footnote">1</a></sup>, and its goal is to issue
 good problem messages rather than, say, to have good running time on heroically
-large composite expressions -- those essentially never arise in natural language.</p>
+large composite expressions — those essentially never arise in natural language.</p>
 <li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>
 In particular it does not need a constraint-satisfaction algorithm, as is
 needed by the almost-Turing complete type systems in some languages.<a href="#fnref:6" title="return to text"> &#x21A9;</a></p>
@@ -238,7 +238,7 @@ had already been created. See <a href="3-lp.html" class="internal">Literal Patte
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Grammar.</b>  What remains, then, is the general Preform grammar for Inform's expressions
-and conditions -- the so-called &quot;S-parser&quot;, since it produces specifications.
+and conditions — the so-called &quot;S-parser&quot;, since it produces specifications.
 This is the content of <a href="4-ets.html" class="internal">Chapter 4: The S-Parser</a>.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

@@ -15,7 +15,7 @@ Inform 7 uses the instructions in such sentences to contribute to the
 writing of a script called a "blurb". In effect, this is a detailed set
 of instructions for Inblorb to follow, and when the user clicks Release
 in the Inform application, the Inblorb tool is called. (This is a slightly
-simplified description -- see below for the full details.)
+simplified description — see below for the full details.)
 
 Inblorb has two main jobs: to bind up the translated project, together with
 any pictures, sounds, or cover art, into a single file called a "blorb" which
@@ -34,9 +34,11 @@ though in a strong box).")
 If you have compiled the standard distribution of the command-line tools
 for Inform then the Inblorb executable will be at `inblorb/Tangled/inblorb/`.
 Usage is very simple:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inblorb/Tangled/inblorb [OPTIONS] BLURBFILE [BLORBFILE]
-=
+```
+
 This follows the given blurb file. Not all blurbs instruct Inblorb to make
 a blorb, which is why BLORBFILE is optional.
 
@@ -54,61 +56,66 @@ to `X/Build/output.gblorb`. `X` is usually something like `Whatever.inform`.
 This is the sequence of events when the user clicks Release in the user
 interface application (the "interface"):
 
-- (1) The interface calls the Inform 7 compiler as normal except that the
-`-release` command-line switch is specified.
+-	(1) The interface calls the Inform 7 compiler as normal except that the
+	`-release` command-line switch is specified.
 
-- (2) If Problems occur, the compiler exits with a return code of 1, and the
-interface displays those, and then stops the process.
+-	(2) If Problems occur, the compiler exits with a return code of 1, and the
+	interface displays those, and then stops the process.
 
-- (3) If no Problems occur, the compiler generates Inform 6 code, and also
-two additional files for the project's `Build` folder:
+- 	(3) If no Problems occur, the compiler generates Inform 6 code, and also
+	two additional files for the project's `Build` folder:
+	
+	  - `Metadata.iFiction`, an iFiction record;
+	  - `Release.blurb`, a blurb file of instructions for Inblorb to follow later.
 
-  - `Metadata.iFiction`, an iFiction record;
-  - `Release.blurb`, a blurb file of instructions for Inblorb to follow later.
+- 	(4) The interface next calls the Inform 6 compiler. The interface calls it
+	with the `S` and `D` switches, for strict checking and for debugging, off
+	instead of on. Inform 6 should certainly not produce syntax errors, though
+	it will surely produce warnings; all the same it can fail if, say, Z-machine
+	memory limits are exceeded. The interface should deal with such failures
+	exactly as it would in a non-Release run.
 
-- (4) The interface next calls the Inform 6 compiler. The interface calls it
-with the `S` and `D` switches, for strict checking and for debugging, off
-instead of on. Inform 6 should certainly not produce syntax errors, though
-it will surely produce warnings; all the same it can fail if, say, Z-machine
-memory limits are exceeded. The interface should deal with such failures
-exactly as it would in a non-Release run.
+-	(5) Inform 6 having returned 0 to indicate success, the interface next calls
+	Inblorb as follows. Let `Path` be the path to the folder containing the Inform
+	project being released, which we'll call `This.inform`. Then the interface
+	should call:
+	
+	``` ConsoleText
+		$ inblorb "Path/This.inform/Release.blurb" "Path/This.inform/Build/output.gblorb"
+	```
 
-- (5) Inform 6 having returned 0 to indicate success, the interface next calls
-Inblorb as follows. Let `Path` be the path to the folder containing the Inform
-project being released, which we'll call `This.inform`. Then the interface
-should call:
-= (text as ConsoleText)
-	$ inblorb "Path/This.inform/Release.blurb" "Path/This.inform/Build/output.gblorb"
-=
+	These two filename arguments are the Blurb script for Inblorb to
+	follow, which was written by Inform 7 at step 3, and the filename of the Blorb
+	file which it should write. Note that the interface should give this the
+	extension ".gblorb" if the Glulx setting is in force, and ".zblorb" if
+	the Z-machine.
 
-- These two filename arguments are the Blurb script for Inblorb to
-follow, which was written by Inform 7 at step 3, and the filename of the Blorb
-file which it should write. Note that the interface should give this the
-extension ".gblorb" if the Glulx setting is in force, and ".zblorb" if
-the Z-machine.
+-	(6) Like its predecessors, Inblorb can produce error messages, and it returns
+	0 (success) or 1 (failure). But the interface doesn't actually need to look
+	at that, because Inblorb also produces a much fuller report in the form of
+	an HTML page to be displayed on the Problems tab. This is `StatusCblorb.html`,
+	in the project's `Build` folder. (This is a change made in 2010: in the past,
+	the interface simply chose between a generic success and failure page on the
+	basis of the return code. The filename `StatusCblorb.html` is not hard-wired:
+	it just happens to be what the Blurb file generated by Inform 7 requests.)
 
-- (6) Like its predecessors, Inblorb can produce error messages, and it returns
-0 (success) or 1 (failure). But the interface doesn't actually need to look
-at that, because Inblorb also produces a much fuller report in the form of
-an HTML page to be displayed on the Problems tab. This is `StatusCblorb.html`,
-in the project's `Build` folder. (This is a change made in 2010: in the past,
-the interface simply chose between a generic success and failure page on the
-basis of the return code. The filename `StatusCblorb.html` is not hard-wired:
-it just happens to be what the Blurb file generated by Inform 7 requests.)
+-	(7) There are no more tools to call, but the interface has one last duty (if
+	Inblorb succeeded) — to move the blorb somewhere sensible on disc, where the
+	user can see it. Leaving it where it is will not do — the user never looks
+	inside the Build project of a folder, which on Mac OS X, for instance, is
+	not even visible. To see what to do, the interface must look at the textual
+	output from Inblorb, printed to `stdout` (of course the interface is free
+	to redirect this if it wants to). If Inblorb printed a line in the form:
 
-- (7) There are no more tools to call, but the interface has one last duty (if
-Inblorb succeeded) -- to move the blorb somewhere sensible on disc, where the
-user can see it. Leaving it where it is will not do -- the user never looks
-inside the Build project of a folder, which on Mac OS X, for instance, is
-not even visible. To see what to do, the interface must look at the textual
-output from Inblorb, printed to `stdout` (of course the interface is free
-to redirect this if it wants to). If Inblorb printed a line in the form:
-= (text as ConsoleText)
-	Copy blorb to: [[...]]
-=
-... then the interface should do as it's told. For instance:
-= (text as ConsoleText)
-	Copy blorb to: [[/Users/gnelson/Examples/Bronze Materials/Release/Bronze.gblorb]]
-=
-If Inblorb printed no such line, the interface should put up a Save As...
-dialogue box, and invite the user to choose a destination.
+	``` ConsoleText
+		Copy blorb to: [[...]]
+	```
+
+	... then the interface should do as it's told. For instance:
+
+	``` ConsoleText
+		Copy blorb to: [[/Users/gnelson/Examples/Bronze Materials/Release/Bronze.gblorb]]
+	```
+
+	If Inblorb printed no such line, the interface should put up a Save As...
+	dialogue box, and invite the user to choose a destination.

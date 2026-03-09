@@ -21,7 +21,7 @@ So, deep breath:
 @d MAX_KIND_CONSTRUCTION_ARITY 2
 
 =
-typedef struct kind_constructor {
+classdef kind_constructor {
 	struct noun *dt_tag; /* text of name */
 	int group; /* one of the four values above */
 
@@ -111,49 +111,47 @@ typedef struct kind_constructor {
 	int linguistic; /* divide off as having linguistics content */
 	int indexed_grey_if_empty; /* shaded grey in the Kinds index */
 	struct text_stream *documentation_reference; /* documentation symbol, if any */
-
-	CLASS_DEFINITION
-} kind_constructor;
+}
 
 @ A few of the settings connect pairs of kinds together, so structures like
 the following are also needed.
 
 =
-typedef struct kind_constructor_casting_rule {
+classdef kind_constructor_casting_rule in 100s {
 	struct text_stream *cast_from_kind_unparsed; /* to the one which has the rule */
 	struct kind_constructor *cast_from_kind; /* to the one which has the rule */
 	struct kind_constructor_casting_rule *next_casting_rule;
-} kind_constructor_casting_rule;
+}
 
 @ And this is the analogous structure for recording conformance:
 
 =
-typedef struct kind_constructor_instance_rule {
+classdef kind_constructor_instance_rule in 100s {
 	struct text_stream *instance_of_this_unparsed;
 	struct kind_constructor *instance_of_this;
 	struct kind_constructor_instance_rule *next_instance_rule;
-} kind_constructor_instance_rule;
+}
 
 @ And this is the analogous structure for giving Inter schemas to compare
 data of two different kinds:
 
 =
-typedef struct kind_constructor_comparison_schema {
+classdef kind_constructor_comparison_schema in 100s {
 	struct text_stream *comparator_unparsed;
 	struct kind_constructor *comparator;
 	struct text_stream *comparison_schema;
 	struct kind_constructor_comparison_schema *next_comparison_schema;
-} kind_constructor_comparison_schema;
+}
 
 @ And this is where explicit instances are recorded:
 
 =
-typedef struct kind_constructor_instance {
+classdef kind_constructor_instance in 100s {
 	struct text_stream *natural_language_name;
 	struct text_stream *identifier;
 	int value;
 	int value_specified;
-} kind_constructor_instance;
+}
 
 @ The "tupling" of an argument is the extent to which an argument can be
 allowed to hold a variable-length list of kinds, rather than a single one.
@@ -179,18 +177,17 @@ kind *latest_base_kind_of_value = NULL;
 @ Arithmetic schemas record:
 
 =
-typedef struct arithmetic_schema {
+classdef arithmetic_schema in 50s {
 	struct text_stream *operands_unparsed[2];
 	struct kind_constructor *operands[2];
 	struct text_stream *schema;
-	CLASS_DEFINITION
-} arithmetic_schema;
+}
 
 @h Creation.
 Constructors come from two sources. Built-in ones like `number` or
 `list of K` come from commands in //Neptune Files//, while source-created
 ones ("Air pressure is a kind of value") result in calls here from
-//Kinds::new_base// -- which, as the name suggests, can only make
+//Kinds::new_base// — which, as the name suggests, can only make
 base kinds, not proper constructors.
 
 Here `super` will be the super-constructor, the one which this will construct

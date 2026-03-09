@@ -150,12 +150,11 @@ special significance:</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The above therefore attaches one of these to each set of rule data:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_time</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 to 1339, or one of the special values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if one is given */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">uses_as_event</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>parse_node</code> */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax"> *</span><span class="function-syntax">TimedRules::new_rfd_data</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">TimedRules::new_rfd_data</span></span>:<br/><a href="3-tr.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">rule_family_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">trfd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">timed_rules_rfd_data</span><span class="plain-syntax">);</span>

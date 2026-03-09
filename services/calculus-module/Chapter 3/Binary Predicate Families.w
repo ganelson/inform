@@ -6,7 +6,7 @@ To create sets of relations for different purposes.
 belong to. Some families are small (the equality family contains just the
 equality relation), others larger (the map connections family in an IF compilation
 has one for each map direction). What unites the members of a family is that
-they share an implementation of typechecking, asserting and compilation --
+they share an implementation of typechecking, asserting and compilation —
 in other words, if two predicates are implemented roughly the same way, then
 they should be in the same family, and otherwise not. Inform currently has
 a little over 10 different families.
@@ -15,10 +15,9 @@ A //bp_family// object is simply a receiver for the method calls providing
 the predicate's implementation.
 
 =
-typedef struct bp_family {
+classdef bp_family {
 	struct method_set *methods;
-	CLASS_DEFINITION
-} bp_family;
+}
 
 bp_family *BinaryPredicateFamilies::new(void) {
 	bp_family *f = CREATE(bp_family);
@@ -89,7 +88,7 @@ int BinaryPredicateFamilies::assert(binary_predicate *bp,
 relation true from now on, or make it false.
 
 Some constants here enumerate the three cases of what we are to do. This
-looks asymmetrical -- shouldn't we also test to see whether an atom is false,
+looks asymmetrical — shouldn't we also test to see whether an atom is false,
 a fourth case?
 
 The answer is that there's no need, since "test false" can be done by

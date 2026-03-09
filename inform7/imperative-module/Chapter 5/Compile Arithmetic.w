@@ -46,7 +46,7 @@ void CompileArithmetic::perform_arithmetic_emit(int op, equation *eqn,
 must all use floating-point, whereas "3 plus 3" uses integer arithmetic: in
 other words, if either operand is real, then real arithmetic must be used.
 "Promotion" means converting an integer to a real number (I'm not quite sure
-why that is traditionally thought of as being better) -- in "pi plus 3", the
+why that is traditionally thought of as being better) — in "pi plus 3", the
 integer 3 is promoted to real.
 
 @<Choose which form of arithmetic and promotion@> =
@@ -75,9 +75,11 @@ integer 3 is promoted to real.
 @ Making this optimisation ensures that if X or Y are literal `K_number` values
 then they will be converted to literal `K_real_number` values at compile time
 rather than at runtime, saving a function call in cases like
-= (text as Inform 7)
+
+``` Inform7
 	let the magic value be 4 + pi;
-=
+```
+
 where there is no need to convert 4 to 4.0 at runtime; we can simply reinterpret
 it as a real.
 

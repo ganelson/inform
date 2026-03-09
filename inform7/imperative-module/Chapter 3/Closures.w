@@ -15,11 +15,13 @@ In the theory of compilers, the term "closure" is usually used more ambitiously
 than this, in that closures "capture" references to local variables, thus enabling
 "closed" functions to be made out of fragments occurring inside code. For example,
 in the Swift programming language:
-= (text)
+
+``` None
 	var threshold = 10
 	let fn = { x in return x > threshold }
 	return fn
-=
+```
+
 a nameless function has been made with `{ x in return x > threshold }` which
 includes a reference to a local variable not part of its own definition, i.e.,
 `threshold`. A reference to this must be "captured" and salted away in the
@@ -69,14 +71,16 @@ void Closures::compile_closures(void) {
 of the function, and the text of the name. (The latter enables us to print
 phrase values efficiently.) Note that we make a compilation request for the
 phrase in order to make sure somebody has actually compiled it: this is in
-case the phrase occurs as a constant but is never explicitly invoked, as here --
-= (text as Inform 7)
+case the phrase occurs as a constant but is never explicitly invoked, as here —
+
+``` Inform7
 To decide which number is (N - a number) doubled (this is doubling):
 	decide on N + N.
 To begin:
 	let L be { 2, 3, 5, 7, 11 };
 	say "Doubling produces [doubling applied to L]."
-=
+```
+
 In this source text, there is never an explicit invocation such as "4 doubled",
 but the fact that the phrase has been given the name "doubling" is enough to
 ensure that the closure array for it is compiled, and that forces a request
@@ -104,9 +108,11 @@ always initialised explicitly, and so on. Clearly the default value for a
 phrase to nothing is one that does nothing, and for a phrase to some kind K
 is one that returns the default value of kind K. For example, the default
 value of
-= (text)
+
+``` None
 	phrase (text, time) -> number
-=
+```
+
 is the function which takes any pair of a text and a time, does nothing with
 them, and always returns the default number, i.e., 0. But this means we need
 to actually compile such functions. Since there are in principle an infinite
@@ -116,11 +122,10 @@ which actually arise during compilation.
 The following function is called exactly once for each such kind `K`.
 
 =
-typedef struct default_closure_request {
+classdef default_closure_request {
 	struct inter_name *closure_identifier;
 	struct kind *K;
-	CLASS_DEFINITION
-} default_closure_request;
+}
 
 void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) {
 	text_stream *desc = Str::new();

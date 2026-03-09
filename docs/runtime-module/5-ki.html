@@ -173,12 +173,9 @@ the array <code>LIST_OF_TY 1 TEXT_TY</code>.</p>
 for constructions like &quot;list of numbers&quot;, where the strong and weak IDs are
 different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">strong</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">strong</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">BASE_KIND_HWM</span><span class="plain-syntax">)) </span><span class="identifier-syntax">weak</span><span class="plain-syntax"> = </span><span class="identifier-syntax">strong</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">weak</span><span class="plain-syntax"> = </span><span class="identifier-syntax">strong</span><span class="plain-syntax">--&gt;0;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">strong</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">strong</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">BASE_KIND_HWM</span><span class="plain-syntax">)) </span><span class="identifier-syntax">weak</span><span class="plain-syntax"> = </span><span class="identifier-syntax">strong</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">weak</span><span class="plain-syntax"> = </span><span class="identifier-syntax">strong</span><span class="plain-syntax">--&gt;0;
+</span></pre>
 <p>We must be careful with comparisons because a strong ID may be numerically
 negative if it's a pointer into the upper half of virtual machine memory.</p>
 </div>
@@ -188,7 +185,7 @@ value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">runtime_kind_structure</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">runtime_kind_structure</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_described</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">default_requested_here</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">make_default</span><span class="plain-syntax">;</span>
@@ -196,8 +193,7 @@ and the following keeps track of which ones we need to make:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rks_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">default_created</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rks_dv_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">runtime_kind_structure</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure runtime_kind_structure is accessed in 2/dv and here.</li></ul>
 <div class="lsmarkdown">
@@ -235,11 +231,11 @@ turns up. This means remembering everything we've seen, using a new structure:</
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Thus the following routine must return <code>NULL</code> if \INWEBMATH(K\INWEBMATH) is a kind whose weak
-ID is the same as its strong ID -- if it's a base kind, in other words --
+ID is the same as its strong ID — if it's a base kind, in other words —
 and otherwise return a pointer to a unique <code>runtime_kind_structure</code> for \INWEBMATH(K\INWEBMATH).</p>
 <p>Note that a <code>CON_TUPLE_ENTRY</code> node is recursed downwards through, to ensure
 that its leaves are passed through <code>RTKindIDs::get_rks</code>, but no RKS structure is made
-for it -- this is because none is needed, since we're going to roll up
+for it — this is because none is needed, since we're going to roll up
 tuple subtrees into flat arrays. Recall that <code>CON_TUPLE_ENTRY</code> nodes are
 &quot;punctuation&quot;, not base kinds in their own right. We can never see them
 here except as a result of recursion.</p>
@@ -275,7 +271,7 @@ here except as a result of recursion.</p>
 <p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>  The following implies a quadratic running time in the number of distinct
 constructed kinds of value seen across the source text, which may become a
 performance problem later on. But at present this number is surprisingly
-small -- often less than 10. On the principle that premature optimisation
+small — often less than 10. On the principle that premature optimisation
 is the root of all evil, I'm leaving it quadratic.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find or make a runtime kind structure for the kind</span><span class="named-paragraph-number">7.1</span></span> =</p>
@@ -331,8 +327,8 @@ values for kinds, since both involve tracking constructions uniquely.</p>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  At the end of Inform's run, then, we have seen various interesting kinds
 of value and compiled pointers to arrays representing them. But we haven't
 compiled the arrays themselves; so we do that now.</p>
-<p>Because these are recursive structures -- the array for a strong ID often
-contains references to other strong ID arrays -- it may look as if there's
+<p>Because these are recursive structures — the array for a strong ID often
+contains references to other strong ID arrays — it may look as if there's
 a risk of further RKS structures being generated, which might make the loop
 behave oddly. But this doesn't happen because <code>RTKindIDs::get_rks</code> has already
 recursively scanned through for us, so that if we have seen a construction
@@ -434,7 +430,7 @@ recursively scanned through for us, so that if we have seen a construction
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Introspection.</b>  Our runtime code is only capable of very limited introspection: given a
 value known to be some kind of object, it can test what kind that is. This
 is done with Inter's <code>OFCLASS_BIP</code> primitive, and note that this refers to
-the kind the way that Inter does -- i.e., by means of the symbol used as
+the kind the way that Inter does — i.e., by means of the symbol used as
 an identifier in the declaration of that kind.</p>
 <p>Testing <code>X ofclass ID</code>, where <code>ID</code> is either the strong or the weak ID, does
 not work, and in fact there is in general no way to take a value at runtime
@@ -445,7 +441,7 @@ objects. But it is also only needed for objects.</p>
 <code>TRUE</code> if code was required to perform that test, <code>FALSE</code> if the test was
 already true and required no code. That will in fact happen if <code>subj</code> is
 not a kind of object, because then the typechecker will have proved already
-that the value \INWEBMATH(x\INWEBMATH) has this kind -- in other words, the checking will have
+that the value \INWEBMATH(x\INWEBMATH) has this kind — in other words, the checking will have
 been done at compile time.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

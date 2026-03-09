@@ -75,7 +75,8 @@ values, and at present Preform return values are `int`.
 @d lcon_ti int
 
 @ And here's how we pack everything in:
-= (text)
+
+``` None
             <-- lsb     32 bits      msb -->
     gender  xx..............................
     person  ..xx............................
@@ -85,7 +86,7 @@ values, and at present Preform return values are `int`.
 	tense   ...........xxx..................
 	sense   ..............x.................
 	id      ...............xxxxxxxxxxxxxxxxx
-=
+```
 
 @d GENDER_LCBASE 0x00000001
 @d GENDER_LCMASK 0x00000003
@@ -295,16 +296,18 @@ Suppose we have a list of `lcon_ti` constants and want to print out their
 grammatical attributes. If we do that in the obvious way, by calling
 //Lcon::write// on each of the constants in turn, we tend to get a list
 of tiresome length. We want to abbreviate so that, e.g.,
-= (text)
+
+``` None
 	1p s + 1p p + 2p s + 2p p + 3p s + 3p p
-=
+```
+
 becomes just `1p/2p/3p s/p`.
 
 Doing this is surprisingly non-trivial: an optimal solution means finding
 the minimal number of disjoint 7-dimensional cuboids whose union is the
 set of coordinates in the list. "Cuboid" here really means "Cartesian
 product of seven sets"; the above case is a benign one because the set
-in question is a single cuboid --
+in question is a single cuboid —
 $$ \lbrace (1p, s), (2p, s), (3p, s), (1p, p), (2p, p), (3p, p) \rbrace = \lbrace 1p, 2p, 3p \rbrace\times\lbrace s, p\rbrace. $$
 
 We will aim for an adequately good answer, not an optimal one. The following
@@ -313,7 +316,7 @@ it's probably not worth any further effort.
 
 @ To avoid the C extension for variable-length arrays, and to avoid memory
 allocation, we're simply going to make our working arrays quite large. But
-this is fine -- the function is for printing, so it's not used much.
+this is fine — the function is for printing, so it's not used much.
 
 @d MAX_LCON_SET_SIZE
 	NO_KNOWN_GENDERS*NO_KNOWN_PERSONS*NO_KNOWN_NUMBERS*NO_KNOWN_VOICES*
@@ -335,7 +338,7 @@ void Lcon::write_set(OUTPUT_STREAM, lcon_ti *set, int set_size, int desiderata) 
 	}
 }
 
-@ Note that there is always at least one cuboid containing the item $i$ --
+@ Note that there is always at least one cuboid containing the item $i$ —
 the $1\times 1\times 1\times 1\times 1\times 1\times 1$ cuboid containing
 just that one point. So the following certainly finds something. The
 `elongated_sides` value accumulates the set of axis directions in which
@@ -373,8 +376,8 @@ which expands it the most. We stop when no further expansion is possible.
 
 @ We start with the current cuboid. The `enlarged` array will be the same as
 the `cuboid_number` array except that some additional points `x` for which
-`cuboid_number[x]` is $-1$ -- i.e., points not yet placed in any cuboid --
-will have `enlarged[x]` set to `cuboid` -- i.e., will be placed in the current
+`cuboid_number[x]` is $-1$ — i.e., points not yet placed in any cuboid —
+will have `enlarged[x]` set to `cuboid` — i.e., will be placed in the current
 cuboid. In effect, `enlarged` is a speculative next version of `cuboid_number`.
 
 We first find the "variations" in the $d$ direction: that is, $d$ coordinates

@@ -20,11 +20,10 @@ void PropertyInferences::start(void) {
 @ Creation:
 
 =
-typedef struct property_inference_data {
+classdef property_inference_data {
 	struct property *inferred_property; /* property referred to */
 	struct parse_node *inferred_property_value; /* and its value, if any */	
-	CLASS_DEFINITION
-} property_inference_data;
+}
 
 inference *PropertyInferences::new(inference_subject *subj,
 	property *prn, parse_node *val) {
@@ -70,7 +69,7 @@ void PropertyInferences::log_details(inference_family *f, inference *inf) {
 }
 
 @ By convention, a pair of attached either/or properties which are negations of
-each other -- say "open" and "closed" -- are treated as if they were the
+each other — say "open" and "closed" — are treated as if they were the
 same property but with different values.
 
 =

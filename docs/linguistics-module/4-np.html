@@ -210,12 +210,9 @@ articled.</p>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Full nounphrases (NP4).</b>  When fully parsing the structure of a nounphrase, we have five different
 constructions in play, and need to work out their precedence over each other:
 rather as <code>*</code> takes precedence over <code>+</code> in arithmetic expressions in C, so
-here we have --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">RELATIONSHIP_NT</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">CALLED_NT</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">WITH_NT</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">AND_NT</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">KIND_NT</span>
-</pre>
-<div class="lsmarkdown">
+here we have —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	RELATIONSHIP_NT &gt; CALLED_NT &gt; WITH_NT &gt; AND_NT &gt; KIND_NT
+</span></pre>
 <p>That is, relative clauses take precedence over callings, and so on. The
 above hierarchy is arrived at thus:</p>
 <ul>
@@ -281,7 +278,7 @@ called &quot;Area&quot;.</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Inform guesses above that most English words ending in &quot;-ing&quot; are present
-participles -- like guessing, bluffing, cheating, and so on. But there is
+participles — like guessing, bluffing, cheating, and so on. But there is
 a conspicuous exception to this; so any word found in <non-participles>
 is never treated as a participle.</p>
 </div>
@@ -299,7 +296,7 @@ is never treated as a participle.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  An implicit RP is a word like &quot;carried&quot;, or &quot;worn&quot;, on its own -- this
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  An implicit RP is a word like &quot;carried&quot;, or &quot;worn&quot;, on its own — this
 implies a relation to some unspecified noun. We represent that in the tree
 using the &quot;implied noun&quot; pronoun. For now, these are fixed.</p>
 </div>
@@ -369,15 +366,12 @@ directions, in particular, a little better. But it means we do not recognise
 <ul class="endnotetexts"><li>This code is used in <a href="4-np.html#SP15">&#167;15</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  We have now disposed of <code>RELATIONSHIP_NT</code> and are left with the constructs:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">CALLED_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">WITH_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">AND_NT</span><span class="Preform-plain-syntax"> &gt; </span><span class="Preform-constant-syntax">KIND_NT</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	CALLED_NT &gt; WITH_NT &gt; AND_NT &gt; KIND_NT
+</span></pre>
 <p>These are all handled by <np-nonrelative>. Two points to note:</p>
 <ul>
 <li>The first production accepts arbitrary text quickly and without allocating
-memory if we're in lookahead mode -- an important economy since otherwise
+memory if we're in lookahead mode — an important economy since otherwise
 parsing a list of \INWEBMATH(n\INWEBMATH) items would have running time and memory of order \INWEBMATH(2^n\INWEBMATH).</li>
 <li>If we regard the above constructs as being like operators in arithmetic,
 then the operands have to match <np-operand>, and this requires text which has

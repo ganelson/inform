@@ -18,10 +18,10 @@ typedef struct activity_compilation_data {
 	struct activity_crossref *cross_references;
 } activity_compilation_data;
 
-typedef struct activity_crossref {
+classdef activity_crossref in 100s {
 	struct id_body *rule_dependent;
 	struct activity_crossref *next;
-} activity_crossref;
+}
 
 @ Which is created, long before compilation time, thus:
 

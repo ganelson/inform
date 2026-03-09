@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../services.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#3">Chapter 3: Binary Predicates</a></li><li><b>Compilation Schemas</b></li></ul></div>
 <p class="purpose">To manage prototype pieces of code for use in code-generation.</p>
 
-<ul class="toc"><li><a href="3-cs.html#SP1">&#167;1. Schemas</a></li><li><a href="3-cs.html#SP3">&#167;3. Annotated schemas</a></li><li><a href="3-cs.html#SP5">&#167;5. Building schemas</a></li><li><a href="3-cs.html#SP8">&#167;8. Emptiness</a></li><li><a href="3-cs.html#SP9">&#167;9. Logging schemas</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-cs.html#SP1">&#167;1. Schemas</a></li><li><a href="3-cs.html#SP3">&#167;3. Annotated schemas</a></li><li><a href="3-cs.html#SP5">&#167;5. Building schemas</a></li><li><a href="3-cs.html#SP6">&#167;6. Emptiness</a></li><li><a href="3-cs.html#SP7">&#167;7. Logging schemas</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Schemas.</b>  The calculus module should not in any direct way be involved in code
@@ -93,7 +93,7 @@ never needed in practice, but we must avoid any risk of buffer overrun for safet
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TYPICAL_I6_SCHEMA_LENGTH</span> <span class="constant-syntax">128</span><span class="plain-syntax"> </span><span class="comment-syntax">/* in practice 40 is plenty */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">prototype_storage</span><span class="plain-syntax">[</span><span class="constant-syntax">TYPICAL_I6_SCHEMA_LENGTH</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* used just to make space for... */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">prototype</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...this */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_quoted_inames</span><span class="plain-syntax">;</span>
@@ -101,7 +101,7 @@ never needed in practice, but we must avoid any risk of buffer overrun for safet
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">compiled</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quoted_inames</span><span class="plain-syntax">[2];</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">} </span><span class="type-syntax">i6_schema</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure i6_schema is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -139,17 +139,11 @@ even more elaborate syntax, with escapes like <code>%s</code> in them. But this 
 they are generated with the following <code>printf</code>-style function. Those <code>%</code> escapes
 are expanded now, when the schema is created, and not later when code is generated
 from it. For example, the function call:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="function-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"*1.%n = *2.%n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"*1.%n = *2.%n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">)
+</span></pre>
 <p>might produce a schema whose <code>prototype</code> text came out as</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">*1.</span><span class="identifier-syntax">x100</span><span class="plain-syntax"> = *2.</span><span class="identifier-syntax">y62</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">*1.x100 = *2.y62
+</span></pre>
 <p>...supposing that <code>x100</code> and <code>y62</code> were the Inter identifiers for whatever was
 referred to by the <code>inter_name</code> values <code>X</code> and <code>Y</code> supplied in the arguments.
 Here then is that <code>printf</code>-like function:</p>
@@ -163,7 +157,7 @@ Here then is that <code>printf</code>-like function:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Streams::new_buffer</span><span class="plain-syntax">(</span><span class="constant-syntax">TYPICAL_I6_SCHEMA_LENGTH</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype_storage</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_quoted_inames</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_end</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">); </span><span class="comment-syntax">/* macro to end variable argument processing */</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ParsingSchemas::from_i6s</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">),</span>
@@ -173,7 +167,7 @@ Here then is that <code>printf</code>-like function:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  And this is a variation for modifying an existing schema:</p>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b>  And this is a variation for modifying an existing schema:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::modify</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::modify</span></span>:<br/>Binary Predicates - <a href="3-bp.html#SP18_1">&#167;18.1</a>, <a href="3-bp.html#SP18_2">&#167;18.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fmt</span><span class="plain-syntax">, ...) {</span>
@@ -181,7 +175,7 @@ Here then is that <code>printf</code>-like function:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Streams::new_buffer</span><span class="plain-syntax">(</span><span class="constant-syntax">TYPICAL_I6_SCHEMA_LENGTH</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype_storage</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_quoted_inames</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_end</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">); </span><span class="comment-syntax">/* macro to end variable argument processing */</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ParsingSchemas::from_i6s</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">),</span>
@@ -190,13 +184,13 @@ Here then is that <code>printf</code>-like function:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  And another:</p>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b>  And another:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::append</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fmt</span><span class="plain-syntax">, ...) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_list</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable argument list signified by the dots */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Process the varargs into schema prototype text</span></span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_end</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">); </span><span class="comment-syntax">/* macro to end variable argument processing */</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ParsingSchemas::from_i6s</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">),</span>
@@ -205,23 +199,23 @@ Here then is that <code>printf</code>-like function:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b>  Either way, the schema's prototype is written as follows:</p>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3. </b>  Either way, the schema's prototype is written as follows:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Process the varargs into schema prototype text</span><span class="named-paragraph-number">5.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Process the varargs into schema prototype text</span><span class="named-paragraph-number">5.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_start</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">fmt</span><span class="plain-syntax">); </span><span class="comment-syntax">/* macro to begin variable argument processing */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fmt</span><span class="plain-syntax">; *</span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'%'</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Recognise schema-format escape sequences</span></span><span class="named-paragraph-number">5.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'%'</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="3-cs.html#SP5_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Recognise schema-format escape sequences</span></span><span class="named-paragraph-number">5.3.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">((</span><span class="type-syntax">inchar32_t</span><span class="plain-syntax">) *</span><span class="identifier-syntax">p</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP5">&#167;5</a>, <a href="3-cs.html#SP6">&#167;6</a> and <a href="3-cs.html#SP7">&#167;7</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP5">&#167;5</a>, <a href="3-cs.html#SP5_1">&#167;5.1</a> and <a href="3-cs.html#SP5_2">&#167;5.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_1_1" class="paragraph-anchor"></a><b>&#167;5.1.1. </b>  We recognise only a few escapes here: <code>%%</code>, a literal percentage sign; <code>%d</code>,
+<p class="commentary firstcommentary"><a id="SP5_3_1" class="paragraph-anchor"></a><b>&#167;5.3.1. </b>  We recognise only a few escapes here: <code>%%</code>, a literal percentage sign; <code>%d</code>,
 an integer; <code>%s</code>, a C string; <code>%S</code>, a text stream; and three which are higher-level:</p>
 <ul>
 <li><code>%k</code> takes a <code>kind</code> parameter and expands to its weak ID;</li>
@@ -232,7 +226,7 @@ global values to have different <code>inter_name</code>s but the same identifier
 so it would not be safe to store only the textual identifier.</li>
 </ul>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recognise schema-format escape sequences</span><span class="named-paragraph-number">5.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recognise schema-format escape sequences</span><span class="named-paragraph-number">5.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">++;</span>
@@ -266,9 +260,9 @@ so it would not be safe to store only the textual identifier.</li>
 <span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Unknown % string escape in schema format"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP5_1">&#167;5.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP5_3">&#167;5.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Emptiness.</b>  A schema is empty if its prototype is the empty text.</p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Emptiness.</b>  A schema is empty if its prototype is the empty text.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::empty</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) {</span>
@@ -278,11 +272,11 @@ so it would not be safe to store only the textual identifier.</li>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Logging schemas.</b>  The fact that I6 schemas are not much more than string makes them easy to log:</p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Logging schemas.</b>  The fact that I6 schemas are not much more than string makes them easy to log:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::log</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::log</span></span>:<br/>Calculus Module - <a href="1-cm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="3-cs.html#SP9" class="function-link"><span class="function-syntax">Calculus::Schemas::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">);</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::log</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::log</span></span>:<br/>Calculus Module - <a href="1-cm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="3-cs.html#SP7" class="function-link"><span class="function-syntax">Calculus::Schemas::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) {</span>
@@ -291,7 +285,7 @@ so it would not be safe to store only the textual identifier.</li>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::log_applied</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_term</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="3-cs.html#SP9" class="function-link"><span class="function-syntax">Calculus::Schemas::write_applied</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cs.html#SP7" class="function-link"><span class="function-syntax">Calculus::Schemas::write_applied</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::write_applied</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::write_applied</span></span>:<br/>Terms - <a href="4-trm.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_term</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt1</span><span class="plain-syntax">) {</span>

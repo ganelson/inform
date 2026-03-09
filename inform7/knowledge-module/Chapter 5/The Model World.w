@@ -37,7 +37,7 @@ certain kinds and relationships better.
 Some instances change their kinds in Stage I, and this can result in further
 creations by assembly sentences like "A handle is part of every door". Because
 of that, Stage I takes place at the end of traverse 2 of the source text and,
-uniquely, gets the opportunity to add fresh sentences to the source -- thus
+uniquely, gets the opportunity to add fresh sentences to the source — thus
 extending the traverse. But by the end of Stage I, all kinds are fixed, and
 no further instances can be created.
 
@@ -113,7 +113,7 @@ void World::stages_II_and_III(void) {
 
 @h Stage IV.
 This is for consistency checks or to store away useful data, but where
-nothing in the model may be changed -- no properties or relationships
+nothing in the model may be changed — no properties or relationships
 may be added.
 
 =
@@ -138,7 +138,7 @@ made, but also on what that subject inherits from. Suppose we are told:
 > The cup is in the Yellow Cupboard. The Cupboard is lighted.
 
 When we make the "lighted" inference, we know for certain what subject
-it's about -- the Yellow Cupboard -- but not where this lives in the
+it's about — the Yellow Cupboard — but not where this lives in the
 inference-subject hierarchy, because that depends on the kind of the
 Cupboard. Is it a room, or a container? We don't yet know (and won't until
 Stage I of model-completion), so we aren't in a position to judge whether
@@ -240,7 +240,7 @@ about the Portal, to stand.
 between things and things, and then write "X connects to Y". Inform must clearly
 check that X and Y are both things. It does indeed make some checks along those
 lines earlier on in compilation, but there are objects whose kinds are not known
-until model completion time -- in particular, there can be objects which might
+until model completion time — in particular, there can be objects which might
 be things or might be rooms, so that we cannot know if "X connects to Y" is
 legal until after the model is completed.
 

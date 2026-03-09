@@ -13,8 +13,8 @@ in order of creation, and so on.
 
 Even if a 32-bit number is available, this is not enough to represent the
 full range of values we might want: consider all the possible hundred-word
-essays of text, for instance. So for a whole range of kinds -- "text",
-"list of K", "stored action" and so on -- the I6 value at run-time is only
+essays of text, for instance. So for a whole range of kinds — "text",
+"list of K", "stored action" and so on — the I6 value at run-time is only
 a pointer to what is called a "short block". This is typically only a few
 words long, and often only a single word: hence the term "short". It has
 no header or other overhead, and its contents depend on the kind of value.
@@ -230,13 +230,17 @@ the LB is not necessarily contiguous, since it can span multiple Flex blocks.
 We abstract that with two routines to read and write entries.
 
 `BlkValueRead` takes two compulsory arguments and one optional one. Thus:
-= (text as Inform 6)
+
+``` Inform6
 	BlkValueRead(bv, n)
-=
+```
+
 reads the nth entry in the long block for `bv`, whereas
-= (text as Inform 6)
+
+``` Inform6
 	BlkValueRead(long_block, n, true)
-=
+```
+
 read it from the given long block directly. `BlkValueWrite` is similar.
 
 =
@@ -388,10 +392,12 @@ or -1 if it has no zeros.
 This copies a given number of entries from one BV's long block to another;
 they must both be of the same word size but can differ in header size.
 Functionally, it's identical to
-= (text as Inform 6)
+
+``` Inform6
 	for (n=0: n<no_entries_to_copy: n++)
 		BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));
-=
+```
+
 but it's much, much faster, and runs in a reasonably small number of cycles
 given what it needs to do.
 
@@ -494,13 +500,17 @@ The following is helpful when reading an array of characters into a text:
 
 @h Creation.
 To create a block value, call:
-= (text as Inform 6)
+
+``` Inform6
 	BlkValueCreate(kind)
-=
+```
+
 where `K` is its (strong) kind ID. Optionally, call:
-= (text as Inform 6)
+
+``` Inform6
 	BlkValueCreate(K, short_block)
-=
+```
+
 to mandate that the short block needs to be located at the given address
 outside the heap: but don't do this unless you can guarantee that space of the
 necessary length will be available there for as long as the lifetime of
@@ -598,9 +608,11 @@ local variables.)
 @h Freeing.
 As noted above, every value returned by `BlkValueCreate` must later be
 freed by calling the following routine exactly once:
-= (text as Inform 6)
+
+``` Inform6
 	BlkValueFree(value)
-=
+```
+
 In particular, if a block value is stored in any I6 location which is about
 to be overwritten with a new value, it's essential to call this in order
 properly to dispose of the old value.

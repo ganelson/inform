@@ -91,7 +91,7 @@ int NewUseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) 
 @ Use options correspond to instances of the following:
 
 =
-typedef struct use_option {
+classdef use_option {
 	struct wording name; /* word range where name is stored */
 	struct wording expansion; /* inline definition as given in source */
 	int definition_form; /* one of the `*_UTAS` constants above */
@@ -105,8 +105,7 @@ typedef struct use_option {
 	int notable_option_code; /* or negative if not notable */
 	struct use_option_compilation_data compilation_data;
 	int no_Inter_presence;
-	CLASS_DEFINITION
-} use_option;
+}
 
 @<Create a new use option@> =
 	wording SP = Node::get_text(V->next);
@@ -348,11 +347,10 @@ chose to) take notice of the option set. We know nothing of the possible
 languages or their options: ours just to pass on the news.
 
 =
-typedef struct target_pragma_setting {
+classdef target_pragma_setting {
 	struct text_stream *target;
 	struct text_stream *content;
-	CLASS_DEFINITION
-} target_pragma_setting;
+}
 
 @ We handle the case of Inform 6 ICL memory limit settings specially:
 `$MAX_WHATEVER=200` must be able to raise the numerical value to the largest
@@ -398,11 +396,10 @@ void NewUseOptions::pragma_setting(parsed_use_option_setting *puos) {
 they mostly are.)
 
 =
-typedef struct i6_memory_setting {
+classdef i6_memory_setting {
 	struct text_stream *ICL_identifier; /* see the DM4 for the I6 memory setting names */
 	int number; /* e.g., `50000` means "at least 50,000" */
-	CLASS_DEFINITION
-} i6_memory_setting;
+}
 
 @ =
 void NewUseOptions::memory_setting(text_stream *identifier, int n) {

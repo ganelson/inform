@@ -70,7 +70,7 @@ column ID numbers: see <a href="../runtime-module/5-tbl.html" class="internal">T
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_COLUMNS_PER_TABLE</span> <span class="constant-syntax">99</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">table</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_no_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the table number (if any) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_name_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the table name (if any) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table_contribution</span><span class="plain-syntax"> *</span><span class="identifier-syntax">table_created_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where created in source */</span>
@@ -93,18 +93,17 @@ column ID numbers: see <a href="../runtime-module/5-tbl.html" class="internal">T
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table_column_usage</span><span class="plain-syntax"> </span><span class="identifier-syntax">columns</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_COLUMNS_PER_TABLE</span><span class="plain-syntax">];</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">table</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure table is accessed in 3/nuor, 3/dbtr, 5/id, 5/idf, 5/adf, 5/tpf, 5/rf, 5/rcd, 6/rls, 6/rlb, 6/fao, 6/act, 7/tc, 7/eqt and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  For indexing purposes only:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table_contribution</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">table_contribution</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source_table</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table_contribution</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">table_contribution</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure table_contribution is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/ass2, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <div class="lsmarkdown">
@@ -264,7 +263,7 @@ some of these fields have been properly filled in.</p>
 table should have an identifier given to it which is accessible to Inter:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tables::translates</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Tables::translates</span></span>:<br/>Translation Requests - <a href="3-tr.html#SP9_1_2">&#167;9.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tables::translates</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Tables::translates</span></span>:<br/>Translation Requests - <a href="3-tr.html#SP8_2_2">&#167;8.2.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-constant-value&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_table</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
@@ -302,7 +301,7 @@ already-existing ones with the same name:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  The source text declaration of tables is not easy to parse. Tabs are
-significantly different from spaces or new-lines, for instance -- so the
+significantly different from spaces or new-lines, for instance — so the
 ordinary rules about white space are suspended. Tabs divide entries in a row;
 new-lines divide rows in a paragraph; and the table is terminated by a
 paragraph break.</p>
@@ -478,7 +477,7 @@ table and then destroy the temporary one made here.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="7-tbl.html#SP18">&#167;18</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18_4" class="paragraph-anchor"></a><b>&#167;18.4. </b>  It's not as simple as it seems to decide when a new table headline refers
-back to a table which already exists -- there are several ways we could play
+back to a table which already exists — there are several ways we could play
 this. What we say is that if the new headline gives both name and number,
 then both must match; if it gives name only, that must match; if it gives
 number only, that must. Suppose that &quot;Table 2 - Trees&quot; already exists. Then:</p>
@@ -724,11 +723,10 @@ of each other: for example the old might have columns &quot;fish&quot;, &quot;ma
 &quot;fungi&quot; (index <code>i</code> running from 0 to 3). We're going to store both the permutation
 and its inverse, with the index <code>-1</code> meaning that the column doesn't appear in
 the other table at all. The result will be:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	old_to_new: 2, 0, -1
+	new_to_old: 1, -1, 0, -1
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">old_to_new:</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">-1</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">new_to_old:</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">-1</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">-1</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the column correspondence tables</span><span class="named-paragraph-number">18.10.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -987,7 +985,7 @@ columns and in the same order.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Table stocking.</b>  See also the corresponding code in &quot;Table Sections&quot;.</p>
 <p>Note that the first column plays a special role in tables used to define new
-constants, because it holds the names of things which don't exist yet -- the
+constants, because it holds the names of things which don't exist yet — the
 things to be defined. So we exempt it from the checking below.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1117,7 +1115,7 @@ us issue more contextual problem messages.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22_4" class="paragraph-anchor"></a><b>&#167;22.4. </b>  The message PM_TablePlayerEntry is so called because by far the commonest
 case of this is people writing &quot;player&quot; as a constant value in a column of
-people -- it needs to be &quot;yourself&quot; instead, since &quot;player&quot; is a variable.</p>
+people — it needs to be &quot;yourself&quot; instead, since &quot;player&quot; is a variable.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TablePlayerEntry or C20TableVariableEntry problem</span><span class="named-paragraph-number">22.4</span></span> =</p>
 
@@ -1364,11 +1362,8 @@ at a time:</p>
 <p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1. </b>  The following is not so obvious. The amendment row is intended to replace a
 row in the main table, and we need to decide which one. Suppose the amendment
 reads:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">62</span><span class="plain-syntax">   </span><span class="string-syntax">"lampstand"</span><span class="plain-syntax">   </span><span class="constant-syntax">10</span><span class="plain-syntax">:30 </span><span class="identifier-syntax">AM</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	62   "lampstand"   10:30 AM
+</span></pre>
 <p>If the main table has exactly one row with 62 in the first column, we choose
 that; if it contains more than one, we look for rows which begin with
 <code>62</code> and then <code>&quot;lampstand&quot;</code>; and so on. (Recall that amendment tables have
@@ -1435,7 +1430,7 @@ column, we're stuck. But if there are two or more, we allow the loop to move
 us along to the next column, hoping that the key value there will find a
 unique match. If we're in the last column and there are still multiple
 possibilities, the amendment row must be identical to more than one row
-of the main table -- in this case the amendment will have no effect, but
+of the main table — in this case the amendment will have no effect, but
 put another way, it can do no harm.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use the key value in the amend-cell to make an amendment</span><span class="named-paragraph-number">25.1.3</span></span> =</p>

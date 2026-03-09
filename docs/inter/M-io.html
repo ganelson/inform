@@ -61,7 +61,7 @@ arbitrary sets of primitives and of annotations, but in practice the Inform
 toolchain standardises both: see <a href="M-ip.html" class="internal">Inform Primitives</a> and <a href="M-ia.html" class="internal">Inform Annotations</a>.</p>
 <p>Similarly, the Inter specification allows great flexibility in how packages are
 used to structure a program, but the Inform toolchain has definite ideas about
-that -- as follows.</p>
+that — as follows.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Global area and main.</b>  As in every Inter program, the global area (outside of all packages) simply
@@ -111,7 +111,7 @@ it includes references to actions found only in the I7 source text.</p>
 <p>In a sense the completion and synoptic modules play a similar role to each
 other, and a long-term aspiration might be to move more of the former into
 the latter, with a view to full linking of code some day. (At present the
-tool-chain can precompile -- &quot;assimilate&quot; -- kits and link them in, but not
+tool-chain can precompile — &quot;assimilate&quot; — kits and link them in, but not
 extensions written in Inform 7 source text.) Many structural choices have
 been made in order to keep this option open, but it is not simple to do.</p>
 </div>
@@ -120,77 +120,75 @@ been made in order to keep this option open, but it is not simple to do.</p>
 produced independently. The module for each kit, in particular, is essentially
 compiled as a stand-alone Inter program and only joins the finished program
 at the linking stage.</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">+-------------------------------+   +---------------------+   +---------------------+
+|   </span><span class="element-syntax">architecture</span><span class="plain-syntax">                |   |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">      |   |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">      |
+|   </span><span class="element-syntax">generic</span><span class="plain-syntax">                     |   |   </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">    |   |   </span><span class="element-syntax">WorldModelKit</span><span class="plain-syntax">     |
+|   </span><span class="element-syntax">source_text</span><span class="plain-syntax">                 |   |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">        |   |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">        |
+|   </span><span class="element-syntax">locksmith_by_emily_short</span><span class="plain-syntax">    |   +----------+----------+   +----------+----------+
+|   ...                         |      </span><span class="function-syntax">INTER</span><span class="plain-syntax">   |                 </span><span class="function-syntax">INTER</span><span class="plain-syntax">   |
+|   </span><span class="element-syntax">completion</span><span class="plain-syntax">                  |              |                         |
+|   </span><span class="element-syntax">connectors</span><span class="plain-syntax">                  |              |                         |   ...
++------------------+------------+              |                         |
+	</span><span class="function-syntax">INFORM7</span><span class="plain-syntax">			\                          |                         |
+					 \                        \|/                       \|/
+					  \-----------------------&gt;</span><span class="element-syntax">o</span><span class="plain-syntax">-----------&gt;</span><span class="element-syntax">o</span><span class="plain-syntax">&lt;-----------</span><span class="element-syntax">o</span><span class="plain-syntax">---- ...
+                                                            |
+                                                            | </span><span class="function-syntax">INTER</span><span class="plain-syntax">
+                                                            |
+                                                           \|/
+                                            +---------------+---------------+
+                                            |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">                |
+                                        	|   </span><span class="element-syntax">generic</span><span class="plain-syntax">                     |
+                                            |   </span><span class="element-syntax">source_text</span><span class="plain-syntax">                 |
+                                            |   </span><span class="element-syntax">locksmith_by_emily_short</span><span class="plain-syntax">    |
+                                            |   ...                         |
+                                            |   </span><span class="element-syntax">completion</span><span class="plain-syntax">                  |
+                                            |   </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">              |
+                                            |   </span><span class="element-syntax">WorldModelKit</span><span class="plain-syntax">               |
+                                            |   ...                         |
+                                            |   </span><span class="element-syntax">synoptic</span><span class="plain-syntax">                    |
+                                            |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">                  |
+                                            +-------------------------------+
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">+-------------------------------+   +---------------------+   +---------------------+</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">architecture</span><span class="plain-syntax">                |   |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">      |   |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">      |</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">generic</span><span class="plain-syntax">                     |   |   </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">    |   |   </span><span class="element-syntax">WorldModelKit</span><span class="plain-syntax">     |</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">source_text</span><span class="plain-syntax">                 |   |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">        |   |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">        |</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">locksmith_by_emily_short</span><span class="plain-syntax">    |   +----------+----------+   +----------+----------+</span>
-<span class="plain-syntax">|   ...                         |      </span><span class="function-syntax">INTER</span><span class="plain-syntax">   |                 </span><span class="function-syntax">INTER</span><span class="plain-syntax">   |</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">completion</span><span class="plain-syntax">                  |              |                         |</span>
-<span class="plain-syntax">|   </span><span class="element-syntax">connectors</span><span class="plain-syntax">                  |              |                         |   ...</span>
-<span class="plain-syntax">+------------------+------------+              |                         |</span>
-<span class="plain-syntax">    </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">         \                          |                         |</span>
-<span class="plain-syntax">                     \                        \|/                       \|/</span>
-<span class="plain-syntax">                      \-----------------------&gt;</span><span class="element-syntax">o</span><span class="plain-syntax">-----------&gt;</span><span class="element-syntax">o</span><span class="plain-syntax">&lt;-----------</span><span class="element-syntax">o</span><span class="plain-syntax">---- ...</span>
-<span class="plain-syntax">                                                            |</span>
-<span class="plain-syntax">                                                            | </span><span class="function-syntax">INTER</span>
-<span class="plain-syntax">                                                            |</span>
-<span class="plain-syntax">                                                           \|/</span>
-<span class="plain-syntax">                                            +---------------+---------------+</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">architecture</span><span class="plain-syntax">                |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">generic</span><span class="plain-syntax">                     |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">source_text</span><span class="plain-syntax">                 |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">locksmith_by_emily_short</span><span class="plain-syntax">    |</span>
-<span class="plain-syntax">                                            |   ...                         |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">completion</span><span class="plain-syntax">                  |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">              |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">WorldModelKit</span><span class="plain-syntax">               |</span>
-<span class="plain-syntax">                                            |   ...                         |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">synoptic</span><span class="plain-syntax">                    |</span>
-<span class="plain-syntax">                                            |   </span><span class="element-syntax">connectors</span><span class="plain-syntax">                  |</span>
-<span class="plain-syntax">                                            +-------------------------------+</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Modules subdivide the program by origin. But each module is further subdivided
 into &quot;submodules&quot;, packages of type <code>_submodule</code>, and those divide it by its
 ingredients. For example, the global variables in module <code>M</code> will all be in
 the submodule <code>/main/M/variables</code>.</p>
 <p>At present, the full range of possible subpackages is:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/main/M/actions
+	/main/M/activities
+	/main/M/adjectives
+	/main/M/arrays
+	/main/M/basics
+	/main/M/bibliographic
+	/main/M/chronology
+	/main/M/commands
+	/main/M/conjugations
+	/main/M/constants
+	/main/M/extensions
+	/main/M/functions
+	/main/M/grammar
+	/main/M/instances
+	/main/M/interactive_fiction
+	/main/M/kinds
+	/main/M/multimedia
+	/main/M/phrases
+	/main/M/properties
+	/main/M/relations
+	/main/M/responses
+	/main/M/rulebooks
+	/main/M/rules
+	/main/M/scenes
+	/main/M/table_columns
+	/main/M/tables
+	/main/M/tests
+	/main/M/</span><span class="type-syntax">text</span><span class="plain-syntax">
+	/main/M/use_options
+	/main/M/variables
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /main/M/actions</span>
-<span class="plain-syntax">    /main/M/activities</span>
-<span class="plain-syntax">    /main/M/adjectives</span>
-<span class="plain-syntax">    /main/M/arrays</span>
-<span class="plain-syntax">    /main/M/basics</span>
-<span class="plain-syntax">    /main/M/bibliographic</span>
-<span class="plain-syntax">    /main/M/chronology</span>
-<span class="plain-syntax">    /main/M/commands</span>
-<span class="plain-syntax">    /main/M/conjugations</span>
-<span class="plain-syntax">    /main/M/constants</span>
-<span class="plain-syntax">    /main/M/extensions</span>
-<span class="plain-syntax">    /main/M/functions</span>
-<span class="plain-syntax">    /main/M/grammar</span>
-<span class="plain-syntax">    /main/M/instances</span>
-<span class="plain-syntax">    /main/M/interactive_fiction</span>
-<span class="plain-syntax">    /main/M/kinds</span>
-<span class="plain-syntax">    /main/M/multimedia</span>
-<span class="plain-syntax">    /main/M/phrases</span>
-<span class="plain-syntax">    /main/M/properties</span>
-<span class="plain-syntax">    /main/M/relations</span>
-<span class="plain-syntax">    /main/M/responses</span>
-<span class="plain-syntax">    /main/M/rulebooks</span>
-<span class="plain-syntax">    /main/M/rules</span>
-<span class="plain-syntax">    /main/M/scenes</span>
-<span class="plain-syntax">    /main/M/table_columns</span>
-<span class="plain-syntax">    /main/M/tables</span>
-<span class="plain-syntax">    /main/M/tests</span>
-<span class="plain-syntax">    /main/M/</span><span class="type-syntax">text</span>
-<span class="plain-syntax">    /main/M/use_options</span>
-<span class="plain-syntax">    /main/M/variables</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Metadata is extensively used throughout Inter trees generated by Inform.
 This is not simply to serve human readers who happen to be glancing at them:
@@ -198,8 +196,8 @@ it's essential to the process that generous and systematic metadata is present,
 because both the synoptic module and the index<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> for a project are both generated
 using that metadata.</p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
-Again, this architectural choice is more work for us -- it was much easier
-to produce the index higher up in the compiler, as was done until 2021 -- but
+Again, this architectural choice is more work for us — it was much easier
+to produce the index higher up in the compiler, as was done until 2021 — but
 generating the index only in <a href="index.html" class="internal">inter</a> right at the end of the compilation
 process, using only the Inter tree and its metadata, leaves open the possibility
 of fuller linking of Inter code later on.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
@@ -207,47 +205,40 @@ of fuller linking of Inter code later on.<a href="#fnref:1" title="return to tex
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  As an example, every module includes metadata at its top level like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> main _plain
+	    ...
+	    </span><span class="type-syntax">package</span><span class="plain-syntax"> basic_inform_by_graham_nelson _module
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^category = </span><span class="constant-syntax">3</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^author = </span><span class="string-syntax">"Graham Nelson"</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^title = </span><span class="string-syntax">"Basic Inform"</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^</span><span class="type-syntax">version</span><span class="plain-syntax"> = </span><span class="string-syntax">"1"</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^credit = </span><span class="string-syntax">"Basic Inform version 1 by Graham Nelson"</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^modesty = </span><span class="constant-syntax">0</span><span class="plain-syntax">
+			</span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^word_count = </span><span class="constant-syntax">7691</span><span class="plain-syntax">
+			...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> main _plain</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">        </span><span class="type-syntax">package</span><span class="plain-syntax"> basic_inform_by_graham_nelson _module</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^category = </span><span class="constant-syntax">3</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^author = </span><span class="string-syntax">"Graham Nelson"</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^title = </span><span class="string-syntax">"Basic Inform"</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^</span><span class="type-syntax">version</span><span class="plain-syntax"> = </span><span class="string-syntax">"1"</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) ^credit = </span><span class="string-syntax">"Basic Inform version 1 by Graham Nelson"</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^modesty = </span><span class="constant-syntax">0</span>
-<span class="plain-syntax">            </span><span class="type-syntax">constant</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) ^word_count = </span><span class="constant-syntax">7691</span>
-<span class="plain-syntax">            ...</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Function packages.</b>  All functions are expressed in Inter code by packages of type <code>_function</code>.
 This contains the function body as a subpackage, but it may also contain
-resources needed by that function body -- for example, literal texts, arrays
+resources needed by that function body — for example, literal texts, arrays
 and so on. (The idea is that a <code>_function</code> package can be &quot;transmigrated&quot;
 from one tree to another, without losing the resources it depends on.)</p>
 <p>Usually this <code>_function</code> package will contain only one function body, often
 but not always called just <code>call</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                </span><span class="type-syntax">package</span><span class="plain-syntax"> rule_fn _function</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">package</span><span class="plain-syntax"> call _code</span>
-<span class="plain-syntax">                        ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">				</span><span class="type-syntax">package</span><span class="plain-syntax"> rule_fn _function
+					</span><span class="type-syntax">package</span><span class="plain-syntax"> call _code
+						...
+</span></pre>
 <p>But if the function needs to manipulate or refer to data not expressible in
 single words, such as lists or texts, then it will probably need to create and
 subsequently destroy a stack frame. The mechanism will then be:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                </span><span class="type-syntax">package</span><span class="plain-syntax"> rule_fn _function</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">package</span><span class="plain-syntax"> call _code</span>
-<span class="plain-syntax">                        ...</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">package</span><span class="plain-syntax"> kernel _code</span>
-<span class="plain-syntax">                        ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">				</span><span class="type-syntax">package</span><span class="plain-syntax"> rule_fn _function
+					</span><span class="type-syntax">package</span><span class="plain-syntax"> call _code
+						...
+					</span><span class="type-syntax">package</span><span class="plain-syntax"> kernel _code
+					    ...
+</span></pre>
 <p>The &quot;shell&quot; function, <code>call</code>, creates a stack frame and then calls the &quot;kernel&quot;
 function, which does the actual work; when that returns to the &quot;shell&quot;, the
 stack frame is disposed of again. This is all transparent to the user, who
@@ -256,12 +247,9 @@ simply calls <code>call</code> and doesn't need to know which mechanism is in pl
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Looking at the Inter produced.</b>  The following commands produce the final state of the Inter code for the test
 case <code>Acidity</code>, in binary and textual form:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span>
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary
+</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text
+</span></pre>
 <p>Be warned that these are large: they have several large kits linked into them
 by the time they have reached this final state, and thus contain many modules.
 <code>Acidity.intert</code> runs to about 250,000 lines of textual Inter.</p>

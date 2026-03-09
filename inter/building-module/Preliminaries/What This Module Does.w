@@ -63,7 +63,7 @@ Each kit produces a module, named after it. Any Inter tree produced by
 //inform7// will always contain the module `BasicInformKit`, for example.
 
 //inform7// generates an additional module called `generic`, holding
-generic definitions -- material which is the same regardless of what is
+generic definitions — material which is the same regardless of what is
 being compiled.
 
 //inform7// generates an additional module called `completion`, holding
@@ -79,7 +79,7 @@ such submodules: for example, in any module the resources defining its
 global variables are in a submodule called `variables`. (If it defines no
 variables, the submodule will not be present.)
 
-There are just two different linkages -- packages with special contents
+There are just two different linkages — packages with special contents
 and which the linking steps of //pipeline// treat differently from modules.
 
 - `architecture` has no subpackages, and contains only constant definitions,
@@ -107,7 +107,7 @@ code defining various resources, cross-referenced by `inter_symbol`s.
 
 But this tree cannot be magically made all at once. For much of the run of
 a tool like //inform7//, a partly-built tree will exist, and this introduces
-many potential race conditions -- where, for example, a call to function F
+many potential race conditions — where, for example, a call to function F
 cannot be made until F itself has been made, and so on.
 
 We also want to avoid bugs where one part of the compiler thinks that F will
@@ -119,16 +119,18 @@ a //package_request// stands for a package which may or may not already exist;
 and an //inter_name//, similarly, is a symbol which may or may not exist yet.
 This enables tools like //inform7// to build up elaborate if shadowy worlds
 of references to tree positions which will be filled in later.
-= (text)
+
+``` None
 				DEFINITELY MADE		PERHAPS NOT YET MADE
 	PACKAGE		inter_package		//package_request//
 	SYMBOL		inter_symbol		//inter_name//
-=
+```
+
 So, for example, a //package_request// can represent `/main/synoptic/kinds`
 either before or after that package has been built. At some point the package
 ceases to be virtual and comes into being: this is called "incarnation". But
 code in //inform7// using package requests never needs to know when this takes
-place, and will function equally well before or after -- so, no race conditions.
+place, and will function equally well before or after — so, no race conditions.
 
 And similarly for //inter_name//, which it would perhaps be more consistent
 to call a `symbol_request`. But "iname" is now a term used almost ubiquitously
@@ -141,10 +143,10 @@ In short, the actual Inter code.
 
 The straightforward way to compile some Inter code is to make calls to functions
 in //Produce//, which provide a straightforward if low-level API. For example:
-= (text as InC)
+
 	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_PROPERTY_HL);
 	Produce::numeric_constant(I, iname, K_value, x);
-=
+
 Note that we do not need to say where this code will go. //Produce//
 looks at the iname, works out what package request it should go into, incarnates
 that into a real `inter_package` if necessary, then incarnates the iname into
@@ -154,12 +156,11 @@ relevant package, an instruction which defines the symbol.
 And similarly for emitting code inside a function body, though then it is
 necessary first to say what function (which can be done by calling //Produce::function_body//
 with the iname for that function). For example:
-= (text as InC)
+
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
 		Produce::val(I, K_value, InterValuePairs::number(1));
 	Produce::up(I);
-=
 
 @ But that is a laborious sort of notation for what, in a C-like language, would
 be written just as `return 1`. It would be very painful to have to implement
@@ -167,27 +168,29 @@ kits such as BasicInformKit that way. Instead, we write them in a notation which
 is very close indeed[1] to Inform 6 syntax.[2]
 
 This means we need to provide what amounts to a pocket Inform-6-to-Inter compiler,
-and we do that in this module, using a data structure called an //inter_schema// --
-in effect, an annotated syntax tree -- to represent the results of parsing Inform 6
+and we do that in this module, using a data structure called an //inter_schema// —
+in effect, an annotated syntax tree — to represent the results of parsing Inform 6
 notation. For example, this:
-= (text as InC)
+
 	inter_schema *sch = ParsingSchemas::from_text(I"return true;", where);
 	EmitInterSchemas::emit(I, ..., sch, ...);
-=
+
 generates Inter code equivalent to the example above.[3] But the real power of
 the system comes from:
 
 (a) The ability to handle much larger passages of I6 notation - for example, a
-function body 10K long -- in an acceptably speed-efficient way; and
+function body 10K long — in an acceptably speed-efficient way; and
 
 (b) The ability to substitute values in for placeholders.
 
 As an example of (b), an //inter_schema// is how //inform7// compiles so-called
 inline phrase definitions such as:
-= (text as Inform 7)
+
+``` Inform7
 	To say (L - a list of values) in brace notation:
 		(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
-=
+```
+
 Here, the text `LIST_OF_TY_Say({-by-reference:L}, 1);` is passed through to
 //ParsingSchemas::from_text// to make a schema. When the phrase is invoked,
 //EmitInterSchemas::emit// is used to generate Inter code from it; and a
@@ -219,22 +222,24 @@ This API keeps track of the current write position inside each tree (using
 the //code_insertion_point// system), and then provides functions which call
 down into //bytecode// for us, making use of that write position. So, for
 example, we can write:
-= (text as InC)
+
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
 		Produce::val(I, K_value, InterValuePairs::number(17));
 	Produce::up(I);
-=
+
 to produce the Inter code:
-= (text as Inter)
+
+``` Inter
 	inv !return
 		val K_unchecked 17
-=
+```
+
 Note the use of //Produce::down// and //Produce::up// to step up and down the
 hierarchy: these functions are always called in matching ways.
 
 @ The //pipeline// module makes heavy use of the Produce API. Surprising,
-//inform7// calls it in only a few places -- but in fact that is because
+//inform7// calls it in only a few places — but in fact that is because
 it provides still another middleware layer on top. See //runtime: Emit//.
 But it's really only a very thin layer, allowing the caller not to have to
 pass the `I` argument to every call (because it will always be the Inter tree

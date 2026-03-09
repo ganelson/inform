@@ -130,7 +130,7 @@ void IndexingData::add_default_categories(compiled_documentation *cd) {
 added:
 
 =
-typedef struct indexing_category {
+classdef indexing_category {
 	struct text_stream *cat_name;
 	struct text_stream *cat_glossed; /* if set, print the style as a gloss */
 	int cat_inverted; /* if set, apply name inversion */
@@ -140,8 +140,7 @@ typedef struct indexing_category {
 	int cat_unbracketed; /* if set, also prune brackets */
 	struct text_stream *cat_under; /* for automatic subentries */
 	int cat_alsounder; /* for automatic subentries */
-	CLASS_DEFINITION
-} indexing_category;
+}
 
 @ The following returns the category for a given name, creating it if it
 doesn't already exist:

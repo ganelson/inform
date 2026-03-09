@@ -67,7 +67,7 @@ function togglePopup(material_id) {
 the Preform parser quickly to reject non-matches, the other being
 <a href="4-le.html" class="internal">Length Extremes</a>, which is easier to understand.</p>
 <p>It may elucidate both to see the actual optimisation data for nonterminals
-as used in a typical run of Inform 7 -- see <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>.</p>
+as used in a typical run of Inform 7 — see <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Incidence bits.</b>  Each NT is assigned an &quot;incidence bit&quot;, but this is generated on demand;
@@ -77,8 +77,8 @@ assume integers are any larger than that). We avoid use of bit 32 because
 these are signed integers and <code>1 &lt;&lt; 31</code> has undefined behaviour in C;
 compiling <code>-fsanitize=undefined</code> produces errors in the function below if it
 is used.</p>
-<p>The lowest 6 bits are reserved -- see <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a>
-below -- but bits 7 to 31 are free, and the following function cycles through
+<p>The lowest 6 bits are reserved — see <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a>
+below — but bits 7 to 31 are free, and the following function cycles through
 those 26 possibilities. Those 26 don't have any semantic significance; they
 simply divide up the nonterminals into 26 different bins of roughly equal
 sizes, in the same sort of way that keys are divided up in hash tables.</p>
@@ -158,19 +158,16 @@ or logical-and (&quot;conjoin&quot;) their NTI bitmaps together:</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Range requirements.</b>  The NTI bitmaps for words are not easy to put together, but provided this
 can be done correctly then we can benefit from systematic criteria to reject
 doomed matches quickly when parsing. For example, suppose we have grammar:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;recipe&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">pan-fried</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fish&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;fish&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">veronique</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">battered</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fish&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;recipe&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	    </span><span class="Preform-constant-syntax">pan-fried</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fish&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	    </span><span class="Preform-function-syntax">&lt;fish&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">veronique</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	    </span><span class="Preform-constant-syntax">battered</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fish&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>and we are trying to match the text &quot;galvanised zinc&quot;. The Optimiser has
 already determined that the word &quot;galvanised&quot; is not used anywhere in the
-grammar for <fish>, and similarly the word &quot;zinc&quot; -- so neither word has
+grammar for <fish>, and similarly the word &quot;zinc&quot; — so neither word has
 the incidence bit for <fish> in its NTI. But the Optimiser can also see that
-each of the three productions involves <fish> somewhere -- not always in
+each of the three productions involves <fish> somewhere — not always in
 the same position, but somewhere. It therefore knows that for a wording to
 match, one of the words must have the <fish> incidence bit. And since
 neither &quot;galvanised&quot; nor &quot;zinc&quot; have it, the wording &quot;galvanised zinc&quot;
@@ -195,7 +192,7 @@ object. A NTIC encodes six rules, applying to a word range in three ways:</p>
 <li>S for &quot;strong&quot;. A word passes if it has all of these NTI bits.</li>
 </ul>
 <p>That makes six combinations in all: DW, DS, CW, CS, FW, and FS.</p>
-<p>For example, suppose a NTIC has <code>DS_req</code> set to <code>0x280</code> -- i.e., to a bitmap
+<p>For example, suppose a NTIC has <code>DS_req</code> set to <code>0x280</code> — i.e., to a bitmap
 in which bits 7 and 9 are set (counting upwards from 0). This is then saying
 that a word range such as &quot;sense and prejudice&quot; can only be a match if one
 of the three words &quot;sense&quot;, &quot;and&quot; or &quot;prejudice&quot; has both bits 7 and 9 set.</p>
@@ -478,7 +475,7 @@ must be found in X/Y, so:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Range requirement simplification.</b>  Once the bitmaps in all the necessary requirements have been made, the following
-is used to simplify them -- paring down any logical redundancy in them, so
+is used to simplify them — paring down any logical redundancy in them, so
 that the simplest possible tests will be applied by <a href="4-ni.html#SP8" class="internal">NTI::nt_bitmap_violates</a>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -498,7 +495,7 @@ that the simplest possible tests will be applied by <a href="4-ni.html#SP8" clas
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1. </b>  Suppose the NTIC says &quot;one of these words has to have bit X&quot;, a disjunction
 test, but also &quot;the first word has to have bit X&quot;, a first word text. Then we
-can get rid of the disjunction test -- it is implied by the first word text,
+can get rid of the disjunction test — it is implied by the first word text,
 and is both slower and weaker.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove a disjunction test contained in a first-word test</span><span class="named-paragraph-number">22.1</span></span> =</p>
@@ -546,7 +543,7 @@ of A. Then the first, weak, test can go, since it is implied by the strong one.<
 <ul class="endnotetexts"><li>This code is used in <a href="4-ni.html#SP22">&#167;22</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  The &quot;ditto flag&quot; on a requirement is used when there are two requirements,
-here <code>prev</code> then <code>ntic</code>, representing alternatives for parsing the same text --
+here <code>prev</code> then <code>ntic</code>, representing alternatives for parsing the same text —
 i.e., it must match either <code>prev</code> or <code>ntic</code>. If these two requirements are
 the same, we needn't check the second one after the first has been checked.
 So we give <code>ntic</code> the ditto flag, to say &quot;same as the one before&quot;.</p>
@@ -676,8 +673,8 @@ but since it can't look inside the workings of internal nonterminals, those
 currently have no constraints.</p>
 <p>So the parent (i.e., the tool using <a href="index.html" class="internal">words</a>) may want to intervene. It does
 that at two points:</p>
-<p>(a) When it starts up, it can call <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a> --
-see below -- or <a href="4-nnt.html#SP11" class="internal">Nonterminals::make_numbering</a> or <a href="4-nnt.html#SP12" class="internal">Nonterminals::flag_words_with</a>.</p>
+<p>(a) When it starts up, it can call <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a> —
+see below — or <a href="4-nnt.html#SP11" class="internal">Nonterminals::make_numbering</a> or <a href="4-nnt.html#SP12" class="internal">Nonterminals::flag_words_with</a>.</p>
 <p>(b) When <a href="4-to.html" class="internal">The Optimiser</a> runs, it calls two callback functions which have
 a chance to add NTI constraints to nonterminals.</p>
 </div>

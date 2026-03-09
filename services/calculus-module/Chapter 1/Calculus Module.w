@@ -8,27 +8,6 @@ which use this module:
 
 @d CALCULUS_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e i6_schema_CLASS
-@e binary_predicate_CLASS
-@e bp_family_CLASS
-@e up_family_CLASS
-@e pcalc_term_CLASS
-@e pcalc_func_CLASS
-@e pcalc_prop_CLASS
-@e unary_predicate_CLASS
-
-=
-DECLARE_CLASS(binary_predicate)
-DECLARE_CLASS(bp_family)
-DECLARE_CLASS(up_family)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_func, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_term, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 @e PREDICATE_CALCULUS_DA

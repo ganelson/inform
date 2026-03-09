@@ -8,11 +8,13 @@ Assimilation is a multi-stage process, but really this stage is the heart of it.
 We expect that `resolve-conditional-compilation` has already run, so that the
 splats in the tree represent directives which all have definite effect. With
 the conditional compilation splats gone, we are left with these:
-= (text)
+
+``` None
 ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      DEFAULT_PLM
 FAKEACTION_PLM    GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM
 ROUTINE_PLM       STUB_PLM          VERB_PLM          ORIGSOURCE_PLM
-=
+```
+
 And we must turn those into splatless Inter code with the same effect. In some
 cases, notably `ROUTINE_PLM` which contains an entire Inform 6-notation
 function definition, that is quite a lot of work.
@@ -183,12 +185,14 @@ meaningful; the node just winds up tacked onto the end of the kit.
 
 @ This code is used for a range of different Inform 6 syntaxes which create
 something with a given identifier name, and sometimes supply a value. For example,
-= (text as Inform 6)
+
+``` Inform6
 	Constant Italian_Meringue_Temperature = 121;
 	Fake_Action Bake;
 	Attribute split;
 	Object Compass "compass";
-=
+```
+
 The following finds the identifier as the second token, i.e., after the directive
 keyword `Constant` or similar. Note that an `Object` declaration does not
 meaningfully have a value, even though a third token is present.
@@ -253,15 +257,19 @@ is nevertheless `##Bake`, so we take care of that here.
 	}
 
 @ The Inform 6 directive
-= (text as Inform 6)
+
+``` Inform6
 	Default Vanilla_Pod 1;
-=
+```
+
 is essentially equivalent to
-= (text as Inform 6)
+
+``` Inform6
 	#Ifndef Vanilla_Pod;
 	Constant Vanilla_Pod = 1;
 	#Endif;
-=
+```
+
 So this is a piece of conditional compilation in disguise, and should perhaps
 have been removed from the tree by the `resolve-conditional-compilation` stage. 
 But in fact it's easier to handle it here.
@@ -277,10 +285,12 @@ But in fact it's easier to handle it here.
 	}
 
 @ So if we're here, we have reduced the possibilities to:
-= (text)
+
+``` None
 ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      FAKEACTION_PLM
 GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM      VERB_PLM
-=
+```
+
 We basically do the same thing in all of these cases: decide where to put
 the result, declare a symbol for it, and then define that symbol.
 
@@ -423,9 +433,10 @@ not already there.
 		InterTypes::from_constructor_code(INT2_ITCONC), B, NULL));
 
 @ A typical Inform 6 array declaration looks like this:
-= (text as Inform 6)
+
+``` Inform6
 	Array Example table 2 (-56) 17 "hey, I am typeless" ' ';
-=
+```
 
 @d MAX_ASSIMILATED_ARRAY_ENTRIES 10000
 
@@ -500,9 +511,11 @@ first to work out which of the several array formats this is, then the contents
 @ The contents text is now tokenised, and each token produces an array entry.
 
 Although it is legal in Inform 6 to write arrays like, say.
-= (text as Inform 6)
+
+``` Inform6
 	Array Example --> 'a' + 2 (24);
-=
+```
+
 where the entries are specified in a way using arithmetic operators, we won't
 support that here: the standard Inform kits do not need it, and it's hard to
 see why other kits would, either.
@@ -590,9 +603,11 @@ without having any arithmetic meaning, so they must not be rejected. That's
 really why we treat this case as different, though we also treat keywords
 occurring after `->` markers as being action names, and introduce `##`s to
 their names. Thus in:
-= (text as Inform 6)
+
+``` Inform6
 	Verb 'do' * 'something' -> Do;
-=
+```
+
 the action name `Do` is converted automatically to `##Do`, the actual identifier
 for the action.
 
@@ -664,7 +679,7 @@ with three things in it:
 
 @ Each action package has to contain an `action_id` symbol, which will eventually
 be defined as a unique ID for the action. But those unique IDs can only be
-assigned at link time -- at this stage we cannot know what other actions exist
+assigned at link time — at this stage we cannot know what other actions exist
 in other compilation units. So we create `action_id` equal just to 0 for now.
 
 @<Make an action_id symbol in the action package@> =
@@ -749,12 +764,14 @@ equating it to a function definition elsewhere.
 
 @h How functions are assimilated.
 Functions in Inform 6 are usually called "routines", and have a syntax like so:
-= (text as Inform 6)
+
+``` Inform6
 	[ Example x y tmp;
 	   tmp = x*y;
 	   print "Product seems to be ", tmp, ".^";
 	];
-=
+```
+
 We are concerned more with the surround than with the contents of the function
 in this section.
 
@@ -795,18 +812,22 @@ in this section.
 
 @ Another of Inform 6's shabby notations for conditional compilation in disguise
 is the `Stub` directive, which looks like so:
-= (text as Inform 6)
+
+``` Inform6
 	Stub Example 2;
-=
+```
+
 This means "if no `Example` routine exists, create one now, and give it two
 local variables". Such a stub routine contains no code, so it doesn't matter
 what these variables are called, of course. We rewrite so that it's as if the
 kit code had written:
-= (text as Inform 6)
+
+``` Inform6
 	[ Example x1 x2;
 		rfalse;
 	];
-=
+```
+
 Note that here the compilation is unconditional. Because kits are precompiled,
 there's no sensible way to provide these only if they are not elsewhere
 provided. So this is no longer a useful directive, and it continues to be
@@ -1020,7 +1041,7 @@ we simply return a bookmark at the end of the existing submodule.
 The function tries to fail safe in the remote contingency that the package type
 `_submodule` does not exist in the current tree. But if the tree has been
 properly initialised with the `new` stage, then it will. Similarly, it will
-fail safe if an assimilation package has not been set -- but this is very
+fail safe if an assimilation package has not been set — but this is very
 unlikely to happen: see above.
 
 =
@@ -1234,13 +1255,15 @@ emulate now. In practice, we are only going to understand fairly simple computat
 but that will be enough for the kits normally used with Inform.
 
 We do this by parsing `S` into a schema, whose tree will look roughly like this:
-= (text)
+
+``` None
 	PLUS_BIP
 		6
 		TIMES_BIP
 			MAX_WEEBLES
 			4
-=
+```
+
 We then recurse down through this tree, constructing an Inter symbol for a
 constant which evaluates to the result of each operation. Here, then, we
 first define `Computed_Constant_Value_1` as the multiplication, then define
@@ -1302,7 +1325,7 @@ inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 two entries, $x$ and $y$, and marking this list in Inter as a list whose meaning
 is the sum of the entries. (And similarly for the other three operations.) This
 is a sort of lazy evaluation: it means that the actual calculation will be done
-in whatever context Inter is being compiled for -- for example, if all of this
+in whatever context Inter is being compiled for — for example, if all of this
 Inter is compiled to ANSI C, then it will eventually be a C compiler which
 actually works out the numerical value of $x + y$.
 
@@ -1413,7 +1436,7 @@ Function bodies are by far the hardest things to compile. We delegate this first
 by storing up a list of requests to do the work:
 
 =
-typedef struct function_body_request {
+classdef function_body_request {
 	struct inter_bookmark position;
 	struct inter_bookmark block_bookmark;
 	struct package_request *enclosure;
@@ -1423,8 +1446,7 @@ typedef struct function_body_request {
 	struct text_stream *identifier;
 	struct text_stream *namespace;
 	struct text_provenance provenance;
-	CLASS_DEFINITION
-} function_body_request;
+}
 
 int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark *IBM,
 	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb,
@@ -1445,8 +1467,8 @@ int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark 
 }
 
 @ ...Playing back through those requests here. Note that we turn the entire
-contents of the function -- which can be very large, for example in the Inform
-kit `CommandParserKit` -- as a single gigantic Inter schema `sch`.
+contents of the function — which can be very large, for example in the Inform
+kit `CommandParserKit` — as a single gigantic Inter schema `sch`.
 
 =
 int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_state *css,

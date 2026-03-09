@@ -84,12 +84,12 @@ condition now (true or false), the next 7 bits are the number of false-to-true
 &quot;trips&quot; observed over time, and the top 7 bits are the number of consecutive
 turns on which the condition has been true (&quot;consecutives&quot;). The 16th and
 most significant bit is unused, so that the state is always positive even
-in a 16-bit virtual machine -- a convenience since we then don't need to
+in a 16-bit virtual machine — a convenience since we then don't need to
 worry about the effect of signed division and remainder on the bitmap.</p>
 <p>There is no need to store a flag for &quot;has this condition ever been true&quot;,
 because this is equivalent the number of trips being greater than zero.
-This might look wrong for a condition which is true at start of play --
-say, if the well was always dry -- because then its state has never changed
+This might look wrong for a condition which is true at start of play —
+say, if the well was always dry — because then its state has never changed
 from false to true. But in fact when the VM starts up the state word is
 initially always 0: it's only when the startup rulebook fires the update
 chronological records rule (see below) that we first test whether the well
@@ -129,8 +129,8 @@ day, and probably only an hour or two ago, but that's a contextual judgement
 made on the basis of our own experience of how rapidly weather changes.
 The context for Inform source text is always that of actions, so our
 convention is that the reference time for past tenses is the point just
-before the current action began. Such key moments -- when things are just
-about to happen -- are called &quot;chronology points&quot;. There is a CP just
+before the current action began. Such key moments — when things are just
+about to happen — are called &quot;chronology points&quot;. There is a CP just
 before each action begins; there is a CP in the startup process; and there
 is a CP at the end of each turn, for good measure. CPs happen when somebody
 calls <code>ChronologyPoint()</code>. The action machinery does this directly, while
@@ -167,7 +167,7 @@ been found true, and so on.</p>
 <ul>
 <li><code>past_flag</code> is true if we want to test a condition like &quot;if the well was
 dry&quot; or &quot;if the well had been dry&quot;, which concern only the state as it was
-at the last chronology point -- in other words, the <code>past_chronological_record</code>,
+at the last chronology point — in other words, the <code>past_chronological_record</code>,
 which we must not change; whereas <code>past_flag</code> is false if we want to test
 a present tense like &quot;if the well is dry&quot; or &quot;if the well has been dry&quot;,
 because then we deal with the <code>present_chronological_record</code> which must be
@@ -181,9 +181,9 @@ detailed in its code below.</li>
 </ul>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scheme II.</b>  Actions discussed in the past tense -- &quot;if we have taken the ball&quot; or,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scheme II.</b>  Actions discussed in the past tense — &quot;if we have taken the ball&quot; or,
 more subtly, &quot;Instead of waiting for the third turn&quot; (which also refers
-to the past) -- are handled in a related but simpler way. Inform counts such
+to the past) — are handled in a related but simpler way. Inform counts such
 references, just as with other past tense conditions above, but this time
 stores a state in two simple word arrays: <code>TimesActionHasHappened</code> and
 <code>TurnsActionHasBeenHappening</code>.</p>
@@ -217,7 +217,7 @@ null-terminated list of these routines.</p>
 equivalent for past tense actions of <code>ChronologyPoint</code>. It's called
 twice for each in-world action: <code>TrackActions(false)</code> just as a new
 action is about to begin, and then <code>TrackActions(true)</code> just after it
-has finished -- note in particular that if action B happens in the
+has finished — note in particular that if action B happens in the
 middle of action A, for instance because of a try phrase, then the
 <code>TrackActions(true)</code> call for B happens when A is back as the current
 action. In fact, that's the point: because it tells us that B was not

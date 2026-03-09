@@ -49,12 +49,12 @@ turn pieces of parse tree into `type_specification` objects, but that entire
 layer has now gone, and all of its bugs and edge cases went with it.
 
 [4] The main demerit is that while all specifications are `parse_node`s, not
-all `parse_node`s are specifications -- chapter subheadings, for example. So
+all `parse_node`s are specifications — chapter subheadings, for example. So
 the use of the `parse_node` type in source code does not communicate whether
 we're trying to work with specifications, or doing general parsing.
 
 @ Given that these disparate ideas are hard to unify, it might seem clearer
-not to unify them at all -- if they are different concepts, represent that
+not to unify them at all — if they are different concepts, represent that
 by using different C types inside Inform.
 
 The reason we need to unify is that Inform's concept of a phrase is much
@@ -93,21 +93,21 @@ Here `v` is on the left and is an l-value: it's a variable, that is, a named
 place to store data. The `5` is an r-value, and is the data which will be
 stored. Of course, `v` can also occur on the right, as in the assignment
 `w = v` where one variable is copied into another. But in this source code
-we would call `v` an lvalue wherever it appears -- we mean only that it has
+we would call `v` an lvalue wherever it appears — we mean only that it has
 the potential to be written to.[1]
 
 [1] We have to treat lvalues in this slightly unusual way because, contrary to
 C-like languages, we have no syntactic way to mark that the name of a variable
-means its value rather than its identity -- in C, this would be `name` versus
+means its value rather than its identity — in C, this would be `name` versus
 `&name`, with the "pointer to" marker `&` distinguishing the cases. We must
-instead look to the context. Even C sometimes does that -- when C writes `v = 5`,
+instead look to the context. Even C sometimes does that — when C writes `v = 5`,
 it would arguably be more consistent to say something like `store(&v, 5)`.
 
 @ "Conditions" express a state of being which might, or might not, be true:
 Inform allows these to be tested with "if" and brought about with "now".
 
-Whereas in C-like languages conditions are rvalues and vice versa --
-you can write `a = b == c`, or `if (7)` -- this often feels a little rum,
+Whereas in C-like languages conditions are rvalues and vice versa —
+you can write `a = b == c`, or `if (7)` — this often feels a little rum,
 and in natural language even more so. In Inform, then, a condition is not an
 rvalue, and an rvalue is not a condition.
 
@@ -145,7 +145,7 @@ specification is indeed a condition or an lvalue/rvalue of a given kind.
 
 Dash aims to be pragmatic rather than clever[1], and its goal is to issue
 good problem messages rather than, say, to have good running time on heroically
-large composite expressions -- those essentially never arise in natural language.
+large composite expressions — those essentially never arise in natural language.
 
 [1] In particular it does not need a constraint-satisfaction algorithm, as is
 needed by the almost-Turing complete type systems in some languages.
@@ -170,5 +170,5 @@ had already been created. See //Literal Patterns//.
 
 @h Grammar.
 What remains, then, is the general Preform grammar for Inform's expressions
-and conditions -- the so-called "S-parser", since it produces specifications.
+and conditions — the so-called "S-parser", since it produces specifications.
 This is the content of //Chapter 4//.

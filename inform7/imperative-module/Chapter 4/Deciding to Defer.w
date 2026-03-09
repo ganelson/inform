@@ -25,7 +25,7 @@ at runtime.
 @d MAX_CINDERS_PER_DEFERRAL 16
 
 =
-typedef struct pcalc_prop_deferral {
+classdef pcalc_prop_deferral {
 	int reason; /* what we intend to do with it: one of the `*_DEFER` values above */
 	struct pcalc_prop *proposition_to_defer;
 	struct parse_node *deferred_from; /* remember where it came from, for Problem reports */
@@ -33,8 +33,7 @@ typedef struct pcalc_prop_deferral {
 	struct kind *cinder_kinds[MAX_CINDERS_PER_DEFERRAL]; /* the kinds of value being cindered (see below) */
 	struct inter_name *ppd_iname; /* function to implement this */
 	struct inter_name *rtp_iname; /* compile a string of the origin text for run-time problems? */
-	CLASS_DEFINITION
-} pcalc_prop_deferral;
+}
 
 @h Deferral requests.
 The following fills out the paperwork to request a deferred proposition.
@@ -124,16 +123,18 @@ being tested in a different function, with its own stack frame, and that means
 that it has no access to the local variables we can see here. Moreover, it
 may not even be able to evaluate the term which the proposition is being
 applied to. We are therefore going to need to call it as:
-= (text)
+
+``` None
 	f(c_1, ..., c_n, t)
-=
+```
+
 where `t` is the term, and `c_1` to `c_n` are any local variables which the
 proposition mentions. (We want to avoid the misery of //Local Parking//.)
 Those passed values `c_1`, ..., `c_n` are called "cinders", and are covered
 more fully in //Cinders and Deferrals//. It is possible, of course, that `n` is
 zero, in which case there are no cinders at all.
 
-Note that the term value `t` -- it it exists -- becomes the initial value of
+Note that the term value `t` — it it exists — becomes the initial value of
 the local variable `x` in the deferred function `f`. This is correct, because
 `x` is the free variable in the proposition, so calling the function with `t`
 in the `x` argument neatly effects a substitution of $x = t$.
@@ -146,9 +147,11 @@ in the `x` argument neatly effects a substitution of $x = t$.
 	EmitCode::up();
 
 @ The second practical problem concerns callings. If we compile:
-= (text as Inform 7)
+
+``` Inform7
 	if a woman (called the moll) has a weapon (called the gun), ...
-=
+```
+
 then we will need to defer the proposition, since it involves quantification
 and therefore an implicit search loop. But it is supposed to set two local
 variables, "moll" and "gun", with its findings; and they have to end up in
@@ -165,9 +168,11 @@ between, there is no risk that some recursive use of propositions will
 overwrite the list.
 
 For example, our call might then become
-= (text)
+
+``` Inform6
 	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
-=
+```
+
 which safely transfers the values to locals `t_2` and `t_3` of `R`. Note that
 Inter evaluates conditions joined by `&&` from left to right, so we can be
 certain that `f` has been called and has returned `true` before we get to the
@@ -189,10 +194,12 @@ int Deferrals::count_callings_in_condition(pcalc_prop *prop) {
 whose side-effects of evaluation will set the necessary calling locals. But
 the details differ. Here `f` is a test; `g` is some other function returning
 a value.
-= (text)
+
+``` Inform6
 	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
 	(stash-->26 = g(c_1, ..., c_n, t), t_2=stash-->0, t_3=stash-->1, stash-->26)
-=
+```
+
 The return value of `g`, which must emerge unscathed from this expression, is
 stored temporarily in `stash-->26`.
 
@@ -328,8 +335,8 @@ int Deferrals::defer_now_proposition(pcalc_prop *prop) {
 }
 
 @h Other uses.
-Unlike "now" and testing, the other ways to use propositions -- for example,
-counting matches with "the number of ..." -- can take a description which
+Unlike "now" and testing, the other ways to use propositions — for example,
+counting matches with "the number of ..." — can take a description which
 might not be a constant. The following gives a general way to call a deferred
 function for one of those other purposes, allowing for callings.
 
@@ -365,7 +372,7 @@ void Deferrals::call_deferred_fn(pcalc_prop *prop,
 
 @h Multipurpose descriptions.
 Descriptions in the form $\phi(x)$, where $x$ is free, are also sometimes
-converted into values -- this is the kind of value "description". The
+converted into values — this is the kind of value "description". The
 Inter representation is (the address of) a function `D` which, in general,
 performs task $u$ on value $v$ when called as `D(u, v)`, where $u$ is
 expected to be one of the following values. (Note that $v$ is only needed
@@ -441,17 +448,21 @@ void Deferrals::compile_multiple_use_proposition(value_holster *VH,
 @ Because multipurpose descriptions have this big drawback, we want to avoid them
 if we possibly can. Fortunately something much simpler will often do. For example,
 consider:
-= (text)
+
+``` Inform7
 (1) the number of members of S
 (2) the number of closed doors
-=
+```
+
 where S, in (1), is a description which appears as a parameter in a phrase.
 In (1) we have no way of knowing what S might be, but we can safely assume
 that it has been compiled as a multi-purpose description function `D`, and
 therefore compile the function call:
-= (text as Inform 6)
+
+``` Inform6
 	D(NUMBER_OF_DUSAGE)
-=
+```
+
 But in case (2) it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
 defer it to function `f` with reason `NUMBER_OF_DEFER`, and then compile just `f()`
 to perform the calculation. We never need a multi-purpose description routine for

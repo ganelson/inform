@@ -89,7 +89,7 @@ inter_pair Emit::stvp_inner(inter_symbol *S, inter_package *pack) {
 }
 
 @h Kinds.
-Inter has a very simple, and non-binding, system of "typenames" -- a much simpler
+Inter has a very simple, and non-binding, system of "typenames" — a much simpler
 system than Inform's hierarchy of kinds. Here we create a typename corresponding
 to each kind whose data we will need to use in Inter. `super` is the superkind,
 if any; `constructor` is one of the codes defined in //bytecode: Inter Data Types//;
@@ -129,7 +129,7 @@ void Emit::pragma(text_stream *target, text_stream *text) {
 
 @h Constants.
 These functions make it easy to define a named value in Inter. If the value is
-an unsigned numeric constant, use one of these two functions -- the first if
+an unsigned numeric constant, use one of these two functions — the first if
 it represents an actual number at run-time, the second if not:
 
 =

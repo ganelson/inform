@@ -63,8 +63,8 @@ equal to Glulx style numbers as conventionally used. (The Z-machine renders
 some as roman, some as bold, but for instance makes `HEADER_VMSTY` and
 `SUBHEADER_VMSTY` indistinguishable to the eye.) Glulx's system of styles
 is one of its weakest points from an IF author's perspective, since it is
-all but impossible to achieve the text effects one might want -- boldface,
-for instance, or red text -- and text rendering is almost the only area
+all but impossible to achieve the text effects one might want — boldface,
+for instance, or red text — and text rendering is almost the only area
 in which it is clearly inferior to the Z-machine, which it was designed
 to replace. Still, using these styles when we can will get the most out of
 it, and for unornamental works Glulx is fine in practice.

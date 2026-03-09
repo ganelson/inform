@@ -113,10 +113,12 @@ articled.
 When fully parsing the structure of a nounphrase, we have five different
 constructions in play, and need to work out their precedence over each other:
 rather as `*` takes precedence over `+` in arithmetic expressions in C, so
-here we have --
-= (text)
+here we have —
+
+``` None
 	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT
-=
+```
+
 That is, relative clauses take precedence over callings, and so on. The
 above hierarchy is arrived at thus:
 
@@ -173,7 +175,7 @@ called "Area".
 	<np-relative-phrase-explicit>                  ==> { pass 1 }
 
 @ Inform guesses above that most English words ending in "-ing" are present
-participles -- like guessing, bluffing, cheating, and so on. But there is
+participles — like guessing, bluffing, cheating, and so on. But there is
 a conspicuous exception to this; so any word found in <non-participles>
 is never treated as a participle.
 
@@ -189,7 +191,7 @@ is never treated as a participle.
 	==> { fail nonterminal };
 }
 
-@ An implicit RP is a word like "carried", or "worn", on its own -- this
+@ An implicit RP is a word like "carried", or "worn", on its own — this
 implies a relation to some unspecified noun. We represent that in the tree
 using the "implied noun" pronoun. For now, these are fixed.
 
@@ -244,13 +246,15 @@ directions, in particular, a little better. But it means we do not recognise
 	==> { -, Diagrams::new_RELATIONSHIP(W, VerbMeanings::reverse_VMT(R), RP[2]) };
 
 @ We have now disposed of `RELATIONSHIP_NT` and are left with the constructs:
-= (text)
+
+``` None
 	CALLED_NT > WITH_NT > AND_NT > KIND_NT
-=
+```
+
 These are all handled by <np-nonrelative>. Two points to note:
 
 - The first production accepts arbitrary text quickly and without allocating
-memory if we're in lookahead mode -- an important economy since otherwise
+memory if we're in lookahead mode — an important economy since otherwise
 parsing a list of $n$ items would have running time and memory of order $2^n$.
 - If we regard the above constructs as being like operators in arithmetic,
 then the operands have to match <np-operand>, and this requires text which has

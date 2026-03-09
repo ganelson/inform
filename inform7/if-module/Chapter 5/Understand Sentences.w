@@ -63,17 +63,19 @@ int Understand::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 }
 
 @h The subject phrase.
-Understand sentences take several different forms -- so different, in fact,
+Understand sentences take several different forms — so different, in fact,
 that we will parse the subject phrase to see which form we have, and only then
 parse the object phrase (using a different grammar for each of the forms).
 As examples:
-= (text as Inform 7)
+
+``` Inform7
 Understand nothing as the pot.
 Understand the unbroken property as describing the pot.
 Understand the command "access" as "open".
 Understand "earthenware" as the pot. Understand "photograph [something]" as photographing.
-=
-<understand-sentence-sp> has, as its integer result, one of these:
+```
+
+`<understand-sentence-sp>` has, as its integer result, one of these:
 
 @e COMMAND_UNDERSTAND_FORM from 1
 @e PROPERTY_UNDERSTAND_FORM
@@ -85,11 +87,11 @@ Understand "earthenware" as the pot. Understand "photograph [something]" as phot
 objects, which are really just unions of being a text in quotes or a property name:
 
 =
-typedef struct understanding_item {
+classdef understanding_item in 100s {
 	struct wording quoted_text;
 	struct property *quoted_property;
 	struct understanding_item *next;
-} understanding_item;
+}
 
 understanding_item *Understand::text_item(wording W) {
 	if (preform_lookahead_mode) return NULL;
@@ -185,7 +187,7 @@ Its pointer return value is once again a linked list of objects, but this time
 they are //understanding_reference// objects:
 
 =
-typedef struct understanding_reference {
+classdef understanding_reference in 100s {
 	struct wording reference_text;
 	int cg_result;
 	int mistaken;
@@ -198,7 +200,7 @@ typedef struct understanding_reference {
 	struct wording token_text;
 	struct wording when_text;
 	struct understanding_reference *next;
-} understanding_reference;
+}
 
 understanding_reference *Understand::list_ur(understanding_reference *ur1,
 	understanding_reference *ur2) {
@@ -548,7 +550,7 @@ does not issue a problem message in that case either.
 	if (cg) CommandGrammars::remove_command(cg, W);
 
 @ But you can only define a command which does exist already if that command has
-no meanings at present -- as can happen if it has had every meaning stripped from
+no meanings at present — as can happen if it has had every meaning stripped from
 it, one at a time, by previous Understand sentences.
 
 @<Throw a problem if the command to be defined already means something@> =

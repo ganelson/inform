@@ -27,8 +27,8 @@ compiler converts such a syntax into a call to the `R_Process` below.
 cup from the table" is converted in the Standard Rules to "taking the cup".
 This is done via a routine called `GVS_Convert`.
 - When a request is successful, the "carry out requested actions" rule
-turns the original action -- a request by the player, such as is produced
-by CHOPIN, PLAY POLONAISE -- into an action by the person asked, such as
+turns the original action — a request by the player, such as is produced
+by CHOPIN, PLAY POLONAISE — into an action by the person asked, such as
 "Chopin playing the Polonaise".
 
 Certain exceptional cases can arise for other reasons:
@@ -43,9 +43,9 @@ In every case except the last, the action is carried out by `BeginAction`, the
 single routine which unifies all of these approaches. Except the last one.
 
 @h Fake Actions.
-Though sometimes useful for I6 coding tricks, fake actions -- action numbers
+Though sometimes useful for I6 coding tricks, fake actions — action numbers
 not corresponding to any action, but different from those of valid actions,
-and useable with a number of action syntaxes -- are not conceptually present
+and useable with a number of action syntaxes — are not conceptually present
 in I7 source text. They can only really exist at the I6 level because I6 is
 typeless; in I7 terms, there is no convenient kind of value which could
 represent both actions and fake actions while protecting each from confusion
@@ -278,9 +278,11 @@ hidden in the call to `LookSub`. The `-Sub` suffix is an I6 usage identifying
 this as the routine to go along with the action `##Look`, and so it is,
 but it looks nothing like the `LookSub` of the old I6 library. Inform compiles
 `-Sub` routines like so:
-= (text as Inform 6)
+
+``` Inform6
 	[ LookSub; return GenericVerbSub(153,154,155); ];
-=
+```
+
 (with whatever rulebook numbers are appropriate). `GenericVerbSub` then
 runs through the specific action processing stage.
 
@@ -308,8 +310,8 @@ We now begin the second half of the segment: the machinery which handles
 all actions.
 
 The significance of 4096 here is that this is how I6 distinguishes genuine
-actions -- numbered upwards in order of creation -- from what I6 calls
-"fake actions" -- numbered upwards from 4096. Fake actions are hardly
+actions — numbered upwards in order of creation — from what I6 calls
+"fake actions" — numbered upwards from 4096. Fake actions are hardly
 used at all in I7, and certainly shouldn't get here, but it's possible
 nonetheless using I6 angled-brackets, so... In other respects all we do
 is to save details of whatever current action is happening onto the stack,
@@ -426,7 +428,7 @@ rulebook.
 - If either the noun or second noun is a topic, then this is an action
 arising from parsing (such actions do not arise through the "try" phrase,
 unless by stored actions in which case this has all happened before and
-doesn't need to be done again) -- the parser places details of which words
+doesn't need to be done again) — the parser places details of which words
 make up the topic in the I6 global variables `consult_words` and `consult_from`.
 We convert them to a valid I7 snippet value.
 
@@ -733,7 +735,7 @@ action machinery at all.
 This is one of the I6 primitive rules in the specific action processing
 rulebook, and it's basically a trick to allow information known to the
 `GenericVerbSub` routine to be passed down as rulebook variables for the
-specific action-processing rules -- in effect allowing us to pass not
+specific action-processing rules — in effect allowing us to pass not
 one but five parameters to the rulebook: the out-of-world and silence
 flags, plus the three specific rulebooks needed to process the action.
 
@@ -751,7 +753,7 @@ flags, plus the three specific rulebooks needed to process the action.
 This is a fairly large bitmap recording which actions have succeeded thus
 far on which nouns. It was to some extent an early attempt at implementing
 a past-tense system; I'm not at all sure it was successful, since it is
-hindered by certain restrictions -- it only records action/noun combinations,
+hindered by certain restrictions — it only records action/noun combinations,
 for instance, and the notion of "success" is a vexed one for actions
 anyway. There is a clearly defined meaning, but it doesn't always correspond
 to what the user might expect, which is unfortunate.

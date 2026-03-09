@@ -46,7 +46,7 @@ called with a variable number of arguments, placed on the stack before the call,
 rather than with arguments placed into local variables in the usual way.
 
 =
-typedef struct vanilla_function {
+classdef vanilla_function {
 	struct text_stream *identifier;
 	struct text_stream *phrase_syntax;
 	struct linked_list *locals; /* of `text_stream`, the names only */
@@ -54,8 +54,7 @@ typedef struct vanilla_function {
 	int takes_variable_arguments;
 	int max_arity;
 	int formal_arity;
-	CLASS_DEFINITION
-} vanilla_function;
+}
 
 @ This produces a synopsis of the phrase syntax which can be used in an identifier.
 For example, for "To award (N - number) points to (P - person)", the following

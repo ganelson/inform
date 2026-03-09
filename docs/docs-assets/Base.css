@@ -127,7 +127,7 @@ p.purpose {
 
 /* Blocks of code appear in these */
 
-pre.all-displayed-code {
+pre.all-displayed-code, div.lsmarkdown pre.all-displayed-code {
 	padding: 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -285,7 +285,6 @@ div.lsmarkdown pre {
 	border: 1px solid #e8e8e8;
 	border-radius: 3px;
 	background-color: #eef;
-	width: 100%;
 	tab-size: 4
 }
 
@@ -340,4 +339,9 @@ div.lsmarkdown p {
 
 div.lsmarkdown p.inwebfootnote {
 	width: 100%;
+}
+
+div.lsmarkdown img {
+	display: block;
+	margin: auto;
 }

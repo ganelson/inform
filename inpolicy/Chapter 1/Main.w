@@ -3,7 +3,11 @@
 The top level, which decides what is to be done and then carries
 this plan out.
 
-@h Main routine.
+@ As always, we need to define:
+
+@d PROGRAM_NAME "inpolicy"
+
+@ Main routine.
 
 @e SILENCE_CLSW
 @e VERBOSE_CLSW

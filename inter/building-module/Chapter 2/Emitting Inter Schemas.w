@@ -15,8 +15,8 @@ statements such as `print "Hello";` cannot be compiled in a value context, only
 in a void one.
 - `sch` is the schema to compile from. It is unchanged by the process, except
 that nodes made inaccessible by conditional compilation are marked as such.
-- If the schema mentions identifiers -- as for example `DoSomething(1, 2)`
-mentions the identifier `DoSomething` -- then these must somehow be matched up
+- If the schema mentions identifiers — as for example `DoSomething(1, 2)`
+mentions the identifier `DoSomething` — then these must somehow be matched up
 with `inter_symbol`s giving them a meaning. `finder` says how: see //Identifier Finders//.
 - As we have seen, schema notation is (almost) Inform 6 syntax, except for two
 big extensions: one is Inform 7 source text placed between `(+` and `+)` markers,
@@ -29,11 +29,11 @@ passed through to those two callback functions. The code below otherwise makes
 no use of it; and it can of course be `NULL` if no state is needed.
 
 So the simplest valid usage of the function would be something like:
-= (text as InC)
+
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 	identifier_finder finder = IdentifierFinders::common_names_only();
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
-=
+
 which roughly means "compile pure Inform 6 code to Inter in a void context, but
 do not recognise any identifiers as corresponding to local variables".
 
@@ -63,12 +63,14 @@ include the `switch` head or tail.
 	if (sch->mid_case) Produce::set_level_to_current_code_block_plus(I, 4);
 
 @ The following looks for conditional compilations such as:
-= (text as Inform 6)
+
+``` Inform6
 	#ifdef TARGET_GLULX;
 	print "This is Glulx!";
 	#endif
-=
-and strikes out any nodes which are not to be compiled from -- for example, the
+```
+
+and strikes out any nodes which are not to be compiled from — for example, the
 `print` statement here would be marked as `blocked_by_conditional` if the symbol
 `TARGET_GLULX` were not defined.
 
@@ -134,10 +136,11 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *dir
 	}
 
 @ The aim here is to find an innermost conditional, setting `dir_node` to its
-head, `ifnot_node` to the position of the `#Ifnot` -- if there is one; they
-are optional in I6 -- and `endif_node` to the position of its `#Endif`, whose
+head, `ifnot_node` to the position of the `#Ifnot` — if there is one; they
+are optional in I6 — and `endif_node` to the position of its `#Endif`, whose
 existence is mandatory. For example:
-= (text as Inform 6)
+
+``` Inform6
 	#ifdef TARGET_ZCODE;
 	#ifdef DEBUG;            <--- dir_node
 	print "ZD!";
@@ -145,7 +148,8 @@ existence is mandatory. For example:
 	print "Z!";
 	#endif;                  <--- endif_node
 	#endif;
-=
+```
+
 Note that we only need find one such conditional, because once we resolve it,
 we will return but the function will then be applied again, and so on until
 all conditionals are resolved.
@@ -169,10 +173,11 @@ all conditionals are resolved.
 	}
 
 @ We are going to recognise only very simple conditions, such as:
-= (text as Inform 6)
+
+``` Inform6
 	#ifdef SYMBOL;
 	#iftrue SYMBOL == N;
-=
+```
 
 @<Work out what the condition is@> =
 	if ((dir_node->dir_clarifier == IFDEF_I6RW) ||
@@ -286,8 +291,8 @@ begins in `CODE_PRIM_CAT` (i.e., void context), but by the time the node for
 @ As noted, this is very much a recursive function, but it does not automatically
 recurse downwards: that depends on what is done at given nodes.
 
-In particular, no children of blocked nodes -- those removed by conditional
-compilation -- are ever visited.
+In particular, no children of blocked nodes — those removed by conditional
+compilation — are ever visited.
 
 =
 void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
@@ -319,7 +324,8 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 	}
 
 @ Assembly language can only appear in `CODE_PRIM_CAT` mode and looks like so:
-= (text)
+
+``` None
 	ASSEMBLY_ISNT
 		EXPRESSION_ISNT
 			OPCODE_ISTT "@mul"
@@ -329,7 +335,8 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 			y
 		EXPRESSION_ISNT
 			z
-=
+```
+
 Note that recursion in `VAL_PRIM_CAT` mode evaluates `x`, `y` and `z`.
 
 @<Assembly@> =
@@ -357,7 +364,7 @@ Note that recursion in `VAL_PRIM_CAT` mode evaluates `x`, `y` and `z`.
 	}
 
 @ What looks syntactically like a function call may in Inform 6 be a use of
-one of the "built-in functions" -- for example, `y = child(O)`. But it is not
+one of the "built-in functions" — for example, `y = child(O)`. But it is not
 in fact a function, in the traditional Inform 6 implementation, at least;
 and it is not legal to perform, say, `x = child; y = indirect(x, O);`
 because `child`, not really being a function, has no address.
@@ -544,8 +551,8 @@ evaluated for their potential side-effects, but only the last produces a value.
 
 @ Note that an expression consisting only of a double-quoted text, in void
 context, is a print-then-print-new-line-then-return-true statement in Inform 6.
-This is where we detect that. (Because its meaning depends on context -- i.e.,
-it doesn't mean that in value context -- we couldn't have decided this when
+This is where we detect that. (Because its meaning depends on context — i.e.,
+it doesn't mean that in value context — we couldn't have decided this when
 parsing the schema.)
 
 @<Expression@> =
@@ -672,23 +679,26 @@ parsing the schema.)
 	}
 
 @ A twig for a label, such as:
-= (text)
+
+``` None
 	LABEL_ISNT
 		EXPRESSION_ISNT
 			MyLabel
-=
+```
+
 This places the label `MyLabel` at the current write position.
 
 What makes this more complicated is that an inline command might be being used
 to determine the name of that label, and/or to amend a label numbering counter.
 For example, the schema `.{-label:Say}{-counter-up:Say};` results in:
-= (text)
+
+``` None
 	LABEL_ISNT
 		EXPRESSION_ISNT
 			INLINE_ISNT = label:Say
 		EXPRESSION_ISNT
 			INLINE_ISNT = counter-up:Say
-=
+```
 
 @<Label@> =
 	if (prim_cat != CODE_PRIM_CAT) {
@@ -732,16 +742,18 @@ For example, the schema `.{-label:Say}{-counter-up:Say};` results in:
 		Produce::up(I);
 	}
 
-@ Note the three pseudo-operations here -- that is, operators which do not
+@ Note the three pseudo-operations here — that is, operators which do not
 directly correspond to Inter primitives. They are:
 
 - `HAS_XBIP`, which is done by performing a property lookup;
+
 - `HASNT_XBIP`, which is done by negating the same;
+
 - `OWNERKIND_XBIP`, which is a way to finesse that `PROPERTYVALUE_BIP` is
 ternary at the Inter level, but only binary in Inform 6 source code. When
 the code writes `obj.prop`, this is treated here as if it had been
 `OBJECT_TY>>obj.prop`; so the value `OBJECT_TY` is dropped in. But if the
-author had written `K>>obj.prop` -- giving the full ternary form -- we
+author had written `K>>obj.prop` — giving the full ternary form — we
 suppress the `>>` operator and take `K`, `obj`, `prop` as the three arguments
 to the primitive `PROPERTYVALUE_BIP`. (`>>` has no other purpose or use, and
 is not present in standard Inform 6 syntax.)
@@ -839,7 +851,8 @@ But it arrives here not with four child nodes, but just two, corresponding to
 the second `val` and the `code` respectively. We must find the first two as
 subexpressions of the first child, by directly probing its subtree. Consider
 these possibilities:
-= (text)
+
+``` None
 	objectloop (x) { ... }
 	            |  \ code
 	            ref and second val; first val is "Object"
@@ -855,7 +868,7 @@ these possibilities:
 	             ref       first val                         code
 	           -------------------------------------------
 	                           second val
-=
+```
 
 @<Handle OBJECTLOOP as a special case@> =
 	Produce::down(I);

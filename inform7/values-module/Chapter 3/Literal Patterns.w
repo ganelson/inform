@@ -22,9 +22,9 @@ so with the following macro:
 we provide elaborate extra features for this form of LP.
 
 A given kind can have many different LPs to represent it, and this is
-especially convenient for physics -- it means we can give ways to describe
+especially convenient for physics — it means we can give ways to describe
 mass (a kind of value) in grams, kilograms or tonnes (all literal patterns).
-Among these, one LP is special and is called the "benchmark" for the kind --
+Among these, one LP is special and is called the "benchmark" for the kind —
 it is the default notation, the one considered most natural, and other LPs for
 the same kind are scaled relative to this. For instance, the benchmark for
 mass might be the notation "1 kg"; the notations "1 g" and "1 tonne" would
@@ -33,13 +33,13 @@ then be scaled down by 1000, and up by 1000, respectively.
 @ Syntactically, a literal pattern is a series of "tokens", of which more
 below. Some tokens are simply fixed lettering or wording, but at least one
 must be numerical, and called an "element". For example, "16:9" has three
-tokens -- element, fixed `:`, element.
+tokens — element, fixed `:`, element.
 
 @d MAX_ELEMENTS_PER_LITERAL 8
 @d MAX_TOKENS_PER_LITERAL 100
 
 =
-typedef struct literal_pattern {
+classdef literal_pattern {
 	struct kind *kind_specified; /* the kind of the result: i.e., what it specifies */
 	struct literal_pattern *next_for_this_kind; /* continuing list for this kind */
 	struct wording prototype_text; /* where the prototype specification is */
@@ -65,8 +65,7 @@ typedef struct literal_pattern {
 	int marked_for_printing; /* used in compiling printing routines */
 
 	struct literal_pattern_compilation_data compilation_data;
-	CLASS_DEFINITION
-} literal_pattern;
+}
 
 @ There are three sorts of token: character, word and element. Each token can
 be a whole word, or only part of a word. For instance, in
@@ -134,18 +133,16 @@ typedef struct literal_pattern_element {
 @ This is used for sets of textual equivalents to values.
 
 =
-typedef struct literal_pattern_element_value_set {
+classdef literal_pattern_element_value_set {
 	struct text_stream *source;
 	int extent;
 	struct literal_pattern_element_value_pair *values;
-	CLASS_DEFINITION
-} literal_pattern_element_value_set;
+}
 
-typedef struct literal_pattern_element_value_pair {
+classdef literal_pattern_element_value_pair {
 	int value_equivalent;
 	struct text_stream *text_equivalent;
-	CLASS_DEFINITION
-} literal_pattern_element_value_pair;
+}
 
 @ For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,
@@ -162,14 +159,13 @@ name". Moreover, a given kind of value can support multiple named notations;
 mass might also support "in kilograms" and "in grams", for instance.
 
 =
-typedef struct literal_pattern_name {
+classdef literal_pattern_name {
 	struct wording notation_name; /* name for this notation, if any; e.g. "in centimetres" */
 	struct literal_pattern *can_use_this_lp; /* list of LPs used under this name */
 	struct literal_pattern_name *next; /* other names for the same kind */
 	struct literal_pattern_name *next_with_rp; /* used in parsing only: list applied to one notation */
 	int lpn_compiled_already;
-	CLASS_DEFINITION
-} literal_pattern_name;
+}
 
 @h Creating patterns, tokens and elements.
 
@@ -505,7 +501,7 @@ The `wpos` value $-1$ means that word `wn` has not yet been started.
 	if (compare_words(wn, lp->lp_tokens[tc].token_wn) == FALSE) return NULL;
 	wn++;
 
-@ A character token matches only a single character -- note the case insensitivity
+@ A character token matches only a single character — note the case insensitivity
 here, because of the use of `tolower`.
 
 @<Match a character token within a literal pattern@> =
@@ -528,7 +524,7 @@ can store on a 16-bit virtual machine;
 - Ditto, but on a 32-bit virtual machine; and
 - One of the numerical elements inside the notation being given out of range.
 
-We report none of these as a problem immediately -- only if the pattern would
+We report none of these as a problem immediately — only if the pattern would
 otherwise match.
 
 The following assumes that `long long int` is at least 64-bit, so that it
@@ -786,7 +782,7 @@ void LiteralPatterns::index_all(OUTPUT_STREAM, kind *K) {
 	@<Index the possible names for these notations, as ways of printing them back@>;
 }
 
-@ Each entry in this list is, in principle, a list all by itself -- of
+@ Each entry in this list is, in principle, a list all by itself — of
 alternatives such as "1 tonne" vs "2 tonnes", which aren't different
 enough to be listed separately. Of these exactly one is the "primary"
 alternative.
@@ -969,7 +965,7 @@ void LiteralPatterns::lp_index_value_specific_inner(OUTPUT_STREAM, literal_patte
 	}
 }
 
-@ We parse in a case-insensitive way, but print back case-sensitively --
+@ We parse in a case-insensitive way, but print back case-sensitively —
 note that the following uses the raw text of the word.
 
 @<Index a fixed word token within a literal pattern@> =
@@ -1107,7 +1103,7 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	}
 
 @ We parse the specification text as if it were a constant value, hoping
-for the result `NULL` -- so that it doesn't already mean something else.
+for the result `NULL` — so that it doesn't already mean something else.
 During this process, we waive checking of numerical overflows in matching
 an LP: this is done so that
 
@@ -1346,7 +1342,7 @@ character ones.
 
 @ Bounds checking is easier here since we know that a LP specification will
 not ever need to create the maximum conceivable value which a C integer can
-hold -- so we need not fool around with long long ints.
+hold — so we need not fool around with long long ints.
 
 @<Break up the word into at least one element token, and perhaps also character tokens@> =
 	int sgn = 1, next_token_begins_word = TRUE, base = lp->number_base;
@@ -1426,7 +1422,7 @@ not really distort matters.
 
 @ The elements are created in parsing order, that is, left to right. But
 the multipliers can only be calculated by working from right to left, so
-this is deferred until all elements exist, at which point we --
+this is deferred until all elements exist, at which point we —
 
 @<Calculate the multipliers for packing the elements into a single integer@> =
 	for (int i = lp->no_lp_elements-1, m = 1; i>=0; i--) {
@@ -1758,14 +1754,17 @@ void LiteralPatterns::define_packing_phrases(literal_pattern *lp, kind *K) {
 
 @ First, we automatically create $n$ phrases to unpack the elements given the value.
 For instance, defining:
-= (text as Inform 7)
+
+``` Inform7
 $10.99 specifies a price with parts dollars and cents.
-=
+```
+
 automatically generates:
-= (text as Inform 7)
+
+``` Inform7
 To define which number is dollars part of ( full - price ) : |(- ({full}/100) -)|.
 To define which number is cents part of ( full - price ) : |(- ({full}%100) -)|.
-=
+```
 
 @<Define phrases to convert from a packed value to individual parts@> =
 	for (int i=0; i<lp->no_lp_elements; i++) {
@@ -1816,10 +1815,11 @@ To define which number is cents part of ( full - price ) : |(- ({full}%100) -)|.
 
 @ And similarly, a packing phrase to calculate the value given its elements.
 For instance, the dollars-and-cents example compiles:
-= (text as Inform 7)
+
+``` Inform7
 To decide which price is price with dollars part ( part0 - a number ) cents part ( part1 - a number) :
 		|(- ({part0}*100+{part1}) -).|
-=
+```
 
 @<Define a phrase to convert from numerical parts to a packed value@> =
 	if (lp->no_lp_elements > 0) {

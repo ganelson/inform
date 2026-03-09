@@ -235,7 +235,7 @@ be currently running for the rule to fire. For example, in:</p>
 <p>Rule for printing the name of the lemon sherbet while listing contents: ...</p>
 </blockquote>
 <p>the activity list is just &quot;listing contents&quot;. These are like action patterns,
-but much simpler to parse -- an or-divided list of activities can be given,
+but much simpler to parse — an or-divided list of activities can be given,
 with or without operands; &quot;not&quot; can be used to negate the list; and ordinary
 conditions are also allowed, as here:</p>
 <blockquote>
@@ -245,13 +245,13 @@ conditions are also allowed, as here:</p>
 it mentions no activities.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">activity_list</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">activity_list</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">activity</span><span class="plain-syntax"> *</span><span class="type-syntax">activity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what activity */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">acting_on</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the parameter */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">only_when</span><span class="plain-syntax">; </span><span class="comment-syntax">/* condition for when this applies */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACL_parity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>+1</code> if meant positively, <code>-1</code> if negatively */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">activity_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in activity list */</span>
-<span class="plain-syntax">} </span><span class="type-syntax">activity_list</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure activity_list is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/ass2, 4/imp, 5/id, 5/adf, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <div class="lsmarkdown">
@@ -278,7 +278,7 @@ in turn requires the activity list. So the following function is called at the
 last possible moment in the booking process.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuntimeContextData::ensure_avl</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">RuntimeContextData::ensure_avl</span></span>:<br/>Rulebooks - <a href="6-rlb.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuntimeContextData::ensure_avl</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">RuntimeContextData::ensure_avl</span></span>:<br/>Rulebooks - <a href="6-rlb.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax"> = </span><a href="6-rls.html#SP9" class="function-link"><span class="function-syntax">Rules::get_imperative_definition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">;</span>

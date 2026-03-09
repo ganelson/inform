@@ -28,13 +28,13 @@ Our IFF file will consist of a front part and then the chunks, one after
 another, in order of their creation. Every chunk has a type, a 4-character ID
 like `"AUTH"` or `"JPEG"`, specifying what kind of data it holds; some
 chunks are also given resource numbers which allow the story file to refer
-to them as it runs -- the pictures, sound effects and the story file itself
+to them as it runs — the pictures, sound effects and the story file itself
 all have unique resource numbers. (These are called "indexed", because
 references to them appear in a special `RIdx` record in the front part
-of the file -- the "resource index".)
+of the file — the "resource index".)
 
 =
-typedef struct chunk_metadata {
+classdef chunk_metadata {
 	struct filename *chunk_file; /* if the content is stored on disc */
 	unsigned char *data_in_memory; /* if the content is stored in memory */
 	int length_of_data_in_memory; /* in bytes; or $-1$ if the content is stored on disc */
@@ -43,18 +43,16 @@ typedef struct chunk_metadata {
 	int resource_id; /* meaningful only if this is a chunk which is indexed */
 	int byte_offset; /* from the start of the chunks, which is not quite the start of the IFF file */
 	int size; /* in bytes */
-	CLASS_DEFINITION
-} chunk_metadata;
+}
 
 @ It is not legal to have two or more Snd resources with the same number.  The
 same goes for Pict resources.  These two linked lists are used to store all the
 resource numbers encountered.
 
 =
-typedef struct resource_number {
+classdef resource_number {
 	int num;
-	CLASS_DEFINITION
-} resource_number;
+}
 
 linked_list *sound_resource = NULL; /* of `resource_number` */
 linked_list *pict_resource = NULL; /* of `resource_number` */
@@ -64,12 +62,11 @@ linked_list *data_resource = NULL; /* of `resource_number` */
 of partially sighted or deaf users:
 
 =
-typedef struct rdes_record {
+classdef rdes_record {
 	int usage;
 	int resource_id;
 	char *description;
-	CLASS_DEFINITION
-} rdes_record;
+}
 
 @h Big-endian integers.
 IFF files use big-endian integers, whereas Inblorb might or might not
@@ -110,8 +107,8 @@ void Writer::s_one_byte(unsigned char *F, int n) {
 }
 
 @h Chunks.
-Although chunks can be written in a nested way -- that's the whole point
-of IFF, in fact -- we will always be writing a very flat structure, in
+Although chunks can be written in a nested way — that's the whole point
+of IFF, in fact — we will always be writing a very flat structure, in
 which a single enclosing chunk (`FORM`) contains a sequence of chunks
 with no further chunks inside.
 
@@ -173,7 +170,7 @@ void Writer::add_chunk_to_blorb(char *id, int resource_num, filename *supplied_f
     current_chunk->size = size;
 
 @ Note the adjustment of `total_size_of_Blorb_chunks` so as to align the next
-chunk's position at a two-byte boundary -- this betrays IFF's origin in the
+chunk's position at a two-byte boundary — this betrays IFF's origin in the
 16-bit world of the mid-1980s. Today's formats would likely align at four, eight
 or even sixteen-byte boundaries.
 
@@ -267,7 +264,7 @@ void Writer::copyright_chunk(text_stream *t) {
     Writer::add_chunk_to_blorb("(c) ", 0, NULL, NULL, (unsigned char *) t, Str::len(t));
 }
 
-@ `"Fspc"`: frontispiece image ID number -- which picture resource provides
+@ `"Fspc"`: frontispiece image ID number — which picture resource provides
 cover art, in other words.
 
 =
@@ -499,7 +496,7 @@ writing it.
 That even extends to the file itself, which is a single IFF chunk of type
 `"FORM"`. So we need to think carefully. We will need the `FORM` header,
 then the header for the `RIdx` indexing chunk, then the body of that indexing
-chunk -- with one record for each indexed chunk; and then room for all of
+chunk — with one record for each indexed chunk; and then room for all of
 the chunks we'll copy in, whether they are indexed or not.
 
 @<Calculate the sizes of the whole file and the index chunk@> =

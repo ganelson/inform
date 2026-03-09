@@ -33,7 +33,7 @@ a.named-paragraph-link:active, a.named-paragraph-link:hover {
 
 /* This is the box into which multi-line stretches of code are put: */
 
-pre.displayed-code {
+pre.displayed-code, div.lsmarkdown pre.displayed-code {
 	background: #f8f8f8;
 	border: 1px solid #cccccc;
 }

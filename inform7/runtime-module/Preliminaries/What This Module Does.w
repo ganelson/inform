@@ -19,7 +19,7 @@ For more, see //foundation: A Brief Guide to Foundation//.
 @h About this layer of Inform.
 The //runtime// and //imperative// modules (see //imperative: What This Module Does//)
 jointly make up a layer of Inform whose task is to take the conceptual structures
-now build up -- rules, phrases, tables, the world model -- and turn them into
+now build up — rules, phrases, tables, the world model — and turn them into
 Inter code. For the bigger picture, see //structure//.
 
 Neither module is in charge of the other. //runtime// makes extensive use of
@@ -40,9 +40,11 @@ binary Inter for speed, but they are really very similar.
 
 You can get a rough idea of what the Inter hierarchy looks like by compiling
 an Inform project with:
-= (text as Inform 7)
+
+``` Inform7
 Include Inter hierarchy in the debugging log.
-=
+```
+
 ...and then looking at the log file. This will give an inventory, a summarised
 listing, at two stages: first when the main Inform compiler has completed, and
 second when linking with kits is all done, and we've reached the final state.
@@ -57,7 +59,8 @@ they are placed. Types are written with an initial underscore: for example,
 one package type we will create is `_module`.
 
 The top of the final hierarchy might look like this:
-= (text)
+
+``` None
 version number -->              version 1
 package type declarations -->   packagetype _plain
                                 packagetype _code
@@ -80,7 +83,8 @@ main -->                        package main _plain
 									package CommandParserKit _module
 	to do with linking -->			package connectors _linkage
 									package template _plain
-=
+```
+
 The modest amount of global material is the same on every compilation, and just
 sets up our conventions. Inter also requires the top-level package to be `main`.
 But it's our decision to then subdivide `main` up into packages called "modules",

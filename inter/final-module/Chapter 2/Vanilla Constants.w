@@ -208,11 +208,10 @@ immediately declared: instead, the following mechanism is used to stash it for
 later.
 
 =
-typedef struct text_literal_holder {
+classdef text_literal_holder {
 	struct text_stream *literal_content;
 	struct inter_symbol *con_name;
-	CLASS_DEFINITION
-} text_literal_holder;
+}
 
 void VanillaConstants::defer_declaring_literal_text(code_generation *gen, text_stream *S,
 	inter_symbol *con_name) {

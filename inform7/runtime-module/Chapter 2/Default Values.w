@@ -114,7 +114,7 @@ If no choice is possible, the function simply returns the `undef` value.
 We begin with some special cases where the default value depends on circumstances,
 or has to be constructed in a more elaborate way. For example, the default value
 of "vehicle" will depend on what vehicles have been created in the source text.
-We then turn to the more typical case of kinds whose defaults never change --
+We then turn to the more typical case of kinds whose defaults never change —
 for example, the default value of `K_number` is always 0.
 
 The test case `DefaultValues` may be helpful when tinkering with this.
@@ -197,10 +197,12 @@ as the number 0.
 @ For an enumeration or a subkind of object such as "thing", the default value
 is the first one created. That makes for an interesting edge case when there
 are no instances, as for example if the author writes:
-= (text as Inform 7)
+
+``` Inform7
 A postage stamp is a kind of thing.
 The most valued stamp is a postage stamp that varies.
-=
+```
+
 ...but never creates any postage stamps. The following will then fail to
 find any instances...
 
@@ -325,7 +327,7 @@ and specified by a brief textual description taken from a Neptune file.
 	return DefaultValues::from_Neptune_term(textual_description, K);
 
 @ That description has to be very simple: a literal number, `true`, `false`, or an
-identifier name which the linker will be able to find -- maybe a function name,
+identifier name which the linker will be able to find — maybe a function name,
 maybe an array, maybe a constant.
 
 This is faster than it looks, but still not fast, and there would be a case to

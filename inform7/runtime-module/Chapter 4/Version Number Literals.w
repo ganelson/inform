@@ -2,25 +2,29 @@
 
 Explicit actions stored in memory as literals.
 
-@h Runtime representation.
-Literal version numbers arise from source text such as:
-= (text as Inform 7)
+@ Literal version numbers arise from source text such as:
+
+``` Inform7
 	let V be v2.31.1;
-=
+```
+
 This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.
 
 Version numbers are stored in small blocks, always of size 3. There are no
 long blocks.
-= (text)
+
+``` None
 	                    small block:
 	V ----------------> major version
 	                    minor version
 	                    patch version
-=
+```
+
 See //Architecture32Kit// for more.
 
-The default is "v0.0.0":
+@ The default is `v0.0.0`:
+
 =
 inter_name *VersionNumberLiterals::default(void) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();

@@ -358,8 +358,8 @@ actually go there in any visual way.
 	}
 
 @h Writing text in EPS.
-All of words written on the map -- titles, labels for arrows, rubrics, and so
-on -- come from here.
+All of words written on the map — titles, labels for arrows, rubrics, and so
+on — come from here.
 
 @d MAX_EPS_TEXT_LENGTH 1000
 @d MAX_EPS_ABBREVIATED_LENGTH MAX_EPS_TEXT_LENGTH

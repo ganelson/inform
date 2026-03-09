@@ -9,7 +9,8 @@ being placed in a nested hierarchy of boxes called "packages".
 A package has a location in the tree defined by its `package_head` node: this
 will be a `PACKAGE_IST` instruction. Every package has a name and a type. For
 example, suppose we have:
-= (text as Inter)
+
+``` Inter
 	A
 		B
 	package gadgets _paraphernalia          <-- package_head node
@@ -19,7 +20,8 @@ example, suppose we have:
 		E
 	F
 	G
-=
+```
+
 Here the Inter instructions C, D and E are the content of the package, which
 is called "gadgets" and has the type `_paraphernalia`. Instructions A, B, F,
 G , along with the `package` instruction itself, belong to the wider context. The
@@ -39,13 +41,12 @@ resource list of the tree's warehouse, and has a resource ID within it. See
 //The Warehouse//.
 
 =
-typedef struct inter_package {
+classdef inter_package {
 	struct inter_tree_node *package_head;
 	struct inter_symbols_table *package_scope;
 	int package_flags; /* a bitmap of the `*_PACKAGE_FLAG` bits */
 	inter_ti resource_ID; /* within the warehouse for the tree holding the package */
-	CLASS_DEFINITION
-} inter_package;
+}
 
 @ Do not call this directly to make a new package: it needs the resource ID `n`
 to exist already, and that has to be allocated. So instead you could call
@@ -76,7 +77,7 @@ For all other packages, these two operations are inverse to each other:
 - To get from a head node to its package, call //PackageInstruction::at_this_head//.
 - To get from a package to its head node, call //InterPackage::head//.
 
-The root package is a very special one-off case -- see //Inter Trees//: it
+The root package is a very special one-off case — see //Inter Trees//: it
 does not originate from any package instruction because it represents the
 outermost box, that is, the top level of the hierarchy.
 
@@ -260,8 +261,8 @@ void InterPackage::mark_as_a_root_package(inter_package *pack) {
 
 @ The `FUNCTION_BODY_PACKAGE_FLAG` is given to function bodies. Note that the code
 of each function always occupies a single package, which contains nothing else.
-Subsidiary parts of the function -- what are called "code blocks" in C, like
-loop bodies -- are not subpackages of this: a code package has no subpackages.
+Subsidiary parts of the function — what are called "code blocks" in C, like
+loop bodies — are not subpackages of this: a code package has no subpackages.
 
 =
 int InterPackage::is_a_function_body(inter_package *pack) {

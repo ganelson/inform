@@ -8,7 +8,8 @@ with just `x`. This is useful mainly for the first of these cases, because
 //imperative: Compile Conditions// has a tendency to make redundant `OR_BIP`
 operations. The other cases occur much more rarely, but we might as well
 handle them too.
-= (text)
+
+``` None
 	x || false
 	x && true
 	x + 0
@@ -17,7 +18,8 @@ handle them too.
 	x * 1
 	1 * x
 	x / 1
-=
+```
+
 We could also perform constant-folding here (e.g., replacing `2+3` with `5`),
 but we would need to be careful about word size on the VM, and there's not much
 gain because the next compiler after us (e.g. Inform 6) will perform its own

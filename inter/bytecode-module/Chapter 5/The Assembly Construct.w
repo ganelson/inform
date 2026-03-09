@@ -19,7 +19,7 @@ void AssemblyInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of an `assembly` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d WHICH_ASSEMBLY_IFLD (DATA_IFLD + 0)
 

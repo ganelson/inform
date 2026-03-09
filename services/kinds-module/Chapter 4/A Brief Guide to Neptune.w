@@ -40,13 +40,13 @@ The second keyword must be one of the following:
 
 For example:
 
-= (text)
+``` None
 builtin protocol SAYABLE_VALUE_TY {
 	conforms-to: STORED_VALUE_TY
 	singular: sayable value
 	plural: sayable values
 }
-=
+```
 
 [1] The distinction really only exists as a mnemonic - it reminds us that it
 wouldn't be safe to change the identifier without also changing the compiler.
@@ -57,21 +57,25 @@ It will have no effect unless applied, which happens only by a special command
 it automatically.
 
 For example:
-= (text)
+
+``` None
 macro #REAL {
 	conforms-to: REAL_ARITHMETIC_VALUE_TY
 }
-=
+```
+
 This declares a macro called `#REAL`. All macros have names beginning with a
 sharp sign, and continuing with capital letters.
 
 @ An "invention" is a piece of source text to be added to whatever is being
 compiled.[1] Invention names begin with an asterisk. For example:
-= (text)
+
+``` None
 invention *UNDERSTOOD-VARIABLE {
 	<kind> understood is a <kind> which varies.
 }
-=
+```
+
 Note that the text is not quite literal, because it can contain wildcards like
 `<kind>`, which expands to the name of the kind in question: for instance, we
 might get "number understood is a number which varies". The legal wildcards are:
@@ -86,22 +90,25 @@ There are a few limitations on what template text can include. Firstly,
 nothing with angle brackets in, except where a wildcard appears. Secondly,
 each sentence must end at the end of a line, and similarly the colon for
 any rule or other definition. Thus this template would fail:
-= (text)
+
+``` None
 invention *UNDERSTOOD-VARIABLE {
 	<kind> understood is a <kind> which
 	varies. To judge <kind>: say "I judge [<kind> understood]."
 }
-=
+```
+
 because the first sentence ends in the middle of the second line, and the
 colon dividing the phrase header from its definition is also mid-line. The
 template must be reformatted thus to work:
-= (text)
+
+``` None
 invention *UNDERSTOOD-VARIABLE {
 	<kind> understood is a <kind> which varies.
 	To judge <kind>:
 		say "I judge [<kind> understood]."
 }
-=
+```
 
 [1] Inventions are not elegant and have now mostly been phased out, except to
 create the "K understood" variables for each base kind conforming to
@@ -167,7 +174,7 @@ what it says: the name of this kind is allowed also to be the name of a property
 which takes values in this kind.
 
 `can-exchange` is either `yes` or `no` (default `no`), and means that data of
-this kind can be serialised -- printed out as text into an external file --
+this kind can be serialised — printed out as text into an external file —
 and read into a different program, but with the same meaning.
 
 `constant-compilation-method` tells Inform how to compile constants of this
@@ -232,7 +239,7 @@ blue help buttons next to the kind's name.
 
 `index-priority` is a non-negative integer. It is by default 100 for base kinds
 and constructors, 0 for protocols and punctuation. 0 in fact means "omit from the
-index", which is otherwise grouped in ascending order -- i.e., lowest priority
+index", which is otherwise grouped in ascending order — i.e., lowest priority
 numbers first.
 
 `index-default-value` can be used in place of the `default-value` in the index,

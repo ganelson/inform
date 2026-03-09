@@ -70,32 +70,26 @@ as flexible as possible.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Inter code can exist in memory, or in a human-readable text file, or in a
 rapid-access binary file. The tool <a href="index.html" class="internal">inter</a> can convert between these formats:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span>
-<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
-<span class="plain-syntax">              \                     /</span>
-<span class="plain-syntax">               \                   /</span>
-<span class="plain-syntax">                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----</span>
-<span class="plain-syntax">               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \</span>
-<span class="plain-syntax">  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span>
-<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span><span class="plain-syntax">
+  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span><span class="plain-syntax">
+              \                     /
+               \                   /
+                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----
+               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \
+  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span><span class="plain-syntax">
+  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span><span class="plain-syntax">
+</span></pre>
 <p>However, Inter can do much more than simply convert between these forms. It
 has a &quot;pipeline&quot; design, meaning that it can run memory inter through any
 desired series of compilation stages, one at a time:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; ... --------&gt; </span><span class="element-syntax">T</span>
-<span class="plain-syntax">       </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">   ...  </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="element-syntax">N</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; ... --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax">
+	   </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">   ...  </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="element-syntax">N</span><span class="plain-syntax">
+</span></pre>
 <p>The Inter tree <code>T</code> starts out empty,<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> and at the end it is thrown away. So any
 useful pipeline will begin by loading something in (usually as step 1), and
 end by producing some useful output (usually in its last step or steps).</p>
 <p>The advantage of this design is that it enables us to build what amount to
-entirely different compilers, just by using different pipelines -- see
+entirely different compilers, just by using different pipelines — see
 &quot;assimilation&quot; below for an example of a pipeline very different to the one
 used in normal Inform 7 compilations. Pipelines also allow us to test existing
 or proposed code-generation stages individually.</p>
@@ -108,11 +102,8 @@ Programs in Inter format are called &quot;Inter trees&quot;.<a href="#fnref:1" t
 for Inform then the Inter executable will be at <code>inter/Tangled/inter</code>.</p>
 <p>Inter has three basic modes. In the first, the command line specifies only
 a single file:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> INTERFILE</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> INTERFILE
+</span></pre>
 <p>Inter simply verifies this file for correctness: that is, to see if the inter
 code supplied conforms to the inter specification. It returns the exit code 0
 if all is well, and issues error messages and returns 1 if not.</p>
@@ -124,28 +115,19 @@ not how Inter decides.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Format conversion.</b>  In the second mode, Inter not only loads (and verifies) the named file, but
 then converts it to a different format and writes that out. For example,</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary
+</span></pre>
 <p>converts <code>my.intert</code> (a textual inter file) to its binary equivalent <code>my.interb</code>,
 and conversely:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text
+</span></pre>
 <p>Two parameters must be specified: <code>-o</code> giving the output file, and <code>-format=F</code>
 to say what format <code>F</code> this should have. Formats are in the same notation as
 those used by <a href="../inbuild/index.html" class="internal">inbuild</a>, which similarly supports <code>-o</code> and <code>-format</code>.
 In fact, <code>-format=text</code> is the default.</p>
 <p>To take an elaborate example,</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=C/32d/nomain</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=C/32d/nomain
+</span></pre>
 <p>generates a 32-bit-word, debugging-enabled ANSI C program from the Inter tree
 in <code>my.interb</code>, with no <code>main</code> function included in it.</p>
 <p>As a special case, if <code>-o</code> is given just as <code>-</code>, then the output is printed
@@ -155,15 +137,12 @@ to the console rather than to a file.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Running a pipeline.</b>  If we specify <code>-trace</code> as a command-line switch, Inter prints out every step
 of the pipeline(s) it is following. This reveals that even the simple commands
 above are, in fact, running pipelines, albeit short ones:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -trace</span>
-<span class="ConsoleText-plain-syntax">    step 1/1: read &lt;- my.intert</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span><span class="ConsoleText-identifier-syntax"> -trace</span>
-<span class="ConsoleText-plain-syntax">    step 1/2: read &lt;- my.intert</span>
-<span class="ConsoleText-plain-syntax">    step 2/2: generate binary -&gt; my.interb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -trace</span><span class="ConsoleText-plain-syntax">
+	step 1/1: read &lt;- my.intert
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span><span class="ConsoleText-identifier-syntax"> -trace</span><span class="ConsoleText-plain-syntax">
+	step 1/2: read &lt;- my.intert
+	step 2/2: generate binary -&gt; my.interb
+</span></pre>
 <p>As this shows, a one or two-step pipeline was running:</p>
 <ul>
 <li>
@@ -172,7 +151,7 @@ code into memory. Here, it comes from the file <code>my.intert</code>.</p>
 </li>
 <li>
 <p>The second step used the <code>generate</code> stage, which writes out Inter code
-in the format of one's choice -- here &quot;binary&quot;.</p>
+in the format of one's choice — here &quot;binary&quot;.</p>
 </li>
 </ul>
 </div>
@@ -181,34 +160,25 @@ in the format of one's choice -- here &quot;binary&quot;.</p>
 reads in a textual description of the pipeline to follow, with the steps divided
 by commas. The examples above used a pipeline which in this notation would
 be written as:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    -pipeline-text 'read &lt;- *in, generate -&gt; *out'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	-pipeline-text 'read &lt;- *in, generate -&gt; *out'
+</span></pre>
 <p><code>*in</code> and <code>*out</code> are examples of &quot;pipeline variables&quot;. <code>*in</code> is the filename
 of whatever file is to be read in, and <code>*out</code> is whatever was specified by <code>-o</code>
 at the command line, or in other words, the filename to write the output to.</p>
 <p>This is not quite the smallest possible pipeline. Consider:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'new, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span>
-<span class="ConsoleText-plain-syntax">    step 1/2: new</span>
-<span class="ConsoleText-plain-syntax">    step 2/2: generate text -&gt; my.intert</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'new, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span><span class="ConsoleText-plain-syntax">
+	step 1/2: new
+	step 2/2: generate text -&gt; my.intert
+</span></pre>
 <p>Here we didn't specify any Inter file to read in, so <code>*in</code> does not appear.
 Instead wevbegan the pipeline with the <code>new</code> compilation stage, which creates
 a minimal Inter program from nothing.</p>
 <p>Even three-step pipelines can be very useful. For example:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'read &lt;- *in, eliminate-redundant-labels, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span>
-<span class="ConsoleText-plain-syntax">    step 1/3: read &lt;- my.intert</span>
-<span class="ConsoleText-plain-syntax">    step 2/3: eliminate-redundant-labels</span>
-<span class="ConsoleText-plain-syntax">    step 3/3: generate text -&gt; my.intert</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'read &lt;- *in, eliminate-redundant-labels, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span><span class="ConsoleText-plain-syntax">
+	step 1/3: read &lt;- my.intert
+	step 2/3: eliminate-redundant-labels
+	step 3/3: generate text -&gt; my.intert
+</span></pre>
 <p>This could be used to test that the <code>eliminate-redundant-labels</code> compilation
 stage is working as it should. We can feed our choice of Inter code into it,
 and examine its direct output, in isolation from the working of the rest of
@@ -217,22 +187,16 @@ the compiler (and, of course, more quickly).</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  In practice, it becomes cumbersome to spell the pipeline out longhand on
 the command line, so we can also put it into a text file:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -pipeline-file</span><span class="ConsoleText-plain-syntax"> mypl.interpipeline</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -pipeline-file</span><span class="ConsoleText-plain-syntax"> mypl.interpipeline
+</span></pre>
 <p>It's not allowed to specify both <code>-pipeline-file</code> and <code>-pipeline-text</code>.
 The text file, however, specifies pipelines with one step on each line, not
 using commas. So <code>-pipeline-text 'read &lt;- *in, eliminate-redundant-labels, generate -&gt; *out'</code>
 is equivalent to <code>-pipeline-file</code> with the file:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">read</span><span class="plain-syntax"> &lt;- *</span><span class="identifier-syntax">in</span>
-<span class="identifier-syntax">eliminate</span><span class="plain-syntax">-</span><span class="identifier-syntax">redundant</span><span class="plain-syntax">-</span><span class="identifier-syntax">labels</span>
-<span class="identifier-syntax">generate</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; *</span><span class="identifier-syntax">out</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">read &lt;- *in
+eliminate-redundant-labels
+generate -&gt; *out
+</span></pre>
 <p>For more on how to write and use pipeline files, see <a href="M-pas.html" class="internal">Pipelines and Stages</a>.</p>
 </div>
 <div class="lsmarkdown">
@@ -240,10 +204,9 @@ is equivalent to <code>-pipeline-file</code> with the file:</p>
 relative to the current working directory, unless given as absolute filenames
 beginning with <code>/</code>. But we can also set a &quot;default directory&quot; to take the
 place of the CWD, using <code>-domain</code>:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	-domain D
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">domain</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Assimilation.</b>  Inform makes use of what are called &quot;kits&quot; of pre-compiled Inter code:
 for example, <code>CommandParserKit</code> contains code for the traditional interactive
@@ -257,43 +220,33 @@ and therefore assimilation is really compilation from I6 to Inter.</p>
 for each different architecture with which they are compatible. Inter can
 build kits for only one architecture at a time, so a command must specify
 which is wanted. For example:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit
+</span></pre>
 <p>At present there are four architectures: <code>16</code>, <code>16d</code>, <code>32</code> and <code>32d</code>.
 Note that an architecture is not the same thing as a format: it specifies
 only the word size (16 or 32 bit) and the presence, or not, of debugging data.</p>
 <p>Incrementally building kits as needed could be done with something like
 the Unix tool <code>make</code>, but in fact Inbuild has this ability: the command</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build</span><span class="ConsoleText-plain-syntax"> K</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build</span><span class="ConsoleText-plain-syntax"> K
+</span></pre>
 <p>looks at the kit <code>K</code>, works out which architectures need rebuilding, and
 then issues commands like the above to instruct <code>inter</code> to do so. Indeed,
 multiple kits can be managed with a single command:</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build -contents-of</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build -contents-of</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Under the hood, assimilation is just another use of pipeline processing. If we
 run one of these <code>-build-kit</code> commands with <code>-trace</code> switched on, we see
 something like this:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">step 1/6: new</span>
-<span class="ConsoleText-plain-syntax">step 2/6: load-kit-source &lt;- BasicInformKit</span>
-<span class="ConsoleText-plain-syntax">step 3/6: parse-insertions</span>
-<span class="ConsoleText-plain-syntax">step 4/6: resolve-conditional-compilation</span>
-<span class="ConsoleText-plain-syntax">step 5/6: compile-splats</span>
-<span class="ConsoleText-plain-syntax">step 6/6: generate binary -&gt; inform7/Internal/Inter/BasicInformKit/arch-32.interb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">step 1/6: new
+step 2/6: load-kit-source &lt;- BasicInformKit
+step 3/6: parse-insertions
+step 4/6: resolve-conditional-compilation
+step 5/6: compile-splats
+step 6/6: generate binary -&gt; inform7/Internal/Inter/BasicInformKit/arch-32.interb
+</span></pre>
 <p>This is in fact the result of running a pipeline file called <code>build-kit.interpipeline</code>
 which is included in the standard Inter distribution.</p>
 </div>

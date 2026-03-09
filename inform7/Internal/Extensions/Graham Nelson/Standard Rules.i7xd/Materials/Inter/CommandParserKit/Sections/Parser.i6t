@@ -14,8 +14,8 @@ There are also minor differences in how the Z-machine stores the result of
 identifying dictionary words in typed commands.
 
 In general, though, `#Iftrue CHARSIZE == 1;` will be used to conditionally
-compile code for the 16-bit parser, and its alternative -- that `CHARSIZE`
-equals `WORDSIZE` -- will mean the 32-bit parser.
+compile code for the 16-bit parser, and its alternative — that `CHARSIZE`
+equals `WORDSIZE` — will mean the 32-bit parser.
 
 Only when genuinely using some feature of the 16-bit architecture (i.e., of
 the Z-machine) will we write `#Ifdef TARGET_ZCODE;`. But this is only a
@@ -462,9 +462,9 @@ The `Keyboard` routine actually receives the player's words, putting the
 words in `a_buffer` and their dictionary addresses in `a_table`. It is
 assumed that the table is the same one on each (standard) call. Much
 of the code handles the OOPS and UNDO commands, which are not actions and
-do not pass through the rest of the parser. The undo state is saved --
+do not pass through the rest of the parser. The undo state is saved —
 it is essentially an internal saved game, in the VM interpreter's memory
-rather than in an external file -- and note that this is therefore also
+rather than in an external file — and note that this is therefore also
 where execution picks up if an UNDO has been typed. Since UNDO recreates
 the former machine state perfectly, it might seem impossible to tell that
 an UNDO had occurred, but in fact the VM passes information back in the
@@ -2249,8 +2249,8 @@ the tokens "[someone]", "[somebody]", "[anyone]" and "[anybody]".)
 
 @h Noun Domain.
 `NounDomain` does the most substantial part of parsing an object name.
-It is given two "domains" -- usually a location and then the actor who is
-looking -- and a context (i.e. token type), and returns:
+It is given two "domains" — usually a location and then the actor who is
+looking — and a context (i.e. token type), and returns:
 
 - 0 if no match at all could be made,
 - 1 if a multiple object was made,
@@ -2666,9 +2666,9 @@ faced with a list of objects (the `match_list`) each of which matches the
 player's specification equally well. To do this it makes use of the `context`
 (the token type being worked on).
 
-It counts up the number of obvious choices for the given context -- all to
+It counts up the number of obvious choices for the given context — all to
 do with where a candidate is, except for 6 (`animate`) which is to
-do with whether it is animate or not -- and then:
+do with whether it is animate or not — and then:
 
 - if only one obvious choice is found, that is returned;
 - if we are in indefinite mode (don't care which) one of the obvious choices
@@ -3214,7 +3214,7 @@ pattern which has been built up.
 
 If `from` is 0, it starts with the verb: then it goes through the pattern.
 
-The other parameter is `emptyf` -- a flag: if 0, it goes up to `pcount`:
+The other parameter is `emptyf` — a flag: if 0, it goes up to `pcount`:
 if 1, it goes up to `pcount`-1.
 
 Note that verbs and prepositions are printed out of the dictionary:
@@ -3396,13 +3396,13 @@ contents and component parts of the object. The I7 phrase "place X in
 scope" uses this routine.
 
 (4) `DoScopeAction` simply visits a single object, taking whatever action
-is needed there -- which will depend on the `scope_reason`. The only use
+is needed there — which will depend on the `scope_reason`. The only use
 made by the parser of `TryGivenObject`, which tries to match command text
 against the name of a given object, is from here. The I7 phrase "place X
 in scope, but not its contents" uses this routine.
 
 Two routines are provided for code external to the parser to modify the
-scope. They should be called only during scope deliberations -- i.e.,
+scope. They should be called only during scope deliberations — i.e.,
 in `scope=...` tokens or in rules for the "deciding the scope of"
 activity. (At present, `AddToScope` is not used in I7 at all.) Note
 that this I7 form of `PlaceInScope` has a slightly different specification
@@ -3906,7 +3906,7 @@ are parsed.)
 and is abstracted as a routine in case something more elaborate is ever
 needed.
 
-For GNAs -- gender/noun/animation combinations -- see the _Inform Designer's
+For GNAs — gender/noun/animation combinations — see the _Inform Designer's
 Manual_, 4th edition.
 
 =
@@ -4123,7 +4123,7 @@ The I6 parser leaves it to the user to provide a `ChooseObjects` routine
 to decide between possibilities when the situation is ambiguous. For I7
 use, we provide a `ChooseObjects` which essentially runs the "does the
 player mean" rulebook to decide, though this is not obvious from the
-code below because it is hidden in the `CheckDPMR` routine -- which
+code below because it is hidden in the `CheckDPMR` routine — which
 is defined in the Standard Rules, not here.
 
 =
@@ -4287,7 +4287,7 @@ question is a text: "A flowerpot is a kind of thing. A flowerpot
 has a text called pattern. Understand the pattern property as
 describing a flowerpot." When the player types EXAMINE STRIPED FLOWERPOT,
 and there is a flowerpot in scope, the following routine is called to
-test whether its pattern property -- a text -- matches any words
+test whether its pattern property — a text — matches any words
 at the position STRIPED FLOWERPOT. Assuming a pot does indeed have the
 pattern "striped", the routine advances `wn` by 1 and returns
 `GPR_PREPOSITION` to indicate a match.

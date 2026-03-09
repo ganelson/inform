@@ -30,7 +30,7 @@ week more). Still, the result seems to be robust. The main compromise made
 is that backtracking is not always comprehensive with regexps like
 `^(a\1?){4}$`, because we do not allocate individual storage to backtrack
 individually through all possibilities of each of the four uses of the
-bracketed subexpression -- which means we miss some cases, since the
+bracketed subexpression — which means we miss some cases, since the
 subexpression contains a reference to itself, so that its content can vary
 in the four uses. PCRE's approach here is to expand the expression as if it
 were a sequence of four bracketed expressions, thus removing the awkward
@@ -179,8 +179,8 @@ memory is too short.)
 counting `\0`. During the compiling stage, `RE_Subexpressions-->N` is set
 to point to the node representating `\N`, where `N` varies from 1 to 9.
 When matching is complete, and assuming we care about the contents of
-these variables -- which we might not, and if not we certainly don't want
-to waste time and memory -- we call `TEXT_TY_RE_CreateMatchVars` to allocate
+these variables — which we might not, and if not we certainly don't want
+to waste time and memory — we call `TEXT_TY_RE_CreateMatchVars` to allocate
 text variables and fill them in as appropriate, memory permitting.
 
 `TEXT_TY_RE_EmptyMatchVars` empties any such variables which may survive from
@@ -922,8 +922,8 @@ Array Subexp_Posns --> 20;
 
 @h Parser.
 The virtue of all of that tree compilation is that the code which actually
-does the work -- which parses the source text to see if the regular expression
-matches it -- is much shorter and quicker: indeed, it takes up fewer lines
+does the work — which parses the source text to see if the regular expression
+matches it — is much shorter and quicker: indeed, it takes up fewer lines
 than the compiler part, which goes to show that decoding regular expression
 syntax is a more complex task than acting upon it. This would have surprised
 the pioneers of regexp, but the syntax has become much more complicated over
@@ -935,7 +935,7 @@ regexp syntax there could be. However: to work.
 The main matcher simply starts a recursive subroutine to perform the match.
 However, the subroutine tests for a match at a particular position in the
 source text; so the main routine tries the subroutine everywhere convenient
-in the source text, from left to right, until a match is made -- unless the
+in the source text, from left to right, until a match is made — unless the
 regexp is constrained by a `^` glyph to begin matching at the start of the
 source text, which will cause a `START_RE_CC` node to be the eldest child
 of the `\0` root.
@@ -1379,7 +1379,7 @@ them efficiently.
 
 But in an expression like `ab+bb`, there is no alternative to backtracking
 if we are going to try to match the nodes from left to right: we match the
-"a", then we match as many "b"s as we can -- but then we find that we
+"a", then we match as many "b"s as we can — but then we find that we
 have to match "bb", and this is necessarily impossible because we have
 just eaten all of the "b"s available. We therefore backtrack one node
 to the `b+` and try again. We obviously can't literally try again because
@@ -1390,7 +1390,7 @@ consider it to be `b{1,22}`, that is, to match at least 1 and at most 22
 letter "b"s. That still won't work, as it happens, so we backtrack again
 with a constraint tightened to make it `b{1,21}`, and now the match occurs
 as we would hope. When the expression becomes more complex, backtracking
-becomes a longer-distance, recursive procedure -- we have to exhaust all
+becomes a longer-distance, recursive procedure — we have to exhaust all
 possibilities of a more recent node before tracking back to one from longer
 ago. (This is why the worst test cases are those which entice us into a long,
 long series of matches only to find that a guess made right back at the
@@ -1461,14 +1461,14 @@ Here, an attempt to make a complicated match against the node in `token` has
 failed: that means that any subexpressions which were matched in the course of
 the attempt must also in retrospect be considered unmatched. So we work down
 through the subtree at `token` and empty any markers for subexpressions,
-which in effect clears their backslash variables -- this is important as,
+which in effect clears their backslash variables — this is important as,
 otherwise, the contents left over could cause the alternative reading of the
 `token` to be misparsed if it refers to the backslash variables in question.
 (If you think nobody would ever be crazy enough to write a regular expression
 like that, you haven't see Perl's test suite.)
 
 If the `downwards` flag is clear, it not only invalidates subexpression
-matches below the node but also to the right of the node -- this is useful
+matches below the node but also to the right of the node — this is useful
 for a backtrack which runs back quite some distance.
 
 =
@@ -1607,7 +1607,7 @@ only to be a simple string of characters taken literally, such as `frog`.
 Each match found is replaced with the contents of `rtxt`, except
 that if the blob type is `REGEXP_BLOB` then we recognise a few syntaxes
 as special: for instance, `\2` expands to the value of subexpression 2
-as it was matched -- see _Writing with Inform_ for details.
+as it was matched — see _Writing with Inform_ for details.
 
 The optional argument `insens` is a flag which, if set, causes the matching
 to be done case insensitively; the optional argument `exactly`, if set,

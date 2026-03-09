@@ -90,7 +90,7 @@ function togglePopup(material_id) {
 meaning for &quot;roomy&quot; which involves the comparison of a property (here &quot;carrying
 capacity&quot;) against a threshold value \INWEBMATH(t\INWEBMATH) (here, \INWEBMATH(t=10\INWEBMATH)). &quot;roomy&quot; is said to
 be the headword; the comparative form would be roomier, and the superlative
-form roomiest. The comparative will make a relation -- see <a href="3-cr.html" class="internal">Comparative Relations</a> --
+form roomiest. The comparative will make a relation — see <a href="3-cr.html" class="internal">Comparative Relations</a> —
 while and the must be a phrase. It can't be an adjective, since its domain
 would be too ambiguous in text such as:</p>
 <blockquote>
@@ -146,13 +146,13 @@ timing during Inform's run: the names of kinds, properties and values become
 available at different times; whereas we need the name of the adjective
 itself to become available very early on. This is why the structure below
 appears to record a lot of extraneous clutter apparently needed only
-temporarily during parsing -- because parsing does not happen all at once,
+temporarily during parsing — because parsing does not happen all at once,
 and partial results have to be parked in the structure after one stage to
 be picked up at the next.</p>
 <p>At any rate, here goes:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">measurement_definition</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">measurement_definition</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">measurement_node</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where the actual definition is */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">headword</span><span class="plain-syntax">; </span><span class="comment-syntax">/* adjective being defined (must be single word) */</span>
@@ -169,8 +169,7 @@ be picked up at the next.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">region_threshold_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text of threshold value */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">measurement_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">measurement_definition</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure measurement_definition is accessed in 2/ins, 2/nv, 3/prp, 3/ma, 4/pp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>

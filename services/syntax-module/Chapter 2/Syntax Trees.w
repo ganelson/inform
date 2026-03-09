@@ -24,7 +24,7 @@ it includes, will form a single //parse_node_tree//.
 @d MAX_BUD_STACK_SIZE 100 /* must be at least the number of heading levels plus 3 */
 
 =
-typedef struct parse_node_tree {
+classdef parse_node_tree {
 	struct parse_node *root_node;
 	int bud_parent_sp;
 	struct parse_node *bud_parent_stack[MAX_BUD_STACK_SIZE];
@@ -33,8 +33,7 @@ typedef struct parse_node_tree {
 	int contains_dialogue;
 	int trace_sentences;
 	HEADING_TREE_SYNTAX_TYPE *headings;
-	CLASS_DEFINITION
-} parse_node_tree;
+}
 
 parse_node_tree *SyntaxTree::new(void) {
 	parse_node_tree *T = CREATE(parse_node_tree);
@@ -406,7 +405,7 @@ int SyntaxTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn,
 @h Cautious traverses.
 When logging or verifying the tree, we cannot use the carefree functions
 above: the tree might be malformed. As a way to detect cycles, we call for
-a new "traverse token" -- just a unique integer value -- and mark all nodes
+a new "traverse token" — just a unique integer value — and mark all nodes
 visited with that value.
 
 =
@@ -446,18 +445,22 @@ Then:
 
 - `SyntaxTree::add_reading(NULL, fruit_node, W)` returns `noun_node`,
 - but `SyntaxTree::add_reading(fruit_node, colour_node, W)` returns this subtree:
-= (text)
+
+``` None
 	AMBIGUITY_NT A
 	    fruit_node
 		colour_node
-=
+```
+
 - and `SyntaxTree::add_reading(A, adj_node, W)` returns the subtree:
-= (text)
+
+``` None
 	AMBIGUITY_NT A
 	    fruit_node
 		colour_node
 		adj_node
-=
+```
+
 Thus it accumulates possible readings of a given text.
 
 A complication is that the following callback function is offered the chance

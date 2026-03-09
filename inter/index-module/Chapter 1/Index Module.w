@@ -27,36 +27,3 @@ void IndexModule::start(void) {
 }
 void IndexModule::end(void) {
 }
-
-@
-
-@e index_session_CLASS
-@e index_page_CLASS
-@e index_element_CLASS
-@e inter_lexicon_CLASS
-@e index_lexicon_entry_CLASS
-@e simplified_scene_CLASS
-@e simplified_end_CLASS
-@e simplified_connector_CLASS
-@e command_index_entry_CLASS
-@e faux_instance_CLASS
-@e faux_instance_set_CLASS
-@e connected_submap_CLASS
-@e EPS_map_level_CLASS
-@e rubric_holder_CLASS
-
-=
-DECLARE_CLASS(index_session)
-DECLARE_CLASS(index_element)
-DECLARE_CLASS(index_page)
-DECLARE_CLASS(inter_lexicon)
-DECLARE_CLASS(index_lexicon_entry)
-DECLARE_CLASS(simplified_scene)
-DECLARE_CLASS(simplified_end)
-DECLARE_CLASS(simplified_connector)
-DECLARE_CLASS(command_index_entry)
-DECLARE_CLASS(faux_instance)
-DECLARE_CLASS(faux_instance_set)
-DECLARE_CLASS(connected_submap)
-DECLARE_CLASS(EPS_map_level)
-DECLARE_CLASS(rubric_holder)

@@ -63,55 +63,40 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Runtime representation.</b>  Text substitutions arise from source text such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that [sleeping animal] got to?"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that [sleeping animal] got to?"</span><span class="plain-syntax">;
+</span></pre>
 <p>These both look like text substitutions, but only <code>the [fox speed] brown fox</code>
 actually is one: <code>say</code> phrases are compiled directly, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that "</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">sleeping</span><span class="plain-syntax"> </span><span class="identifier-syntax">animal</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">" got to?"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that "</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">sleeping</span><span class="plain-syntax"> </span><span class="identifier-syntax">animal</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">" got to?"</span><span class="plain-syntax">;
+</span></pre>
 <p>So we are concerned only with substitutions used as values. At run-time, these
 are essentially the same as <a href="4-tl.html" class="internal">Text Literals</a>, but where the content field in
 the small block is a function pointer:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PERISHABLE_TEXT_STORAGE</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">function</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:
+	Q ----------------&gt; CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE
+	                    function
+</span></pre>
 <p>It is worth emphasising that this is a function. In an interpreted language
 like Perl, an interpolation such as <code>&quot;Deleted $file_count files&quot;</code> is immediately
 converted to text when it is executed; and even in some compiled languages
-like Swift, the same is essentially true -- in that the text is compiled to
+like Swift, the same is essentially true — in that the text is compiled to
 code which immediately produces the expanded version.</p>
 <p>In Inform, however, a text substitution is instead compiled to a function which
 can at some later time perform that expansion. This means it is, in effect, a
 form of closure, and has to retain some memory of the environment in which it
 came up. Consider for example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">write</span><span class="plain-syntax"> </span><span class="string-syntax">"remember [X]"</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Memos</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">write</span><span class="plain-syntax"> </span><span class="string-syntax">"remember [X]"</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Memos</span><span class="plain-syntax">;
+</span></pre>
 <p>This is a context where it's clear what it means to refer to the local variable
 <code>X</code> in the text. But this is less clear:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cage</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Discount</span><span class="plain-syntax"> </span><span class="identifier-syntax">Cage</span><span class="plain-syntax"> </span><span class="identifier-syntax">Warehouse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="string-syntax">"As bad as [a cage]."</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cage</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Discount</span><span class="plain-syntax"> </span><span class="identifier-syntax">Cage</span><span class="plain-syntax"> </span><span class="identifier-syntax">Warehouse</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="string-syntax">"As bad as [a cage]."</span><span class="plain-syntax">;
+</span></pre>
 <p>The trouble is that <code>decide on</code> causes a return out of the current stack frame;
 at which point the local variable <code>cage</code> will cease to exist, and it will then
 not be possible to expand <code>&quot;As bad as [a cage].&quot;</code>. If we were pursuing closures
@@ -135,11 +120,8 @@ we expand this on the spot, i.e., inside the original stack frame.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Cues.</b>  The &quot;cue&quot; for a text substitution that is not a response is its original appearance:
 like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the [fox speed] brown fox"</span><span class="plain-syntax">;
+</span></pre>
 <p>When compiling this value, the following is called with <code>W</code> being the single-word
 wording <code>&quot;the [fox speed] brown fox&quot;</code>.</p>
 </div>
@@ -200,7 +182,7 @@ case of a response to a rule, since those are never perishable.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Substitutions.</b>  Each substitution creates an object like so:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_substitution</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">text_substitution</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">unsubstituted_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* including the substitutions in squares */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tr_done_already</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has been compiled */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sentence_using_this</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where this occurs in source */</span>
@@ -213,19 +195,16 @@ case of a response to a rule, since those are never perishable.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">responding_to_rule</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">responding_to_marker</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">text_substitution</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure text_substitution is accessed in 4/rsp and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Two inames are involved here:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                        small block:
+	value ----------------&gt; CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE
+	                        function ----------------------&gt; ...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PERISHABLE_TEXT_STORAGE</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------------&gt; ...</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">TextSubstitutions::value_iname</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">TextSubstitutions::value_iname</span></span>:<br/><a href="4-ts.html#SP2_1">&#167;2.1</a>, <a href="4-ts.html#SP2_2">&#167;2.2</a><br/>Responses - <a href="4-rsp.html#SP2">&#167;2</a>, <a href="4-rsp.html#SP6">&#167;6</a><br/>Dialogue Line Instances - <a href="5-dli.html#SP3_5">&#167;3.5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">text_substitution</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ts</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ts</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ts_value_iname</span><span class="plain-syntax">;</span>
@@ -237,7 +216,7 @@ case of a response to a rule, since those are never perishable.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Note that this function is called both when cues are detected (above), and
-also when responses are created -- see <a href="4-rsp.html" class="internal">Responses</a>.</p>
+also when responses are created — see <a href="4-rsp.html" class="internal">Responses</a>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">text_substitution</span><span class="plain-syntax"> *</span><span class="function-syntax">TextSubstitutions::new_text_substitution</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">TextSubstitutions::new_text_substitution</span></span>:<br/><a href="4-ts.html#SP2_1_1">&#167;2.1.1</a><br/>Responses - <a href="4-rsp.html#SP2">&#167;2</a><br/>Dialogue Line Instances - <a href="5-dli.html#SP3_5">&#167;3.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
@@ -337,7 +316,7 @@ frame creating this text substitution to the stack frame compiling it.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ts.html#SP7">&#167;7</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b>  In DEBUG mode, there's an option to print the unsubstituted text instead --
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b>  In DEBUG mode, there's an option to print the unsubstituted text instead —
 note the <code>rtrue</code> here, which stops the function from proceeding.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile some debugging text</span><span class="named-paragraph-number">7.2</span></span> =</p>
@@ -378,7 +357,7 @@ a request for a new text substitution to be compiled later...</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">IMPERATIVE_NT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-cu.html#SP7" class="function-link"><span class="function-syntax">CompilationUnits::assign_to_same_unit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">, </span><span class="identifier-syntax">ts</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_point</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cu.html#SP6" class="function-link"><span class="function-syntax">CompilationUnits::assign_to_same_unit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">, </span><span class="identifier-syntax">ts</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_point</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">ts</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unsubstituted_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_text_substitution_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>

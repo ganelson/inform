@@ -6,8 +6,8 @@ To run the necessary rulebooks to carry out an activity.
 Activities are more like nested function calls than independent processes;
 they finish in reverse order of starting, and are placed on a stack. This
 needs only very limited size in practice: 20 might seem a bit low, but making
-it much higher simply means that oddball bugs in the user's code -- where
-activities recursively cause themselves ad infinitum -- will be caught less
+it much higher simply means that oddball bugs in the user's code — where
+activities recursively cause themselves ad infinitum — will be caught less
 efficiently.
 
 =
@@ -102,7 +102,7 @@ This is really much like processing any rulebook, except that `self` is
 temporarily set to the parameter, and is preserved by the process.
 
 Note that when an activity based on the conjectural "future action" is
-being run -- in a few parser-related cases, that is -- the identity of this
+being run — in a few parser-related cases, that is — the identity of this
 action is put temporarily into `action`, and the current value saved while
 this takes place. That allows rules in the activity rulebooks to have
 preambles based on the current action, and yet be tested against what is not

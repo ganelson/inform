@@ -16,12 +16,11 @@ the following blob of data to a `property_permission`:
 @d DESCRIBING_VISIBILITY_LEVEL 2
 
 =
-typedef struct parsing_pp_data {
+classdef parsing_pp_data {
 	int visibility_level_in_parser; /* one of the `*_VISIBILITY_LEVEL` values above */
 	struct wording visibility_condition; /* (at least if...?) */
 	struct parse_node *visibility_sentence; /* where this is specified */
-	CLASS_DEFINITION
-} parsing_pp_data;
+}
 
 parsing_pp_data *Visibility::new_pp_data(property_permission *pp) {
 	parsing_pp_data *pd = CREATE(parsing_pp_data);

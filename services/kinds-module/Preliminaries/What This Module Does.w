@@ -81,13 +81,15 @@ For instance:
 > To decide which text is (N - a number) as text: (- {N} -).
 
 is analogous to a C function like so:
-= (text as C)
+
+``` C
 	char *number_as_text(int N) {
 		return (char *) N;
 	}
-=
-This is a legal C function but the deliberate disregard of type safety -- in
-the use of the `(char *)` cast notation -- is a kind of waiver, where the
+```
+
+This is a legal C function but the deliberate disregard of type safety — in
+the use of the `(char *)` cast notation — is a kind of waiver, where the
 author chooses to accept the risk. In a similar way, there are no victims of
 Inform's `(-` and `-)` notation, only volunteers.
 
@@ -122,8 +124,8 @@ Problem messages about safety violations can be issued either at compile
 time or at run-time.
 
 @h Dimensional analysis.
-Inform subjects all calculations with its "quasinumerical" kinds -- basically,
-all those on which calculation can be performed -- to dimensional checking.
+Inform subjects all calculations with its "quasinumerical" kinds — basically,
+all those on which calculation can be performed — to dimensional checking.
 
 Dimension in this sense is a term drawn from physics. The idea is that when
 quantities are multiplied together, their natures are combined as well as
@@ -150,7 +152,7 @@ produces a hierarchical order among possible kinds.
 
 Conformance is an "is-a" relationship: thus a `vehicle` can safely be stored in
 a variable of kind `thing` because a vehicle is a thing. But a `number` cannot
-be stored in a `real number` variable directly -- integers and real numbers
+be stored in a `real number` variable directly — integers and real numbers
 have completely different data representations at run-time, so the compiler
 must generate conversion code (a "cast") to adapt the `number` value before
 it is stored. Sometimes this is possible, sometimes not. A kind $K$ is
@@ -167,7 +169,7 @@ But not to us. In the //kinds// module, `object` is a kind like any other. It
 need not even exist.
 
 @h Kind variables.
-The 26 letters A to Z, written in upper case, can serve as kind variables --
+The 26 letters A to Z, written in upper case, can serve as kind variables —
 placeholders for kinds.[1] In practice A is best avoided because it looks too
 much like an indefinite article, but it's very rare to need more than two.[2]
 Phrase definitions in the standard Inform extensions use only K and L.
@@ -186,13 +188,13 @@ So a variable cannot have the kind `list of K`, for example.
 
 [1] Using letters seemed the nearest point of contact with natural
 language conventions. In English, we do say pseudo-algebraic things like
-"So, let's call our spy Mr X." -- or at least we do if we lead slightly
+"So, let's call our spy Mr X." — or at least we do if we lead slightly
 more exciting lives than the present author. The use of letters emphasises
 that this is some kind of reference, not a direct identification.
 
 [2] At one time I was tempted by the syntax used in the early functional
 programming language Miranda (1985), which uses rows of asterisks `*`, `**`,
-`***`, and so on as needed -- a syntax making clear that nobody expected
+`***`, and so on as needed — a syntax making clear that nobody expected
 to see many of them at once. But asterisks in natural language have an air
 of censorship, of something that must not be named: compare Stéphanie de
 Genlis's gothic novella "Histoire de la duchesse de C***" (1782).
@@ -216,63 +218,62 @@ values by writing `K = number`, or similar. For example:
 
 @h Overview of facilities.
 A kind is represented by a `kind *` pointer. These actually point to
-small trees of //kind// objects -- see //Kinds// -- because many kinds are
+small trees of //kind// objects — see //Kinds// — because many kinds are
 constructed out of others: thus `list of texts` is the result of applying the
 "list of ..." construction to the kind `text`.[1] Kinds not constructed from
 other kinds are called "base kinds". Briefly:
 
-- By convention the `NULL` pointer means "kind unknown".
+- 	By convention the `NULL` pointer means "kind unknown".
 
-- Commonly needed base kinds, like `number` or `text`, have global variables
-set equal to them, like `K_number` or `K_text`. See //Familiar Kinds//.
+-	Commonly needed base kinds, like `number` or `text`, have global variables
+	set equal to them, like `K_number` or `K_text`. See //Familiar Kinds//.
 
-- Kinds can otherwise be made with //Kinds::base_construction//,
-//Kinds::unary_con// or //Kinds::binary_con//. For example,
-`list of numbers` and `relation of numbers to texts` can be made by:
-= (text)
-	Kinds::unary_con(CON_list_of, K_number)
-	Kinds::binary_con(CON_relation, K_number, K_text)
-=
+-	Kinds can otherwise be made with //Kinds::base_construction//,
+	//Kinds::unary_con// or //Kinds::binary_con//. For example,
+	`list of numbers` and `relation of numbers to texts` can be made by:
 
-- Kinds for functions are a bit laborious to put together, so //Kinds::function_kind//
-is a convenience.
+		Kinds::unary_con(CON_list_of, K_number)
+		Kinds::binary_con(CON_relation, K_number, K_text)
 
-- As with kinds, commonly needed constructors, like `CON_list_of` or
-`CON_relation`, are available as global values. Again see //Familiar Kinds//.
+-	Kinds for functions are a bit laborious to put together, so //Kinds::function_kind//
+	is a convenience.
 
-- Two different `kind *` values can represent the same kind, so don't test
-whether $K$ is the same kind as $L$ by the pointer comparison `K == L`. Instead
-call //Kinds::eq// or its negation //Kinds::ne//.
+-	As with kinds, commonly needed constructors, like `CON_list_of` or
+	`CON_relation`, are available as global values. Again see //Familiar Kinds//.
 
-- Call //Kinds::conforms_to// to test whether $K$ conforms to $L$. This is
-either true or not true. To find a kind able to hold values of either $K$ or $L$,
-call //Latticework::join//.
+-	Two different `kind *` values can represent the same kind, so don't test
+	whether $K$ is the same kind as $L$ by the pointer comparison `K == L`. Instead
+	call //Kinds::eq// or its negation //Kinds::ne//.
 
-- Call //Kinds::compatible// to test whether $K$ is compatible with $L$,
-but note that the reply is three-valued: always, sometimes or never.
+-	Call //Kinds::conforms_to// to test whether $K$ conforms to $L$. This is
+	either true or not true. To find a kind able to hold values of either $K$ or $L$,
+	call //Latticework::join//.
 
-- Inform makes frequent use of "weakening", where we deliberately weaken a
-kind (i.e., make it less restrictive) by ignoring distinctions between subkinds
-of some $W$. For example, the weakening of `list of things` with respect to
-`object` is `list of objects`. See //Kinds::weaken//.
+-	Call //Kinds::compatible// to test whether $K$ is compatible with $L$,
+	but note that the reply is three-valued: always, sometimes or never.
 
-- An extensive API of functions is provided in //Using Kinds// to test whether
-given kinds have given properties. The most important is //Kinds::Behaviour::definite//,
-which determines whether $K$ is definite.
+-	Inform makes frequent use of "weakening", where we deliberately weaken a
+	kind (i.e., make it less restrictive) by ignoring distinctions between subkinds
+	of some $W$. For example, the weakening of `list of things` with respect to
+	`object` is `list of objects`. See //Kinds::weaken//.
 
-- New base kinds can be created either by calling //Kinds::new_base//,[2] or in
-the process of reading in "Neptune files".[3] New constructors can only
-be made the latter way. See //NeptuneFiles::load//, which sends individual commands
-to //NeptuneFiles::read_command//, which in turn deals with the low-level code in
-the //Kind Constructors// section.[4] See //A Brief Guide to Neptune// for a
-manual to the syntax.
+-	An extensive API of functions is provided in //Using Kinds// to test whether
+	given kinds have given properties. The most important is //Kinds::Behaviour::definite//,
+	which determines whether $K$ is definite.
 
-- It is possible to move kinds within the lattice of kinds, i.e., to change
-their hierarchical relationship, even after creation. See //Kinds::make_subkind//.
-Inform does this very sparingly and only with kinds of object.[5]
+-	New base kinds can be created either by calling //Kinds::new_base//,[2] or in
+	the process of reading in "Neptune files".[3] New constructors can only
+	be made the latter way. See //NeptuneFiles::load//, which sends individual commands
+	to //NeptuneFiles::read_command//, which in turn deals with the low-level code in
+	the //Kind Constructors// section.[4] See //A Brief Guide to Neptune// for a
+	manual to the syntax.
 
-- Use //Kinds::Dimensions::arithmetic_on_kinds// to determine what kind, if
-any, results from performing an arithmetic operation.
+-	It is possible to move kinds within the lattice of kinds, i.e., to change
+	their hierarchical relationship, even after creation. See //Kinds::make_subkind//.
+	Inform does this very sparingly and only with kinds of object.[5]
+
+-	Use //Kinds::Dimensions::arithmetic_on_kinds// to determine what kind, if
+	any, results from performing an arithmetic operation.
 
 [1] "List of ..." is what is called a "kind constructor". This term follows the
 traditional usage of "type constructor", but note that Haskell and some other

@@ -64,7 +64,7 @@ void StandardProblems::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A
 @h Table problems.
 In principle we could treat these as sentence problems, but the "sentence"
 for a table can be enormous: so we need something which can show which
-table we are in, yet still only cite a small part of it --
+table we are in, yet still only cite a small part of it —
 
 =
 void StandardProblems::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc, parse_node *data,

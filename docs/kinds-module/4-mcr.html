@@ -64,12 +64,11 @@ function togglePopup(material_id) {
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_KIND_MACRO_LENGTH</span> <span class="constant-syntax">20</span><span class="plain-syntax"> </span><span class="comment-syntax">/* maximum number of commands in any one macro */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kind_macro_definition</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">kind_macro_definition</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_macro_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* including the sharp, e.g., <code>&quot;#UNIT&quot;</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_macro_line_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">single_kind_command</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_macro_line</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_KIND_MACRO_LENGTH</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">kind_macro_definition</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">kind_macro_definition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_km</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the one now being recorded */</span>
 

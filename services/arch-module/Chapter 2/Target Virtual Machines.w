@@ -73,7 +73,7 @@ we're keeping them here in case there is some day a need for a 32-bit format
 with integer-only arithmetic, say.
 
 =
-typedef struct target_vm {
+classdef target_vm {
 	struct inter_architecture *architecture; /* such as 32d */
 	struct semantic_version_number version; /* such as 0.8.7 */
 	struct text_stream *transpiled_extension; /* such as `i6` */
@@ -87,8 +87,7 @@ typedef struct target_vm {
 	int supports_floating_point;
 	int max_locals; /* upper limit on local variables per stack frame */
 	struct linked_list *format_options; /* of `text_stream` */
-	CLASS_DEFINITION
-} target_vm;
+}
 
 @ =
 target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
@@ -384,7 +383,7 @@ for a Python VN, if there were one.
 
 When releasing a blorbed story file, the file extension used depends on the
 story file wrapped inside. (This is a dubious idea, in the opinion of
-the author of Inform -- should not "blorb" be one unified wrapper? -- but
+the author of Inform — should not "blorb" be one unified wrapper? — but
 that ship seems to have sailed.)
 
 Note that for VMs not using Inform 6, blorbing is essentially meaningless,

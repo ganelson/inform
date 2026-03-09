@@ -66,37 +66,28 @@ function togglePopup(material_id) {
 have produced a sequence of <code>SPLAT_IST</code> nodes corresponding to directives,
 and some of those will be conditional compilation directives. For example,
 we might see a sequence like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">IFDEF_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ROUTINE_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">IFNOT_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ARRAY_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ROUTINE_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ENDIF_PLM</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	IFDEF_PLM
+	ROUTINE_PLM
+	IFNOT_PLM
+	ARRAY_PLM
+	ROUTINE_PLM
+	ENDIF_PLM
+</span></pre>
 <p>Clearly this either means a function (the first <code>ROUTINE_PLM</code>), or a different
 function plus an array. We have to decide that now, because optimisation, code
 generation and so on need to know exactly what they are dealing with.</p>
 <p>If we allowed kit sources to contain arbitrary conditional compilations, that
 would be impossible. But in practice they only need to depend on the constants
-which are defined by the VM architecture -- whether 16 or 32 bit; whether
+which are defined by the VM architecture — whether 16 or 32 bit; whether
 debugging is enabled. And we do know the architecture now. (This is why a kit
 has a different binary form for each different architecture supported.) So this
 stage collapses the above to either:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">ROUTINE_PLM</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ROUTINE_PLM
+</span></pre>
 <p>or:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">ARRAY_PLM</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ROUTINE_PLM</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ARRAY_PLM
+	ROUTINE_PLM
+</span></pre>
 <p>depending on which way the <code>IFDEF_PLM</code> comes out. At the end of this stage,
 then, none of the directives <code>IFDEF_PLM</code>, <code>IFNDEF_PLM</code>, <code>IFTRUE_PLM</code>,
 <code>IFNOT_PLM</code> or <code>ENDIF_PLM</code> appear anywhere in the tree, and all compilation
@@ -177,22 +168,18 @@ is written such that this can safely be done.)</p>
 <p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. </b>  In order to answer whether or not a symbol is defined... we must look for it.
 Note that definitions only count if they are in active code. Here, <code>Y</code> is added
 to the dictionary when it is reached:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;
+</span></pre>
 <p>But here it is not:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">Ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">Ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Symbol definition</span><span class="named-paragraph-number">3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -22,11 +22,10 @@ It's a matter for the build process and not for the compiler.
 which calls the following function to obtain a way to record each "requirement":
 
 =
-typedef struct attachment_instruction {
+classdef attachment_instruction {
 	struct pathname *location;
 	struct text_stream *attachment_point;
-	CLASS_DEFINITION
-} attachment_instruction;
+}
 
 attachment_instruction *LoadBinaryKitsStage::new_requirement(pathname *P, text_stream *attach) {
 	attachment_instruction *link = CREATE(attachment_instruction);

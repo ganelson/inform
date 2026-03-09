@@ -70,7 +70,7 @@ function togglePopup(material_id) {
 in a variety of inflected forms (though in English, there will be just two:
 &quot;mammal&quot; and &quot;mammals&quot;). That set of forms is gathered into a <code>lexical_cluster</code>
 object: see <a href="../inflections-module/3-lc.html" class="internal">Lexical Clusters (in inflections)</a>. Lexical clusters are not necessarily
-of nouns -- they are also used for adjectives, for example. So it would be
+of nouns — they are also used for adjectives, for example. So it would be
 wrong to represent a noun by a lexical cluster alone.</p>
 <p>Inform instead attaches a <a href="2-nns.html#SP3" class="internal">noun</a> object to the new &quot;mammal&quot; kind. This object
 contains the lexical cluster to define its syntax, but it also has semantics attached.</p>
@@ -99,16 +99,16 @@ object which gives it a meaning. For example, for the &quot;carved oak table&quo
 the Inform example above that would be an <code>instance</code> object representing this
 piece of furniture in the model world.</p>
 <p>It might seem the wrong way around for the <a href="2-nns.html#SP3" class="internal">noun</a> object to contain its
-meaning -- like saying that a luggage tag has a suitcase hanging from it,
+meaning — like saying that a luggage tag has a suitcase hanging from it,
 rather than vice versa. But this enables the lexicon to return a <a href="2-nns.html#SP3" class="internal">noun</a>
 as the result of parsing some text, or more accurately a <a href="2-nns.html#SP4" class="internal">noun_usage</a>
 which points to a <a href="2-nns.html#SP3" class="internal">noun</a>. That in turn means that the lexicon's results
-can convey some linguistic data as well as the actual meaning -- e.g., it
+can convey some linguistic data as well as the actual meaning — e.g., it
 can say not only &quot;this text refers to X&quot; but also &quot;this text is in the
 feminine accusative plural&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">noun</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">noun</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexical_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">names</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun_subclass</span><span class="plain-syntax">; </span><span class="comment-syntax">/* either <code>COMMON_NOUN</code> or <code>PROPER_NOUN</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax">;</span>
@@ -121,9 +121,7 @@ feminine accusative plural&quot;.</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">noun</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure noun is accessed in 2/adj, 2/art, 2/daq, 2/prn, 3/vrb, 3/vu, 3/prp and here.</li></ul>
 <div class="lsmarkdown">
@@ -131,11 +129,10 @@ feminine accusative plural&quot;.</p>
 against some form of a noun.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">noun_usage</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">noun_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">noun_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">noun_usage</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure noun_usage is accessed in 2/art, 2/prn, 3/vu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
@@ -236,7 +233,7 @@ to a combination of just two possibilities:</li>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Logging.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::log</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Nouns::log</span></span>:<br/><a href="2-nns.html#SP6">&#167;6</a><br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a>, <a href="1-lm.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::log</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Nouns::log</span></span>:<br/><a href="2-nns.html#SP6">&#167;6</a><br/>Linguistics Module - <a href="1-lm.html#SP2">&#167;2</a>, <a href="1-lm.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-nns.html#SP10" class="function-link"><span class="function-syntax">Nouns::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
@@ -332,9 +329,9 @@ say, the German plural form of &quot;Tisch&quot;, then the declension of that wo
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Disambiguation.</b>  Here the parse node <code>p</code> stands at the head of a list of alternative meanings
 for some text: for example, they might be different possible meanings of the
-words &quot;red chair&quot; -- perhaps the &quot;red stuffed chair&quot;, perhaps the &quot;red upright
+words &quot;red chair&quot; — perhaps the &quot;red stuffed chair&quot;, perhaps the &quot;red upright
 chair&quot;, and so on. We want to choose the most likely possibility.</p>
-<p>Within Inform, this &quot;likely&quot; consideration is a matter of context -- of which
+<p>Within Inform, this &quot;likely&quot; consideration is a matter of context — of which
 heading the noun appears under.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -404,7 +401,7 @@ heading the noun appears under.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  The following function is so called because Inform registers many constant
-values as nouns -- for example, each rulebook name is a noun, and the meaning
+values as nouns — for example, each rulebook name is a noun, and the meaning
 of that is a valid rvalue in the compiler sense; it's a value which can be
 computed with at run-time. Inform represents rvalues as sprigs of the parse
 tree, so this function returns a <code>parse_node</code>.</p>

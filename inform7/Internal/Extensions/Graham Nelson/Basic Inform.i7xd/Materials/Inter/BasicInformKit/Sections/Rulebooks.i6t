@@ -56,8 +56,8 @@ now has fewer local variables.
 compulsory:
 
 - The `rulebook` is an I7 value of kind "rule", which means it can be
-either the ID number of a rulebook -- from 0 up to $N-1$, where $N$ is the
-number of rulebooks compiled by Inform, typically about 600 -- or else the
+either the ID number of a rulebook — from 0 up to $N-1$, where $N$ is the
+number of rulebooks compiled by Inform, typically about 600 — or else the
 address of a routine representing an individual rule.
 - The `parameter` supplied to the rulebook. Much as arguments can be supplied
 to a function in a conventional language's function call, so a parameter can be
@@ -76,11 +76,13 @@ the rule explicitly fails, then `FollowRulebook` returns `true`. It's easy
 to write plausible-looking code which goes wrong because it assumes that the
 return value is success vs. failure.) The outcome of `FollowRulebook` is
 stored as described above: thus the most recent rule or rulebook succeeded
-or failed if --
-= (text as Inform 6)
+or failed if —
+
+``` Inform6
 	(latest_rule_result-->0 == RS_SUCCEEDS)
 	(latest_rule_result-->0 == RS_FAILS)
-=
+```
+
 and otherwise there was no decision.
 
 =

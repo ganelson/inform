@@ -20,7 +20,7 @@ void ValInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `val` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d TYPE_VAL_IFLD (DATA_IFLD + 0)
 @d VAL1_VAL_IFLD (DATA_IFLD + 1)

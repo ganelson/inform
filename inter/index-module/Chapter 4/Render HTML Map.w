@@ -137,7 +137,7 @@ a single square distant, then we get the "aligned" bit as a consolation prize.
 			else bitmap |= ALIGNED_MAPBIT;
 		}
 
-@ If a different room altogether -- say, the Tack Room -- is being plotted one
+@ If a different room altogether — say, the Tack Room — is being plotted one
 square east of the Ballroom, even though the map connection leads to the
 Kitchens, then we get the "fading" bit. (At one time connections like this
 were going to be plotted in a sort of fading-away grey gradient, hence the
@@ -204,7 +204,7 @@ void HTMLMap::correct_pair(vector P, vector D, int from_i1, int from_i2, int to_
 @ Let's see how the "long" bits are added first, since that's easier. The
 following looks disturbingly like an infinite loop: it lays out the roadway,
 one cell at a time (adding the direction vector $D$ to our position $P$ each
-turn) but stops when it hits an occupied cell -- one with a room plotted in
+turn) but stops when it hits an occupied cell — one with a room plotted in
 it. This must eventually happen because the exit is "aligned", which means
 that it leads to a room whose position is some multiple of $D$ offset from
 the original. So the loop always terminates.
@@ -633,7 +633,7 @@ The grid background must have pixel dimensions $(2x_o+x_i)\times (2x_o+x_i)$.
 @d MAP_CELL_SIZE (MAP_CELL_OUTER_SIZE + MAP_CELL_INNER_SIZE + MAP_CELL_OUTER_SIZE)
 
 @ This is going to be a height-19 blank row of a table with a different
-background image to the regular grid background -- it's an icon of the grid
+background image to the regular grid background — it's an icon of the grid
 with breaks in it. So we need to end the existing table, start a new one,
 end it again, and start another table like the original.
 
@@ -810,7 +810,7 @@ There are 15 possibilities, and their icons are named as the following shows:
 
 @h Numbering cells.
 If we're displaying a numbering in the map, that means there are two
-columns -- the first and last -- which don't contain rooms or exits, but
+columns — the first and last — which don't contain rooms or exits, but
 are simply blank except for an italic row number.
 
 @<Render a top or bottom stripe for a blank cell@> =

@@ -74,15 +74,14 @@ know exactly how many there are.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_COMPILER_FEATURES</span> <span class="constant-syntax">32</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">textual_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_feature</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">activation_function</span><span class="plain-syntax">)(</span><span class="type-syntax">void</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">active</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permanently_active</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">activation_function_run</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="function-syntax">Features::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Features::new</span></span>:<br/><a href="3-fm.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">starter</span><span class="plain-syntax">)(</span><span class="type-syntax">void</span><span class="plain-syntax">), </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tname</span><span class="plain-syntax">, </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">set</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">compiler_feature</span><span class="plain-syntax">);</span>
@@ -135,7 +134,7 @@ to test that:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  In the code above, features are set up as inactive by default -- even &quot;core&quot;,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  In the code above, features are set up as inactive by default — even &quot;core&quot;,
 which the compiler absolutely cannot live without. So <a href="../supervisor-module/5-ps.html" class="internal">Project Services (in supervisor)</a>
 calls the following before switching on optional things that it wants.</p>
 </div>

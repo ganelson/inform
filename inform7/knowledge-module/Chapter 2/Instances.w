@@ -31,7 +31,7 @@ has to be deduced from the position of the instance's subject in the subjects
 hierarchy. See //Instances::to_kind//.
 
 =
-typedef struct instance {
+classdef instance {
 	struct noun *as_noun; /* the name of the instance */
 	struct adjective *as_adjective; /* if this is a noun used adjectivally, like "red" */
 	struct inference_subject *as_subject; /* from which the kind can be deduced */
@@ -42,8 +42,7 @@ typedef struct instance {
 	int enumeration_index; /* within each non-object kind, instances are counted from 1 */
 
 	struct instance_compilation_data compilation_data; /* see //runtime: Instances// */
-	CLASS_DEFINITION
-} instance;
+}
 
 @ We record the one most recently made:
 
@@ -99,8 +98,8 @@ those numbers, and also where we give corresponding adjectival meanings
 in the kind in question is also a property.
 
 There are two reasons why we don't do the same for objects: firstly, because
-"object" has a whole hierarchy of subkinds, there's no unique numbering --
-the same object may be thing number 17 but vehicle number 3 -- and secondly,
+"object" has a whole hierarchy of subkinds, there's no unique numbering —
+the same object may be thing number 17 but vehicle number 3 — and secondly,
 because we won't know the exact kind of objects until much later on; for now
 the only thing we are sure of is that they are indeed objects. Enumeration
 for objects within kinds is certainly useful, but it's harder to do and will

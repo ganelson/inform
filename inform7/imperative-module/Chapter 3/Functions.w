@@ -8,13 +8,13 @@ a function corresponding to a definition in the source text; more often, it will
 be a support function needed to implement some feature at runtime.
 
 However it happens, every function is compiled using code like so:
-= (text as InC)
+
 	inter_name *iname = /* work something out here */;
 	packaging_state save = Functions::begin(iname);
 	/* declare some call parameters */
 	/* now compile the code in the function */
 	Functions::end(save);
-=
+
 This will create a new stack frame for the function, which is usually what is
 wanted. If we want to compile it using an existing frame `frame`, then instead
 call `Functions::begin_framed(iname, frame)`, not `Functions::begin(iname)`;
@@ -41,7 +41,7 @@ packaging_state Functions::begin_framed(inter_name *iname, stack_frame *frame) {
 
 =
 typedef struct function_under_compilation {
-	struct id_body *from_idb; /* if any -- many functions do not arise this way */
+	struct id_body *from_idb; /* if any; many functions do not arise this way */
 	struct stack_frame *function_stack_frame; /* the stack frame for this function */
 	int currently_compiling_nnp; /* is this a nonphrasal stack frame we made ourselves? */
 	struct inter_package *into_package; /* where Inter is being emitted to */
@@ -127,15 +127,18 @@ function, because it they were then we need to worry about memory allocation.
 The following pseudocode gives the general idea. Suppose we want to create
 a function called `public_name`. If no block values were needed, we do the
 obvious thing:
-= (text)
+
+``` None
     public_name(t1, t2, ..., tn) {
         ... package code here ...
     }
-=
+```
+
 But if block values are involved, we make two functions, a "shell" with the
 outward-facing name, and a "kernel" which does the actual work. If we suppose
 that the kernel returns an ordinary value, then this happens:
-= (text)
+
+``` None
     public_name(t1, t2, ..., tn) {
         ...allocate memory...
         RV = kernel_name(t1, t2, ..., tn)
@@ -145,13 +148,15 @@ that the kernel returns an ordinary value, then this happens:
     kernel_name(I7RBLK, t1, t2, ..., tn) {
         ... package code here ...
     }
-=
+```
+
 Since we do not support exceptions in the Inter VM, it follows that whatever
-`kernel_name` does -- even if it fails in some way at runtime -- all
+`kernel_name` does — even if it fails in some way at runtime — all
 allocated memory will safely be deallocated.
 
 A slight variation is needed if the kernel returns a block value, as follows:
-= (text)
+
+``` None
     public_name(t1, t2, ..., tn) {
         ...allocate memory...
         CopyPV(BRV, kernel_name(t1, t2, ..., tn))
@@ -161,7 +166,8 @@ A slight variation is needed if the kernel returns a block value, as follows:
     kernel_name(BRV, t1, t2, ..., tn) {
         ... package code here ...
     }
-=
+```
+
 Here `BRV` is a pointer to memory in which to write the return value: note that
 we copy it before we deallocate any of the memory which was likely used to
 generate it.

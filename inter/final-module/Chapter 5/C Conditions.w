@@ -6,15 +6,19 @@ Evaluating conditions.
 might seem a surprising inclusion in the list: as the name suggests, this finds
 a property value. But although it is often used in a value context, it's also used
 as a condition. For example, if kit code (written in Inform 6 notation) does this:
-= (text as Inform 6)
+
+``` Inform6
 	if (obj has concealed) ...
-=
+```
+
 then the condition amounts to an `inv !propertyvalue`. Now, since any value can
 be used as a condition, this may still not seem to mean that `!propertyvalue`
-belongs here; but consider that it is also legal to write --
-= (text as Inform 6)
+belongs here; but consider that it is also legal to write —
+
+``` Inform6
 	if (obj has concealed or scenery) ...
-=
+```
+
 Here the `inv !propertyvalue` involves an `inv !alternative` in its children,
 and handling that requires the mechanism below.
 
@@ -52,7 +56,8 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 
 @ The following recursive mechanism exists because of the need to support
 alternative choices in Inter conditions, as here:
-= (text as Inter)
+
+``` Inter
 	inv !if
 	    inv !eq
 	    	val K_number x
@@ -60,7 +65,8 @@ alternative choices in Inter conditions, as here:
 	    	    val K_number 4
 	    	    val K_number 8
         ...
-=
+```
+
 This is the equivalent of writing `if (x == 4 or 8) ...` in Inform 6, but C does
 not have an `or` operator like that. We could with care sometimes compile this
 as `if ((x == 4) || (x == 8))`, but if evaluating `x` has side-effects, or is

@@ -68,7 +68,7 @@ will be many different sorts of impulse which a person may have: &quot;going&quo
 kind <code>K_action_name</code> at run-time.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_name</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">action_name</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_naming_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">naming_data</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_semantics</span><span class="plain-syntax"> </span><span class="identifier-syntax">semantics</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-as.html" class="internal">Action Semantics</a> */</span>
@@ -81,8 +81,7 @@ kind <code>K_action_name</code> at run-time.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if any */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">action_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure action_name is accessed in 4/ap, 4/as, 4/av, 4/ann, 4/anl, 4/nap, 4/gng, 5/pp, 5/cg, 5/cgl, 5/ts, 6/db, 6/dl, 6/dc and here.</li></ul>
 <div class="lsmarkdown">

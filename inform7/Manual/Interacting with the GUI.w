@@ -8,7 +8,7 @@ be installed, it should look at the first line. (Note that this might have
 any of `0a`, `0d`, `0a0d`, `0d0a`, or Unicode line division as its line
 ending: and that the file might, or might not, begin with a Unicode BOM,
 "byte order marker", code. Characters within the line will be encoded as
-UTF-8, though -- except possibly for some exotic forms of space -- they
+UTF-8, though — except possibly for some exotic forms of space — they
 will all be found in the ISO Latin-1 set.) The first line is required to
 have one of the following forms, possibly with white space before or after,
 but definitely without line breaks before:
@@ -74,7 +74,7 @@ on three occasions:
 When `inform7` is run in "census mode", it should be run with the command `-census`.
 All output from Inform should be ignored, including its return code: ideally,
 not even a fatal error should provoke a reaction from the application. If the
-census doesn't work for some file-system reason, never mind -- it's not
+census doesn't work for some file-system reason, never mind — it's not
 mission-critical.
 
 @h What happens in census mode.
@@ -82,14 +82,18 @@ The census has two purposes: first, to create provisional documentation
 where needed for new and unused extensions; and second, to create the
 following index files in the external documentation area (not in
 the external extension area):
-= (text)
+
+``` None
 	.../Extensions.html
 	.../ExtIndex.html
-=
+```
+
 Documentation for any individual extension is stored at, e.g.,
-= (text)
+
+``` None
 	.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html
-=
+```
+
 Inform can generate such a file, for an individual extension, in two ways: (a)
 provisionally, with much less detail, and (b) fully. Whenever it
 successfully compiles a work using extension X, it rewrites the
@@ -103,5 +107,5 @@ provisional one; and again, it updates both the two indexing pages.
 do nothing "extra" that a normal run of Inform does not also do. On every
 census, Inform automatically checks for misfiled or broken extensions, and
 places a descriptive report of what's wrong on the `Extensions.html` index
-page -- if people move around or edit extensions by hand, they may run into
+page — if people move around or edit extensions by hand, they may run into
 these errors.)

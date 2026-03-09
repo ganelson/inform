@@ -31,7 +31,7 @@ of ambiguity. Instead, we need to return a list of possibilities, and we do
 that by returning fragment of syntax tree material, using the infrastructure
 from //syntax//. This will be a list of nodes joined by `->next_alternative` limks.
 
-This list of nodes is disposable -- even if it is a copy of something from the
+This list of nodes is disposable — even if it is a copy of something from the
 syntax tree, it is never the only copy. It can freely be ignored or changed.
 A return value of `NULL` means there were no results at all.
 

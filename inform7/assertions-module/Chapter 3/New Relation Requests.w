@@ -232,7 +232,7 @@ greeter of the Queen of Sheba" given the following definition?
 > Acquaintance relates various people (called the greeter) to various people.
 
 Because of that, callings are only allowed in certain circumstances. An
-exception is made -- that is, they are always allowed -- where the relation
+exception is made — that is, they are always allowed — where the relation
 tests a given condition, because then the names identify the terms, e.g.,
 
 > Divisibility relates a number (called N) to a number (called M) when the remainder after dividing M by N is 0.
@@ -322,16 +322,14 @@ kind *RelationRequests::parse_term(wording W, char *side) {
 @
 
 =
-typedef struct by_function_bp_data {
+classdef by_function_bp_data {
 	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
 	struct inter_name *bp_by_routine_iname; /* routine to determine */
-	CLASS_DEFINITION
-} by_function_bp_data;
+}
 
-typedef struct equivalence_bp_data {
+classdef equivalence_bp_data {
 	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
-	CLASS_DEFINITION
-} equivalence_bp_data;
+}
 
 @h Creation, Stage II.
 Altogether, the Inform user is allowed to define some eight different forms

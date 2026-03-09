@@ -9,26 +9,23 @@ annotated.
 @d MAX_SCENE_ENDS 32 /* this must exceed 31 */
 
 =
-typedef struct simplified_scene {
+classdef simplified_scene {
 	struct inter_package *pack;
 	int no_ends;
 	struct simplified_end *ends[MAX_SCENE_ENDS];
 	int indexed_already;
-	CLASS_DEFINITION
-} simplified_scene;
+}
 
-typedef struct simplified_end {
+classdef simplified_end {
 	struct inter_package *end_pack;
 	struct simplified_connector *anchor_connectors; /* linked list */
-	CLASS_DEFINITION
-} simplified_end;
+}
 
-typedef struct simplified_connector {
+classdef simplified_connector {
 	struct inter_package *con_pack;
 	struct simplified_scene *connect_to;
 	struct simplified_connector *next; /* next in list of connectors for a scene end */
-	CLASS_DEFINITION
-} simplified_connector;
+}
 
 @ This three-deck structure of objects matches a similar hierarchy of Inter
 packages, where `_scene_connector` packages are inside `_scene_end` packages

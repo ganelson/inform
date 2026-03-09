@@ -89,7 +89,7 @@ int GoingPlugin::aspect(int C, int *A) {
 
 @ The Standard Rules defines five action variables in sequence for the going
 action, and we pick them up here. Note that we do this by their creation
-sequence and not by their names -- so this would all stop working if the
+sequence and not by their names — so this would all stop working if the
 Standard Rules were rearranged. Caveat editor.
 
 If we do spot one of these five magic variables, we tie it to a clause with

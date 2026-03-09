@@ -16,13 +16,15 @@ int RTKindDeclarations::base_represented_in_Inter(kind *K) {
 	return FALSE;
 }
 
-@ But all other kinds -- number, person, list of texts, whatever may be --
+@ But all other kinds — number, person, list of texts, whatever may be —
 need to be declared, and define an Inter symbol as an identifier for that kind.
 For example:
-= (text as Inter)
+
+``` Inter
 kind K_action_name int32
 kind K_list_of_texts list of K_text
-=
+```
+
 ...make two kinds available in Inter, defining `K_action_name` and `K_list_of_texts`
 to refer to them.
 
@@ -32,7 +34,7 @@ same kind over and over. We use two different mechanisms for this:
 - for base kinds, storing the iname as the identifier for the associated noun,
 which is quicker to look up;
 - for constructed kinds, storing it in a `cached_kind_declaration`, which is
-slower but occurs considerably less often -- there are in practice relatively
+slower but occurs considerably less often — there are in practice relatively
 few `cached_kind_declaration` objects created.
 
 @ So, firstly, each base kind registers a new noun for itself here:
@@ -54,11 +56,10 @@ noun *RTKindDeclarations::register(kind *K, kind *super, wording W, general_poin
 @ And secondly, here's where we cache inames for constructed kinds:
 
 =
-typedef struct cached_kind_declaration {
+classdef cached_kind_declaration {
 	struct kind *noted_kind;
 	struct inter_name *noted_iname;
-	CLASS_DEFINITION
-} cached_kind_declaration;
+}
 
 @ Calling //RTKindDeclarations::iname// produces the `inter_name` referring to
 the kind in Inter, ensuring that it has been declared exactly once.

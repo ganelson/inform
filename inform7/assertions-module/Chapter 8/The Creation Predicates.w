@@ -152,7 +152,7 @@ int CreationPredicates::typecheck_is_a_kind(up_family *self, unary_predicate *up
 value into the local variable of the given name. Note then that here
 the I6 `=` (set equal) operator is being used in a condition context:
 there's a good chance that the value set is non-zero (since all objects
-and enumerated values are non-zero), but it isn't necessarily so --
+and enumerated values are non-zero), but it isn't necessarily so —
 in Inform it's legal to quantify over times and truth states, for
 instance, where 0 is a legal I6 value. So we use the comma operator
 to throw away the result of the assignment, and evaluate the condition

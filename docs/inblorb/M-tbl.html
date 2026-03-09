@@ -68,31 +68,25 @@ is no longer useful, so we will give a full description below of Blurb as
 it currently stands.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Some simple examples.</b>  This first script instructs Inblorb to carry out its mission -- it makes a
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Some simple examples.</b>  This first script instructs Inblorb to carry out its mission — it makes a
 simple Blorb wrapping up a story file with bibliographic data, but nothing
 more, and nothing else is released.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    storyfile "/Users/gnelson/Examples/Zinc.inform/Build/output.ulx" include</span>
-<span class="plain-syntax">    ifiction "/Users/gnelson/Examples/Zinc.inform/Metadata.iFiction" include</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	storyfile "/Users/gnelson/Examples/Zinc.inform/Build/output.ulx" include
+	ifiction "/Users/gnelson/Examples/Zinc.inform/Metadata.iFiction" include
+</span></pre>
 <p>These two lines tell Inblorb to include the story file and the iFiction
 record respectively.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  A more ambitious Blorb can be made like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    storyfile leafname "Audiophilia.gblorb"</span>
-<span class="plain-syntax">    storyfile "/Users/gnelson/Examples/Audiophilia.inform/Build/output.ulx" include</span>
-<span class="plain-syntax">    ifiction "/Users/gnelson/Examples/Audiophilia.inform/Metadata.iFiction" include</span>
-<span class="plain-syntax">    cover "/Users/gnelson/Examples/Audiophilia Materials/Cover.png"</span>
-<span class="plain-syntax">    picture 1 "/Users/gnelson/Examples/Audiophilia Materials/Cover.png"</span>
-<span class="plain-syntax">    sound 3 "/Users/gnelson/Examples/Audiophilia Materials/Sounds/Powermac.aiff"</span>
-<span class="plain-syntax">    sound 4 "/Users/gnelson/Examples/Audiophilia Materials/Sounds/Bach.ogg"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	storyfile leafname "Audiophilia.gblorb"
+	storyfile "/Users/gnelson/Examples/Audiophilia.inform/Build/output.ulx" include
+	ifiction "/Users/gnelson/Examples/Audiophilia.inform/Metadata.iFiction" include
+	cover "/Users/gnelson/Examples/Audiophilia Materials/Cover.png"
+	picture 1 "/Users/gnelson/Examples/Audiophilia Materials/Cover.png"
+	sound 3 "/Users/gnelson/Examples/Audiophilia Materials/Sounds/Powermac.aiff"
+	sound 4 "/Users/gnelson/Examples/Audiophilia Materials/Sounds/Bach.ogg"
+</span></pre>
 <p>The cover image is included only once, but declaring it as picture 1 makes it
 available to the story file for display internally as well as externally.
 Resource ID 2, apparently skipped, is in fact the story file.</p>
@@ -100,37 +94,31 @@ Resource ID 2, apparently skipped, is in fact the story file.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  And here's a very short script, which makes Inblorb generate a solution
 file from the Skein of a project:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    project folder "/Users/gnelson/Examples/Zinc.inform"</span>
-<span class="plain-syntax">    release to "/Users/gnelson/Examples/Zinc Materials/Release"</span>
-<span class="plain-syntax">    solution</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	project folder "/Users/gnelson/Examples/Zinc.inform"
+	release to "/Users/gnelson/Examples/Zinc Materials/Release"
+	solution
+</span></pre>
 <p>This time no blorb file is made. The opening line tells Inblorb which Inform
-project we're dealing with, allowing it to look at the various files inside --
+project we're dealing with, allowing it to look at the various files inside —
 its Skein, for instance, which is used to create a solution. The second line
-tells Inblorb where to put all of its output -- everything it makes. Only
+tells Inblorb where to put all of its output — everything it makes. Only
 the third line directly causes Inblorb to do anything.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  More ambitiously, this time we'll make a website for a project, but again
 without making a blorb:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    project folder "/Users/gnelson/Examples/Audiophilia.inform"</span>
-<span class="plain-syntax">    release to "/Users/gnelson/Examples/Audiophilia Materials/Release"</span>
-<span class="plain-syntax">    placeholder [IFID] = "AD5648BA-18A2-48A6-9554-4F6C53484824"</span>
-<span class="plain-syntax">    placeholder [RELEASE] = "1"</span>
-<span class="plain-syntax">    placeholder [YEAR] = "2009"</span>
-<span class="plain-syntax">    placeholder [TITLE] = "Audiophilia"</span>
-<span class="plain-syntax">    placeholder [AUTHOR] = "Graham Nelson"</span>
-<span class="plain-syntax">    placeholder [BLURB] = "A test project for sound effect production."</span>
-<span class="plain-syntax">    template path "/Users/gnelson/Library/Inform/Templates"</span>
-<span class="plain-syntax">    css</span>
-<span class="plain-syntax">    website "Standard"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	project folder "/Users/gnelson/Examples/Audiophilia.inform"
+	release to "/Users/gnelson/Examples/Audiophilia Materials/Release"
+	placeholder [IFID] = "AD5648BA-18A2-48A6-9554-4F6C53484824"
+	placeholder [RELEASE] = "1"
+	placeholder [YEAR] = "2009"
+	placeholder [TITLE] = "Audiophilia"
+	placeholder [AUTHOR] = "Graham Nelson"
+	placeholder [BLURB] = "A test project for sound effect production."
+	template path "/Users/gnelson/Library/Inform/Templates"
+	css
+	website "Standard"
+</span></pre>
 <p>The first novelty here is the setting of placeholders. These are named pieces
 of text which appear on the website being generated: where the text &quot;[RELEASE]&quot;
 appears in the template, Inblorb writes the value we've set for it, in this
@@ -139,7 +127,7 @@ hold text. A few placeholder names are reserved by Inblorb for its own use,
 and it will produce errors if we try to set those, but none of those in
 this example is reserved.</p>
 <p>Template paths tell Inblorb where to find templates. Any number of these
-can be set -- including none at all, but if so then commands needing a
+can be set — including none at all, but if so then commands needing a
 named template, like <code>website</code>, can't be used. Inblorb looks for any
 template it needs by trying each template path in turn (the earliest
 defined having the highest priority). The blurb files produced by <code>inform7</code>
@@ -151,42 +139,36 @@ respectively.</p>
 make its web pages more appealing to look at: this results in generally
 better HTML, easier to use in other contexts, too.</p>
 <p>All of that set things up so that the <code>website</code> command could be used,
-which actually does something -- it creates a website in the release-to
+which actually does something — it creates a website in the release-to
 location, taking its design from the template named. If we were to add
-any of these commands --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    source public</span>
-<span class="plain-syntax">    solution public</span>
-<span class="plain-syntax">    ifiction public</span>
-</pre>
-<div class="lsmarkdown">
-<p>-- then the website would be graced with these additions.</p>
+any of these commands —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	source public
+	solution public
+	ifiction public
+</span></pre>
+<p>— then the website would be graced with these additions.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The previous examples all involved Inform projects, but Inblorb can also
-deal with stand-alone files of Inform source text -- notably extensions.
+deal with stand-alone files of Inform source text — notably extensions.
 For example, here we make a website out of an extension:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release to "Test Site"</span>
-<span class="plain-syntax">    placeholder [TITLE] = "Locksmith"</span>
-<span class="plain-syntax">    placeholder [AUTHOR] = "Emily Short"</span>
-<span class="plain-syntax">    placeholder [RUBRIC] = "Implicit handling of doors and... (...and so on)"</span>
-<span class="plain-syntax">    template path "/Users/gnelson/Library/Inform/Templates"</span>
-<span class="plain-syntax">    css</span>
-<span class="plain-syntax">    release file "style.css" from "Extended"</span>
-<span class="plain-syntax">    release file "index.html" from "Extended"</span>
-<span class="plain-syntax">    release file "Extensions/Emily Short/Locksmith.i7x"</span>
-<span class="plain-syntax">    release source "Extensions/Emily Short/Locksmith.i7x" using "extsrc.html" from "Extended"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release to "Test Site"
+	placeholder [TITLE] = "Locksmith"
+	placeholder [AUTHOR] = "Emily Short"
+	placeholder [RUBRIC] = "Implicit handling of doors and... (...and so on)"
+	template path "/Users/gnelson/Library/Inform/Templates"
+	css
+	release file "style.css" from "Extended"
+	release file "index.html" from "Extended"
+	release file "Extensions/Emily Short/Locksmith.i7x"
+	release source "Extensions/Emily Short/Locksmith.i7x" using "extsrc.html" from "Extended"
+</span></pre>
 <p>This time we're using a template called &quot;Extended&quot;, and the script tells
 Inblorb exactly what to do with it. The &quot;release file... from...&quot; command
 tells Inblorb to extract the named file from this template and to copy it
-into the release folder -- if it's a &quot;.html&quot; file, placeholders are
+into the release folder — if it's a &quot;.html&quot; file, placeholders are
 substituted with their values. The simpler form, &quot;release file ...&quot;, just
-tells Inblorb to copy that actual file -- here, it puts a copy of the
+tells Inblorb to copy that actual file — here, it puts a copy of the
 extension itself into the release folder. The final line produces a run
 of pages, in all likelihood, for the source and documentation of the
 extension, with the design drawn from &quot;Extended&quot; again.</p>
@@ -196,7 +178,7 @@ There's nothing very special about it, in any case.)</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Specification of the Blurb language.</b>  A blorb script should be a text file, using the Unicode character set and
-encoded as UTF-8 without a byte order marker -- in other words, a plain
+encoded as UTF-8 without a byte order marker — in other words, a plain
 text file. It consists of lines of up to 10239 bytes in length each,
 divided by any of the four line-end markers in common use (<code>CR</code>, <code>LF</code>,
 <code>CR LF</code> or <code>LF CR</code>), though the same line-end marker should be used
@@ -228,57 +210,36 @@ value <code>B3</code>. Hexadecimal digits may be given in either upper or lower 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The full set of commands is as follows. First, core commands for making
 a blorb:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    author &lt;string&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	author &lt;string&gt;
+</span></pre>
 <p>Adds this author name to the file.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    copyright &lt;string&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	copyright &lt;string&gt;
+</span></pre>
 <p>Adds this copyright declaration to the blorb file. It would normally consist of
 short text such as &quot;(c) J. Mango Pineapple 2007&quot; rather than a lengthy legal
 discourse.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release &lt;number&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release &lt;number&gt;
+</span></pre>
 <p>Gives this release number to the blorb file.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    auxiliary &lt;filename&gt; &lt;string&gt;</span>
-</pre>
-<div class="lsmarkdown">
-<p>Tells us that an auxiliary file -- for instance, a PDF manual -- is associated
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	auxiliary &lt;filename&gt; &lt;string&gt;
+</span></pre>
+<p>Tells us that an auxiliary file — for instance, a PDF manual — is associated
 with the release but will not be embedded directly into the blorb file. For
 instance,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    auxiliary "map.png" "Black Pete's treasure map"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	auxiliary "map.png" "Black Pete's treasure map"
+</span></pre>
 <p>The string should be a textual description of the contents. Every auxiliary
 file should have a filename including an extension usefully describing its
 format, as in &quot;.png&quot;: if there is no extension, then the auxiliary resource
 is assumed to be a mini-website housed in a subfolder with this name.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ifiction &lt;filename&gt; include</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ifiction &lt;filename&gt; include
+</span></pre>
 <p>The file should be a valid iFiction record for the work. This is an XML file
 specified in the Treaty of Babel, a cross-IF-system standard for specifying
 bibliographic data; it will be embedded into the blorb.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    storyfile &lt;filename&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    storyfile &lt;filename&gt; include</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	storyfile &lt;filename&gt;    ... unsupported by Inblorb
+	storyfile &lt;filename&gt; include
+</span></pre>
 <p>Specifies the filename of the story file which these resources are being
 attached to. Blorb 2001 allowed for blorbs to be made which held everything
 to do with the release except the story file; that way a release
@@ -293,13 +254,10 @@ Inblorb always does this, and does not support <code>storyfile</code> without
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Second, now-deprecated commands describing our ideal screen display:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    palette 16 bit    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    palette 32 bit    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    palette { &lt;colour-1&gt; ... &lt;colour-N&gt; }    ... unsupported by Inblorb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	palette 16 bit    ... unsupported by Inblorb
+	palette 32 bit    ... unsupported by Inblorb
+	palette { &lt;colour-1&gt; ... &lt;colour-N&gt; }    ... unsupported by Inblorb
+</span></pre>
 <p>Blorb allows designers to signal to the interpreter that a particular
 colour-scheme is in use. The first two options simply suggest that the
 pictures are best displayed using at least 16-bit, or 32-bit, colours. The
@@ -308,14 +266,11 @@ red/green/blue levels, and the braces allow the sequence of colours to
 continue over many lines. At least one and at most 256 colours may be
 defined in this way. This is only a &quot;clue&quot; to the interpreter; see the
 Blorb specification for details.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    resolution &lt;dim&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    resolution &lt;dim&gt; min &lt;dim&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    resolution &lt;dim&gt; max &lt;dim&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    resolution &lt;dim&gt; min &lt;dim&gt; max &lt;dim&gt;    ... unsupported by Inblorb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	resolution &lt;dim&gt;    ... unsupported by Inblorb
+	resolution &lt;dim&gt; min &lt;dim&gt;    ... unsupported by Inblorb
+	resolution &lt;dim&gt; max &lt;dim&gt;    ... unsupported by Inblorb
+	resolution &lt;dim&gt; min &lt;dim&gt; max &lt;dim&gt;    ... unsupported by Inblorb
+</span></pre>
 <p>Allows the designer to signal a preferred screen size, in real pixels, in
 case the interpreter should have any choice over this. The minimum and
 maximum values are the extreme values at which the designer thinks the game
@@ -324,15 +279,12 @@ infinity by infinity.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Third, commands for adding audiovisual resources:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    sound &lt;id&gt; &lt;filename&gt;</span>
-<span class="plain-syntax">    sound &lt;id&gt; &lt;filename&gt; repeat &lt;number&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    sound &lt;id&gt; &lt;filename&gt; repeat forever    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    sound &lt;id&gt; &lt;filename&gt; music    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    sound &lt;id&gt; &lt;filename&gt; song    ... unsupported by Inblorb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	sound &lt;id&gt; &lt;filename&gt;
+	sound &lt;id&gt; &lt;filename&gt; repeat &lt;number&gt;    ... unsupported by Inblorb
+	sound &lt;id&gt; &lt;filename&gt; repeat forever    ... unsupported by Inblorb
+	sound &lt;id&gt; &lt;filename&gt; music    ... unsupported by Inblorb
+	sound &lt;id&gt; &lt;filename&gt; song    ... unsupported by Inblorb
+</span></pre>
 <p>Tells us to take a sound sample from the named file and make it the sound
 effect with the given number. Most forms of <code>sound</code> are now deprecated:
 repeat information (the number of repeats to be played) is meaningful
@@ -340,18 +292,15 @@ only with Z-machine version 3 story files using sound effects, and Inform 7
 does not generate those; the <code>music</code> and <code>song</code> keywords specify unusual
 sound formats. Nowadays the straight <code>sound</code> command should always
 be used regardless of format.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    picture &lt;id&gt; &lt;filename&gt;</span>
-<span class="plain-syntax">    picture &lt;id&gt; &lt;filename&gt; scale &lt;ratio&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    picture &lt;id&gt; &lt;filename&gt; scale min &lt;ratio&gt;    ... unsupported by Inblorb</span>
-<span class="plain-syntax">    picture &lt;id&gt; &lt;filename&gt; scale &lt;ratio&gt; min &lt;ratio&gt;    ... unsupported by Inblorb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	picture &lt;id&gt; &lt;filename&gt;
+	picture &lt;id&gt; &lt;filename&gt; scale &lt;ratio&gt;    ... unsupported by Inblorb
+	picture &lt;id&gt; &lt;filename&gt; scale min &lt;ratio&gt;    ... unsupported by Inblorb
+	picture &lt;id&gt; &lt;filename&gt; scale &lt;ratio&gt; min &lt;ratio&gt;    ... unsupported by Inblorb
+</span></pre>
 <p>(and so on) is a similar command for images. In 2001, the image file was required
 to be a PNG, but it can now alternatively be a JPEG.</p>
 <p>Optionally, the designer can specify a scale factor at which the
-interpreter will display the image -- or, alternatively, a range of
+interpreter will display the image — or, alternatively, a range of
 acceptable scale factors, from which the interpreter may choose its own
 scale factor. (By default an image is not scaleable and an interpreter must
 display it pixel-for-pixel.) There are three optional scale factors given:
@@ -359,17 +308,11 @@ the preferred scale factor, the minimum and the maximum allowed. The
 minimum and maximum each default to the preferred value if not given, and
 the default preferred scale factor is 1. Scale factors are expressed as
 fractions: so for instance,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    picture "flag/png" scale 3/1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	picture "flag/png" scale 3/1
+</span></pre>
 <p>means &quot;always display three times its normal size&quot;, whereas</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    picture "backdrop/png" scale min 1/10 max 8/1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	picture "backdrop/png" scale min 1/10 max 8/1
+</span></pre>
 <p>means &quot;you can display this anywhere between one tenth normal size and
 eight times normal size, but if possible it ought to be just its normal
 size&quot;.</p>
@@ -378,21 +321,15 @@ the exotic forms of <code>sound</code>, they now seem pass'e. We no longer need 
 worry too much about the size of the blorb file, nor about screens with
 very low resolution; an iPhone today has a screen resolution close to that
 of a typical desktop of 2001.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    cover &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	cover &lt;filename&gt;
+</span></pre>
 <p>specifies that this is the cover art; it must also be declared with a
 <code>picture</code> command in the usual way, and must have picture ID 1.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Fourth, a command for adding static internal data files:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    data &lt;id&gt; &lt;filename&gt; type &lt;format&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	data &lt;id&gt; &lt;filename&gt; type &lt;format&gt;
+</span></pre>
 <p>Tells us to take the given data file and embed it into the blorb so that its
 contents can be read whenever the story is played. The &quot;format&quot; here can be
 either <code>TEXT</code> or <code>BINA</code>, meaning plain text or binary data.</p>
@@ -404,18 +341,12 @@ data words.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Three commands help us to specify locations.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    project folder &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	project folder &lt;filename&gt;
+</span></pre>
 <p>Tells Inblorb to look for associated resources, such as the Skein file,
 within this Inform project.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release to &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release to &lt;filename&gt;
+</span></pre>
 <p>Tells Inblorb that all of its output should go into this folder. (Well,
 except that the blorb file itself will be written to the location specified
 in the command line arguments, but see the description above of how Inblorb
@@ -423,12 +354,9 @@ then contrives to move it.) The folder must already exist, and Inblorb
 won't create it. Under some circumstances Inform will seem to be creating
 the release folder if it doesn't already exist, but that's always the work
 of <code>inform7</code>, not Inblorb.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    template path &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
-<p>Sets a search path for templates -- a folder in which to look for them. There
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	template path &lt;filename&gt;
+</span></pre>
+<p>Sets a search path for templates — a folder in which to look for them. There
 can be any number of template paths set, and Inblorb checks them in order
 of declaration (i.e., most important first).</p>
 </div>
@@ -439,60 +367,42 @@ text, iFiction record, miscellaneous file, website and interpreter.</p>
 <p>No explicit single command causes a Blorb file to be generated; it will be
 made automatically if one of the above commands to include the story file,
 pictures, etc., is present in the script, and otherwise not generated.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    solution</span>
-<span class="plain-syntax">    solution public</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	solution
+	solution public
+</span></pre>
 <p>causes a solution file to be generated in the release folder. The mechanism
 for this is described in &quot;Writing with Inform&quot;. The difference between
 the two commands affects only a website also being made, if one is: a
 public solution will be included in its links, thus being made available
 to the public who read the website.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ifiction</span>
-<span class="plain-syntax">    ifiction public</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ifiction
+	ifiction public
+</span></pre>
 <p>is similar, but for the iFiction record of the project.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    source</span>
-<span class="plain-syntax">    source public</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	source
+	source public
+</span></pre>
 <p>is again similar, but here there's a twist. If the source is public, then
 Inblorb doesn't just include it on a website: it generates multiple HTML
 pages to show it off in HTML form, as well as including the plain text
 original.</p>
 <p>Miscellaneous files can be released like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release file &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release file &lt;filename&gt;
+</span></pre>
 <p>Here Inblorb acts as no more than a file-copy utility; a verbatim copy of
 the named file is placed in the release folder.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Finally we come to web pages.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    css</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	css
+</span></pre>
 <p>enables the use of CSS-defined styles within the HTML generated by Inblorb.
 This has an especially marked effect when Inblorb is generating HTML
 versions of Inform source text, and is a good thing. Unless there is
 reason not to, every blurb script generating websites ought to contain
 this command.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release file &lt;filename&gt; from &lt;template&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release file &lt;filename&gt; from &lt;template&gt;
+</span></pre>
 <p>causes the named file to be found from the given template. If it can't be
 found in that template, Inblorb tries to find it from a template called
 &quot;Standard&quot;. If it isn't there either, or Inblorb can't find any template
@@ -502,20 +412,14 @@ the release folder. If it has the file extension &quot;.html&quot; (in lower cas
 and using that exact form, i.e., not &quot;.HTM&quot; or some other variation)
 then any placeholders in the file will be expanded with their values.
 A few reserved placeholders have special effects, causing Inblorb to
-expand interesting text in their places -- see &quot;Writing with Inform&quot;
+expand interesting text in their places — see &quot;Writing with Inform&quot;
 for more on this.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    release source &lt;filename&gt;` using `&lt;filename&gt; from &lt;template&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	release source &lt;filename&gt;` using `&lt;filename&gt; from &lt;template&gt;
+</span></pre>
 <p>makes Inblorb convert the Inform source text in the first filename into a
 suite of web pages using the style of the given file from the given template.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    website &lt;template&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	website &lt;template&gt;
+</span></pre>
 <p>saves the best until last: it makes a complete website for an Inform project,
 using the named template. This means that the CSS file is copied into place
 (assuming <code>css</code> is used), the &quot;index.html&quot; is released from the template,
@@ -529,11 +433,8 @@ specified in the template's &quot;(extras.txt)&quot; are released as well. See
 form of the story, by base64-encoding the story file within a Javascript
 wrapper, then calling an interpreter such as Parchment.</p>
 <p>The encoding part is taken care of by:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    base64 &lt;filename&gt; to &lt;filename&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	base64 &lt;filename&gt; to &lt;filename&gt;
+</span></pre>
 <p>This performs an RFC 1113-standard encoding on the binary file in (almost
 always our story file) into a textual base-64 file out. The file is topped
 and tailed with the text in placeholders <code>[BASESIXTYFOURTOP]</code> and <code>[BASESIXTYFOURTAIL]</code>,
@@ -541,11 +442,8 @@ allowing Javascript wrapper code to surround the encoded data.</p>
 <p>The interpreter itself is copied into place in the Release folder in a
 process rather like the construction of a website from a template. The
 necessary blurb command is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    interpreter &lt;interpreter-name&gt; &lt;vm-letter&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	interpreter &lt;interpreter-name&gt; &lt;vm-letter&gt;
+</span></pre>
 <p>Interpreter names are like template names; Inform often uses &quot;Parchment&quot;.
 The VM letter should be &quot;g&quot; if we need this to handle a Glulx story file
 (blorbed up), or &quot;z&quot; if we need it to handle a Z-machine story file.
@@ -559,19 +457,16 @@ not Inform itself.)</p>
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Finally (really finally this time), three commands to do with the
 &quot;status&quot; page, an HTML page written by Inblorb to report back on
 what it has done. If requested, this is constructed for reading within
-the Inform application -- it is not a valid HTML page in other
+the Inform application — it is not a valid HTML page in other
 contexts, and expects to have access to Javascript functions provided
 by Inform, and so on.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    status &lt;template&gt; &lt;filename&gt;</span>
-<span class="plain-syntax">    status alternative &lt;link to Inform documentation&gt;</span>
-<span class="plain-syntax">    status instruction &lt;link to Inform source text&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	status &lt;template&gt; &lt;filename&gt;
+	status alternative &lt;link to Inform documentation&gt;
+	status instruction &lt;link to Inform source text&gt;
+</span></pre>
 <p>The first simply requests the page to be made. It's made from a single
 template file, but in exactly the same way that website pages are generated
-from website templates -- that is, placeholders are expanded. The second
+from website templates — that is, placeholders are expanded. The second
 filename is where to write the result.</p>
 <p>The other two commands allow Inform to insert information which Inblorb
 otherwise has no access to: options for fancy release tricks not currently
@@ -579,7 +474,7 @@ being used (with links to the documentation on them), and links to source
 text &quot;Release along with...&quot; sentences.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">tbl</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresschapter"><a href="3-rls.html">3</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">tbl</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresschapter"><a href="3-rls.html">3</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

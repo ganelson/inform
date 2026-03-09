@@ -5,7 +5,7 @@ A nascent system for managing conversation.
 @ This feature, `dialogue`, is technically not part of `if`, but it clearly
 belongs in this module.
 
-Note that a child feature called `performance styles` -- see //Performance Styles// --
+Note that a child feature called `performance styles` — see //Performance Styles// —
 handles that kind, so it won't be dealt with in the code for this feature.
 
 =

@@ -4,46 +4,56 @@ In this section we compile text with substitutions.
 
 @h Runtime representation.
 Text substitutions arise from source text such as:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be "the [fox speed] brown fox";
 	say "Where has that [sleeping animal] got to?";
-=
+```
+
 These both look like text substitutions, but only `the [fox speed] brown fox`
 actually is one: `say` phrases are compiled directly, like so:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be "the [fox speed] brown fox";
 	say "Where has that ";
 	say sleeping animal;
 	say " got to?";
-=
+```
+
 So we are concerned only with substitutions used as values. At run-time, these
 are essentially the same as //Text Literals//, but where the content field in
 the small block is a function pointer:
-= (text)
+
+``` None
 	                    small block:
 	Q ----------------> CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE
 	                    function
-=
+```
+
 It is worth emphasising that this is a function. In an interpreted language
 like Perl, an interpolation such as `"Deleted $file_count files"` is immediately
 converted to text when it is executed; and even in some compiled languages
-like Swift, the same is essentially true -- in that the text is compiled to
+like Swift, the same is essentially true — in that the text is compiled to
 code which immediately produces the expanded version.
 
 In Inform, however, a text substitution is instead compiled to a function which
 can at some later time perform that expansion. This means it is, in effect, a
 form of closure, and has to retain some memory of the environment in which it
 came up. Consider for example:
-= (text as Inform 7)
+
+``` Inform7
 	let X be 17;
 	write "remember [X]" to the file of Memos;
-=
+```
+
 This is a context where it's clear what it means to refer to the local variable
 `X` in the text. But this is less clear:
-= (text as Inform 7)
+
+``` Inform7
 	let the cage be a random container in the Discount Cage Warehouse;
 	decide on "As bad as [a cage].";
-=
+```
+
 The trouble is that `decide on` causes a return out of the current stack frame;
 at which point the local variable `cage` will cease to exist, and it will then
 not be possible to expand `"As bad as [a cage]."`. If we were pursuing closures
@@ -68,9 +78,11 @@ void TextSubstitutions::compile_value(inter_name *at, inter_name *fn,
 @h Cues.
 The "cue" for a text substitution that is not a response is its original appearance:
 like so:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be "the [fox speed] brown fox";
-=
+```
+
 When compiling this value, the following is called with `W` being the single-word
 wording `"the [fox speed] brown fox"`.
 
@@ -121,7 +133,7 @@ case of a response to a rule, since those are never perishable.
 Each substitution creates an object like so:
 
 =
-typedef struct text_substitution {
+classdef text_substitution {
 	struct wording unsubstituted_text; /* including the substitutions in squares */
 	int tr_done_already; /* has been compiled */
 	struct parse_node *sentence_using_this; /* where this occurs in source */
@@ -134,16 +146,15 @@ typedef struct text_substitution {
 
 	struct rule *responding_to_rule;
 	int responding_to_marker;
-
-	CLASS_DEFINITION
-} text_substitution;
+}
 
 @ Two inames are involved here:
-= (text)
+
+``` None
 	                        small block:
 	value ----------------> CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE
 	                        function ----------------------> ...
-=
+```
 
 =
 inter_name *TextSubstitutions::value_iname(text_substitution *ts) {
@@ -155,7 +166,7 @@ inter_name *TextSubstitutions::function_iname(text_substitution *ts) {
 }
 
 @ Note that this function is called both when cues are detected (above), and
-also when responses are created -- see //Responses//.
+also when responses are created — see //Responses//.
 
 =
 text_substitution *TextSubstitutions::new_text_substitution(wording W,
@@ -250,7 +261,7 @@ int TextSubstitutions::compile_function(text_substitution *ts) {
 	if (frame == NULL) frame = ts->using_frame;
 	if (frame) LocalVariableSlates::append(Frames::current_stack_frame(), frame);
 
-@ In DEBUG mode, there's an option to print the unsubstituted text instead --
+@ In DEBUG mode, there's an option to print the unsubstituted text instead —
 note the `rtrue` here, which stops the function from proceeding.
 
 @<Compile some debugging text@> =

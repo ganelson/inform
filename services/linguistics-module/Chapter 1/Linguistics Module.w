@@ -8,55 +8,6 @@ which use this module:
 
 @d LINGUISTICS_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e adjective_CLASS
-@e article_CLASS
-@e article_usage_CLASS
-@e quantifier_CLASS
-@e determiner_CLASS
-@e grammatical_category_CLASS
-@e linguistic_stock_item_CLASS
-@e grammatical_usage_CLASS
-@e verb_CLASS
-@e verb_form_CLASS
-@e verb_meaning_CLASS
-@e verb_sense_CLASS
-@e verb_usage_CLASS
-@e verb_usage_tier_CLASS
-@e preposition_CLASS
-@e noun_CLASS
-@e noun_usage_CLASS
-@e pronoun_CLASS
-@e pronoun_usage_CLASS
-@e small_word_set_CLASS
-@e special_meaning_holder_CLASS
-@e time_period_CLASS
-
-=
-DECLARE_CLASS(adjective)
-DECLARE_CLASS(article)
-DECLARE_CLASS(article_usage)
-DECLARE_CLASS(quantifier)
-DECLARE_CLASS(determiner)
-DECLARE_CLASS(grammatical_category)
-DECLARE_CLASS(linguistic_stock_item)
-DECLARE_CLASS(grammatical_usage)
-DECLARE_CLASS(verb)
-DECLARE_CLASS(verb_form)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(verb_meaning, 100)
-DECLARE_CLASS(verb_sense)
-DECLARE_CLASS(verb_usage)
-DECLARE_CLASS(verb_usage_tier)
-DECLARE_CLASS(preposition)
-DECLARE_CLASS(time_period)
-DECLARE_CLASS(noun)
-DECLARE_CLASS(noun_usage)
-DECLARE_CLASS(pronoun)
-DECLARE_CLASS(pronoun_usage)
-DECLARE_CLASS(special_meaning_holder)
-DECLARE_CLASS(small_word_set)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 @e LINGUISTIC_STOCK_DA

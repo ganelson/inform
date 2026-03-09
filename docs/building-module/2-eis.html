@@ -73,8 +73,8 @@ statements such as <code>print &quot;Hello&quot;;</code> cannot be compiled in a
 in a void one.</li>
 <li><code>sch</code> is the schema to compile from. It is unchanged by the process, except
 that nodes made inaccessible by conditional compilation are marked as such.</li>
-<li>If the schema mentions identifiers -- as for example <code>DoSomething(1, 2)</code>
-mentions the identifier <code>DoSomething</code> -- then these must somehow be matched up
+<li>If the schema mentions identifiers — as for example <code>DoSomething(1, 2)</code>
+mentions the identifier <code>DoSomething</code> — then these must somehow be matched up
 with <code>inter_symbol</code>s giving them a meaning. <code>finder</code> says how: see <a href="2-if.html" class="internal">Identifier Finders</a>.</li>
 <li>As we have seen, schema notation is (almost) Inform 6 syntax, except for two
 big extensions: one is Inform 7 source text placed between <code>(+</code> and <code>+)</code> markers,
@@ -87,13 +87,10 @@ passed through to those two callback functions. The code below otherwise makes
 no use of it; and it can of course be <code>NULL</code> if no state is needed.</li>
 </ul>
 <p>So the simplest valid usage of the function would be something like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">value_holster</span><span class="plain-syntax"> </span><span class="identifier-syntax">VH</span><span class="plain-syntax"> = </span><span class="function-syntax">Holsters::new</span><span class="plain-syntax">(</span><span class="constant-syntax">INTER_VOID_VHMODE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="type-syntax">identifier_finder</span><span class="plain-syntax"> </span><span class="identifier-syntax">finder</span><span class="plain-syntax"> = </span><span class="function-syntax">IdentifierFinders::common_names_only</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="function-syntax">EmitInterSchemas::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">finder</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> </span><span class="identifier-syntax">VH</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Holsters::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTER_VOID_VHMODE</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">identifier_finder</span><span class="plain-syntax"> </span><span class="identifier-syntax">finder</span><span class="plain-syntax"> = </span><span class="identifier-syntax">IdentifierFinders::common_names_only</span><span class="plain-syntax">();
+</span><span class="identifier-syntax">EmitInterSchemas::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">finder</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);
+</span></pre>
 <p>which roughly means &quot;compile pure Inform 6 code to Inter in a void context, but
 do not recognise any identifiers as corresponding to local variables&quot;.</p>
 <p>Note that emission can turn up syntax errors which went undetected earlier
@@ -127,14 +124,11 @@ include the <code>switch</code> head or tail.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  The following looks for conditional compilations such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"This is Glulx!"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-</pre>
-<div class="lsmarkdown">
-<p>and strikes out any nodes which are not to be compiled from -- for example, the
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"This is Glulx!"</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">
+</span></pre>
+<p>and strikes out any nodes which are not to be compiled from — for example, the
 <code>print</code> statement here would be marked as <code>blocked_by_conditional</code> if the symbol
 <code>TARGET_GLULX</code> were not defined.</p>
 <p>Note that this is done only once for each schema, so we are implicitly assuming
@@ -208,20 +202,17 @@ same machine architecture each time.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP2">&#167;2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1. </b>  The aim here is to find an innermost conditional, setting <code>dir_node</code> to its
-head, <code>ifnot_node</code> to the position of the <code>#Ifnot</code> -- if there is one; they
-are optional in I6 -- and <code>endif_node</code> to the position of its <code>#Endif</code>, whose
+head, <code>ifnot_node</code> to the position of the <code>#Ifnot</code> — if there is one; they
+are optional in I6 — and <code>endif_node</code> to the position of its <code>#Endif</code>, whose
 existence is mandatory. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEBUG</span><span class="plain-syntax">;            &lt;--- </span><span class="identifier-syntax">dir_node</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"ZD!"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;                  &lt;--- </span><span class="identifier-syntax">ifnot_node</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Z!"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;                  &lt;--- </span><span class="identifier-syntax">endif_node</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEBUG</span><span class="plain-syntax">;            &lt;--- </span><span class="identifier-syntax">dir_node</span><span class="plain-syntax">
+	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"ZD!"</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;                  &lt;--- </span><span class="identifier-syntax">ifnot_node</span><span class="plain-syntax">
+	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Z!"</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;                  &lt;--- </span><span class="identifier-syntax">endif_node</span><span class="plain-syntax">
+	#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;
+</span></pre>
 <p>Note that we only need find one such conditional, because once we resolve it,
 we will return but the function will then be applied again, and so on until
 all conditionals are resolved.</p>
@@ -249,11 +240,10 @@ all conditionals are resolved.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP2_1">&#167;2.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2_1_2" class="paragraph-anchor"></a><b>&#167;2.1.2. </b>  We are going to recognise only very simple conditions, such as:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">SYMBOL</span><span class="plain-syntax">;
+	#</span><span class="identifier-syntax">iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">SYMBOL</span><span class="plain-syntax"> == </span><span class="identifier-syntax">N</span><span class="plain-syntax">;
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">SYMBOL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">SYMBOL</span><span class="plain-syntax"> == </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out what the condition is</span><span class="named-paragraph-number">2.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -388,8 +378,8 @@ begins in <code>CODE_PRIM_CAT</code> (i.e., void context), but by the time the n
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  As noted, this is very much a recursive function, but it does not automatically
 recurse downwards: that depends on what is done at given nodes.</p>
-<p>In particular, no children of blocked nodes -- those removed by conditional
-compilation -- are ever visited.</p>
+<p>In particular, no children of blocked nodes — those removed by conditional
+compilation — are ever visited.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">EmitInterSchemas::emit_recursively</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">EmitInterSchemas::emit_recursively</span></span>:<br/><a href="2-eis.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node</span><span class="plain-syntax">,</span>
@@ -425,19 +415,16 @@ compilation -- are ever visited.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP3">&#167;3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1. </b>  Assembly language can only appear in <code>CODE_PRIM_CAT</code> mode and looks like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">ASSEMBLY_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">OPCODE_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"@mul"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">y</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">z</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ASSEMBLY_ISNT
+		EXPRESSION_ISNT
+			OPCODE_ISTT "@mul"
+		EXPRESSION_ISNT
+			x
+		EXPRESSION_ISNT
+			y
+		EXPRESSION_ISNT
+			z
+</span></pre>
 <p>Note that recursion in <code>VAL_PRIM_CAT</code> mode evaluates <code>x</code>, <code>y</code> and <code>z</code>.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assembly</span><span class="named-paragraph-number">3.1.1</span></span> =</p>
@@ -469,7 +456,7 @@ compilation -- are ever visited.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP3_1">&#167;3.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_1_2" class="paragraph-anchor"></a><b>&#167;3.1.2. </b>  What looks syntactically like a function call may in Inform 6 be a use of
-one of the &quot;built-in functions&quot; -- for example, <code>y = child(O)</code>. But it is not
+one of the &quot;built-in functions&quot; — for example, <code>y = child(O)</code>. But it is not
 in fact a function, in the traditional Inform 6 implementation, at least;
 and it is not legal to perform, say, <code>x = child; y = indirect(x, O);</code>
 because <code>child</code>, not really being a function, has no address.</p>
@@ -683,8 +670,8 @@ evaluated for their potential side-effects, but only the last produces a value.<
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_1_7" class="paragraph-anchor"></a><b>&#167;3.1.7. </b>  Note that an expression consisting only of a double-quoted text, in void
 context, is a print-then-print-new-line-then-return-true statement in Inform 6.
-This is where we detect that. (Because its meaning depends on context -- i.e.,
-it doesn't mean that in value context -- we couldn't have decided this when
+This is where we detect that. (Because its meaning depends on context — i.e.,
+it doesn't mean that in value context — we couldn't have decided this when
 parsing the schema.)</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expression</span><span class="named-paragraph-number">3.1.7</span></span> =</p>
@@ -822,25 +809,21 @@ parsing the schema.)</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP3_1_7">&#167;3.1.7</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_1_8" class="paragraph-anchor"></a><b>&#167;3.1.8. </b>  A twig for a label, such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">LABEL_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">MyLabel</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	LABEL_ISNT
+		EXPRESSION_ISNT
+			MyLabel
+</span></pre>
 <p>This places the label <code>MyLabel</code> at the current write position.</p>
 <p>What makes this more complicated is that an inline command might be being used
 to determine the name of that label, and/or to amend a label numbering counter.
 For example, the schema <code>.{-label:Say}{-counter-up:Say};</code> results in:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	LABEL_ISNT
+		EXPRESSION_ISNT
+			INLINE_ISNT = label:Say
+		EXPRESSION_ISNT
+			INLINE_ISNT = counter-up:Say
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">LABEL_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">INLINE_ISNT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">label:Say</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">INLINE_ISNT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">counter</span><span class="plain-syntax">-</span><span class="identifier-syntax">up:Say</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Label</span><span class="named-paragraph-number">3.1.8</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -890,19 +873,25 @@ For example, the schema <code>.{-label:Say}{-counter-up:Say};</code> results in:
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP3_1">&#167;3.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3_1_10" class="paragraph-anchor"></a><b>&#167;3.1.10. </b>  Note the three pseudo-operations here -- that is, operators which do not
+<p class="commentary firstcommentary"><a id="SP3_1_10" class="paragraph-anchor"></a><b>&#167;3.1.10. </b>  Note the three pseudo-operations here — that is, operators which do not
 directly correspond to Inter primitives. They are:</p>
 <ul>
-<li><code>HAS_XBIP</code>, which is done by performing a property lookup;</li>
-<li><code>HASNT_XBIP</code>, which is done by negating the same;</li>
-<li><code>OWNERKIND_XBIP</code>, which is a way to finesse that <code>PROPERTYVALUE_BIP</code> is
+<li>
+<p><code>HAS_XBIP</code>, which is done by performing a property lookup;</p>
+</li>
+<li>
+<p><code>HASNT_XBIP</code>, which is done by negating the same;</p>
+</li>
+<li>
+<p><code>OWNERKIND_XBIP</code>, which is a way to finesse that <code>PROPERTYVALUE_BIP</code> is
 ternary at the Inter level, but only binary in Inform 6 source code. When
 the code writes <code>obj.prop</code>, this is treated here as if it had been
 <code>OBJECT_TY&gt;&gt;obj.prop</code>; so the value <code>OBJECT_TY</code> is dropped in. But if the
-author had written <code>K&gt;&gt;obj.prop</code> -- giving the full ternary form -- we
+author had written <code>K&gt;&gt;obj.prop</code> — giving the full ternary form — we
 suppress the <code>&gt;&gt;</code> operator and take <code>K</code>, <code>obj</code>, <code>prop</code> as the three arguments
 to the primitive <code>PROPERTYVALUE_BIP</code>. (<code>&gt;&gt;</code> has no other purpose or use, and
-is not present in standard Inform 6 syntax.)</li>
+is not present in standard Inform 6 syntax.)</p>
+</li>
 </ul>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Operation</span><span class="named-paragraph-number">3.1.10</span></span> =</p>
@@ -1012,24 +1001,23 @@ code block to be executed.</li>
 the second <code>val</code> and the <code>code</code> respectively. We must find the first two as
 subexpressions of the first child, by directly probing its subtree. Consider
 these possibilities:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	objectloop (x) { ... }
+	            |  \ code
+	            ref and second val; first val is "Object"
+
+	objectloop (x ofclass K1_thing) { ... }
+	            |            |         |
+	            ref       first val   code
+	           --------------------
+	                second val
+
+	objectloop ((x ofclass K1_thing) &amp;&amp; (x has container)) { ... }
+	             |             |                              |
+	             ref       first val                         code
+	           -------------------------------------------
+	                           second val
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">objectloop</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">) { ... }</span>
-<span class="plain-syntax">                |  \ </span><span class="identifier-syntax">code</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">ref</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">; </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"Object"</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">objectloop</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K1_thing</span><span class="plain-syntax">) { ... }</span>
-<span class="plain-syntax">                |            |         |</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">ref</span><span class="plain-syntax">       </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">   </span><span class="identifier-syntax">code</span>
-<span class="plain-syntax">               </span><span class="constant-syntax">-</span><span class="plain-syntax">-------------------</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">objectloop</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K1_thing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax">)) { ... }</span>
-<span class="plain-syntax">                 |             |                              |</span>
-<span class="plain-syntax">                 </span><span class="identifier-syntax">ref</span><span class="plain-syntax">       </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">                         </span><span class="identifier-syntax">code</span>
-<span class="plain-syntax">               </span><span class="constant-syntax">-</span><span class="plain-syntax">------------------------------------------</span>
-<span class="plain-syntax">                               </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Handle OBJECTLOOP as a special case</span><span class="named-paragraph-number">3.1.11.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">

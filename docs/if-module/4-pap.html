@@ -110,7 +110,7 @@ rigged always to fail.</li>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_action_pattern_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ParseActionPatterns::enter_mode</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ParseActionPatterns::enter_mode</span></span>:<br/><a href="4-pap.html#SP5">&#167;5</a>, <a href="4-pap.html#SP6">&#167;6</a>, <a href="4-pap.html#SP9">&#167;9</a><br/>Action Patterns - <a href="4-ap2.html#SP6">&#167;6</a><br/>Parse Clauses - <a href="4-pc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pm</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ParseActionPatterns::enter_mode</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ParseActionPatterns::enter_mode</span></span>:<br/><a href="4-pap.html#SP5">&#167;5</a>, <a href="4-pap.html#SP6">&#167;6</a>, <a href="4-pap.html#SP9">&#167;9</a><br/>Action Patterns - <a href="4-ap2.html#SP6">&#167;6</a><br/>Parse Clauses - <a href="4-pc.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> = </span><span class="identifier-syntax">parse_action_pattern_mode</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_action_pattern_mode</span><span class="plain-syntax"> |= </span><span class="identifier-syntax">pm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax">;</span>
@@ -123,7 +123,7 @@ rigged always to fail.</li>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ParseActionPatterns::restore_mode</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ParseActionPatterns::restore_mode</span></span>:<br/><a href="4-pap.html#SP5">&#167;5</a>, <a href="4-pap.html#SP6">&#167;6</a>, <a href="4-pap.html#SP9">&#167;9</a>, <a href="4-pap.html#SP15">&#167;15</a><br/>Action Patterns - <a href="4-ap2.html#SP6">&#167;6</a><br/>Parse Clauses - <a href="4-pc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ParseActionPatterns::restore_mode</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ParseActionPatterns::restore_mode</span></span>:<br/><a href="4-pap.html#SP5">&#167;5</a>, <a href="4-pap.html#SP6">&#167;6</a>, <a href="4-pap.html#SP9">&#167;9</a>, <a href="4-pap.html#SP15">&#167;15</a><br/>Action Patterns - <a href="4-ap2.html#SP6">&#167;6</a><br/>Parse Clauses - <a href="4-pc.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_action_pattern_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">saved</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -351,7 +351,7 @@ Our aim here is to determine who will perform the action.</p>
 &quot;Raffles taking a jewel&quot; rather than the less likely to be ambiguous &quot;Raffles
 trying taking a jewel&quot;. This is allowed only in <code>PERMIT_TRYING_OMISSION</code> mode,
 and makes use of the following voracious nonterminal to match the actor's
-name -- here, just &quot;Raffles&quot;.</p>
+name — here, just &quot;Raffles&quot;.</p>
 <p>The following tries to break just before any &quot;-ing&quot; word (i.e., participle)
 which is not inside parentheses; but only if the resulting name matches
 <s-ap-parameter> as a constant, variable, or description; and there is no
@@ -537,8 +537,8 @@ special clause of its own.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-pap.html#SP14">&#167;14</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  <ap-five-condition> is really just <s-condition> in disguise -- i.e.,
-it matches a standard Inform condition -- but it's implemented as an internal
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  <ap-five-condition> is really just <s-condition> in disguise — i.e.,
+it matches a standard Inform condition — but it's implemented as an internal
 to enable Inform to set up a stack frame if there isn't one already, and so on.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">

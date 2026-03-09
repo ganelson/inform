@@ -3,17 +3,19 @@
 In this section we keep track of response texts.
 
 @h Introduction.
-Responses are texts -- which may be either literals or text substitutions --
+Responses are texts — which may be either literals or text substitutions —
 occurring inside the body of rules, and marked out (A), (B), (C), ... within
 that rule. This enables them to be manipulated or changed. For example:
-= (text as Inform 7)
+
+``` Inform7
 Report an actor taking (this is the standard report taking rule):
 	if the action is not silent:
 		if the actor is the player:
 			say "Taken." (A);
 		otherwise:
 			say "[The actor] [pick] up [the noun]." (B).
-=
+```
+
 In effect there is a two-element array attached to this rule, one holding
 the current response (A), the other (B). These are identified by an index called
 the "marker", which counts from 0: so (A) is 0, (B) is 1.
@@ -24,18 +26,20 @@ actually involve any substituting. (It's simpler to have a common format, and in
 any case these are the exception.) All of the difficulties attendant on text
 substitutions apply here, too. Note, for example, that (B) refers to the "actor",
 a shared variable which is not normally visible from here:
-= (text as Inform 7)
+
+``` Inform7
 To grab is a verb.
 When play begins:
 	now the standard report taking rule response (B) is "[The actor] [grab] [the noun]."
-=
+```
+
 Here, "actor" has to be read in the context of the standard report taking rule's
 stack frame, not in the stack for the "when play begins" rule.
 
 Each time a cue is found, a `response_message` object is created, as follows:
 
 =
-typedef struct response_message {
+classdef response_message {
 	struct rule *the_rule; /* to which this is a response */
 	int the_marker; /* 0 for A, 1 for B, and so on up */
 	struct text_substitution *the_ts;
@@ -52,8 +56,7 @@ typedef struct response_message {
 	struct inter_name *group_md_iname;
 	int launcher_compiled;
 	int via_Inter_routine_compiled; /* if responding to a rule defined by Inter code */
-	CLASS_DEFINITION
-} response_message;
+}
 
 @ Note that each response has its own package, which is stored inside the package
 of the rule to which it responds.
@@ -61,9 +64,11 @@ of the rule to which it responds.
 It occasionally happens that assertion sentences have changed the wording of a
 response long before any code is compiled, and therefore before this call,
 through a sentence like:
-= (text as Inform 7)
+
+``` Inform7
 The print empty inventory rule response (A) is "I got nothing."
-=
+```
+
 This would cause `RW`, the replacement wording, below to be `"I got nothing."`.
 
 =
@@ -114,12 +119,11 @@ inter_name *Responses::response_constant_iname(rule *R, int marker) {
 	return resp->constant_iname;
 }
 
-typedef struct deferred_response_iname {
+classdef deferred_response_iname {
 	struct rule *R;
 	int marker;
 	struct inter_name *deferred_iname;
-	CLASS_DEFINITION
-} deferred_response_iname;
+}
 
 inter_name *Responses::future_constant_iname(rule *R, int marker) {
 	inter_name *iname = Responses::response_constant_iname(R, marker);
@@ -172,9 +176,11 @@ stack_frame *Responses::frame_for_response(rule *R, int marker) {
 @h How rules gain responses.
 There are two ways a rule can get a new response. Firstly, and the way most
 Inform authors do it:
-= (text as Inform 7)
+
+``` Inform7
 say "[The actor] [pick] up [the noun]." (B).
-=
+```
+
 Will cause //Responses::set_via_source_text// to be called. This compiles Inter
 code suitable for the response to be called (i.e., printed), setting up the cue
 and attaching it to its rule in the process.
@@ -195,11 +201,13 @@ void Responses::set_via_source_text(value_holster *VH, rule *R, int marker, word
 
 @ Secondly, a lower-level technique used by extensions to give responses even
 to rules defined in Inter kits rather than by source text:
-= (text as Inform 7)
+
+``` Inform7
 The requested actions require persuasion rule translates into Inter as
 	"REQUESTED_ACTIONS_REQUIRE_R" with
 	 "[The noun] [have] better things to do." (A).
-=
+```
+
 Which causes the following to be called:
 
 =
@@ -214,11 +222,13 @@ void Responses::set_via_translation(rule *R, int marker, wording SW) {
 @h Compilation.
 Values and launchers for responses are then compiled in due course by the
 following agent. Each response compiles to a text value like so:
-= (text)
+
+``` None
 	                        small block:
 	value ----------------> CONSTANT_PACKED_TEXT_STORAGE
 	                        launcher function ----------------------> ...
-=
+```
+
 Thus, printing this value at runtime calls the launcher function. This in
 turn runs the "issuing the response text" activity, though it does it via
 a function defined in //BasicInformKit//.
@@ -266,18 +276,24 @@ void Responses::compilation_agent(compilation_subtask *t) {
 
 @ Something skated over above is that responses can also be created when the
 source text defines a rule only as an Inter function. For example:
-= (text as Inform 7)
+
+``` Inform7
 The hack mode rule translates into Inter as "HACK_MODE_ON_R" with "Hack mode on." (A).
-=
+```
+
 Responses like this one are "via Inter", and they cause us to create a handler
 function for the rule, called (say) `HACK_MODE_ON_RM`. The rule then calls:
-= (text as Inform 6)
+
+``` Inform6
 	HACK_MODE_ON_RM('A');
-=
+```
+
 to produce response (A), or alternatively
-= (text as Inform 6)
+
+``` Inform6
 	HACK_MODE_ON_RM('a');
-=
+```
+
 to return the current text of (A) without printing it. Speed is not of the essence;
 and note that the response-handler is created in the package for the rule to which
 it responds.

@@ -62,19 +62,16 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="4-rsp.html#SP1">&#167;1. Introduction</a></li><li><a href="4-rsp.html#SP4">&#167;4. How rules gain responses</a></li><li><a href="4-rsp.html#SP6">&#167;6. Compilation</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  Responses are texts -- which may be either literals or text substitutions --
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  Responses are texts — which may be either literals or text substitutions —
 occurring inside the body of rules, and marked out (A), (B), (C), ... within
 that rule. This enables them to be manipulated or changed. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">silent</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Taken."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">otherwise</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [pick] up [the noun]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):
+	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">silent</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">:
+			</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Taken."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax">:
+			</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [pick] up [the noun]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).
+</span></pre>
 <p>In effect there is a two-element array attached to this rule, one holding
 the current response (A), the other (B). These are identified by an index called
 the &quot;marker&quot;, which counts from 0: so (A) is 0, (B) is 1.</p>
@@ -84,19 +81,16 @@ actually involve any substituting. (It's simpler to have a common format, and in
 any case these are the exception.) All of the difficulties attendant on text
 substitutions apply here, too. Note, for example, that (B) refers to the &quot;actor&quot;,
 a shared variable which is not normally visible from here:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">grab</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">response</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">) </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [grab] [the noun]."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">grab</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">response</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">) </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [grab] [the noun]."</span><span class="plain-syntax">
+</span></pre>
 <p>Here, &quot;actor&quot; has to be read in the context of the standard report taking rule's
 stack frame, not in the stack for the &quot;when play begins&quot; rule.</p>
 <p>Each time a cue is found, a <code>response_message</code> object is created, as follows:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">response_message</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">response_message</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_rule</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to which this is a response */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_marker</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 for A, 1 for B, and so on up */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_substitution</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_ts</span><span class="plain-syntax">;</span>
@@ -113,8 +107,7 @@ stack frame, not in the stack for the &quot;when play begins&quot; rule.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">group_md_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">launcher_compiled</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">via_Inter_routine_compiled</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if responding to a rule defined by Inter code */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">response_message</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure response_message is accessed in 5/act, 5/rls and here.</li></ul>
 <div class="lsmarkdown">
@@ -123,11 +116,8 @@ of the rule to which it responds.</p>
 <p>It occasionally happens that assertion sentences have changed the wording of a
 response long before any code is compiled, and therefore before this call,
 through a sentence like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">response</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">) </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"I got nothing."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">response</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">) </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"I got nothing."</span><span class="plain-syntax">
+</span></pre>
 <p>This would cause <code>RW</code>, the replacement wording, below to be <code>&quot;I got nothing.&quot;</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -179,12 +169,11 @@ through a sentence like:</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">resp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">constant_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">deferred_response_iname</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">deferred_response_iname</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marker</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">deferred_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">deferred_response_iname</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">Responses::future_constant_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marker</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="4-rsp.html#SP3" class="function-link"><span class="function-syntax">Responses::response_constant_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">marker</span><span class="plain-syntax">);</span>
@@ -238,11 +227,8 @@ through a sentence like:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. How rules gain responses.</b>  There are two ways a rule can get a new response. Firstly, and the way most
 Inform authors do it:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [pick] up [the noun]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The actor] [pick] up [the noun]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B</span><span class="plain-syntax">).
+</span></pre>
 <p>Will cause <a href="4-rsp.html#SP4" class="internal">Responses::set_via_source_text</a> to be called. This compiles Inter
 code suitable for the response to be called (i.e., printed), setting up the cue
 and attaching it to its rule in the process.</p>
@@ -263,13 +249,10 @@ retrieved.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Secondly, a lower-level technique used by extensions to give responses even
 to rules defined in Inter kits rather than by source text:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">requested</span><span class="plain-syntax"> </span><span class="identifier-syntax">actions</span><span class="plain-syntax"> </span><span class="identifier-syntax">require</span><span class="plain-syntax"> </span><span class="identifier-syntax">persuasion</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"REQUESTED_ACTIONS_REQUIRE_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span>
-<span class="plain-syntax">     </span><span class="string-syntax">"[The noun] [have] better things to do."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">requested</span><span class="plain-syntax"> </span><span class="identifier-syntax">actions</span><span class="plain-syntax"> </span><span class="identifier-syntax">require</span><span class="plain-syntax"> </span><span class="identifier-syntax">persuasion</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax">
+	</span><span class="string-syntax">"REQUESTED_ACTIONS_REQUIRE_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax">
+	 </span><span class="string-syntax">"[The noun] [have] better things to do."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).
+</span></pre>
 <p>Which causes the following to be called:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -284,13 +267,10 @@ to rules defined in Inter kits rather than by source text:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Compilation.</b>  Values and launchers for responses are then compiled in due course by the
 following agent. Each response compiles to a text value like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">launcher</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------------&gt; ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                        small block:
+	value ----------------&gt; CONSTANT_PACKED_TEXT_STORAGE
+	                        launcher function ----------------------&gt; ...
+</span></pre>
 <p>Thus, printing this value at runtime calls the launcher function. This in
 turn runs the &quot;issuing the response text&quot; activity, though it does it via
 a function defined in <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>.</p>
@@ -339,24 +319,15 @@ a function defined in <a href="../BasicInformKit/index.html" class="internal">Ba
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Something skated over above is that responses can also be created when the
 source text defines a rule only as an Inter function. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">hack</span><span class="plain-syntax"> </span><span class="identifier-syntax">mode</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"HACK_MODE_ON_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"Hack mode on."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">hack</span><span class="plain-syntax"> </span><span class="identifier-syntax">mode</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"HACK_MODE_ON_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"Hack mode on."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).
+</span></pre>
 <p>Responses like this one are &quot;via Inter&quot;, and they cause us to create a handler
 function for the rule, called (say) <code>HACK_MODE_ON_RM</code>. The rule then calls:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">HACK_MODE_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">HACK_MODE_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">);
+</span></pre>
 <p>to produce response (A), or alternatively</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">HACK_MODE_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'a'</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">HACK_MODE_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'a'</span><span class="plain-syntax">);
+</span></pre>
 <p>to return the current text of (A) without printing it. Speed is not of the essence;
 and note that the response-handler is created in the package for the rule to which
 it responds.</p>

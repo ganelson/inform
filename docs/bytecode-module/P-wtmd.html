@@ -72,8 +72,8 @@ For more, see <a href="../foundation/P-abgtf.html" class="internal">A Brief Guid
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What is intermediate about inter.</b>  This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
 memory, and with reading and writing it from and to the filing system.</p>
 <p>An Inter tree is an expression of a single program. It's an intermediate state
-between the source code for that program -- perhaps Inform 7 source text,
-perhaps Inform 6-syntax source for a kit -- and the so-called &quot;final&quot; output,
+between the source code for that program — perhaps Inform 7 source text,
+perhaps Inform 6-syntax source for a kit — and the so-called &quot;final&quot; output,
 typically a C or I6 program.</p>
 <p>In conventional compiler design, a high-level language such as Swift or C# is
 parsed first into an abstract syntax tree, or &quot;AST&quot;, which is essentially a tree
@@ -82,11 +82,8 @@ what everything in it means. This AST is then compiled down to an intermediate
 representation, an &quot;IR&quot;, which is a sort of structured list of still-abstract
 operations to perform. The IR is then further converted to produce the compiler's
 actual output. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">  ----&gt;   </span><span class="function-syntax">AST</span><span class="plain-syntax">   ------------&gt;   </span><span class="function-syntax">IR</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">assembly</span><span class="plain-syntax"> </span><span class="element-syntax">language</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">  ----&gt;   </span><span class="function-syntax">AST</span><span class="plain-syntax">   ------------&gt;   </span><span class="function-syntax">IR</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">assembly</span><span class="plain-syntax"> </span><span class="element-syntax">language</span><span class="plain-syntax">)
+</span></pre>
 <p>In the Inform family of tools, two languages have to be compiled: natural
 language by <a href="../inform7/index.html" class="internal">inform7</a> and more conventional C-like code by <a href="../inter/index.html" class="internal">inter</a>.
 Having very different syntaxes, these have different ASTs:</p>
@@ -94,22 +91,19 @@ Having very different syntaxes, these have different ASTs:</p>
 <li>For I7, a <code>parse_node_tree</code>, managed by the <a href="../syntax-module/index.html" class="internal">syntax</a> module.</li>
 <li>For Inter, an <code>inter_schema</code>, managed by the <a href="../building-module/index.html" class="internal">building</a> module.</li>
 </ul>
-<p>But these two compiler flows share the same IR -- an <a href="2-it.html#SP1" class="internal">inter_tree</a> provides the
+<p>But these two compiler flows share the same IR — an <a href="2-it.html#SP1" class="internal">inter_tree</a> provides the
 intermediate representation for both:<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                 "</span><span class="function-syntax">AST</span><span class="plain-syntax">"                 "</span><span class="function-syntax">IR</span><span class="plain-syntax">"</span>
-<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">        </span><span class="element-syntax">syntax</span>
-<span class="plain-syntax">  </span><span class="element-syntax">text</span><span class="plain-syntax">    ---&gt;   </span><span class="element-syntax">tree</span><span class="plain-syntax"> -------+</span>
-<span class="plain-syntax">         </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">              \</span>
-<span class="plain-syntax">                               \</span>
-<span class="plain-syntax">                                ----&gt;  </span><span class="element-syntax">Inter</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">C</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                               /       </span><span class="element-syntax">tree</span>
-<span class="plain-syntax">  </span><span class="element-syntax">kit</span><span class="plain-syntax">           </span><span class="element-syntax">Inter</span><span class="plain-syntax">         /</span>
-<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">  ---&gt;  </span><span class="element-syntax">schemas</span><span class="plain-syntax"> -----+</span>
-<span class="plain-syntax">          </span><span class="function-syntax">INTER</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">                 "</span><span class="function-syntax">AST</span><span class="plain-syntax">"                 "</span><span class="function-syntax">IR</span><span class="plain-syntax">"
+  </span><span class="element-syntax">source</span><span class="plain-syntax">        </span><span class="element-syntax">syntax</span><span class="plain-syntax">
+  </span><span class="element-syntax">text</span><span class="plain-syntax">    ---&gt;   </span><span class="element-syntax">tree</span><span class="plain-syntax"> -------+
+         </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">              \
+                               \
+                                ----&gt;  </span><span class="element-syntax">Inter</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">C</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">)
+                               /       </span><span class="element-syntax">tree</span><span class="plain-syntax">
+  </span><span class="element-syntax">kit</span><span class="plain-syntax">           </span><span class="element-syntax">Inter</span><span class="plain-syntax">         /
+  </span><span class="element-syntax">source</span><span class="plain-syntax">  ---&gt;  </span><span class="element-syntax">schemas</span><span class="plain-syntax"> -----+
+          </span><span class="function-syntax">INTER</span><span class="plain-syntax">
+</span></pre>
 <p>Because we want to work with hybrid programs, part compiled by one flow and
 part by the other, Inter is not quite as low-level as most IRs.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup> It still
 contains a great deal of semantic markup, making analysis and optimisation
@@ -128,22 +122,19 @@ highly structured object-oriented way.<a href="#fnref:2" title="return to text">
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Textual, Binary, Memory.</b>  Inter code has three representations: as a binary file, as a textual file,
-and in memory -- a sort of cross-referenced form of binary. Binary or
+and in memory — a sort of cross-referenced form of binary. Binary or
 textual inter files can be read in as memory inter, and memory inter can
 be written out as either binary or textual files. Any inter program can
 faithfully be represented in any of these forms:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span>
-<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
-<span class="plain-syntax">              \                     /</span>
-<span class="plain-syntax">               \                   /</span>
-<span class="plain-syntax">                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----</span>
-<span class="plain-syntax">               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \</span>
-<span class="plain-syntax">  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span>
-<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span><span class="plain-syntax">
+  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span><span class="plain-syntax">
+              \                     /
+               \                   /
+                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----
+               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \
+  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span><span class="plain-syntax">
+  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span><span class="plain-syntax">
+</span></pre>
 <p>Textual Inter is human-readable, but binary Inter loads quickly. Either form,
 as stored on an external file whose provenance we do not know, has to be treated
 as suspect:</p>
@@ -165,32 +156,26 @@ changed. See <a href="1-tiv.html" class="internal">The Inter Version</a>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. What textual Inter looks like.</b>  There is a manual for writing <a href="../inter/M-ti.html" class="internal">Textual Inter (in inter)</a>, and this may now be
 worth skimming through. But here is a minimal example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">package</span><span class="plain-syntax"> main _plain</span>
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">package</span><span class="plain-syntax"> main _plain
+	</span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code
+		</span><span class="type-syntax">code</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span><span class="plain-syntax">
+</span></pre>
 <p>If we read this in and then write it out again, we find, perhaps surprisingly,
 four extra instructions:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">packagetype</span><span class="plain-syntax"> _plain</span>
-<span class="type-syntax">packagetype</span><span class="plain-syntax"> _code</span>
-<span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-<span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-<span class="type-syntax">package</span><span class="plain-syntax"> main _plain</span>
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">packagetype</span><span class="plain-syntax"> _plain
+</span><span class="type-syntax">packagetype</span><span class="plain-syntax"> _code
+</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+</span><span class="type-syntax">package</span><span class="plain-syntax"> main _plain
+	</span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code
+		</span><span class="type-syntax">code</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span><span class="plain-syntax">
+</span></pre>
 <p>This is because <code>packagetype</code> and <code>primitive</code> instructions are optional in textual
 Inter. When we read <code>package Main _code</code>, for example, we deduce that a <code>_code</code>
 package type is needed, and so we automatically declare it if it is not there
@@ -200,8 +185,8 @@ Nevertheless, those instructions are part of the program, which is why they
 are printed out when we write it back as textual Inter.</p>
 <p><code>packagetype</code>, <code>primitive</code>, <code>package</code>, <code>code</code>, <code>inv</code> and so on are all examples
 of <a href="3-ic.html" class="internal">Inter Constructs</a>. Each has its own textual syntax. Most constructs give
-rise to instructions -- for example, every line using the <code>val</code> construct
-results in a single <code>VAL_IST</code> instruction in the program -- but just a few
+rise to instructions — for example, every line using the <code>val</code> construct
+results in a single <code>VAL_IST</code> instruction in the program — but just a few
 &quot;pseudo-constructs&quot; such as <code>version</code> specify something else.</p>
 <p>So it is not true that lines in textual Inter correspond exactly to the
 instructions in a program, but it's very nearly true.</p>
@@ -212,20 +197,17 @@ in to memory.</p>
 <p>The main organising idea of Inter trees is the <a href="2-pck.html#SP2" class="internal">inter_package</a>. <a href="2-pck.html" class="internal">Packages</a> are
 like nested boxes: each one can hold either more packages, or Inter instructions
 providing code or data, or both. In the case of &quot;hello world&quot;:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">....................................................</span>
-<span class="plain-syntax">.  </span><span class="element-syntax">top</span><span class="plain-syntax">-</span><span class="element-syntax">level</span><span class="plain-syntax"> </span><span class="element-syntax">material</span><span class="plain-syntax">                              .</span>
-<span class="plain-syntax">.  +--------------------------------------------+  .</span>
-<span class="plain-syntax">.  | /</span><span class="element-syntax">main</span><span class="plain-syntax">                               </span><span class="element-syntax">_plain</span><span class="plain-syntax"> |  .</span>
-<span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
-<span class="plain-syntax">.  |   | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">Main</span><span class="plain-syntax">                    </span><span class="element-syntax">_code</span><span class="plain-syntax"> |  |  .</span>
-<span class="plain-syntax">.  |   | </span><span class="element-syntax">code</span><span class="plain-syntax"> </span><span class="element-syntax">in</span><span class="plain-syntax"> </span><span class="element-syntax">the</span><span class="plain-syntax"> </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">function</span><span class="plain-syntax">           |  |  .</span>
-<span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
-<span class="plain-syntax">.  +--------------------------------------------+  .</span>
-<span class="plain-syntax">....................................................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">....................................................
+.  </span><span class="element-syntax">top</span><span class="plain-syntax">-</span><span class="element-syntax">level</span><span class="plain-syntax"> </span><span class="element-syntax">material</span><span class="plain-syntax">                              .
+.  +--------------------------------------------+  .
+.  | /</span><span class="element-syntax">main</span><span class="plain-syntax">                               </span><span class="element-syntax">_plain</span><span class="plain-syntax"> |  .
+.  |   +-------------------------------------+  |  .
+.  |   | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">Main</span><span class="plain-syntax">                    </span><span class="element-syntax">_code</span><span class="plain-syntax"> |  |  .
+.  |   | </span><span class="element-syntax">code</span><span class="plain-syntax"> </span><span class="element-syntax">in</span><span class="plain-syntax"> </span><span class="element-syntax">the</span><span class="plain-syntax"> </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">function</span><span class="plain-syntax">           |  |  .
+.  |   +-------------------------------------+  |  .
+.  +--------------------------------------------+  .
+....................................................
+</span></pre>
 <p>Each package has a name, and its location can be identified by a &quot;URL&quot;. For
 example, <code>/main/BasicInformKit/properties</code> means &quot;the package <code>properties</code>
 inside the package <code>BasicInformKit</code> inside the package <code>main</code>&quot;. Every package
@@ -248,8 +230,8 @@ What the remaining words mean depends on the construct, but here are some
 typical ingredients:</p>
 <ul>
 <li>
-<p>Many constructs -- <code>constant</code>, for example -- define a new symbol.
-If so, the symbol ID -- or SID -- will be stored in one of the words;
+<p>Many constructs — <code>constant</code>, for example — define a new symbol.
+If so, the symbol ID — or SID — will be stored in one of the words;
 this is the ID of the symbol in the <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging
 to the package containing the instruction. Some constructs also contain
 SIDs for other reasons: for example, <code>propertyvalue</code> needs to store the
@@ -270,20 +252,14 @@ in just one?</p>
 <p>In both cases the solution is the same: to use <code>constant</code> or <code>typename</code> to
 assign a symbol to anything complicated, and then refer to that symbol. For
 example, we can't have this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">list</span><span class="plain-syntax"> </span><span class="type-syntax">of</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span><span class="plain-syntax">) { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">list</span><span class="plain-syntax"> </span><span class="type-syntax">of</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span><span class="plain-syntax">) { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }
+</span></pre>
 <p>because both the type and the value are too complicated. But we can have:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    typename list_of_integers = </span><span class="type-syntax">list</span><span class="plain-syntax"> </span><span class="type-syntax">of</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> (list_of_integers) primes = { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> (list_of_integers) primes</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	typename list_of_integers = </span><span class="type-syntax">list</span><span class="plain-syntax"> </span><span class="type-syntax">of</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span><span class="plain-syntax">
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> (list_of_integers) primes = { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }
+	...
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> (list_of_integers) primes
+</span></pre>
 <li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 The term &quot;bytecode&quot; is a misnomer, since this is word-based, not byte-based.
 But it is traditional and seems to have been used as far back as the mid-1960s.<a href="#fnref:3" title="return to text"> &#x21A9;</a></p>
@@ -293,16 +269,13 @@ But it is traditional and seems to have been used as far back as the mid-1960s.<
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Constants are useful also for providing metadata about the program. This
 is not simply commentary: what makes it &quot;meta&quot; is that it does not literally
 compile into the final output. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> lucky_number = </span><span class="constant-syntax">7</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> ^special_constant = lucky_number</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> lucky_number = </span><span class="constant-syntax">7</span><span class="plain-syntax">
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> ^special_constant = lucky_number
+</span></pre>
 <p>Here <code>lucky_number</code> can be used in the program whenever a value is needed. But
 <code>^special_constant</code>, whose name begins with the magic metadata caret <code>^</code>, cannot
 be used as a value. Instead, the idea is that it communicates something to the
-code-generation code in <a href="../pipeline-module/index.html" class="internal">pipeline</a> and <a href="../final-module/index.html" class="internal">final</a> -- indicating the significance,
+code-generation code in <a href="../pipeline-module/index.html" class="internal">pipeline</a> and <a href="../final-module/index.html" class="internal">final</a> — indicating the significance,
 purpose or origins of something in the program. (<a href="../inform7/index.html" class="internal">inform7</a> produces a lot
 of metadata like this.)</p>
 <p>See <a href="3-mtd.html" class="internal">Metadata</a> for functions to access this metadata.</p>
@@ -314,23 +287,20 @@ table, recording symbols and their meanings within that package. For example,
 if a package <code>X</code> contains a definition of a constant called <code>pi</code>, then the
 definition will occupy an Inter instruction inside the package, and the
 identifier name <code>pi</code> will be an <a href="2-sym.html#SP1" class="internal">inter_symbol</a> recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    +-----------------+</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |</span>
-<span class="plain-syntax">    |                 |</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">pi</span><span class="plain-syntax">              |</span>
-<span class="plain-syntax">    | .....           |</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">constant</span><span class="plain-syntax"> </span><span class="element-syntax">pi</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    +-----------------+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    +-----------------+
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |
+    |                 |
+    | </span><span class="element-syntax">pi</span><span class="plain-syntax">              |
+    | .....           |
+    | </span><span class="element-syntax">constant</span><span class="plain-syntax"> </span><span class="element-syntax">pi</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |
+    +-----------------+
+</span></pre>
 <p>The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
 by Inter itself, such as the identities of primitives like <code>!add</code> or
 <code>!printnumber</code>. In some sense, they specify the kind of Inter tree we have,
 rather than anything about the program it represents. Material from that
-program -- a variable, say, or a function -- is not allowed at the root level.</p>
+program — a variable, say, or a function — is not allowed at the root level.</p>
 <p>Symbols can be annotated in various ways. See <a href="2-ann.html" class="internal">Annotations</a>. They also come
 in several types, see <a href="2-sym.html#SP5" class="internal">InterSymbol::get_type</a>, and can have a few flags,
 see <a href="2-sym.html#SP6" class="internal">InterSymbol::get_flag</a>.</p>
@@ -372,35 +342,26 @@ have our cake and eat it. The tree structure makes it quick and easy to splice,
 cut and reorder code; the binary bytecode storage is quick to load from a file.
 Still, the result is an unusual hybrid of a data structure.</p>
 <p>For example, the tree might start out like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">							...	</span><span class="constant-syntax">102</span><span class="plain-syntax">	</span><span class="constant-syntax">103</span><span class="plain-syntax">	</span><span class="constant-syntax">104</span><span class="plain-syntax">	</span><span class="constant-syntax">105</span><span class="plain-syntax">	</span><span class="constant-syntax">106</span><span class="plain-syntax">	</span><span class="constant-syntax">107</span><span class="plain-syntax">	</span><span class="constant-syntax">108</span><span class="plain-syntax">	</span><span class="constant-syntax">109</span><span class="plain-syntax">	...
+	</span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]
+		</span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]
+		</span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]
+</span></pre>
 <p>Here <code>node1</code> represents an instruction, with the details stored at bytecode
 locations 103 to 105; <code>node2</code> points to bytecode at 106 to 107, and so on.
 But then we could decide, when optimising code, that we want instructions
 <code>node2</code> and <code>node3</code> performed the other way round. Simple amendments to
 the tree structure achieve this without needing to edit the bytecode:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">							...	</span><span class="constant-syntax">102</span><span class="plain-syntax">	</span><span class="constant-syntax">103</span><span class="plain-syntax">	</span><span class="constant-syntax">104</span><span class="plain-syntax">	</span><span class="constant-syntax">105</span><span class="plain-syntax">	</span><span class="constant-syntax">106</span><span class="plain-syntax">	</span><span class="constant-syntax">107</span><span class="plain-syntax">	</span><span class="constant-syntax">108</span><span class="plain-syntax">	</span><span class="constant-syntax">109</span><span class="plain-syntax">	...
+	</span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]
+		</span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]
+		</span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]
+</span></pre>
 <p>Indeed, we could decide that the instruction at <code>node2</code> is redundant and cut it:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">node1</span><span class="plain-syntax">  </span><span class="constant-syntax">-</span><span class="plain-syntax">----------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">node3</span><span class="plain-syntax">  </span><span class="constant-syntax">-</span><span class="plain-syntax">--------------------------------------&gt; [.........]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">							...	</span><span class="constant-syntax">102</span><span class="plain-syntax">	</span><span class="constant-syntax">103</span><span class="plain-syntax">	</span><span class="constant-syntax">104</span><span class="plain-syntax">	</span><span class="constant-syntax">105</span><span class="plain-syntax">	</span><span class="constant-syntax">106</span><span class="plain-syntax">	</span><span class="constant-syntax">107</span><span class="plain-syntax">	</span><span class="constant-syntax">108</span><span class="plain-syntax">	</span><span class="constant-syntax">109</span><span class="plain-syntax">	...
+	</span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]
+		</span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]
+</span></pre>
 <p>It doesn't matter that the resulting bytecode storage is all mixed up in
 sequencing; the tree is what gives us the sequence of instructions, and the
 order of words in bytecode memory is only significant within a single
@@ -433,17 +394,14 @@ variables, constants and functions.</p>
 <p>But that is not true because symbols in one package can be &quot;wired&quot; to symbols
 in another:<sup id="fnred:6"><a href="#fn:6" rel="footnote">1</a></sup> see <a href="2-tw2.html" class="internal">The Wiring</a>. We write <code>S ~~&gt; T</code> if the symbol <code>S</code> is &quot;wired to&quot;
 <code>T</code>, and we understand this as meaning that <code>S</code> means whatever <code>T</code> does.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    +-----------------+        +-------------------------------+</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |        | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">                     |</span>
-<span class="plain-syntax">    |                 |        |                               |</span>
-<span class="plain-syntax">    |  </span><span class="element-syntax">earth</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">earth</span><span class="plain-syntax">                       |</span>
-<span class="plain-syntax">    +-----------------+        | .....                         |</span>
-<span class="plain-syntax">                               | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">earth</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">            |</span>
-<span class="plain-syntax">                               +-------------------------------+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    +-----------------+        +-------------------------------+
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |        | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">                     |
+    |                 |        |                               |
+    |  </span><span class="element-syntax">earth</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">earth</span><span class="plain-syntax">                       |
+    +-----------------+        | .....                         |
+                               | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">earth</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">            |
+                               +-------------------------------+
+</span></pre>
 <p>In this example, the symbol <code>earth</code> in package <code>X</code> is undefined. Instead it is
 wired to a different symbol of the same name in package <code>Y</code>, which is defined
 as the name of a variable declared in that package. (The names do not have to
@@ -467,31 +425,25 @@ into it later on.</p>
 <p>For example, <a href="../inform7/index.html" class="internal">inform7</a> compiles a tree of Inter, but then <a href="../inter/index.html" class="internal">inter</a> links
 this with a separately compiled Inter tree from <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>. Each both
 imports from and exports to the other.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    .....................           .......................</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">        . ~~~~~~~~&gt; . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax"> .</span>
-<span class="plain-syntax">    .                   .           .                     .</span>
-<span class="plain-syntax">    .                   . &lt;~~~~~~~~ .                     .</span>
-<span class="plain-syntax">    .....................           .......................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    .....................           .......................
+    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">        . ~~~~~~~~&gt; . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax"> .
+    .                   .           .                     .
+    .                   . &lt;~~~~~~~~ .                     .
+    .....................           .......................
+</span></pre>
 <p>It would be chaotic<sup id="fnred:7"><a href="#fn:7" rel="footnote">1</a></sup> to allow random symbols in packages all over each tree
 to be wired directly to symbols in the other. Instead, every tree has a sort
 of embassy package <code>/main/connectors</code> (a package called <code>connectors</code> which is
 a subpackage of <code>main</code>) which acts as an intermediary.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ...............................       ..................................</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">                  .       .  </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">           .</span>
-<span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">other</span><span class="plain-syntax">       | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> | .       . | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> |                 .</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">packages</span><span class="plain-syntax"> ~~~~~~~&gt; </span><span class="element-syntax">plugs</span><span class="plain-syntax"> ~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">sockets</span><span class="plain-syntax"> ~~~~~&gt;   </span><span class="element-syntax">other</span><span class="plain-syntax">      .</span>
-<span class="plain-syntax">    .            &lt;~~~~ </span><span class="element-syntax">sockets</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~ </span><span class="element-syntax">plugs</span><span class="plain-syntax"> &lt;~~~~~~~~~ </span><span class="element-syntax">packages</span><span class="plain-syntax">   .</span>
-<span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
-<span class="plain-syntax">    ...............................       ..................................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    ...............................       ..................................
+    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">                  .       .  </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">           .
+    .              +------------+ .       . +------------+                 .
+    .  </span><span class="element-syntax">other</span><span class="plain-syntax">       | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> | .       . | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> |                 .
+    .  </span><span class="element-syntax">packages</span><span class="plain-syntax"> ~~~~~~~&gt; </span><span class="element-syntax">plugs</span><span class="plain-syntax"> ~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">sockets</span><span class="plain-syntax"> ~~~~~&gt;   </span><span class="element-syntax">other</span><span class="plain-syntax">      .
+    .            &lt;~~~~ </span><span class="element-syntax">sockets</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~ </span><span class="element-syntax">plugs</span><span class="plain-syntax"> &lt;~~~~~~~~~ </span><span class="element-syntax">packages</span><span class="plain-syntax">   .
+    .              +------------+ .       . +------------+                 .
+    ...............................       ..................................
+</span></pre>
 <p>The connectors package contains only symbols, and they are all either &quot;plugs&quot; or
 &quot;sockets&quot;. A &quot;plug&quot; is made for every external meaning needed by a tree; a
 &quot;socket&quot; is made for each meaning that the tree declares itself but wants to
@@ -509,40 +461,34 @@ another, as the diagram above suggests. The actual wiring-together occurs only
 when (part of) one tree is merged into another, in what is called <a href="2-trn.html" class="internal">Transmigration</a>.</p>
 <p>Transmigration is by definition the process of moving a package from one tree
 to another. Almost the whole design of Inter is motivated by the need to make this
-fast -- the hierarchies of packages, the use of wiring, and the existence of sockets
+fast — the hierarchies of packages, the use of wiring, and the existence of sockets
 and plugs all came about working backwards from the goal of implementing
 transmigration efficiently.</p>
 <p>Transmigration is how the <a href="../pipeline-module/index.html" class="internal">pipeline</a> for processing Inter links a tree
 produced by <a href="../inform7/index.html" class="internal">inform7</a> to trees from kits produced by <a href="../inter/index.html" class="internal">inter</a>. This
 diagram is also a little simplified, but the idea is right. We start with:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    .........................         .........................</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">            .         . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">   .</span>
-<span class="plain-syntax">    .  </span><span class="element-syntax">main</span><span class="plain-syntax">                 .         . </span><span class="element-syntax">main</span><span class="plain-syntax">                  .</span>
-<span class="plain-syntax">    .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .         .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .</span>
-<span class="plain-syntax">    .    </span><span class="element-syntax">basic_inform</span><span class="plain-syntax">       .         .    </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">     .</span>
-<span class="plain-syntax">    .    </span><span class="element-syntax">source_text</span><span class="plain-syntax">        .         .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .</span>
-<span class="plain-syntax">    .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .         .                       .</span>
-<span class="plain-syntax">    .........................         .........................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    .........................         .........................
+    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">            .         . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">   .
+    .  </span><span class="element-syntax">main</span><span class="plain-syntax">                 .         . </span><span class="element-syntax">main</span><span class="plain-syntax">                  .
+    .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .         .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .
+    .    </span><span class="element-syntax">basic_inform</span><span class="plain-syntax">       .         .    </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">     .
+    .    </span><span class="element-syntax">source_text</span><span class="plain-syntax">        .         .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .
+    .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .         .                       .
+    .........................         .........................
+</span></pre>
 <p>where all of the substantive content of the BasicInformKit tree is in its
 package <code>/main/BasicInformKit</code>. Transmigration simply moves that package,
 the result being:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    .........................         .........................</span>
-<span class="plain-syntax">    .  </span><span class="identifier-syntax">Main</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">            .         . </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">   .</span>
-<span class="plain-syntax">    .  </span><span class="identifier-syntax">main</span><span class="plain-syntax">                 .         . </span><span class="identifier-syntax">main</span><span class="plain-syntax">                  .</span>
-<span class="plain-syntax">    .    </span><span class="identifier-syntax">architectural</span><span class="plain-syntax">      .         .    </span><span class="identifier-syntax">architectural</span><span class="plain-syntax">      .</span>
-<span class="plain-syntax">    .    </span><span class="identifier-syntax">basic_inform</span><span class="plain-syntax">       .         .    </span><span class="identifier-syntax">connectors</span><span class="plain-syntax">         .</span>
-<span class="plain-syntax">    .    </span><span class="identifier-syntax">source_text</span><span class="plain-syntax">        .         .                       .</span>
-<span class="plain-syntax">    .    </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">     .         .                       .</span>
-<span class="plain-syntax">    .    </span><span class="identifier-syntax">connectors</span><span class="plain-syntax">         .         .                       .</span>
-<span class="plain-syntax">    .........................         .........................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    .........................         .........................
+    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">            .         . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">   .
+    .  </span><span class="element-syntax">main</span><span class="plain-syntax">                 .         . </span><span class="element-syntax">main</span><span class="plain-syntax">                  .
+    .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .         .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .
+    .    </span><span class="element-syntax">basic_inform</span><span class="plain-syntax">       .         .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .
+    .    </span><span class="element-syntax">source_text</span><span class="plain-syntax">        .         .                       .
+    .    </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">     .         .                       .
+    .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .         .                       .
+    .........................         .........................
+</span></pre>
 <p>The original BasicInformKit tree is reduced to a husk and can be discarded.</p>
 <p>Plugs and sockets are important here because when BasicInformKit moves to the
 main tree, its plugs looking for meanings in that tree can now be connected

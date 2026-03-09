@@ -8,13 +8,6 @@ which use this module:
 
 @d LEXICON_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e excerpt_meaning_CLASS
-
-=
-DECLARE_CLASS(excerpt_meaning)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 @e EXCERPT_MEANINGS_DA

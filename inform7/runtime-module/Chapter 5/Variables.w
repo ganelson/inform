@@ -5,8 +5,8 @@ _variable packages.
 
 @h NVEs.
 While a nonlocal variable, or NLV, looks like a simple storage location from
-the perspective of Inform 7 source text -- the author assumes there's some
-memory cell somewhere with this name -- it can actually be data expressed in
+the perspective of Inform 7 source text — the author assumes there's some
+memory cell somewhere with this name — it can actually be data expressed in
 a range of different ways in Inter code. It might indeed be a global variable,
 but then again it might be an array entry, or even a temporary location on
 a stack; it might even be a constant.
@@ -182,16 +182,19 @@ void RTVariables::compile_NVE_as_val(nonlocal_variable *nlv, nonlocal_variable_e
 @h Writing without NVEs.
 NVEs are a very flexible way to describe a storage location, but they do assume
 that a write can be performed by a `STORE_BIP` instruction applied to a reference
-to that location -- in other words, by some form of assignment like so:
-= (text)
+to that location — in other words, by some form of assignment like so:
+
+``` None
 	Something = value;
 	(Somewhere-->20) = value;
-=
+```
+
 And here the term on the left is compiled by wrapping the code produced by
 //RTVariables::compile_NVE_as_val// in a `REF_IST` to make a reference.
 This is all well and good. But suppose the assignment has to be made by
 some function instead?
-= (text)
+
+``` None
 	ChangePlayer(value);
 	...
 	ChangePlayer (val) {
@@ -199,7 +202,8 @@ some function instead?
 		player = val;
 		...
 	}
-=
+```
+
 An NVE cannot express the need to compile an assignment entirely differently.
 So for such cases we provide the ability to set an explicit I6 scheme for
 writing. In such a schema, `*1` means the variable, `*2` the value; so, for

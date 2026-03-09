@@ -62,8 +62,8 @@ int ProvisionRelation::typecheck(bp_family *self, binary_predicate *bp,
 
 @h Assertion.
 If we assert that, say, vehicles provide "colour", then we are implicitly
-enabling adjectives formed from its enumerated instances -- say, "green" or
-"blue" -- can apply to vehicles, so we must make sure any such meanings are
+enabling adjectives formed from its enumerated instances — say, "green" or
+"blue" — can apply to vehicles, so we must make sure any such meanings are
 defined.
 
 =

@@ -16,8 +16,8 @@ void Assertions::PropertyKnowledge::initialise_global_variable(nonlocal_variable
 }
 
 @h Asserting properties, three different ways.
-In these three alternative functions, we can assert that a given owner -- specified
-either as an object, a value or a subtree -- should have
+In these three alternative functions, we can assert that a given owner — specified
+either as an object, a value or a subtree — should have
 
 - a given single property equal to a value given as a subtree,
 - a given single property equal to an explicit value, or
@@ -57,7 +57,7 @@ void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtr
 }
 
 @ We pass the "clue kind" to obtain a proposition which includes an atom
-setting the kind of the free variable -- not because we need to assert this,
+setting the kind of the free variable — not because we need to assert this,
 although it does no harm to, but because this enables the proposition
 asserter to know the kind of the free variable, which in turn affects the
 interpretation placed on adjectives which have different meanings in different
@@ -193,7 +193,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 				Problems::issue_problem_end();
 				return NULL;
 			}
-			break; /* (this is fine -- there's a well-expressed value) */
+			break; /* (this is fine: there's a well-expressed value) */
 		case COMMON_NOUN_NT:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyInstance),
 				"this property value makes no sense to me",

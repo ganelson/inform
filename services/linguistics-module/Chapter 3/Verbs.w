@@ -13,7 +13,7 @@ defines a verb as a combination of its inflected forms with its possible
 usages in a sentence.
 
 =
-typedef struct verb {
+classdef verb {
 	struct verb_conjugation *conjugation;
 	struct verb_form *first_form;
 	struct verb_form *base_form;
@@ -22,9 +22,7 @@ typedef struct verb {
 	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
 	struct verb_compilation_data compilation_data;
 	#endif
-
-	CLASS_DEFINITION
-} verb;
+}
 
 @ Verbs are a grammatical category:
 
@@ -145,7 +143,7 @@ form usages can be legal for the same form, this is a bitmap:
 @ So here's the verb form:
 
 =
-typedef struct verb_form {
+classdef verb_form {
 	struct verb *underlying_verb;
 	struct preposition *preposition;
 	struct preposition *second_clause_preposition;
@@ -164,9 +162,7 @@ typedef struct verb_form {
 	#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
 	struct verb_form_compilation_data verb_form_compilation;
 	#endif
-
-	CLASS_DEFINITION
-} verb_form;
+}
 
 @ Verb forms are also a grammatical category:
 
@@ -200,11 +196,10 @@ The following structure is just a holder for a "verb meaning", so that it
 can be joined into a linked list. Verb meanings are described elsewhere.
 
 =
-typedef struct verb_sense {
+classdef verb_sense {
 	struct verb_meaning vm;
 	struct verb_sense *next_sense; /* within the linked list for the verb form */
-	CLASS_DEFINITION
-} verb_sense;
+}
 
 @h Creating forms and senses.
 Forms are stored in a linked list, and are uniquely identified by the triplet
@@ -354,7 +349,7 @@ we overwrite that with the new (presumably meaningful) one.
 			vf->first_unspecial_meaning = NULL;
 	}
 
-@ The following function may seem curious -- what's so great about the first
+@ The following function may seem curious — what's so great about the first
 regular sense of a verb? The answer is that Inform generally gives a verb at
 most one regular sense.
 

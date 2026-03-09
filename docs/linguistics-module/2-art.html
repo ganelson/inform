@@ -67,12 +67,10 @@ function togglePopup(material_id) {
 is an enumeration.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">article</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">article</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">article</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure article is accessed in 1/sc, 2/adj, 2/daq, 2/nns, 2/prn, 3/vrb, 3/vu, 3/prp and here.</li></ul>
 <div class="lsmarkdown">
@@ -80,12 +78,11 @@ is an enumeration.</p>
 matched against some form of a pronoun.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">article_usage</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">article_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">article_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">word_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">article_usage</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure article_usage is accessed in 2/nns, 2/prn, 3/vu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
@@ -152,7 +149,7 @@ we give these special priority in Preform optimisation; they have their very
 own private bit.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Articles::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Articles::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>

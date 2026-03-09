@@ -3,8 +3,8 @@
 To index inferences.
 
 @h Indexing properties of a subject.
-This is where the detailed description of a given kind -- what properties it
-has, and so on -- is generated.
+This is where the detailed description of a given kind — what properties it
+has, and so on — is generated.
 
 =
 void RTInferences::index(package_request *pack, int hl, inference_subject *infs, int brief) {

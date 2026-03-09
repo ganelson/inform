@@ -52,13 +52,12 @@ as follows:
 @d BARE_DIRECTION_COMMAND 5
 
 =
-typedef struct command_index_entry {
+classdef command_index_entry {
 	int nature; /* one of the above values */
 	struct text_stream *command_headword; /* text of command headword, such as "REMOVE" */
 	struct inter_package *cg_indexed; /* ...leading to... */
 	struct command_index_entry *next_alphabetically; /* next in linked list */
-	CLASS_DEFINITION
-} command_index_entry;
+}
 
 command_index_entry *sorted_command_index = NULL; /* in alphabetical order of `text` */
 

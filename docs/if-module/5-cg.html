@@ -101,7 +101,7 @@ world we would not impose a limit here.</p>
 form, so this is not as bloated a structure as it looks.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">command_grammar</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">command_grammar</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>CG_IS_*</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_cg_created</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for problem message reports */</span>
 
@@ -125,7 +125,6 @@ form, so this is not as bloated a structure as it looks.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn_understood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>CG_IS_PROPERTY_NAME</code>: which prn this names */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">command_grammar</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure command_grammar is accessed in 4/ap, 4/act, 4/as, 4/nap, 4/gng, 5/pp, 5/cgl, 5/ts, 6/db, 6/dl, 6/dc and here.</li></ul>
@@ -383,13 +382,10 @@ in any case for those.<a href="#fnref:2" title="return to text"> &#x21A9;</a></p
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The CG_IS_VALUE form.</b>  This is used to store names for, say, particular numbers, or enumeration
 values. The following examples both involve <code>CG_IS_VALUE</code> grammars:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"deuce"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">Red</span><span class="plain-syntax">, </span><span class="identifier-syntax">blue</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"scarlet"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">red</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"deuce"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">Red</span><span class="plain-syntax">, </span><span class="identifier-syntax">blue</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"scarlet"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">red</span><span class="plain-syntax">.
+</span></pre>
 <p>Note however that a <code>CG_IS_VALUE</code> grammar is associated with a kind: unlike
 the case of <code>CG_IS_SUBJECT</code>, there isn't a different one for each individual
 value. There is just one grammar holding all possible fancy names for
@@ -421,8 +417,8 @@ free-form textual parts of commands typed by the player: the player can legally
 type ASK JETHRO ABOUT ... and put almost anything after ABOUT, and we need ways
 to parse that material.</p>
 <p>The model here is rather different. Because the topic being discussed could be
-almost anything -- maybe Jethro knows about WHEAT PRICES, the HARVEST and
-QUANTUM CHROMODYNAMICS (he has hidden depths) -- there is no obvious data
+almost anything — maybe Jethro knows about WHEAT PRICES, the HARVEST and
+QUANTUM CHROMODYNAMICS (he has hidden depths) — there is no obvious data
 structure in Inform to attach such a grammar to. Instead, code wishing to
 create a new consultation should first call <a href="5-cg.html#SP15" class="internal">CommandGrammars::prepare_consultation_cg</a>,
 then access the current one being made using <a href="5-cg.html#SP15" class="internal">CommandGrammars::get_consultation_cg</a>.
@@ -521,7 +517,7 @@ the buck down to <a href="5-cgl.html" class="internal">Command Grammar Lines</a>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  Determining is more involved, and is also recursive. What we are doing is
-trying to work values a CG can produce, in terms of what value it refers to --
+trying to work values a CG can produce, in terms of what value it refers to —
 if any. For <code>CG_IS_COMMAND</code> grammars, for example, it will be <code>NULL</code>, but
 for <code>CG_IS_VALUE</code>, it might for example be a description meaning &quot;any value
 with kind <code>K_number</code>.</p>

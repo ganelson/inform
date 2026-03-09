@@ -239,8 +239,8 @@ void Lexer::start(void) {
 	Vocabulary::start_hash_table();
 }
 
-@ These are quite hefty memory allocations, with the expensive one --
-`lw_source` -- also being the least essential to Inform's running. But at least
+@ These are quite hefty memory allocations, with the expensive one —
+`lw_source` — also being the least essential to Inform's running. But at least
 we use memory in a way at least vaguely related to the size of the source
 text, never using more than twice what we need, and we impose no absolute
 upper limits.
@@ -488,7 +488,7 @@ It is therefore used only twice, with care, and only in this section below.
 @h Internal lexer states.
 The current situation of the lexer is specified by the collective values
 of all of the following. First, the start of the current word being
-recorded, and the current high water mark -- those are defined above.
+recorded, and the current high water mark — those are defined above.
 Second, we need the feeder machinery to maintain a variable telling us
 the previous character in the raw, un-respaced source.
 
@@ -511,8 +511,8 @@ int lxs_kind_of_word; /* One of the defined values above */
 @ While there are a pile of state variables below, the basic situation is that
 the lexer has two main modes: ordinary mode and literal mode, determined
 by whether `lxs_literal_mode` is false or true. It might look as if this
-variable is redundant -- can't we simply see whether `lxs_kind_of_word`
-is `ORDINARY_KW` or not? -- but in fact we return to ordinary mode slightly
+variable is redundant — can't we simply see whether `lxs_kind_of_word`
+is `ORDINARY_KW` or not? — but in fact we return to ordinary mode slightly
 before we finish recording a literal, as we shall see, so it is important
 to be able to switch in and out of literal mode without changing the kind
 of word.
@@ -862,7 +862,7 @@ Inform print a paragraph break at run-time.
     }
 
 @h Completing a word.
-Outside of whitespace, then, our word (whatever it was -- ordinary word,
+Outside of whitespace, then, our word (whatever it was — ordinary word,
 literal string, I6 insertion or comment) has been stored character by
 character at the steadily rising high water mark. We have now hit the end
 by reaching whitespace (in the case of a literal, this has happened because
@@ -925,7 +925,7 @@ For ordinary words (but not literals), the copy of a word in the main array
 `lw_text` is lowered in case. The original is preserved in `lw_rawtext` and
 is used to print more attractive error messages, and also to enable a few
 semantic parts of Inform to be case sensitive. This copying means that in the
-worst case -- when we complete an ordinary word of maximal length -- we need
+worst case — when we complete an ordinary word of maximal length — we need
 to consume an additional `MAX_WORD_LENGTH+2` bytes of the lexer's workspace,
 which is why that was the amount we checked to ensure existed when the
 lexer was called. The lowering loop can therefore never overspill the

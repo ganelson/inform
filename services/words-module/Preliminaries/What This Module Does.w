@@ -26,20 +26,22 @@ a //source_file// object representing the file as an origin, and the lexer
 assigns each word a //source_location// which is simply its SF together with
 a line number. //Lexer::word_location// returns this for a given word number.
 
-Word numbers count upwards from 1 and are contiguous: for example --
-= (text)
+Word numbers count upwards from 1 and are contiguous: for example —
+
+``` None
 	Mary had a  little lamb .   Everywhere that Mary went ,  the lamb
 	17   18  19 20     21   22  23         24   25   26   27 28  29
-=
+```
+
 Repetitions are frequent: a typical source text of 50,000 words has an
 unquoted[1] vocabulary of only about 2000 different words. Inform generates
 a //vocabulary_entry// object for each of these distinct words, and //Lexer::word//
 returns the VE for a given word number. In the above example,
-= (text as InC)
+
 	Lexer::word(17) == Lexer::word(25)   /* both are uses of "Mary" */
 	Lexer::word(21) == Lexer::word(29)   /* both are uses of "lamb" */
 	Lexer::word(20) != Lexer::word(24)   /* one is "little", the other "that" */
-=
+
 The important point is that words at two positions can be tested for textual
 equality in an essentially instant process, by comparing `vocabulary_entry *`
 pointers. (See //Numbered Words// for just this sort of comparison.)
@@ -57,11 +59,11 @@ lexer again to do that.
 @ A few //vocabulary_entry// objects are hardwired into //words//, but only
 for punctuation. These have names like `COMMA_V`, which means just what you
 think it means. In our example,
-= (text as InC)
+
 	Lexer::word(27) == COMMA_V   /* the comma between "went" and "the" */
-=
+
 See //Vocabulary::create_punctuation//, and also //LoadPreform::create_punctuation//,
-where further punctuation marks are created in order to parse Preform syntax --
+where further punctuation marks are created in order to parse Preform syntax —
 there are exotica such as `COLONCOLONEQUALS_V` there, for "::=".
 
 @ Lexical errors occur if words are too long, or quoted text continues without
@@ -73,11 +75,11 @@ user (see //How To Include This Module//).
 Each //vocabulary_entry// has a bitmap of `*_MC` meaning codes assigned to it.
 (And //Vocabulary::test_flags// tests whether the Nth word has a given bit.)
 For example, `ORDINAL_MC` is applied to ordinal numbers like "sixth" or "15th"
--- see //Vocabulary::an_ordinal_number//, and `NUMBER_MC` to cardinals. The
+— see //Vocabulary::an_ordinal_number//, and `NUMBER_MC` to cardinals. The
 //words// module uses only a few bits in this map, but the //linguistics//
 module develops the idea much further: for example, any word which can be used
-in a particular semantic category -- say, in a variable name -- is marked
-with a bit representing that -- say, `VARIABLE_MC`. The //core// module
+in a particular semantic category — say, in a variable name — is marked
+with a bit representing that — say, `VARIABLE_MC`. The //core// module
 uses this for 15 or so of the most commonly used semantic categories in the
 Inform language. See //linguistics: What This Module Does// to pick up the story.
 
@@ -110,20 +112,23 @@ of numbers (21, 26, 23) in our example above.
 word stream, with new numbers. For example, call this on "lamb", then "went",
 then "everywhere"; the three new word numbers will then be contiguous, and
 can be represented by a //wording//:
-= (text)
+
+``` None
 	Mary had a  little lamb .   Everywhere that Mary went ,  the lamb lamb went everywhere
 	17   18  19 20     21   22  23         24   25   26   27 28  29   30   31   32
-=
+```
 
 If however we want to make "lamb tian with haricot beans", we need to use the
 Lexer's ability to read text internally as well as from external files. This
 is called a "feed": see //Feeds//. In particular, //Feeds::feed_text// will
 take the text `I"tian with haricot beans"`, treat this as fresh text for
 lexing so that we now have
-= (text)
+
+``` None
 	... ,  the lamb lamb went everywhere tian with haricot beans
 	... 27 28  29   30   31   32         34   35   36      37
-=
+```
+
 and now the word assemblage (21, 34, 35, 36, 37) would indeed represent "lamb
 tian with haricot beans". The return value of //Feeds::feed_text// is the
 //wording// (34, 37).
@@ -153,7 +158,7 @@ of things: this is fastest and most efficient on memory.
 Imagine you're a compiler turning natural language into some sort of computer
 code, just hypothetically: then you probably want "a little lamb" to come out
 as a named location in memory, or object, or something like that: and this name
-must be a valid identifier for some other compiler or assembler -- alphanumeric,
+must be a valid identifier for some other compiler or assembler — alphanumeric,
 not too long, and so on. Calling it "a little lamb" is not an option.
 
 You could of course name it `ref_15A40F`, or some such, because the user will

@@ -96,9 +96,9 @@ the variable we want to find is the entire left hand side, but this is done
 for us by code in //assertions: Equations//, so it looks easy here.
 
 The surprising thing is the fresh round of typechecking: why do we do that?
-The answer is not that we doubt whether the equation is still valid -- the
+The answer is not that we doubt whether the equation is still valid — the
 rearranged equation should pass if and only if the original did, if we've
-implemented all of this correctly -- but because the alterations made to the
+implemented all of this correctly — but because the alterations made to the
 tree mean that the assignments of kinds at each node are now potentially
 incorrect. Re-typechecking will recalculate these.
 
@@ -162,7 +162,7 @@ need to exist as local variables in the current stack frame.
 	return;
 
 @ In the case of the symbol we are setting, the local variable might be one
-which has only just been created and thus has no value yet -- not having
+which has only just been created and thus has no value yet — not having
 set it, Inform hasn't given it a kind more explicit than "value".
 We can improve that by giving it the kind of the symbol it is to match.
 

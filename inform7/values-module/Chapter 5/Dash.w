@@ -43,13 +43,12 @@ the phrase is proved correct.
 see what we've considered, and this is used to accumulate data for that.
 
 =
-typedef struct inv_token_problem_token {
+classdef inv_token_problem_token {
 	struct wording problematic_text;
 	struct parse_node *as_parsed;
 	int already_described;
 	int new_name; /* found in context of a name not yet defined */
-	CLASS_DEFINITION
-} inv_token_problem_token;
+}
 
 @h The Dashboard.
 Dash uses a small suite of global variables to keep track of two decidedly
@@ -483,10 +482,12 @@ sometimes the grandparent or great-grandparent; and at the start of the
 recursion, when no context has appeared yet, it will be null. In effect,
 then, the tree we're checking contains its own instructions on how it
 should be checked. For example, the subtree
-= (text)
+
+``` None
 	CONDITION_CONTEXT_NT
 	    p
-=
+```
+
 tells us that when we reach `p` it should be checked as a condition.
 
 =
@@ -550,7 +551,7 @@ and typechecking the following invocation:
 
 > inspect the Marble Portal;
 
-Then we would have `p` set to some value -- here "the Marble Portal" --
+Then we would have `p` set to some value — here "the Marble Portal" —
 and the `MATCHING_RVALUE_CONTEXT_NT` node would point to a description node
 for open doors. We must see if `p` matches that. Any match can be at best at
 the "sometimes" level. We can prove the Marble Portal is a door at compile
@@ -578,8 +579,8 @@ that natural language doesn't distinguish values from types; early designs
 of Inform didn't allow it, but many people reported this as a bug.
 
 Again we switch context and recurse first. We can't safely test pointer
-values, such as texts, for equality at compile time -- for one thing, we
-don't know what text substitutions will then expand to -- so the value
+values, such as texts, for equality at compile time — for one thing, we
+don't know what text substitutions will then expand to — so the value
 test only forces us towards never or always when the constants being
 compared are word values.
 
@@ -696,7 +697,7 @@ But in Inform, a phrase like:
 > let the monster be a random pterodactyl;
 
 can be valid even where "the monster" is text not known to the S-parser
-as yet -- indeed, that's how local variables are made. It's the typechecker
+as yet — indeed, that's how local variables are made. It's the typechecker
 which sorts this out, because only the typechecker can decide which of the
 subtly different forms of "let" is being used.
 
@@ -907,14 +908,18 @@ there are still a handful of pitfalls.
 
 @ To recap, after checking through the possible readings we have something
 like this as the result:
-= (text)
+
+``` None
 	f ? f g ? ? p - - -
-=
-We can now throw away the `f`, `g` and `-` readings -- failed, grossly failed,
-or never reached -- to leave just those which will be compiled:
-= (text)
+```
+
+We can now throw away the `f`, `g` and `-` readings — failed, grossly failed,
+or never reached — to leave just those which will be compiled:
+
+``` None
 	? ? ? p
-=
+```
+
 If compiled this will result in run-time code to check if the arguments
 allow the first invocation and run it if so; then the second; then the third;
 and, if those three fell through, run the fourth invocation without further
@@ -991,7 +996,7 @@ or in Dash.
 	return NEVER_MATCH;
 
 @ This is another sort of error which couldn't happen with a conventional
-programming language -- in C, for instance, it's syntactically obvious
+programming language — in C, for instance, it's syntactically obvious
 how many arguments a function call has, because the brackets and commas
 are unambiguous. But in Inform, there are no reserved tokens of syntax
 acting like that. So we could easily have two accepted invocations in the
@@ -1173,7 +1178,7 @@ with it.)
 		kind_produced = Kinds::Dimensions::arithmetic_on_kinds(left_kind, right_kind, op_number);
 	kind_wanted = kind_needed;
 
-@ Note that "value" -- the vaguest kind of all -- might come up here as
+@ Note that "value" — the vaguest kind of all — might come up here as
 a result of some problem evaluating one of the operands, which has already been
 reported in a problem message; so we only issue this problem message when
 L and R are more definite.
@@ -1550,7 +1555,7 @@ Here's the code for (1), the less obvious case. This is needed for something lik
 > change the canvas to blue;
 
 where "blue" is a constant colour, and "colour" is both a kind and also a
-property. (This case really is an assignment -- it assigns the value "blue"
+property. (This case really is an assignment — it assigns the value "blue"
 to the colour property of the canvas.)
 
 @<Maybe we're changing an object to a value of a kind coinciding with a property@> =
@@ -1692,7 +1697,7 @@ a value) against `expected` as "number", the parameter expected in
 No matter how peculiar this invocation of `found` was, we have now successfully
 worked out the kind of the value it would return if compiled, and this is
 stored in `inv->kind_resulting`. We now check to see if this matches the kind
-expected -- in this example, it won't, because a stored action does not cast
+expected — in this example, it won't, because a stored action does not cast
 to a number.
 
 @<Step (4I.e) Check kind of value returned@> =
@@ -2145,7 +2150,7 @@ To be definite, let's suppose we are working on:
 
 The checking code above accepted "magic word" as a new name, and marked
 token 0 in the invocation as one where a new variable will need to be
-created -- which is done if and when the invocation is ever compiled.
+created — which is done if and when the invocation is ever compiled.
 
 =
 int Dash::set_up_any_local_required(parse_node *inv) {
@@ -2166,7 +2171,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 }
 
 @ The following code is used to work out a good kind for the new variable,
-instead of "value", based on looking at token 1 -- the value being assigned.
+instead of "value", based on looking at token 1 — the value being assigned.
 In the example above, we look at this initial value,
 
 > "Shazam [turn count] times!"
@@ -2181,7 +2186,7 @@ and decide that K should be "text".
 	if (initial_value)
 		@<Where no kind was explicitly stated, infer this from the supplied initial value@>;
 
-@ Unusually, it's legal for the initial value to be a kind --
+@ Unusually, it's legal for the initial value to be a kind —
 
 > let the magic digraph be a text;
 
@@ -2194,7 +2199,7 @@ with values which are objects, we guess the kind as the broadest subkind of
 "object" to which the value belongs: in practice that means usually a thing,
 a room or a region.
 
-We make one exception to allow lines like --
+We make one exception to allow lines like —
 
 > let X be a one-to-one relation of numbers to men;
 
@@ -2284,7 +2289,7 @@ up in Dash.
 
 But we want to produce more helpful problem messages than that. It's not
 entirely clear how best to do this. Often, when a node fails, it fails for
-seven different reasons -- each different possibility fails for a different
+seven different reasons — each different possibility fails for a different
 cause. We want, somehow, to guess which was the most likely to have been
 intended and to report the problem with that one.
 
@@ -2539,7 +2544,7 @@ int Dash::typecheck_single_node(parse_node *p, kind *kind_expected, int conditio
 
 @ "You can't have/ Something for nothing," as Canadian power-trio Rush tell
 us with the air of having just made a great discovery; well, you can't have
-"nothing" for something, either --
+"nothing" for something, either —
 
 @<Disallow "nothing" as a match for a description requiring a kind of object@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
@@ -2872,7 +2877,7 @@ common misunderstanding.
 
 @h Rule (5.b).
 This is all concerned with a shorthand far more convenient to an Inform author
-than it is to us -- where a property's name is used without any indication of
+than it is to us — where a property's name is used without any indication of
 its owner.
 
 @<Step (5.b) Deal with bare property names@> =
@@ -3065,7 +3070,7 @@ different representations at run-time.
 > let N be the number of women who are in lighted rooms;
 
 ...is parsed as a description, a condition. But in
-fact it's a noun here -- it has to be a value, in fact, which can go into
+fact it's a noun here — it has to be a value, in fact, which can go into
 the "number of..." phrase as an argument. We make this happen by coercing
 it to a constant value, using the "description of..." constructor.
 
@@ -3526,7 +3531,7 @@ linked_list *Dash::phrases_to_log(void) {
 The following adapts the above test to attempt to match two specifications
 together: for example, to match "12" against "even number". This, rather
 surprisingly, returns `SOMETIMES_MATCH`, since we find that the kinds
-are guaranteed -- 12 is indeed a number -- but Inform doesn't "know" the
+are guaranteed — 12 is indeed a number — but Inform doesn't "know" the
 meaning of the word "even", only that it's a test which will be applied
 at run time.
 

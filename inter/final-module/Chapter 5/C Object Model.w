@@ -71,7 +71,7 @@ Inter requires that the following values must be distinguishable at runtime:
 - Instances of object;
 - Classes, which include kinds of object such as "container", but not other
 kinds such as "number";
-- Constant text values -- note: this does not mean values of the I7 "text"
+- Constant text values — note: this does not mean values of the I7 "text"
 kind, this means only text literals in Inter;
 - Functions;
 - 0, which is also the value of the non-object `nothing`.
@@ -84,7 +84,7 @@ function implements the `!metaclass` primitive.
 
 @ In this C runtime, `nothing` will be 0, as is mandatory; `Class`, `Object`,
 `String` and `Routine` will be 1 to 4 respectively; values from 5 upwards will
-be assigned to objects and classes as they arise -- note that these mix freely;
+be assigned to objects and classes as they arise — note that these mix freely;
 string values will occupy a contiguous range `I7VAL_STRINGS_BASE` to
 `I7VAL_FUNCTIONS_BASE-1`; and function values will be in tha range
 `I7VAL_FUNCTIONS_BASE` to `0x7FFFFFFF`, though they will certainly not fill it.
@@ -142,7 +142,7 @@ containment tree; so we record the initial state of that three here. For classes
 of course, `initial_parent`, `initial_sibling` and `initial_child` will remain `NULL`.
 
 =
-typedef struct C_property_owner {
+classdef C_property_owner {
 	int id;
 	int is_class;
 	struct text_stream *name;
@@ -151,8 +151,7 @@ typedef struct C_property_owner {
 	struct C_property_owner *initial_parent;
 	struct C_property_owner *initial_sibling;
 	struct C_property_owner *initial_child;
-	CLASS_DEFINITION
-} C_property_owner;
+}
 
 C_property_owner *CObjectModel::new_owner(code_generation *gen, int id, text_stream *name,
 	text_stream *class_name, int is_class) {
@@ -338,7 +337,7 @@ void CObjectModel::new_runtime_class(code_generation *gen, text_stream *class_na
 }
 
 @h Runtime instances.
-These arise either (i) as pseudo-objects provided by kits -- the Inform 7
+These arise either (i) as pseudo-objects provided by kits — the Inform 7
 compiler never itself generates pseudo-objects; or (ii) as property-holder
 objects to hold the properties of an enumerated non-object kind, where one
 such object exists for each such kind; or (iii), the most obvious way, as
@@ -448,12 +447,11 @@ freely overlap with owner IDs or anything else. Their order is not significant.
 Properties are recognised here by name, using a dictionary.
 
 =
-typedef struct C_property {
+classdef C_property {
 	struct text_stream *name;
 	int id;
 	int either_or;
-	CLASS_DEFINITION
-} C_property;
+}
 
 C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name,
 	int either_or) {
@@ -576,12 +574,11 @@ void CObjectModel::assign_properties(code_generator *gtr, code_generation *gen,
 all it really does is to stash it away for now:
 
 =
-typedef struct C_pv_pair {
+classdef C_pv_pair {
 	struct C_property *prop;
 	struct text_stream *val;
 	int inlined;
-	CLASS_DEFINITION
-} C_pv_pair;
+}
 
 void CObjectModel::assign_one_prop(code_generation *gen, C_property_owner *owner,
 	C_property *prop, text_stream *val, int inline_this) {
@@ -593,7 +590,7 @@ void CObjectModel::assign_one_prop(code_generation *gen, C_property_owner *owner
 }
 
 @ Creating all those //C_pv_pair//s was just playing for time, though: eventually
-we have to do this --
+we have to do this —
 
 =
 void CObjectModel::write_i7_initialiser(code_generation *gen) {
@@ -997,7 +994,7 @@ i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr,
 
 @h Reading, writing and changing general properties.
 And these are the exactly analogous functions which more generally read, write
-or change properties which can be held by either objects or enumerated instances --
+or change properties which can be held by either objects or enumerated instances —
 in other words, all properties. The additional kind argument `K` is then needed
 to distinguish these cases (since the `obj` values for different kinds may well
 coincide).

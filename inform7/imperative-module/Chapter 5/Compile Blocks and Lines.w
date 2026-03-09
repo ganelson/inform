@@ -10,7 +10,8 @@ the function begun. Now we must compile the actual code to go into the function;
 the test group `:invocations` exercises all of this.
 
 Here is a typical example rule, taken from the Standard Rules:
-= (text as Inform 7)
+
+``` Inform7
 Report an actor waiting (this is the standard report waiting rule):
 	if the actor is the player:
 		if the action is not silent:
@@ -18,9 +19,11 @@ Report an actor waiting (this is the standard report waiting rule):
 			say "Time [pass]." (A);
 	otherwise:
 		say "[The actor] [wait]." (B).
-=
+```
+
 In the parse tree, this now looks like so:
-= (text)
+
+``` None
 IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 	CODE_BLOCK_NT
 		CODE_BLOCK_NT
@@ -35,7 +38,8 @@ IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 			CODE_BLOCK_NT'otherwise'
 				CODE_BLOCK_NT'say "[The actor] [wait]." ( b )'
 					INVOCATION_LIST_SAY_NT'"[The actor] [wait]." ( b )'
-=
+```
+
 This diagram has been simplified to remove the child nodes of the `INVOCATION_LIST_NT`
 and `INVOCATION_LIST_SAY_NT` nodes; the point is to show the structure of the code
 blocks here.
@@ -81,12 +85,14 @@ int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, in
 
 @ There's nothing special about singleton blocks except that we want to issue
 problem messages for something like this:
-= (text as Inform 7)
+
+``` Inform7
 	if the player is in the Hall of Mirrors:
 		let the court favourite be Moliere;
 	if Louis is happy:
 		...
-=
+```
+
 ...where the "let" phrase can have no meaningful effect, since "court favourite"
 is destroyed immediately after its creation. So in order to check for that, we
 keep the following state variable:
@@ -244,22 +250,25 @@ need bespoke handling:
 
 @ When an "if" node has two children, they are the condition to test and then
 the code block of what to execute if the condition is true:
-= (text)
+
+``` None
 		CODE_BLOCK_NT {control structure: IF}
 			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
 			CODE_BLOCK_NT
 				...
-=
+```
+
 When it has three children, the extra block is what to execute if the condition
 is false:
-= (text)
+
+``` None
 		CODE_BLOCK_NT {control structure: IF}
 			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
 			CODE_BLOCK_NT
 				...
 			CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
 				...
-=
+```
 
 @<Compile an if midriff@> =
 	if (p->down->next->next) EmitCode::inv(IFELSE_BIP);
@@ -382,7 +391,8 @@ one is the "non-pointery" case.
 	}
 
 @ Okay, so here's the code for a pointery switch. We generate something like this:
-= (text)
+
+``` None
 	sw_v = ... switch value ...
 	if (Equals(sw_v, v1)) {
 		... case for v1 ...
@@ -393,7 +403,8 @@ one is the "non-pointery" case.
 			... default case ...
 		}
 	}
-=	
+```
+
 We begin by ensuring that the function has a scratch local variable called `sw_v`,
 and store the switch value in it. We need not use `CopyPV` to make an
 independent copy, since `sw_v` will be read-only: we can just copy the address of
@@ -662,12 +673,14 @@ void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parse
 
 @h Validating sequences of say invocations.
 Test substitutions result in "say" invocations with multiple things to do:
-here are examples, increasing in difficulty --
-= (text as Inform 7)
+here are examples, increasing in difficulty —
+
+``` Inform7
 "Estates are worth at least [N]."
 "Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."
 "The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."
-=
+```
+
 These imply 3, 5 and 9 individual invocations, respectively. The second and
 third examples involve "say control structures", which means that those
 invocations have to connect properly with each other: thus "[if...]" can be

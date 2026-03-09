@@ -96,8 +96,8 @@ still function, but would be slower. With that said, it's possible to break
 things by making the wrong settings here, so be wary of making changes.
 
 Setting up happens in two stages. Firstly, when this module (and therefore
-the compiler) starts up, certain internally-defined Preform nonterminals --
-those defined by functions in the code, not loaded from Syntax files -- need
+the compiler) starts up, certain internally-defined Preform nonterminals —
+those defined by functions in the code, not loaded from Syntax files — need
 to be marked with NT incidence bits. (See //words: Nonterminal Incidences//.)
 
 =

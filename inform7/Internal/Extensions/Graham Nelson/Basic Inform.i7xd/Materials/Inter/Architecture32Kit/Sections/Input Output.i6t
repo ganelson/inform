@@ -356,7 +356,7 @@ needed by the rest of the template as routines for each VM.
 `VM_PrintToBuffer(buf, len, a, b, c)` prints something into a buffer.
 
 `VM_Tokenise(buff, parse_buff)` takes the text in the buffer `buff` and
-produces the corresponding data in the parse buffer `parse_buff` -- this is
+produces the corresponding data in the parse buffer `parse_buff` — this is
 called tokenisation since the characters are divided into words: in traditional
 computing jargon, such clumps of characters treated syntactically as units
 are called tokens.
@@ -559,8 +559,8 @@ address because they are encoded differently, so that a function address
 (which is packed) could well coincide with that of a dictionary word (which
 is not). On Glulx these restrictions are somewhat lifted, so that it's
 possible to write a routine which can look at a value, work out what it
-must mean, and print it suitably. This is only possible up to a point --
-for instance, it can't distinguish an integer from a function address --
+must mean, and print it suitably. This is only possible up to a point —
+for instance, it can't distinguish an integer from a function address —
 and in I7 the use of this sort of trick is much less important because
 type-checking in the Inform compiler handles the problem much better. Still,
 we retain some Glulx-only features because they are convenient for writing
@@ -585,7 +585,7 @@ not Unicode.
 word array in memory. The stored characters are Unicode code points.
 
 `Glulx_ChangeAnyToCString` calls `Glulx_PrintAnyToArray` on a particular
-array, then amends the result to make it a C-style string -- that is, a
+array, then amends the result to make it a C-style string — that is, a
 sequence of byte-sized characters which are null terminated. The character
 set stored here is once again ZSCII, not Unicode.
 
@@ -788,7 +788,7 @@ screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
 `VM_MoveCursorInStatusLine(line, column)` switches printing to the status line,
-positioning the "cursor" -- the position at which printing will begin --
+positioning the "cursor" — the position at which printing will begin —
 at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.

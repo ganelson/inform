@@ -74,9 +74,9 @@ functions in the <a href="../bytecode-module/index.html" class="internal">byteco
 greater ease and consistency.</p>
 <p>This module needs plenty of working data, and stashes that data inside the
 <code>inter_tree</code> structure it is working on: in a component of that structure called
-a <a href="1-bm.html#SP4" class="internal">building_site</a>. Whereas the main data in an <code>inter_tree</code> affects the meaning
+a <a href="1-bm.html#SP3" class="internal">building_site</a>. Whereas the main data in an <code>inter_tree</code> affects the meaning
 of the tree, i.e., makes a difference as to what program the tree represents,
-the contents of the <a href="1-bm.html#SP4" class="internal">building_site</a> component are only used to make it, and
+the contents of the <a href="1-bm.html#SP3" class="internal">building_site</a> component are only used to make it, and
 are ignored by the <a href="../final-module/index.html" class="internal">final</a> code-generator.</p>
 </div>
 <div class="lsmarkdown">
@@ -111,7 +111,7 @@ named for that unit. That is:</p>
 <p>Each kit produces a module, named after it. Any Inter tree produced by
 <a href="../inform7/index.html" class="internal">inform7</a> will always contain the module <code>BasicInformKit</code>, for example.</p>
 <p><a href="../inform7/index.html" class="internal">inform7</a> generates an additional module called <code>generic</code>, holding
-generic definitions -- material which is the same regardless of what is
+generic definitions — material which is the same regardless of what is
 being compiled.</p>
 <p><a href="../inform7/index.html" class="internal">inform7</a> generates an additional module called <code>completion</code>, holding
 resources put together from across different compilation units.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
@@ -123,7 +123,7 @@ package type <code>_submodule</code>. The Inform tools use a standard set of nam
 such submodules: for example, in any module the resources defining its
 global variables are in a submodule called <code>variables</code>. (If it defines no
 variables, the submodule will not be present.)</p>
-<p>There are just two different linkages -- packages with special contents
+<p>There are just two different linkages — packages with special contents
 and which the linking steps of <a href="../pipeline-module/index.html" class="internal">pipeline</a> treat differently from modules.</p>
 <ul>
 <li>
@@ -155,7 +155,7 @@ as part of <code>synoptic</code> during linking, but at present this is too diff
 code defining various resources, cross-referenced by <code>inter_symbol</code>s.</p>
 <p>But this tree cannot be magically made all at once. For much of the run of
 a tool like <a href="../inform7/index.html" class="internal">inform7</a>, a partly-built tree will exist, and this introduces
-many potential race conditions -- where, for example, a call to function F
+many potential race conditions — where, for example, a call to function F
 cannot be made until F itself has been made, and so on.</p>
 <p>We also want to avoid bugs where one part of the compiler thinks that F will
 live in one place, and another part thinks it is somewhere else.</p>
@@ -165,18 +165,15 @@ a <a href="1-pck.html#SP1" class="internal">package_request</a> stands for a pac
 and an <a href="1-in.html#SP3" class="internal">inter_name</a>, similarly, is a symbol which may or may not exist yet.
 This enables tools like <a href="../inform7/index.html" class="internal">inform7</a> to build up elaborate if shadowy worlds
 of references to tree positions which will be filled in later.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                </span><span class="identifier-syntax">DEFINITELY</span><span class="plain-syntax"> </span><span class="identifier-syntax">MADE</span><span class="plain-syntax">     </span><span class="identifier-syntax">PERHAPS</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT</span><span class="plain-syntax"> </span><span class="identifier-syntax">YET</span><span class="plain-syntax"> </span><span class="identifier-syntax">MADE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PACKAGE</span><span class="plain-syntax">     </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax">       </span><span class="comment-syntax">//package_request//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SYMBOL</span><span class="plain-syntax">      </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">        </span><span class="comment-syntax">//inter_name//</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">				DEFINITELY MADE		PERHAPS NOT YET MADE
+	PACKAGE		inter_package		//package_request//
+	SYMBOL		inter_symbol		//inter_name//
+</span></pre>
 <p>So, for example, a <a href="1-pck.html#SP1" class="internal">package_request</a> can represent <code>/main/synoptic/kinds</code>
 either before or after that package has been built. At some point the package
 ceases to be virtual and comes into being: this is called &quot;incarnation&quot;. But
 code in <a href="../inform7/index.html" class="internal">inform7</a> using package requests never needs to know when this takes
-place, and will function equally well before or after -- so, no race conditions.</p>
+place, and will function equally well before or after — so, no race conditions.</p>
 <p>And similarly for <a href="1-in.html#SP3" class="internal">inter_name</a>, which it would perhaps be more consistent
 to call a <code>symbol_request</code>. But &quot;iname&quot; is now a term used almost ubiquitously
 across <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inter/index.html" class="internal">inter</a>, and it doesn't seem worth renaming it now.</p>
@@ -187,12 +184,9 @@ actual content of these boxes, or the definitions which the symbols refer to.
 In short, the actual Inter code.</p>
 <p>The straightforward way to compile some Inter code is to make calls to functions
 in <a href="3-prd.html" class="internal">Produce</a>, which provide a straightforward if low-level API. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="function-syntax">HierarchyLocations::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CCOUNT_PROPERTY_HL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::numeric_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HierarchyLocations::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CCOUNT_PROPERTY_HL</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">Produce::numeric_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">);
+</span></pre>
 <p>Note that we do not need to say where this code will go. <a href="3-prd.html" class="internal">Produce</a>
 looks at the iname, works out what package request it should go into, incarnates
 that into a real <code>inter_package</code> if necessary, then incarnates the iname into
@@ -201,41 +195,34 @@ relevant package, an instruction which defines the symbol.</p>
 <p>And similarly for emitting code inside a function body, though then it is
 necessary first to say what function (which can be done by calling <a href="3-prd.html#SP12" class="internal">Produce::function_body</a>
 with the iname for that function). For example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">RETURN_BIP</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(1));
+</span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(1));</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  But that is a laborious sort of notation for what, in a C-like language, would
 be written just as <code>return 1</code>. It would be very painful to have to implement
 kits such as BasicInformKit that way. Instead, we write them in a notation which
 is very close indeed<sup id="fnred:2"><a href="#fn:2" rel="footnote">1</a></sup> to Inform 6 syntax.<sup id="fnred:3"><a href="#fn:3" rel="footnote">2</a></sup></p>
 <p>This means we need to provide what amounts to a pocket Inform-6-to-Inter compiler,
-and we do that in this module, using a data structure called an <a href="2-is.html#SP1" class="internal">inter_schema</a> --
-in effect, an annotated syntax tree -- to represent the results of parsing Inform 6
+and we do that in this module, using a data structure called an <a href="2-is.html#SP1" class="internal">inter_schema</a> —
+in effect, an annotated syntax tree — to represent the results of parsing Inform 6
 notation. For example, this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="function-syntax">ParsingSchemas::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"return true;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">where</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="function-syntax">EmitInterSchemas::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, ...);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ParsingSchemas::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"return true;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">where</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">EmitInterSchemas::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">sch</span><span class="plain-syntax">, ...);
+</span></pre>
 <p>generates Inter code equivalent to the example above.<sup id="fnred:4"><a href="#fn:4" rel="footnote">3</a></sup> But the real power of
 the system comes from:</p>
 <p>(a) The ability to handle much larger passages of I6 notation - for example, a
-function body 10K long -- in an acceptably speed-efficient way; and</p>
+function body 10K long — in an acceptably speed-efficient way; and</p>
 <p>(b) The ability to substitute values in for placeholders.</p>
 <p>As an example of (b), an <a href="2-is.html#SP1" class="internal">inter_schema</a> is how <a href="../inform7/index.html" class="internal">inform7</a> compiles so-called
 inline phrase definitions such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">values</span><span class="plain-syntax">) </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">brace</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        (- </span><span class="identifier-syntax">LIST_OF_TY_Say</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, </span><span class="constant-syntax">1</span><span class="plain-syntax">); -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">values</span><span class="plain-syntax">) </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">brace</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation</span><span class="plain-syntax">:
+		(- </span><span class="identifier-syntax">LIST_OF_TY_Say</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, </span><span class="constant-syntax">1</span><span class="plain-syntax">); -).
+</span></pre>
 <p>Here, the text <code>LIST_OF_TY_Say({-by-reference:L}, 1);</code> is passed through to
 <a href="2-pis.html#SP1" class="internal">ParsingSchemas::from_text</a> to make a schema. When the phrase is invoked,
 <a href="2-eis.html#SP1" class="internal">EmitInterSchemas::emit</a> is used to generate Inter code from it; and a
@@ -270,27 +257,21 @@ Inter instruction at a time, and for this the Produce API is provided.</p>
 the <a href="3-prd.html#SP3" class="internal">code_insertion_point</a> system), and then provides functions which call
 down into <a href="../bytecode-module/index.html" class="internal">bytecode</a> for us, making use of that write position. So, for
 example, we can write:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(17));</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">RETURN_BIP</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(17));
+</span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);
+</span></pre>
 <p>to produce the Inter code:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span><span class="plain-syntax">
+</span></pre>
 <p>Note the use of <a href="3-prd.html#SP9" class="internal">Produce::down</a> and <a href="3-prd.html#SP9" class="internal">Produce::up</a> to step up and down the
 hierarchy: these functions are always called in matching ways.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The <a href="../pipeline-module/index.html" class="internal">pipeline</a> module makes heavy use of the Produce API. Surprising,
-<a href="../inform7/index.html" class="internal">inform7</a> calls it in only a few places -- but in fact that is because
+<a href="../inform7/index.html" class="internal">inform7</a> calls it in only a few places — but in fact that is because
 it provides still another middleware layer on top. See <a href="../runtime-module/2-emt.html" class="internal">Emit (in runtime)</a>.
 But it's really only a very thin layer, allowing the caller not to have to
 pass the <code>I</code> argument to every call (because it will always be the Inter tree

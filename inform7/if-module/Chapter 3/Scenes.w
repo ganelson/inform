@@ -112,10 +112,10 @@ are called "ends" in the code below, and are numbered end 0 (the beginning),
 end 1 (the usual end), and then any named ends ("ends badly" or "ends
 triumphantly", for instance, might be ends 2 and 3). Each end has a condition
 which can cause it, or can be "anchored" to any number of ends of other
-scenes -- to express which, the //scene_connector// structure is used.
+scenes — to express which, the //scene_connector// structure is used.
 
 =
-typedef struct scene {
+classdef scene {
 	struct instance *as_instance; /* the constant for the name of the scene */
 	int once_only; /* cannot repeat during play */
 	int start_of_play; /* if begins when play begins */
@@ -123,25 +123,23 @@ typedef struct scene {
 	int no_ends; /* how many ends the scene has */
 	struct scene_end ends[MAX_SCENE_ENDS];
 	int indexed; /* temporary storage during Scenes index creation */
-	CLASS_DEFINITION
-} scene;
+}
 
-typedef struct scene_end {
+classdef scene_end {
 	struct wording end_names; /* for ends 2, 3, ...: e.g. "badly" */
 	struct rulebook *end_rulebook; /* rules to apply then */
 	struct dialogue_beat *as_beat; /* only for those scenes equated to beats */
 	struct parse_node *anchor_condition;
 	struct scene_connector *anchor_connectors; /* linked list */
 	struct parse_node *anchor_condition_set; /* where set */
-	CLASS_DEFINITION
-} scene_end;
+}
 
-typedef struct scene_connector {
+classdef scene_connector in 1000s {
 	struct scene *connect_to; /* scene connected to */
 	int end; /* end number: see above */
 	struct scene_connector *next; /* next in list of connectors for a scene end */
 	struct parse_node *where_said; /* where this linkage was specified in source */
-} scene_connector;
+}
 
 scene *SC_entire_game = NULL;
 
@@ -624,10 +622,9 @@ description. This is stored in the following scenes-feature corner of the
 //assertions: Runtime Context Data// for the rule:
 
 =
-typedef struct scenes_rcd_data {
+classdef scenes_rcd_data {
 	struct parse_node *during_scene; /* ...happens only during a scene matching this? */
-	CLASS_DEFINITION
-} scenes_rcd_data;
+}
 
 scenes_rcd_data *Scenes::new_rcd_data(id_runtime_context_data *idrcd) {
 	scenes_rcd_data *srd = CREATE(scenes_rcd_data);

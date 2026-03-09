@@ -5,7 +5,7 @@ others with values.
 
 @h Introduction.
 Each differently-named property has a //property// instance. It can be
-had by multiple subjects -- usually kinds or instances -- which is why it
+had by multiple subjects — usually kinds or instances — which is why it
 has a list of `permissions` saying who can have it, and not just one subject;
 but it is the same essential property whoever has it, and in particular has
 the same kind. A door and a scene could both have the property "style", but
@@ -18,7 +18,7 @@ implementations. In this section of code, we deal with what they have in
 common.
 
 =
-typedef struct property {
+classdef property {
 	struct wording name; /* name of property */
 	int has_of_in_the_name; /* looks like a property test, e.g., "point of view"? */
 	int Inter_level_only; /* i.e., does not correspond to an I7 property */
@@ -33,9 +33,7 @@ typedef struct property {
 	struct property_compilation_data compilation_data;
 
 	struct possession_marker pom; /* for temporary use when checking implications */
-
-	CLASS_DEFINITION
-} property;
+}
 
 @h Creation.
 We have two basic operations: (1) To find the structure corresponding to a
@@ -175,7 +173,7 @@ property *P_grammatical_gender = NULL; /* a value property describing names */
 
 @ The first four of these are recognised by having the names in this Preform
 nonterminal; the fifth is detected instead by having the same name as the
-kind "grammatical gender" -- see //Instances::make_kind_coincident//.
+kind "grammatical gender" — see //Instances::make_kind_coincident//.
 
 =
 <notable-properties> ::=

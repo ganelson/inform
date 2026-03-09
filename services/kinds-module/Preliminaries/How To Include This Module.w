@@ -36,14 +36,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_KINDS_CALLBACK Emotions::whoa
 	
 	=
 	void Emotions::whoa(text_stream *OUT) {
 	    WRITE("Great heavens!\n");
 	}
-=
+```
+
 The following alphabetical list has references to fuller explanations:
 
 - `DETERMINE_SCALE_FACTOR_KINDS_CALLBACK`, if provided, is called to give
@@ -59,7 +61,7 @@ kind can contain sometimes-matching subkind instances. See
 
 - `HIERARCHY_MOVE_KINDS_CALLBACK` is called to ask us to put make one
 kind a subkind of another. See //Kinds::make_subkind// and
-//Kinds::new_base// -- there are two ways this can happen.
+//Kinds::new_base// — there are two ways this can happen.
 
 - `HIERARCHY_VETO_MOVE_KINDS_CALLBACK` is called to give the parent tool a
 chance to veto any proposed subkind. (Inform uses this, for example, to catch
@@ -68,7 +70,7 @@ See //Kinds::make_subkind//.
 
 - `NEW_BASE_KINDS_CALLBACK` is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See //Kinds::new_base//
-and //NeptuneFiles::read_command// -- there are two ways this can happen.
+and //NeptuneFiles::read_command// — there are two ways this can happen.
 
 - `NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK` is called when the kind "natural
 language" is created (if it is): see //FamiliarKinds::notice_new_kind//.

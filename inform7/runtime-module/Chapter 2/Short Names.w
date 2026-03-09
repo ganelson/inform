@@ -38,8 +38,8 @@ part of an assembly, then its name needs to contain that of the object it
 was assembled from: say `"Marianne's blue hat"`, where `"Marianne"` is the
 name of the owner.
 
-If, however, the short name for `"Marianne"` varies -- through the use of
-an activity -- then we want to respect that. So we don't give the name using
+If, however, the short name for `"Marianne"` varies — through the use of
+an activity — then we want to respect that. So we don't give the name using
 static text, but as a dynamic function, which first prints Marianne's name
 through the usual apparatus, and then adds `"'s blue hat"` afterwards. That
 way, if Marianne changes her name to Emilia, the result will be
@@ -50,14 +50,13 @@ request for it. `capped` is `TRUE` if the function is to be used in a capitalise
 short name, and `FALSE` for regular.
 
 =
-typedef struct short_name_notice {
+classdef short_name_notice {
 	struct inter_name *routine_iname;
 	struct inter_name *snn_iname;
 	struct instance *namee;
 	struct inference_subject *after_subject;
 	int capped;
-	CLASS_DEFINITION
-} short_name_notice;
+}
 
 inter_name *ShortNames::iname_for_short_name_fn(instance *I, inference_subject *subj,
 	int capped) {

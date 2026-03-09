@@ -19,7 +19,7 @@ For more, see //foundation: A Brief Guide to Foundation//.
 @h About this layer of Inform.
 The //runtime// and //imperative// modules (see //imperative: What This Module Does//)
 jointly make up a layer of Inform whose task is to take the conceptual structures
-now build up -- rules, phrases, tables, the world model -- and turn them into
+now build up — rules, phrases, tables, the world model — and turn them into
 Inter code. For the bigger picture, see //structure//.
 
 Neither module is in charge of the other. //runtime// makes extensive use of

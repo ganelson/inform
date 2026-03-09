@@ -67,10 +67,9 @@ that Inform 7 is installed in the directory <code>inform7</code> with respect to
 current working directory. <code>inform7</code> is a composite of various files, and
 the executable inside is at <code>inform7/Tangled/inform7</code>. To test that it has
 been built successfully, try:</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -help</span><span class="ConsoleText-plain-syntax">
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -help</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  When it runs, Inform 7 needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
@@ -91,11 +90,8 @@ with respect to the current working directory.</li>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. How the UI apps call Inform 7.</b>  The full range of options is complex, so it seems helpful to start by showing
 what the Inform UI apps typically call when the user clicks &quot;Go&quot;:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> I</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> E</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> P</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=F</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> I</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> E</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> P</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=F
+</span></pre>
 <p>for suitable pathnames <code>I</code>, <code>E</code>, <code>P</code> and a choice of <code>F</code>.</p>
 <p>The format <code>F</code> can have quite a complex syntax. It takes the form of a
 sequence of criteria divided by slashes. The first will be the name of the
@@ -114,7 +110,7 @@ the equivalent modern notation if one is used.</p>
 <code>Bronze.inform</code>. On MacOS, this will be a bundle, and will look like an
 opaque binary file in the Finder, but it is a directory nevertheless.</p>
 <p>The directories <code>I</code> and <code>E</code> tell Inform where to find its resources. Internal
-means &quot;inside the app&quot; -- in other words, fixed material supplied with Inform
+means &quot;inside the app&quot; — in other words, fixed material supplied with Inform
 and always present; external means &quot;outside the app&quot;, and is where the user
 installs her own choice of extra resources.</p>
 </div>
@@ -178,7 +174,7 @@ for more.</p>
 rather than from its normal location inside the project bundle. Note that if
 this switch is used from within the GUI app, by means of a settings file (see
 below), then on some platforms there may be permissions errors if <code>F</code> does
-not lie inside the bundle or Materials folder -- in particular, sandboxing
+not lie inside the bundle or Materials folder — in particular, sandboxing
 for the Mac App Store editions of the executables has this effect.</p>
 </div>
 <div class="lsmarkdown">
@@ -197,42 +193,36 @@ variety of other things.</p>
 <p>But it is also perfectly possible to use Inform 7 on isolated, single files of
 source code, rather as a C compiler might work on a single source file for
 a simple program. At its simplest, for example:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    To begin:</span>
-<span class="ConsoleText-plain-syntax">        say "Hello world."</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    Inform 7 v10.1.0 has started.</span>
-<span class="ConsoleText-plain-syntax">    I've now read your source text, which is 5 words long.</span>
-<span class="ConsoleText-plain-syntax">    I've also read Basic Inform by Graham Nelson, which is 7687 words long.</span>
-<span class="ConsoleText-plain-syntax">    I've also read English Language by Graham Nelson, which is 2328 words long.</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.i7
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> helloworld.i7
+	To begin:
+	    say "Hello world."
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic</span><span class="ConsoleText-plain-syntax"> helloworld.i7
+	Inform 7 v10.1.0 has started.
+	I've now read your source text, which is 5 words long.
+	I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+	I've also read English Language by Graham Nelson, which is 2328 words long.
 
-<span class="ConsoleText-plain-syntax">      The 5-word source text has successfully been translated. There were 0 rooms</span>
-<span class="ConsoleText-plain-syntax">      and 0 things.</span>
-<span class="ConsoleText-plain-syntax">    Inform 7 has finished.</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.i6       helloworld.i7</span>
-</pre>
-<div class="lsmarkdown">
+	  The 5-word source text has successfully been translated. There were 0 rooms
+	  and 0 things.
+	Inform 7 has finished.
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.i6       helloworld.i7
+</span></pre>
 <p>(This was a Basic Inform program, hence <code>-basic</code>.) That produced quite a bit of
 console chatter: the traditional Unix doctrine is that command-line tools should
-shut up when they operate without errors -- &quot;silence is golden&quot;, as the usual
+shut up when they operate without errors — &quot;silence is golden&quot;, as the usual
 slogan has it. Use <code>-silence</code> to impose this on Inform:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    To begin:</span>
-<span class="ConsoleText-plain-syntax">        say "Hello world."</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.i6       helloworld.i7</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.i7
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> helloworld.i7
+	To begin:
+	    say "Hello world."
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.i6       helloworld.i7
+</span></pre>
 <p>In <code>-silence</code> mode, any problem messages will also be rendered in a conventional
 Unix style, opening with <code>filename:line:</code> for the convenience of text editors
 or IDEs which throw back to source lines where errors occur.</p>
@@ -243,29 +233,25 @@ also implied, and no debugging log was produced. (All of these could be reactiva
 by command line settings, however.)</p>
 <p>The output file can be specified with the traditional Unix compiler switch <code>-o</code>
 for &quot;output&quot;:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my-fancy-file.txt</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.i7       my-fancy-file.txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my-fancy-file.txt
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.i7       my-fancy-file.txt
+</span></pre>
 <p>The default output filename is the source filename but with the file extension
 changed from <code>i7</code> to whatever is standard for the format being output. For
 example,</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=C
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	helloworld.c        helloworld.i7
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -basic -silence</span><span class="ConsoleText-plain-syntax"> helloworld.i7</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=C</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    helloworld.c        helloworld.i7</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Testing and debugging switches.</b>  The following switches are used only when testing or maintaining Inform,
 and are unlikely to be useful to end users. Many of these are, however,
 used in the Intest scripts for testing Inform 7 and Inblorb.</p>
 <ul>
 <li><code>-crash-all</code> performs a deliberate hard crash, dividing by zero, in
-the event of any Problem message being issues -- this makes it easier to
+the event of any Problem message being issues — this makes it easier to
 obtain stack backtraces in a debugger.</li>
 <li><code>-no-index</code> skips the production of an Index, which reduces file system
 writes in a big testing run, and also saves a little time.</li>

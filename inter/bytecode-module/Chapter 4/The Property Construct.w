@@ -20,7 +20,7 @@ void PropertyInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `property` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d DEFN_PROP_IFLD      (DATA_IFLD + 0)
 @d TYPE_PROP_IFLD      (DATA_IFLD + 1)

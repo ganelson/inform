@@ -65,22 +65,20 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Templates and their paths.</b>  Template paths define, in order of priority, where to look for templates.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">template_path</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">template_path</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template_repository</span><span class="plain-syntax">; </span><span class="comment-syntax">/* pathname of folder of repository */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">template_path</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure template_path is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Whereas templates are the things themselves.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">template</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">template</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;Standard&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">template_path</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template_location</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">latest_use</span><span class="plain-syntax">; </span><span class="comment-syntax">/* filename most recently sought from it */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">template</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure template is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -98,7 +96,7 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The following searches for a named file in a named template, returning
 the template path which holds the template if it exists. This might look a
-pretty odd thing to do -- weren't we looking for the file itself? But the
+pretty odd thing to do — weren't we looking for the file itself? But the
 answer is that <code>Templates::seek_file</code> is really used to detect
 the presence of templates, not of files.</p>
 </div>
@@ -191,7 +189,7 @@ inside &quot;Standard&quot; instead (if we can find a template of that name).</p
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-plc.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-rls.html">rls</a></li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresscurrent">tmp</li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-wm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-plc.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-rls.html">rls</a></li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresscurrent">tmp</li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-wm.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

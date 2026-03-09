@@ -291,7 +291,7 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 }
 
 @ Either-or properties work analogously. Note that unpossessed either/or properties
-can legally be "read" -- the result being by definition `false` -- and that the
+can legally be "read" — the result being by definition `false` — and that the
 WorldModelKit code makes use of this.
 
 =

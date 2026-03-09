@@ -63,7 +63,7 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Special meaning functions.</b>  Regular meanings of verbs are represented by <code>VERB_MEANING_LINGUISTICS_TYPE</code>
-pointers -- see <a href="3-vm.html" class="internal">Verb Meanings</a>. In Inform, those are binary predicates.
+pointers — see <a href="3-vm.html" class="internal">Verb Meanings</a>. In Inform, those are binary predicates.
 They always take two terms.</p>
 <p>However, Inform sometimes wants sentences which are written in non-standard
 ways, with anything from one to three terms, and which don't correspond to
@@ -113,12 +113,11 @@ have some metadata with it too:</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">special_meaning_holder</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">special_meaning_holder</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">sm_func</span><span class="plain-syntax">)(</span><span class="type-syntax">int</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *); </span><span class="comment-syntax">/* (compiler doesn't like typedef here) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sm_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">metadata_N</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">special_meaning_holder</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure special_meaning_holder is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
@@ -173,7 +172,7 @@ have some metadata with it too:</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Calling:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">SpecialMeanings::call</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">SpecialMeanings::call</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">special_meaning_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">smh</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">,</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">SpecialMeanings::call</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">SpecialMeanings::call</span></span>:<br/>Verb Phrases - <a href="4-vp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">special_meaning_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">smh</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">smh</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">smh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sm_func</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (*(</span><span class="identifier-syntax">smh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sm_func</span><span class="plain-syntax">))(</span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">NPs</span><span class="plain-syntax">);</span>

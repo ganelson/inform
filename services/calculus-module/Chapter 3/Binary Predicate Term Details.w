@@ -106,7 +106,7 @@ Note that if $B$ does have an $f_0$ function then its reversal $R$ has an
 identical $f_1$ function, and vice versa.
 
 @ We never in fact need to calculate the value of $f_0(y)$ from $y$ during
-compilation -- only at run-time. So we store the function $f_0(y)$ in an
+compilation — only at run-time. So we store the function $f_0(y)$ in an
 //i6_schema// for the necessary run-time code. For example, this might be
 the schema `ContainerOf(*1)`, which would code-generate to a function call.
 

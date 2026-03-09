@@ -51,11 +51,10 @@ therefore store the text (say, "weight") in `property_pending_text` and come
 back to it later.
 
 =
-typedef struct property_setting_bp_data {
+classdef property_setting_bp_data {
 	struct wording property_pending_text; /* temp. version used until props created */
 	struct property *set_property; /* asserting $B(x, v)$ sets this prop. of $x$ to $v$ */
-	CLASS_DEFINITION
-} property_setting_bp_data;
+}
 
 binary_predicate *SettingPropertyRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
@@ -202,7 +201,7 @@ int SettingPropertyRelations::typecheck(bp_family *self, binary_predicate *bp,
 superficially attractive to reject them here, but (a) that would result in
 less specific problem messages which can be issued later on, notably for
 the "opposite" property of directions; and (b) we must be careful because
-in assertion traverse 2 not every object yet has its final kind -- for
+in assertion traverse 2 not every object yet has its final kind — for
 many implicitly created objects, they have yet to be declared as room,
 container and supporter.
 

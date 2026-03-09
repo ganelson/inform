@@ -63,8 +63,8 @@ See //lexicon: How To Include This Module//.
 This is a speed-critical part of Inform and has been heavily optimised, at the
 cost of some complexity. There are two main ideas:
 
-Firstly, each word in the vocabulary gathered up by the //words// module --
-i.e., each different word in the source text -- has a //vocabulary_lexicon_data//
+Firstly, each word in the vocabulary gathered up by the //words// module —
+i.e., each different word in the source text — has a //vocabulary_lexicon_data//
 object attached to it. This in turn contains lists of all known meanings
 starting with, ending with, or simply involving the word.
 
@@ -73,11 +73,11 @@ the first-word list for "great", the last-word list for "dragon", and the
 middle-word list for "green".
 
 In addition, every word in an excerpt which is not an article adds the meaning
-to its "subset list" -- here, that would be all three words, but for "gandalf
+to its "subset list" — here, that would be all three words, but for "gandalf
 the grey", it would be entered onto the subset lists for "gandalf" and "grey".
 Subset lists tend to be longer and thus slower to deal with, and are used only
 in contexts where it is legal to use a subset of a name to refer to the
-meaning -- for example, to say just "Gandalf" but mean the same wizard.
+meaning — for example, to say just "Gandalf" but mean the same wizard.
 
 @ Secondly, recall that each vocabulary entry has a field 32 bits wide for
 a bitmap, of which only 6 bits were used in the lexer. (See //words: Vocabulary//.)

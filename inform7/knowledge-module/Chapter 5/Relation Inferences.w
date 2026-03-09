@@ -25,11 +25,10 @@ The terms will either both be subjects, or both be values, so at all times
 exactly one of these pairs of pointers is `NULL`.
 
 =
-typedef struct relation_inference_data {
+classdef relation_inference_data {
 	struct inference_subject *terms_as_subjects[2];
 	struct parse_node *terms_as_values[2];
-	CLASS_DEFINITION
-} relation_inference_data;
+}
 
 inference *RelationInferences::new(inference_subject *subj0,
 	inference_subject *subj1, parse_node *val0, parse_node *val1) {

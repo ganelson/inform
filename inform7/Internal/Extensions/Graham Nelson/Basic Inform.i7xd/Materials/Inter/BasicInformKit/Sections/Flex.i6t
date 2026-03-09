@@ -57,13 +57,17 @@ might at any point overflow their current storage, so they're stored in a
 doubly linked list of blocks. The pointer to such a flexible-length array is
 by definition the pointer to the block heading this linked list. For instance,
 the data in a text
-= (text as Inform 6)
+
+``` Inform6
 	"But now I worship a celestiall Sunne"
-=
+```
+
 might be stored in a list of blocks like so:
-= (text as Inform 6)
+
+``` Inform6
 	NULL <-- BN: "But now I wor" <--> BN2: "ship a celestiall Sunne" --> NULL
-=
+```
+
 Note that the unique pointer to `BN2` is the one in the header of the
 `BN` block. When we need to grow such a text, we add additional blocks;
 if the text should shrink, blocks at the end can at our discretion be
@@ -481,7 +485,7 @@ pointer returned by `FlexAllocate`.
 
 There are two complications: first, when we free a multiple block we need
 to free all of the blocks in the list, starting from the back end and
-working forwards to the front -- this is the job of `FlexFree`. Second,
+working forwards to the front — this is the job of `FlexFree`. Second,
 when any given block is freed it has to be put into the free block list
 at the correct position to preserve invariant (a): it might either come
 after all of the currently free blocks in memory, and have to be added to
@@ -539,7 +543,7 @@ A block which has been allocated, but not yet freed, can sometimes have
 its data capacity changed by `FlexResize`.
 
 When the data being stored stretches or shrinks, we will sometimes need
-to change the size of the block(s) containing the data -- though not always:
+to change the size of the block(s) containing the data — though not always:
 we might sometimes need to resize a 1052-byte text to a 1204-byte text and
 find that we are sitting in a 2048-byte block in any case. We either shed
 blocks from the end of the chain, or add new blocks at the end, that being

@@ -261,7 +261,7 @@ Our aim here is to determine who will perform the action.
 "Raffles taking a jewel" rather than the less likely to be ambiguous "Raffles
 trying taking a jewel". This is allowed only in `PERMIT_TRYING_OMISSION` mode,
 and makes use of the following voracious nonterminal to match the actor's
-name -- here, just "Raffles".
+name — here, just "Raffles".
 
 The following tries to break just before any "-ing" word (i.e., participle)
 which is not inside parentheses; but only if the resulting name matches
@@ -426,8 +426,8 @@ special clause of its own.
 	if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF;
 	return FALSE;
 
-@ <ap-five-condition> is really just <s-condition> in disguise -- i.e.,
-it matches a standard Inform condition -- but it's implemented as an internal
+@ <ap-five-condition> is really just <s-condition> in disguise — i.e.,
+it matches a standard Inform condition — but it's implemented as an internal
 to enable Inform to set up a stack frame if there isn't one already, and so on.
 
 =

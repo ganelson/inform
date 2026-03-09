@@ -40,7 +40,7 @@ Preform nonterminal to parse those names. Here it is:
 }
 
 @ As noted above, features can provide plugin functions, which go into what
-we will call "plugin rulebooks" -- there's a mixed metaphor here, but the idea
+we will call "plugin rulebooks" — there's a mixed metaphor here, but the idea
 is that they behave like Inform rulebooks. When a rulebook is called, the
 compiler works through each plug until one of them returns something other
 than `FALSE`.
@@ -430,7 +430,7 @@ int PluginCalls::name_to_early_infs(wording W, inference_subject **infs) {
 which in practice enables them to spot from the name that it is actually a kind
 they want to provide built-in support for: thus the actions feature reacts to
 the name "stored action", for example. `K` is the newcomer, `super` its super-kind,
-if any; `d` and `W` are alternate forms of that name -- `d` will be useful if the
+if any; `d` and `W` are alternate forms of that name — `d` will be useful if the
 kind was created by a kit (such as "number"), `W` if it came from Inform 7
 source text (such as "container").
 

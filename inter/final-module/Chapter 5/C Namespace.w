@@ -22,11 +22,13 @@ in fact, we want our code to use only names beginning `i7_` or `glulx_`, with
 the single exception of `main`, and even that only when `main` is compiled.
 
 @ To that end, we "mangle" identifier names, and this is how. Examples:
-= (text)
+
+``` None
 	example         i7_mgl_example
 	##Attack        i7_ss_Attack
 	#g$self         i7_ss_gself
-=
+```
+
 This is not quite a faithful scheme because, say, `#a#a` and `#aa` both mangle
 to the same result, `i7_ss_aa`. But `#` and `$` characters are used extremely
 sparingly in Inter, and these can never arise.
@@ -49,10 +51,11 @@ void CNamespace::mangle_with(code_generator *gtr, OUTPUT_STREAM, text_stream *id
 @ Opcode names are also mangled. Each assembly language opcode will use a
 corresponding C function, whose name is mangled from that of the opcode. For
 example:
-= (text)
+
+``` None
     @jz             i7_opcode_jz
     @streamnum		i7_opcode_streamnum
-=
+```
 
 =
 void CNamespace::mangle_opcode(OUTPUT_STREAM, text_stream *opcode) {
@@ -63,9 +66,10 @@ void CNamespace::mangle_opcode(OUTPUT_STREAM, text_stream *opcode) {
 }
 
 @ Global variable names are similarly mangled:
-= (text)
+
+``` None
     howmayyou       i7_var_howmayyou
-=
+```
 
 =
 void CNamespace::mangle_variable(OUTPUT_STREAM, text_stream *var) {
@@ -74,26 +78,30 @@ void CNamespace::mangle_variable(OUTPUT_STREAM, text_stream *var) {
 
 @ Local variable names have to be handled slightly differently. This is because
 Inter frequently makes use of local variables whose identifiers are also used
-for some global construct. Of course, C also allows for this: for example --
-= (text as C)
+for some global construct. Of course, C also allows for this: for example —
+
+``` C
 	int xerxes = 1;
 	void govern_Sophene(void) {
 		int xerxes = 2;
 		printf("%d\n", xerxes);
 	}
-=
+```
+
 ...is legal, and prints 2 when the function is called. So at first sight, there's
 no problem giving a local variable the same name as some global construct.
 
 But that does not work if the global definition is made by the C preprocessor
 rather than its syntax analyser. Consider:
-= (text as C)
+
+``` C
 	#define xerxes 1
 	void govern_Sophene(void) {
 		int xerxes = 2;
 		printf("%d\n", xerxes);
 	}
-=
+```
+
 This throws an error message: `int xerxes = 2;` then reads as `int 1 = 2;`. And
 since some of our Inter constructs will indeed result in `#define`d values
 rather than named C variables, we cannot allow a local variable name to coincide
@@ -101,10 +109,12 @@ with the name of anything else (after mangling).
 
 We avoid this by changing the pre-mangled identifiers for all local variables
 to begin with `local_`:
-= (text)
+
+``` None
 	original	    translation			mangled translation
     "xerxes"		"local_xerxes"      "i7_mgl_local_xerxes"
-=
+```
+
 This is not an elegant trick, but it works nicely enough.
 
 =

@@ -69,16 +69,13 @@ the linking stage.</p>
 <p>Note that this is different from the ability to define phrases inline, which
 also uses I6 notation, but is fully decoded in the main compiler. Here we are
 looking at the consequences of, for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">predictable</span><span class="plain-syntax"> </span><span class="identifier-syntax">randomisation</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FIX_RNG</span><span class="plain-syntax">; </span><span class="constant-syntax">-</span><span class="plain-syntax">).</span>
-<span class="identifier-syntax">Include</span><span class="plain-syntax"> (-</span>
-<span class="plain-syntax">    [ </span><span class="identifier-syntax">MyOddballFunction</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">print</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">*</span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ];</span>
-<span class="constant-syntax">-</span><span class="plain-syntax">).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Use predictable randomisation translates as (- Constant FIX_RNG; -).
+Include (-
+	[ MyOddballFunction x;
+		print 2*x;
+	];
+-).
+</span></pre>
 <p>See <a href="../assertions-module/3-ir.html" class="internal">Intervention Requests (in assertions)</a> for how such Include sentences are
 handled. Each one leads to the creation of a <code>source_text_intervention</code> object;
 so now we work through those objects and take the necessary action to put the
@@ -189,19 +186,13 @@ perform them in the &quot;wrong&quot; order, what should the compiler do?<a href
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b>  Our biggest complication is that I7 expressions can be included in the I6
 matter with the <code>(+</code> and <code>+)</code> notation. For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FROG_CL</span><span class="plain-syntax"> = (+ </span><span class="identifier-syntax">pond</span><span class="plain-syntax">-</span><span class="identifier-syntax">dwelling</span><span class="plain-syntax"> </span><span class="identifier-syntax">amphibian</span><span class="plain-syntax"> +);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Constant FROG_CL = (+ pond-dwelling amphibian +);
+</span></pre>
 <p>will expand &quot;pond-dwelling amphibian&quot; into the I6 translation of the kind
 of object with this name. Because of this syntax, one has to watch out for
 I6 code like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (++</span><span class="identifier-syntax">counter_of_some_kind</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (++</span><span class="identifier-syntax">counter_of_some_kind</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) ...
+</span></pre>
 <p>which can trigger an unwanted <code>(+</code>.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read up to the next plus close-bracket as an I7 expression</span><span class="named-paragraph-number">3.2</span></span> =</p>

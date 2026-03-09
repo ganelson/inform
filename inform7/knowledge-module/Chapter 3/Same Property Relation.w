@@ -26,7 +26,7 @@ the comparison but also to force it true thus:
 > now Ms Cregg is the same height as Big Bird;
 
 [1] That couldn't be arranged for strict inequality comparisons like "taller
-than" -- see //Comparative Relations// -- because it is unclear just how much
+than" — see //Comparative Relations// — because it is unclear just how much
 taller than Big Bird we would have to make C. J.
 
 =

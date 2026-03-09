@@ -62,15 +62,15 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="1-hl.html#SP1">&#167;1. Hierarchy locations</a></li><li><a href="1-hl.html#SP7">&#167;7. Finding HLs by ID or name</a></li><li><a href="1-hl.html#SP8">&#167;8. Finding HLs representing one-off global resources</a></li><li><a href="1-hl.html#SP9">&#167;9. Finding HLs representing resources in families of packages</a></li><li><a href="1-hl.html#SP16">&#167;16. Making one-off subpackages</a></li><li><a href="1-hl.html#SP17">&#167;17. Making packages systematically at attachment points</a></li><li><a href="1-hl.html#SP20">&#167;20. Bookkeeping</a></li><li><a href="1-hl.html#SP21">&#167;21. Finding inames by name</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Hierarchy locations.</b>  A compiler such as <a href="../inform7/index.html" class="internal">inform7</a> needs to create many different resources --
-arrays, functions and so on -- and each one needs to be placed somewhere
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Hierarchy locations.</b>  A compiler such as <a href="../inform7/index.html" class="internal">inform7</a> needs to create many different resources —
+arrays, functions and so on — and each one needs to be placed somewhere
 in the hierarchy of an Inter tree, and given a name.</p>
 <p>A <a href="1-hl.html#SP1" class="internal">hierarchy_location</a> is an abstract way to specify the rules for doing
 that. The compiler creates a mass of these objects, and they are then indexed
 by unique IDs, their <code>access_number</code>s. The compiler can then, with essentially
 no overhead, ask to create the resource with ID <code>JINXED_WIZARDS_HL</code> (say),
 and the machinery below will work out where it is to go, and what it is to
-be called -- <code>/synoptic/pangrams/jinxed_wizards_fn</code>, say.</p>
+be called — <code>/synoptic/pangrams/jinxed_wizards_fn</code>, say.</p>
 <p>This leads to greater consistency, less duplication of book-keeping code,
 and the ability to have a sort of registry of where everything will go:
 see <a href="../runtime-module/2-hrr.html" class="internal">Hierarchy (in runtime)</a> for an example.</p>
@@ -80,7 +80,7 @@ simply use <code>HierarchyLocations::iname(JINXED_WIZARDS_HL)</code> to obtain a
 for where that function is (if it already exists) or will be (if not).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">hierarchy_location</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">hierarchy_location</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">access_number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">access_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_package_name</span><span class="plain-syntax">;</span>
@@ -89,8 +89,7 @@ for where that function is (if it already exists) or will be (if not).</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">equates_to_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">package_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">trans</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">hierarchy_location</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">hierarchy_location</span><span class="plain-syntax"> *</span><span class="function-syntax">HierarchyLocations::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">HierarchyLocations::new</span></span>:<br/><a href="1-hl.html#SP2">&#167;2</a>, <a href="1-hl.html#SP4">&#167;4</a>, <a href="1-hl.html#SP5">&#167;5</a>, <a href="1-hl.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="type-syntax">location_requirement</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">hierarchy_location</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">hierarchy_location</span><span class="plain-syntax">);</span>
@@ -306,12 +305,11 @@ it only needs to be worked out once.</p>
 the compiler wants to create a constant <code>capital_city</code> in each of these packages.</p>
 <p>There will be a single HL supplying the rules to do this, but multiple inames
 will be produced as the compiler makes multiple calls:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">... </span><span class="identifier-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">) ...
+... </span><span class="identifier-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">peru_package</span><span class="plain-syntax">) ...
+... </span><span class="identifier-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">chile_package</span><span class="plain-syntax">) ...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">) ...</span>
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">peru_package</span><span class="plain-syntax">) ...</span>
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">chile_package</span><span class="plain-syntax">) ...</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="type-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-hl.html#SP15" class="function-link"><span class="function-syntax">HierarchyLocations::iip</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">-1</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
@@ -320,24 +318,18 @@ will be produced as the compiler makes multiple calls:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  That might, say, produce constants with the Inter symbols like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">uruguay</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span>
-<span class="plain-syntax">    /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">peru</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span>
-<span class="plain-syntax">    /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">chile</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">/</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">uruguay</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span><span class="plain-syntax">
+/</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">peru</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span><span class="plain-syntax">
+/</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">south_america</span><span class="plain-syntax">/</span><span class="identifier-syntax">chile</span><span class="plain-syntax">/</span><span class="identifier-syntax">capital_city</span><span class="plain-syntax">
+</span></pre>
 <p>When final code is generated from these, the constants will probably end up
 with bland identifiers like <code>capital_city_U1</code>, <code>capital_city_U2</code>, and so on.
 If we don't want that, we can make an exception like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">) ...</span>
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_with_specific_translation</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"Lima"</span><span class="plain-syntax">, </span><span class="identifier-syntax">peru_package</span><span class="plain-syntax">) ...</span>
-<span class="plain-syntax">    ... </span><span class="function-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">chile_package</span><span class="plain-syntax">) ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">... </span><span class="identifier-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">) ...
+... </span><span class="identifier-syntax">HierarchyLocations::make_iname_with_specific_translation</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">,
+	</span><span class="identifier-syntax">I</span><span class="string-syntax">"Lima"</span><span class="plain-syntax">, </span><span class="identifier-syntax">peru_package</span><span class="plain-syntax">) ...
+... </span><span class="identifier-syntax">HierarchyLocations::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">CAPITAL_CITY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">chile_package</span><span class="plain-syntax">) ...
+</span></pre>
 <p>Our three capitals would then translate to <code>capital_city_U1</code>, <code>Lima</code>, and
 <code>capital_city_U2</code>.</p>
 </div>
@@ -353,11 +345,8 @@ If we don't want that, we can make an exception like so:</p>
 legible when Inter code is printed out. We can do that by attaching a &quot;memo&quot;
 of wording to its name. For example, if <code>W</code> is the wording &quot;Uruguay&quot;, then
 calling:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">HierarchyLocations::make_iname_with_memo</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">COUNTRY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">HierarchyLocations::make_iname_with_memo</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">COUNTRY_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">uruguay_package</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">)
+</span></pre>
 <p>might produce the iname <code>/main/south_america/uruguay/C3_uruguay</code>; a subsequent
 call in a different package, with a different wording, might then produce
 <code>/main/south_america/uruguay/C4_trinidad_and_tobago</code>, and so on. (The choice of
@@ -377,7 +366,7 @@ call in a different package, with a different wording, might then produce
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Note that the HL, in this example <code>COUNTRY_HL</code>, keeps track of how many of
-these inames it has made, so that it can increment the index number -- in those
+these inames it has made, so that it can increment the index number — in those
 two cases, 3 and then 4. If we need to override this with a specific number <code>x</code>
 for some reason, we can use this variant:</p>
 </div>
@@ -556,13 +545,12 @@ is called &quot;attachment&quot;.</p>
 numbering system.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">hierarchy_attachment_point</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">hierarchy_attachment_point</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">hap_id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_stem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">location_requirement</span><span class="plain-syntax"> </span><span class="identifier-syntax">requirements</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">hierarchy_attachment_point</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure hierarchy_attachment_point is accessed in 1/pck, 1/in and here.</li></ul>
 <div class="lsmarkdown">
@@ -593,11 +581,8 @@ attaches another package. R and M need only be specified if the location require
 of the HAL do not imply a definite position already; M is meaningful only if the
 requirements are to put everything in a submodule of a given module, and then M
 is that module. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">vf_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::package_within</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">VERB_FORMS_HAP</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">vf_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::package_within</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">VERB_FORMS_HAP</span><span class="plain-syntax">);
+</span></pre>
 <p>attaches a new verb form package inside <code>R</code>. <code>VERB_FORMS_HAP</code> has already been
 declared with <a href="1-hl.html#SP18" class="internal">HierarchyLocations::att</a>, and has stem <code>&quot;form&quot;</code> and type <code>&quot;_verb_form&quot;</code>.
 So the outcome might be a package called, say, <code>form_16</code> of type <code>_verb_form</code>
@@ -650,7 +635,7 @@ this code is being compiled within a tool which defines no HLs or HAPs.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">hierarchy_attachment_point</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HAPs_indexed_by_id</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_HAP_VALUES</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">} </span><span class="type-syntax">site_hierarchy_data</span><span class="plain-syntax">;</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">HierarchyLocations::clear_site_data</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">HierarchyLocations::clear_site_data</span></span>:<br/>Building Module - <a href="1-bm.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">HierarchyLocations::clear_site_data</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">HierarchyLocations::clear_site_data</span></span>:<br/>Building Module - <a href="1-bm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">building_site</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">shdata</span><span class="plain-syntax">.</span><span class="element-syntax">HLs_indexed_by_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::new</span><span class="plain-syntax">(512, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_HL_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">shdata</span><span class="plain-syntax">.</span><span class="element-syntax">HLs_indexed_by_id</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

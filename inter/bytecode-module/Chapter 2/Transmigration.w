@@ -249,9 +249,9 @@ void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *st
 will contain a reference to the origin tree's definition of `!printnumber`; this
 must be converted to a reference to the destination's definition of the same thing.
 
-Note that we expect to perform this operation frequently -- there may be, say,
+Note that we expect to perform this operation frequently — there may be, say,
 10,000 primitive invocations in the migrant, but always of the same 50 or so
-primitives round and around -- so we cache the results.
+primitives round and around — so we cache the results.
 
 @<Transfer from a primitive in the origin tree to one in the destination@> =
 	inter_symbol *equivalent_primitive = Transmigration::known_equivalent(primitive);
@@ -327,8 +327,8 @@ to matching declarations in the destination.
 		NodePlacement::move_to_moving_bookmark(D, &(det->ptypes_point));
 	}
 
-@ Here `S` is some miscellaneous symbol in our subpackage of `migrant` -- it
-can't be either a plug or a socket, since the connectors never migrate -- and
+@ Here `S` is some miscellaneous symbol in our subpackage of `migrant` — it
+can't be either a plug or a socket, since the connectors never migrate — and
 there are three bad possibilities:
 
 @<Correct outbound wiring from the package's symbols table@> =
@@ -393,7 +393,7 @@ tree: and this is exactly what plugs in the destination tree are for.
 @ Now time for the second sort of correction: references from the origin tree
 into the migrant. If we care about those, then we traverse so that the following 
 visits every node in the origin tree. Note that at this point the head node
-of `migrant` has been removed from the origin tree -- so this visitor can never
+of `migrant` has been removed from the origin tree — so this visitor can never
 visit anything inside `migrant`.
 
 Note that we do not correct references from the origin tree's `/main/connectors`

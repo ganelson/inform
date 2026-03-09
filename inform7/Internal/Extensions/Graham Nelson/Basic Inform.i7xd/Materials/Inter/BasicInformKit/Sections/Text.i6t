@@ -83,9 +83,10 @@ This shows the various forms a text's short block can take:
 
 @h Creation.
 A newly created text is a two-word short block with no long block, like this:
-= (text as Inform 6)
+
+``` Inform6
 	Array ThisIsAText --> PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;
-=
+```
 
 =
 [ TEXT_TY_Create kind_id sb_address
@@ -505,7 +506,7 @@ What are the basic operations of text-handling? Clearly we want to be able
 to search, and replace, but that is left for the segment "RegExp.i6t"
 to handle. More basically we would like to be able to read and write
 characters from the text. But texts in I7 tend to be of natural language,
-rather than containing arbitrary material -- that's indeed why we call them
+rather than containing arbitrary material — that's indeed why we call them
 texts rather than strings. This means they are likely to be punctuated
 sequences of words, divided up perhaps into sentences and even paragraphs.
 
@@ -865,7 +866,7 @@ block-value, which counts from 0.
 @h Casing.
 In many programming languages, characters are a distinct data type from
 strings, but not in I7. To I7, a character is simply a text which
-happens to have length 1 -- this has its inefficiencies, but is conceptually
+happens to have length 1 — this has its inefficiencies, but is conceptually
 easy for the user.
 
 `TEXT_TY_CharactersOfCase(txt, case)` determines whether all the characters in `txt`

@@ -15,9 +15,11 @@ might be a fairer description.
 @h Variable and values.
 The instruction `variable` seems a good place to begin, since it creates an
 easily-understood piece of data. For example:
-= (text as Inter)
+
+``` Inter
 	variable V_score = 10
-=
+```
+
 declares a new variable `V_score`, and assigns it the initial value 10. This
 is a global variable, accessible across the whole program.
 
@@ -73,18 +75,21 @@ does not deserve respect, and is not used anywhere in the Inform tool chain.
 
 @h Constant and extended values.
 The instruction `constant` defines a name for a given value. For example:
-= (text as Inter)
+
+``` Inter
 	constant SPEED_LIMIT = 70
-=
+```
+
 The name of this constant can then be used wherever a value is needed. Thus:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 		constant SPEED_LIMIT = 70
 		variable V_speed = SPEED_LIMIT
-=
+```
 
 @ Constants also allow us to write more elaborate values than are normally
-allowed -- so-called "extended values". In particular:
+allowed — so-called "extended values". In particular:
 
 - A literal `list` is written in braces: `{ V1, V2, ..., Vn }`, where `V1`, 
 `V2` and so on are all (unextended) values. The empty list is `{ }`.
@@ -95,7 +100,7 @@ in the same way.
 - Either sort of list can be given with an extent instead. `list of N words`
 or `list of N bytes` constructs a list of `N` zero entries. This is not simply
 an abbreviation for typing something like `{ 0, 0, 0, 0, 0, 0, 0, 0 }`, because `N`
-does not have to be a literal number -- it can be a named symbol defined elsewhere,
+does not have to be a literal number — it can be a named symbol defined elsewhere,
 or even defined in a different Inter tree to be linked in later.
 
 - Prefixing either sort of list with the keyword `bounded` tells Inter that
@@ -126,21 +131,25 @@ Inform 6's old syntax here. The Inter list `{ 20 }` is unambiguously a one-entry
 list whose one entry is 20; it is quite different from `list of 20 words`.
 
 @ Lists are obviously useful. Here are some examples:
-= (text as Inter)
+
+``` Inter
 	constant squares = { 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 }
 	constant colours = { "red", "green", "blue" }
 	constant lists = { squares, colours }
-=
+```
+
 The distinction between a `struct` and a `list` is only visible if typechecking
 is used (see below); the expectation is that a list would contain a varying
 number of entries all of the same type, whereas a struct would contain a fixed
 number of entries of perhaps different but predetermined types.
 
 @ Calculated values are an unusual but very useful feature of Inter. Consider:
-= (text as Inter)
+
+``` Inter
 	constant SPEED_LIMIT = 70
 	constant SAFE_SPEED = difference{ SPEED_LIMIT, 5 }
-=
+```
+
 This effectively declares that `SAFE_SPEED` will be 65. What makes this useful
 is that when two Inter programs are linked together, `SAFE_SPEED` might be
 declared in one and `SPEED_LIMIT` in the other, and it all works even though
@@ -149,44 +158,52 @@ other could see the 5 but not the 70.
 
 @h URL notation.
 All identifier names are local to their own packages. So, for example, this:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 		package one _plain
 			constant SPEED_LIMIT = 70
 			variable V_speed = SPEED_LIMIT
 		package two _plain
 			variable V_speed = 12
-=
+```
+
 is a legal Inter program and contains two different variables. But this:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 		package one _plain
 			constant SPEED_LIMIT = 70
 		package two _plain
 			variable V_speed = SPEED_LIMIT
-=
+```
+
 ...does not work. The variable `V_speed` is declared in package `two`, where
 the constant `SPEED_LIMIT` does not exist.
 
 This might seem to make it impossible for material in one package to refer
 to material in any other, but in fact we can, using URL notation:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 		package one _plain
 			constant SPEED_LIMIT = 70
 		package two _plain
 			variable V_speed = /main/one/SPEED_LIMIT
-=
+```
+
 Here `/main/one/SPEED_LIMIT` is an absolute "URL" of the symbol `SPEED_LIMIT`.
 If we return to the example:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 		package one _plain
 			constant SPEED_LIMIT = 70
 			variable V_speed = SPEED_LIMIT
 		package two _plain
 			variable V_speed = 12
-=
+```
+
 we see that the two variables have different URLs, `/main/one/V_speed` and
 `/main/two/V_speed`.
 
@@ -198,9 +215,11 @@ the compilation process, and they usually do not change the meaning of the
 program. For example, the final C code generator annotates the names of arrays
 with their addresses in (virtual) memory, with the `__array_address` annotation.
 In textual format:
-= (text as Inter)
+
+``` Inter
 	constant my_array = { 1, 2, 4, 8 } __array_address=7718
-=
+```
+
 All annotation names begin with a double underscore, `__`. They do not all
 express a value: some are boolean flags, where no `=...` part is written.
 
@@ -210,14 +229,18 @@ For the list of standard annotation names in use, see //Inform Annotations//.
 If constant names begin with the magic character `^` then they represent
 "metadata", describing the program rather than what it does. They are not
 data in the program at all. Thus:
-= (text as Inter)
+
+``` Inter
 	constant ^author = "Jonas Q. Duckling"
-=
+```
+
 is legal, but:
-= (text as Inter)
+
+``` Inter
 	constant ^author = "Jonas Q. Duckling"
 	variable V_high_scorer = ^author
-=
+```
+
 is not, because it tries to use a piece of metadata as if it were data.
 
 @h Types in Inter.
@@ -227,24 +250,30 @@ how much type-checking is done.
 Inter assigns a type to every constant, variable and so on. But by default those
 types are always a special type called `unchecked`, which means that nothing
 is ever forbidden. This is true even if the type seems obvious:
-= (text as Inter)
+
+``` Inter
 	constant SPEED_LIMIT = 20
-=
+```
+
 gives `SPEED_LIMIT` the type `unchecked`, not (say) `int32`. If a storage object
 such as a variable has type `unchecked`, then anything can be put into it; and
 conversely an `unchecked` value can always be used in any context.
 
 So if we want a constant or variable to have a type, we must give it explicitly:
-= (text as Inter)
+
+``` Inter
 	constant (int32) SPEED_LIMIT = 20
 	variable (text) WARNING = "Slow down."
-=
+```
+
 The "type marker" `(int32)`, which is intended to look like the C notation for
 a cast, gives an explicit type. The following, however, will be rejected:
-= (text as Inter)
+
+``` Inter
 	constant (int32) SPEED_LIMIT = 20
 	variable (text) WARNING = SPEED_LIMIT
-=
+```
+
 This is because `WARNING` has type `text` and cannot hold an `int32`. This is
 typechecking in action, and although you must volunteer for it, it is real.
 By conscientiously applying type markers throughout your program, you can
@@ -252,26 +281,32 @@ use Inter as if it were a typed language.
 
 @ An intentional hole in this type system is that literals which look wrong for
 a given type can often be used as them. This, for instance, is perfectly legal:
-= (text as Inter)
+
+``` Inter
 	constant (text) SPEED_LIMIT = 20
 	variable (int32) WARNING = "Slow down."
-=
+```
+
 The type of a constant or variable is always either `unchecked` or else is
 exactly what is declared in brackets, regardless of what the value after the
 equals sign looks as if it ought to be. However, a weaker form of checking
 is actually going on under the hood: numerical data has to fit. So for example:
-= (text as Inter)
+
+``` Inter
 	constant (int2) true = 1
 	constant (int2) false = 0
 	constant (int2) dunno = 2
-=
+```
+
 allows `true` and `false` to be declared, but throws an error on `dunno`,
 because 2 is too large a value to be stored in an `int2`. Even this checking
 can be circumvented with a named constant of type `unchecked`, as here:
-= (text as Inter)
+
+``` Inter
 	constant dangerous = 17432
 	constant (int2) safe = dangerous
-=
+```
+
 This is allowed, and the result may be unhappy, but the user asked for it.
 
 @ Types are like values in that simple ones can be used directly, but to
@@ -289,22 +324,27 @@ literal `-6` would be written into an `int8`, an `int16` or an `int32` in
 a twos-complement signed way, but Inter treats all these just as bits.
 
 With just five types it really seems only cosmetic to use `typename`:
-= (text as Inter)
+
+``` Inter
 	typename boolean = int2
 	constant (boolean) true = 1
 	variable (boolean) V_flag = true
 	typename truth_state = boolean
-=
+```
+
 But what brings `typename` into its own is that it allows the writing of
 more complex types. For example:
-= (text as Inter)
+
+``` Inter
 	typename bit_stream = list of int2
 	constant (bit_stream) signal = { 1, 0, 1, 1, 0, 1 }
 	variable (bit_stream) V_buffer = signal
-=
+```
+
 `list of T` is allowed only for simple types `T`, so `list of list of int32`,
 say, is not allowed: but note that a typename is itself a simple type. So:
-= (text as Inter)
+
+``` Inter
 	typename bit_stream = list of int2
 	typename signal_list = list of bit_stream
 	constant (bit_stream) signal1 = { 1, 0, 1, 1, 0, 1 }
@@ -312,7 +352,8 @@ say, is not allowed: but note that a typename is itself a simple type. So:
 	constant (bit_stream) signal3 = { 0, 1, 1 }
 	constant (signal_list) log = { signal1, signal2, signal3 }
 	variable (signal_list) V_buffer = log
-=
+```
+
 will create a variable whose initial contents are a list of three lists of `int2`
 values.
 
@@ -350,7 +391,8 @@ in the entry type);
 
 @ This enables us to declare the type of a function. A typed version of `Hello`
 might look like this:
-= (text as Inter)
+
+``` Inter
 package main _plain
 	typename void_function = function void -> void
 	package (void_function) Main _code
@@ -358,34 +400,40 @@ package main _plain
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-=
+```
+
 And similarly:
-= (text as Inter)
+
+``` Inter
 	typename ii_i_function = function int32 int32 -> int32
 	package (ii_i_function) gcd _code
 		...
-=
+```
+
 creates a function called `gcd` whose type is `int32 int32 -> int32`.
 Note that only `_code` packages are allowed to be marked with a type, because
 only `_code` package names are values.
 
 @ As an example of structures:
-= (text as Inter)
+
+``` Inter
 	typename city_data = struct real real text
 	constant (city_data) L = struct{ r"+51.507", r"-0.1275", "London" }
 	constant (city_data) P = struct{ r"+48.857", r"+2.3522", "Paris" }
-=
+```
 
 @h Enumerations and instances.
 That leaves enumerations, which have the enigmatically concise type `enum`.
 Only a typename can have this type: it may be concise but it is not simple. (So
 `list of enum` is not allowed.) `enum` is special in that each different time
 it is declared, it makes a different type. For example:
-= (text as Inter)
+
+``` Inter
 	typename city = enum
 	typename country = enum
 	typename nation = country
-=
+```
+
 Here there are two different enumerated types: `city` and another one which
 can be called either `country` or `nation`.
 
@@ -394,13 +442,15 @@ a fixed range of values known at compile time: for example, perhaps it can hold
 only the values 1, 2, 3, 4. An unusual feature of Inter is that the declaration
 does not specify these permitted values. Instead, they must be declared
 individually using the `instance` instruction. For example:
-= (text as Inter)
+
+``` Inter
 	typename city = enum
 	instance (city) Berlin
 	instance (city) Madrid
 	instance (city) Lisbon
-=
-For obvious reasons, the type marker -- in this case `(city)` -- is compulsory,
+```
+
+For obvious reasons, the type marker — in this case `(city)` — is compulsory,
 not optional as it was for `constant`, `variable` and `package` declarations.
 
 At runtime, the values representing these instances are guaranteed to be different,
@@ -411,12 +461,14 @@ Z-machine or pointers to objects in Glulx or C, for instance.)
 
 If we need specific numerical values (which must be non-negative), we can specify
 that explicitly:
-= (text as Inter)
+
+``` Inter
 	typename city = enum
 	instance (city) Berlin = 1
 	instance (city) Madrid = 17
 	instance (city) Lisbon = 201
-=
+```
+
 You should either specify values for all instances of a given enumeration, or none.
 
 Note that instances do not have to be declared in the same package, or even the
@@ -424,11 +476,13 @@ same program, as the enumeration they belong to.
 
 @h Subtypes.
 Enumerated types, but no others, can be "subtypes". For example:
-= (text as Inter)
+
+``` Inter
 	typename K_thing = enum
 	typename K_vehicle <= K_thing
 	typename K_tractor <= K_vehicle
-=
+```
+
 An instance of `K_tractor` is now automatically also an instance of `K_vehicle`,
 but the converse is not necessarily true.
 
@@ -442,37 +496,44 @@ is in effect a class, and this is why instances are so called.)
 A property is a set of similarly-named variables belonging, potentially, to
 any number of owners, each having their own value. As with constants and
 variables, properties can optionally have types. For example:
-= (text as Inter)
+
+``` Inter
 	property population
 	property (text) motto
-=
+```
+
 Any instance can in principle have its own copy of any property, and so can
 an enumerated type as a whole. But this is allowed only if an explicit
 permission is granted:
-= (text as Inter)
+
+``` Inter
 	typename city = enum
 	instance (city) Stockholm
 	instance (city) Odessa
 	permission for city to have population
 	permission for Odessa to have motto
-=
+```
+
 And we can now use the `propertyvalue` instruction to set these:
-= (text as Inter)
+
+``` Inter
 	propertyvalue population of Stockholm = 978770
 	propertyvalue population of Odessa = 1015826
 	propertyvalue motto of Odessa = "Pearl of the Black Sea"
-=
+```
 
 @ An optional extended form of `permission` is allowed which enables us to say
 that we want the storage for a property to be in a given list. Thus:
-= (text as Inter)
+
+``` Inter
 	constant population_storage = { 2, 978770, 1015826 }
 	typename city = enum
 	instance (city) Stockholm
 	instance (city) Odessa
 	property population
 	permission for city to have population population_storage
-=
+```
+
 But this is finicky, and has to be set up just right in order to work.[1]
 
 [1] The feature exists in Inter because of Inform 7's ability to define kinds
@@ -490,9 +551,10 @@ still writing strange hybrid programs partly in I6.
 
 `insert` tells Inter that it needs to add this raw I6-syntax material to the
 program:
-= (text as Inter)
+
+``` Inter
 	insert "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"
-=
+```
 
 @h Splats.
 And never use `splat` either.

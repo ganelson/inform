@@ -56,14 +56,16 @@ to be compiled with a C compiler.
 
 As these new-style `-format` options suggest, the compilation process thus
 involves a combination of both architecture and target:
-= (text as BoxArt)
+
+``` BoxArt
                              depends on architecture:           depends on target:
 	Source text -----------> Inter code       ----------------> Bytecode for
 	              INFORM7                       via INFORM6     target virtual machine
                                               ----------------> Executable
 	                                            via CLANG/GCC
 	                                          ...
-=
+```
+
 Note that a single //target_vm// object can be used with just one architecture:
 use the function //TargetVMs::get_architecture// to obtain this. If a target supports
 multiple architectures, then there will be multiple //target_vm// objects for it,
@@ -74,8 +76,8 @@ by `Inform6/32` or `Inform6/32d`. There can also be multiple versions: for examp
 the toolchain supports this.
 
 @h Compatibility.
-Not all software in the Inform stack -- source text from the user, extensions,
-kits of Inter code -- will be compatible with every architecture, or with
+Not all software in the Inform stack — source text from the user, extensions,
+kits of Inter code — will be compatible with every architecture, or with
 every VM. We represent that by giving something a //compatibility_specification//
 object to say what it can work with: the function //Compatibility::test//
 determines whether any given VM is allowed with this specification.

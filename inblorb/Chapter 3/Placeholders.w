@@ -19,13 +19,12 @@ a few are "reserved":
 @d PAGEEXTENT_RPL 8
 
 =
-typedef struct placeholder {
+classdef placeholder {
 	struct text_stream *pl_name; /* such as "[AUTHOR]" */
 	struct text_stream *pl_contents; /* current value */
 	int reservation; /* one of the `*_RPL` values above, or 0 for unreserved */
 	int locked; /* currently being expanded: locked to prevent mise-en-abyme */
-	CLASS_DEFINITION
-} placeholder;
+}
 
 @h Initial values.
 The `BLURB` refers here to back-cover-style text, and not to the "blurb"
@@ -165,9 +164,9 @@ void Placeholders::write(OUTPUT_STREAM, text_stream *var) {
 	}
 }
 
-@ Note that the [BLURB] placeholder -- which holds the story description, and is
+@ Note that the [BLURB] placeholder — which holds the story description, and is
 like a back cover blurb for a book; the name is not related to the release
-instructions format -- may consist of multiple paragraphs. If so, then they
+instructions format — may consist of multiple paragraphs. If so, then they
 will be divided by `<br/>`, since that's the XML convention. But we want to
 translate those breaks to `</p><p>`, closing an old paragraph and opening
 a new one, because that will make the blurb text much easier to style

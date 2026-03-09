@@ -70,8 +70,8 @@ imported module,</p>
 <ul>
 <li>The contents page of the parent's web must identify and locate the
 module: <code>Import: somepath/kinds</code></li>
-<li>The parent must call <a href="1-km.html#SP3" class="internal">KindsModule::start</a> just after it starts up, and
-<a href="1-km.html#SP3" class="internal">KindsModule::end</a> just before it shuts down. (But just after, and just
+<li>The parent must call <a href="1-km.html#SP2" class="internal">KindsModule::start</a> just after it starts up, and
+<a href="1-km.html#SP2" class="internal">KindsModule::end</a> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../foundation/index.html" class="internal">foundation</a>.)</li>
 </ul>
 </div>
@@ -85,16 +85,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_KINDS_CALLBACK Emotions::whoa</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_KINDS_CALLBACK Emotions::whoa
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::whoa(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("Great heavens!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::whoa(text_stream *OUT) {
+	    WRITE("Great heavens!\n");
+	}
+</span></pre>
 <p>The following alphabetical list has references to fuller explanations:</p>
 <ul>
 <li>
@@ -113,19 +110,19 @@ kind can contain sometimes-matching subkind instances. See
 </li>
 <li>
 <p><code>HIERARCHY_MOVE_KINDS_CALLBACK</code> is called to ask us to put make one
-kind a subkind of another. See <a href="2-knd.html#SP24" class="internal">Kinds::make_subkind</a> and
-<a href="2-knd.html#SP23" class="internal">Kinds::new_base</a> -- there are two ways this can happen.</p>
+kind a subkind of another. See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a> and
+<a href="2-knd.html#SP20" class="internal">Kinds::new_base</a> — there are two ways this can happen.</p>
 </li>
 <li>
 <p><code>HIERARCHY_VETO_MOVE_KINDS_CALLBACK</code> is called to give the parent tool a
 chance to veto any proposed subkind. (Inform uses this, for example, to catch
 the case of somebody making &quot;region&quot; a subkind of some other kind of object.)
-See <a href="2-knd.html#SP24" class="internal">Kinds::make_subkind</a>.</p>
+See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.</p>
 </li>
 <li>
 <p><code>NEW_BASE_KINDS_CALLBACK</code> is called when a new base kind (properly
-speaking, a new arity-0 kind constructor) is made. See <a href="2-knd.html#SP23" class="internal">Kinds::new_base</a>
-and <a href="4-nf.html#SP1" class="internal">NeptuneFiles::read_command</a> -- there are two ways this can happen.</p>
+speaking, a new arity-0 kind constructor) is made. See <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>
+and <a href="4-nf.html#SP1" class="internal">NeptuneFiles::read_command</a> — there are two ways this can happen.</p>
 </li>
 <li>
 <p><code>NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK</code> is called when the kind &quot;natural
@@ -134,11 +131,11 @@ language&quot; is created (if it is): see <a href="2-fk.html#SP13" class="intern
 <li>
 <p><code>PROBLEM_KINDS_CALLBACK</code> is called when a syntax error is found, and can
 prevent this from being issued to the terminal as an error message: see
-<a href="1-km.html#SP5" class="internal">KindsModule::problem_handler</a>.</p>
+<a href="1-km.html#SP4" class="internal">KindsModule::problem_handler</a>.</p>
 </li>
 <li>
 <p><code>REGISTER_NOUN_KINDS_CALLBACK</code>, if provided, can register a common noun
-for a new base kind with the lexicon itself. See <a href="2-knd.html#SP23" class="internal">Kinds::new_base</a>.</p>
+for a new base kind with the lexicon itself. See <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.</p>
 </li>
 </ul>
 </div>

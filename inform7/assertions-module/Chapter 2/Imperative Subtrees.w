@@ -7,11 +7,13 @@ at `IMPERATIVE_NT` nodes: some define phrases, some define rules. Those nodes
 are initially followed by a run of `UNKNOWN_NT` nodes for the actual code.
 The process of "acceptance" turns such definitions into a subtree, as
 follows:
-= (text)
+
+``` None
 IMPERATIVE_NT 'every turn'                IMPERATIVE_NT 'every turn
 UNKNOWN_NT 'say "Hello!"'            -->      INVOCATION_LIST_NT 'say "Hello!"'
 UNKNOWN_NT 'now the guard is alert'           INVOCATION_LIST_NT 'now the guard is alert'
-=
+```
+
 //ImperativeSubtrees::accept// needs to be called on every `IMPERATIVE_NT` node in order
 for this to work; note that it does nothing further, but also causes no harm,
 if called multiple times on the same node. //ImperativeSubtrees::accept_all// can
@@ -63,8 +65,8 @@ which uses explicit marker phrases like "end if" and "end while". The compiler
 continues to support both though they cannot be mixed in a single `IMPERATIVE_NT`
 subtree.
 
-The old syntax is retained not for compatibility with old code -- very little
-remains from the pre-2008 era which has not been modernised -- but because
+The old syntax is retained not for compatibility with old code — very little
+remains from the pre-2008 era which has not been modernised — but because
 some partially sighted users find tabbed indentation difficult to manage
 with screen-readers.
 
@@ -129,7 +131,7 @@ This means looking out for control structures such as "if" and "while": see
 		if (csp) {
 			int syntax_used = Annotations::read_int(p, colon_block_command_ANNOT);
 			if (syntax_used == FALSE) { /* i.e., doesn't end with a colon */
-				/* don't count "if x is 1, let y be 2" -- with no block -- as deciding it */
+				/* don't count "if x is 1, let y be 2" (with no block) as deciding it */
 				if ((csp->subordinate_to == NULL) &&
 					(!(<phrase-beginning-block>(Node::get_text(p)))))
 					syntax_used = NOT_APPLICABLE;
@@ -419,10 +421,10 @@ the lines often look silly and short).
 
 @ We now know the `indent` level of the line as read, and also the
 `expected_indent` given the definition so far. If they agree, fine. If they
-don't agree, it isn't necessarily bad news -- if each line's indentation were
+don't agree, it isn't necessarily bad news — if each line's indentation were
 a function of the last, there would be no information in it, after all.
 Roughly speaking, when `indent` is greater than we expect, that must be
-wrong -- it means indentation has jumped inward as if to open a new block,
+wrong — it means indentation has jumped inward as if to open a new block,
 but blocks are opened explicitly and not by simply raising the indent.
 But when `indent` is less than we expect, this may simply mean that the
 current block(s) has or have been closed, because blocks are indeed closed
@@ -451,7 +453,7 @@ These are required to be at the same indentation as the line which opened the
 block, rather than being one tab step in from there: in other words they are
 not deemed part of the block itself. They can also occur in "stages", which
 is a way to enforce one intermediate phrase only being allowed after another
-one -- for instance, "otherwise if..." is not allowed after an "otherwise"
+one — for instance, "otherwise if..." is not allowed after an "otherwise"
 within an "if".
 
 @<Compare actual indentation to what we expect for an intermediate phrase@> =
@@ -1190,7 +1192,7 @@ becomes:
 > "Look, ", the noun, " said."
 
 This is then re-parsed with the following nonterminal; note that we report any
-problem with misuse of commas -- really, of square brackets -- before handing back
+problem with misuse of commas — really, of square brackets — before handing back
 to <s-say-phrase> to parse the list.
 
 =

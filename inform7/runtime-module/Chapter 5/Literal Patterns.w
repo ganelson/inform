@@ -1693,12 +1693,11 @@ inter_name *RTLiteralPatterns::digit_value_function_iname(literal_pattern_elemen
 	return Hierarchy::find(DIGITTOVALUE_HL);
 }
 
-typedef struct digit_manager {
+classdef digit_manager {
 	struct inter_name *function_iname;
 	struct text_stream *text;
 	int category;
-	CLASS_DEFINITION
-} digit_manager;
+}
 
 inter_name *RTLiteralPatterns::digits_iname_inner(text_stream *text, int cat) {
 	if (digits_iname_D[cat] == NULL)

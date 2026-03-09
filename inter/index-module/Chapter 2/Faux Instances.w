@@ -9,7 +9,7 @@ which partly correspond to the instance objects in the original compiler.
 to other faux instances, and is paraphrased directly from the Inter tree:
 
 =
-typedef struct faux_instance {
+classdef faux_instance {
 	struct inter_package *package;
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
 	struct text_stream *name;
@@ -30,8 +30,7 @@ typedef struct faux_instance {
 	struct text_stream *kind_chain;
 	struct text_stream *anchor_text;
 	struct fi_map_data fimd;
-	CLASS_DEFINITION
-} faux_instance;
+}
 
 @ The following function creates a basic //faux_instance// corresponding to
 the package `pack`, but one in which none of the cross-references to other
@@ -129,7 +128,7 @@ Since we might want to index multiple different Inter trees in the same run,
 we may need to keep multiple sets of faux instances, one for each tree. So:
 
 =
-typedef struct faux_instance_set {
+classdef faux_instance_set {
 	int no_direction_fi;
 	int no_room_fi;
 	struct linked_list *instances; /* of `faux_instance` */
@@ -137,8 +136,7 @@ typedef struct faux_instance_set {
 	struct faux_instance *faux_yourself;
 	struct faux_instance *faux_benchmark;
 	struct linked_list *rubrics; /* of `rubric_holder` */
-	CLASS_DEFINITION
-} faux_instance_set;
+}
 
 @ =
 faux_instance_set *FauxInstances::new_empty_set(void) {

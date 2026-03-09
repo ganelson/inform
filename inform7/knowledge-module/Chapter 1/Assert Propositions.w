@@ -296,7 +296,7 @@ where X is.
 Another difference is that $R(x, y)$ can give you definite information about
 the kinds of $x$ and $y$, where they are objects, because binary predicates
 have single definitions. (Knowing $locked(x)$, by contrast, doesn't
-tell you whether $x$ is a door or a container -- adjectives can have multiple
+tell you whether $x$ is a door or a container — adjectives can have multiple
 domains in which they have differing definitions.) In the case of a
 proposition produced by sentence conversion, that information is redundant
 since appropriate kind atoms were added to the proposition anyway. But we
@@ -361,7 +361,7 @@ these kind atoms.
 			"into two or more sentences?");
 
 @ The "is" predicate is not usually assertable, but $is(x, f_R(y))$
-can be asserted since it is equivalent to $R(x, y)$ -- this is where we
+can be asserted since it is equivalent to $R(x, y)$ — this is where we
 unravel that. We reject compound uses of functions in this way, but in
 practice they hardly ever arise, and could only do so with quite complex
 sentences where it seems reasonable to tell the user to write something
@@ -425,7 +425,7 @@ more general value $V$. Recall that a term can be
 
 We are unable, at compile-time, to evaluate $f_R(t)$ for any relation $R$,
 and won't even try. We can evaluate a variable using the interpretation
-slate -- that was its whole purpose. So the only case left is a constant:
+slate — that was its whole purpose. So the only case left is a constant:
 
 =
 parse_node *Assert::spec_of_term(pcalc_term pt) {
@@ -436,7 +436,7 @@ parse_node *Assert::spec_of_term(pcalc_term pt) {
 
 @ The analogous routine to extract an instance, which normally takes
 precedence, is more convoluted. First, we could be looking at the name of a
-kind -- in "A door is usually closed", "door" will appear here as a
+kind — in "A door is usually closed", "door" will appear here as a
 description node, and we need to extract the instance of the kind as our
 return value. Second, we want to divert all assertions about "the player" so
 that they refer to the player object, not to the global variable "the player".

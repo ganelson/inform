@@ -6,12 +6,11 @@ To manage the stock of possible linguistic items.
 these, each represented by a single instance of:
 
 =
-typedef struct grammatical_category {
+classdef grammatical_category {
 	struct text_stream *name;
 	struct method_set *methods;
 	int number_of_items;
-	CLASS_DEFINITION
-} grammatical_category;
+}
 
 @ The categories form a fixed set. They are each created by their own sections
 of code, as called from this function when the module starts up:
@@ -51,11 +50,10 @@ VOID_METHOD_TYPE(LOG_GRAMMATICAL_CATEGORY_MTID, grammatical_category *cat,
 instance of the following:
 
 =
-typedef struct linguistic_stock_item {
+classdef linguistic_stock_item {
 	struct grammatical_category *category;
 	struct general_pointer data;
-	CLASS_DEFINITION
-} linguistic_stock_item;
+}
 
 @ A flat array is maintained of the entire stock, so that they can be efficiently
 looked up by their allocation numbers:
@@ -143,7 +141,7 @@ linguistic_stock_item *Stock::from_lcon(lcon_ti l) {
 Consider nouns, for example. In many languages, declensions do not distinguish
 cases fully. In English, the accusative and nominative form of almost every
 noun are the same. So it would not be possible for this object to say for
-sure what case was used -- for example, the lexicon can't know that the
+sure what case was used — for example, the lexicon can't know that the
 use of "Jane" in the sentences "Peter knows Jane" and "Jane knows Peter" has
 a different case in those sentences: it's only looking at the word itself,
 and can't know the wider context. If we parse the word "Jane" the best we can
@@ -159,13 +157,12 @@ or accusative case".
 @d MAX_GU_FORMS 2*MAX_GRAMMATICAL_CASES
 
 =
-typedef struct grammatical_usage {
+classdef grammatical_usage {
 	struct linguistic_stock_item *used;
 	NATURAL_LANGUAGE_WORDS_TYPE *language;
 	int no_possible_forms;
 	lcon_ti possible_forms[MAX_GU_FORMS];
-	CLASS_DEFINITION
-} grammatical_usage;
+}
 
 grammatical_usage *Stock::new_usage(linguistic_stock_item *item, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	grammatical_usage *gu = CREATE(grammatical_usage);
@@ -209,25 +206,23 @@ int Stock::usage_might_be_third_person(grammatical_usage *gu) {
 
 @h Small word sets.
 Sometimes we want a very fast way to parse a single word to see if it belongs
-to a small set of possibilities -- for example, to see if it is a pronoun.
+to a small set of possibilities — for example, to see if it is a pronoun.
 If there are very few such, even using Preform is unnecessary overhead. The
 following is a lightweight alternative:
 
 =
-typedef struct small_word_set {
+classdef small_word_set {
 	int extent;
 	int used;
 	struct vocabulary_entry **word_ve;
 	void **results;
-
-	CLASS_DEFINITION
-} small_word_set;
+}
 
 @ Small word sets do not expand: they must be created large enough. But really,
 if we expect them to contain more than about 20 words at the outside, then
 we ought to be using standard Preform nonterminals instead.
 
-Small word sets are, however, initially empty -- i.e., no capacity is used.
+Small word sets are, however, initially empty — i.e., no capacity is used.
 
 =
 small_word_set *Stock::new_sws(int capacity) {

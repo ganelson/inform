@@ -3,7 +3,7 @@
 To remove labels which are defined but never jumped to.
 
 @ //inform7// tends to produce a lot of labels when compiling complicated text
-substitutions, but many -- around 2000 in a typical run -- are never branched to,
+substitutions, but many — around 2000 in a typical run — are never branched to,
 either by a jump invocation or by assembly language.
 
 These spurious labels cause no real problem except untidiness, but removing

@@ -22,7 +22,7 @@ duck out of it by providing an implementation of her own. (Indeed, this could
 even be `cheapglk`, as mentioned above.)
 
 This section of code therefore defines just two functions, `i7_default_stylist`
-and `i7_default_glk`, plus their supporting code -- which turns out to be quite
+and `i7_default_glk`, plus their supporting code — which turns out to be quite
 a lot, but there are only those two points of entry.
 
 @h The Glk handler.

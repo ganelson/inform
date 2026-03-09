@@ -95,8 +95,8 @@ compiler converts such a syntax into a call to the <code>R_Process</code> below.
 cup from the table&quot; is converted in the Standard Rules to &quot;taking the cup&quot;.
 This is done via a routine called <code>GVS_Convert</code>.</li>
 <li>When a request is successful, the &quot;carry out requested actions&quot; rule
-turns the original action -- a request by the player, such as is produced
-by CHOPIN, PLAY POLONAISE -- into an action by the person asked, such as
+turns the original action — a request by the player, such as is produced
+by CHOPIN, PLAY POLONAISE — into an action by the person asked, such as
 &quot;Chopin playing the Polonaise&quot;.</li>
 </ul>
 <p>Certain exceptional cases can arise for other reasons:</p>
@@ -111,9 +111,9 @@ generated when describing the new location at the end of a &quot;going&quot; act
 single routine which unifies all of these approaches. Except the last one.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Fake Actions.</b>  Though sometimes useful for I6 coding tricks, fake actions -- action numbers
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Fake Actions.</b>  Though sometimes useful for I6 coding tricks, fake actions — action numbers
 not corresponding to any action, but different from those of valid actions,
-and useable with a number of action syntaxes -- are not conceptually present
+and useable with a number of action syntaxes — are not conceptually present
 in I7 source text. They can only really exist at the I6 level because I6 is
 typeless; in I7 terms, there is no convenient kind of value which could
 represent both actions and fake actions while protecting each from confusion
@@ -341,11 +341,8 @@ hidden in the call to <code>LookSub</code>. The <code>-Sub</code> suffix is an I
 this as the routine to go along with the action <code>##Look</code>, and so it is,
 but it looks nothing like the <code>LookSub</code> of the old I6 library. Inform compiles
 <code>-Sub</code> routines like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [ </span><span class="identifier-syntax">LookSub</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">GenericVerbSub</span><span class="plain-syntax">(153,154,155); ];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[ </span><span class="identifier-syntax">LookSub</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">GenericVerbSub</span><span class="plain-syntax">(153,154,155); ];
+</span></pre>
 <p>(with whatever rulebook numbers are appropriate). <code>GenericVerbSub</code> then
 runs through the specific action processing stage.</p>
 </div>
@@ -372,8 +369,8 @@ runs through the specific action processing stage.</p>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Begin Action.</b>  We now begin the second half of the segment: the machinery which handles
 all actions.</p>
 <p>The significance of 4096 here is that this is how I6 distinguishes genuine
-actions -- numbered upwards in order of creation -- from what I6 calls
-&quot;fake actions&quot; -- numbered upwards from 4096. Fake actions are hardly
+actions — numbered upwards in order of creation — from what I6 calls
+&quot;fake actions&quot; — numbered upwards from 4096. Fake actions are hardly
 used at all in I7, and certainly shouldn't get here, but it's possible
 nonetheless using I6 angled-brackets, so... In other respects all we do
 is to save details of whatever current action is happening onto the stack,
@@ -491,7 +488,7 @@ rulebook.</p>
 <p>If either the noun or second noun is a topic, then this is an action
 arising from parsing (such actions do not arise through the &quot;try&quot; phrase,
 unless by stored actions in which case this has all happened before and
-doesn't need to be done again) -- the parser places details of which words
+doesn't need to be done again) — the parser places details of which words
 make up the topic in the I6 global variables <code>consult_words</code> and <code>consult_from</code>.
 We convert them to a valid I7 snippet value.</p>
 </li>
@@ -800,7 +797,7 @@ action machinery at all.</p>
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Work Out Details Of Specific Action Rule.</b>  This is one of the I6 primitive rules in the specific action processing
 rulebook, and it's basically a trick to allow information known to the
 <code>GenericVerbSub</code> routine to be passed down as rulebook variables for the
-specific action-processing rules -- in effect allowing us to pass not
+specific action-processing rules — in effect allowing us to pass not
 one but five parameters to the rulebook: the out-of-world and silence
 flags, plus the three specific rulebooks needed to process the action.</p>
 </div>
@@ -818,7 +815,7 @@ flags, plus the three specific rulebooks needed to process the action.</p>
 <p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Actions Bitmap.</b>  This is a fairly large bitmap recording which actions have succeeded thus
 far on which nouns. It was to some extent an early attempt at implementing
 a past-tense system; I'm not at all sure it was successful, since it is
-hindered by certain restrictions -- it only records action/noun combinations,
+hindered by certain restrictions — it only records action/noun combinations,
 for instance, and the notion of &quot;success&quot; is a vexed one for actions
 anyway. There is a clearly defined meaning, but it doesn't always correspond
 to what the user might expect, which is unfortunate.</p>

@@ -41,11 +41,13 @@ We must distinguish between two closely related things:
 During the time of its existence, each Inform 7 local is stored in a
 corresponding Inter local, but this is a little like register allocation in
 a conventional compiler. For example, consider this C code:
-= (text as C)
+
+``` C
 	for (int i=0; i<10; i++) printf("%d... ", i);
 	printf("A moment of suspense. ");
 	for (int j=9; j>=0; j--) printf("%d! ", j);
-=
+```
+
 A C compiler will allocate registers in the CPU to hold `i` and `j`, but it is
 also likely to notice that `i` ceases to exist before `j` comes into being: and
 therefore the same register can be used to hold both. It holds `i` for a while,
@@ -54,12 +56,14 @@ meaningful contents.
 
 Inside the Inter function we are compiling, Inter VM locals are like registers
 in this analogy. Inform 7 source text like this:
-= (text as Inform 7)
+
+``` Inform7
 	repeat with the item running through things:
 		say "The needle flickers over [the item]."
 	repeat with the watcher running through people in the Laboratory:
 		say "[The watcher] looks on anxiously."
-=
+```
+
 Here there are two `LET_VALUE_LV` variables, "item" and "watcher", but "watcher"
 does not come into being until after "item" has ceased to exist, and Inform
 will compile both to use the same Inter local. Note that this causes it not
@@ -77,7 +81,7 @@ The `current_usage` field contains the I7 local it currently stores, and must
 therefore be ignored if `allocated` is `FALSE`.
 
 =
-typedef struct local_variable {
+classdef local_variable in 100s {
 	int allocated; /* in existence at this point in the routine? */
 	int lv_purpose; /* one of the `*_LV` values above */
 	int index_with_this_purpose; /* counting up from 0 within locals of same purpose */
@@ -85,8 +89,7 @@ typedef struct local_variable {
 	struct text_stream *comment_on_use; /* purely to make the output more legible */
 
 	struct I7_local_variable current_usage; /* meaningful only if `allocated` */
-	CLASS_DEFINITION
-} local_variable;
+}
 
 typedef struct I7_local_variable {
 	struct wording varname; /* name of local variable */
@@ -116,9 +119,11 @@ void LocalVariableSlates::clear_I7_local(I7_local_variable *I7_local, wording W,
 
 @ Default Inter identifier names are generated as follows. The result is that
 a typical Inter function will have locals looking something like this:
-= (text)
+
+``` None
 	t_0  t_1  phrase_options  tmp_0  tmp_1  tmp_2  ct_0  ct_1
-=
+```
+
 where the defaults have been overridden for `phrase_options`, `ct_0` and `ct_1`,
 but allowed to stand for the rest.
 
@@ -222,7 +227,7 @@ void LocalVariableSlates::append(stack_frame *frame_to, stack_frame *frame_from)
 
 @h Allocating.
 Adding a new I7 local variable to a slate may, or may not, result in the
-creation of a new //local_variable// object -- if we can reuse one that is no
+creation of a new //local_variable// object — if we can reuse one that is no
 longer needed, we will.
 
 =

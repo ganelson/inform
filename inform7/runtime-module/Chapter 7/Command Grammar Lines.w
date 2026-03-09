@@ -268,9 +268,11 @@ indicating what the mistake was, exactly. We do this by beginning the line
 with an additional token matching the empty text (and thus, always matching)
 but with the side-effect of setting a special global variable. Thus a mistaken
 line `act [thing]` comes out as something like:
-= (text)
+
+``` None
 * Mistake_Token_12 'act' noun -> MistakeAction
-=
+```
+
 Since the command parser accepts the first command which matches, and since
 none of this can be recursive, the value of this variable at the end of
 command parsing is guaranteed to be the one set during the line causing the
@@ -489,12 +491,11 @@ These are functions which match exactly one of the tokens in the given range;
 so, for example, `fish/fowl/duck/drake` could be handled by a slash GPR.
 
 =
-typedef struct slash_gpr {
+classdef slash_gpr {
 	struct cg_token *first_choice;
 	struct cg_token *last_choice;
 	struct inter_name *sgpr_iname;
-	CLASS_DEFINITION
-} slash_gpr;
+}
 
 @ =
 inter_name *RTCommandGrammarLines::slash(cg_token *from_token, cg_token *to_token) {

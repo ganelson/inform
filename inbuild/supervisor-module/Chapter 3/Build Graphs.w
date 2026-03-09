@@ -27,7 +27,7 @@ compiled, is a file vertex.
 @e REQUIREMENT_VERTEX
 
 =
-typedef struct build_vertex {
+classdef build_vertex {
 	int type; /* one of the `*_VERTEX` values above */
 	struct linked_list *build_edges; /* of `build_vertex` */
 	struct linked_list *use_edges; /* of `build_vertex` */
@@ -47,9 +47,7 @@ typedef struct build_vertex {
 	int always_build_dependencies; /* if you build this, first always build its dependencies */
 	int never_build_this; /* i.e., trust that it is correct regardless of timestamps */
 	struct build_script *script; /* how to build what this node represents */
-
-	CLASS_DEFINITION
-} build_vertex;
+}
 
 @h Creation.
 First, the three colours of vertex.
@@ -296,7 +294,7 @@ This isn't simply a matter of printing out, of course, but very similar code
 handles `-archive` and `-archive-to N`.
 
 Note that the English language definition, which lives in the internal nest,
-cannot be read from any other nest -- so we won't archive it.
+cannot be read from any other nest — so we won't archive it.
 
 =
 void Graphs::archive(OUTPUT_STREAM, build_vertex *V, inbuild_nest *N,

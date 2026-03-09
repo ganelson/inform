@@ -7,11 +7,11 @@ If we write $K\leq L$ to mean that $K$ conforms to $L$, then $\leq$ provides
 an ordering on kinds. For any kinds $K, L, M$ not making use of kind variables[1]
 it is true that:
 
-- $K \leq K$ -- reflexivity.
-- If $K\leq L$ and $L\leq M$ then $K\leq M$ -- transitivity.
-- `K_nil` $\leq K \leq$ `value` -- there are top and bottom elements.[2]
+- $K \leq K$ — reflexivity.
+- If $K\leq L$ and $L\leq M$ then $K\leq M$ — transitivity.
+- `K_nil` $\leq K \leq$ `value` — there are top and bottom elements.[2]
 - If $K \leq L$ then a value of kind $K$ can always be substituted for a
-value of kind $L$ without modification -- the Liskov substitution principle.[3]
+value of kind $L$ without modification — the Liskov substitution principle.[3]
 - There is a join $K\lor L$ and a meet $K\land L$ such that
 $K\land L\leq K, L\leq K\lor L$, where $K\lor L$ is minimal and $K\land L$
 maximal with that property.
@@ -39,7 +39,7 @@ formally a lattice.
 As it happens, however, Inform's choice of indefinite kinds is made in
 such a way that this does not happen. The upshot is that although the set of
 kinds is not necessarily a lattice, it often will be in practice, and we use
-the language of lattices -- hence, words like "join" and "meet" -- as a guide.
+the language of lattices — hence, words like "join" and "meet" — as a guide.
 
 @ Conformance is tested with the function //Kinds::conforms_to//, and the
 following shows it in action.
@@ -55,15 +55,15 @@ in other languages would be called a protocol. Here we see conformance:
  
 = (text from Figures/variance.txt as REPL)
 
-- A constructor $\phi$ is "covariant" -- meaning, goes the same way -- if
+- A constructor $\phi$ is "covariant" — meaning, goes the same way — if
 $K\leq L$ means $\phi(K)\leq\phi(L)$. 
-- It is "contravariant" -- goes the opposite way -- if $K\leq L$ means
+- It is "contravariant" — goes the opposite way — if $K\leq L$ means
 $\phi(L)\leq\phi(K)$. 
 
 Note that "list of ..." is covariant; "phrase ... -> ..." is contravariant in
 the first term, but covariant in the second. To see why, consider a function
 $f: K\to L$, and then considering expanding or contracting the sets $K$ and $L$.
-It's no problem if $L$ grows larger -- $f$ can still be used -- but if $L$
+It's no problem if $L$ grows larger — $f$ can still be used — but if $L$
 shrinks then $f$ might map outside it, which is unsafe. But the reverse is true
 for $K$. If $K$ shrinks we can still use $f$, but if it grows then we may not
 be able to. If $K_1\leq K\leq K_2$ and $L_1\leq L\leq L_2$, then a function
@@ -127,7 +127,7 @@ The main use of this for Inform is to handle literals such as:
 > { 1, 2.1415, "frog" }
 
 The kind of this is by definition the join of the kinds of the values in the
-list, which as it happens is `K_sayable_value` -- an indefinite kind, so that
+list, which as it happens is `K_sayable_value` — an indefinite kind, so that
 such a list can't be constructed as data.
 
 =
@@ -199,7 +199,7 @@ A related but different question is "compatibility". This asks whether a
 value of kind $K$ can be used where $L$ is expected, but:
 
 - It is now okay if explicit code to perform a conversion would be needed; and
-- There are now three possible answers -- always, never and sometimes, where
+- There are now three possible answers — always, never and sometimes, where
 "sometimes" means that code can be compiled which would test compatibility at
 run time rather than compile time.
 
@@ -209,7 +209,7 @@ Conformance implies compatibility but not vice versa. For example:
 
 Note that `number` is compatible with `real number`. Run-time code will be
 needed to convert the value, but the answer is "always". We also see that
-`device` is always compatible with `thing` -- every device is a thing --
+`device` is always compatible with `thing` — every device is a thing —
 but also that `thing` is sometimes compatible with `device`. If we pass a
 thing to a function expecting to see a device, run-time code can check whether
 the value passed is indeed a device, and reject the call with a run-time error
@@ -236,7 +236,7 @@ kind *values_of_kind_variables[MAX_KIND_VARIABLES];
 @ In theory the kind-checker only needs to read the values of `A` to `Z`, not
 to write them. If `Q` is currently equal to `number`, then it should check
 kinds against `Q` exactly as if it were checking against `number`. It can
-indeed do this -- that's the `MATCH_KIND_VARIABLES_AS_VALUES` mode. It can
+indeed do this — that's the `MATCH_KIND_VARIABLES_AS_VALUES` mode. It can
 also ignore the values of kind variables and treat them as names, so that
 `Q` matches only against `Q`, regardless of its current value; that's the
 `MATCH_KIND_VARIABLES_AS_SYMBOLS` mode. Or it can match anything
@@ -263,12 +263,11 @@ a match of "add 23 to U" in the example above would produce a successful
 result plus a note that `K` has to be `list of numbers`.)
 
 =
-typedef struct kind_variable_declaration {
+classdef kind_variable_declaration {
 	int kv_number; /* must be from 1 to 26 */
 	struct kind *kv_value; /* must be a definite non-`NULL` kind */
 	struct kind_variable_declaration *next;
-	CLASS_DEFINITION
-} kind_variable_declaration;
+}
 
 @ And this little function unpacks a list of KVDs into an array of values:
 
@@ -385,7 +384,7 @@ that domain. For example, in
 > To add (new entry - K) to (L - list of values of kind K) ...
 
 the first appearance of `K` will be an ordinary use of a kind variable,
-whereas the second has the declaration `value` -- meaning that it can
+whereas the second has the declaration `value` — meaning that it can
 become any kind matching `value`. (It could alternatively have had a
 more restrictive declaration like `arithmetic value`.)
 

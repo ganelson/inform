@@ -123,19 +123,16 @@ on each such sentence in turn.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The subject phrase.</b>  Understand sentences take several different forms -- so different, in fact,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The subject phrase.</b>  Understand sentences take several different forms — so different, in fact,
 that we will parse the subject phrase to see which form we have, and only then
 parse the object phrase (using a different grammar for each of the forms).
 As examples:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">unbroken</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">describing</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="string-syntax">"access"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"earthenware"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">. </span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"photograph [something]"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">photographing</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
-<p><understand-sentence-sp> has, as its integer result, one of these:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">unbroken</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">describing</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="string-syntax">"access"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"earthenware"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">pot</span><span class="plain-syntax">. </span><span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"photograph [something]"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">photographing</span><span class="plain-syntax">.
+</span></pre>
+<p><code>&lt;understand-sentence-sp&gt;</code> has, as its integer result, one of these:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">COMMAND_UNDERSTAND_FORM</span> <span class="constant-syntax">1</span>
 </pre>
@@ -152,11 +149,11 @@ As examples:</p>
 objects, which are really just unions of being a text in quotes or a property name:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_item</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_item</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">quoted_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quoted_property</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">understanding_item</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">understanding_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Understand::text_item</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Understand::text_item</span></span>:<br/><a href="5-us.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">preform_lookahead_mode</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -261,7 +258,7 @@ Its pointer return value is once again a linked list of objects, but this time
 they are <a href="5-us.html#SP7" class="internal">understanding_reference</a> objects:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_reference</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_reference</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">reference_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mistaken</span><span class="plain-syntax">;</span>
@@ -274,7 +271,7 @@ they are <a href="5-us.html#SP7" class="internal">understanding_reference</a> ob
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">when_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">understanding_reference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">understanding_reference</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">understanding_reference</span><span class="plain-syntax"> *</span><span class="function-syntax">Understand::list_ur</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Understand::list_ur</span></span>:<br/><a href="5-us.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">understanding_reference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ur1</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">understanding_reference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ur2</span><span class="plain-syntax">) {</span>
@@ -702,7 +699,7 @@ does not issue a problem message in that case either.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-us.html#SP15">&#167;15</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2. </b>  But you can only define a command which does exist already if that command has
-no meanings at present -- as can happen if it has had every meaning stripped from
+no meanings at present — as can happen if it has had every meaning stripped from
 it, one at a time, by previous Understand sentences.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Throw a problem if the command to be defined already means something</span><span class="named-paragraph-number">15.2</span></span> =</p>

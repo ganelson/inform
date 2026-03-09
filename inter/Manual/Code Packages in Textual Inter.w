@@ -24,7 +24,8 @@ are the subject of this section (and which are allowed only in `_code` packages)
 @ The basic structure of a function body like this is that it begins with some
 local variable declarations, and then has its actual content inside a `code`
 block, like so:
-= (text as Inter)
+
+``` Inter
 	package double _code
 	    local x
 	    code
@@ -32,36 +33,43 @@ block, like so:
 	    		inv !plus
 	    			val x
 	    			val x
-=
+```
+
 As with its global analogue, `variable`, a `local` instruction can optionally
 specify a type:
-= (text as Inter)
+
+``` Inter
 	local (int32) x
-=
+```
 
 There can be at most one `code` instruction at the top level. This is incorrect:
-= (text as Inter)
+
+``` Inter
 	package fails _code
 	    code
 	    	inv !enableprinting
 	    code
 	    	inv !print
 	    		val "I am dismal.\n"
-=
+```
+
 and should instead be:
-= (text as Inter)
+
+``` Inter
 	package succeeds _code
 	    code
 	    	inv !enableprinting
 	    	inv !print
 	    		val "I am glorious.\n"
-=
+```
 
 @ Surprisingly, perhaps, it's legal not to have a `code` block at all. This
 function works:
-= (text as Inter)
+
+``` Inter
 	package succeeds _code
-=
+```
+
 But of course it does nothing. If the return value of such a function is used,
 it will be 0.
 
@@ -83,7 +91,8 @@ a global variable, or a particular property of some instance.
 marking a position in that same function.
 
 In a `code` block, the context is initially `code`. For example:
-= (text as Inter)
+
+``` Inter
 	package double _code
 	    local x                             top level has no context
 	    code                                top level has no context
@@ -99,7 +108,8 @@ In a `code` block, the context is initially `code`. For example:
 	    			val x                   context is val
 	    	inv !return                     context is code
 	    		val x                       context is val
-=
+```
+
 In this function, the `code` block contains five instructions, each of which
 is read in a `code` context. Each of those then has its own expectations which
 set the context for its child instructions, and so on. For example, `inv !store`
@@ -110,9 +120,11 @@ Those uses of `inv !something` are called "primitive invocations". They are
 like function calls, but where the function is built in to Inter and is not
 itself defined in Inter. Each such has a "signature". For example, the
 internal declaration of `!store` is:
-= (text as Inter)
+
+``` Inter
 	primitive !store ref val -> val
-=
+```
+
 So its signature is `ref val -> val`. This expresses that its two children
 should be read in `ref` and `val` context, and that its result is a `val`.
 (As in most C-like languages, stores are values in Inter, though in
@@ -131,24 +143,29 @@ requires a `ref` result, and similarly for `val` and `lab`.
 For example, `!return` has the signature `val -> void`, which makes it legal
 to use in a `code` context as in the above example. But these two attempts
 to use it would both be incorrect:
-= (text as Inter)
+
+``` Inter
 	inv !return
 	inv !printnumber
 		inv !return
 			val 10
-=
+```
+
 The first fails because it tries to use `!return` as if it were `void -> void`,
 i.e., with no supplied value; the second fails because it tries to use it as if
 it were `val -> val`.
 
 @ Some primitives have `code` as one or more of their arguments. For example:
-= (text as Inter)
+
+``` Inter
 	primitive !ifelse val code code -> void
-=
+```
+
 This evaluates the first argument (a value), then executes the second argument
 (a code block) if the value is non-zero, or alternatively the third if it is zero.
 There is no result. For example:
-= (text as Inter)
+
+``` Inter
 	inv !ifelse
 		val x
 		code
@@ -157,63 +174,75 @@ There is no result. For example:
 		code
 			inv !print
 				"I refuse to print zeroes on principle."
-=
+```
 
 @ Rather like `code`, which executes a run of instructions as if they were a
 single instruction, `evaluation` makes a run of evaluations. Thus:
-= (text as Inter)
+
+``` Inter
 	inv !printnumber
 		evaluation
 			val 23
 			val -1
 			val 12
-=
+```
+
 prints just "12". The point of this is that there may be side-effects in the
 earlier evaluations, of course, though there weren't in this example.
 
 Another converter, so to speak, is `reference`, but this is much more limited
 in what it is allowed to do.
-= (text as Inter)
+
+``` Inter
 	inv !store
 		reference
 			val x
 		val 5
-=
+```
+
 is exactly equivalent to:
-= (text as Inter)
+
+``` Inter
 	inv !store
 		ref x
 		val 5
-=
-This is not a very useful example: but consider --
-= (text as Inter)
+```
+
+This is not a very useful example: but consider —
+
+``` Inter
 	inv !store
 		reference
 			inv !propertyvalue
 				val Odessa
 				val area
 		val 5000
-=
+```
+
 which changes the property `area` for `Odessa` to 5000. The signature of
 `!propertyvalue` is `val val -> val`, and ordinarily it evaluates the property.
 But placed under a `reference`, it becomes a reference to where that property
 is stored, and thus allows the value to be changed with `!store`. This:
-= (text as Inter)
+
+``` Inter
 	inv !store
 		inv !propertyvalue
 			val Odessa
 			val area
 		val 5000
-=
+```
+
 would by contrast be rejected with an error, as trying to use a `val` in a `ref`
 context.
 
 `reference` cannot be applied to anything other than storage (a local or global
 variable, a memory location or a property value), so for example:
-= (text as Inter)
+
+``` Inter
 	reference
 		val 5
-=
+```
+
 is meaningless and will be rejected. There is in general no way to make, say,
 a pointer to a function or instance using `reference`. It is much more circumscribed
 than the `&` operator in C.
@@ -221,11 +250,13 @@ than the `&` operator in C.
 @h Function calls.
 This seems a good point to say how to make function calls, since it's almost
 exactly the same. This:
-= (text as Inter)
+
+``` Inter
 	inv !printnumber
 		inv double
 			val 10
-=
+```
+
 prints "20". Note the lack of a `!` in front of the function name: this means
 it is a regular function, not a primitive. 
 
@@ -240,11 +271,13 @@ call it with any number of arguments. Again: beware.
 
 Those arguments become the initial values of the local variables. So for
 example, if:
-= (text as Inter)
+
+``` Inter
 	package example _code
 	    local x
 	    local y
-=
+```
+
 then:
 
 - a call with no arguments results in `x` and `y` equal to 0 and 0;
@@ -267,10 +300,12 @@ function body, in a `lab` context.
 
 @ The `val` and `ref` instructions both allow optional type markers to be placed,
 so for example:
-= (text as Inter)
+
+``` Inter
 	val (int32) x
 	ref (text) y
-=
+```
+
 Where no type marker is given, the type is always considered `unchecked`.
 
 Types of `val` or `ref` tend not to be checked or looked at anyway, so this
@@ -284,14 +319,18 @@ Similarly unuseful for the moment is `cast`. This instruction allows us to
 say "consider this value as if it had a different type". For example, if we
 are using an enumerated type `city`, we could read the enumeration values as
 numbers like so:
-= (text as Inter)
+
+``` Inter
 	cast int32 <- city
 		val (city) Odessa
-=
+```
+
 Right now this is no different from:
-= (text as Inter)
+
+``` Inter
 	val (int32) Odessa
-=
+```
+
 but we keep `cast` around as a hedge against future developments, in case we
 ever want to typecheck strictly enough that `val (int32) Odessa` is rejected
 as a contradiction in terms.
@@ -311,11 +350,13 @@ This has always been a feature of Inform 6 code. For example, some real-number
 arithmetic functions in BasicInformKit are written to use heavy amounts of
 Glulx assembly language, in order to access functionality not present in the
 Inform language itself. Here is a sample:
-= (text as Inform 6)
+
+``` Inform6
 	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
 	@floor log10val fexpo;
 	@ftonumn fexpo expo;
-=
+```
+
 Those "opcodes" beginning `@` are part of the instruction set for the
 Glulx virtual machine: real number arithmetic is impossible on the smaller
 Z-machine, so we couldn't meaningfully compile this code to that platform,
@@ -338,7 +379,8 @@ absolutely anything, and would be quite happy to accept, say, `inv @flytothemoon
 even though this opcode does not exist in any known system of assembly language.[1]
 
 And so the above is in fact compiled to:
-= (text as Inform 6)
+
+``` Inter
 	inv @fdiv
 		assembly stack
 		val 0x40135D8E
@@ -349,7 +391,8 @@ And so the above is in fact compiled to:
 	inv @ftonumn
 		val fexpo
 		val expo
-=
+```
+
 And when the //building// module performed that compilation, it knew nothing
 about `@fdiv` and the rest: it just took on trust that this is meaningful.
 
@@ -367,7 +410,7 @@ instruction set when compiling for Z via Inform 6, and how to deal with the
 Glulx instruction set when compiling either for Glulx via Inform 6 or a
 native executable via a C compiler like `clang`. Any further code-generators
 are also likely to follow Glulx conventions. So: if you really must use
-assembly language in your Inter code, good advice would be --
+assembly language in your Inter code, good advice would be —
 
 - Use the Glulx instruction set, for better chances of portability.
 
@@ -375,14 +418,16 @@ assembly language in your Inter code, good advice would be --
 somewhere, since those will probably be implemented.
 
 @ If we look at this example in more detail:
-= (text as Inter)
+
+``` Inter
 	inv @fdiv
 		assembly stack
 		val 0x40135D8E
 		val log10val
-=
+```
+
 we see some general features of assembly language. Inter allows any number
-of child instructions to be supplied -- here, there are three. Since Inter knows
+of child instructions to be supplied — here, there are three. Since Inter knows
 nothing about the meaning of `@fdiv`, it has no way to know how many are
 expected. They should all be usages of `val`, `lab`, or `assembly`.
 
@@ -410,12 +455,14 @@ branches on a successful test. But alternatively it can:
 - `assembly return_false_if_false`
 
 So for example the Z-machine instruction `@random sp -> i;` compiles to Inter as:
-= (text as Inter)
+
+``` Inter
 	inv @fdiv
 		assembly stack
 		assembly store_to
 		val i
-=
+```
+
 And note the use of `val i`, not `ref i`, even though the variable is being
 written to here. Even Inter's normal rules of category checking do not apply
 to assembly language, the lowest of the low.

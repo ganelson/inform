@@ -25,12 +25,11 @@ void ImperativeDefinitionFamilies::create(void) {
 @ Such a family is little more than a set of methods:
 
 =
-typedef struct imperative_defn_family {
+classdef imperative_defn_family {
 	struct text_stream *family_name;
 	struct method_set *methods;
 	int compile_last;
-	CLASS_DEFINITION
-} imperative_defn_family;
+}
 
 imperative_defn_family *ImperativeDefinitionFamilies::new(text_stream *name, int last) {
 	imperative_defn_family *family = CREATE(imperative_defn_family);
@@ -179,7 +178,7 @@ int ImperativeDefinitionFamilies::allows_inline(imperative_defn *id) {
 
 @h Compilation and indexing.
 `COMPILE_IMP_DEFN_MTID` is called to ask the family to perform its main round
-of compilation for any resources it will need -- most obviously, of course,
+of compilation for any resources it will need — most obviously, of course,
 it may want to turn its definition bodies into Inter functions.
 
 @e COMPILE_IMP_DEFN_MTID

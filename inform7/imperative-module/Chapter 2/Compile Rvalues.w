@@ -281,9 +281,11 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 
 @ Texts can be compiled in four different ways, so the following splits into
 four cases. Note that responses take the form
-= (text)
+
+``` None
 	"blah blah blah" ( letter )
-=
+```
+
 so the penultimate word, if it's there, is the letter.
 
 =
@@ -359,11 +361,10 @@ occur in the source text because they can compile to a fairly large slice of
 code, and we don't want to repeat that:
 
 =
-typedef struct cached_understanding {
+classdef cached_understanding {
 	struct wording understanding_text; /* word range of the understanding text */
 	struct inter_name *cu_iname; /* function to test this */
-	CLASS_DEFINITION
-} cached_understanding;
+}
 
 inter_pair CompileRvalues::compile_understanding(wording W) {
 	if (<subject-pronoun>(W)) {

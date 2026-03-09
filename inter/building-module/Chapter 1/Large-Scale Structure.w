@@ -179,8 +179,8 @@ package_request *LargeScale::architecture_request(inter_tree *I) {
 on demand: if you look for `#grammar_table` you will find it, but if you never
 look then it will never exist. These are used only for a handful of values
 which are redefined by the //final// code-generator anyway: here we define
-them as 0 -- meaninglessly, but they have to be set to something. They are
-not, in fact, all constants -- `self` is a variable at runtime -- but again,
+them as 0 — meaninglessly, but they have to be set to something. They are
+not, in fact, all constants — `self` is a variable at runtime — but again,
 it's for the code-generator to define them as it would like, on a platform
 by platform basis.
 
@@ -339,11 +339,10 @@ Modules are identified by name, and each one produces an instance of the
 following.
 
 =
-typedef struct module_request {
+classdef module_request {
 	struct package_request *where_found;
 	struct linked_list *submodules; /* of `submodule_request` */
-	CLASS_DEFINITION
-} module_request;
+}
 
 @ The tree's module dictionary is used to ensure that repeated calls with the
 same module name return the same `module_request`.
@@ -367,18 +366,17 @@ module_request *LargeScale::module_request(inter_tree *I, text_stream *name) {
 @h Submodules.
 The idea here is that each module could define, say, some variables, placing
 them in a submodule for that purpose. As a result, there will be a "variables only"
-submodule found in several modules. Such flavours of submodule are preset --
+submodule found in several modules. Such flavours of submodule are preset —
 we allow only a few of these: see //runtime: Hierarchy// for the set used by
-//inform7// -- and they must be specified in advance of use, with the following.
+//inform7// — and they must be specified in advance of use, with the following.
 
 For the moment, at least, `submodule_identity` is really just a textual name
 like `variables` but in a fancy wrapper.
 
 =
-typedef struct submodule_identity {
+classdef submodule_identity {
 	struct text_stream *submodule_name;
-	CLASS_DEFINITION
-} submodule_identity;
+}
 
 submodule_identity *LargeScale::register_submodule_identity(text_stream *name) {
 	submodule_identity *sid;
@@ -409,11 +407,10 @@ package_request *LargeScale::completion_submodule(inter_tree *I, submodule_ident
 @ Those in turn all make use of this back-end function:
 
 =
-typedef struct submodule_request {
+classdef submodule_request {
 	struct package_request *where_found;
 	struct submodule_identity *which_submodule;
-	CLASS_DEFINITION
-} submodule_request;
+}
 
 package_request *LargeScale::request_submodule_of(inter_tree *I, module_request *M,
 	submodule_identity *sid) {

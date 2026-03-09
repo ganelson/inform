@@ -10,7 +10,7 @@ stipulations on place and possessions attached.
 @d MAX_POSSESSIONS_PER_SCENARIO 16
 
 =
-typedef struct test_scenario {
+classdef test_scenario {
 	struct wording name; /* in fact a single word identifying the test */
 	struct text_stream *text_of_script;
 	struct instance *place; /* room we need to be in to perform test */
@@ -18,8 +18,7 @@ typedef struct test_scenario {
 	struct instance *possessions[MAX_POSSESSIONS_PER_SCENARIO]; /* what they are */
 	struct parse_node *sentence_test_declared_at;
 	struct test_scenario_compilation_data compilation_data;
-	CLASS_DEFINITION
-} test_scenario;
+}
 
 @ =
 test_scenario *TestCommand::new_scenario(wording XW) {

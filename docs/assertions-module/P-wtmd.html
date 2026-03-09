@@ -128,8 +128,8 @@ equations and rules. See <a href="2-ptmn.html" class="internal">Passes through M
 <p>During the &quot;pre-pass&quot; names of tables and other top-level structures are
 recorded, and sentences are classified by <a href="2-cs.html#SP3" class="internal">Classifying::sentence</a>. This is
 done by asking the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module to diagram them and determine whether
-the meaning is &quot;regular&quot; -- a typical sentence asserting some relationship,
-such as &quot;the ball is on the table&quot; -- or &quot;special&quot; -- a sentence with some
+the meaning is &quot;regular&quot; — a typical sentence asserting some relationship,
+such as &quot;the ball is on the table&quot; — or &quot;special&quot; — a sentence with some
 other purpose, such as &quot;Test ... with ...&quot;, often but not always written in
 the imperative.</p>
 </li>
@@ -213,15 +213,12 @@ usually wearable&quot; do not immediately lead to propositions being drawn up.</
 sentences: other constructions are made with different syntaxes. The most
 obvious of these are &quot;imperative definitions&quot;, which are lists of instructions
 for what to do in different circumstances. They take the form</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">:
+    </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;
+    </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;
+    ...
+    </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">.
+</span></pre>
 <p>The preamble is parsed into an <a href="5-id.html#SP1" class="internal">imperative_defn</a>, which falls into one of
 a small range of <a href="5-idf.html" class="internal">Imperative Definition Families</a>: the most important being
 the <a href="5-rf.html" class="internal">Rule Family</a>, for interactive-fiction-style rules, and <a href="5-tpf.html" class="internal">To Phrase Family</a>,

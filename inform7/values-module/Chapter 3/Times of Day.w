@@ -9,7 +9,7 @@ that time is at Nought. His less accurate grandmother Poetry has always been
 understood to start in the middle; but on reflection it appears that her
 proceeding is not very different from his; since Science, too, reckons backwards
 as well as forwards, divides his unit into billions, and with his clock-finger
-at Nought really sets off in medias res" (George Eliot, "Daniel Deronda").
+at Nought really sets off in medias res" (George Eliot, _Daniel Deronda_).
 
 Our make-believe here is midnight, our unit is divided not into billions but
 into 1440, and a value of this kind holds one of two possibilities:
@@ -19,12 +19,12 @@ into 1440, and a value of this kind holds one of two possibilities:
 
 Thus the value 70 might mean 1:10 AM, or it might mean 70 minutes, and
 type-checking does not try to distinguish the two. This is so that arithmetic
-will be easier -- we can add 70 minutes to 1:10 AM to get 2:20 AM, but if they
+will be easier — we can add 70 minutes to 1:10 AM to get 2:20 AM, but if they
 had different kinds, this would be illegal.[1]
 
 [1] The down side is that it allows adding, say, 4:52 PM to 3:31 PM, which
 Inform does by considering each as time since the previous midnight, but makes
-little sense. We also need two different notations for time -- compare the
+little sense. We also need two different notations for time — compare the
 command parser tokens "[a time]", recognising, say, "4:12 AM" and "[a
 time period]", for "3 HOURS".
 
@@ -71,7 +71,7 @@ parse_node *TimesOfDay::elapsed_time_rvalue(int N, wording W) {
 
 @h Parsing.
 Although they are eventually stored in variables of the same kind ("time"),
-relative and absolute times are parsed differently -- they really are not
+relative and absolute times are parsed differently — they really are not
 linguistically the same thing at all.
 
 =
@@ -95,9 +95,9 @@ linguistically the same thing at all.
 
 @ Note that we allow "12:01 AM" (one minute past midnight) and "12:01 PM"
 (ditto noon), and also "0:01 AM" and "00:01 AM", but not "0:01 PM".
-Lawrence Sanders's sci-fi thriller "The Tomorrow File", if that can be
-mentioned on the same page as "Daniel Deronda", had a terrific cover of
-a digital clock glowing with "24:01" -- but we won't allow that, either.
+Lawrence Sanders's sci-fi thriller _The Tomorrow File_, if that can be
+mentioned on the same page as _Daniel Deronda_, had a terrific cover of
+a digital clock glowing with "24:01" — but we won't allow that, either.
 
 @<Vet the time for clock range@> =
 	int time_cycles = 12*60*R[2];

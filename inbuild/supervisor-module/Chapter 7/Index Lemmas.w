@@ -34,25 +34,22 @@ one lemma can cross-reference another which does not yet exist but which will
 be created later.)
 
 =
-typedef struct index_lemma {
+classdef index_lemma {
 	struct categorised_term term; /* term of lemma */
 	struct linked_list *references; /* of `index_reference` */
 	struct linked_list *cross_references; /* of `index_cross_reference` */
 	struct text_stream *sorting_key; /* final reading order is alphabetic on this */
 	int lemma_source; /* one of the `*_LEMMASOURCE` constants */
 	int categories_to_show; /* display the last N categories of the term (normally 1; 0 means skip this lemma entirely) */
-	CLASS_DEFINITION
-} index_lemma;
+}
 
-typedef struct index_reference {
+classdef index_reference {
 	struct cd_index_location posn;
-	CLASS_DEFINITION
-} index_reference;
+}
 
-typedef struct index_cross_reference {
+classdef index_cross_reference {
 	struct categorised_term P;
-	CLASS_DEFINITION
-} index_cross_reference;
+}
 
 void IndexLemmas::add_reference(index_lemma *il, cd_index_location posn) {
 	index_reference *ref = CREATE(index_reference);

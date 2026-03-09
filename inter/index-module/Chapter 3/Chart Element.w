@@ -226,7 +226,7 @@ void ChartElement::index_kind_col_head(OUTPUT_STREAM, text_stream *key, char *an
 }
 
 @ Once we're past the heading row, each row is made in two parts: first this
-is called --
+is called —
 
 =
 void ChartElement::begin_chart_row(OUTPUT_STREAM, index_session *session) {
@@ -236,7 +236,7 @@ void ChartElement::begin_chart_row(OUTPUT_STREAM, index_session *session) {
 }
 
 @ It's convenient to return the shadedness: a row is shaded if it's for a kind
-which can have enumerated values but doesn't at the moment -- for instance, the
+which can have enumerated values but doesn't at the moment — for instance, the
 sound effects row is shaded if there are none.
 
 =

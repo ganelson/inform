@@ -12,7 +12,7 @@ Inform generates a new noun from this line: "mammal". This may well occur
 in a variety of inflected forms (though in English, there will be just two:
 "mammal" and "mammals"). That set of forms is gathered into a `lexical_cluster`
 object: see //inflections: Lexical Clusters//. Lexical clusters are not necessarily
-of nouns -- they are also used for adjectives, for example. So it would be
+of nouns — they are also used for adjectives, for example. So it would be
 wrong to represent a noun by a lexical cluster alone.
 
 Inform instead attaches a //noun// object to the new "mammal" kind. This object
@@ -41,16 +41,16 @@ the Inform example above that would be an `instance` object representing this
 piece of furniture in the model world.
 
 It might seem the wrong way around for the //noun// object to contain its
-meaning -- like saying that a luggage tag has a suitcase hanging from it,
+meaning — like saying that a luggage tag has a suitcase hanging from it,
 rather than vice versa. But this enables the lexicon to return a //noun//
 as the result of parsing some text, or more accurately a //noun_usage//
 which points to a //noun//. That in turn means that the lexicon's results
-can convey some linguistic data as well as the actual meaning -- e.g., it
+can convey some linguistic data as well as the actual meaning — e.g., it
 can say not only "this text refers to X" but also "this text is in the
 feminine accusative plural".
 
 =
-typedef struct noun {
+classdef noun {
 	struct lexical_cluster *names;
 	int noun_subclass; /* either `COMMON_NOUN` or `PROPER_NOUN` */
 	struct general_pointer meaning;
@@ -63,19 +63,16 @@ typedef struct noun {
 	#ifdef NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK
 	struct name_resolution_data name_resolution;
 	#endif
-
-	CLASS_DEFINITION
-} noun;
+}
 
 @ A //noun_usage// object is what a lexicon search returns when text is matched
 against some form of a noun.
 
 =
-typedef struct noun_usage {
+classdef noun_usage {
 	struct noun *noun_used;
 	struct grammatical_usage *usage;
-	CLASS_DEFINITION
-} noun_usage;
+}
 
 @ =
 void Nouns::write_usage(OUTPUT_STREAM, noun_usage *nu) {
@@ -261,10 +258,10 @@ general_pointer Nouns::meaning(noun *N) {
 @h Disambiguation.
 Here the parse node `p` stands at the head of a list of alternative meanings
 for some text: for example, they might be different possible meanings of the
-words "red chair" -- perhaps the "red stuffed chair", perhaps the "red upright
+words "red chair" — perhaps the "red stuffed chair", perhaps the "red upright
 chair", and so on. We want to choose the most likely possibility.
 
-Within Inform, this "likely" consideration is a matter of context -- of which
+Within Inform, this "likely" consideration is a matter of context — of which
 heading the noun appears under.
 
 =
@@ -325,7 +322,7 @@ noun_usage *Nouns::usage_from_excerpt_meaning(excerpt_meaning *em) {
 }
 
 @ The following function is so called because Inform registers many constant
-values as nouns -- for example, each rulebook name is a noun, and the meaning
+values as nouns — for example, each rulebook name is a noun, and the meaning
 of that is a valid rvalue in the compiler sense; it's a value which can be
 computed with at run-time. Inform represents rvalues as sprigs of the parse
 tree, so this function returns a `parse_node`.

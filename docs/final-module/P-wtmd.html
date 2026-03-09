@@ -80,7 +80,7 @@ simply provides a single Inter pipeline stage called <code>generate</code>. See
 <a href="2-cg.html#SP1" class="internal">CodeGen::run_pipeline_stage</a> is run. This then creates a <a href="2-cg.html#SP2" class="internal">code_generation</a>
 object, which holds all the temporary storage and configuration details for a
 single act of code-generation. The most important of those details is the
-choice of which <a href="2-cg2.html#SP1" class="internal">code_generator</a> to use -- see below.</p>
+choice of which <a href="2-cg2.html#SP1" class="internal">code_generator</a> to use — see below.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The module creates a small number of <a href="2-cg2.html#SP1" class="internal">code_generator</a>s, one for each
@@ -91,7 +91,7 @@ creates one for &quot;output ANSI C-99 code, please&quot;.</p>
 that should be done by adding a new <a href="2-cg2.html#SP1" class="internal">code_generator</a>. Although the default
 generator is the Inform 6 one, that is in some ways misleadingly simple in
 design because Inter, our intermediate format, was originally designed as a
-sort of abstract paraphrase of Inform 6 -- which means that it's quite easy
+sort of abstract paraphrase of Inform 6 — which means that it's quite easy
 to turn Inter to I6. The C code generator is a much better example of the real
 issues likely to present themselves. So reading through the chapter on C is
 probably the best way to get an idea of the task.</p>

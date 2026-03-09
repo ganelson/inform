@@ -8,7 +8,7 @@ phrases in rule or phrase definitions, and the following structure defines
 the relevant behaviour. (The contents are static.)
 
 =
-typedef struct control_structure_phrase {
+classdef control_structure_phrase {
 	struct control_structure_phrase *subordinate_to;
 	struct text_stream *mnemonic;
 	int indent_subblocks;
@@ -18,8 +18,7 @@ typedef struct control_structure_phrase {
 	int requires_new_syntax;
 	int allow_run_on;
 	inchar32_t *keyword;
-	CLASS_DEFINITION
-} control_structure_phrase;
+}
 
 @ =
 control_structure_phrase *ControlStructures::new(text_stream *mnemonic) {

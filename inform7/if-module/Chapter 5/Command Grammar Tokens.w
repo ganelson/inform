@@ -9,7 +9,7 @@ it was also obfuscatory, and now each CG token corresponds to a //cg_token//
 object as follows:
 
 =
-typedef struct cg_token {
+classdef cg_token {
 	struct wording text_of_token;
 	int grammar_token_code;
 	struct parse_node *what_token_describes; /* 0 or else one of the `*_GTC` values */
@@ -19,8 +19,7 @@ typedef struct cg_token {
 	int slash_class; /* used in slashing: see //CGLines::slash// */
 	int slash_dash_dash; /* ditto */
 	struct cg_token *next_token; /* in the list for a CG line */
-	CLASS_DEFINITION
-} cg_token;
+}
 
 cg_token *CGTokens::cgt_of(wording W, int lit) {
 	cg_token *cgt = CREATE(cg_token);
@@ -42,15 +41,18 @@ is parsed, from an Understand sentence or elsewhere. What happens is much
 the same as when text with substitutions is read: the text is retokenised
 by the lexer to produce the following, in which the square brackets have
 become commas:
-= (text)
+
+``` None
 "drill" , something , "with" , something
-=
+```
+
 In fact we use a different punctuation set from the lexer's default, because
 we want forward slashes to break words, so that we need `/` to be a punctuation
 mark: thus "get away/off/out" becomes
-= (text)
+
+``` None
 "get" "away" / "off" / "out"
-=
+```
 
 @d GRAMMAR_PUNCTUATION_MARKS U".,:;?!(){}[]/" /* note the slash */
 
@@ -519,8 +521,8 @@ parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 	return cgt->what_token_describes;
 }
 
-@ If the token determines an actual constant value -- as it can when it is a
-named token which always refers to a specific thing, for example -- it is
+@ If the token determines an actual constant value — as it can when it is a
+named token which always refers to a specific thing, for example — it is
 possible for `result` not to be a description. Otherwise, though, it has to
 be a description which is true or false for any given value, so:
 
@@ -629,7 +631,7 @@ kind *CGTokens::verify_and_find_kind(cg_token *cgt, int code_mode, int consult_m
 
 @ Relational tokens are the hardest to cope with at runtime, not least because
 Inform has so many different implementations for different relations, and not every
-relation can legally be used. The following function polices that -- either
+relation can legally be used. The following function polices that — either
 doing nothing (okay) or issuing exactly one problem message (not okay).
 
 =

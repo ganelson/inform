@@ -78,7 +78,7 @@ int VariableSubjects::has_initial_value_set(nonlocal_variable *nlv) {
 
 @ Initial values are typechecked twice: once when the assertions machinery
 actually generates them (see //assertions: Property Knowledge//) and then
-again at model completion time. This looks wasteful -- why not typecheck them
+again at model completion time. This looks wasteful — why not typecheck them
 just the once, at completion time?
 
 The reason we don't is that the initial check produces more specific problem
@@ -182,7 +182,7 @@ void VariableSubjects::check_model(inference_subject_family *family,
 
 @ If a variable is said to be the same as, say, `my_var` defined in some kit
 of Inter code somewhere out of our reach, then it makes no sense to allow the
-source text to specify its initial value -- the initial value is whatever
+source text to specify its initial value — the initial value is whatever
 that faraway Inter code said it was.
 
 @<Verify that externally-stored nonlocals haven't been initialised@> =

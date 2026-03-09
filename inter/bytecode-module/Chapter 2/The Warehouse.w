@@ -17,7 +17,7 @@ This data is held in the //inter_warehouse// connected to the tree. Each //inter
 contains a pointer to its warehouse.
 
 =
-typedef struct inter_warehouse {
+classdef inter_warehouse {
 	/* bytecode storage */
 	struct inter_warehouse_room *first_room;
 	struct inter_warehouse_room *last_room;
@@ -26,16 +26,14 @@ typedef struct inter_warehouse {
 	inter_ti next_free_resource_ID;
 	struct inter_warehouse_resource *stored_resources;
 	inter_ti resources_capacity;
-
-	CLASS_DEFINITION
-} inter_warehouse;
+}
 
 @ An implementation secret, though, is that (in the present implementation, anyway)
 there is only one warehouse. If there are multiple trees, they all share the use
 of a single warehouse, though they don't know it. This would cause thread-safety
 issues if Inter had any aspiration to be threaded, but it does not have. And this
-single-warehouse design makes it much faster to carry out "transmigration" -- the
-movement of branches of Inter from one tree to another -- since the associated
+single-warehouse design makes it much faster to carry out "transmigration" — the
+movement of branches of Inter from one tree to another — since the associated
 bytecode and resources do not need to be copied from one warehouse to another.
 
 In this description we continue to talk about "a" warehouse, regardless of the
@@ -104,7 +102,7 @@ inter_ti InterWarehouse::create_resource(inter_warehouse *warehouse) {
 	warehouse->resources_capacity = new_size;
 
 @ Every resource is tied to a package which owns it. This is only in fact used to
-determine the tree which owns it -- but we store the package, not the tree, because
+determine the tree which owns it — but we store the package, not the tree, because
 when material transmigrates from one tree to another, the owning package can then
 stay the same: it is just that //InterPackage::tree// will return a different
 tree after the movement has taken place.
@@ -197,7 +195,7 @@ inter_symbols_table *InterWarehouse::get_symbols_table(inter_warehouse *warehous
 	return RETRIEVE_POINTER_inter_symbols_table(gp);
 }
 
-@ Third, a resource can be a package -- or, really, a pointer to a package, a
+@ Third, a resource can be a package — or, really, a pointer to a package, a
 form of resource which allows bytecode to contain cross-references to packages.
 
 This may as well be its own owner, since it can be valid only if the package
@@ -258,32 +256,33 @@ Each instruction occupies a contiguous run of addresses. That all sounds like
 a typical machine-code arrangement, but:
 
 - the instructions themselves contain neither absolute addresses nor address
-offsets -- they are oblivious to where they are stored, and refer to code
+offsets — they are oblivious to where they are stored, and refer to code
 positions using labels instead;
 
 - some storage may remain unused, and the addresses of instructions do not
 correspond to their order in the code.
 
 =
-typedef struct inter_warehouse_room {
+classdef inter_warehouse_room {
 	struct inter_warehouse *owning_warehouse;
 	int room_usage;
 	int room_capacity;
 	inter_ti *bytecode;
 	struct inter_warehouse_room *next_room;
-	CLASS_DEFINITION
-} inter_warehouse_room;
+}
 
 @ The warehouse is divided into a series of rooms of steadily telescoping sizes.
 Unless an improbably large demand is made for a very long single instruction,
 they will typically look like:
-= (text)
+
+``` None
 	room 0      addresses 0x000000 to 0x000fff (4K words)
 	room 1      addresses 0x001000 to 0x002fff (8K words)
 	room 2		addresses 0x003000 to 0x006fff (16K words)
 	room 3      addresses 0x007000 to 0x00efff (32K words)
 	...
-=
+```
+
 though probably not with boundaries as neat as that, since there will be a
 few words of unused space at the end of each room.
 
@@ -305,10 +304,10 @@ instruction is `extent + PREFRAME_SIZE`.
 
 Note that `instruction` and `extent` are both in principle redundant in this
 structure. If you know `in_room` and `index` you know everything, because:
-= (text as InC)
+
 	W.instruction == W.in_room->bytecode + W.index + PREFRAME_SIZE
 	W.extent == W.in_room->bytecode[W.index + PREFRAME_SKIP_AMOUNT] - PREFRAME_SIZE
-=
+
 But speed of access is so important that we store these two fields redundantly
 in order to cache the results of those two calculations.
 
@@ -372,7 +371,7 @@ warehouse_floor_space InterWarehouse::make_floor_space(inter_warehouse *warehous
 	}
 
 @ Secondly, //InterWarehouse::enlarge_floor_space// adds extra length to an
-existing instruction -- which may involve moving its bytecode to a bigger room,
+existing instruction — which may involve moving its bytecode to a bigger room,
 in the worst case, but is more typically very fast. Note that this function
 may only be called on the floor space for the most-recently creates instruction,
 so the floor space is guaranteed to be at the end of the space used in the

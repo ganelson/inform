@@ -146,7 +146,7 @@ actually used by anything in <a href="index.html" class="internal">words</a>, bu
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LoadPreform::create_punctuation</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LoadPreform::create_punctuation</span></span>:<br/>Words Module - <a href="1-wm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LoadPreform::create_punctuation</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LoadPreform::create_punctuation</span></span>:<br/>Words Module - <a href="1-wm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">AMPERSAND_V</span><span class="plain-syntax">        = </span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&amp;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BACKSLASH_V</span><span class="plain-syntax">        = </span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"\\"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CARET_V</span><span class="plain-syntax">            = </span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"^"</span><span class="plain-syntax">);</span>
@@ -272,13 +272,12 @@ one French definition both in memory at the same time. Each would be an
 independent <a href="4-lp.html#SP8" class="internal">production_list</a> object.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production_list</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">production_list</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">definition_language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_pl</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the list of PLs for a NT */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_pr</span><span class="plain-syntax">; </span><span class="comment-syntax">/* start of linked list of productions */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_avinue</span><span class="plain-syntax">; </span><span class="comment-syntax">/* when compiled to a trie rather than for Preform */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">production_list</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure production_list is accessed in 4/to, 4/le, 4/ni, 4/prf, 4/ins, 4/pu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b> </p>
@@ -330,11 +329,8 @@ to minimise overhead.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Productions and ptokens.</b>  So now we reach the production, which encodes a typical &quot;row&quot; of grammar:
 for example,</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>is a production. This is implemented as still another list, of &quot;ptokens&quot; (the
 &quot;p&quot; is silent): that example has three ptokens. Note that the stroke sign and
 the defined-by sign are not ptokens; they divide up productions, but aren't
@@ -345,10 +341,10 @@ For example, it can see that the above can only match a text if it has exactly
 of the remaining data, and for what &quot;struts&quot; are, see <a href="4-to.html" class="internal">The Optimiser</a>: it
 only confuses the picture here.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_STRUTS_PER_PRODUCTION</span> <span class="Preform-constant-syntax">10</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_STRUTS_PER_PRODUCTION</span> <span class="constant-syntax">10</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">production</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_pt</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the linked list of ptokens */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 for <code>/a/</code>, 1 for <code>/b/</code> and so on: see <a href="4-ap.html" class="internal">About Preform</a> */</span>
 
@@ -358,8 +354,7 @@ only confuses the picture here.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production_instrumentation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">ins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-ins.html" class="internal">Instrumentation</a> */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">production</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_pr</span><span class="plain-syntax">; </span><span class="comment-syntax">/* within its production list */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">production</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure production is accessed in 4/nnt, 4/to, 4/le, 4/ni, 4/prf, 4/ins, 4/pu and here.</li></ul>
 <div class="lsmarkdown">
@@ -383,7 +378,7 @@ the <code>balanced_wildcard</code> flag set.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NONTERMINAL_PTC</span> <span class="constant-syntax">5</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ptoken</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">ptoken</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* How to parse text against this ptoken */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ptoken_category</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_PTC</code> values */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">balanced_wildcard</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for <code>MULTIPLE_WILDCARD_PTC</code> ptokens: brackets balanced? */</span>
@@ -402,19 +397,15 @@ the <code>balanced_wildcard</code> flag set.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ptoken_instrumentation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">ins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-ins.html" class="internal">Instrumentation</a> */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_pt</span><span class="plain-syntax">; </span><span class="comment-syntax">/* within its production list */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">ptoken</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ptoken is accessed in 4/nnt, 4/to, 4/le, 4/ni, 4/prf, 4/ins, 4/pu and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Each ptoken has a <code>range_starts</code> and <code>range_ends</code> number. This is either -1,
 or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">make</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">from</span><span class="plain-syntax"> {</span><span class="identifier-syntax">rice</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">onions</span><span class="plain-syntax">} </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">peppers</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">make</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">from</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{rice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">onions}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">and</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">peppers</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>the first <code>...</code> ptoken has start and end set to 1; <code>rice</code> has start 2; <code>onions</code>
 has end 2. Note that the second <code>...</code>, inside the braces, doesn't start or
 end anything; it normally would, but the wider range consumes it.</p>
@@ -443,22 +434,19 @@ and so on.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1. </b>  So, then, we have to turn a wording like:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">make</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">from</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{rice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">onions/shallots}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">and</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">peppers</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">make</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">from</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{rice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">onions/shallots}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">and</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">peppers</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>into a sequence of ptokens, setting <code>head</code> to the first and <code>tail</code> to the last.
 This particular example will produce two word ranges: one for the initial <code>...</code>,
 one for the matter in the braces. Because of that, we need to keep track of
 whether we're in braces or not. (Braces cannot be nested.)</p>
 <p>The alternative <code>onions/shallots</code> is called a &quot;slashed chain&quot; in the code below.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OUTSIDE_PTBRACE</span> <span class="Preform-constant-syntax">0</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">OUTSIDE_PTBRACE</span> <span class="constant-syntax">0</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ABOUT_TO_OPEN_PTBRACE</span> <span class="Preform-constant-syntax">1</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ABOUT_TO_OPEN_PTBRACE</span> <span class="constant-syntax">1</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INSIDE_PTBRACE</span> <span class="Preform-constant-syntax">2</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INSIDE_PTBRACE</span> <span class="constant-syntax">2</span>
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the row of production tokens into a linked list of ptokens</span><span class="named-paragraph-number">14.1</span></span> =</p>
 

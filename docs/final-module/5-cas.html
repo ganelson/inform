@@ -92,13 +92,10 @@ opcodes.</p>
 language is the big hole in that. It is legal for Inter code to contain almost
 anything which purports to be assembly language. For example, the following
 code will successfully build as part of an Inter kit:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [ </span><span class="identifier-syntax">Peculiar</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">bandersnatch</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[ </span><span class="identifier-syntax">Peculiar</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;
+	    @</span><span class="identifier-syntax">bandersnatch</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;
+	];
+</span></pre>
 <p>Kit code, and also material included in <code>(-</code> and <code>-)</code> brackets in I7 source text,
 can claim to use assembly language opcodes with any names it likes. No checking
 is done that these are &quot;real&quot; opcodes. (Spoilers: <code>@bandersnatch</code> is not.)</p>
@@ -130,12 +127,9 @@ then may pick up (2) a few others such as <code>@bandersnatch</code>, if kits do
 non-standard.</p>
 <p>So now we define some very minimal metadata on our opcodes. Each opcode will,
 when used, be followed by a number of operands, which we number from 1:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">fmod</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> </span><span class="identifier-syntax">rem</span><span class="plain-syntax"> </span><span class="identifier-syntax">quot</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     1 2 3   4</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@</span><span class="identifier-syntax">fmod</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> </span><span class="identifier-syntax">rem</span><span class="plain-syntax"> </span><span class="identifier-syntax">quot</span><span class="plain-syntax">;
+	</span><span class="comment-syntax">!     1 2 3   4</span><span class="plain-syntax">
+</span></pre>
 <p>This opcode, which performs floating-point division with remainder, reads in
 operands 1 and 2, and writes results out to operands 3 and 4. In the following,
 <code>store_this_operand[3]</code> and <code>store_this_operand[4]</code> would be <code>TRUE</code>, while
@@ -144,20 +138,14 @@ this is an outlier, because it is the only opcode we support which has more than
 one store operand. But in principle we could have many.)</p>
 <p>Glulx assembly language also allows variable numbers of arguments to some opcodes,
 or &quot;varargs&quot;. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!    1 2             3</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;
+	</span><span class="comment-syntax">!    1 2             3</span><span class="plain-syntax">
+</span></pre>
 <p>Here operand 3 is a store, and operands 1 and 2 are read in. But operand 2 is
 special in that it is a count of additional operands which are found on the
 stack rather than in the body of the instruction. For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;
+</span></pre>
 <p>would provide <code>@glk</code> with seven operands to read in: the one in the instruction
 itself, <code>4</code>, and then the top 6 items on the stack.</p>
 <p>Because of this, an operand holding a variable-argument count is special. There
@@ -165,13 +153,12 @@ can be at most one for any opcode; <code>vararg_operand</code> is -1 if there is
 but for <code>@glk</code>, <code>vararg_operand</code> would be 2.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_supported_opcode</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">C_supported_opcode</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* including the opening <code>@</code> character */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">store_this_operand</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_OPERANDS_IN_INTER_ASSEMBLY</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">vararg_operand</span><span class="plain-syntax">; </span><span class="comment-syntax">/* position of <code>_vararg_count</code> operand, or -1 if none */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">speculative</span><span class="plain-syntax">; </span><span class="comment-syntax">/* i.e., not part of the standard supported set */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">C_supported_opcode</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure C_supported_opcode is accessed in 5/com and here.</li></ul>
 <div class="lsmarkdown">
@@ -291,10 +278,9 @@ are not part of our supported set, there's no code here to implement them.
 Instead we predeclare a function and simply assume that the user will have
 written this function somewhere and linked it to us. For example, we might
 predeclare this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_opcode_bandersnatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax">);
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_opcode_bandersnatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax">);</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a speculative new opcode to the dictionary</span><span class="named-paragraph-number">5.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -341,7 +327,7 @@ instruction found in our Inter.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">label_sense</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" == FALSE"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">") goto "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">label</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no branch label"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-vnl.html#SP3" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cas.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
@@ -370,7 +356,7 @@ inline optimisation to remove most of these calls anyway.</li>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">operand</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">", "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="2-cg.html#SP13" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">O</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">operands</span><span class="plain-syntax">[</span><span class="identifier-syntax">operand</span><span class="plain-syntax">-1]);</span>
+<span class="plain-syntax">        </span><a href="2-vnl.html#SP3" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">operands</span><span class="plain-syntax">[</span><span class="identifier-syntax">operand</span><span class="plain-syntax">-1]);</span>
 <span class="plain-syntax">        </span><a href="2-cg.html#SP13" class="function-link"><span class="function-syntax">CodeGen::deselect_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">opc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">store_this_operand</span><span class="plain-syntax">[</span><span class="identifier-syntax">operand</span><span class="plain-syntax">]) </span><span class="named-paragraph-container code-font"><a href="5-cas.html#SP6_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Generate a store operand</span></span><span class="named-paragraph-number">6.3.2</span></a></span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-cas.html#SP6_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Generate a regular operand</span></span><span class="named-paragraph-number">6.3.1</span></a></span><span class="plain-syntax">;</span>
@@ -401,7 +387,7 @@ returns an <code>i7word_t</code>.</p>
 to make a pointer.</p>
 <p>Again, <code>sp</code> is a pseudo-variable meaning &quot;the top of the stack&quot;, but this time
 we have to push, not pull, and that's something we can't do until the function
-has returned -- the function will create the value we need to push. We get
+has returned — the function will create the value we need to push. We get
 around this by compiling a pointer to some temporary memory.</p>
 <p>Finally, assembly also allows <code>0</code> as a special value for a store operand, and
 this means &quot;throw the value away&quot;. We don't want to incur a C compiler warning
@@ -471,7 +457,7 @@ address:</p>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. copy.</b>  Though it doesn't look it, this is one of the main ways Glulx assembly language
-programs push or pull to the stack -- <code>@copy sp x</code> pulls the stack to <code>x</code>;
+programs push or pull to the stack — <code>@copy sp x</code> pulls the stack to <code>x</code>;
 <code>@copy sp 0</code> pops the stack; <code>@copy x sp</code> pushes <code>x</code> to the stack. But all of
 that is handled by the general mechanism above.</p>
 </div>
@@ -827,7 +813,7 @@ does change, we will need also to change <code>@gestalt</code>.)</p>
 <code>@random</code> opcode, so we define that here too.</p>
 <p>We have no convincing need for a statistically good random number algorithm,
 but we do want cross-platform consistency in order that the test suite for Inform
-should behave equivalently on MacOS, Linux and Windows -- at least when the
+should behave equivalently on MacOS, Linux and Windows — at least when the
 generator is seeded with the same value. To that end, we borrow the algorithm
 used by the <code>frotz</code> Z-machine interpreter, which in turn is based on suggestions
 in the Z-machine standards document.</p>

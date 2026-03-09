@@ -8,22 +8,26 @@ function defined in kit B; and suppose further that `Mystery` is not the name of
 a function, but the name of a variable in kit B, whose value at runtime will be
 the address of the function which must be called. The original call in Kit A
 will be a function invocation like so:
-= (text as Inter)
+
+``` Inter
 	inv Mystery
 		val K_number 1
 		val K_number 2
 		val K_number 3
-=
+```
+
 But this is incorrect, because only explicitly identified functions can be
 invoked like this, and `Mystery` turns out to be a variable. (The compiler
 of kit A has no way to know this.) We must correct to:
-= (text as Inter)
+
+``` Inter
 	inv !indirect3v
 		val K_unchecked Mystery
 		val K_number 1
 		val K_number 2
 		val K_number 3
-=
+```
+
 This looks like an edge case, and it would certainly be possible to rewrite the
 kits so that it doesn't arise. But rejecting such usages with an error message
 would be as slow as correcting them, so we might as well get them right.

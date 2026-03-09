@@ -42,9 +42,11 @@ typedef struct production_optimisation_data {
 @ There's a new idea here as well, though: struts. A "strut" is a run of
 ptokens in the interior of the production whose position relative to the
 ends is not known. For example, if we match:
-= (text as Preform)
+
+``` Preform
 	frogs like ... but not ... to eat
-=
+```
+
 then we know that in a successful match, "frogs" and "like" must be the
 first two words in the text matched, and "eat" and "to" the last two.
 They are said to have positions 1, 2, -1 and -2 respectively: a positive
@@ -115,7 +117,7 @@ void Optimiser::clear_requirement_and_extremes(nonterminal *nt) {
 
 @ Although it's not obvious from here, the following function is recursive,
 because it calls //NTI::calculate_constraint//, and that in turn needs all the
-nonterminals in the grammar for `nt` to have been optimised already -- to
+nonterminals in the grammar for `nt` to have been optimised already — to
 ensure which, it calls //Optimiser::optimise_nonterminal//. A similar thing
 also happens in //LengthExtremes::calculate_for_nt//.
 
@@ -150,7 +152,7 @@ elastic (it always matches a single word). If the first ptoken is inelastic,
 we know it must match words 1 to $L_1$ of whatever text is to be matched,
 and we give it position 1; if the second is also inelastic, that will match
 $L_1+1$ to $L_2$, and it gets position $L_1+1$; and so on. As soon as we
-hit an elastic token -- a wildcard like `...`, for example -- this
+hit an elastic token — a wildcard like `...`, for example — this
 predictability stops, and we can only assign position 0, which means that
 we don't know.
 

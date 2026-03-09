@@ -148,13 +148,15 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 `!switch` primitive: but C does not allow this for its keyword `case`, so we
 have to recurse downwards through the possibilities and preface each one by
 `case:`. For example,
-= (text as Inter)
+
+``` Inter
 	inv !switch
 		inv !alternativecase
 			val K_number 3
 			val K_number 7
 		...
-=
+```
+
 becomes `case 3: case 7:`.
 
 @<Generate primitive for case@> =

@@ -9,15 +9,14 @@ visible to the player's avatar in the world model. Usually, but not always,
 and noun filter tokens can monkey with this.
 
 =
-typedef struct noun_filter_token {
+classdef noun_filter_token {
 	struct parse_node *the_filter;
 	struct parse_node *nft_created_at;
 	int change_scope;
 	int change_scope_to_any_things;
 	struct package_request *nft_package;
 	struct inter_name *nft_iname;
-	CLASS_DEFINITION
-} noun_filter_token;
+}
 
 @ There are only three things we can do with these: create them, compile
 their names (used as I6 tokens), and compile their routines.

@@ -14,7 +14,7 @@ For each different dictionary word brought to our attention, we create one
 of these:
 
 =
-typedef struct vanilla_dword {
+classdef vanilla_dword {
 	struct text_stream *text;
 	struct text_stream *identifier;
 	int pluralise;
@@ -24,8 +24,7 @@ typedef struct vanilla_dword {
 	int verblike;
 	int verb_number;
 	int grammar_table_offset;
-	CLASS_DEFINITION
-} vanilla_dword;
+}
 
 @ The following sorting function places dwords in alphabetical order:
 
@@ -463,7 +462,7 @@ int VanillaIF::is_verb_meta(inter_tree_node *P) {
 
 @ Okay then. So the above functions called the following to insert either
 bytes or words into the growing grammar table. But Vanilla doesn't support
-arrays with a mixture of bytes and words -- its entries should all be of
+arrays with a mixture of bytes and words — its entries should all be of
 the same format. So we will break the words down into a sequence of 4 bytes,
 and have only a `BYTE_ARRAY_FORMAT` array in the end.
 

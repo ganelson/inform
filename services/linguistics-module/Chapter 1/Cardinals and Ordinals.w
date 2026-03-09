@@ -110,7 +110,7 @@ is parsing text in a work intended for a 16-bit VM.
 
 Why do we catch this here? The answer is probably that it's an excess of
 caution, but this is a rare case where the choice of virtual machine affects
-the legal syntax for Inform source text -- text originally written for use on
+the legal syntax for Inform source text — text originally written for use on
 Glulx, which allows for larger integers, might be moved over to a Z-machine
 project, with the user not realising the consequences.
 

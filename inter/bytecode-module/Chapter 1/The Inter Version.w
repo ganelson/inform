@@ -24,7 +24,7 @@ ones. See //Annotations//.
 ones. See //building: Inter Primitives//.
 
 This may result in ungainly, high `major` version numbers: so be it. However,
-the following need only mean a bump of the `minor` version --
+the following need only mean a bump of the `minor` version —
 
 - Addition of a new Inter construct, provided the existing ones are not
 renumbered.
@@ -33,7 +33,7 @@ renumbered.
 - Addition of a new Inter primitive, provided the existing ones are not
 renumbered.
 
-The `patch` version number should always remain 0 -- this is not a version for
+The `patch` version number should always remain 0 — this is not a version for
 the implementation of anything, just for the specification itself, so in some
 sense it cannot be bug-fixed, only changed.
 

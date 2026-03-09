@@ -8,13 +8,12 @@ example by making a directory: nests here are merely notes in memory of
 positions in the file system hierarchy which may or may not exist.
 
 =
-typedef struct inbuild_nest {
+classdef inbuild_nest {
 	struct pathname *location;
 	int read_only; /* files cannot be written into this nest */
 	int tag_value; /* used to indicate whether internal, external, and such */
 	int deprecated; /* issue warnings if resources from here are actually used */
-	CLASS_DEFINITION
-} inbuild_nest;
+}
 
 inbuild_nest *Nests::new(pathname *P) {
 	inbuild_nest *N = CREATE(inbuild_nest);
@@ -29,7 +28,7 @@ inbuild_nest *Nests::new(pathname *P) {
 constants. (There used to be quite a good joke here, but refactoring of the
 code removed its premise. Literate programming is like that sometimes.)
 
-The sequence of the following enumerated values is very significant --
+The sequence of the following enumerated values is very significant —
 see below for why. Lower-tag-numbered origins are better than later ones.
 
 @e MATERIALS_NEST_TAG from 1
@@ -93,7 +92,7 @@ pathname *Nests::get_location(inbuild_nest *N) {
 
 @h Search list.
 When we search for copies, we do so by looking through nests in a list. The
-following builds such lists, removing duplicates -- where duplicates are
+following builds such lists, removing duplicates — where duplicates are
 shown up by having the same textual form of pathname. (This is not foolproof
 by any means: Unix is replete with ways to describe the same directory, thanks
 to simlinks, `~` and so on. But in the circumstances arising inside Inbuild,
@@ -122,11 +121,10 @@ When we search a list of nests for copies satisfying certain requirements,
 we create one of these for each hit:
 
 =
-typedef struct inbuild_search_result {
+classdef inbuild_search_result {
 	struct inbuild_copy *copy; /* what was found */
 	struct inbuild_nest *nest; /* from whence it came */
-	CLASS_DEFINITION
-} inbuild_search_result;
+}
 
 @ These can be created only as entries in a list:
 

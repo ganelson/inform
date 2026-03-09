@@ -12,10 +12,9 @@ as method calls. There are (currently) five families.
 Each family is an instance of:
 
 =
-typedef struct inference_subject_family {
+classdef inference_subject_family {
 	struct method_set *methods;
-	CLASS_DEFINITION
-} inference_subject_family;
+}
 
 inference_subject_family *InferenceSubjects::new_family(void) {
 	inference_subject_family *f = CREATE(inference_subject_family);
@@ -70,11 +69,11 @@ For the bag subject, that would be the container subject; for the container
 subject, it would be the thing subject; and so on.[2]
 
 [1] A directed acyclic graph of the sort sometimes called a spaghetti stack, in
-which all of the links run upwards to a common root -- the `model_world` subject,
+which all of the links run upwards to a common root — the `model_world` subject,
 which represents the entire model.
 
 [2] The subject hierarchy thus contains the same tree structure of
-//kinds: The Lattice of Kinds//, which is not a coincidence -- see
+//kinds: The Lattice of Kinds//, which is not a coincidence — see
 but of course it includes instances and much else as well.
 
 @ The top of the inference hierarchy is essentially fixed, and contains a number
@@ -88,12 +87,13 @@ inference_subject *relations = NULL;
 
 @ And these are set up in a tiny hierarchy, with `model_world` at the top, the
 one and only subject with no broader subject:
-= (text)
+
+``` None
 	model_world
 	    global_variables
 	    global_constants
 	    relations
-=
+```
 
 =
 void InferenceSubjects::make_built_in(void) {
@@ -108,7 +108,7 @@ void InferenceSubjects::make_built_in(void) {
 Each subject is an instance of:
 
 =
-typedef struct inference_subject {
+classdef inference_subject {
 	struct inference_subject *broader_than; /* going up in the hierarchy */
 
 	struct inference_subject_family *infs_family;
@@ -124,8 +124,7 @@ typedef struct inference_subject {
 
 	struct parse_node *infs_created_at; /* which sentence created this */
 	char *infs_name_in_log; /* solely to make the debugging log more legible */
-	CLASS_DEFINITION
-} inference_subject;
+}
 
 @ The following is provided as two functions, not one, so that a subject can
 be reinitialised. (This is used to get around awkward timing problems with some
@@ -200,7 +199,7 @@ inference_subject *InferenceSubjects::divert(inference_subject *infs) {
 }
 
 @h Breadth.
-Some subjects are broad, covering many things, and others narrow -- perhaps
+Some subjects are broad, covering many things, and others narrow — perhaps
 used to specify facts about only a single person or value.
 
 Either two different subjects are disjoint or one strictly contains the other.
@@ -435,8 +434,8 @@ void InferenceSubjects::make_adj_const_domain(inference_subject *infs,
 	VOID_METHOD_CALL(infs->infs_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, infs, nc, prn);
 }
 
-@ Part of the process of "completing" the model -- that is, filling in detail
-not spelled out explicitly in assertion sentences -- is to ask each subject
+@ Part of the process of "completing" the model — that is, filling in detail
+not spelled out explicitly in assertion sentences — is to ask each subject
 to fill in anything missing about itself:
 
 @e COMPLETE_MODEL_INFS_MTID
@@ -465,7 +464,7 @@ void InferenceSubjects::check_model(inference_subject *infs) {
 @ Here we must compile run-time code which tests whether the value in `t_0`
 is a constant which the subject gives information about, given that we already
 know it has the right atomic kind. (In some cases there will be nothing to
-test -- if we know that `t_0` has kind "number" then it must be what we want.
+test — if we know that `t_0` has kind "number" then it must be what we want.
 But in the case of objects, we need to check `t_0` is not `nothing` and that
 it has the right kind, and so on. If there's nothing to check, we leave the
 condition blank.)
@@ -534,10 +533,10 @@ returning a pointer to it.
 @d ATTACH_FEATURE_DATA_TO_SUBJECT(name, S, val)
 	(S)->additional_data_for_features[name##_feature->allocation_id] = (void *) (val);
 
-@ Then, to access that same data, the following -- though in practice each
+@ Then, to access that same data, the following — though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
-the features from the //if// module are concerned only with instances -- rooms
-and doors, say -- so `DATA_ON_INSTANCE_PCALL` pays its way.
+the features from the //if// module are concerned only with instances — rooms
+and doors, say — so `DATA_ON_INSTANCE_PCALL` pays its way.
 
 @d FEATURE_DATA_ON_SUBJECT(name, S)
 	((name##_data *) (S)->additional_data_for_features[name##_feature->allocation_id])

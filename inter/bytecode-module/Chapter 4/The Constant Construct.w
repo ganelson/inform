@@ -20,7 +20,7 @@ void ConstantInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of an `comment` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by these fields. Note
+compulsory words — see //Inter Nodes// — followed by these fields. Note
 that the data then occupies a varying number of further data pairs, depending on
 the value of `FORMAT_CONST_IFLD`. As a result, the length of a `constant`
 instruction can be any odd number of words from 5 upwards.
@@ -394,11 +394,13 @@ Constants given explicit values have depth 1. Constants defined as equal to
 other constants have depth 1 more than those other constants. Constants equal
 to lists have depth 1 more than the sum of the depths of the values in the
 lists. For example, if:
-= (text as Inter)
+
+``` Inter
 	constant x = 23
 	constant y = x
 	constant z = { x, y, 17 }
-=
+```
+
 then `x` has depth 1, `y` has depth 1+1 = 2, and `z` has depth 1+(1+2+1) = 5.
 It is a requirement that every constant must always have finite depth. The
 point of this is to guarantee that if constant declarations are written in
@@ -430,10 +432,12 @@ int ConstantInstruction::constant_depth_r(inter_symbol *con) {
 
 @h Direct evaluation.
 Some numerical constants can be evaluated at compile-time: for example, given
-= (text as Inter)
+
+``` Inter
 	constant x = 23
 	constant y = x + 3
-=
+```
+
 the following function would return 23 and 26 on `x` and `y` respectively. On
 anything non-numerical the function aims to return 0, but this should probably
 not be relied on.

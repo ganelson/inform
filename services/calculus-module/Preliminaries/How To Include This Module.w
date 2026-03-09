@@ -32,14 +32,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_CALCULUS_CALLBACK Emotions::zowie
 	
 	=
 	void Emotions::zowie(text_stream *OUT) {
 	    WRITE("Zowie!\n");
 	}
-=
+```
+
 The calculus module has only a few callbacks and all are optional. The
 following alphabetical list has references to fuller explanations:
 

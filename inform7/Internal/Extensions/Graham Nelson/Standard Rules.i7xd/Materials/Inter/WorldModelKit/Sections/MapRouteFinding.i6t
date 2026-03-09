@@ -43,8 +43,8 @@ be fighting for the last few bytes in readable memory.
 The user is therefore offered the choice, by selecting the use options
 "Use fast route-finding" and "Use slow route-finding": and the defaults,
 if neither option is explicitly set, are fast on Glulx and slow on the
-Z-machine. If both use options are explicitly set -- which might happen
-due to a disagreement between extensions -- "fast" wins.
+Z-machine. If both use options are explicitly set — which might happen
+due to a disagreement between extensions — "fast" wins.
 
 =
 [ UseFastRouteFinding;
@@ -259,15 +259,15 @@ Array FWMatrix --> FWMATRIX_SIZE;
 
 @h Slow Route-Finding.
 The alternative algorithm, used when only $O(n)$ memory is available,
-computes only some of the shortest paths leading to $R_y$, and is not cached --
+computes only some of the shortest paths leading to $R_y$, and is not cached —
 both because the storage is likely to be reused often by other searches and
 because there is little gain from doing so, given that a subsequent search
 with different endpoints will not benefit from the results of this one. On
 the other hand, to call it "slow" is a little unfair. It is somewhat like
 Prim's algorithm for finding a minimum spanning tree, rooted at $R_y$, and
-grows the tree outward from $R_y$ until either $R_x$ is reached -- in which
-case we stop immediately -- or the (directed) component containing $R_y$
-has been exhausted -- in which case $R_x$, which must lie outside this, can
+grows the tree outward from $R_y$ until either $R_x$ is reached — in which
+case we stop immediately — or the (directed) component containing $R_y$
+has been exhausted — in which case $R_x$, which must lie outside this, can
 have no path to $R_y$. In principle, the running time is $O(dn^2)$, where
 $d\leq D$ is the maximum vertex degree and $n$ is the number of rooms in
 the component containing $R_y$: in practice the degree is often much less

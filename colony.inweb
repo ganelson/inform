@@ -57,7 +57,7 @@ Colony {
 	member: "basic_inform" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Source" to "basic_inform"
 	member: "standard_rules" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Source" to "standard_rules"
 
-	default: breadcrumbs "Home: //overview// > Kits: //extensions//"
+	default: breadcrumbs "Home: //overview// > Kits: //kits//"
 	member: "WorldModelKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit" to "WorldModelKit"
 	member: "EnglishLanguageKit" at "inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit" to "EnglishLanguageKit"
 	member: "CommandParserKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/CommandParserKit" to "CommandParserKit"

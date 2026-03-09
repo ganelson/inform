@@ -27,14 +27,3 @@ void RuntimeModule::start(void) {
 }
 void RuntimeModule::end(void) {
 }
-
-@
-
-@e contents_entry_CLASS
-@e digit_manager_CLASS
-@e mapping_hint_CLASS
-
-=
-DECLARE_CLASS(contents_entry)
-DECLARE_CLASS(digit_manager)
-DECLARE_CLASS(mapping_hint)

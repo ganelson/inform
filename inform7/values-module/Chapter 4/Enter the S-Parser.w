@@ -39,7 +39,7 @@ These are coded as internals for efficiency's sake. We will often reparse the
 same wording over and over, so we cache the results. But <s-value> matches
 exactly the same text as <s-value-uncached>, and so on for the other four.
 
-<s-value> looks for source text which can be evaluated -- a constant, a
+<s-value> looks for source text which can be evaluated — a constant, a
 variable or other storage object, or a phrase to decide a value.
 
 =
@@ -50,7 +50,7 @@ variable or other storage object, or a phrase to decide a value.
 	return TRUE;
 }
 
-@ <s-condition> looks for a condition -- anything legal after an
+@ <s-condition> looks for a condition — anything legal after an
 "if", in short. This includes sentence-like excerpts such as "six
 animals have been in the Stables".
 
@@ -82,7 +82,7 @@ as conditions, so for example "taking something" would not match.
 }
 
 @ <s-type-expression> is for where we expect to find the "type" of something
--- for instance, the kind of value to be stored in a variable, or the
+— for instance, the kind of value to be stored in a variable, or the
 specification of a phrase argument.
 
 =

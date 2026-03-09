@@ -270,9 +270,11 @@ out when writing to plain text format.
 	}
 
 @ Okay, so the format for a source reference here is:
-= (text)
+
+``` None
 	XparaphraseXfilenameXnumberX
-=
+```
+
 e.g., `Xmain textXsource/story.niX102`, where `X` is the unprintable
 `SOURCE_REF_CHAR`. The counter `i` is at the first `X`, and we must now
 convert this to something fit for printing to `stdout`, finishing up with `i`
@@ -353,10 +355,10 @@ void ProblemBuffer::output_problem_buffer(int indentation) {
 
 @h Problems report and index.
 That gives us enough infrastructure to produce the final report. Note the use
-of error redirection to in order to put pseudo-problem messages -- actually
-informational -- into the report. In the case where the run was successful and
+of error redirection to in order to put pseudo-problem messages — actually
+informational — into the report. In the case where the run was successful and
 there we no Problem messages, we have to be careful to reset `problem_count`
--- it will have been increased by the issuing of these pseudo-problems, and we
+— it will have been increased by the issuing of these pseudo-problems, and we
 need it to remain 0 so that `main()` can finally return back to the operating
 system without an error code.
 

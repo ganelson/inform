@@ -61,13 +61,11 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This test tool uses the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module, and it needs to have some
-concept of what relationships are -- that is, of what might be meant by
+concept of what relationships are — that is, of what might be meant by
 &quot;X sees Y&quot; or &quot;X is on top of Y&quot;.</p>
 <p>Inform uses a class called <code>binary_predicate</code> for this, but we will use a
 class simply called <code>rel</code>.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">rel_CLASS</span> 
-</pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VERB_MEANING_LINGUISTICS_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rel</span>
 </pre>
 <div class="lsmarkdown">
@@ -81,7 +79,6 @@ we don't need to create the annotation or give it permissions.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="type-syntax">rel</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relationship</span><span class="plain-syntax">, </span><span class="type-syntax">rel</span><span class="plain-syntax">)</span>
 </pre>
 <div class="lsmarkdown">
@@ -89,11 +86,10 @@ we don't need to create the annotation or give it permissions.</p>
 print out a name.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rel</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">rel</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">debugging_log_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">rel</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reversed</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">rel</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure rel is accessed in 1/dgr, 3/vm and here.</li></ul>
 <div class="lsmarkdown">

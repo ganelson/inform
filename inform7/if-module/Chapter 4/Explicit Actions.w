@@ -4,17 +4,17 @@ An exactly specified action is called "explicit".
 
 @ Explicit actions are used inside the compiler whenever we know exactly what
 action we are talking about; stored action constants are //explicit_action//
-objects in a thin wrapper -- see //Action Kinds//.
+objects in a thin wrapper — see //Action Kinds//.
 
 =
-typedef struct explicit_action {
+classdef explicit_action in 100s {
 	int request;
 	struct action_name *action;
 	struct parse_node *actor;
 	struct parse_node *first_noun;
 	struct parse_node *second_noun;
 	struct action_pattern *as_described;
-} explicit_action;
+}
 
 @ The code here is concerned with the question: when is an action pattern a
 description of an explicit action? The answer is only if takes the Goldilocks

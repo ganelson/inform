@@ -4,7 +4,7 @@ To abstract non-standard, perhaps non-SVO, meanings of a verb.
 
 @h Special meaning functions.
 Regular meanings of verbs are represented by `VERB_MEANING_LINGUISTICS_TYPE`
-pointers -- see //Verb Meanings//. In Inform, those are binary predicates.
+pointers — see //Verb Meanings//. In Inform, those are binary predicates.
 They always take two terms.
 
 However, Inform sometimes wants sentences which are written in non-standard
@@ -55,12 +55,11 @@ Although a SM is basically encapsulated by a function, it's convenient to
 have some metadata with it too:
 
 @ =
-typedef struct special_meaning_holder {
+classdef special_meaning_holder {
 	int (*sm_func)(int, parse_node *, wording *); /* (compiler doesn't like typedef here) */
 	struct text_stream *sm_name;
 	int metadata_N;
-	CLASS_DEFINITION
-} special_meaning_holder;
+}
 
 @ =
 special_meaning_holder *SpecialMeanings::declare(special_meaning_fn func,

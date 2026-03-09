@@ -110,19 +110,19 @@ See <a href="P-htitm.html" class="internal">How To Include This Module (in lexic
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Optimisations.</b>  This is a speed-critical part of Inform and has been heavily optimised, at the
 cost of some complexity. There are two main ideas:</p>
-<p>Firstly, each word in the vocabulary gathered up by the <a href="../words-module/index.html" class="internal">words</a> module --
-i.e., each different word in the source text -- has a <a href="2-em.html#SP3" class="internal">vocabulary_lexicon_data</a>
+<p>Firstly, each word in the vocabulary gathered up by the <a href="../words-module/index.html" class="internal">words</a> module —
+i.e., each different word in the source text — has a <a href="2-em.html#SP3" class="internal">vocabulary_lexicon_data</a>
 object attached to it. This in turn contains lists of all known meanings
 starting with, ending with, or simply involving the word.</p>
 <p>For example, if &quot;great green dragon&quot; is given a meaning, then this is added to
 the first-word list for &quot;great&quot;, the last-word list for &quot;dragon&quot;, and the
 middle-word list for &quot;green&quot;.</p>
 <p>In addition, every word in an excerpt which is not an article adds the meaning
-to its &quot;subset list&quot; -- here, that would be all three words, but for &quot;gandalf
+to its &quot;subset list&quot; — here, that would be all three words, but for &quot;gandalf
 the grey&quot;, it would be entered onto the subset lists for &quot;gandalf&quot; and &quot;grey&quot;.
 Subset lists tend to be longer and thus slower to deal with, and are used only
 in contexts where it is legal to use a subset of a name to refer to the
-meaning -- for example, to say just &quot;Gandalf&quot; but mean the same wizard.</p>
+meaning — for example, to say just &quot;Gandalf&quot; but mean the same wizard.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Secondly, recall that each vocabulary entry has a field 32 bits wide for
@@ -137,7 +137,7 @@ such a name, then each if the words <code>table</code>, <code>of</code> and <cod
 text to see if they might be the name of a table, we can immediately reject,
 say, &quot;green table&quot; because the word <code>green</code> does not have the <code>TABLE_MC</code> bit.</p>
 <p>For more on this, and for complications arising to do with case sensitivity,
-see <a href="2-em.html#SP9" class="internal">ExcerptMeanings::hash_code_from_token_list</a>.</p>
+see <a href="2-em.html#SP8_1" class="internal">ExcerptMeanings::hash_code_from_token_list</a>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Performance in practice.</b>  The following statistics show how many times the lexicon was used during

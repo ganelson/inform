@@ -21,7 +21,7 @@ void CastInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `cast` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d TO_KIND_CAST_IFLD   (DATA_IFLD + 0)
 @d FROM_KIND_CAST_IFLD (DATA_IFLD + 1)

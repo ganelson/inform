@@ -4,15 +4,18 @@ Explicit actions stored in memory as literals.
 
 @h Runtime representation.
 Literal stored actions arise from source text such as:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be examining the harmonium;
-=
+```
+
 This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.
 
 Stored actions are stored in small blocks, always of size 6. There are no
 long blocks.
-= (text)
+
+``` None
 	                    small block:
 	Q ----------------> action name
 	                    first noun
@@ -20,7 +23,8 @@ long blocks.
 	                    actor
 	                    request
 	                    command text
-=
+```
+
 See //WorldModelKit: StoredAction// for more. Note that literals do not arise
 from typed commands, so they have no command text, and the final word is
 therefore always 0 for literal actions.

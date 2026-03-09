@@ -23,7 +23,7 @@ void CompileInvocations::list(value_holster *VH, parse_node *invl, wording W,
 
 @ The invocation list has already been typechecked by //values: Dash//. This
 means that any invocation which could be disproved has been removed, and what's
-left is either "proven" -- i.e., certain to be applicable -- or "unproven" --
+left is either "proven" — i.e., certain to be applicable — or "unproven" —
 i.e., only applicable if certain runtime checks are performed.
 
 Here we check that the list does indeed contain 0 or more unproven invocations
@@ -92,20 +92,23 @@ carry out. Suppose we have invocations I1, ..., In, and tokens T1, ..., Tm.
 (In a group like this, every invocation will have the same number of tokens.)
 We want each invocation in turn to try to handle the situation, and to stop
 as soon as one of them does. The first thought is this:
-= (text)
+
+``` None
 	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
 	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
 	...
 	else runtime-error-message();
-=
+```
+
 where the chain of execution runs into the error message code only if none
 of I1, ..., In can be applied. In the case where the final invocation is
 proven, we can more simply do this:
-= (text)
+
+``` None
 	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
 	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
 	else invoke In(T1, ..., Tm);
-=
+```
 
 @ That's almost what we do, but not quite. The problem lies in the fact that
 the tokens `T1`, ..., `Tm` are evaluated multiple times - not in the invocations
@@ -113,7 +116,8 @@ the tokens `T1`, ..., `Tm` are evaluated multiple times - not in the invocations
 multiple evaluation would be incorrect if token evaluation had side-effects,
 as it easily might, and would also waste time if the tokens were slow to evaluate.
 So in fact we modify our scheme like so:
-= (text)
+
+``` None
 	F1 = T1;
 	F2 = T2;
 	...
@@ -121,7 +125,8 @@ So in fact we modify our scheme like so:
 	else if (condition for I2 to be valid) invoke I2(F1, ..., Fm);
 	...
 	else runtime-error-message();
-=
+```
+
 Here `F1, ..., Fn` are called the "formal parameters". But now we have a tricky
 issue to contend with: where can they be stored?
 
@@ -301,12 +306,14 @@ producing the answer.
 
 @ In Inter, as in C, assignments return a value and are therefore legal here.
 But because Inter does not provide a binary sequential opcode, we will fold
-our run of assignments into a single value by adding them up -- the result
+our run of assignments into a single value by adding them up — the result
 doesn't matter, since it will be thrown away anyway. So if there are, say,
 four formal parameters then our `x` will be:
-= (text)
+
+``` None
 	(F4 = T4) + ((F3 = T3) + ((F2 = T2) + (F1 = T1)))
-=
+```
+
 It isn't really important that we count downwards from 4 to 1 here, but we do
 it because the Inform 6 compiler happens to evaluate operands of `+` in the
 order right then left. So this actually causes `T1` to evaluate first, then `T2`
@@ -325,13 +332,15 @@ and so on, provided Inform 6 is the eventual code generator.
 	if (L != EmitCode::level()) internal_error("misimplemented");
 
 @ Now the fun really begins. We compile `y` to an expression like so:
-= (text)
+
+``` None
 	((condition for I1 to be valid) && ((formal_rv = I1) bitwise-or 1)) ||
 	((condition for I2 to be valid) && ((formal_rv = I2) bitwise-or 1)) ||
 	...
 	((condition for In to be valid) && ((formal_rv = In) bitwise-or 1)) ||
 	(issue run-time-problem)
-=
+```
+
 The key here is that Inter, like C, evaluates operands of `&&` left to right
 and short-circuits: if the left operand is false, the right is never evaluated,
 and its side-effect (of invoking a phrase and setting `formal_rv`) never
@@ -346,12 +355,13 @@ Note that all functions return values in Inter, so the function call to issue
 the run-time problem is indeed legal in a value context.
 
 Matters are a little simpler if the final invocation is proven:
-= (text)
+
+``` Inform6
 	((condition for I1 to be valid) && ((formal_rv = I1) bitwise-or 1)) ||
 	((condition for I2 to be valid) && ((formal_rv = I2) bitwise-or 1)) ||
 	...
 	((formal_rv = In) bitwise-or 1)
-=
+```
 
 @<Perform the tests and invocations in value mode@> =
 	int L = EmitCode::level();
@@ -499,10 +509,10 @@ where that's checked:
 	}
 
 @ The real work is done by one of the two sections following this one. Note that
-only inline invocations are allowed to produce an exotic manner of return -- it's
+only inline invocations are allowed to produce an exotic manner of return — it's
 not possible to define a high-level I7 phrase which effects, say, an immediate
 end to the rule it's used in. Similarly, only inline invocations are allowed
-to be followed by blocks of other phrases -- that is, are allowed to define
+to be followed by blocks of other phrases — that is, are allowed to define
 control structures.
 
 @<The art of invocation is delegation@> =
@@ -515,14 +525,17 @@ control structures.
 
 @ If `allow_implied_newlines` is set, we understand the final part of a
 text literal to be allowed to print an implied newline. For example, here it's on:
-= (text as Inform 7)
+
+``` Inform7
 	say "At [time of day], I like to serve afternoon tea. Indian or Chinese?";
-=
+```
+
 Here the question mark has an implied newline after it. But there are other
 contexts in which newlines are not implied:
-= (text as Inform 7)
+
+``` Inform7
 	let the warning rubric be "Snakes!";
-=
+```
 
 @<Compile a newline if the phrase implicitly requires one@> =
 	if (IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) {
@@ -544,11 +557,13 @@ This structure is a convenient holder for the token values being used when
 invoking a phrase, and for what we think their kinds are.
 
 In many cases that will not be much of an issue, but suppose the phrase to be
-invoked is polymorphic, like so --
-= (text as Inform 7)
+invoked is polymorphic, like so —
+
+``` Inform7
 To discuss (V - sayable value):
 	say "You discourse about [V]."
-=
+```
+
 If the invocation is "discuss 16", then the token has kind `K_number` not
 `K_sayable_value`, because we derive the kind from what the phrase was actually
 invoked on rather than the full range of what it might have been. Similarly,

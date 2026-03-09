@@ -125,8 +125,8 @@ now has fewer local variables.</p>
 compulsory:</p>
 <ul>
 <li>The <code>rulebook</code> is an I7 value of kind &quot;rule&quot;, which means it can be
-either the ID number of a rulebook -- from 0 up to \INWEBMATH(N-1\INWEBMATH), where \INWEBMATH(N\INWEBMATH) is the
-number of rulebooks compiled by Inform, typically about 600 -- or else the
+either the ID number of a rulebook — from 0 up to \INWEBMATH(N-1\INWEBMATH), where \INWEBMATH(N\INWEBMATH) is the
+number of rulebooks compiled by Inform, typically about 600 — or else the
 address of a routine representing an individual rule.</li>
 <li>The <code>parameter</code> supplied to the rulebook. Much as arguments can be supplied
 to a function in a conventional language's function call, so a parameter can be
@@ -145,13 +145,10 @@ the rule explicitly fails, then <code>FollowRulebook</code> returns <code>true</
 to write plausible-looking code which goes wrong because it assumes that the
 return value is success vs. failure.) The outcome of <code>FollowRulebook</code> is
 stored as described above: thus the most recent rule or rulebook succeeded
-or failed if --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (</span><span class="identifier-syntax">latest_rule_result</span><span class="plain-syntax">--&gt;0 == </span><span class="identifier-syntax">RS_SUCCEEDS</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    (</span><span class="identifier-syntax">latest_rule_result</span><span class="plain-syntax">--&gt;0 == </span><span class="identifier-syntax">RS_FAILS</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+or failed if —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(</span><span class="identifier-syntax">latest_rule_result</span><span class="plain-syntax">--&gt;0 == </span><span class="identifier-syntax">RS_SUCCEEDS</span><span class="plain-syntax">)
+	(</span><span class="identifier-syntax">latest_rule_result</span><span class="plain-syntax">--&gt;0 == </span><span class="identifier-syntax">RS_FAILS</span><span class="plain-syntax">)
+</span></pre>
 <p>and otherwise there was no decision.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

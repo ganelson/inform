@@ -63,24 +63,18 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Runtime representation.</b>  Literal texts arise from source text such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the quick brown fox"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that indolent hound got to?"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the quick brown fox"</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Where has that indolent hound got to?"</span><span class="plain-syntax">;
+</span></pre>
 <p>Note that only <code>&quot;the quick brown fox&quot;</code> is actually a constant value here; the
 text concerning the hound is turned directly into operands for Inter instructions
 for printing text, and never needs to be a value. The fox text, on the other hand,
 is being stored in <code>Q</code>, and you can only store values.</p>
 <p>Text at runtime is stored in small blocks, always of size 2:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">format</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">content</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:
+	Q ----------------&gt; format
+	                    content
+</span></pre>
 <p>The format can be one of four possible alternatives at runtime, and the runtime
 system may dynamically switch between them; essentially it uses this to
 decompress text from its &quot;packed&quot; form to a character-accessible form only

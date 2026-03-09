@@ -11,7 +11,7 @@ within them representing symbols which also do not exist yet. Eventually,
 though, such tools need to make good on their promises and "incarnate" them.
 
 =
-typedef struct package_request {
+classdef package_request {
 	struct inter_tree *tree;
 	struct inter_name *eventual_name;
 	struct inter_symbol *eventual_type;
@@ -19,8 +19,7 @@ typedef struct package_request {
 	struct inter_bookmark write_position;
 	struct linked_list *iname_generators; /* of `inter_name_generator` */
 	struct inter_package *actual_package; /* `NULL` until this is incarnated */
-	CLASS_DEFINITION
-} package_request;
+}
 
 @ =
 package_request *Packaging::request(inter_tree *I, inter_name *name, inter_symbol *pt) {
@@ -59,7 +58,7 @@ void Packaging::log(OUTPUT_STREAM, void *vR) {
 
 @h The packaging state.
 At any given time, Inter code is being produced at a particular position
-(in some incarnated package) and in the context of a given enclosure -- see
+(in some incarnated package) and in the context of a given enclosure — see
 //LargeScale::package_type//. This is summarised by the following state:
 
 =
@@ -71,7 +70,7 @@ typedef struct packaging_state {
 @ It is not legal to make any use of the following state, which exists only to
 initialise variables to neutral contents (and thus to avoid warnings generated
 because our C compiler is not able to prove that they will never be used in an
-uninitialised state -- though in fact they will not).
+uninitialised state — though in fact they will not).
 
 =
 packaging_state Packaging::stateless(void) {
@@ -150,7 +149,7 @@ void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR
 @h Bubbles.
 Inter code is stored in memory as a linked list. This is fast and compact, but
 can make it awkward to insert material other than at the end, particularly if
-one insertion leads to another close by, midway in the process -- which is
+one insertion leads to another close by, midway in the process — which is
 exactly what can happen when incarnating a nested set of packages.
 
 It is also tricky to bookmark positions if nearby code may later be rewritten
@@ -165,14 +164,15 @@ We avoid all these difficulties by placing "bubbles" at positions in the
 linked list where we will later need to return and place new material.
 A bubble is simply a pair of `NOP_IST` (no operation) instructions; any
 later inserted material will be placed between them. For example:
-= (text)
+
+``` None
 	...
 	inv Whatever
 	nop                                       } this is the bubble
 		<--- bookmark position is here        }
 	nop	                                      }
 	...
-=
+```
 
 To insert a bubble at the current write-position:
 
@@ -207,8 +207,8 @@ package we wsnt to extend next.
 
 That switching is called "entering" a package. Every entry must be followed
 by a matching exit, which restores the write position to where it was before
-the entry. (The one exception is that the very first entry, into `main` --
-see //LargeScale::begin_new_tree// -- is never followed by an exit.)
+the entry. (The one exception is that the very first entry, into `main` —
+see //LargeScale::begin_new_tree// — is never followed by an exit.)
 
 =
 packaging_state Packaging::enter_home_of(inter_name *N) {

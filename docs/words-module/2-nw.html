@@ -76,7 +76,7 @@ function call, we perform this with macros.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  We can also, more slowly, perform a direct string comparison. If carried
-out on the original, raw, text, this will be case sensitive -- which is
+out on the original, raw, text, this will be case sensitive — which is
 usually wrong for Inform purposes. On the treated text, however, we are
 comparing a case-normalised version of the original word, which is likely
 to be safely case insensitive comparison, provided that the content of <code>t</code>
@@ -219,15 +219,15 @@ escape meaning the character with hexadecimal value <code>xx</code>.</p>
 optionally again, markers to indicate that the word is (for instance) a
 plural: thus <code>'newts//p'</code>. Using no markers, as in <code>'toads//'</code>, makes a
 word equivalent to that without a marker, but avoids the single-letter
-problem -- so the preferred modern way to write a single-character I6
+problem — so the preferred modern way to write a single-character I6
 dictionary word is <code>'t//'</code>, and this is what the following routine does.
 (Note the exceptional case where the word consists only of a <code>'/'</code>: here
 we cannot write <code>'///'</code> because I6 reads this as <code>//</code> plus an invalid
 marker <code>/</code>, and throws an error. We escape the single <code>/</code> to avoid this.
 In all other cases there's no need to escape a <code>/</code>.)</p>
 <p>Dictionary words with a literal <code>~</code> in are, as it happens, not parsable
-by the Z-machine, but the code below -- employing the <code>@{7E}</code>
-escape -- is in principle legal, and it does work on Glulx.</p>
+by the Z-machine, but the code below — employing the <code>@{7E}</code>
+escape — is in principle legal, and it does work on Glulx.</p>
 <p>Very long words can safely be truncated since the virtual machines do not
 have indefinitely long dictionary resolution anyway, and we had better do
 so because I6 rejects overlong text between single quotation marks.</p>

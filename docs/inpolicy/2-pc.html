@@ -81,12 +81,11 @@ set of Inform test cases.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NAMELESS_PCON</span> <span class="constant-syntax">0x00000020</span><span class="plain-syntax"> </span><span class="comment-syntax">/* this is <code>...</code> */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">known_problem</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">known_problem</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">contexts_observed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the above bits */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">contexts_observed_multiple_times</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the above bits */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">known_problem</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure known_problem is accessed in 2/trs, 4/prp, 4/jsn, 5/mrk, 5/mv, 5/im, 7/ld, 1/wcl, 1/cln, 1/ws, 2/wn, 2/hs, 3/pl, 3/tp, 4/cs, 5/ts, 5/ptt, 5/wt, 6/rw and here.</li></ul>
 <div class="lsmarkdown">
@@ -221,7 +220,7 @@ messages:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">observations_made</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Coverage::check</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Coverage::check</span></span>:<br/>Main - <a href="1-mn.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Coverage::check</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Coverage::check</span></span>:<br/>Main - <a href="1-mn.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">observations_made</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-pc.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform the observations</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">observations_made</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -324,7 +323,7 @@ messages:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="1-mn.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">pc</li><li class="progresssection"><a href="2-kv.html">kv</a></li><li class="progresssection"><a href="2-ev.html">ev</a></li><li class="progressnext"><a href="2-kv.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="1-mn.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">pc</li><li class="progresssection"><a href="2-kv.html">kv</a></li><li class="progresssection"><a href="2-ev.html">ev</a></li><li class="progressnext"><a href="2-kv.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

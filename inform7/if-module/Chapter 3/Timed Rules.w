@@ -79,12 +79,11 @@ int TimedRules::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd)
 @ The above therefore attaches one of these to each set of rule data:
 
 =
-typedef struct timed_rules_rfd_data {
+classdef timed_rules_rfd_data {
 	int event_time; /* 0 to 1339, or one of the special values above */
 	struct wording event_name; /* if one is given */
 	struct linked_list *uses_as_event; /* of `parse_node` */
-	CLASS_DEFINITION
-} timed_rules_rfd_data;
+}
 
 timed_rules_rfd_data *TimedRules::new_rfd_data(rule_family_data *rfd) {
 	timed_rules_rfd_data *trfd = CREATE(timed_rules_rfd_data);

@@ -5,7 +5,7 @@ registered excerpt meanings which it matches.
 
 @h Default bitmaps.
 The following will be useful only for minimal use of //lexicon//. Inform
-certainly doesn't use settings as minimal as these -- see
+certainly doesn't use settings as minimal as these — see
 //values: Meaning Codes// for what it does do.
 
 @d ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC 0x00000004 /* meaningless, so do not use */
@@ -178,7 +178,7 @@ which have a meaning code among those we are looking for:
 Exact matching is just what it sounds like: the match must be word
 for word. Because of that, the excerpt meaning is guaranteed to be listed
 under the start list of the first word, if it matches (because there cannot
-be `#` tokens in the token list -- if there were, we would be in parametrised
+be `#` tokens in the token list — if there were, we would be in parametrised
 parsing mode).
 
 @<Enter exact parsing mode@> =

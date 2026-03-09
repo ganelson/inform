@@ -84,27 +84,21 @@ which instances can have the property in question. This is 0-terminated.</li>
 some cases, with multiple property declarations for what is actually the same
 property.</p>
 <p>For example, this arises when a property is defined in Inform 7 source like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"privately_named"</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"privately_named"</span><span class="plain-syntax">.
+</span></pre>
 <p>...where the property <code>privately_named</code> actually originates in a kit, written
 in Inform 6 notation like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">;
+</span></pre>
 <p>We now have two property declarations, one in the Standard Rules module, the
 other in the BasicInformKit module. It's tempting to have the linker delete
 the Standard Rules one and convert references to it to point them to the kit
 definition, but this is not a good idea because the kit definition doesn't
 have the metadata or permissions which the Standard Rules definition has. So
 we keep both in play, and reconcile them in the code below.</p>
-<p>It gets worse: the Standard Rules properties &quot;lighted&quot; and &quot;lit&quot;, though different --
-one applies to rooms, one to things -- both translate to the same BasicInformKit
+<p>It gets worse: the Standard Rules properties &quot;lighted&quot; and &quot;lit&quot;, though different —
+one applies to rooms, one to things — both translate to the same BasicInformKit
 property <code>light</code>. At present that's the worst case scenario (i.e., three different
 properties all coinciding) but we won't assume that.</p>
 <p>So what we do is to work through the properties and group them into equivalence
@@ -157,22 +151,19 @@ list will be a singleton.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b>  So here's an annoyance. We will need two identifier names for each property.
 One is the metadata array, while the other will probably be used by the generator
-to hold the actual storage -- that other is called the &quot;inner name&quot;.</p>
+to hold the actual storage — that other is called the &quot;inner name&quot;.</p>
 <p>In the case of our <code>privately_named</code> example, the metadata array will be called
 something like <code>A_privately_named</code>, and any references to the property in kit
 code or in Inform 7 source text will compile to this array. The inner name will
 preserve the original identifier <code>privately_named</code>, and will likely be used by
 the final generator for where a property value is actually stored. For Inform 6,
 for example, we will have:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">A_privately_named</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">     </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">                      </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">     </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax"> (</span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">attribute</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                      </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">2</span><span class="plain-syntax">     </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">                      </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">3</span><span class="plain-syntax">     </span><span class="string-syntax">"privately named"</span>
-<span class="plain-syntax">                      </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">4</span><span class="plain-syntax">     ... </span><span class="identifier-syntax">permissions</span><span class="plain-syntax"> </span><span class="identifier-syntax">follow</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	A_privately_named --&gt; 0		2
+	                  --&gt; 1		privately_named (an I6 attribute)
+	                  --&gt; 2     1
+	                  --&gt; 3     "privately named"
+	                  --&gt; 4     ... permissions follow
+</span></pre>
 <p>In some ways it would be more convenient to use these names the other way around:
 to call the array itself <code>privately_named</code> and have the inner identifier be
 something like <code>I_privately_named</code>. But this fails on Inform 6 in exasperating
@@ -275,7 +266,7 @@ a list of permissions to be stored in memory. This is where.</p>
 <p>Note that permissions are accumulated for all of the properties in a given
 name set. In the case of &quot;lighted&quot; and &quot;lit&quot; and <code>light</code>, therefore, the
 permissions written will be those for &quot;lighted&quot; (rooms, basically) and then
-those for &quot;lit&quot; (things); <code>light</code>, the WorldModelKit original, has no permissions --
+those for &quot;lit&quot; (things); <code>light</code>, the WorldModelKit original, has no permissions —
 assimilated properties never do have.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write a list of kinds or objects which are permitted to have this property</span><span class="named-paragraph-number">2.2.1.3</span></span> =</p>
@@ -328,7 +319,7 @@ can be given properties, even when other objects of the same kind may lack them.
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_3">&#167;2.2.1.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2_2_1_3_3" class="paragraph-anchor"></a><b>&#167;2.2.1.3.3. </b>  It's happily a rare occurrence, but &quot;object&quot; itself can have properties -- so
+<p class="commentary firstcommentary"><a id="SP2_2_1_3_3" class="paragraph-anchor"></a><b>&#167;2.2.1.3.3. </b>  It's happily a rare occurrence, but &quot;object&quot; itself can have properties — so
 that every object of any kind has permission to have that. We convey that by giving
 permission for every top-level kind of object. (There are typically only four of
 these top-level kinds, and not many properties have these permissions, so it's
@@ -356,7 +347,7 @@ not as wasteful as it looks.)</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Generators can then access the inner name (if they want it) thus:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaObjects::inner_property_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::inner_property_name</span></span>:<br/><a href="2-vo.html#SP2_2">&#167;2.2</a><br/>Inform 6 Objects - <a href="4-i6o.html#SP4">&#167;4</a>, <a href="4-i6o.html#SP9">&#167;9</a><br/>Inform 6 Code - <a href="4-i6c2.html#SP9">&#167;9</a><br/>C Object Model - <a href="5-com.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaObjects::inner_property_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::inner_property_name</span></span>:<br/><a href="2-vo.html#SP2_2">&#167;2.2</a><br/>Inform 6 Objects - <a href="4-i6o.html#SP4">&#167;4</a>, <a href="4-i6o.html#SP9">&#167;9</a><br/>Inform 6 Code - <a href="4-i6c2.html#SP8">&#167;8</a><br/>C Object Model - <a href="5-com.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SymbolAnnotation::get_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"&lt;nameless&gt;"</span><span class="plain-syntax">;</span>
@@ -441,19 +432,16 @@ so we use &quot;marks&quot; on those already done.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1_1">&#167;4.1.1</a> and <a href="2-vo.html#SP4_1_2">&#167;4.1.2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4_1_1_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.1.1. </b>  In the case where a kind of value has been created by table, as in this example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Planet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">planets</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Planet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">planets</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span><span class="plain-syntax">.
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">planet</span><span class="plain-syntax">      </span><span class="identifier-syntax">semimajor</span><span class="plain-syntax"> </span><span class="identifier-syntax">axis</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Jupiter</span><span class="plain-syntax">     </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Saturn</span><span class="plain-syntax">      </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Uranus</span><span class="plain-syntax">      </span><span class="constant-syntax">19</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Neptune</span><span class="plain-syntax">     </span><span class="constant-syntax">30</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Pluto</span><span class="plain-syntax">       </span><span class="constant-syntax">39</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
-</pre>
-<div class="lsmarkdown">
+	</span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">planet</span><span class="plain-syntax">		</span><span class="identifier-syntax">semimajor</span><span class="plain-syntax"> </span><span class="identifier-syntax">axis</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Jupiter</span><span class="plain-syntax">		</span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Saturn</span><span class="plain-syntax">		</span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Uranus</span><span class="plain-syntax">		</span><span class="constant-syntax">19</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Neptune</span><span class="plain-syntax">		</span><span class="constant-syntax">30</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">Pluto</span><span class="plain-syntax">		</span><span class="constant-syntax">39</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span><span class="plain-syntax">
+</span></pre>
 <p>the property &quot;semimajor axis&quot; is already stored in a table column. That becomes
 our stick array. But in other cases, where the instances have not been created
 by table, no sticks exist and we must compile them.</p>
@@ -593,13 +581,10 @@ kind or instance of object, and passes raw splat matter down into the declaratio
 which the generator is making.</p>
 <p>This is a bad idea, because it presupposes which generator is being used, or
 at any rate what the syntax will be. It arises from source text like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Include</span><span class="plain-syntax"> (-</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="comment-syntax">[; Go: return 1; ]</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">-) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rideable</span><span class="plain-syntax"> </span><span class="identifier-syntax">vehicle</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Include</span><span class="plain-syntax"> (-
+	</span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="comment-syntax">[; Go: return 1; ]</span><span class="plain-syntax">,
+-) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rideable</span><span class="plain-syntax"> </span><span class="identifier-syntax">vehicle</span><span class="plain-syntax">.
+</span></pre>
 <p>...which should probably not be allowed. The splat is the text between <code>(-</code>
 and <code>-)</code> here, and as can be seen, it's in Inform 6 syntax, which would be bad
 news for, say, the C generator.</p>
@@ -609,7 +594,7 @@ news for, say, the C generator.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP14" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SymbolAnnotation::get_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">symb</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">APPEND_IANN</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-vnl.html#SP5" class="function-link"><span class="function-syntax">Vanilla::splat_matter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::splat_matter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">

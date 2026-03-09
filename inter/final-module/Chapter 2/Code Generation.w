@@ -33,7 +33,7 @@ It will be carried out by the "generator", using the data held in the following
 object.
 
 =
-typedef struct code_generation {
+classdef code_generation {
 	struct code_generator *generator;
 	struct pipeline_step *from_step;
 	struct target_vm *for_VM;
@@ -70,9 +70,7 @@ typedef struct code_generation {
 	struct linked_list *verb_grammar; /* of `text_stream` */
 	struct dictionary *long_words; /* which might push past dictionary resolution */
 	struct dictionary *warned_about_words; /* which might push past dictionary resolution */
-
-	CLASS_DEFINITION
-} code_generation;
+}
 
 code_generation *CodeGen::new_generation(pipeline_step *step, filename *F, 
 	text_stream *T, inter_tree *I, inter_package *just, code_generator *generator,
@@ -292,7 +290,7 @@ Segments are identified by ID numbers counting up from 0, 1, 2, ...: but
 ID number 0 is `no_I7CGS`, reserved to mean "not a segment".
 
 A segment is itself internally stratified into numbered "layers", and these
-are used to help generators cope with more nuanced ordering issues -- e.g.,
+are used to help generators cope with more nuanced ordering issues — e.g.,
 where two declarations are of basically the same sort of thing, and should
 be in the same segment as each other; but where one must nevertheless precede
 the other. This can be achieved by putting the one to come first at a
@@ -303,11 +301,10 @@ lower-numbered level.
 @d INITIAL_LAYERS_PER_SEGMENT 16
 
 =
-typedef struct generated_segment {
+classdef generated_segment {
 	int layers;
 	struct text_stream **generated_code;
-	CLASS_DEFINITION
-} generated_segment;
+}
 
 generated_segment *CodeGen::new_segment(void) {
 	generated_segment *seg = CREATE(generated_segment);
@@ -368,7 +365,7 @@ segmentation_data CodeGen::new_segmentation_data(void) {
 
 @ If a generator wants to use this system, it should call //CodeGen::create_segments//
 to say which segments it wants to be created, passing an array of ID numbers. The
-order of these is significant -- it's the order in which they will appear in the final
+order of these is significant — it's the order in which they will appear in the final
 output.
 
 =

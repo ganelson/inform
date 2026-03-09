@@ -23,7 +23,7 @@ void PackageInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `package` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d DEFN_PACKAGE_IFLD    (DATA_IFLD + 0)
 @d TYPE_PACKAGE_IFLD    (DATA_IFLD + 1)
@@ -113,7 +113,7 @@ void PackageInstruction::transpose(inter_construct *IC, inter_tree_node *P, inte
 @ Verification begins with sanity checks, but then does something crucial: makes
 sure that the link between the package and its head node is in place. If the
 instruction has just been created by //PackageInstruction::new// then
-that will be done already -- but not if the instruction has been loaded from
+that will be done already — but not if the instruction has been loaded from
 a binary Inter file.
 
 =

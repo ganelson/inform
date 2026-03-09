@@ -105,13 +105,12 @@ which case <code>px</code> and <code>substitute_at</code> in the following struc
 generalisations which apply to it.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">look_for</span><span class="plain-syntax">; </span><span class="comment-syntax">/* prototype situation to look for */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">what_to_make</span><span class="plain-syntax">; </span><span class="comment-syntax">/* subtree for what to assemble */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substitute_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* position under <code>look_for</code> of the EVERY node */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in list of generalisations about kind */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">generalisation</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure generalisation is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <div class="lsmarkdown">
@@ -121,11 +120,11 @@ a list of pairs \INWEBMATH((K, g)\INWEBMATH) where \INWEBMATH(K\INWEBMATH) is a 
 applied from \INWEBMATH(K\INWEBMATH)'s list.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">application</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">application</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">generalisation_owner</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">generalisation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">latest_applied</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">application</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">application</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure application is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <div class="lsmarkdown">
@@ -155,7 +154,7 @@ each inference subject:</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Setting the naming-after information.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Assemblies::name_object_after</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Assertions::Assemblies::name_object_after</span></span>:<br/>The Creator - <a href="4-tc.html#SP8_4_1">&#167;8.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">after</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Assemblies::name_object_after</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Assertions::Assemblies::name_object_after</span></span>:<br/>The Creator - <a href="4-tc.html#SP7_4_1">&#167;7.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">after</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">assemblies_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ad</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InferenceSubjects::get_assemblies_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ad</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">named_after</span><span class="plain-syntax"> = </span><span class="identifier-syntax">after</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ad</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">named_after_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
@@ -384,8 +383,8 @@ which is significantly better than a bitmap recording all pairs of generalisatio
 and objects (which would be \INWEBMATH(O(GN)\INWEBMATH)). The running time of <code>Assertions::Assemblies::satisfies_generalisations</code>
 applied to object \INWEBMATH(X\INWEBMATH) is \INWEBMATH(O(G_X H^2)\INWEBMATH), where \INWEBMATH(G_X\INWEBMATH) is the number of generalisations
 which can be applied to \INWEBMATH(X\INWEBMATH). In the course of compilation this is called once
-each time the kind of \INWEBMATH(X\INWEBMATH) is changed -- at most \INWEBMATH(H\INWEBMATH) times -- and once each time
-a new generalisation applicable to \INWEBMATH(X\INWEBMATH) is added -- at most \INWEBMATH(G_X\INWEBMATH) times. So we
+each time the kind of \INWEBMATH(X\INWEBMATH) is changed — at most \INWEBMATH(H\INWEBMATH) times — and once each time
+a new generalisation applicable to \INWEBMATH(X\INWEBMATH) is added — at most \INWEBMATH(G_X\INWEBMATH) times. So we
 have a total time consumption of \INWEBMATH(O(G_X^2 H^2 + G_X H^3)\INWEBMATH). In practice the
 constants are low, \INWEBMATH(G_X\INWEBMATH) is very small compared to the size of the source
 text, and so is \INWEBMATH(H\INWEBMATH).</p>

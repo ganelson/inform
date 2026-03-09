@@ -88,15 +88,12 @@ hardwired into the code of this module. <code>new</code> must be used in all oth
 <li><code>punctuation</code> for a constructor with no independent meaning, such as <code>INTERMEDIATE_TY</code>.</li>
 </ul>
 <p>For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">builtin</span><span class="plain-syntax"> </span><span class="identifier-syntax">protocol</span><span class="plain-syntax"> </span><span class="identifier-syntax">SAYABLE_VALUE_TY</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">conforms</span><span class="plain-syntax">-</span><span class="identifier-syntax">to:</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORED_VALUE_TY</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">singular:</span><span class="plain-syntax"> </span><span class="identifier-syntax">sayable</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">plural:</span><span class="plain-syntax"> </span><span class="identifier-syntax">sayable</span><span class="plain-syntax"> </span><span class="identifier-syntax">values</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">builtin protocol SAYABLE_VALUE_TY {
+	conforms-to: STORED_VALUE_TY
+	singular: sayable value
+	plural: sayable values
+}
+</span></pre>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
 The distinction really only exists as a mnemonic - it reminds us that it
 wouldn't be safe to change the identifier without also changing the compiler.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
@@ -108,26 +105,20 @@ It will have no effect unless applied, which happens only by a special command
 (see below) or, for certain macro names, when the code in this module applies
 it automatically.</p>
 <p>For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">macro</span><span class="plain-syntax"> #</span><span class="identifier-syntax">REAL</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">conforms</span><span class="plain-syntax">-</span><span class="identifier-syntax">to:</span><span class="plain-syntax"> </span><span class="identifier-syntax">REAL_ARITHMETIC_VALUE_TY</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">macro #REAL {
+	conforms-to: REAL_ARITHMETIC_VALUE_TY
+}
+</span></pre>
 <p>This declares a macro called <code>#REAL</code>. All macros have names beginning with a
 sharp sign, and continuing with capital letters.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  An &quot;invention&quot; is a piece of source text to be added to whatever is being
 compiled.<sup id="fnred:2"><a href="#fn:2" rel="footnote">1</a></sup> Invention names begin with an asterisk. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">invention</span><span class="plain-syntax"> *</span><span class="identifier-syntax">UNDERSTOOD</span><span class="plain-syntax">-</span><span class="identifier-syntax">VARIABLE</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">invention *UNDERSTOOD-VARIABLE {
+	&lt;kind&gt; understood is a &lt;kind&gt; which varies.
+}
+</span></pre>
 <p>Note that the text is not quite literal, because it can contain wildcards like
 <code>&lt;kind&gt;</code>, which expands to the name of the kind in question: for instance, we
 might get &quot;number understood is a number which varies&quot;. The legal wildcards are:</p>
@@ -142,26 +133,20 @@ might get &quot;number understood is a number which varies&quot;. The legal wild
 nothing with angle brackets in, except where a wildcard appears. Secondly,
 each sentence must end at the end of a line, and similarly the colon for
 any rule or other definition. Thus this template would fail:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">invention</span><span class="plain-syntax"> *</span><span class="identifier-syntax">UNDERSTOOD</span><span class="plain-syntax">-</span><span class="identifier-syntax">VARIABLE</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">judge</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax">: </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"I judge [&lt;kind&gt; understood]."</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">invention *UNDERSTOOD-VARIABLE {
+	&lt;kind&gt; understood is a &lt;kind&gt; which
+	varies. To judge &lt;kind&gt;: say "I judge [&lt;kind&gt; understood]."
+}
+</span></pre>
 <p>because the first sentence ends in the middle of the second line, and the
 colon dividing the phrase header from its definition is also mid-line. The
 template must be reformatted thus to work:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">invention</span><span class="plain-syntax"> *</span><span class="identifier-syntax">UNDERSTOOD</span><span class="plain-syntax">-</span><span class="identifier-syntax">VARIABLE</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">judge</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;kind&gt;</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"I judge [&lt;kind&gt; understood]."</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">invention *UNDERSTOOD-VARIABLE {
+	&lt;kind&gt; understood is a &lt;kind&gt; which varies.
+	To judge &lt;kind&gt;:
+		say "I judge [&lt;kind&gt; understood]."
+}
+</span></pre>
 <li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 Inventions are not elegant and have now mostly been phased out, except to
 create the &quot;K understood&quot; variables for each base kind conforming to
@@ -221,7 +206,7 @@ kind. If this is not set, problem messages may be generated for such variables.<
 what it says: the name of this kind is allowed also to be the name of a property
 which takes values in this kind.</p>
 <p><code>can-exchange</code> is either <code>yes</code> or <code>no</code> (default <code>no</code>), and means that data of
-this kind can be serialised -- printed out as text into an external file --
+this kind can be serialised — printed out as text into an external file —
 and read into a different program, but with the same meaning.</p>
 <p><code>constant-compilation-method</code> tells Inform how to compile constants of this
 kind. The possible options are: <code>none</code>, <code>literal</code>, <code>quantitative</code> and <code>special</code>,
@@ -278,7 +263,7 @@ which can make be used to improve problem messages or the index by giving little
 blue help buttons next to the kind's name.</p>
 <p><code>index-priority</code> is a non-negative integer. It is by default 100 for base kinds
 and constructors, 0 for protocols and punctuation. 0 in fact means &quot;omit from the
-index&quot;, which is otherwise grouped in ascending order -- i.e., lowest priority
+index&quot;, which is otherwise grouped in ascending order — i.e., lowest priority
 numbers first.</p>
 <p><code>index-default-value</code> can be used in place of the <code>default-value</code> in the index,
 to make it look prettier.</p>

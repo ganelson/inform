@@ -7,32 +7,38 @@ This stage is intended to run immediately after `load-kit-source`. That will
 have produced a sequence of `SPLAT_IST` nodes corresponding to directives,
 and some of those will be conditional compilation directives. For example,
 we might see a sequence like this:
-= (text)
+
+``` None
 	IFDEF_PLM
 	ROUTINE_PLM
 	IFNOT_PLM
 	ARRAY_PLM
 	ROUTINE_PLM
 	ENDIF_PLM
-=
+```
+
 Clearly this either means a function (the first `ROUTINE_PLM`), or a different
 function plus an array. We have to decide that now, because optimisation, code
 generation and so on need to know exactly what they are dealing with.
 
 If we allowed kit sources to contain arbitrary conditional compilations, that
 would be impossible. But in practice they only need to depend on the constants
-which are defined by the VM architecture -- whether 16 or 32 bit; whether
+which are defined by the VM architecture — whether 16 or 32 bit; whether
 debugging is enabled. And we do know the architecture now. (This is why a kit
 has a different binary form for each different architecture supported.) So this
 stage collapses the above to either:
-= (text)
+
+``` None
 	ROUTINE_PLM
-=
+```
+
 or:
-= (text)
+
+``` None
 	ARRAY_PLM
 	ROUTINE_PLM
-=
+```
+
 depending on which way the `IFDEF_PLM` comes out. At the end of this stage,
 then, none of the directives `IFDEF_PLM`, `IFNDEF_PLM`, `IFTRUE_PLM`,
 `IFNOT_PLM` or `ENDIF_PLM` appear anywhere in the tree, and all compilation
@@ -111,19 +117,22 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 @ In order to answer whether or not a symbol is defined... we must look for it.
 Note that definitions only count if they are in active code. Here, `Y` is added
 to the dictionary when it is reached:
-= (text as Inform 6)
+
+``` Inform6
 	Constant X = 1;
 	#Ifdef X;
 	Constant Y = 2;
 	#Endif;
-=
+```
+
 But here it is not:
-= (text as Inform 6)
+
+``` Inform6
 	Constant X = 1;
 	#Ifndef X;
 	Constant Y = 2;
 	#Endif;
-=
+```
 
 @<Symbol definition@> =
 	if (compile_this) {

@@ -198,18 +198,16 @@ Each command is read in as text, parsed and stored into a modest structure.
 kind_constructor *constructor_described = NULL;
 additional_property_set *additional_property_set_described = NULL;
 
-typedef struct additional_property_set {
+classdef additional_property_set {
 	struct text_stream *owner_name;
 	struct linked_list *properties; /* of `additional_property` */
-	CLASS_DEFINITION
-} additional_property_set;
+}
 
-typedef struct additional_property {
+classdef additional_property {
 	int attr;
 	struct text_stream *property_name;
 	struct text_stream *value_text;
-	CLASS_DEFINITION
-} additional_property;
+}
 
 additional_property_set *NeptuneSyntax::new_additional_property_set(text_stream *owner_name) {
 	additional_property_set *set = CREATE(additional_property_set);
@@ -389,7 +387,7 @@ begin with those characters, but that doesn't matter for the things we need.
 @ The following is clearly inefficient, but is not worth optimising. It makes
 about 20 string comparisons per command, and there are about 600 commands in a
 typical run of Inform, so the total cost is about 12,000 comparisons with
-quite small strings as arguments -- which is negligible for our purposes,
+quite small strings as arguments — which is negligible for our purposes,
 so we neglect it.
 
 @<Identify the command being used@> =

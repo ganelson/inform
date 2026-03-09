@@ -145,14 +145,13 @@ int Sounds::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 This structure of additional data is attached to each sound instance:
 
 =
-typedef struct sounds_data {
+classdef sounds_data {
 	struct wording name; /* text of name */
 	struct filename *filename_of_sound_file; /* relative to the Resources folder */
 	int sound_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
 	struct instance *as_instance;
-	CLASS_DEFINITION
-} sounds_data;
+}
 
 @ We allow instances of "sound name" to be created only through the above
 code calling //Sounds::sounds_create//. If any other proposition somehow

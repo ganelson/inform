@@ -152,7 +152,7 @@ void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t vararg
 @ What makes this more burdensome is that `@glk` is not so much a single opcode
 as an entire instruction set: it is an compendium of over 120 disparate operations.
 Indeed, the `glk_api_selector` argument to `i7_opcode_glk` chooses which one is
-being used. For convenience, we define a set of names for them all -- which does
+being used. For convenience, we define a set of names for them all — which does
 not imply any commitment to implement them all.
 
 = (text to inform7_clib.h)
@@ -336,7 +336,7 @@ And these are "event types":
 =
 
 Finally, these are the gestalt values: that is, the selection of bells and
-whistles which a Glk implementation can offer --
+whistles which a Glk implementation can offer —
 
 = (text to inform7_clib.h)
 #define i7_gestalt_Version						0

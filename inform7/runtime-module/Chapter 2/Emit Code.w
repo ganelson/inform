@@ -6,12 +6,12 @@ Here is how bytecode for instructions inside functions is emitted.
 Many sections of //runtime// need to create functions by explicitly giving
 their bytecode. This is quite verbose, but with practice easy enough to read.
 For example, here's bytecode equivalent to `return 13`:
-= (text as InC)
+
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_number(13);
 	EmitCode::up();
-=
+
 We conventionally indent this code to reflect the structure of what is being
 generated, so that the source code in this module looks like the Inter tree
 structure which emerges.

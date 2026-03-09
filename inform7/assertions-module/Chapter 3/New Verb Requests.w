@@ -293,7 +293,7 @@ which exist only when certain features are active.
 	meaning_given = TRUE;
 
 @ Casing problems are acutely problematic with prepositions, because so many
-locations have names which begin with them -- "Under Milkwood", "Inside the
+locations have names which begin with them — "Under Milkwood", "Inside the
 Machine", "On Top of Old Smoky". Our best way to avoid confusion is to read
 prepositions as such only when they do not unexpectedly jump into upper case,
 i.e., to distinguish between the meanings of
@@ -364,7 +364,7 @@ We read the parts of speech as a comma-separated list of individual parts
 (but we don't allow "and" or "or" to divide this list: only commas).
 
 At the end, if no present plural is supplied, we may as well use the
-infinitive for that -- the two are the same in most regular English verbs
+infinitive for that — the two are the same in most regular English verbs
 ("to sleep", "they sleep") even if not irregular ones ("to be", "they are").
 
 @<Parse the parts of speech supplied for the verb@> =
@@ -398,7 +398,7 @@ infinitive for that -- the two are the same in most regular English verbs
 
 @ A single English verb, such as "to contain", produces numerous `verb_usage`
 objects, since we have one for each combination of tense, number and negation
--- "contains", "had not contained", etc. These have upper limits on their
+— "contains", "had not contained", etc. These have upper limits on their
 sizes, not so much from the language definition as from limitations on our
 implementation of it. But in practice they should never be reached.
 
@@ -467,7 +467,7 @@ implementation of it. But in practice they should never be reached.
 @ This funny little problem message is the price we pay for blurring grammar
 in the syntax provided for users. Prepositions do not inflect in English
 when used in different tenses or when negated, so there's no conjugation
-involved, and we need to reject any attempt -- even though it would be
+involved, and we need to reject any attempt — even though it would be
 perfectly valid if a verb were being defined.
 
 @<Reject with a problem message if preposition is conjugated@> =

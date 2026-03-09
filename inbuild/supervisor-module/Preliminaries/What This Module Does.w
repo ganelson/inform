@@ -52,7 +52,7 @@ up additional dependencies. But eventually it will call //Supervisor::go_operati
 The Supervisor is now ready for use!
 
 There is no single "go" button: instead, the Supervisor provides a suite
-of functions to call, each acting on a "copy" -- an instance of some software
+of functions to call, each acting on a "copy" — an instance of some software
 at a given filing system location. When //inform7// is the parent, it follows
 the call to //Supervisor::go_operational// with a single call to //Copies::build//
 on the copy representing the current Inform 7 project. But when //inbuild//
@@ -82,11 +82,11 @@ Such objects carry with them a note of which virtual machine architectures
 they work with: see //arch: Compatibility// for more on this.
 
 A "copy" is an instance of an edition actually present somewhere in the file
-system -- note that we might have several copies of the same edition in
+system — note that we might have several copies of the same edition in
 different places. Each copy known to the Supervisor is an //inbuild_copy// object.
 
-When copies are claimed, they are typically scanned -- exactly how depends
-on the genre -- and this can reveal damage: if so, a //copy_error// object is
+When copies are claimed, they are typically scanned — exactly how depends
+on the genre — and this can reveal damage: if so, a //copy_error// object is
 attached to the copy for each different defect turned up. These errors are not
 necessarily reported at once, or at all: if they are reported, the function
 //CopyErrors::write// is used to write a suitable command-line error, but it's
@@ -107,16 +107,18 @@ go poking around without being asked.[1] Instead, the user will give the
 parent tool some locations at the command line: and those command-line
 instructions will be processed by //supervisor//. For example, if the user
 typed:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7 -internal inform7/Internal -external ~/mystuff -project Tadpoles.inform
-=
+```
+
 then all three command-line switches here would actually be parsed by
 //Supervisor::option//, rather than by anything in the //core// module.
 They would set the "internal" and "external" nest (see //inbuild: Manual//),
 creating an //inbuild_nest// object for each. The Inform 7 project for the
 run would also be set. This would become whose genre is `project_bundle_genre`.
 
-Other copies would swiftly be needed -- the definition of the English language
+Other copies would swiftly be needed — the definition of the English language
 (found inside the Internal nest), the Standard Rules extension, and several more.
 These are not explicitly named on the command line: instead, they are found by
 searching through the nests. //supervisor// does this by creating an
@@ -178,8 +180,8 @@ a one-to-one fashion.
 
 This table summarises the genres, where they managed, what type of metadata
 object is attached to each copy of that genre, and where such metadata is
-handled. Note that the two Inform project genres -- one for single files,
-one for whole bundles -- share a metadata format: a project is a project,
+handled. Note that the two Inform project genres — one for single files,
+one for whole bundles — share a metadata format: a project is a project,
 however it is managed on disc.
 = (hyperlinked text)
 	GENRE INSTANCE        WHOSE METHODS ARE AT     COPIES GET AN     WHICH IS HANDLED BY
@@ -195,7 +197,7 @@ however it is managed on disc.
 @h Build graph.
 See //Build Graphs// for the infrastructure of how a dependency graph is stored.
 Basically these consist of //build_vertex// objects joined together by edges,
-represented by lists of other vertices -- each vertex has two lists, one of
+represented by lists of other vertices — each vertex has two lists, one of
 "use edges", the other of "build edges". See the manual at //inbuild: Using Inbuild//
 for an explanation and examples.
 
@@ -240,7 +242,7 @@ without throwing copy errors. So we read only what we will use.
 
 @h Reading source text.
 For any copy, //Copies::get_source_text// will instruct the Supervisor to
-read in the Inform source text associated with it -- if any: this does nothing
+read in the Inform source text associated with it — if any: this does nothing
 for languages, pipelines, website templates or kits. Text for a copy is read
 at most once, and is cached so that a second read produces the same result
 as the first.
@@ -252,12 +254,14 @@ such is read by a call to //SourceText::read_file//, which then sends out
 to the //words// module to break the text file into a stream of words:
 see //words: Text From Files//. But it is //SourceText::read_file// which
 prints console messages like these:
-= (text as ConsoleText)
+
+``` ConsoleText
 	I've now read your source text, which is 70 words long.
 	I've also read Basic Inform by Graham Nelson, which is 7645 words long.
 	I've also read English Language by Graham Nelson, which is 2328 words long.
 	I've also read Standard Rules by Graham Nelson, which is 32123 words long.
-=
+```
+
 Any lexical errors arising in //words// are converted by us into copy errors
 and attached to the //inbuild_copy// object for the extension or project.
 
@@ -290,9 +294,9 @@ given a //heading// object. We will do three things with headings:
 - Form them into a tree structure, to be able to determine quickly
 which is a subheading of which;
 - Parse their bracketed caveats, such as "for use with ... only",
-which we will soon need -- this is done by another Preform grammar; and
+which we will soon need — this is done by another Preform grammar; and
 - Move content around to satisfy annotations such as "in place of...",
-though this stage is performed only later -- see below.
+though this stage is performed only later — see below.
 
 @ What happens next involves is carefully timed. What we want is to look
 through for sentences like this one:
@@ -327,8 +331,8 @@ which of those states actually happens.
 
 @ At any rate, when //Inclusions::traverse// finds an Include sentence which
 it decides is valid, it calls //Inclusions::fulfill_request_to_include_extension//.
-This performs a search for the best compatible copy of the extension named --
-see above -- and, once such a copy is found, calls //Inclusions::load// to
+This performs a search for the best compatible copy of the extension named —
+see above — and, once such a copy is found, calls //Inclusions::load// to
 merge its text into the current syntax tree. (Note: it doesn't form an
 isolated syntax tree of its own.) This is why Inform reads the text of an
 extension as if it appeared at the same position as the Include sentence.
@@ -336,8 +340,8 @@ extension as if it appeared at the same position as the Include sentence.
 When a valid Include is found, //Inclusions::fulfill_request_to_include_extension//
 also puts a dependency edge in between the vertex for our copy and the vertex
 for the new extension's copy. That will be a use edge if our copy is also an
-extension -- i.e., you can't use Existing Extension unless you also have
-New Extension -- but a build edge if our copy is a project -- i.e., you can't
+extension — i.e., you can't use Existing Extension unless you also have
+New Extension — but a build edge if our copy is a project — i.e., you can't
 build Existing Project unless you also have New Extension.
 
 By the end of the process, therefore, all dependencies on or between extensions

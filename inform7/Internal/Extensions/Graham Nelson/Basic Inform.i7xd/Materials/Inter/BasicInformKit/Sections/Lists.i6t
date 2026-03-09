@@ -198,8 +198,8 @@ That completes the compulsory services required for this KOV to function:
 from here on, the remaining routines provide definitions of stored action-related
 phrases in the Standard Rules.
 
-Given a description `D` which applies to some objects and not others --
-say, "lighted rooms adjacent to the Transport Hub" -- we can cast this
+Given a description `D` which applies to some objects and not others —
+say, "lighted rooms adjacent to the Transport Hub" — we can cast this
 into a list of all objects satisfying `D` with the following routine.
 Slightly wastefully of time, we have to iterate through the objects
 twice in order first to work out the length of list we will need, and
@@ -503,9 +503,9 @@ happened in this situation to be unhelpful.
 
 @h Set Length.
 This is rather harder: it might lengthen the list, in which case we
-have to pad out with the default value for the kind of value stored --
+have to pad out with the default value for the kind of value stored —
 padding a list of numbers with 0s, a list of texts with copies of the
-empty text, and so on -- creating such block-values as might be needed;
+empty text, and so on — creating such block-values as might be needed;
 or else it might shorten the list, in which case we must cut items,
 destroying them properly if they were block-values.
 

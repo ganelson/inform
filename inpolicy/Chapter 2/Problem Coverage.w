@@ -19,12 +19,11 @@ set of Inform test cases.
 @d NAMELESS_PCON       0x00000020 /* this is `...` */
 
 =
-typedef struct known_problem {
+classdef known_problem {
 	struct text_stream *name;
 	int contexts_observed; /* bitmap of the above bits */
 	int contexts_observed_multiple_times; /* bitmap of the above bits */
-	CLASS_DEFINITION
-} known_problem;
+}
 
 @ When a problem is observed, we create a dictionary entry for it, if necessary,
 and augment its bitmap of known contexts:

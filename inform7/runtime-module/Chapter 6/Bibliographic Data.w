@@ -94,8 +94,8 @@ void RTBibliographicData::compile_constants(void) {
 		DISCARD_TEXT(v)
 	}
 
-@ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
-number "130625" -- is actually controversial: quite a few users feel they
+@ This innocuous code — if Inform runs on 25 June 2013, we compile the serial
+number "130625" — is actually controversial: quite a few users feel they
 should be able to fake the date-stamp with dates of their own choosing.
 
 @<Compile the I6 serial number, based on the date@> =

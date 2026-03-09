@@ -23,10 +23,9 @@ For now, a `localisation_dictionary` object is just a wrapper for a simple
 `dictionary` of key-value pairs, but it may become more elaborate later.
 
 =
-typedef struct localisation_dictionary {
+classdef localisation_dictionary {
 	struct dictionary *texts;
-	CLASS_DEFINITION
-} localisation_dictionary;
+}
 
 localisation_dictionary *Localisation::new(void) {
 	localisation_dictionary *D = CREATE(localisation_dictionary);
@@ -67,12 +66,13 @@ key. This text continues on what may be multiple lines until the next key;
 and any white space at the start or end is ignored.
 
 So, for example:
-= (text)
+
+``` None
 # This is a comment line
 	%Index.Elements.Cm.Title = Commands
 	%Index.Elements.Cm.Heading =
 		Commands which the player can type
-=
+```
 
 And the following function reads such a file into an existing dictionary. Note
 that it can be used to read several files in turn into the same dictionary;
@@ -165,25 +165,31 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 @h Writers.
 These functions can then be used for generating text (or HTML) which expands one
 of the keys, substituting textual values in for placeholders. For example, given:
-= (text)
+
+``` None
 %Index.Elements.RS.Unlist = The *1 is not listed in the *2.
-=
+```
+
 Calling //Localisation::roman_tt// on the key `"Index.Elements.RS.Unlist"` with
 the values "imports rule" and "customs rulebook" would then produce:
-= (text)
+
+``` None
 The imports rule is not listed in the customs rulebook.
-=
+```
+
 If an actual asterisk is needed, `**` will produce one.
 
 Two further syntaxes can be used if the text is HTML rather than plain. The
 notation `<REF>` expands to a blue help icon linking to the Inform documentation
 at reference point `REF`; and a vertical stroke becomes a forced line break,
 with everything under the first line being italicised. For example:
-= (text)
+
+``` None
 %Index.Elements.Cd.Heading =
 	How this project might be filed in a library
 	catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
-=
+```
+
 Note that a valid documentation reference must begin with an upper-case letter.
 
 =

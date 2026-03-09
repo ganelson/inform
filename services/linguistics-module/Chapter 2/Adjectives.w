@@ -15,7 +15,7 @@ for the user of this module to attach semantics to an adjective. For how
 Inform does this, see //assertions: Adjective Meanings//.
 
 = 
-typedef struct adjective {
+classdef adjective {
 	struct lexical_cluster *adjective_names;
 	struct linguistic_stock_item *in_stock;
 
@@ -25,9 +25,7 @@ typedef struct adjective {
 	#ifdef ADJECTIVE_MEANING_LINGUISTICS_CALLBACK
 	struct adjective_meaning_data adjective_meanings;
 	#endif
-
-	CLASS_DEFINITION
-} adjective;
+}
 
 @ Adjectives are a grammatical category:
 

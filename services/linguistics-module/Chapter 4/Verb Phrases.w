@@ -19,7 +19,7 @@ But a human has to know a great deal about culture and society to make
 this sort of judgement. How is <sentence> to do it? One answer might be to
 recognise "the Fisher-Price carry cot" as something already known, having
 been defined in an earlier sentence. But Inform does not require such
-pre-declarations -- indeed, the above sentence is a legal way to create
+pre-declarations — indeed, the above sentence is a legal way to create
 the cot from nothing.
 
 Instead, <sentence> has to use heuristic rules about what is most likely,
@@ -152,8 +152,8 @@ or "have" in "does not have".
 
 The copular verb "to be" is exempt so that something like "Velma is not a
 thinker" can be parsed as "(Velma) is (not a thinker)", allowing "not a thinker"
-to be a noun phrase -- if "thinker" is an either/or property with a single possible
-antonym -- "doer", let's say -- then we want to construe this sentence as if
+to be a noun phrase — if "thinker" is an either/or property with a single possible
+antonym — "doer", let's say — then we want to construe this sentence as if
 it read "Velma is a doer".
 
 @<Calculate the viability map@> =
@@ -532,7 +532,7 @@ int VerbPhrases::default_verb(int task, parse_node *V, verb_meaning *vm, wording
 the point of view of the object, not the subject.
 
 For example, in "Darcy wears the hat", the OP "the hat" becomes a
-`RELATIONSHIP_NT` subtree with the relation "is worn by" -- from the hat's
+`RELATIONSHIP_NT` subtree with the relation "is worn by" — from the hat's
 point of view, it is being worn.
 
 @<Insert a relationship subtree for the OP of a non-copular verb@> =
@@ -569,7 +569,7 @@ little careful using this nonterminal.
 
 @ The following is used only in the reconstruction of existential sentences
 such as "There is a cat called Puss in Boots", where we want to prevent the
-"in" being considered a preposition -- it is part of a calling-name.
+"in" being considered a preposition — it is part of a calling-name.
 
 =
 <phrase-with-calling> ::=

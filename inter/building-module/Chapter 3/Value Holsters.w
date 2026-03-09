@@ -6,19 +6,19 @@ Representing compilation contexts, and holding compiled values.
 code-base had to be turned around. Pre-2017, Inform generated code by writing
 Inform 6 syntax out by hand: but post-2019, Inter bytecode was generated instead.
 Hundreds of subsystems had to be rewritten, a process taking over a year, and
-during this time the compiler had to work in a piebald sort of way -- some
+during this time the compiler had to work in a piebald sort of way — some
 systems generating bytecode, others still pouring our raw I6 as text.
 
 The //value_holster// was invented as a way to manage this. It allows the caller
 of a compilation function to ask for code to be made in a particular way: this
 is the `vhmode_wanted` field. These ways are:
 
-- `INTER_VAL_VHMODE` -- generate Inter bytecode inside a function, producing a value
+- `INTER_VAL_VHMODE` — generate Inter bytecode inside a function, producing a value
 
-- `INTER_VOID_VHMODE` -- generate Inter bytecode inside a function but in
+- `INTER_VOID_VHMODE` — generate Inter bytecode inside a function but in
 void context, i.e., not producing a value
 
-- `INTER_DATA_VHMODE` -- encode a constant value as a pair of Inter values,
+- `INTER_DATA_VHMODE` — encode a constant value as a pair of Inter values,
 for use in, say, an array entry.
 
 So much for what the caller wants. The compilation function, or subsystem, then

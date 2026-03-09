@@ -11,7 +11,7 @@ Each of these different sorts of action is represented by an instance of
 kind `K_action_name` at run-time. 
 
 =
-typedef struct action_name {
+classdef action_name {
 	struct action_naming_data naming_data;
 
 	struct action_semantics semantics; /* see //Action Semantics// */
@@ -24,8 +24,7 @@ typedef struct action_name {
 	struct cg_line *command_parser_grammar_producing_this; /* if any */
 
 	struct action_compilation_data compilation_data;
-	CLASS_DEFINITION
-} action_name;
+}
 
 @ Note that we notify the `K_action_name` kind that a new enumerated value
 for it exists; we don't need to record the reply (i.e. the number used as

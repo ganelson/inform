@@ -63,12 +63,13 @@ semantic_version_number BinaryInter::test_file_version(filename *F) {
 @ Once past the header, the data is a flat series of 32-bit values, but many
 of those are in practice low values: small integers, ASCII character codes and
 the like. Given the Inform GUI apps need to store quite a lot of precompiled
-binary Inter files, we can reduce the app's footprint -- by what turns out to be
-about 14 MB -- if we compress those files. We do this by writing each word as
+binary Inter files, we can reduce the app's footprint — by what turns out to be
+about 14 MB — if we compress those files. We do this by writing each word as
 a series of 1 to 5 bytes.
 
 @ The following scheme is used on every word after the header:
-= (text)
+
+``` None
 	VALUE               ONE TO FIVE BYTES
 	00000000-0000007f	0xxxxxxx
 	00000080-00003fff	10xxxxxx	xxxxxxxx
@@ -76,7 +77,8 @@ a series of 1 to 5 bytes.
 	00200000-3fffffff	11111111	xxxxxxxx	xxxxxxxx	xxxxxxxx	xxxxxxxx
 	40000000-4000001e	111xxxxx
 	4000001f-ffffffff	11111111	xxxxxxxx	xxxxxxxx	xxxxxxxx	xxxxxxxx
-=
+```
+
 This is a little like UTF-8, but because there is no need to synchronise from an
 arbitrary mid-file position, we can be more economical with bits; and we then
 also optimise for the range just above `40000000` because this is `SYMBOL_BASE_VAL`,
@@ -85,13 +87,15 @@ and means that references in Inter bytecode to symbols cluster there. See
 
 Measurement on the binary Inter form of BasicInformKit, compiled for the 32d
 architecture, came out as follows in February 2022:
-= (text)
+
+``` None
 Words in 1 byte(s): 923439
 Words in 2 byte(s): 81056
 Words in 3 byte(s): 21939
 Words in 5 byte(s): 17269
 1043703 words, 1237713 bytes: compression 0.296472
-=
+```
+
 That is, the compressed file is about 0.295 times the size of what it would be
 if no compression were used. Other kits similarly produced 0.294220, 0.286038,
 and so on: the ratio was fairly consistent. More could certainly be done (even
@@ -228,12 +232,14 @@ void BinaryInter::write_compression_statistics(OUTPUT_STREAM) {
 }
 
 @ Conventionally, texts are stored as a sequence of words:
-= (text)
+
+``` None
 	0	length word L (= 0 for the empty text)
 	1	first character
 	...
 	L	last character
-=
+```
+
 So, note, this is not a C-style null terminated string.
 
 =
@@ -350,11 +356,13 @@ now, because they will be referred to in the symbol definitions in the
 resource block later on.
 
 This block is a sequence of records like so:
-= (text)
+
+``` None
 	Word	Annotation ID
 	Text	Name
 	Word	Annotation type (a `*_IATYPE` value)
-=
+```
+
 terminated by the sentinel word `INVALID_IANN`. There cannot be two blocks with
 the same annotation ID; the order of blocks is not meaningful. In particular,
 they are not necessarily in increasing order of ID.
@@ -512,14 +520,15 @@ resources will be in increasing warehouse ID order.
 
 @ A symbols table resource is `SYMBOLS_TABLE_IRSRC` followed by a list of records,
 one for each symbol:
-= (text)
+
+``` None
 	word	ID within the symbols table (always SYMBOL_BASE_VAL or greater, so nonzero)
 	word	symbol type (one of the `*_ISYMT` values)
 	word	persistent flags
 	text	identifier of the symbol
 	table	annotations table (see below)
 	text	text this symbol is wired to (if it is a plug: otherwise, omitted)
-=
+```
 
 @<Read a symbols table resource@> =
 	inter_symbols_table *tab = InterWarehouse::get_symbols_table(warehouse, ID);
@@ -569,13 +578,15 @@ one for each symbol:
 
 @ The annotations table for a single symbol begins with a word in the form
 `(bm << 6) + n`, where `bm` is the bitmap of its boolean annotations, and `n`
-is the number of non-boolean ones it has -- which might be 0.
+is the number of non-boolean ones it has — which might be 0.
 
 This word is then followed by `n` pairs:
-= (text)
+
+``` None
 	word	non-boolean annotation ID
 	word	non-boolean annotation value
-=
+```
+
 The meaning of the value depends on the annotation type.
 
 @<Read the annotations for a symbol@> =
@@ -609,12 +620,14 @@ The meaning of the value depends on the annotation type.
 	}
 
 @ A package resource is `PACKAGE_REF_IRSRC` followed by:
-= (text)
+
+``` None
 	word	warehouse ID of parent package, or 0 for the root package
 	word	persistent package flags
 	word	warehouse ID of symbols table
 	text	package name
-=
+```
+
 The name isn't used much here, and it's arguably wasteful to store it: the
 alternative would be to use some further flags marking the identity of certain
 special packages (such as `connectors`). But having the names of packages be
@@ -678,17 +691,21 @@ does not record wirings to names, only wirings to symbols.
 Rather than storing these pairs in no order, we group them by the origin table,
 that is, by the symbols table holding `S1`. So the block consists of one record
 for each table which needs to make some wirings:
-= (text)
+
+``` None
 	word	warehouse ID of symbols table holding S1
 	table	wirings in this table
-=
+```
+
 This is terminated by a 0 word, which is safe since 0 is never a valid warehouse
 ID: see //The Warehouse//. The sub-table of wirings is then a sequence of these:
-= (text)
+
+``` None
 		word	symbol ID in this table of S1
 		word 	warehouse ID of symbols table holding S2
 		word	symbol ID in that table of S2
-=
+```
+
 Again, this is null-terminated, which is safe since all symbol IDs are at least
 `SYMBOL_BASE_VAL`, a huge number.
 

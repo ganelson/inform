@@ -43,7 +43,7 @@ kind *KindPredicates::get_kind(pcalc_prop *prop) {
 }
 
 @ Composited kind predicates are special in that they represent composites
-of quantifiers with common nouns -- for example, "everyone" is a composite
+of quantifiers with common nouns — for example, "everyone" is a composite
 meaning "every person".
 
 =

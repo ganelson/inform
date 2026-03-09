@@ -2,15 +2,15 @@
 
 Conjugating verbs into the many different forms they can take.
 
-@ We will need to turn a base form of a verb -- in English, this is always the
-infinitive -- into up to 123 variants; we manage this with quite an extensive
+@ We will need to turn a base form of a verb — in English, this is always the
+infinitive — into up to 123 variants; we manage this with quite an extensive
 data structure. There will typically only be a few dozen fully conjugated
 verbs in any source text, though, so the memory cost isn't too extreme. For
 English it looks wasteful, since so many forms are the same, but for French
 (say) they are almost all different.
 
 =
-typedef struct verb_conjugation {
+classdef verb_conjugation {
 	struct word_assemblage infinitive; /* not counting the "to", in English */
 	struct word_assemblage past_participle;
 	struct word_assemblage present_participle;
@@ -24,8 +24,7 @@ typedef struct verb_conjugation {
 	#endif
 	int auxiliary_only; /* used only as an auxiliary, e.g. the "have" in "I have gone" */
 	int instance_of_verb; /* defines an instance of kind "verb" at run-time */
-	CLASS_DEFINITION
-} verb_conjugation;
+}
 
 typedef struct verb_tabulation {
 	struct word_assemblage to_be_auxiliary; /* use this if non-empty */
@@ -213,9 +212,11 @@ Note that verb form 0 can't be overridden: that was the base text.
 @ A tabulation is a sort of program laying out what to put in which slots,
 active or passive. Each production is a step in this program, and it consists
 of a "selector" followed by a "line". For example, the production:
-= (text as Preform)
+
+``` Preform
 	a3 ( t1 avoir ) 3+*
-=
+```
+
 contains six tokens; the selector is `a3`, and the line is made up from the
 rest. (The selector is always just a single token.)
 
@@ -339,15 +340,19 @@ nonterminal *Conjugation::follow_instructions(word_assemblage *verb_forms,
 @ Each production in this language's `<verb-conjugation-instructions>` grammar
 consists of a (possibly empty) pattern to match, followed by the name of a
 nonterminal to use as the conjugation if it matches. For example, in
-= (text as Preform)
+
+``` Preform
 	-querir <fr-querir-conjugation>
-=
+```
+
 the pattern part is a single token, `-querir`, which matches if the base text
 is a single word whose last six characters are "querir". A more complicated
 case is:
-= (text as Preform)
+
+``` Preform
 	be able to ... <to-be-able-to-auxiliary>
-=
+```
+
 Here the wildcard `...` matches one or more words, and the "auxiliary
 infinitive" form is set to the part matched by `...`: for example,
 "be able to see" matches with auxiliary infinitive "see".
@@ -462,13 +467,17 @@ and we have to copy that text into a word assemblage and return it.
 In theory that's a one-line routine, but it's made complicated by the number
 of special syntaxes which can go into the row of text. For example, if `row`
 is only
-= (text as Preform)
+
+``` Preform
 	will not do
-=
+```
+
 then the word assemblage comes out to just "will not do"; but if it is
-= (text as Preform)
+
+``` Preform
 	( t1 auxiliary-have ) done
-=
+```
+
 then we consult tense 1 (present) of the verb "auxiliary-have", extract
 the relevant slot, then append "done". (This might produce "have done"
 or "has done" or "haven't done" or "hasn't done", depending on the
@@ -532,10 +541,12 @@ make use of the same fancy features we're allowing here.
 	}
 
 @ A number followed by a verb in brackets, like so:
-= (text as Preform)
+
+``` Preform
 	3 ( avoir )
-=
-expands to verb form 3 of this verb -- the past participle of "avoir", which
+```
+
+expands to verb form 3 of this verb — the past participle of "avoir", which
 is "eu", as it happens. This is a special kind of lift. It isn't actually
 performed now; we make a note and carry it out when we reach the brackets,
 on the next iteration.
@@ -551,9 +562,11 @@ on the next iteration.
 set, in which case we should lift a verb form, or we might not, in which case
 we should lift an ordinary usage, such as third-person singular in a particular
 tense. A lift can optionally change tense or sense: for example,
-= (text as Preform)
+
+``` Preform
 	( t1 have )
-=
+```
+
 lifts from the present tense of "to have". If there's no tense indicator,
 the tense remains the current one. (It's also possible to change the sense from
 positive to negative or vice versa with this, though I can't think of a
@@ -644,22 +657,30 @@ word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve,
 @ The final step in merging verb material is to pass the result through the
 following, which attends to contractions. (Most of the time it does nothing.)
 For example, suppose we have:
-= (text as Preform)
+
+``` Preform
 	ne-' ai pas
-=
+```
+
 The `-'` marker tells us that the word it attaches to should contract if a
 vowel follows it. In this case that's what happens, so we convert to:
-= (text as Preform)
+
+``` Preform
 	n'ai pas
-=
+```
+
 On the other hand,
-= (text as Preform)
+
+``` Preform
 	ne-' jette pas
-=
+```
+
 would convert to
-= (text as Preform)
+
+``` Preform
 	ne jette pas
-=
+```
+
 with no contraction. Either way, though, we have to take some action when
 we see a `-'` marker.
 

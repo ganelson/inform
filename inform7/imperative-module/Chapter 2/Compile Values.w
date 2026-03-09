@@ -80,15 +80,17 @@ inter_pair CompileValues::to_pair(parse_node *spec) {
 	return Holsters::unholster_to_pair(&VH);
 }
 
-@ Finally, for compiling to Inter opcodes in a `val` context -- in other words,
+@ Finally, for compiling to Inter opcodes in a `val` context — in other words,
 for values as they appear in imperative code rather than in data structures.
 A "fresh" value should be made when we want the value compiled to be a new,
 independent copy of the data in question. Consider:
-= (text as Inform 7)
+
+``` Inform7
 	let T be { 2, 3, 5, 7 };
 	let U be T;
 	add 11 to T;
-=
+```
+
 Clearly `U` must be set to a fresh copy of the data in `T`, not a reference to the
 same data. So the `T` in line 2 must be compiled as "fresh", whereas the `T` in
 line 3 must not.

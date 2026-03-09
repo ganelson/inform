@@ -103,8 +103,8 @@ offset and <code>C--&gt;3</code> up to <code>C--&gt;(C--&gt;0)</code> holding th
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">COL_HSIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="comment-syntax">! Column header size: two words (ID/flags, blank bits)</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Find Column.</b>  Columns can be referenced either by their physical column numbers -- from 1
-to, potentially, 99 -- or else by unique ID numbers associated with column
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Find Column.</b>  Columns can be referenced either by their physical column numbers — from 1
+to, potentially, 99 — or else by unique ID numbers associated with column
 names. For instance, if a table has a column called &quot;liquid capacity&quot;,
 then all references to its &quot;liquid capacity entry&quot; are via the ID number
 associated with this column name, which will be \INWEBMATH(\geq 100\INWEBMATH) and on the other
@@ -163,7 +163,7 @@ cell which is such that it cannot be valid for the kind of value stored
 in the column. We therefore provide a &quot;blanks bitmap&quot; for only some
 columns.</p>
 <p>This leads us to define the following dummy value, chosen so that it is
-both impossible for most kinds of value -- which is easy to arrange -- and
+both impossible for most kinds of value — which is easy to arrange — and
 also unlikely for even those kinds of value where it is legal. For
 instance, \INWEBMATH(-1\INWEBMATH) would be impossible for enumerative kinds of value such as
 rulebooks and scenes, but it would be a poor choice for the dummy value
@@ -272,8 +272,8 @@ block allocated yet&quot;.)</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Force Entry Non-Blank.</b>  To unblank a cell, we need to clear the relevant bit in the bitmap. We then
-go on to write a new value in to the entry -- thus overwriting the
-<code>TABLE_NOVALUE</code> value -- but that isn't done here; the expectation is
+go on to write a new value in to the entry — thus overwriting the
+<code>TABLE_NOVALUE</code> value — but that isn't done here; the expectation is
 that whoever calls this routine is just about to write a new entry anyway.</p>
 <p>The exception is again for columns holding a kind of value pointing to a
 memory block, where we create a suitable initialised but uninteresting
@@ -765,11 +765,8 @@ in order of their physical row numbers - ascending if <code>D = 1</code>, descen
 if <code>D = -1</code>, so that using the routine with <code>D = -1</code> always produces the
 exact reverse ordering from using it with <code>D = 1</code> and the same parameters.
 Rows with blank entries in <code>C</code> are skipped.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableNextRow</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span><span class="identifier-syntax">C</span><span class="plain-syntax">,0,</span><span class="identifier-syntax">D</span><span class="plain-syntax">): </span><span class="identifier-syntax">R</span><span class="plain-syntax"> : </span><span class="identifier-syntax">R</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableNextRow</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span><span class="identifier-syntax">C</span><span class="plain-syntax">,</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span><span class="identifier-syntax">D</span><span class="plain-syntax">)) ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableNextRow</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span><span class="identifier-syntax">C</span><span class="plain-syntax">,0,</span><span class="identifier-syntax">D</span><span class="plain-syntax">): </span><span class="identifier-syntax">R</span><span class="plain-syntax"> : </span><span class="identifier-syntax">R</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableNextRow</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span><span class="identifier-syntax">C</span><span class="plain-syntax">,</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span><span class="identifier-syntax">D</span><span class="plain-syntax">)) ...
+</span></pre>
 <p>will perform a loop of valid row numbers in order of column <code>C</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

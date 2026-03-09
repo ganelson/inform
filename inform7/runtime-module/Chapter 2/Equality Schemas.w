@@ -19,7 +19,7 @@ along the lines of `StorageRoutineWrite(S, W);`.
 
 But once pointers to blocks are allowed, this becomes more interesting.
 Now the comparison needs to be a deep one, that is, we want to test whether
-two texts (say) have the same textual content -- not whether we are
+two texts (say) have the same textual content — not whether we are
 holding two pointers to the same blocks in memory, which is what a simple
 comparison would achieve. Such a test is called "deep comparison", and
 similarly, we must assign by transferring the contents of the blocks of

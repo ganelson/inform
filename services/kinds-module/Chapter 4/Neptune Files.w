@@ -34,13 +34,13 @@ void NeptuneFiles::read_command(text_stream *command, text_file_position *tfp) {
 	else NeptuneFiles::error(command, I"kind command describes unspecified kind", tfp);
 }
 
-@ Neptune files are in the strange position in being not quite for end users --
-the average Inform user will never even see one -- but they are not quite for
+@ Neptune files are in the strange position in being not quite for end users —
+the average Inform user will never even see one — but they are not quite for
 internal use only, either. The main motivation for moving properties of kinds
 out of Inform's program logic and into an external text file was to make it
 easier to verify that they were correctly set up, but they were certainly also
-meant to give future Inform hackers -- users who like to burrow into
-internals -- scope for play.
+meant to give future Inform hackers — users who like to burrow into
+internals — scope for play.
 
 The Neptune files supplied with Inform's standard distribution are correct,
 so errors can only result from mistakes by hackers. Until 2020 these simply

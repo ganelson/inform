@@ -9,7 +9,7 @@ is 0, type is a "base" constructor.
 
 Constructors are identified textually by keywords, such as `int32`, and also
 by "constructor ID" numbers, such as `INT32_ITCONC`. This one is a base;
-whereas `list`, for example, is not -- `list of int32` is a valid type, with
+whereas `list`, for example, is not — `list of int32` is a valid type, with
 1 type operand, but `list` alone is not sufficient to specify a type.
 
 @ These are the constructor IDs. Note that changing any of these values would
@@ -157,14 +157,14 @@ simple descriptions (see below), and you need to know what package a TID
 came from (i.e., what symbols table was in use there) to unravel it.
 
 (2) An //inter_type// is a lightweight structure intended for passing around
-the functions in this section. It can also only represent simple descriptions -- in
-fact, TIDs and `inter_type`s can faithfully be converted back and forth -- but
+the functions in this section. It can also only represent simple descriptions — in
+fact, TIDs and `inter_type`s can faithfully be converted back and forth — but
 has the advantage that you don't need any package context to understand it.
 Arguably this should be called `inter_simple_type_description`, but this is the
 one we use most often, so brevity is good.
 
 (3) An //inter_semisimple_type_description// is a much larger structure used only
-when parsing Inter code from text -- so in a regular Inform 7 compilation run, no
+when parsing Inter code from text — so in a regular Inform 7 compilation run, no
 such structures will ever exist. This is still limited, but to the larger
 set of semi-simple type descriptions.
 
@@ -322,7 +322,7 @@ inter_ti InterTypes::to_TID_at(inter_bookmark *IBM, inter_type type) {
 
 @h Parsing from text.
 The data structure //inter_semisimple_type_description// exists as a way of
-holding the results of the function //InterTypes::parse_semisimple// -- see
+holding the results of the function //InterTypes::parse_semisimple// — see
 below. It's made convoluted by the remote but theoretical need to handle an
 arbitrarily large number of type operands. No human user of Inter would ever
 write a type exceeding about 10 operands, but we want to avoid any maxima in

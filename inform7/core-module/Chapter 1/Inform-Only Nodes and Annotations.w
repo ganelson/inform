@@ -102,8 +102,8 @@ void CoreSyntax::create_node_types(void) {
 	NodeType::new(LVALUE_LOCAL_CONTEXT_NT, I"LVALUE_LOCAL_CONTEXT_NT",		0, INFTY,	CODE_NCAT, 0);
 	NodeType::new(CONDITION_CONTEXT_NT, I"CONDITION_CONTEXT_NT",			0, INFTY,	CODE_NCAT, 0);
 
-@ The first specification nodes are the rvalues. These express run-time values --
-numbers, objects, text and so on -- but cannot be assigned to, so that in an
+@ The first specification nodes are the rvalues. These express run-time values —
+numbers, objects, text and so on — but cannot be assigned to, so that in an
 assignment of the form "change L to R" they can be used only as R, not L. This
 is not the same thing as a constant: for instance, "location of the player"
 evaluates differently at different times, but cannot be changed in an

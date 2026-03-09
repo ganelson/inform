@@ -50,9 +50,9 @@ possessions.' is produced (provided Mr X is visible)."
 @ There used to be a rule, documented here, to do with pronouns, and
 this was explained in terms of Missee Lee, a black and white cat
 living in North Oxford; named for a Cambridge-educated pirate queen in
-the South China seas who is the heroine -- or villainess -- of the
-tenth in Arthur Ransome's Swallows and Amazons series of children's
-books, "Missee Lee" (1941). The rule was then removed, but it
+the South China seas who is the heroine — or villainess — of the
+tenth in Arthur Ransome's _Swallows and Amazons_ series of children's
+books, _Missee Lee_ (1941). The rule was then removed, but it
 seemed sad to delete the only mention of Missee, and all the more so
 since she died (at a grand old age and in mid-spring) in 2008.
 
@@ -3086,9 +3086,8 @@ The switch the story transcript off rule is defined by Inter as "SWITCH_TRANSCRI
     "[line break]End of transcript." (B),
     "Attempt to end transcript failed." (C).
 
-
-@ The VERSION command is not quite so close to the metal -- it is implemented
-in I6, at the end of the day -- but it does involve reading the bytes of the
+@ The VERSION command is not quite so close to the metal — it is implemented
+in I6, at the end of the day — but it does involve reading the bytes of the
 story file header, so it needs to take quite different forms for the
 different formats being compiled to.
 

@@ -61,15 +61,14 @@ int I6_target_segments[] = {
 @d I6_GEN_DATA(x) ((I6_generation_data *) (gen->generator_private_data))->x
 
 =
-typedef struct I6_generation_data {
+classdef I6_generation_data {
 	int attribute_slots_used;
 	int value_ranges_needed;
 	int value_property_holders_needed;
 	int DebugAttribute_seen;
 	int subterfuge_count;
 	int write_orig_source_directives;
-	CLASS_DEFINITION
-} I6_generation_data;
+}
 
 I6_generation_data *I6Target::new_data(void) {
 	I6_generation_data *data = CREATE(I6_generation_data);
@@ -117,7 +116,7 @@ int I6Target::begin_generation(code_generator *gtr, code_generation *gen) {
 	}
 
 @ Defining a constant called `Grammar__Version` tells Inform 6 which storage
-layout to use for command parser grammar. 2 is the shiny, modern one -- 1995
+layout to use for command parser grammar. 2 is the shiny, modern one — 1995
 not 1993.
 
 The I6 compiler adds a thin layer of hidden code to every program it compiles,
@@ -237,7 +236,7 @@ Document for a specification.
 	WRITE("#Endif;\n");
 	CodeGen::deselect(gen, saved);
 
-@ Pragmas are interpreted as ICL directives -- ICL being the Inform
+@ Pragmas are interpreted as ICL directives — ICL being the Inform
 Configuration Language part of Inform 6, a mini-language for controlling the I6
 compiler, able to set command-line switches, memory settings and so on. I6
 ordinarily discards lines beginning with exclamation marks as comments, but at

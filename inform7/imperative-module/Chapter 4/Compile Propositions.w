@@ -5,8 +5,8 @@ To compile a proposition within the body of the current function.
 @h Compiling a test of a proposition.
 Given a proposition $\phi$, and a value $v$, we compile a valid condition
 to decide whether or not $\phi(v)$ is true. This is essentially how Inform
-compiles something like "if all the doors are closed" -- where the proposition
-has no free variable, so $v$ is never substituted -- or the test for something
+compiles something like "if all the doors are closed" — where the proposition
+has no free variable, so $v$ is never substituted — or the test for something
 like "taking an open container", where "an open container" is $\phi$ and $v$
 is the item being taken.
 
@@ -137,7 +137,7 @@ void CompilePropositions::to_make_true(pcalc_prop *prop) {
 }
 
 @ We reject $\exists x$ because it would either require us to judge the $x$
-most likely to be meant -- tricky -- or to create an $x$ out of nothing, which
+most likely to be meant — tricky — or to create an $x$ out of nothing, which
 it's too late for, since Inform does not have run-time object or value creation.
 
 @<Vet the proposition to be forced@> =
@@ -277,9 +277,9 @@ void CompilePropositions::to_test_if_matches(parse_node *in, parse_node *desc) {
 
 @h Checking the validity of a description.
 The following utility routine checks that a proposition contains exactly one
-free variable, producing problem messages if not -- all of that is really just
+free variable, producing problem messages if not — all of that is really just
 defensive programming; if Inform is correctly written, none of these conditions
-can ever occur -- but also typechecking the proposition, which does do something
+can ever occur — but also typechecking the proposition, which does do something
 and can indeed throw problems.
 
 =

@@ -50,7 +50,7 @@ int NewPropertyRequests::optional_either_SMF(int task, parse_node *V, wording *N
 	return FALSE;
 }
 
-@ From a syntax point of view, such sentences come in two forms -- those which
+@ From a syntax point of view, such sentences come in two forms — those which
 give a range of possible named alternative states, and those which create
 named value properties. We'll take the first of those first.
 
@@ -88,7 +88,7 @@ in the speedy/sluggish example that's just what it does, but if there are
 three or more alternatives then it has to do something trickier: create a
 value property, and a new kind of value of which these alternatives form
 the legal range. Such a property is customarily called a "condition" (in
-the sense of a state of something, not a test -- as in "this antique is in
+the sense of a state of something, not a test — as in "this antique is in
 good condition", not "you can come in on one condition").
 
 =
@@ -202,7 +202,7 @@ which might take forms such as:
 > An animal can be either alive or dead.
 
 Here "either" has a slight sense of emphasis, implying the exclusivity of the
-two choices -- the lack of a middle way. That's not useful information for us,
+two choices — the lack of a middle way. That's not useful information for us,
 because to Inform all either/or properties have that Aristotelian nature. But
 we found in testing that users wrote the word "either" now and then,
 regardless of what the documentation said. So we'll allow it but do nothing
@@ -398,7 +398,7 @@ three or more alternatives, like so:
 
 > A vehicle can be petrol, diesel, electric or hybrid.
 
-the default is the first option -- petrol. This accords with the
+the default is the first option — petrol. This accords with the
 convention that the first-created value for an enumerated kind is always
 its default value.
 
@@ -408,7 +408,7 @@ would be. And there does seem to be some subtle difference in English
 meaning as to the suggested likelihood of possibilities, here. "You can
 be useful" has the sense that you aren't useful right at the moment,
 but "it can be blue, green or purple" tends to favour the front end
-of the list as likelier, if anything -- as when people offer an
+of the list as likelier, if anything — as when people offer an
 exaggeratedly unlikely final choice: "you can be black, white, brown,
 or sky blue pink".
 

@@ -5,8 +5,8 @@ by the standard kits, and which are called or accessed from code generated
 by Inter or by the Inform 7 compiler.
 
 @ Suppose you are a tool like //inform7// or //inter// and you are generating
-a function, and in that function you want to access the variable `location` --
-which is defined in //WorldModelKit// -- or call the function `TEXT_TY_Say` --
+a function, and in that function you want to access the variable `location` —
+which is defined in //WorldModelKit// — or call the function `TEXT_TY_Say` —
 which is in //BasicInformKit//. These have not yet been linked in to the Inter
 tree you're trying to build: so how do you describe them?
 

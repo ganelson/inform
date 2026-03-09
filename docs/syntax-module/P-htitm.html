@@ -72,11 +72,8 @@ imported module,</p>
 <li>The contents page of the parent's web must identify and locate the
 module:</li>
 </ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Import: somepath/syntax</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Import: somepath/syntax
+</span></pre>
 <ul>
 <li>The parent must call <code>SyntaxModule::start()</code> just after it starts up, and
 <code>SyntaxModule::end()</code> just before it shuts down. (But just after, and just
@@ -104,16 +101,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_SYNTAX_CALLBACK Emotions::gosh</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_SYNTAX_CALLBACK Emotions::gosh
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::gosh(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("Good gracious!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::gosh(text_stream *OUT) {
+	    WRITE("Good gracious!\n");
+	}
+</span></pre>
 <p>The syntax module has many callbacks, but they are all optional. The following
 alphabetical list has references to fuller explanations:</p>
 <ul>
@@ -134,7 +128,7 @@ way to create custom annotations: see <a href="2-na.html#SP13" class="internal">
 <li>
 <p><code>BEGIN_OR_END_HERE_SYNTAX_CALLBACK</code> is called when a new extension beginning
 or ending sentence is found in the source text being broken into sentences:
-see <a href="3-snt.html#SP7" class="internal">Sentences::make_node</a>.</p>
+see <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.</p>
 </li>
 <li>
 <p><code>DIVIDE_AT_COLON_SYNTAX_CALLBACK</code> is called to ask permission to break a
@@ -146,7 +140,7 @@ a regular sentence or not: see <a href="2-nt.html#SP11" class="internal">NodeTyp
 </li>
 <li>
 <p><code>LANGUAGE_ELEMENT_SYNTAX_CALLBACK</code> is called when a sentence is found matching
-the nonterminal <code>&lt;language-modifying-sentence&gt;</code>: see <a href="3-snt.html#SP7" class="internal">Sentences::make_node</a>.</p>
+the nonterminal <code>&lt;language-modifying-sentence&gt;</code>: see <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.</p>
 </li>
 <li>
 <p><code>LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK</code> is called to log a node type
@@ -154,7 +148,7 @@ not recognised as one of the enumerated <code>*_NT</code> values: see <a href="2
 </li>
 <li>
 <p><code>NEW_HEADING_SYNTAX_CALLBACK</code> is called when a new heading sentence is found
-in the source text being broken into sentences: see <a href="3-snt.html#SP7" class="internal">Sentences::make_node</a>.</p>
+in the source text being broken into sentences: see <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.</p>
 </li>
 <li>
 <p><code>NEW_HEADING_TREE_SYNTAX_CALLBACK</code> is called when a new syntax tree is being
@@ -178,12 +172,12 @@ to be parents of each other: see <a href="2-nt.html#SP4" class="internal">NodeTy
 <li>
 <p><code>PROBLEM_SYNTAX_CALLBACK</code> is called when a syntax error is found, and can
 prevent this from being issued to the terminal as an error message: see
-<a href="3-snt.html#SP12" class="internal">Sentences::syntax_problem</a>.</p>
+<a href="3-snt.html#SP8" class="internal">Sentences::syntax_problem</a>.</p>
 </li>
 <li>
 <p><code>NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK</code> is called when a new, regular
 sentence is found in the source text being broken into sentences: see
-<a href="3-snt.html#SP7" class="internal">Sentences::make_node</a>.</p>
+<a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.</p>
 </li>
 <li>
 <p><code>UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK</code> is used only by the Preform cache:

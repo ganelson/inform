@@ -56,15 +56,17 @@ inter_schema *ParsingSchemas::from_i6s(text_stream *from,
 
 @h Inline phrase definitions.
 This is a typical inline phrase definition which //inform7// must handle:
-= (text as Inform 7)
+
+``` Inform7
 	To say (L - a list of values) in brace notation:
 		(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
-=
+```
+
 Essentially, this defines "say ... in brace notation" as meaning the schema
 coming from the text `LIST_OF_TY_Say({-by-reference:L}, 1);`.
 
 Note that the //inform7// compiler calls //ParsingSchemas::from_inline_phrase_definition//
-only once on such a definition -- it would clearly be slow and wasteful to parse
+only once on such a definition — it would clearly be slow and wasteful to parse
 it anew each time it is used. Because of that, only 100 or so calls to this function
 are made in a typical run, and so speed is not critical here.
 
@@ -72,7 +74,7 @@ are made in a typical run, and so speed is not critical here.
 head which has no tail.
 
 However, a few inline phrases make use of the notation `{-block}`, which
-represents a block of code -- usually a loop body -- and which divides the
+represents a block of code — usually a loop body — and which divides the
 definition into a head part, before the block, and a tail part, after. So
 in general we may have to compile two schemas, not one.
 
@@ -105,25 +107,30 @@ For example:
 > To repeat with a King's Court begin -- end loop:
 
 could be given the definition:
-= (text as Inform 6)
+
+``` Inform6
 	@push {-my:trcount};
 	for (trcount=1; trcount<=3; trcount++)
 	    {-block}
 	@pull trcount;
-=
+```
+
 This then repeats what it's given three times, while guaranteeing that the
 counter is always a local variable called `trcount`, and that no matter how
 such operations are nested, they will work. We might then write:
-= (text as Inform 7)
+
+``` Inform7
 	To say iteration: (- print {-my:trcount}; -).
-=
+```
+
 and then this will work as might be hoped:
-= (text as Inform 7)
+
+``` Inform7
 	repeat with a King's Court:
 	    say "[iteration]...";
 	        repeat with a King's Court:
 	            say "[iteration]. You play a Shanty Town, getting +2 Actions.";
-=
+```
 
 @<Fetch the head and tail definitions@> =
 	while (Characters::is_whitespace(*from)) from++;

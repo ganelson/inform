@@ -85,7 +85,7 @@ package_request *RTRelations::package(binary_predicate *bp) {
 @ Some relations are never needed or referred to by runtime code: for example,
 reversals of relations used only one way around. It would be wasteful to
 compile arrays or functions for those, so we keep track of which have actually
-been requested -- it will be just those for which the runtime representation,
+been requested — it will be just those for which the runtime representation,
 i.e., the result of //RTRelations::iname//, has been called for. This can
 therefore be forced with:
 
@@ -211,7 +211,7 @@ void RTRelations::metadata_agent(compilation_subtask *t) {
 
 It might seem that this can never be called on a relation which is the wrong
 way round, and in fact it almost never is. But on rare occasions the runtime
-does need to represent the value (i.e. the metadata array) for such a relation --
+does need to represent the value (i.e. the metadata array) for such a relation —
 for example, because it's possible for the runtime to determine the meaning
 of any verb, and because some verbs can be given a wrong-way-round relation
 as their meanings. See the test case `PronounVariation`.
@@ -1235,7 +1235,7 @@ above: it forces the template layer to generate the cache when first used.
 @ The following function conveniently determines whether a given INFS is
 within the domain of one of the terms of a relation; the rule is that it
 mustn't itself express a domain (otherwise, e.g., the kind "woman" would
-show up as within the domain of "person" -- we want only instances here,
+show up as within the domain of "person" — we want only instances here,
 not kinds); and that it must inherit from the domain of the term.
 
 =
@@ -1364,8 +1364,8 @@ possible ways to divide it up into non-empty, non-overlapping pieces.
 We therefore store the current state not as some list of which pairs $(x, y)$
 for which $E(x, y)$ is true, but instead as a partition of the set $S$. We
 store this as a function $p:S\rightarrow \lbrace 1, 2, 3, ...\rbrace$ such
-that $x$ and $y$ belong in the same class -- or to put it another way, such
-that $E(x, y)$ is true -- if and only if $p(x) = p(y)$. When we are assembling
+that $x$ and $y$ belong in the same class — or to put it another way, such
+that $E(x, y)$ is true — if and only if $p(x) = p(y)$. When we are assembling
 the initial state, the function $p$ is an array of integers whose address is
 stored in the `bp->equivalence_partition` field of the BP structure. It is
 then compiled into the storage properties of the I6 objects concerned. For
@@ -1498,7 +1498,7 @@ not used with the wrong kinds of object. (Compile-time checking excludes
 other cases.)
 
 =
-typedef struct relation_guard {
+classdef relation_guard {
 	struct binary_predicate *guarding; /* which one is being defended */
 	struct kind *check_L; /* or null if no check needed */
 	struct kind *check_R; /* or null if no check needed */
@@ -1512,8 +1512,7 @@ typedef struct relation_guard {
 	struct inter_name *guard_test_iname;
 	struct inter_name *guard_make_true_iname;
 	struct inter_name *guard_make_false_iname;
-	CLASS_DEFINITION
-} relation_guard;
+}
 
 @ 
 

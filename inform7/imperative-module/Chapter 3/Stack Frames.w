@@ -74,10 +74,9 @@ The following does so. //stack_frame_box// objects provide a convenient permanen
 place in memory to stash these; pointers to them otherwise don't exist.
 
 =
-typedef struct stack_frame_box {
+classdef stack_frame_box {
 	struct stack_frame boxed_phsf;
-	CLASS_DEFINITION
-} stack_frame_box;
+}
 
 stack_frame *Frames::boxed_frame(stack_frame *old_frame) {
 	if (old_frame == NULL) return NULL;
@@ -250,7 +249,7 @@ void Frames::enable_its(stack_frame *frame) {
 }
 
 @ In addition, a special name can optionally be given to the "it". This is only
-likely to be useful if the first call parameter is nameless -- but that does
+likely to be useful if the first call parameter is nameless — but that does
 sometimes happen.
 
 =
@@ -302,7 +301,7 @@ and at runtime the Inter identifier `I7SFRAME` points to the current and therefo
 bottom-most frame on this stack. So, for example, if the current stack frame has
 just two local block values, a `K_text` and a `K_stored_action`, then we would have:
 
-= (text)
+``` None
                  ...free space...
     I7SFRAME --> 0      } small block 0 (for a K_text),               offset index 0
                  1      }        may then --> more data on the heap   offset past  2
@@ -314,7 +313,8 @@ just two local block values, a `K_text` and a `K_stored_action`, then we would h
                  6      }
                  7      }
                  ...frames belonging to functions calling this one...
-=
+```
+
 These small blocks may well point to larger blocks elsewhere on the heap (for
 example, to accommodate the actual contents of a text, if they are non-constant).
 But small blocks have the virtue of being of a size which is fixed for each
@@ -323,13 +323,12 @@ the `I7SFRAME` sufficiently.
 
 Each local block value is kept track of with one of these:
 =
-typedef struct local_block_value {
+classdef local_block_value {
 	struct heap_allocation allocation; /* needed to compile a function call returning a pointer to a new value */
 	struct i6_schema *to_refer; /* a schema to access this data */
 	int offset_index; /* start of small block wrt current stack frame */
 	int offset_past; /* just past the end of the small block */
-	CLASS_DEFINITION
-} local_block_value;
+}
 
 @ Note that the schemas below for calculating offset positions from `I7SFRAME`
 will end up only as a single addition at runtime, because the multiplication of

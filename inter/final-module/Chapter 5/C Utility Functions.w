@@ -141,7 +141,7 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 }
 =
 
-@ Lastly, this function allows an action to be tried -- something which is only
+@ Lastly, this function allows an action to be tried — something which is only
 meaningful in an Inform project which uses WorldModelKit: it will fail in a
 Basic Inform only project.
 

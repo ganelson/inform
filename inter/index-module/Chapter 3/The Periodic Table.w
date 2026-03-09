@@ -167,7 +167,7 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 
 @h Writing the elements.
 Each element is contained inside a DIV with id "segment1", "segment2", and
-so on. There's then a banner line -- a sort of subheading; then the index
+so on. There's then a banner line — a sort of subheading; then the index
 content at last; and then a rule.
 
 @<Write the index elements@> =

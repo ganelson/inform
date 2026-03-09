@@ -70,12 +70,12 @@ For more, see <a href="../foundation/P-abgtf.html" class="internal">A Brief Guid
 </ul>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Inflections.</b>  Inflections are modifications of words -- usually word endings or beginnings --
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Inflections.</b>  Inflections are modifications of words — usually word endings or beginnings —
 for different circumstances. English is often called an uninflected language,
 but this is an exaggeration. For example, we spell the word &quot;tree&quot; as
 &quot;trees&quot; when we refer to more than one of them. Inform sometimes needs
-to take text in one form and change it to another -- for example, to turn
-a singular noun into a plural one -- and ordinary Preform parsing isn't good
+to take text in one form and change it to another — for example, to turn
+a singular noun into a plural one — and ordinary Preform parsing isn't good
 enough to express this.</p>
 <p>Inform uses a data structure called a &quot;trie&quot; as an efficient way to match
 prefix and/or suffix patterns in words, and then to modify them.</p>
@@ -95,14 +95,11 @@ cannot be mixed within the same NT.</p>
 identifying the trie to make use of. One exception: the token <code>...</code> before the
 trie's name makes it work on the end of a word instead of the beginning.
 For example:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;fiddle-with-words&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;fiddle-with-exceptions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-irregular-endings&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-regular-endings&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;fiddle-with-words&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-function-syntax">&lt;fiddle-with-exceptions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-irregular-endings&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-regular-endings&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>means try <fiddle-with-exceptions> first (on the whole text), then
 <fiddle-with-irregular-endings> (on the tail), and finally <fiddle-with-regular-endings>
 (also on the tail).</p>
@@ -116,14 +113,11 @@ letters and add...&quot;. The simplest possible instruction is <code>0</code> al
 means &quot;truncate 0 letters and add nothing&quot;, and therefore leaves the text
 unchanged.</p>
 <p>Some examples:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;pluralise&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">lead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">codex</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">codices</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">*mouse</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">5mice</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;pluralise&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-constant-syntax">lead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-constant-syntax">codex</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">codices</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-constant-syntax">*mouse</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">5mice</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>This would pluralise &quot;lead&quot; as &quot;lead&quot;, &quot;codex&quot; as &quot;codices&quot;, &quot;mouse&quot; as &quot;mice&quot;,
 and &quot;fieldmouse&quot; as &quot;fieldmice&quot;.</p>
 <p>The special character <code>+</code> after a digit means &quot;double the last letter&quot;, so
@@ -172,12 +166,9 @@ exceptions.</p>
 to their grammatical case. A language should list its cases in a special
 nonterminal called <grammatical-case-names>, in which &quot;nominative&quot; or its
 equivalent should always come first. For example:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;grammatical-case-names&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">nominative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">vocative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">accusative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">genetive</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ablative</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-function-syntax">&lt;grammatical-case-names&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">nominative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">vocative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">accusative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">genetive</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ablative</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>The function <a href="3-dcl.html#SP2" class="internal">Declensions::no_cases</a> returns a count of these for a given
 natural language. The actual names of cases are only needed by the function
 <a href="3-dcl.html#SP3" class="internal">Declensions::writer</a>, which prints out tables of declensions for debugging
@@ -198,90 +189,74 @@ in the form either <code>gender table</code> or <code>gender grouper table</code
 </ul>
 <p>In the two-token form <code>gender table</code>, the <code>table</code> is a nonterminal for
 irregular forms; if the three-token form <code>gender grouper table</code>, the <code>grouper</code>
-is a nonterminal which works out which &quot;group&quot; the word falls into -- groups
-are numbered, so perhaps, e.g., the word &quot;device&quot; falls into group 1 -- and
+is a nonterminal which works out which &quot;group&quot; the word falls into — groups
+are numbered, so perhaps, e.g., the word &quot;device&quot; falls into group 1 — and
 then the <code>table</code> provides declensions for the different groups needed.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  A simple example of using the irregular forms table is provided by the
 English language definition of <article-declension>:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-article-declension&gt;</span>
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-article-declension&gt;</span><span class="Preform-plain-syntax">
 
-<span class="Preform-function-syntax">&lt;en-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="Preform-function-syntax">&lt;en-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>Here the declension NT is <article-declension> and contains only one possibility,
 applying to all genders (hence the <code>*</code>). The <code>table</code> of irregular forms is then
 <en-article-declension>. Each production begins with the possibility against
-which the stem is matched -- here, it's going to have to be &quot;a&quot; or &quot;the&quot;. There
+which the stem is matched — here, it's going to have to be &quot;a&quot; or &quot;the&quot;. There
 are then one possibility for each case (nominative and accusative) in each of
 the two numbers (singular and plural), making four forms in all. English, of
 course, is not very inflected: this would be more interesting for French:</p>
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">m</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">f</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span><span class="Preform-plain-syntax">
+
+</span><span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">
+
+</span><span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">la</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">la</span><span class="Preform-plain-syntax">
+	     </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">
+</span></pre>
 </div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">m</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">f</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span>
-
-<span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span>
-
-<span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">la</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">la</span>
-<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  So much for irregular forms. Grouped forms are useful for languages like
 German, which has about 12 groups of nouns, each with its own way of declining.
 For example, there's one group which goes something like:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">Kraft</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">Kräften</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">Kräfte</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräften</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>and another which goes like:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">Kamera</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">Kameras</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>For German, we might then have</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;noun-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span>
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-function-syntax">&lt;noun-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span><span class="Preform-plain-syntax">
 
-<span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">2</span>
+</span><span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">2</span><span class="Preform-plain-syntax">
 
-<span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;de-noun-group2-table&gt;</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-function-syntax">&lt;de-noun-group2-table&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>where for example:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äften</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">
+	</span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äften</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>giving inflection rules for the four cases of German in singular and then
 in plural. In practice, of course, <de-noun-grouper> will need to sort out
 nouns rather better than this, and there are about 12 groups. Groups are
@@ -305,11 +280,8 @@ the relevant language extension, or in <code>Syntax.preform</code> files.</p>
 <p>Except at the very top level, translators are free to created new tries
 and name them as they please, but the top-level tries must have the same
 names that they have here. For example, the Spanish implementation of</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;singular-noun-to-its-indefinite-article&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;singular-noun-to-its-indefinite-article&gt;</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>may look entirely unlike its English version, but at the top level it still
 has to have that name.</p>
 <p>All lower-level tries used in the implementation should have names beginning

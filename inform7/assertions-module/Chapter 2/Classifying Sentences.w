@@ -8,8 +8,8 @@ text to be read in by //words// and has made a rudimentary parse tree for
 it using //syntax//. Certain "structural" sentences, such as headings, have
 been taken care of, and turned into nodes with types like `HEADING_NT`.
 
-But the assertions we want to read -- such as "The Mona Lisa is in the Louvre",
-or "The plural of major general is majors general" -- are all simply
+But the assertions we want to read — such as "The Mona Lisa is in the Louvre",
+or "The plural of major general is majors general" — are all simply
 `SENTENCE_NT` nodes with no children. The following traverse begins Inform's
 compilation process in earnest: for each such `SENTENCE_NT` node, it asks
 the //linguistics// module to identify a primary verb, noun phrases and so
@@ -17,7 +17,7 @@ on, placing them in a subtree.
 
 @h Textual sentences.
 "Textual" sentences are not really sentences at all, and are just double-quoted
-text used in isolation -- Inform sometimes recognises these as being implicit
+text used in isolation — Inform sometimes recognises these as being implicit
 property values, as for the description of a room just created. These sentences
 are necessarily exempt from having a primary verb.
 

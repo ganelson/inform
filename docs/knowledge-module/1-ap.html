@@ -368,7 +368,7 @@ interpret no indication of a kind as meaning &quot;object&quot;.</p>
 <span class="plain-syntax">        </span><span class="type-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax"> = </span><a href="2-nv.html#SP2" class="function-link"><span class="function-syntax">NonlocalVariables::new_global</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_interpretation_as_infs</span><span class="plain-syntax">[</span><span class="identifier-syntax">v</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_interpretation_as_spec</span><span class="plain-syntax">[</span><span class="identifier-syntax">v</span><span class="plain-syntax">] = </span><span class="identifier-syntax">Lvalues::new_actual_NONLOCAL_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">is_a_const</span><span class="plain-syntax">) </span><a href="2-nv.html#SP14" class="function-link"><span class="function-syntax">NonlocalVariables::make_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">is_a_const</span><span class="plain-syntax">) </span><a href="2-nv.html#SP12" class="function-link"><span class="function-syntax">NonlocalVariables::make_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nc</span><span class="plain-syntax"> = </span><a href="2-ins.html#SP4" class="function-link"><span class="function-syntax">Instances::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_interpretation_as_infs</span><span class="plain-syntax">[</span><span class="identifier-syntax">v</span><span class="plain-syntax">] = </span><a href="2-ins.html#SP6" class="function-link"><span class="function-syntax">Instances::as_subject</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nc</span><span class="plain-syntax">);</span>
@@ -409,7 +409,7 @@ where X is.</p>
 <p>Another difference is that \INWEBMATH(R(x, y)\INWEBMATH) can give you definite information about
 the kinds of \INWEBMATH(x\INWEBMATH) and \INWEBMATH(y\INWEBMATH), where they are objects, because binary predicates
 have single definitions. (Knowing \INWEBMATH(locked(x)\INWEBMATH), by contrast, doesn't
-tell you whether \INWEBMATH(x\INWEBMATH) is a door or a container -- adjectives can have multiple
+tell you whether \INWEBMATH(x\INWEBMATH) is a door or a container — adjectives can have multiple
 domains in which they have differing definitions.) In the case of a
 proposition produced by sentence conversion, that information is redundant
 since appropriate kind atoms were added to the proposition anyway. But we
@@ -481,7 +481,7 @@ these kind atoms.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ap.html#SP6_7">&#167;6.7</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_7_2" class="paragraph-anchor"></a><b>&#167;6.7.2. </b>  The &quot;is&quot; predicate is not usually assertable, but \INWEBMATH(is(x, f_R(y))\INWEBMATH)
-can be asserted since it is equivalent to \INWEBMATH(R(x, y)\INWEBMATH) -- this is where we
+can be asserted since it is equivalent to \INWEBMATH(R(x, y)\INWEBMATH) — this is where we
 unravel that. We reject compound uses of functions in this way, but in
 practice they hardly ever arise, and could only do so with quite complex
 sentences where it seems reasonable to tell the user to write something
@@ -548,7 +548,7 @@ more general value \INWEBMATH(V\INWEBMATH). Recall that a term can be</p>
 </ul>
 <p>We are unable, at compile-time, to evaluate \INWEBMATH(f_R(t)\INWEBMATH) for any relation \INWEBMATH(R\INWEBMATH),
 and won't even try. We can evaluate a variable using the interpretation
-slate -- that was its whole purpose. So the only case left is a constant:</p>
+slate — that was its whole purpose. So the only case left is a constant:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Assert::spec_of_term</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Assert::spec_of_term</span></span>:<br/><a href="1-ap.html#SP6_7">&#167;6.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
@@ -560,7 +560,7 @@ slate -- that was its whole purpose. So the only case left is a constant:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The analogous routine to extract an instance, which normally takes
 precedence, is more convoluted. First, we could be looking at the name of a
-kind -- in &quot;A door is usually closed&quot;, &quot;door&quot; will appear here as a
+kind — in &quot;A door is usually closed&quot;, &quot;door&quot; will appear here as a
 description node, and we need to extract the instance of the kind as our
 return value. Second, we want to divert all assertions about &quot;the player&quot; so
 that they refer to the player object, not to the global variable &quot;the player&quot;.</p>
@@ -589,7 +589,7 @@ but just in case.</p>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">NONLOCAL_VARIABLE_NT</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">diversion</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">            </span><a href="2-nv.html#SP16" class="function-link"><span class="function-syntax">NonlocalVariables::get_alias</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_constant_nonlocal_variable</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><a href="2-nv.html#SP14" class="function-link"><span class="function-syntax">NonlocalVariables::get_alias</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_constant_nonlocal_variable</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">diversion</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">diversion</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 

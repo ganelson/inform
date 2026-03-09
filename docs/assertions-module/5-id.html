@@ -63,15 +63,12 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="5-id.html#SP1">&#167;1. The head</a></li><li><a href="5-id.html#SP6">&#167;6. The body</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The head.</b>  Inform has several features -- most obviously rules and &quot;To ...&quot; phrases --
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The head.</b>  Inform has several features — most obviously rules and &quot;To ...&quot; phrases —
 where something is created with top-level syntax with a shape like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Some</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">ending</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">colon</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">body</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">instructions</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">like</span><span class="plain-syntax"> </span><span class="identifier-syntax">so</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Some</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">ending</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">colon</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">body</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">instructions</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">like</span><span class="plain-syntax"> </span><span class="identifier-syntax">so</span><span class="plain-syntax">;
+</span></pre>
 <p>These are called &quot;imperative definitions&quot;, and each one in the source text
 is given its own <a href="5-id.html#SP1" class="internal">imperative_defn</a>: see <a href="5-id.html#SP2" class="internal">ImperativeDefinitions::new</a> below.</p>
 <p>The body has to be a standard chunk of Inform 7 code, which, roughly speaking,
@@ -84,14 +81,13 @@ definition makes a &quot;To...&quot; phrase if its family is the one looked afte
 <a href="5-tpf.html" class="internal">To Phrase Family</a>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">family</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what manner of thing is defined */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">family_specific_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where this occurs in the syntax tree */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">body_of_defn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">log_text</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure imperative_defn is accessed in 5/idf, 5/adf, 5/tpf, 5/rf, 5/rcd, 6/rls, 6/rb, 6/bl, 8/tap, 8/tcp, 8/aa, 8/am, 8/abp, 8/abif and here.</li></ul>
 <div class="lsmarkdown">
@@ -232,17 +228,16 @@ into at least one (and perhaps more than one) Inter function:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The body.</b>  During assessment, then, each <a href="5-id.html#SP1" class="internal">imperative_defn</a> is given a body, which
-is one of these. It represents the body of the definition -- that is, the
+is one of these. It represents the body of the definition — that is, the
 Inform 7 source text written underneath the heading.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_body</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">id_body</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">head_of_defn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_type_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">type_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">id_runtime_context_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">runtime_context_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">id_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">id_body</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">id_body</span><span class="plain-syntax"> *</span><span class="function-syntax">ImperativeDefinitions::new_body</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitions::new_body</span></span>:<br/><a href="5-id.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_CREATIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Creating body: &lt;%W&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">log_text</span><span class="plain-syntax">);</span>
@@ -258,13 +253,10 @@ Inform 7 source text written underneath the heading.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Definition bodies can be written in two different ways. In one way, the
 body is a list of instructions to follow. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperbolic</span><span class="plain-syntax"> </span><span class="identifier-syntax">arccosine</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">given</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">log</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax"> + </span><span class="identifier-syntax">root</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">^2 - </span><span class="constant-syntax">1</span><span class="plain-syntax">)) </span><span class="identifier-syntax">where</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperbolic</span><span class="plain-syntax"> </span><span class="identifier-syntax">arccosine</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):
+	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">given</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">log</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax"> + </span><span class="identifier-syntax">root</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">^2 - </span><span class="constant-syntax">1</span><span class="plain-syntax">)) </span><span class="identifier-syntax">where</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">.
+</span></pre>
 <p>Here there are two instructions. Each is an &quot;invocation&quot; of a &quot;To...&quot; phrase;
 and the whole definition will ultimately be compiled to an Inter function.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup>
 Invoking this phrase with source text like &quot;hyperbolic arccosine of pi&quot; then
@@ -272,26 +264,20 @@ compiles to a call to that function.</p>
 <p>In the other way, the body has just one entry, written in <code>(-</code> and <code>-)</code>
 markers, showing directly what Inter code the definition would create if
 it were invoked. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperbolic</span><span class="plain-syntax"> </span><span class="identifier-syntax">sine</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">REAL_NUMBER_TY_Sinh</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}) -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperbolic</span><span class="plain-syntax"> </span><span class="identifier-syntax">sine</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):
+	(- </span><span class="identifier-syntax">REAL_NUMBER_TY_Sinh</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}) -).
+</span></pre>
 <p>Here the definition itself compiles nothing: there is no Inter function at
 run-time to perform &quot;hyperbolic sine&quot;. Instead, an invocation such as
 &quot;hyperbolic sine of pi&quot; results in Inter code being compiled which follows
 the pattern in the <code>(-</code> and <code>-)</code> markers. See <a href="../imperative-module/index.html" class="internal">imperative</a> for how this is done.</p>
 <p>The second sort of definition is called &quot;inline&quot;, because an invocation of it
-results in code being compiled inline -- i.e., within the current function,
+results in code being compiled inline — i.e., within the current function,
 rather than calling out to an another function. Inline definitions can do
 things which regular definitions can't. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">yes</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">rtrue</span><span class="plain-syntax">; -) - </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">yes</span><span class="plain-syntax">
+	(- </span><span class="identifier-syntax">rtrue</span><span class="plain-syntax">; -) - </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax">.
+</span></pre>
 <p>Invoking this compiles to a single instruction, returning <code>true</code> from the
 current Inter function. But it would make no sense to do that if the function
 were required to return, say, an object. So this particular inline definition
@@ -358,9 +344,9 @@ text like <code>(- rtrue; -)</code> and converts it into just two words, the mar
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP9">&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b>  It is not clear that this restriction is needed any longer -- the compiler
-works fine if it is removed -- but it keeps us on the side of sanity. Long
-inline definitions would be very inefficient -- those should use code in an
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b>  It is not clear that this restriction is needed any longer — the compiler
+works fine if it is removed — but it keeps us on the side of sanity. Long
+inline definitions would be very inefficient — those should use code in an
 Inter kit instead.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_INLINE_DEFN_LENGTH</span> <span class="constant-syntax">1024</span>

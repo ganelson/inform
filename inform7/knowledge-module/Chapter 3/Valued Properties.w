@@ -7,14 +7,13 @@ given kind.
 Each valued property has the following small block of data attached:
 
 =
-typedef struct value_property_data {
+classdef value_property_data {
 	struct kind *property_value_kind; /* if not either/or, what kind of value does it hold? */
 	struct binary_predicate *setting_bp; /* and which relation sets it? */
 	struct binary_predicate *relation_whose_state_this_stores; /* or `NULL` if it doesn't */
 	struct condition_of_subject *as_condition_of_subject; /* or `NULL` if it isn't one */
 	int name_coincides_with_kind; /* and is its name the same as that of a kind? */
-	CLASS_DEFINITION
-} value_property_data;
+}
 
 value_property_data *ValueProperties::new_value_data(property *prn) {
 	value_property_data *vod = CREATE(value_property_data);

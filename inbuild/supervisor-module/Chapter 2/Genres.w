@@ -16,14 +16,13 @@ Each genre has its own section of code: for example, `Kit Manager` defines
 the instance `kit_genre` and provides its method functions.
 
 =
-typedef struct inbuild_genre {
+classdef inbuild_genre {
 	text_stream *genre_name;
 	text_stream *metadata_type_name;
 	int stored_in_nests;
 	int genre_class;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} inbuild_genre;
+}
 
 inbuild_genre *Genres::new(text_stream *name, text_stream *md, int nested) {
 	inbuild_genre *gen = CREATE(inbuild_genre);
@@ -132,7 +131,7 @@ VOID_METHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID,
 	inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req,
 	linked_list *search_results)
 
-@ Some genres of work involve Inform source text -- Inform projects and
+@ Some genres of work involve Inform source text — Inform projects and
 extensions, for example. Reading in source text is fairly fast, but it's not
 an instant process, and we don't automatically perform it. (When an extension
 is scanned for metadata during claiming, only the opening line is looked at.)

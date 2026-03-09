@@ -89,7 +89,7 @@ obvious strategies are:</p>
 </ul>
 <p>We follow (a), which is easier to iterate through without tiresome amounts
 of recursion, but comes at the cost of extra complexity when it comes to
-grouping the terms -- this is why we need the awkward <code>NOT&lt;</code> and <code>NOT&gt;</code>
+grouping the terms — this is why we need the awkward <code>NOT&lt;</code> and <code>NOT&gt;</code>
 atoms, for example. (b) would almost certainly be better if we needed to
 accommodate disjunction as well as conjunction, but we do not. The main
 demerit of (a) is that it is easy to make malformed propositions, so we have
@@ -98,7 +98,7 @@ to build and edit carefully.</p>
 atomic proposition, and this leads via its <code>next</code> field to a second atomit
 proposition, and so on. Now there's a natural way to store incomplete
 propositions and a natural build-point (at the end), and depth-first traverses
-are easy -- just work along from left to right.</p>
+are easy — just work along from left to right.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  In particular:</p>
@@ -154,11 +154,11 @@ this is chosen to look like standard mathematical notation.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Walking through propositions.</b>  We sometimes need to indicate a position within a proposition -- a position
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Walking through propositions.</b>  We sometimes need to indicate a position within a proposition — a position
 not of an atom, but between atoms. Consider the possible places where letters
 could be inserted into the word &quot;rap&quot;: before the &quot;r&quot; (trap), between &quot;r&quot; and
 &quot;a&quot; (reap), between &quot;a&quot; and &quot;p&quot; (ramp), after the &quot;p&quot; (rapt). Though &quot;rap&quot; is
-a three-letter word, there are four possible insertion points -- so they can't
+a three-letter word, there are four possible insertion points — so they can't
 exactly correspond to letters. The convention we use is that a position marker
 points to the <a href="4-ap.html#SP1" class="internal">pcalc_prop</a> structure for the atom before the position
 meant: and a <code>NULL</code> pointer in this context means the front position, before
@@ -192,8 +192,8 @@ to the proposition at and beyond the marker position <code>p</code>, but not all
 to change what came before. Since such an edit might leave <code>p</code> pointing
 to an atom which has been cut, or moved later, we must perform the following
 macro after edits to restore <code>p</code>. We know that the atom which was before
-<code>p</code> at the start of the loop has not been changed -- since edits aren't
-allowed there -- so <code>p_prev</code> must be correct, and we therefore restore
+<code>p</code> at the start of the loop has not been changed — since edits aren't
+allowed there — so <code>p_prev</code> must be correct, and we therefore restore
 <code>p</code> to the next atom after <code>p_prev</code>.</p>
 <p>There is a catch, however: if our edit consists only of deleting some
 atoms then using <code>PROPOSITION_EDITED</code> correctly resets <code>p</code> to the current
@@ -218,7 +218,7 @@ should be set if and only if a change has been made to the proposition.</p>
 logged as just <code>&lt;&lt; &gt;&gt;</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::log</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Propositions::log</span></span>:<br/>Calculus Module - <a href="1-cm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::log</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Propositions::log</span></span>:<br/>Calculus Module - <a href="1-cm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="4-prp.html#SP7" class="function-link"><span class="function-syntax">Propositions::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
@@ -235,7 +235,7 @@ logged as just <code>&lt;&lt; &gt;&gt;</code>.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Validity.</b>  Since the proposition data structure lets us build all kinds of nonsense,
-we'll be much safer if we can check our working -- if we can verify that a
+we'll be much safer if we can check our working — if we can verify that a
 proposition is valid. But what does that mean? We might mean:</p>
 <p>(i) a proposition is good if its sequence of <code>next</code> pointers all correctly
 point to <code>pcalc_prop</code> structures, and don't loop around into a circle;</p>
@@ -255,27 +255,18 @@ properties, but intermediate half-built states often satisfy only (i).</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The following examples illustrate the differences. This one is not even
 syntactically valid:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">`</span><span class="identifier-syntax">IN</span><span class="plain-syntax">&lt; </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">NOT</span><span class="plain-syntax">&gt; </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">NOT</span><span class="plain-syntax">&gt;`</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">`IN&lt; --&gt; NOT&gt; --&gt; NOT&gt;`
+</span></pre>
 <p>This one is syntactically valid, but not well-formed:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">`</span><span class="identifier-syntax">EVERYWHERE</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">QUANTIFIER</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">PREDICATE</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)`</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">`EVERYWHERE(x) --&gt; QUANTIFIER x --&gt; PREDICATE(x)`
+</span></pre>
 <p>(If <code>x</code> ranges over all objects at the middle of the proposition, it had
 better not already have a value, but if it doesn't, what can that first
 atom mean? It would be like writing the formula \INWEBMATH(n + \sum_{n=1}^{10} n^2\INWEBMATH),
 where clearly two different things have been called \INWEBMATH(n\INWEBMATH).)</p>
 <p>And this proposition is well-formed but not type-safe:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">`</span><span class="identifier-syntax">QUANTIFIER</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">kind</span><span class="plain-syntax">=</span><span class="identifier-syntax">number</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">EVERYWHERE</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)`</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">`QUANTIFIER(x) --&gt; kind=number(x) --&gt; EVERYWHERE(x)`
+</span></pre>
 <p>(Here <code>x</code> is supposed to be a number, and therefore has no location, but
 <code>EVERYWHERE</code> can validly be applied only to backdrop objects, so what
 could <code>EVERYWHERE(x)</code> possibly mean?)</p>
@@ -420,7 +411,7 @@ did not, simply writing one after the other.</p>
 subsequent ones.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::copy</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Propositions::copy</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP9">&#167;9</a>, <a href="5-sc.html#SP9_4">&#167;9.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::copy</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Propositions::copy</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP3">&#167;3</a>, <a href="5-sc.html#SP3_4">&#167;3.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">last</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">original</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">copied_atom</span><span class="plain-syntax"> = </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(0);</span>
@@ -442,7 +433,7 @@ the result will be, too; but the same is not true of well-formedness, so we
 need to be careful in using this.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::concatenate</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Propositions::concatenate</span></span>:<br/><a href="4-prp.html#SP15">&#167;15</a>, <a href="4-prp.html#SP16">&#167;16</a><br/>Sentence Conversions - <a href="5-sc.html#SP2_7">&#167;2.7</a>, <a href="5-sc.html#SP9_7">&#167;9.7</a>, <a href="5-sc.html#SP9_8">&#167;9.8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">existing_body</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tail</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::concatenate</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Propositions::concatenate</span></span>:<br/><a href="4-prp.html#SP15">&#167;15</a>, <a href="4-prp.html#SP16">&#167;16</a><br/>Sentence Conversions - <a href="5-sc.html#SP2_13">&#167;2.13</a>, <a href="5-sc.html#SP3_7">&#167;3.7</a>, <a href="5-sc.html#SP3_8">&#167;3.8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">existing_body</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tail</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">end</span><span class="plain-syntax"> = </span><span class="identifier-syntax">existing_body</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tail</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -532,7 +523,7 @@ invalid. Handle with care.</p>
 is <code>NULL</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::insert_atom</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Propositions::insert_atom</span></span>:<br/>Binding and Substitution - <a href="4-bas.html#SP10">&#167;10</a><br/>Simplifications - <a href="5-smp.html#SP2_1">&#167;2.1</a>, <a href="5-smp.html#SP4">&#167;4</a>, <a href="5-smp.html#SP6">&#167;6</a>, <a href="5-smp.html#SP7">&#167;7</a>, <a href="5-smp.html#SP8">&#167;8</a>, <a href="5-smp.html#SP10_3_2">&#167;10.3.2</a>, <a href="5-smp.html#SP15">&#167;15</a>, <a href="5-smp.html#SP19">&#167;19</a>, <a href="5-smp.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">,</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::insert_atom</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Propositions::insert_atom</span></span>:<br/>Binding and Substitution - <a href="4-bas.html#SP10">&#167;10</a><br/>Simplifications - <a href="5-smp.html#SP2_2">&#167;2.2</a>, <a href="5-smp.html#SP3">&#167;3</a>, <a href="5-smp.html#SP5">&#167;5</a>, <a href="5-smp.html#SP6">&#167;6</a>, <a href="5-smp.html#SP7">&#167;7</a>, <a href="5-smp.html#SP9_3_2">&#167;9.3.2</a>, <a href="5-smp.html#SP14">&#167;14</a>, <a href="5-smp.html#SP18">&#167;18</a>, <a href="5-smp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_atom</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">position</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">new_atom</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
@@ -549,7 +540,7 @@ is <code>NULL</code>.</p>
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  And similarly, with the deleted atom the one after the position given:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::delete_atom</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Propositions::delete_atom</span></span>:<br/><a href="4-prp.html#SP34">&#167;34</a>, <a href="4-prp.html#SP35">&#167;35</a>, <a href="4-prp.html#SP36">&#167;36</a><br/>Simplifications - <a href="5-smp.html#SP10_3_1">&#167;10.3.1</a>, <a href="5-smp.html#SP10_3_2">&#167;10.3.2</a>, <a href="5-smp.html#SP10_4">&#167;10.4</a>, <a href="5-smp.html#SP14">&#167;14</a>, <a href="5-smp.html#SP15">&#167;15</a>, <a href="5-smp.html#SP17_1">&#167;17.1</a>, <a href="5-smp.html#SP19">&#167;19</a>, <a href="5-smp.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::delete_atom</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Propositions::delete_atom</span></span>:<br/><a href="4-prp.html#SP34">&#167;34</a>, <a href="4-prp.html#SP35">&#167;35</a>, <a href="4-prp.html#SP36">&#167;36</a><br/>Simplifications - <a href="5-smp.html#SP9_3_1">&#167;9.3.1</a>, <a href="5-smp.html#SP9_3_2">&#167;9.3.2</a>, <a href="5-smp.html#SP9_4">&#167;9.4</a>, <a href="5-smp.html#SP13">&#167;13</a>, <a href="5-smp.html#SP14">&#167;14</a>, <a href="5-smp.html#SP16_1">&#167;16.1</a>, <a href="5-smp.html#SP18">&#167;18</a>, <a href="5-smp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">position</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"deleting atom nowhere"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
@@ -599,21 +590,15 @@ which has been simplified.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Matching sequences of atoms.</b>  The following sneakily variable-argument-length function can be used to
 detect subsequences within a proposition: say, the sequence</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">QUANTIFIER</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">PREDICATE</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">anything</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">PREDICATE</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	QUANTIFIER --&gt; PREDICATE --&gt; anything --&gt; PREDICATE
+</span></pre>
 <p>starting at the current position, which could be tested with:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">Propositions::match</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">QUANTIFIER_ATOM</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">PREDICATE_ATOM</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">ANY_ATOM_HERE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">PREDICATE_ATOM</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">pp</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Propositions::match(p, 4,
+		QUANTIFIER_ATOM, NULL,
+		PREDICATE_ATOM, NULL, NULL,
+		ANY_ATOM_HERE, NULL,
+		PREDICATE_ATOM, &amp;pp, NULL);
+</span></pre>
 <p>As can be seen, each atom is tested with an element number and an optional
 pointer; when a successful match is made, the optional pointer is set to
 the atom making the match. <code>PREDICATE_ATOM</code> atoms are followed by a third
@@ -627,7 +612,7 @@ two special pseudo-element-numbers:</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">END_PROP_HERE</span> <span class="constant-syntax">-1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a sentinel meaning &quot;the proposition must end at this point&quot; */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::match</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Propositions::match</span></span>:<br/><a href="4-prp.html#SP35">&#167;35</a><br/>Sentence Conversions - <a href="5-sc.html#SP9_4">&#167;9.4</a><br/>Simplifications - <a href="5-smp.html#SP5">&#167;5</a>, <a href="5-smp.html#SP6">&#167;6</a>, <a href="5-smp.html#SP7">&#167;7</a>, <a href="5-smp.html#SP10_2">&#167;10.2</a>, <a href="5-smp.html#SP15">&#167;15</a>, <a href="5-smp.html#SP19">&#167;19</a>, <a href="5-smp.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, ...) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::match</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Propositions::match</span></span>:<br/><a href="4-prp.html#SP35">&#167;35</a><br/>Sentence Conversions - <a href="5-sc.html#SP3_4">&#167;3.4</a><br/>Simplifications - <a href="5-smp.html#SP4">&#167;4</a>, <a href="5-smp.html#SP5">&#167;5</a>, <a href="5-smp.html#SP6">&#167;6</a>, <a href="5-smp.html#SP9_2">&#167;9.2</a>, <a href="5-smp.html#SP14">&#167;14</a>, <a href="5-smp.html#SP18">&#167;18</a>, <a href="5-smp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, ...) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_list</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the variable argument list signified by the dots */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_start</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">); </span><span class="comment-syntax">/* macro to begin variable argument processing */</span>
@@ -693,7 +678,7 @@ a given arity, or both:</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-prp.html#SP23" class="function-link"><span class="function-syntax">Propositions::prop_seek_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="constant-syntax">QUANTIFIER_ATOM</span><span class="plain-syntax">, </span><span class="constant-syntax">-1</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::composited_kind</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Propositions::composited_kind</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP2_7_1">&#167;2.7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::composited_kind</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Propositions::composited_kind</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP2_13_1">&#167;2.13.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">k_atom</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP23" class="function-link"><span class="function-syntax">Propositions::prop_seek_up_family</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_up_family</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-kp.html#SP4" class="function-link"><span class="function-syntax">KindPredicates::is_composited_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">k_atom</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">k_atom</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_atom</span><span class="plain-syntax">;</span>
@@ -783,7 +768,7 @@ expense of typechecking the proposition:</p>
 term in the proposition:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::get_first_cited_term</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Propositions::get_first_cited_term</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP9_4">&#167;9.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::get_first_cited_term</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Propositions::get_first_cited_term</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP3_4">&#167;3.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_PROPOSITION</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">arity</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
@@ -794,14 +779,14 @@ term in the proposition:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  Here we attempt, if possible, to read a proposition as being either
-{\it adjective}(\INWEBMATH(v\INWEBMATH)) or \INWEBMATH(\exists v: {\it adjective}(v)\INWEBMATH), where the adjective
+\INWEBMATH({\it adjective}(v)\INWEBMATH) or \INWEBMATH(\exists v: {\it adjective}(v)\INWEBMATH), where the adjective
 can be also be read as a noun, and if so we return a constant term \INWEBMATH(t\INWEBMATH) for
 that noun; or if the proposition isn't in that form, we return \INWEBMATH(t=x\INWEBMATH), that
 is, variable 0.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="type-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::convert_adj_to_noun</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Propositions::convert_adj_to_noun</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP9_6">&#167;9.6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::convert_adj_to_noun</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Propositions::convert_adj_to_noun</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP3_6">&#167;3.6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pct</span><span class="plain-syntax"> = </span><a href="4-trm.html#SP4" class="function-link"><span class="function-syntax">Terms::new_variable</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_existence_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">)) </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
@@ -846,11 +831,8 @@ following are useful for looping through them:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. Bracketed groups.</b>  The following routine tests whether the entire proposition is a single
 bracketed group. For instance:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">NOT</span><span class="plain-syntax">&lt; </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">PREDICATE</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">NOT</span><span class="plain-syntax">&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	NOT&lt; --&gt; PREDICATE --&gt; NOT&gt;
+</span></pre>
 <p>would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.</p>
 </div>
@@ -899,7 +881,7 @@ and that they may be nested.</p>
 point in a proposition (which can continue after the close bracket).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::ungroup_after</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Propositions::ungroup_after</span></span>:<br/><a href="4-prp.html#SP35">&#167;35</a><br/>Simplifications - <a href="5-smp.html#SP6">&#167;6</a>, <a href="5-smp.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> **</span><span class="identifier-syntax">last</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::ungroup_after</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Propositions::ungroup_after</span></span>:<br/><a href="4-prp.html#SP35">&#167;35</a><br/>Simplifications - <a href="5-smp.html#SP5">&#167;5</a>, <a href="5-smp.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">position</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> **</span><span class="identifier-syntax">last</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">opener</span><span class="plain-syntax">, </span><span class="identifier-syntax">closer</span><span class="plain-syntax">, </span><span class="identifier-syntax">level</span><span class="plain-syntax">;</span>
@@ -951,7 +933,7 @@ followed by a domain specification, we must also ungroup this:</p>
 <p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  Less ambitiously:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::remove_final_close_domain</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Propositions::remove_final_close_domain</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">move_domain</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::remove_final_close_domain</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Propositions::remove_final_close_domain</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP2_13">&#167;2.13</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">move_domain</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">move_domain</span><span class="plain-syntax">) *</span><span class="identifier-syntax">move_domain</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_PROPOSITION</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">)</span>

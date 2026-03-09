@@ -8,19 +8,6 @@ which use this module:
 
 @d INFLECTIONS_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e lexical_cluster_CLASS
-@e individual_form_CLASS
-@e plural_dictionary_entry_CLASS
-@e verb_conjugation_CLASS
-
-=
-DECLARE_CLASS(individual_form)
-DECLARE_CLASS(lexical_cluster)
-DECLARE_CLASS(plural_dictionary_entry)
-DECLARE_CLASS(verb_conjugation)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 @e CONSTRUCTED_PAST_PARTICIPLES_DA

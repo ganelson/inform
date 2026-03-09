@@ -71,7 +71,7 @@ defines a verb as a combination of its inflected forms with its possible
 usages in a sentence.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">conjugation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">base_form</span><span class="plain-syntax">;</span>
@@ -80,9 +80,7 @@ usages in a sentence.</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vu, 3/prp, 4/vp and here.</li></ul>
 <div class="lsmarkdown">
@@ -157,7 +155,7 @@ to be the definitive copular verb.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Verbs::log_verb</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Verbs::log_verb</span></span>:<br/><a href="3-vrb.html#SP2">&#167;2</a><br/>Linguistics Module - <a href="1-lm.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vvi</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Verbs::log_verb</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Verbs::log_verb</span></span>:<br/><a href="3-vrb.html#SP2">&#167;2</a><br/>Linguistics Module - <a href="1-lm.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vvi</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = (</span><span class="type-syntax">verb</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vvi</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;no-V&gt;"</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -215,7 +213,7 @@ form usages can be legal for the same form, this is a bitmap:</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  So here's the verb form:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_form</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb_form</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">underlying_verb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">preposition</span><span class="plain-syntax"> *</span><span class="type-syntax">preposition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">preposition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">second_clause_preposition</span><span class="plain-syntax">;</span>
@@ -234,9 +232,7 @@ form usages can be legal for the same form, this is a bitmap:</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_form_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_form_compilation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb_form</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_form is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vu, 3/prp, 4/vp and here.</li></ul>
 <div class="lsmarkdown">
@@ -271,11 +267,10 @@ by looking at X and Y.)</p>
 can be joined into a linked list. Verb meanings are described elsewhere.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_sense</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb_sense</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_sense</span><span class="plain-syntax">; </span><span class="comment-syntax">/* within the linked list for the verb form */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb_sense</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_sense is accessed in 3/vu, 3/prp, 4/vp and here.</li></ul>
 <div class="lsmarkdown">
@@ -442,7 +437,7 @@ we overwrite that with the new (presumably meaningful) one.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vrb.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  The following function may seem curious -- what's so great about the first
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  The following function may seem curious — what's so great about the first
 regular sense of a verb? The answer is that Inform generally gives a verb at
 most one regular sense.</p>
 <p>We cache the result in <code>vf-&gt;first_unspecial_meaning</code> for speed, because profiling

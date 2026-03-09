@@ -132,7 +132,7 @@ be currently running for the rule to fire. For example, in:
 > Rule for printing the name of the lemon sherbet while listing contents: ...
 
 the activity list is just "listing contents". These are like action patterns,
-but much simpler to parse -- an or-divided list of activities can be given,
+but much simpler to parse — an or-divided list of activities can be given,
 with or without operands; "not" can be used to negate the list; and ordinary
 conditions are also allowed, as here:
 
@@ -142,13 +142,13 @@ where "the sack is not carried" is also a <run-time-context> even though
 it mentions no activities.
 
 =
-typedef struct activity_list {
+classdef activity_list in 1000s {
 	struct activity *activity; /* what activity */
 	struct parse_node *acting_on; /* the parameter */
 	struct parse_node *only_when; /* condition for when this applies */
 	int ACL_parity; /* `+1` if meant positively, `-1` if negatively */
 	struct activity_list *next; /* next in activity list */
-} activity_list;
+}
 
 @ The "count" of an activity list is a measure of its complexity:
 

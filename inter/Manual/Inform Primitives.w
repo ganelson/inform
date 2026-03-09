@@ -68,13 +68,15 @@ possibilities at once. (Old-school Inform 6 users will recognise it as the
 - `!alternative val val -> val`
 
 For example,
-= (text as Inter)
+
+``` Inter
 	inv !eq
 		val x
 		inv !alternative
 			val 2
 			val 7
-=
+```
+
 tests whether `x` equals either 2 or 7.
 
 @h Sequential evaluation.
@@ -271,7 +273,8 @@ contain only invocations of `!case`, followed optionally by one of `!default`.
 - `primitive !alternativecase val val -> val`.
 
 This looks a little baroque, but it works in practice:
-= (text as Inter)
+
+``` Inter
 	inv !switch
 	    val K_number X
 	    code
@@ -291,7 +294,8 @@ This looks a little baroque, but it works in practice:
 	            code
 	                inv !print
 	                    val K_text "Something else!"
-=
+```
+
 As in most C-like languages, there are primitives for:
 
 - `primitive !break void -> void`. Exit the innermost switch case or loop.

@@ -75,14 +75,13 @@ int I6Errors::errors_occurred(void) {
 when emitting code from them.
 
 Note that the `parsing_errors` field  of a schema is null until the first error
-is detected -- which, of course, it usually isn't. It holds a linked list of these:
+is detected — which, of course, it usually isn't. It holds a linked list of these:
 
 =
-typedef struct schema_parsing_error {
+classdef schema_parsing_error {
 	struct text_stream *message;
 	struct text_provenance provenance;
-	CLASS_DEFINITION
-} schema_parsing_error;
+}
 
 @ =
 void I6Errors::issue_at_node(inter_schema_node *at, text_stream *message) {

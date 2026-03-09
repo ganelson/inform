@@ -7,7 +7,7 @@ This instruction does nothing at all, has no textual representation and is
 nevertheless useful when constructing Inter in memory.
 
 It exists as a convenience used by Inform when it needs to write simultaneously to
-multiple positions within the same node's child list -- the idea being that
+multiple positions within the same node's child list — the idea being that
 a nop statement acts as a divider. For example, by placing the A write
 position just before a nop N, and the B write position just after, Inform
 will generate A1, A2, A3, ..., N, B1, B2, ..., rather than (say) A1, B1, A2,
@@ -27,7 +27,7 @@ void NopInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `nop` instruction consists only of the two
-compulsory words -- see //Inter Nodes//.
+compulsory words — see //Inter Nodes//.
 
 =
 inter_error_message *NopInstruction::new(inter_bookmark *IBM, inter_ti level,

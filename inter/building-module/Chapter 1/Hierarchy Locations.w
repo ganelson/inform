@@ -3,8 +3,8 @@
 Location and naming rules for resources to be compiled in an Inter hierarchy.
 
 @h Hierarchy locations.
-A compiler such as //inform7// needs to create many different resources --
-arrays, functions and so on -- and each one needs to be placed somewhere
+A compiler such as //inform7// needs to create many different resources —
+arrays, functions and so on — and each one needs to be placed somewhere
 in the hierarchy of an Inter tree, and given a name.
 
 A //hierarchy_location// is an abstract way to specify the rules for doing
@@ -12,7 +12,7 @@ that. The compiler creates a mass of these objects, and they are then indexed
 by unique IDs, their `access_number`s. The compiler can then, with essentially
 no overhead, ask to create the resource with ID `JINXED_WIZARDS_HL` (say),
 and the machinery below will work out where it is to go, and what it is to
-be called -- `/synoptic/pangrams/jinxed_wizards_fn`, say.
+be called — `/synoptic/pangrams/jinxed_wizards_fn`, say.
 
 This leads to greater consistency, less duplication of book-keeping code,
 and the ability to have a sort of registry of where everything will go:
@@ -24,7 +24,7 @@ simply use `HierarchyLocations::iname(JINXED_WIZARDS_HL)` to obtain an //inter_n
 for where that function is (if it already exists) or will be (if not).
 
 =
-typedef struct hierarchy_location {
+classdef hierarchy_location {
 	int access_number;
 	struct text_stream *access_name;
 	struct text_stream *function_package_name;
@@ -33,8 +33,7 @@ typedef struct hierarchy_location {
 	struct inter_name *equates_to_iname;
 	struct text_stream *package_type;
 	struct name_translation trans;
-	CLASS_DEFINITION
-} hierarchy_location;
+}
 
 hierarchy_location *HierarchyLocations::new(int id, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
@@ -232,11 +231,10 @@ the compiler wants to create a constant `capital_city` in each of these packages
 
 There will be a single HL supplying the rules to do this, but multiple inames
 will be produced as the compiler makes multiple calls:
-= (text as InC)
+
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, uruguay_package) ...
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, peru_package) ...
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, chile_package) ...
-=
 
 =
 inter_name *HierarchyLocations::make_iname_in(inter_tree *I, int id, package_request *P) {
@@ -245,20 +243,20 @@ inter_name *HierarchyLocations::make_iname_in(inter_tree *I, int id, package_req
 }
 
 @ That might, say, produce constants with the Inter symbols like so:
-= (text as InC)
+
 	/main/south_america/uruguay/capital_city
 	/main/south_america/peru/capital_city
 	/main/south_america/chile/capital_city
-=
+
 When final code is generated from these, the constants will probably end up
 with bland identifiers like `capital_city_U1`, `capital_city_U2`, and so on.
 If we don't want that, we can make an exception like so:
-= (text as InC)
+
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, uruguay_package) ...
 	... HierarchyLocations::make_iname_with_specific_translation(I, CAPITAL_CITY_HL,
 		I"Lima", peru_package) ...
 	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, chile_package) ...
-=
+
 Our three capitals would then translate to `capital_city_U1`, `Lima`, and
 `capital_city_U2`.
 
@@ -273,9 +271,9 @@ inter_name *HierarchyLocations::make_iname_with_specific_translation(inter_tree 
 legible when Inter code is printed out. We can do that by attaching a "memo"
 of wording to its name. For example, if `W` is the wording "Uruguay", then
 calling:
-= (text as InC)
+
 	HierarchyLocations::make_iname_with_memo(I, COUNTRY_HL, uruguay_package, W)
-=
+
 might produce the iname `/main/south_america/uruguay/C3_uruguay`; a subsequent
 call in a different package, with a different wording, might then produce
 `/main/south_america/uruguay/C4_trinidad_and_tobago`, and so on. (The choice of
@@ -294,7 +292,7 @@ inter_name *HierarchyLocations::make_iname_with_shorter_memo(inter_tree *I, int 
 }
 
 @ Note that the HL, in this example `COUNTRY_HL`, keeps track of how many of
-these inames it has made, so that it can increment the index number -- in those
+these inames it has made, so that it can increment the index number — in those
 two cases, 3 and then 4. If we need to override this with a specific number `x`
 for some reason, we can use this variant:
 
@@ -464,13 +462,12 @@ Like HLs, HAPs are identified by number, but this is a different and independent
 numbering system.
 
 =
-typedef struct hierarchy_attachment_point {
+classdef hierarchy_attachment_point {
 	int hap_id;
 	struct text_stream *name_stem;
 	struct text_stream *type;
 	struct location_requirement requirements;
-	CLASS_DEFINITION
-} hierarchy_attachment_point;
+}
 
 @ Once again, these are indexed for speedy retrieval by ID number:
 
@@ -498,9 +495,9 @@ attaches another package. R and M need only be specified if the location require
 of the HAL do not imply a definite position already; M is meaningful only if the
 requirements are to put everything in a submodule of a given module, and then M
 is that module. For example:
-= (text as InC)
+
 	vf_req = Hierarchy::package_within(I, NULL, R, VERB_FORMS_HAP);
-=
+
 attaches a new verb form package inside `R`. `VERB_FORMS_HAP` has already been
 declared with //HierarchyLocations::att//, and has stem `"form"` and type `"_verb_form"`.
 So the outcome might be a package called, say, `form_16` of type `_verb_form`

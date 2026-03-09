@@ -82,8 +82,8 @@ MathJax = {
 <ul class="toc"><li><a href="3-vu.html#SP1">&#167;1. Verb usages</a></li><li><a href="3-vu.html#SP3">&#167;3. Search list and tiers</a></li><li><a href="3-vu.html#SP5">&#167;5. Creation</a></li><li><a href="3-vu.html#SP6">&#167;6. Registration of regular verbs</a></li><li><a href="3-vu.html#SP11">&#167;11. Miscellaneous utility routines</a></li><li><a href="3-vu.html#SP13">&#167;13. Parsing source text against verb usages</a></li><li><a href="3-vu.html#SP23">&#167;23. Optimisation</a></li><li><a href="3-vu.html#SP24">&#167;24. Adaptive person</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verb usages.</b>  We already have the ability to conjugate verbs -- to turn &quot;to have&quot; into &quot;I have&quot;,
-&quot;you have&quot;, &quot;he has&quot;, &quot;they have had&quot;, &quot;we will have&quot; and so on -- from the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verb usages.</b>  We already have the ability to conjugate verbs — to turn &quot;to have&quot; into &quot;I have&quot;,
+&quot;you have&quot;, &quot;he has&quot;, &quot;they have had&quot;, &quot;we will have&quot; and so on — from the
 <a href="../inflections-module/index.html" class="internal">inflections</a> module. However, we won't necessarily want to recognise all of
 those forms in sentences in the source text. For example, Inform only looks
 at present tense forms of verbs in the third person, or at imperative forms.</p>
@@ -91,7 +91,7 @@ at present tense forms of verbs in the third person, or at imperative forms.</p>
 be turned into one of the following structures:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage</span><span class="plain-syntax">;        </span><span class="comment-syntax">/* includes verb, voice, tense, sense */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">vu_text</span><span class="plain-syntax">;         </span><span class="comment-syntax">/* text to recognise */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">vu_allow_unexpected_upper_case</span><span class="plain-syntax">;     </span><span class="comment-syntax">/* for verbs like &quot;to Hoover&quot; or &quot;to Google&quot; */</span>
@@ -102,8 +102,7 @@ be turned into one of the following structures:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu_lex_entry</span><span class="plain-syntax">;  </span><span class="comment-syntax">/* for use when indexing */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb_usage</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_usage is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vrb, 3/prp, 4/vp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
@@ -160,12 +159,11 @@ If two usages belong to the same tier, the earlier in a sentence is preferred.</
 <p>The tiers are stored as a linked list, in priority order:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage_tier</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage_tier</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">priority</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tier_contents</span><span class="plain-syntax">; </span><span class="comment-syntax">/* head of linked list for this tier */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">verb_usage_tier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_tier</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">verb_usage_tier</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">verb_usage_tier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_search_tier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* head of linked list of tiers */</span>
 </pre>
@@ -303,12 +301,12 @@ the persons from 1PS to 3PP.</p>
 <p>Moreover, we need to group together identical wordings, so that each is
 registered only once, but with an accumulated grammatical usage marker.
 For example, consider the regular English verb &quot;to carry&quot;. Of the six present
-tense active voice forms, only one -- &quot;carries&quot; -- uniquely identifies its
+tense active voice forms, only one — &quot;carries&quot; — uniquely identifies its
 number and person (i.e., as third person singular); the other five are all
 &quot;carry&quot;. So we make two registrations, one with a <a href="1-sc.html#SP9" class="internal">grammatical_usage</a>
 containing a single linguistic constant, the other with one containing five.</p>
-<p>We do this by accumulating a to-do list of forms we are interested in --
-callback functions can tell us to ignore certain forms -- and the worst-case
+<p>We do this by accumulating a to-do list of forms we are interested in —
+callback functions can tell us to ignore certain forms — and the worst-case
 scenario is if every imaginable form is different, so the to-do list needs
 to be this long just in case:</p>
 </div>
@@ -509,7 +507,7 @@ list, with lower priority numbers before higher ones.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">root</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">verb</span><span class="plain-syntax"> *</span><span class="function-syntax">VerbUsages::get_verb</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::get_verb</span></span>:<br/><a href="3-vu.html#SP2">&#167;2</a>, <a href="3-vu.html#SP11">&#167;11</a>, <a href="3-vu.html#SP15">&#167;15</a>, <a href="3-vu.html#SP16">&#167;16</a>, <a href="3-vu.html#SP17">&#167;17</a><br/>Verb Phrases - <a href="4-vp.html#SP5_3_1_1_1">&#167;5.3.1.1.1</a>, <a href="4-vp.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">verb</span><span class="plain-syntax"> *</span><span class="function-syntax">VerbUsages::get_verb</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::get_verb</span></span>:<br/><a href="3-vu.html#SP2">&#167;2</a>, <a href="3-vu.html#SP11">&#167;11</a>, <a href="3-vu.html#SP15">&#167;15</a>, <a href="3-vu.html#SP16">&#167;16</a>, <a href="3-vu.html#SP17">&#167;17</a><br/>Verb Phrases - <a href="4-vp.html#SP5_4_1_1_1">&#167;5.4.1.1.1</a>, <a href="4-vp.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-vrb.html#SP2" class="function-link"><span class="function-syntax">Verbs::from_lcon</span></a><span class="plain-syntax">(</span><a href="1-sc.html#SP9" class="function-link"><span class="function-syntax">Stock::first_form_in_usage</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">usage</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -537,7 +535,7 @@ even though there are typically fairly few verbs in the S-grammar, so we
 confine ourselves to words flagged in the vocabulary as being used in verbs.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::parse_against_verb</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::parse_against_verb</span></span>:<br/><a href="3-vu.html#SP15">&#167;15</a>, <a href="3-vu.html#SP16">&#167;16</a>, <a href="3-vu.html#SP17">&#167;17</a>, <a href="3-vu.html#SP18">&#167;18</a>, <a href="3-vu.html#SP19">&#167;19</a>, <a href="3-vu.html#SP20">&#167;20</a><br/>Verb Phrases - <a href="4-vp.html#SP5_3_1_1_1">&#167;5.3.1.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::parse_against_verb</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::parse_against_verb</span></span>:<br/><a href="3-vu.html#SP15">&#167;15</a>, <a href="3-vu.html#SP16">&#167;16</a>, <a href="3-vu.html#SP17">&#167;17</a>, <a href="3-vu.html#SP18">&#167;18</a>, <a href="3-vu.html#SP19">&#167;19</a>, <a href="3-vu.html#SP20">&#167;20</a><br/>Verb Phrases - <a href="4-vp.html#SP5_4_1_1_1">&#167;5.4.1.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vu_allow_unexpected_upper_case</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Word::unexpectedly_upper_case</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">-1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">WordAssemblages::parse_as_strictly_initial_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vu_text</span><span class="plain-syntax">));</span>
@@ -807,7 +805,7 @@ or &quot;the verb to be able to see&quot; use these.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::mark_vocabulary</span><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="function-syntax">&lt;past-tense-verb&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::preform_optimiser</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::preform_optimiser</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::preform_optimiser</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::preform_optimiser</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::first_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;nonimperative-verb&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::first_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;copular-verb&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::first_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;negated-noncopular-verb-present&gt;</span><span class="plain-syntax">);</span>

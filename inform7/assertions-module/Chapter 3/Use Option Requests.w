@@ -43,7 +43,7 @@ void UseOptions::set_use_options(parse_node *p, int task) {
 @ Needed to provide a structured response from `<use-setting>`:
 
 =
-typedef struct parsed_use_option_setting {
+classdef parsed_use_option_setting {
 	struct wording textual_option;
 	struct use_option *resolved_option;
 	struct parse_node *made_at;
@@ -51,8 +51,7 @@ typedef struct parsed_use_option_setting {
 	int value;
 	struct text_stream *language_for_pragma;
 	struct text_stream *content_of_pragma;
-	CLASS_DEFINITION
-} parsed_use_option_setting;
+}
 
 parsed_use_option_setting *UseOptions::new_puos(wording W) {
 	parsed_use_option_setting *puos = CREATE(parsed_use_option_setting);

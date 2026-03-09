@@ -21,7 +21,7 @@ and each property a list of subjects it can be provided by. These are each
 lists of //property_permission// objects.
 
 =
-typedef struct property_permission {
+classdef property_permission {
 	struct inference_subject *property_owner; /* to whom permission is granted */
 	struct property *property_granted; /* which property is permitted */
 
@@ -31,8 +31,7 @@ typedef struct property_permission {
 	void *feature_pp[MAX_COMPILER_FEATURES]; /* storage for features to attach, if they want to */
 
 	struct property_permission_compilation_data compilation_data;
-	CLASS_DEFINITION
-} property_permission;
+}
 
 @h Seeking permission.
 Note that an either/or property and its antonym (say, "open" and "closed")
@@ -75,7 +74,7 @@ player (say), then we may create a new permission even though the player's
 kind ("person") already has one. This is intentional.[1]
 
 [1] It means that features can specify different data about permissions when
-applied to specific instances -- see the example of the jar below.
+applied to specific instances — see the example of the jar below.
 
 =
 property_permission *PropertyPermissions::grant(inference_subject *infs, property *prn,
@@ -109,7 +108,7 @@ property_permission *PropertyPermissions::grant(inference_subject *infs, propert
 
 @ Complicating matters, features have the ability to attach data of their
 own to a permission. For instance, the "parsing" feature attaches the idea
-of a property being visible -- we might say that every thing has an
+of a property being visible — we might say that every thing has an
 interior colour, but that it is invisible in the case of a dog and visible
 in the case of a broken jar.
 

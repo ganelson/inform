@@ -241,7 +241,7 @@ int ExternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name,
 This structure of additional data is attached to each figure instance.
 
 =
-typedef struct files_data {
+classdef files_data {
 	struct wording name; /* text of name */
 	int unextended_filename; /* word number of text like `"bones"` */
 	struct text_stream *exf_identifier; /* an Inter identifier */
@@ -250,8 +250,7 @@ typedef struct files_data {
 	struct text_stream *IFID_of_owner; /* if we know that */
 	struct instance *as_instance;
 	struct parse_node *where_created;
-	CLASS_DEFINITION
-} files_data;
+}
 
 @ We allow instances of "external file" to be created only through the above
 code calling //Figures::figures_create//. If any other proposition somehow

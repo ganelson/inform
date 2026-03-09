@@ -15,13 +15,13 @@ condition now (true or false), the next 7 bits are the number of false-to-true
 "trips" observed over time, and the top 7 bits are the number of consecutive
 turns on which the condition has been true ("consecutives"). The 16th and
 most significant bit is unused, so that the state is always positive even
-in a 16-bit virtual machine -- a convenience since we then don't need to
+in a 16-bit virtual machine — a convenience since we then don't need to
 worry about the effect of signed division and remainder on the bitmap.
 
 There is no need to store a flag for "has this condition ever been true",
 because this is equivalent the number of trips being greater than zero.
-This might look wrong for a condition which is true at start of play --
-say, if the well was always dry -- because then its state has never changed
+This might look wrong for a condition which is true at start of play —
+say, if the well was always dry — because then its state has never changed
 from false to true. But in fact when the VM starts up the state word is
 initially always 0: it's only when the startup rulebook fires the update
 chronological records rule (see below) that we first test whether the well
@@ -62,8 +62,8 @@ day, and probably only an hour or two ago, but that's a contextual judgement
 made on the basis of our own experience of how rapidly weather changes.
 The context for Inform source text is always that of actions, so our
 convention is that the reference time for past tenses is the point just
-before the current action began. Such key moments -- when things are just
-about to happen -- are called "chronology points". There is a CP just
+before the current action began. Such key moments — when things are just
+about to happen — are called "chronology points". There is a CP just
 before each action begins; there is a CP in the startup process; and there
 is a CP at the end of each turn, for good measure. CPs happen when somebody
 calls `ChronologyPoint()`. The action machinery does this directly, while
@@ -99,7 +99,7 @@ been found true, and so on.
 `TestSinglePastState` is called with four arguments:
 - `past_flag` is true if we want to test a condition like "if the well was
 dry" or "if the well had been dry", which concern only the state as it was
-at the last chronology point -- in other words, the `past_chronological_record`,
+at the last chronology point — in other words, the `past_chronological_record`,
 which we must not change; whereas `past_flag` is false if we want to test
 a present tense like "if the well is dry" or "if the well has been dry",
 because then we deal with the `present_chronological_record` which must be
@@ -112,9 +112,9 @@ purposes the start of play is a turn end since the UCRR runs then, too.)
 detailed in its code below.
 
 @h Scheme II.
-Actions discussed in the past tense -- "if we have taken the ball" or,
+Actions discussed in the past tense — "if we have taken the ball" or,
 more subtly, "Instead of waiting for the third turn" (which also refers
-to the past) -- are handled in a related but simpler way. Inform counts such
+to the past) — are handled in a related but simpler way. Inform counts such
 references, just as with other past tense conditions above, but this time
 stores a state in two simple word arrays: `TimesActionHasHappened` and
 `TurnsActionHasBeenHappening`.
@@ -149,7 +149,7 @@ The routine `TrackActions` then updates the two arrays, and is the
 equivalent for past tense actions of `ChronologyPoint`. It's called
 twice for each in-world action: `TrackActions(false)` just as a new
 action is about to begin, and then `TrackActions(true)` just after it
-has finished -- note in particular that if action B happens in the
+has finished — note in particular that if action B happens in the
 middle of action A, for instance because of a try phrase, then the
 `TrackActions(true)` call for B happens when A is back as the current
 action. In fact, that's the point: because it tells us that B was not

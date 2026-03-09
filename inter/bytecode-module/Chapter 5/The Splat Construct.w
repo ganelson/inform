@@ -22,7 +22,7 @@ void SplatInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `splat` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d MATTER_SPLAT_IFLD         (DATA_IFLD + 0)
 @d PLM_SPLAT_IFLD            (DATA_IFLD + 1)
@@ -166,8 +166,8 @@ text_provenance SplatInstruction::provenance(inter_tree_node *P) {
 }
 
 @h PLMs.
-At some point PLM stood for something, but what it was is now forgotten --
-perhaps "parse linked matter"? -- so it is now a nonsense-word pronounced
+At some point PLM stood for something, but what it was is now forgotten —
+perhaps "parse linked matter"? — so it is now a nonsense-word pronounced
 "plum". This is a marker attached to a splat which can indicate which Inform
 6-syntax directive the splat contains (if any).
 

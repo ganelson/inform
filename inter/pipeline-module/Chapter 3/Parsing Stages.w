@@ -62,13 +62,15 @@ and reading raw I6T source code from `INSERT_IST` nodes in the Inter tree rather
 than from an external file. Speed is not important here either, but only because
 there will only be a few `INSERT_IST` nodes to deal with, and with not much code
 in them. They arise from low-level Inform 7 features such as
-= (text as Inform 7)
+
+``` Inform7
 Include (-
 	[ CuriousFunction;
 		print "Curious!";
 	];
 -).
-=
+```
+
 The //inform7// code does not contain a compiler from I6T down to Inter, so
 it can only leave us these unparsed fragments as `INSERT_IST` nodes. We take
 it from there.
@@ -231,19 +233,25 @@ piece in turn to //ParsingStages::splat//". But of course we do not want to
 react to semicolons in quoted text or comments, and in fact we also do not
 want to react to semicolons used as statement dividers inside I6 routines (i.e.,
 functions). So for example
-= (text as Inform 6)
+
+``` Inform6
 Global aspic = "this; and that";
 ! Don't react to this; I'm only a comment
 [ Hello; print "Hello; goodbye.^"; ];
-=
+```
+
 would be divided into just two splats,
-= (text as Inform 6)
+
+``` Inform6
 Global aspic = "this; and that";
-=
+```
+
 and
-= (text as Inform 6)
+
+``` Inform6
 [ Hello; print "Hello; goodbye.^"; ];
-=
+```
+
 (And the comment would be stripped out entirely.)
 
 @d IGNORE_WS_I6TBIT 1

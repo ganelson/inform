@@ -15,7 +15,7 @@ int Metadata::valid_key(text_stream *key) {
 //InterSymbol::new_for_symbols_table//. These symbols never code-generate: see
 //final: Vanilla Constants//. It follows that metadata cannot be part of the
 program at runtime. Nor can metadata be wired to anything else, either way
-round -- see //Wiring::wire_to//.
+round — see //Wiring::wire_to//.
 
 So the only purpose metadata can serve is to annotate the program, to assist
 tools such as the //pipeline// module. Metadata helps with linking, optimisation,

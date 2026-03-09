@@ -356,11 +356,8 @@ if it is enabled.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Texts can be compiled in four different ways, so the following splits into
 four cases. Note that responses take the form</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="string-syntax">"blah blah blah"</span><span class="plain-syntax"> ( </span><span class="identifier-syntax">letter</span><span class="plain-syntax"> )</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	"blah blah blah" ( letter )
+</span></pre>
 <p>so the penultimate word, if it's there, is the letter.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -453,11 +450,10 @@ occur in the source text because they can compile to a fairly large slice of
 code, and we don't want to repeat that:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cached_understanding</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">cached_understanding</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">understanding_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word range of the understanding text */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cu_iname</span><span class="plain-syntax">; </span><span class="comment-syntax">/* function to test this */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">cached_understanding</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">inter_pair</span><span class="plain-syntax"> </span><span class="function-syntax">CompileRvalues::compile_understanding</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompileRvalues::compile_understanding</span></span>:<br/><a href="2-cr.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;subject-pronoun&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
@@ -486,7 +482,7 @@ arguments, plus an optional sixth for where to store rather than process the
 action.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileRvalues::compile_explicit_action</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CompileRvalues::compile_explicit_action</span></span>:<br/><a href="2-cr.html#SP2">&#167;2</a><br/>Compile Invocations Inline - <a href="5-cii.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_action</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ea</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_value</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileRvalues::compile_explicit_action</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CompileRvalues::compile_explicit_action</span></span>:<br/><a href="2-cr.html#SP2">&#167;2</a><br/>Compile Invocations Inline - <a href="5-cii.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_action</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ea</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_value</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ea</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_noun</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the noun */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ea</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">second_noun</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the second noun */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ea</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the actor */</span>

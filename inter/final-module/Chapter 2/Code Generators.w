@@ -6,11 +6,10 @@ To create the range of possible targets into which Inter can be converted.
 Single, steel-cut artisanal code generators are made here.
 
 =
-typedef struct code_generator {
+classdef code_generator {
 	struct text_stream *generator_name;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} code_generator;
+}
 
 code_generator *Generators::new(text_stream *name) {
 	code_generator *generator = CREATE(code_generator);
@@ -60,7 +59,7 @@ they must respond to `BEGIN_GENERATION_MTID`. If they return `FALSE` to this, th
 process stops: it's assumed that they have gone their own way and completed the
 business. If they return `TRUE`, however, the "vanilla" algorithm for generating
 imperative code is run for them, in which case a host of further method calls
-will be made -- see below.
+will be made — see below.
 
 In practice, then, some generators provide `BEGIN_GENERATION_MTID` and nothing
 else, and do their own thing; others provide basically the entire suite below,
@@ -89,7 +88,7 @@ This method is called early in generation to give the generator a chance to
 act on any `pragma` instructions at the top of the Inter tree. These are like
 C compiler `#pragma` directives: a generator is free to completely ignore any
 that it doesn't recognise or like. They are each "tagged" with a textual
-indication of the generator intended to get the message -- thus, for example,
+indication of the generator intended to get the message — thus, for example,
 `Inform6` for `pragma` instructions expected to be useful only when generating
 I6 code. Still, all pragmas are offered to all generators.
 

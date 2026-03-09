@@ -109,7 +109,7 @@ at runtime.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_CINDERS_PER_DEFERRAL</span> <span class="constant-syntax">16</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pcalc_prop_deferral</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">pcalc_prop_deferral</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what we intend to do with it: one of the <code>*_DEFER</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proposition_to_defer</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">deferred_from</span><span class="plain-syntax">; </span><span class="comment-syntax">/* remember where it came from, for Problem reports */</span>
@@ -117,8 +117,7 @@ at runtime.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cinder_kinds</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_CINDERS_PER_DEFERRAL</span><span class="plain-syntax">]; </span><span class="comment-syntax">/* the kinds of value being cindered (see below) */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ppd_iname</span><span class="plain-syntax">; </span><span class="comment-syntax">/* function to implement this */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rtp_iname</span><span class="plain-syntax">; </span><span class="comment-syntax">/* compile a string of the origin text for run-time problems? */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">pcalc_prop_deferral</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pcalc_prop_deferral is accessed in 4/cl, 4/cad, 4/cdp and here.</li></ul>
 <div class="lsmarkdown">
@@ -214,17 +213,14 @@ being tested in a different function, with its own stack frame, and that means
 that it has no access to the local variables we can see here. Moreover, it
 may not even be able to evaluate the term which the proposition is being
 applied to. We are therefore going to need to call it as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">f</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	f(c_1, ..., c_n, t)
+</span></pre>
 <p>where <code>t</code> is the term, and <code>c_1</code> to <code>c_n</code> are any local variables which the
 proposition mentions. (We want to avoid the misery of <a href="3-lp.html" class="internal">Local Parking</a>.)
 Those passed values <code>c_1</code>, ..., <code>c_n</code> are called &quot;cinders&quot;, and are covered
 more fully in <a href="4-cad.html" class="internal">Cinders and Deferrals</a>. It is possible, of course, that <code>n</code> is
 zero, in which case there are no cinders at all.</p>
-<p>Note that the term value <code>t</code> -- it it exists -- becomes the initial value of
+<p>Note that the term value <code>t</code> — it it exists — becomes the initial value of
 the local variable <code>x</code> in the deferred function <code>f</code>. This is correct, because
 <code>x</code> is the free variable in the proposition, so calling the function with <code>t</code>
 in the <code>x</code> argument neatly effects a substitution of \INWEBMATH(x = t\INWEBMATH).</p>
@@ -241,11 +237,8 @@ in the <code>x</code> argument neatly effects a substitution of \INWEBMATH(x = t
 <ul class="endnotetexts"><li>This code is used in <a href="4-dtd.html#SP4">&#167;4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  The second practical problem concerns callings. If we compile:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">woman</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">moll</span><span class="plain-syntax">) </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">weapon</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">gun</span><span class="plain-syntax">), ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">woman</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">moll</span><span class="plain-syntax">) </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">weapon</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">gun</span><span class="plain-syntax">), ...
+</span></pre>
 <p>then we will need to defer the proposition, since it involves quantification
 and therefore an implicit search loop. But it is supposed to set two local
 variables, &quot;moll&quot; and &quot;gun&quot;, with its findings; and they have to end up in
@@ -260,11 +253,8 @@ is to extract what we want from it. Because no other activity takes place in
 between, there is no risk that some recursive use of propositions will
 overwrite the list.</p>
 <p>For example, our call might then become</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (</span><span class="identifier-syntax">f</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="identifier-syntax">true</span><span class="plain-syntax">))</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(</span><span class="identifier-syntax">f</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="reserved-syntax">true</span><span class="plain-syntax">))
+</span></pre>
 <p>which safely transfers the values to locals <code>t_2</code> and <code>t_3</code> of <code>R</code>. Note that
 Inter evaluates conditions joined by <code>&amp;&amp;</code> from left to right, so we can be
 certain that <code>f</code> has been called and has returned <code>true</code> before we get to the
@@ -288,12 +278,9 @@ setting of <code>t_2</code> and <code>t_3</code>.</p>
 whose side-effects of evaluation will set the necessary calling locals. But
 the details differ. Here <code>f</code> is a test; <code>g</code> is some other function returning
 a value.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (</span><span class="identifier-syntax">f</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="identifier-syntax">true</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">    (</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;26 = </span><span class="identifier-syntax">g</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">), </span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;26)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(</span><span class="identifier-syntax">f</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="reserved-syntax">true</span><span class="plain-syntax">))
+	(</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;26 = </span><span class="identifier-syntax">g</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_1</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">c_n</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">), </span><span class="identifier-syntax">t_2</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;0, </span><span class="identifier-syntax">t_3</span><span class="plain-syntax">=</span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;1, </span><span class="identifier-syntax">stash</span><span class="plain-syntax">--&gt;26)
+</span></pre>
 <p>The return value of <code>g</code>, which must emerge unscathed from this expression, is
 stored temporarily in <code>stash--&gt;26</code>.</p>
 <p>The retrieval must be done in two stages. First, call this; then, in the
@@ -434,8 +421,8 @@ is much easier here: we're in a void context, and we don't have callings.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Other uses.</b>  Unlike &quot;now&quot; and testing, the other ways to use propositions -- for example,
-counting matches with &quot;the number of ...&quot; -- can take a description which
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Other uses.</b>  Unlike &quot;now&quot; and testing, the other ways to use propositions — for example,
+counting matches with &quot;the number of ...&quot; — can take a description which
 might not be a constant. The following gives a general way to call a deferred
 function for one of those other purposes, allowing for callings.</p>
 <p>Callings can indeed occur, as in the example &quot;a random person in a room (called
@@ -470,7 +457,7 @@ the haven)&quot;. <code>RandomCalling</code> is a useful test case for this func
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Multipurpose descriptions.</b>  Descriptions in the form \INWEBMATH(\phi(x)\INWEBMATH), where \INWEBMATH(x\INWEBMATH) is free, are also sometimes
-converted into values -- this is the kind of value &quot;description&quot;. The
+converted into values — this is the kind of value &quot;description&quot;. The
 Inter representation is (the address of) a function <code>D</code> which, in general,
 performs task \INWEBMATH(u\INWEBMATH) on value \INWEBMATH(v\INWEBMATH) when called as <code>D(u, v)</code>, where \INWEBMATH(u\INWEBMATH) is
 expected to be one of the following values. (Note that \INWEBMATH(v\INWEBMATH) is only needed
@@ -554,21 +541,15 @@ capture local values as closures.) Hence the following:</p>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Because multipurpose descriptions have this big drawback, we want to avoid them
 if we possibly can. Fortunately something much simpler will often do. For example,
 consider:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1) </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">members</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span>
-<span class="plain-syntax">(2) </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">closed</span><span class="plain-syntax"> </span><span class="identifier-syntax">doors</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1) </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">members</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">
+(2) </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">closed</span><span class="plain-syntax"> </span><span class="identifier-syntax">doors</span><span class="plain-syntax">
+</span></pre>
 <p>where S, in (1), is a description which appears as a parameter in a phrase.
 In (1) we have no way of knowing what S might be, but we can safely assume
 that it has been compiled as a multi-purpose description function <code>D</code>, and
 therefore compile the function call:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">D</span><span class="plain-syntax">(</span><span class="identifier-syntax">NUMBER_OF_DUSAGE</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">D</span><span class="plain-syntax">(</span><span class="identifier-syntax">NUMBER_OF_DUSAGE</span><span class="plain-syntax">)
+</span></pre>
 <p>But in case (2) it is sufficient to take \INWEBMATH(\phi(x) = {\it door}(x)\land{\it closed}(x)\INWEBMATH),
 defer it to function <code>f</code> with reason <code>NUMBER_OF_DEFER</code>, and then compile just <code>f()</code>
 to perform the calculation. We never need a multi-purpose description routine for

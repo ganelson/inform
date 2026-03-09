@@ -9,7 +9,7 @@ threes, and then convert this into a sequence of four emailable
 characters. To encode 24 bits in four characters, we need six bits per
 character, so we need $2^6 = 64$ characters in all. Since $64 = 26 +
 26 + 10 + 2$, we can nearly get there with alphanumeric characters alone,
-adding just two others -- conventionally, plus and forward-slash.
+adding just two others — conventionally, plus and forward-slash.
 That's more or less the whole thing, except that we use an equals sign
 to indicate incompleteness of the final triplet (which might have only
 1 or 2 bytes in it).

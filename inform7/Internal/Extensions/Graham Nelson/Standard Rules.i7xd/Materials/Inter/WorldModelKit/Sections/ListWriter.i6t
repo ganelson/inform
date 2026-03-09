@@ -16,7 +16,7 @@ The list-writer is called by one of the following function calls:
 
 	- the set of objects listed begins with `obj`;
 	- the `style` is a sum of `*_BIT` constants as defined in "Definitions.i6t";
-	- the `depth` is the recursion depth within the list -- ordinarily 0, but
+	- the `depth` is the recursion depth within the list — ordinarily 0, but
 	by supplying a higher value, we can simulate a sublist of another list;
 	- `noactivity` is a flag which forces the list-writer to ignore the
 	"listing the contents of" activity (in cases where it would otherwise consult
@@ -76,7 +76,7 @@ being listed so that they appear in the tree in coalesced order. The
 side-effect if the marked objects all happen to share a common parent.
 It might seem odd for a list-writer to have side effects at all, but the
 idea is that occasional coalescing improves the quality of play in many
-small ways -- for instance, the sequence of matches to TAKE ALL is tidier --
+small ways — for instance, the sequence of matches to TAKE ALL is tidier —
 and that coalescing has a small speed cost, so we want to do it as little
 as possible. (The latter was more of a consideration for I6: interpreters
 are faster nowadays.)
@@ -259,9 +259,11 @@ From which:
 Suppose `Iter` is an iterator function and that we have a "raw list"
 $x_1, x_2, ..., x_n$ of objects. Of these, the iterator function will
 choose a sublist of "qualifying" objects. It is called with arguments
-= (text as Inform 6)
+
+``` Inform6
 	Iter(obj, depth, L, function)
-=
+```
+
 where the `obj` is required to be $x_j$ for some $j$ and the function is one
 of the `*_ITF` constants defined below:
 
@@ -646,7 +648,7 @@ where $R_1$ and $R_2$ are addresses of routines:
 `coin` ($R_1$), `coin` ($R_1$), `box` ($R_2$), `statuette` (0), `coin` ($R_1$), `box` ($R_2$)
 
 Then the partition is 1, 1, 2, 3, 1, 2, so that the final output will be
-something like "three coins, two boxes and a statuette" -- with three
+something like "three coins, two boxes and a statuette" — with three
 grouped terms. Here each partition class is the only member in its group,
 so the number of groups is the same as the number of classes. (The above
 list is not coalesced, so the $R_1$ values, for instance, are not
@@ -818,15 +820,15 @@ The big one: `WriteListR` is the heart of the list-writer.
 @h Write Multiple Class Group.
 The text of a single group which contains more than one partition class.
 We carry out the "grouping together" activity, so that the user can add
-text fore and aft -- this is how groups of objects such as "X, Y and Z"
-can be fluffed up to "the letters X, Y and Z from a Scrabble set" --
+text fore and aft — this is how groups of objects such as "X, Y and Z"
+can be fluffed up to "the letters X, Y and Z from a Scrabble set" —
 but the default is simple: we print the grouped items by calling
 `WriteListR` once again, but this time starting from X, and where
 `lt_value` is set to the common `list_together` value of X, Y and Z.
 (That restricts the list to just the objects in this group.) Because
 `lt_value` is set to this value, the grouping code won't then group X, Y
 and Z again, and they will instead be individual classes in the new
-list -- so each will end up being sent, in turn, to `WriteSingleClassGroup`
+list — so each will end up being sent, in turn, to `WriteSingleClassGroup`
 below, and _that_ is where they are printed.
 
 =

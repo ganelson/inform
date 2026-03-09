@@ -70,7 +70,7 @@ within them representing symbols which also do not exist yet. Eventually,
 though, such tools need to make good on their promises and &quot;incarnate&quot; them.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">package_request</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">package_request</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eventual_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eventual_type</span><span class="plain-syntax">;</span>
@@ -78,8 +78,7 @@ though, such tools need to make good on their promises and &quot;incarnate&quot;
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_bookmark</span><span class="plain-syntax"> </span><span class="identifier-syntax">write_position</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname_generators</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>inter_name_generator</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">actual_package</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>NULL</code> until this is incarnated */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">package_request</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure package_request is accessed in 1/hl and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
@@ -104,7 +103,7 @@ and outermost last: to make this more visually clear, backslashes rather
 than forward slashes are used as dividers.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::log</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Packaging::log</span></span>:<br/>Building Module - <a href="1-bm.html#SP3_3">&#167;3.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vR</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::log</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Packaging::log</span></span>:<br/>Building Module - <a href="1-bm.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vR</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = (</span><span class="type-syntax">package_request</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;null-package&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -122,7 +121,7 @@ than forward slashes are used as dividers.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The packaging state.</b>  At any given time, Inter code is being produced at a particular position
-(in some incarnated package) and in the context of a given enclosure -- see
+(in some incarnated package) and in the context of a given enclosure — see
 <a href="1-ls.html#SP19" class="internal">LargeScale::package_type</a>. This is summarised by the following state:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -136,7 +135,7 @@ than forward slashes are used as dividers.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  It is not legal to make any use of the following state, which exists only to
 initialise variables to neutral contents (and thus to avoid warnings generated
 because our C compiler is not able to prove that they will never be used in an
-uninitialised state -- though in fact they will not).</p>
+uninitialised state — though in fact they will not).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::stateless</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Packaging::stateless</span></span>:<br/><a href="1-pck.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
@@ -217,7 +216,7 @@ package is created, very early on, the enclosure is always an enclosing package.
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Bubbles.</b>  Inter code is stored in memory as a linked list. This is fast and compact, but
 can make it awkward to insert material other than at the end, particularly if
-one insertion leads to another close by, midway in the process -- which is
+one insertion leads to another close by, midway in the process — which is
 exactly what can happen when incarnating a nested set of packages.</p>
 <p>It is also tricky to bookmark positions if nearby code may later be rewritten
 or removed, as sometimes happens. A bookmark meaning &quot;after this <code>INV_IST</code>
@@ -229,16 +228,13 @@ it is difficult to place a bookmark in an empty package.</p>
 linked list where we will later need to return and place new material.
 A bubble is simply a pair of <code>NOP_IST</code> (no operation) instructions; any
 later inserted material will be placed between them. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> </span><span class="identifier-syntax">Whatever</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nop</span><span class="plain-syntax">                                       } </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">bubble</span>
-<span class="plain-syntax">        &lt;--- </span><span class="identifier-syntax">bookmark</span><span class="plain-syntax"> </span><span class="identifier-syntax">position</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">        }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nop</span><span class="plain-syntax">                                       }</span>
-<span class="plain-syntax">    ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	...
+	inv Whatever
+	nop                                       } this is the bubble
+		&lt;--- bookmark position is here        }
+	nop	                                      }
+	...
+</span></pre>
 <p>To insert a bubble at the current write-position:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -273,8 +269,8 @@ all over the hierarchy, simply by switching to the write position in the
 package we wsnt to extend next.</p>
 <p>That switching is called &quot;entering&quot; a package. Every entry must be followed
 by a matching exit, which restores the write position to where it was before
-the entry. (The one exception is that the very first entry, into <code>main</code> --
-see <a href="1-ls.html#SP20" class="internal">LargeScale::begin_new_tree</a> -- is never followed by an exit.)</p>
+the entry. (The one exception is that the very first entry, into <code>main</code> —
+see <a href="1-ls.html#SP20" class="internal">LargeScale::begin_new_tree</a> — is never followed by an exit.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::enter_home_of</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Packaging::enter_home_of</span></span>:<br/>Produce - <a href="3-prd.html#SP12">&#167;12</a>, <a href="3-prd.html#SP20">&#167;20</a>, <a href="3-prd.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -406,7 +402,7 @@ of name stems.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">packaging_entry_sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">site_packaging_data</span><span class="plain-syntax">;</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::clear_site_data</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Packaging::clear_site_data</span></span>:<br/>Building Module - <a href="1-bm.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Packaging::clear_site_data</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Packaging::clear_site_data</span></span>:<br/>Building Module - <a href="1-bm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">building_site</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">spdata</span><span class="plain-syntax">.</span><span class="element-syntax">current_state</span><span class="plain-syntax"> = </span><a href="1-pck.html#SP5" class="function-link"><span class="function-syntax">Packaging::stateless</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">spdata</span><span class="plain-syntax">.</span><span class="element-syntax">packaging_entry_sp</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>

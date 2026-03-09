@@ -59,21 +59,18 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../intern.html">Inter Modules</a></li><li><a href="index.html">building</a></li><li><a href="index.html#2">Chapter 2: Blueprints</a></li><li><b>Ramification</b></li></ul></div>
 <p class="purpose">Turning textual code written in Inform 6 syntax into an inter schema.</p>
 
-<ul class="toc"><li><a href="2-rmf.html#SP1">&#167;1. Introduction</a></li><li><a href="2-rmf.html#SP3">&#167;3. The implied braces ramification</a></li><li><a href="2-rmf.html#SP4">&#167;4. The unbrace schema ramification</a></li><li><a href="2-rmf.html#SP5">&#167;5. The divide schema ramification</a></li><li><a href="2-rmf.html#SP6">&#167;6. The undivide schema ramification</a></li><li><a href="2-rmf.html#SP7">&#167;7. The resolve halfopen blocks ramification</a></li><li><a href="2-rmf.html#SP8">&#167;8. The break early bracings ramification</a></li><li><a href="2-rmf.html#SP9">&#167;9. The strip leading white space ramification</a></li><li><a href="2-rmf.html#SP10">&#167;10. The split switches into cases ramification</a></li><li><a href="2-rmf.html#SP12">&#167;12. The split print statements ramification</a></li><li><a href="2-rmf.html#SP13">&#167;13. The identify constructs ramification</a></li><li><a href="2-rmf.html#SP14">&#167;14. The break for statements ramification</a></li><li><a href="2-rmf.html#SP15">&#167;15. The add missing bodies ramification</a></li><li><a href="2-rmf.html#SP16">&#167;16. The remove empty expressions ramification</a></li><li><a href="2-rmf.html#SP17">&#167;17. The outer subexpressions ramification</a></li><li><a href="2-rmf.html#SP18">&#167;18. The top level commas ramification</a></li><li><a href="2-rmf.html#SP19">&#167;19. The multiple case values ramification</a></li><li><a href="2-rmf.html#SP20">&#167;20. The strip all white space ramification</a></li><li><a href="2-rmf.html#SP21">&#167;21. The debracket ramification</a></li><li><a href="2-rmf.html#SP25">&#167;25. The implied return values ramification</a></li><li><a href="2-rmf.html#SP26">&#167;26. The message calls ramification</a></li><li><a href="2-rmf.html#SP27">&#167;27. The sanity check ramification</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-rmf.html#SP1">&#167;1. Introduction</a></li><li><a href="2-rmf.html#SP3">&#167;3. The implied braces ramification</a></li><li><a href="2-rmf.html#SP4">&#167;4. The unbrace schema ramification</a></li><li><a href="2-rmf.html#SP5">&#167;5. The divide schema ramification</a></li><li><a href="2-rmf.html#SP6">&#167;6. The undivide schema ramification</a></li><li><a href="2-rmf.html#SP7">&#167;7. The resolve halfopen blocks ramification</a></li><li><a href="2-rmf.html#SP8">&#167;8. The break early bracings ramification</a></li><li><a href="2-rmf.html#SP9">&#167;9. The strip leading white space ramification</a></li><li><a href="2-rmf.html#SP10">&#167;10. The split switches into cases ramification</a></li><li><a href="2-rmf.html#SP12">&#167;12. The split print statements ramification</a></li><li><a href="2-rmf.html#SP13">&#167;13. The identify constructs ramification</a></li><li><a href="2-rmf.html#SP14">&#167;14. The break for statements ramification</a></li><li><a href="2-rmf.html#SP15">&#167;15. The add missing bodies ramification</a></li><li><a href="2-rmf.html#SP16">&#167;16. The remove empty expressions ramification</a></li><li><a href="2-rmf.html#SP17">&#167;17. The outer subexpressions ramification</a></li><li><a href="2-rmf.html#SP18">&#167;18. The top level commas ramification</a></li><li><a href="2-rmf.html#SP19">&#167;19. The multiple case values ramification</a></li><li><a href="2-rmf.html#SP20">&#167;20. The strip all white space ramification</a></li><li><a href="2-rmf.html#SP21">&#167;21. The debracket ramification</a></li><li><a href="2-rmf.html#SP24">&#167;24. The implied return values ramification</a></li><li><a href="2-rmf.html#SP25">&#167;25. The message calls ramification</a></li><li><a href="2-rmf.html#SP26">&#167;26. The sanity check ramification</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  Once <a href="2-tkn.html" class="internal">Tokenisation</a> has been done, we have an inter schema which is not
-really a tree, but a linked list in all but name --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-<span class="plain-syntax">        ...</span>
-</pre>
-<div class="lsmarkdown">
+really a tree, but a linked list in all but name —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+		T4
+		...
+</span></pre>
 <p>So, there is no internal structure yet. &quot;Ramification&quot; performs a series of
 transformations on this tree, gradually shaking out the (sometimes ambiguous)
 syntactic markers such as <code>COMMA_ISTT</code> and replacing them with semantically
@@ -100,9 +97,9 @@ clear subtrees.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP19" class="function-link"><span class="function-syntax">Ramification::multiple_case_values</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP20" class="function-link"><span class="function-syntax">Ramification::strip_all_white_space</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP21" class="function-link"><span class="function-syntax">Ramification::debracket</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP25" class="function-link"><span class="function-syntax">Ramification::implied_return_values</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::message_calls</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP27" class="function-link"><span class="function-syntax">Ramification::sanity_check</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP24" class="function-link"><span class="function-syntax">Ramification::implied_return_values</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP25" class="function-link"><span class="function-syntax">Ramification::message_calls</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::sanity_check</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
@@ -138,17 +135,11 @@ these out at the start of each iteration.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The implied braces ramification.</b>  In common with most C-like languages, though unlike Perl, Inform 6 makes braces
 optional around code blocks which contain only a single statement. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"x is 1.^"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"x is 1.^"</span><span class="plain-syntax">;
+</span></pre>
 <p>is understood as if it were</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"x is 1.^"</span><span class="plain-syntax">; }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"x is 1.^"</span><span class="plain-syntax">; }
+</span></pre>
 <p>But we will find future ramifications much easier to code up if braces are
 always used. So this one looks for cases where braces have been omitted,
 and inserts them around the single statements in question.</p>
@@ -249,30 +240,24 @@ and inserts them around the single statements in question.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The unbrace schema ramification.</b>  We now remove braces used to delimit code blocks and replace them with <code>CODE_ISNT</code>
 subtrees. So for example</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">OPEN_BRACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">CLOSE_BRACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		OPEN_BRACE_ISTT
+		T2
+		T3
+		CLOSE_BRACE_ISTT
+		T4
+</span></pre>
 <p>becomes</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CODE_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+	CODE_ISNT
+		EXPRESSION_ISNT
+			T2
+			T3
+	EXPRESSION_ISNT
+		T4
+</span></pre>
 <p>In this way, all matching pairs of <code>OPEN_BRACE_ISTT</code> and <code>CLOSE_BRACE_ISTT</code> tokens
 are removed.</p>
 </div>
@@ -338,30 +323,24 @@ are removed.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The divide schema ramification.</b>  A <code>DIVIDER_ISTT</code> token represents a semicolon used to divide I6 statements.
 We want to represent them, however, by independent subtrees. So:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+		T3
+		T4
+		DIVIDER_ISTT
+</span></pre>
 <p>becomes</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+	EXPRESSION_ISNT
+		T3
+		T4
+		DIVIDER_ISTT
+</span></pre>
 <p>After this stage, therefore, each statement occupies its own <code>EXPRESSION_ISNT</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -397,29 +376,23 @@ We want to represent them, however, by independent subtrees. So:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The undivide schema ramification.</b>  The expression nodes for statements now tend to end with <code>DIVIDER_ISTT</code> tokens
 which no longer have any useful meaning. We remove them. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DIVIDER_ISTT</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+	EXPRESSION_ISNT
+		T3
+		T4
+		DIVIDER_ISTT
+</span></pre>
 <p>becomes</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T4</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+	EXPRESSION_ISNT
+		T3
+		T4
+</span></pre>
 <p>After this, then, there are no further <code>DIVIDER_ISTT</code> tokens in the tree.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -458,7 +431,7 @@ empty <code>EXPRESSION_ISNT</code> list), so instead we convert it to a harmless
 of white space.</p>
 <p>At the end of this process, then, all code blocks are correctly handled, and
 all statements are held as single <code>EXPRESSION_ISNT</code> nodes. So the coarse
-structure of the code is correctly handled -- we have a clear tree structure
+structure of the code is correctly handled — we have a clear tree structure
 of statements (or expressions), hierarchically arranged in code blocks.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -503,31 +476,27 @@ of statements (or expressions), hierarchically arranged in code blocks.</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The break early bracings ramification.</b>  If an expression list begins with one or more braced commands, perhaps with some
 white space, and then continues with some honest I6 material, we divide the
 early commands off from the subsequent matter. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">INLINE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">INLINE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		T1
+		T2
+		T3
+</span></pre>
 <p>becomes</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">INLINE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">INLINE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::break_early_bracings</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Ramification::break_early_bracings</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">=</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">) {</span>
@@ -568,7 +537,7 @@ early commands off from the subsequent matter. Thus:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. The strip leading white space ramification.</b>  If an expression begins with white space, remove it. (This makes coding subsequent
-ramifications easier -- because we can assume the first token is substantive.)</p>
+ramifications easier — because we can assume the first token is substantive.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::strip_leading_white_space</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Ramification::strip_leading_white_space</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -586,39 +555,35 @@ ramifications easier -- because we can assume the first token is substantive.)</
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The split switches into cases ramification.</b>  Unlike most C-like languages, Inform 6 does not have a <code>case</code> reserved word to
 introduce cases in a <code>switch</code> statement. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Do one thing."</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Do a different thing."</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">default</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Otherwise, do this other thing."</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">) {
+		</span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Do one thing."</span><span class="plain-syntax">;
+		</span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Do a different thing."</span><span class="plain-syntax">;
+		</span><span class="reserved-syntax">default</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Otherwise, do this other thing."</span><span class="plain-syntax">;
+	}
+</span></pre>
 <p>Here, the colons and the reserved word <code>default</code> are the important syntactic markers.
 We break this up as three code blocks:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	STATEMENT_ISNT "case"
+		EXPRESSION_ISNT
+			1
+			COMMA_ISTT
+			WHITE_SPACE_ISTT
+			2
+			COMMA_ISTT
+			WHITE_SPACE_ISTT
+			3
+		CODE_ISNT
+			...
+	STATEMENT_ISNT "case"
+		EXPRESSION_ISNT
+			4
+		CODE_ISNT
+			...
+	STATEMENT_ISNT "default"
+		CODE_ISNT
+			...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> </span><span class="string-syntax">"case"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">COMMA_ISTT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">COMMA_ISTT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">3</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">CODE_ISNT</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> </span><span class="string-syntax">"case"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">4</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">CODE_ISNT</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> </span><span class="string-syntax">"default"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">CODE_ISNT</span>
-<span class="plain-syntax">            ...</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::split_switches_into_cases</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Ramification::split_switches_into_cases</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">=</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">) {</span>
@@ -732,43 +697,34 @@ We break this up as three code blocks:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. The split print statements ramification.</b>  Inform 6 supports composite print statements, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">print_ret</span><span class="plain-syntax"> </span><span class="string-syntax">"X is "</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">, </span><span class="string-syntax">"."</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">print_ret</span><span class="plain-syntax"> </span><span class="string-syntax">"X is "</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">, </span><span class="string-syntax">"."</span><span class="plain-syntax">;
+</span></pre>
 <p>This example currently looks like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">RESERVED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"print_ret"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"X is "</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">COMMA_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">IDENTIFIER_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"x"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">COMMA_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		RESERVED_ISTT "print_ret"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "X is "
+		COMMA_ISTT
+		WHITE_SPACE_ISTT
+		IDENTIFIER_ISTT "x"
+		COMMA_ISTT
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "."
+</span></pre>
 <p>We break this up as three individual prints:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">RESERVED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"print"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"X is "</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">RESERVED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"print"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">IDENTIFIER_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"x"</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">RESERVED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"print_ret"</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">WHITE_SPACE_ISTT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax"> </span><span class="string-syntax">"."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		RESERVED_ISTT "print"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "X is "
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print"
+		WHITE_SPACE_ISTT
+		IDENTIFIER_ISTT "x"
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print_ret"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "."
+</span></pre>
 <p>Note that, for obvious reasons, in the <code>print_ret</code> case only the third of the
 prints should perform a return.</p>
 <p>The point of this stage is to get rid of one source of <code>COMMA_ISTT</code> tokens;
@@ -862,21 +818,15 @@ such as <code>while</code>; and this is where we do that.</p>
 set <code>which_statement</code> to the BIP of the Inter primitive which will implement it.
 If we set <code>dangle_number</code> to some non-negative value, then that will be added
 as an argument. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">rfalse</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		rfalse
+</span></pre>
 <p>becomes:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">RETURN_BIP</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">0</span>
-</pre>
-<div class="lsmarkdown">
-<p>The <code>0</code> is an invention -- in that it never occurs in the original text -- and
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	STATEMENT_ISNT - RETURN_BIP
+		EXPRESSION_ISNT
+			0
+</span></pre>
+<p>The <code>0</code> is an invention — in that it never occurs in the original text — and
 its expression dangles beneath the <code>STATEMENT_ISNT</code> node; and similarly for
 a <code>dangle_text</code>, of course.</p>
 <p>The set of Inform 6 statements is a mixed bag, to put it mildly, and some have
@@ -1036,13 +986,10 @@ anything else, too.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_1_7" class="paragraph-anchor"></a><b>&#167;13.1.7. </b>  Note that composite print statements have already been broken up, so that
 we only have three possibilities:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">some_number</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Some text"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">some_rule</span><span class="plain-syntax">) </span><span class="identifier-syntax">some_value</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">some_number</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Some text"</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">some_rule</span><span class="plain-syntax">) </span><span class="identifier-syntax">some_value</span><span class="plain-syntax">;
+</span></pre>
 <p>(or the same but with <code>print_ret</code> instead of <code>print</code>). The first two cases
 are straightforward and become usages of <code>PRINTNUMBER_BIP</code> or <code>PRINT_BIP</code>
 respectively.</p>
@@ -1172,20 +1119,16 @@ to know about the difference.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP13_1">&#167;13.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2. </b>  Directives are much easier. For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">DEBUG</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		#ifdef
+		DEBUG
+</span></pre>
 <p>becomes</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	DIRECTIVE_ISNT = #IFDEF
+		EXPRESSION_ISNT
+			DEBUG
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">DIRECTIVE_ISNT</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">IFDEF</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">DEBUG</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If this expression opens with a directive keyword, it is a directive</span><span class="named-paragraph-number">13.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1261,9 +1204,9 @@ to be recognised for what they are.</li>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP13">&#167;13</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_4" class="paragraph-anchor"></a><b>&#167;13.4. </b>  Finally! In the case where we do want to make a <code>STATEMENT_ISNT</code> node --
+<p class="commentary firstcommentary"><a id="SP13_4" class="paragraph-anchor"></a><b>&#167;13.4. </b>  Finally! In the case where we do want to make a <code>STATEMENT_ISNT</code> node —
 either through recognising an I6 statement word like <code>while</code>, or one of the
-assembly instructions <code>@push</code> or <code>@pull</code> -- we do the following.</p>
+assembly instructions <code>@push</code> or <code>@pull</code> — we do the following.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this a STATEMENT_ISNT node</span><span class="named-paragraph-number">13.4</span></span> =</p>
 
@@ -1345,7 +1288,7 @@ they cannot both apply.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_4_4" class="paragraph-anchor"></a><b>&#167;13.4.4. </b>  It was noted above that the <code>STORE_BIP</code> value was being somewhat abused in
 the one special case of <code>give O P</code> or <code>give O ~P</code>. This won't be a statement
-at all -- instead we rewrite this as the setting of a property value either
+at all — instead we rewrite this as the setting of a property value either
 to 1 or 0 respectively. And that makes it an <code>EXPRESSION_ISNT</code> node after all.</p>
 <p>It would not have been legal in I6 to use <code>O.P = 1</code> as an alternative to <code>give O P</code>.
 But it is legal to do so in this schema, and that is what our expression node does.</p>
@@ -1374,34 +1317,30 @@ But it is legal to do so in this schema, and that is what our expression node do
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The break for statements ramification.</b>  This is where we dismantle <code>for (X: Y: Z) ...</code> into its constituent parts,
 removing the colon and bracket tokens. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> = </span><span class="constant-syntax">FOR_BIP</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            (</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">X</span>
-<span class="plain-syntax">            :</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Y</span>
-<span class="plain-syntax">            :</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Z</span>
-<span class="plain-syntax">            )</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	STATEMENT_ISNT = FOR_BIP
+		EXPRESSION_ISNT
+			(
+			X
+			:
+			Y
+			:
+			Z
+			)
+		EXPRESSION_ISNT
+			...
+</span></pre>
 <p>should become</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	STATEMENT_ISNT = FOR_BIP
+		EXPRESSION_ISNT
+			X
+		EXPRESSION_ISNT
+			Y
+		EXPRESSION_ISNT
+			Z
+		EXPRESSION_ISNT
+			...
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax"> = </span><span class="constant-syntax">FOR_BIP</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">X</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Y</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Z</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            ...</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::break_for_statements</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Ramification::break_for_statements</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">=</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">) {</span>
@@ -1552,7 +1491,7 @@ code blocks. They mean nothing, but it's tidy to remove them.)</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. The outer subexpressions ramification.</b>  If an expression looks like <code>( ... )</code>, but not <code>( ... ) ... ( ... )</code> -- in
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. The outer subexpressions ramification.</b>  If an expression looks like <code>( ... )</code>, but not <code>( ... ) ... ( ... )</code> — in
 other words, if the entire expression lies inside a matching pair of round
 brackets...</p>
 </div>
@@ -1588,14 +1527,13 @@ brackets...</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1. </b>  ...then we move the bracketed content under a new subexpression node, so
 that <code>(x+1)</code> would now become:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	SUBEXPRESSION_ISNT
+		EXPRESSION_ISNT
+			x
+			+
+			1
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">SUBEXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">            +</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">1</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This expression is entirely in a matching pair of round brackets</span><span class="named-paragraph-number">17.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1617,33 +1555,27 @@ that <code>(x+1)</code> would now become:</p>
 and as the serial evaluation operator. Because we have already performed the outer
 subexpressions ramification, we can tell which meaning applies by seeing if a comma
 occurs at the top level or inside of brackets. Thus <code>a, b, c</code> must be serial
-evaluation -- evaluate <code>a</code>, then <code>b</code>, then <code>c</code> -- whereas <code>a + f(b, c)</code> cannot be.</p>
+evaluation — evaluate <code>a</code>, then <code>b</code>, then <code>c</code> — whereas <code>a + f(b, c)</code> cannot be.</p>
 <p>This changes</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">a</span>
-<span class="plain-syntax">        ,</span>
-<span class="plain-syntax">        (</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">b</span>
-<span class="plain-syntax">        ,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">c</span>
-<span class="plain-syntax">        )</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		a
+		,
+		(
+		b
+		,
+		c
+		)
+</span></pre>
 <p>to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">a</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        (</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">b</span>
-<span class="plain-syntax">        ,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">c</span>
-<span class="plain-syntax">        )</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		a
+	EXPRESSION_ISNT
+		(
+		b
+		,
+		c
+		)
+</span></pre>
 <p>After this stage, then, the only commas left are those used for function arguments.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1740,14 +1672,14 @@ and which signal function calls, as in <code>f ( a , b )</code>. At each node:</
 <ul>
 <li>we use <a href="2-rmf.html#SP17" class="internal">Ramification::outer_subexpressions</a> to dispose of the <code>( ... )</code> case;</li>
 <li>then <a href="2-rmf.html#SP22" class="internal">Ramification::op_subexpressions</a> to look for the <code>a * ( b + c)</code> case;</li>
-<li>and finally <a href="2-rmf.html#SP24" class="internal">Ramification::place_calls</a> to take care of <code>f ( a , b )</code>.</li>
+<li>and finally <a href="2-rmf.html#SP23" class="internal">Ramification::place_calls</a> to take care of <code>f ( a , b )</code>.</li>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::debracket</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Ramification::debracket</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP17" class="function-link"><span class="function-syntax">Ramification::outer_subexpressions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP22" class="function-link"><span class="function-syntax">Ramification::op_subexpressions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP24" class="function-link"><span class="function-syntax">Ramification::place_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP23" class="function-link"><span class="function-syntax">Ramification::place_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -1770,10 +1702,10 @@ original <code>EXPRESSION_ISNT</code>.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final_op_token</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="type-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><a href="2-is.html#SP16" class="function-link"><span class="function-syntax">InterSchemas::first_dark_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">), *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">final_op_token</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_left_operand</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">has_right_operand</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> != </span><span class="identifier-syntax">to</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the left operand expression</span></span><span class="named-paragraph-number">22.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> != </span><span class="identifier-syntax">to</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the left operand expression</span></span><span class="named-paragraph-number">22.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><a href="2-is.html#SP16" class="function-link"><span class="function-syntax">InterSchemas::next_dark_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">final_op_token</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the right operand expression</span></span><span class="named-paragraph-number">22.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Work out which operation is implied by the operator</span></span><span class="named-paragraph-number">22.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the right operand expression</span></span><span class="named-paragraph-number">22.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP22_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Work out which operation is implied by the operator</span></span><span class="named-paragraph-number">22.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -1806,7 +1738,7 @@ otherwise convert it from an <code>OPERATOR_ISTT</code> to an <code>IDENTIFIER_I
 <span class="plain-syntax">                </span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ist_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">IDENTIFIER_ISTT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operation_primitive</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP23" class="function-link"><span class="function-syntax">Ramification::prefer_over</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">this_operator</span><span class="plain-syntax">, </span><span class="identifier-syntax">final_operation</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP22_2" class="function-link"><span class="function-syntax">Ramification::prefer_over</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">this_operator</span><span class="plain-syntax">, </span><span class="identifier-syntax">final_operation</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">final_op_token</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">final_operation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">this_operator</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
@@ -1815,7 +1747,7 @@ otherwise convert it from an <code>OPERATOR_ISTT</code> to an <code>IDENTIFIER_I
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP22">&#167;22</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  Well... so actually we have to be a bit more careful about left vs right
+<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2. </b>  Well... so actually we have to be a bit more careful about left vs right
 associativity if there are two least-precedence operators both at the top
 level, as in the case of <code>x - y + z</code> or (horrifically) <code>x = y = z</code>.</p>
 </div>
@@ -1831,31 +1763,25 @@ level, as in the case of <code>x - y + z</code> or (horrifically) <code>x = y = 
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2. </b>  So the basic plan is to turn out example <code>x + y * z</code> into</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">OPERATION_ISNT</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLUS_BIP</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">y</span><span class="plain-syntax"> * </span><span class="identifier-syntax">z</span>
-</pre>
-<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP22_3" class="paragraph-anchor"></a><b>&#167;22.3. </b>  So the basic plan is to turn out example <code>x + y * z</code> into</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	OPERATION_ISNT = PLUS_BIP
+		EXPRESSION_ISNT
+			x
+		EXPRESSION_ISNT
+			y * z
+</span></pre>
 <p>Recursion of the above then turns this into</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">OPERATION_ISNT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">EXPRESSION_ISNT</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLUS_BIP</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">OPERATION_ISNT</span><span class="plain-syntax"> = </span><span class="constant-syntax">TIMES_BIP</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">y</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">z</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	OPERATION_ISNT
+		EXPRESSION_ISNT = PLUS_BIP
+			x
+		OPERATION_ISNT = TIMES_BIP
+			EXPRESSION_ISNT
+				y
+				z
+</span></pre>
 <p>Here the final operator is the <code>+</code>, and there are both left and right operands.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the left operand expression</span><span class="named-paragraph-number">22.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the left operand expression</span><span class="named-paragraph-number">22.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_operand_node</span><span class="plain-syntax"> =</span>
@@ -1870,7 +1796,7 @@ level, as in the case of <code>x - y + z</code> or (horrifically) <code>x = y = 
 <span class="plain-syntax">    </span><span class="identifier-syntax">has_left_operand</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_3" class="paragraph-anchor"></a><b>&#167;22.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the right operand expression</span><span class="named-paragraph-number">22.3</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP22_4" class="paragraph-anchor"></a><b>&#167;22.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the right operand expression</span><span class="named-paragraph-number">22.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_operand_node</span><span class="plain-syntax"> =</span>
@@ -1887,14 +1813,14 @@ level, as in the case of <code>x - y + z</code> or (horrifically) <code>x = y = 
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP22">&#167;22</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP22_4" class="paragraph-anchor"></a><b>&#167;22.4. </b>  It's only now that we can clarify the meaning of <code>++</code>, for example, which
+<p class="commentary firstcommentary"><a id="SP22_5" class="paragraph-anchor"></a><b>&#167;22.5. </b>  It's only now that we can clarify the meaning of <code>++</code>, for example, which
 is one operation used as a prefix, and another used as a suffix.</p>
 <p>Note that Inform 6 does allow labels to be used as a value, but only in <code>jump</code>
 statements or assembly language. Since labels begin with a <code>.</code>, as in <code>.Example</code>,
 we need to be careful not to misread that as a use of the property-value
 operation <code>a.b</code>.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out which operation is implied by the operator</span><span class="named-paragraph-number">22.4</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out which operation is implied by the operator</span><span class="named-paragraph-number">22.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">OPERATION_ISNT</span><span class="plain-syntax">;</span>
@@ -1926,7 +1852,7 @@ operation <code>a.b</code>.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP22">&#167;22</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  Now for function calls.</p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  Now for function calls.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::place_calls</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Ramification::place_calls</span></span>:<br/><a href="2-rmf.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -1934,19 +1860,19 @@ operation <code>a.b</code>.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXPRESSION_ISNT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expression_tokens</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expression_tokens</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ist_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">OPEN_ROUND_ISTT</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Maybe the function is itself a bracketed term</span></span><span class="named-paragraph-number">24.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Or maybe the function is not bracketed</span></span><span class="named-paragraph-number">24.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Maybe the function is itself a bracketed term</span></span><span class="named-paragraph-number">23.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Or maybe the function is not bracketed</span></span><span class="named-paragraph-number">23.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP24" class="function-link"><span class="function-syntax">Ramification::place_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP23" class="function-link"><span class="function-syntax">Ramification::place_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24_1" class="paragraph-anchor"></a><b>&#167;24.1. </b>  This is to catch the super-annoying possibility <code>(array-&gt;2)(7)</code>, where an
+<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1. </b>  This is to catch the super-annoying possibility <code>(array-&gt;2)(7)</code>, where an
 array lookup is performed to find the address of the function to call.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Maybe the function is itself a bracketed term</span><span class="named-paragraph-number">24.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Maybe the function is itself a bracketed term</span><span class="named-paragraph-number">23.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bl</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">term_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">tops</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -1961,14 +1887,14 @@ array lookup is performed to find the address of the function to call.</p>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bl</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">tops</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">term_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">tops</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">opener</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">closer</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Call brackets found</span></span><span class="named-paragraph-number">24.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Call brackets found</span></span><span class="named-paragraph-number">23.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP24">&#167;24</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP23">&#167;23</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24_2" class="paragraph-anchor"></a><b>&#167;24.2. </b>  But much more usually...</p>
+<p class="commentary firstcommentary"><a id="SP23_2" class="paragraph-anchor"></a><b>&#167;23.2. </b>  But much more usually...</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Or maybe the function is not bracketed</span><span class="named-paragraph-number">24.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Or maybe the function is not bracketed</span><span class="named-paragraph-number">23.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expression_tokens</span><span class="plain-syntax">;</span>
@@ -1994,34 +1920,34 @@ array lookup is performed to find the address of the function to call.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (((</span><span class="identifier-syntax">pre_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) || ((</span><span class="identifier-syntax">pre_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pre_bracings</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">))) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">post_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">opener</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">closer</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">veto</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Call brackets found</span></span><span class="named-paragraph-number">24.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Call brackets found</span></span><span class="named-paragraph-number">23.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_1_1" class="paragraph-anchor"></a><b>&#167;24.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Call brackets found</span><span class="named-paragraph-number">24.1.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP23">&#167;23</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP23_1_1" class="paragraph-anchor"></a><b>&#167;23.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Call brackets found</span><span class="named-paragraph-number">23.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expression_tokens</span><span class="plain-syntax">, *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">opener</span><span class="plain-syntax">, *</span><span class="identifier-syntax">resume</span><span class="plain-syntax"> = </span><span class="identifier-syntax">opener</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">24.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">23.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">resume</span><span class="plain-syntax">; </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bl</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">n</span><span class="plain-syntax"> != </span><span class="identifier-syntax">closer</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">n</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ist_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">OPEN_ROUND_ISTT</span><span class="plain-syntax">) </span><span class="identifier-syntax">bl</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ist_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">CLOSE_ROUND_ISTT</span><span class="plain-syntax">) </span><span class="identifier-syntax">bl</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">bl</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ist_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">COMMA_ISTT</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">resume</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">24.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">23.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">resume</span><span class="plain-syntax">; </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">closer</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP24_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">24.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rmf.html#SP23_1_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Relegate node</span></span><span class="named-paragraph-number">23.1.1.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expression_tokens</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">CALL_ISNT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP24_1">&#167;24.1</a> and <a href="2-rmf.html#SP24_2">&#167;24.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_1_1_1" class="paragraph-anchor"></a><b>&#167;24.1.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Relegate node</span><span class="named-paragraph-number">24.1.1.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP23_1">&#167;23.1</a> and <a href="2-rmf.html#SP23_2">&#167;23.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP23_1_1_1" class="paragraph-anchor"></a><b>&#167;23.1.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Relegate node</span><span class="named-paragraph-number">23.1.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">from</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">to</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> != </span><span class="identifier-syntax">to</span><span class="plain-syntax">)) {</span>
@@ -2042,9 +1968,9 @@ array lookup is performed to find the address of the function to call.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">new_isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">isn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP24_1_1">&#167;24.1.1</a> (three times).</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-rmf.html#SP23_1_1">&#167;23.1.1</a> (three times).</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. The implied return values ramification.</b>  A bare <code>return;</code> statement in Inform 6 means &quot;return true&quot;, i.e., the numerical value 1.</p>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. The implied return values ramification.</b>  A bare <code>return;</code> statement in Inform 6 means &quot;return true&quot;, i.e., the numerical value 1.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Ramification::implied_return_values</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Ramification::implied_return_values</span></span>:<br/><a href="2-rmf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="type-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2059,14 +1985,14 @@ array lookup is performed to find the address of the function to call.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">one</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">isn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP25" class="function-link"><span class="function-syntax">Ramification::implied_return_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP24" class="function-link"><span class="function-syntax">Ramification::implied_return_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. The message calls ramification.</b>  Here we look for the configuration <code>x.y(z)</code>, which is a message call -- i.e. a
-function call to <code>x.y</code>, of a special kind -- rather than a lookup of the property
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. The message calls ramification.</b>  Here we look for the configuration <code>x.y(z)</code>, which is a message call — i.e. a
+function call to <code>x.y</code>, of a special kind — rather than a lookup of the property
 <code>y(z)</code> on the object <code>x</code>. We clarify using <code>MESSAGE_ISNT</code>.</p>
 <p>There is also the oddball syntax <code>f.call(y)</code>, which performs a function call too.
 This is almost useless, but we pick it up anyway.</p>
@@ -2092,13 +2018,13 @@ This is almost useless, but we pick it up anyway.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">args</span><span class="plain-syntax">) { </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">isn</span><span class="plain-syntax">; </span><span class="identifier-syntax">args</span><span class="plain-syntax"> = </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::message_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rmf.html#SP25" class="function-link"><span class="function-syntax">Ramification::message_calls</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. The sanity check ramification.</b>  This does nothing except to catch some errors more politely than allowing them
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. The sanity check ramification.</b>  This does nothing except to catch some errors more politely than allowing them
 to cause trouble later. If no error is thrown, the schema is unchanged.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -2138,16 +2064,16 @@ to cause trouble later. If no error is thrown, the schema is unchanged.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">STATEMENT_ISNT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_clarifier</span><span class="plain-syntax"> == </span><span class="constant-syntax">CASE_BIP</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXPRESSION_ISNT</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><a href="2-rmf.html#SP27" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">OPERATION_ISNT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_clarifier</span><span class="plain-syntax"> == </span><span class="constant-syntax">ALTERNATIVECASE_BIP</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXPRESSION_ISNT</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><a href="2-rmf.html#SP27" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">isn_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXPRESSION_ISNT</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><a href="2-rmf.html#SP27" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::check_for_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><a href="2-rmf.html#SP27" class="function-link"><span class="function-syntax">Ramification::sanity_check</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-rmf.html#SP26" class="function-link"><span class="function-syntax">Ramification::sanity_check</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">isn</span><span class="plain-syntax">, </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

@@ -5,7 +5,7 @@ child nodes, and what in general terms it means.
 
 @h Node types.
 Each node has a "node type". Some of those are defined here with `*_NT`
-names -- these are the "enumerated" node types. But every `*_MC` code,
+names — these are the "enumerated" node types. But every `*_MC` code,
 as defined in the //words// module and by its clients, is also a valid
 node type. (See //words: Vocabulary//.) The following is guaranteed to
 be able to hold any node type:

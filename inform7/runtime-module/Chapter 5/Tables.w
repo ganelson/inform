@@ -253,8 +253,8 @@ to look up two parallel structures each time we want to access the cell. So a
 blank cell is represented as both the value `TABLE_NOVALUE`, chosen so that it
 is very unlikely ever to occur as a genuine table value (currently it's the
 picturesque hexadecimal value `0xDEADCE11`), and also as a blank bit set in
-the blanks array. This makes a negative check -- that something is not blank
--- very quick, since only in the very rare case when the value does coincide
+the blanks array. This makes a negative check — that something is not blank
+— very quick, since only in the very rare case when the value does coincide
 with `TABLE_NOVALUE` do we need to check the blanks array. A positive check
 necessarily takes longer, but this cannot be helped.
 

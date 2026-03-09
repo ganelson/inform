@@ -89,12 +89,11 @@ will in practice use that only for subjects representing kinds:</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">COUNTING_DATA(subj)</span> <span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">counting</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">counting_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">counting_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_instances</span><span class="plain-syntax">; </span><span class="comment-syntax">/* are there any instances of this kind? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">IK_count_prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_in_IK_sequence_prop</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the IK-Link property for this kind */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">counting_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure counting_data is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
@@ -376,8 +375,8 @@ would be the number for &quot;vehicle&quot;, not for &quot;thing&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10_4_1" class="paragraph-anchor"></a><b>&#167;10.4.1. </b>  And otherwise, for every kind that the instance belongs to (directly or
 indirectly) it gets the relevant instance count as a property value. For
-example, the red door might have <code>IK4_Count</code> set to 3 -- it's door number 3,
-let's suppose -- and <code>IK2_Count</code> set to 19 -- it's thing number 19. It doesn't
+example, the red door might have <code>IK4_Count</code> set to 3 — it's door number 3,
+let's suppose — and <code>IK2_Count</code> set to 19 — it's thing number 19. It doesn't
 have an <code>IK7_Count</code> property at all, since it isn't a backdrop (kind number 7),
 and so on for all other kinds.</p>
 </div>

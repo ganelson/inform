@@ -98,8 +98,8 @@ Constant RRP_LARGE_IS      256; ! how many entries make a table "large"?
 Constant RRP_CROWDED_IS    2;   ! when filled entries outnumber unfilled by _ to 1
 
 @h Abstract Relations.
-As the following shows, we can abstractly use a relation -- that is, we can
-use a relation whose identity we know little about -- by calling its handler
+As the following shows, we can abstractly use a relation — that is, we can
+use a relation whose identity we know little about — by calling its handler
 routine `R` in the form `R(rel, task, X, Y)`.
 
 The task should be one of: `RELS_TEST`, `RELS_ASSERT_TRUE`, `RELS_ASSERT_FALSE`,
@@ -165,7 +165,7 @@ creating, a relation. For example, if we write
 > let Q be the containment relation;
 
 ...we aren't literally asking for Q to be a duplicate copy of containment,
-which can then independently evolve -- we mean in some sense that Q is a
+which can then independently evolve — we mean in some sense that Q is a
 pointer to the one and only containment relation. On the other hand, if we
 write
 
@@ -176,7 +176,7 @@ write
 then the second line clearly expects Q to be its own relation, newly created.
 
 We cope with this at creation time. If we're invited to create a copy of an
-existing relation, we look to see if it is empty -- which we detect by its
+existing relation, we look to see if it is empty — which we detect by its
 use of the `EmptyRelationHandler` handler. The empty relations are exactly
 those used as default values for the relation kinds; thus that's what will
 happen when Q is created. If we find this handler, we intercept and replace
@@ -252,7 +252,7 @@ deep copying.
 
 @h Comparison.
 It really isn't clear how to define equality for relations, but we follow
-the doctrine above. What we don't do is to test its actual state -- that
+the doctrine above. What we don't do is to test its actual state — that
 would be very slow and might be impossible.
 
 =
@@ -1463,7 +1463,7 @@ clears the corresponding other half stored in a different entry. That is,
 given the entries $(F, X, _, Y)$ at index `i` and $(F, Y, X, _)$ elsewhere,
 `TwoInOneDelete(rel, i, kx, ky, RRF_ENTKEYX, 1)` will clear both entries
 and mark them as deleted. If, however, those entries overlap with other
-pairs -- say they're $(F, X, A, Y)$ and $(F, Y, X, B)$ -- then the same call
+pairs — say they're $(F, X, A, Y)$ and $(F, Y, X, B)$ — then the same call
 to `TwoInOneDelete` will leave us with $(F, X, A, _)$ and $(F, Y, _, B)$,
 having cleared the parts corresponding to the pair $(X, Y)$ but not the
 parts corresponding to the pairs $(A, X)$ and $(Y, B)$, and will not mark

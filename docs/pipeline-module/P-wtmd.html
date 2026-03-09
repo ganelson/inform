@@ -88,13 +88,10 @@ objects, each made up of <a href="2-pp.html#SP2" class="internal">pipeline_step<
 <p>Pipelines can go wrong in two different ways: either by failing to be properly
 defined because of syntax errors in their definitions, or by failing to run
 properly. For example, if we compile this Basic Inform project:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">: </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">: </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">: (- </span><span class="identifier-syntax">Cryptid</span><span class="plain-syntax">(); -).</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">: (- </span><span class="identifier-syntax">Cryptid</span><span class="plain-syntax">(); -).
+</span></pre>
 <p>...then the <a href="../inform7/index.html" class="internal">inform7</a> compiler happily makes an Inter tree, on the
 assumption that an Inter function called <code>Cryptid</code> will be defined in one
 of the kits to be loaded in later. But when later comes, the <code>compile</code> pipeline
@@ -118,17 +115,17 @@ optimises the result, and then generates final code.</p>
 </li>
 </ul>
 <p>The <a href="../supervisor-module/index.html" class="internal">supervisor</a> module decides when these are to be &quot;run&quot;, and sets them
-up with configuration details -- what Inter architecture to use, where to
+up with configuration details — what Inter architecture to use, where to
 put the resultant files, when a kit needs to be rebuilt, and so on. None of
 that is our problem here. Roughly speaking, though, <code>build-kit</code> is run only
-occasionally, when the source code for a kit is modified -- for most Inform
-users, that will be never -- whereas <code>compile</code> is run every time the user of
+occasionally, when the source code for a kit is modified — for most Inform
+users, that will be never — whereas <code>compile</code> is run every time the user of
 an Inform GUI app clicks the &quot;Go&quot; button.</p>
 <p>Speed is therefore unimportant for stages used in <code>build-kit</code>, but very
 important for stages used in <code>compile</code>. As a rule of thumb, if the user waits
 10 seconds for the result after clicking &quot;Go&quot; then the first 6 seconds are spent
 in <a href="../inform7/index.html" class="internal">inform7</a>, the next 3 seconds running the <code>compile</code> pipeline, and the final
-second in whatever compiler turns the final code into an executable -- usually
+second in whatever compiler turns the final code into an executable — usually
 Inform 6.</p>
 </div>
 <div class="lsmarkdown">
@@ -201,8 +198,8 @@ code is generated. At present this does relatively little, but it's a start.</p>
 <span class="plain-syntax">eliminate-redundant-operations</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  To create a new stage, you may want to copy a simple existing one -- say,
-the <a href="6-erls.html" class="internal">Eliminate Redundant Labels Stage</a> -- as a model. Note that a stage
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  To create a new stage, you may want to copy a simple existing one — say,
+the <a href="6-erls.html" class="internal">Eliminate Redundant Labels Stage</a> — as a model. Note that a stage
 must be &quot;created&quot;, and your function to create it should be called from the
 function <a href="2-pp.html#SP10" class="internal">ParsingPipelines::parse_stage</a>.</p>
 </div>

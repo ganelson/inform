@@ -166,8 +166,8 @@ mean the direction or, say, &quot;east garden&quot;. And what if the source
 mentions many chairs, and now refers simply to &quot;the chair&quot;? This problem
 is not so acute for nouns referring to abstractions, where we can simply
 forbid duplicate definitions and require an exact wording when talking
-about them. But for names of IF objects -- which represent the solid and often
-repetitive items and places of a simulated world -- it cannot be ducked.
+about them. But for names of IF objects — which represent the solid and often
+repetitive items and places of a simulated world — it cannot be ducked.
 We can hardly tell an Inform author to create at most one item whose
 name contains the word &quot;jar&quot;, for instance.</p>
 <p>All programming languages face similar problems. In C, for instance, a local
@@ -179,17 +179,14 @@ cases of ambiguity, being the definition of narrowest scope which is valid
 at the position in question. In our terms, a stand-alone C program has a
 heading tree like so, with two semantically meaningful heading levels,
 File (0) and Routine (1), and then sublevels provided by braced blocks:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">File</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">main</span><span class="plain-syntax">()</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">routine1</span><span class="plain-syntax">()</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">interior</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">loop</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">routine2</span><span class="plain-syntax">()</span>
-<span class="plain-syntax">        ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	File
+	    main()
+	    routine1()
+	        interior block of a loop
+	        ...
+	    routine2()
+	    ...
+</span></pre>
 <p>The resolution of a name at a given position P is unambiguous: find the
 heading H to which P belongs; if the name is defined there, accept that;
 if not move H upwards and try again; if it is not defined even at File (0)
@@ -341,13 +338,13 @@ the graph is connected, and therefore every heading must eventually be
 visited. No heading can be visited twice, because that would mean that a
 cycle of nodes \INWEBMATH(H_1, H_2, ..., H_i, H_1\INWEBMATH) must exist: since we have a tree
 structure, there are no loops, and so \INWEBMATH(H_i = H_2\INWEBMATH), \INWEBMATH(H_{i-1} = H_3\INWEBMATH), and so
-on -- we must be walking a path and then retracing our steps in reverse.
+on — we must be walking a path and then retracing our steps in reverse.
 That being so, there is a point where we turned back: we went from \INWEBMATH(H_j\INWEBMATH) to
 \INWEBMATH(H_{j+1}\INWEBMATH) to \INWEBMATH(H_j\INWEBMATH) again. And this violates the principle that at each node
 we move outwards in every direction except the way we came, a
 contradiction.</p>
-<p>The routine looks as if it may have a large recursion depth -- maybe as
-deep as the number of headings -- but because we go downwards and then
+<p>The routine looks as if it may have a large recursion depth — maybe as
+deep as the number of headings — but because we go downwards and then
 upwards, the maximum recursion depth of the routine is less than \INWEBMATH(2L+1\INWEBMATH), where
 \INWEBMATH(L\INWEBMATH) is the number of levels in the tree other than the pseudo-heading. This
 provides an upper bound of about 21, regardless of the size of the source

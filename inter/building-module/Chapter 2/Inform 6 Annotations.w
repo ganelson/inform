@@ -5,18 +5,16 @@ Parsing Inform 6-syntax annotation markers.
 @ Annotations are parsed into the following:
 
 =
-typedef struct I6_annotation {
+classdef I6_annotation in 100s {
 	struct text_stream *identifier;
 	struct linked_list *terms; /* of `I6_annotation_term` */
 	struct I6_annotation *next;
-	CLASS_DEFINITION
-} I6_annotation;
+}
 
-typedef struct I6_annotation_term {
+classdef I6_annotation_term in 100s {
 	struct text_stream *key;
 	struct text_stream *value;
-	CLASS_DEFINITION
-} I6_annotation_term;
+}
 
 @ =
 I6_annotation *I6Annotations::new(void) {

@@ -3,8 +3,8 @@
 To parse two forms of noun: a noun phrase in a sentence, and a
 description of what text can be written in a given situation.
 
-@ Inform recognises many noun-like constructions, some of which -- out of a noun
-context -- look like adjectives, actions or other excerpts which aren't at all
+@ Inform recognises many noun-like constructions, some of which — out of a noun
+context — look like adjectives, actions or other excerpts which aren't at all
 evidently nouns. These many ways to describe nouns are gathered up into two
 central constructions. A "type expression" specifies what sort of excerpt
 should appear in a given place, whereas a "value" means anything which
@@ -12,7 +12,8 @@ can be a noun phrase for a verb. There is considerable overlap between the
 two, but they are not the same.
 
 The following example sentences all have expressions embedded in them:
-= (text as Inform 7)
+
+``` Inform7
                                      EXPRESSION:
 if the idea of the gizmo is          taking the fish             , ...
 if there are                         three women                 in the Nunnery, ...
@@ -26,6 +27,7 @@ To repeat until (C -                 condition                   ): ...
 The Zeppelin countdown is a          number that varies
 The little red car is a              vehicle
 The weight of the Space Shuttle is   68585 kg
+```
 
 @h Type expressions.
 A "type expression" specifies what sort of excerpt of text should appear
@@ -48,7 +50,7 @@ consider a value and not a type at all:
 > To adjust (X - closed door) by (N - 11): ...
 
 gives a definition to be used only where the second parameter evaluates to
-11. In this way any constant value is regarded as being a type -- the narrow
+11. In this way any constant value is regarded as being a type — the narrow
 type representing only its own value.
 
 The final use of <s-object-instance> here catches hardly any cases, but is
@@ -73,8 +75,8 @@ otherwise as the 24th "Street".
 	<s-object-instance>                          ==> { pass 1 }
 
 @ Note that a list of adjectives with no noun does not qualify as a type
-expression. It looks as if it never should, on the face of it -- "opaque"
-does not make clear what kind of object is to be opaque -- but once again we
+expression. It looks as if it never should, on the face of it — "opaque"
+does not make clear what kind of object is to be opaque — but once again we
 are up against the problem that Inform needs to allow some slightly noun-like
 adjectives. For instance, this:
 

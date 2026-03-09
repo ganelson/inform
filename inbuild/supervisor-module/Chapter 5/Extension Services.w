@@ -10,7 +10,7 @@ length to one character less than the following constants:
 @d MAX_EXTENSION_AUTHOR_LENGTH 51
 
 =
-typedef struct inform_extension {
+classdef inform_extension {
 	struct inbuild_copy *as_copy;
 	int has_literate_source;
 	struct wording body_text; /* Body of source text supplied in extension, if any */
@@ -35,8 +35,7 @@ typedef struct inform_extension {
 	struct linked_list *kits; /* of `inbuild_requirement` */
 	struct inbuild_nest *materials_nest;
 	int documented_on_this_run;
-	CLASS_DEFINITION
-} inform_extension;
+}
 
 @ This is called as soon as a new copy `C` of the extension genre is created.
 We scan the extension file for the title, author, version number and any
@@ -894,9 +893,11 @@ void Extensions::read_source_text_for(inform_extension *E) {
 }
 
 @ We concoct a textual synopsis in the form
-= (text)
+
+``` None
 	"Pantomime Sausages by Mr Punch"
-=
+```
+
 to be used by `SourceFiles::read_extension_source_text` for printing to `stdout`. Since
 we dare not assume `stdout` can manage characters outside the basic ASCII
 range, we flatten them from general ISO to plain ASCII.
@@ -1095,8 +1096,8 @@ inform_extension *Extensions::find_by_name(text_stream *name, text_stream *autho
 }
 
 @h Version requirements.
-When it's known that an extension must satisfy a given version requirement --
-say, being version 7.2.1 or better -- the following is called. Note that
+When it's known that an extension must satisfy a given version requirement —
+say, being version 7.2.1 or better — the following is called. Note that
 if incompatible requirements are placed on it, the range in `E->must_satisfy`
 becomes empty and stays that way. 
 

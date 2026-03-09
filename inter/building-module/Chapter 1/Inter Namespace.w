@@ -5,7 +5,7 @@ To manage references to Inter symbols which may or may not yet exist.
 @h Introduction.
 See //What This Module Does// for a fuller explanation, but briefly, an
 //inter_name// or "iname" represents a symbol which will eventually exist,
-but which may not exist at the moment -- indeed, may be placed inside a
+but which may not exist at the moment — indeed, may be placed inside a
 package which also does not yet exist.
 
 //inform7// and other code-generation tools can make many such inames, living
@@ -25,13 +25,13 @@ and others still derive new names from existing ones (for example, turning
 @e DERIVED_INGEN
 
 =
-typedef struct inter_name_generator {
+classdef inter_name_generator in 1000s {
 	int ingen;
 	struct text_stream *name_stem;
 	int no_generated; /* relevant only for `MULTIPLE_INGEN` */
 	struct text_stream *derived_prefix; /* relevant only for `DERIVED_INGEN` */
 	struct text_stream *derived_suffix; /* relevant only for `DERIVED_INGEN` */
-} inter_name_generator;
+}
 
 inter_name_generator *InterNames::single_use_generator(text_stream *name) {
 	inter_name_generator *F = CREATE(inter_name_generator);
@@ -60,14 +60,18 @@ required to generate that text. (The memo field, which in principle allows
 any text to be stored, is used only for a small proportion of inames.)
 
 =
-typedef struct inter_name {
+classdef inter_name in 1000s {
 	struct inter_name_generator *generated_by;
 	int unique_number;
 	struct inter_symbol *symbol;
 	struct package_request *location_in_hierarchy;
 	struct text_stream *memo;
 	struct inter_name *derived_from;
-} inter_name;
+}
+
+#ifdef CORE_MODULE
+MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
+#endif
 
 @ This implements the `%n` escape, which prints an iname:
 

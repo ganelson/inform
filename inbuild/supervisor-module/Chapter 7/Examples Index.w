@@ -7,15 +7,14 @@ multiple-files mode only.
 alphabetic and thematic example indexes.
 
 =
-typedef struct example_index_data {
+classdef example_index_data {
 	int alpha_index_embolden;
 	struct text_stream *alpha_index_rubric;
 	struct text_stream *alpha_index_subtitle;
 	struct markdown_item *alpha_index_to_S;
 	struct IFM_example *alpha_index_to_E;
 	struct text_stream *sort_key;
-	CLASS_DEFINITION
-} example_index_data;
+}
 
 dictionary *example_index_data_by_rubric = NULL;
 

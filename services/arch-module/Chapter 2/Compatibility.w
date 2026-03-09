@@ -7,12 +7,11 @@ An object of the following class can represent any subset of VMs, so
 it's a fully general way to express which VMs some piece of software works with:
 
 =
-typedef struct compatibility_specification {
+classdef compatibility_specification {
 	struct text_stream *parsed_from; /* if it came from text */
 	int default_allows;
 	struct linked_list *exceptions; /* of `target_vm` */
-	CLASS_DEFINITION
-} compatibility_specification;
+}
 
 @ The creator function for this always begins with a specification meaning
 "works with all VMs":
@@ -78,8 +77,8 @@ text like "for Glulx only" used in Inform extension headings. A syntactically
 invalid description returns `NULL` but prints no error message; an empty
 description returns the universally valid specification.
 
-A question we might return to is whether an unrecognisable description --
-say, "for Marzipan version 28.1 only" -- should return a universally-false
+A question we might return to is whether an unrecognisable description —
+say, "for Marzipan version 28.1 only" — should return a universally-false
 specification rather than returning `NULL`: this would enable current Inform
 tools to work with future resources which use VMs currently unthought of.
 But for now, it seems best to generate errors, because the more likely thing
@@ -161,7 +160,7 @@ compatibility_specification *Compatibility::from_text(text_stream *text) {
 	}
 
 @ The above gets us down from, say, "for Glulx only" to just "Glulx", and
-calls the function //Compatibility::parse_specifics// to handle that specific part --
+calls the function //Compatibility::parse_specifics// to handle that specific part —
 though it may be more complicated. See the //arch-test// unit test for
 examples. While parsing those specifics we maintain a state in the following
 structure:
@@ -197,7 +196,7 @@ int Compatibility::parse_specifics(compatibility_specification *C, text_stream *
 	return okay;
 }
 
-@ This is essentially simple -- it splits up text like "Z-machine versions 5 or 8"
+@ This is essentially simple — it splits up text like "Z-machine versions 5 or 8"
 into tokens, sending them one at a time to //Compatibility::parse_token//.
 Note that commas are converted to the token `or`: e.g., "Z-machine versions 5, 6
 or 8" would be treated as "Z-machine versions 5 or 6 or 8"; and note also that

@@ -35,7 +35,7 @@ But it can optionally add a bracketed note giving the language:
 > "Le Port des brumes" by Georges Simenon (in French)
 
 This bracketed note can take two forms. If it begins "in", then the rest must
-be the English form of the name of a language -- in this instance, "French".
+be the English form of the name of a language — in this instance, "French".
 This must be a language for which Inbuild can find a language bundle (see below).
 The LOP will be French, and the LOS will be English.
 
@@ -76,7 +76,8 @@ This is a JSON file very similar to the ones used for kit metadata: see //A Guid
 which it is probably helpful to read before going much further with this.
 
 For example:
-= (text)
+
+``` None
 {
     "is": {
         "type": "language",
@@ -94,17 +95,20 @@ For example:
 		"translated-syntax-cue": "en français"
     }
 }
-=
+```
+
 Note that at present language bundles have no authorship, so that the `"is"`
 object does not give an `"author"` field. (This may change in later builds.)
 Language bundles can have version numbers, like so:
-= (text)
+
+``` None
     "is": {
         "type": "language",
         "title": "French",
         "version": "2.3.17"
     },
-=
+```
+
 But the English language kit shipped with Inform is not version-numbered.
 
 @ A language bundle can only have unconditional "needs", each of which must
@@ -118,7 +122,8 @@ when compiling a project whose LOP is that language.
 
 Note that a language bundle does not have an extension among its "needs". It
 would be incorrect to write:
-= (text)
+
+``` None
     "needs": [ {
 		"need": {
 			"type": "kit",
@@ -131,19 +136,21 @@ would be incorrect to write:
 			"author": "Paul Mensonge"
 		}
 	} ],
-=
+```
+
 Although the extension is indeed necessary, it should be given in the "needs"
 of the kit `FrenchLanguageKit`, not of the language bundle "French". Thus
-= (text)
+
+``` None
 French --- needs --> FrenchLanguageKit --- needs --> French Language by Paul Mensonge
-=
+```
 
 @ The `language-details.translated-name` field is required, and should the the
 language as it is normally written in the language itself: thus, `Deutsch` not
 `German`.
 
 As its name suggests, the `language-details.iso-639-1-code` field should be
-a valid ISO 639-1 code for the language in question -- a two-letter code such
+a valid ISO 639-1 code for the language in question — a two-letter code such
 as "de" (German) or "hr" (Croatian). See for example
 //Wikipedia -> https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes// for a complete list.
 
@@ -157,15 +164,17 @@ If the user tries to build a project "scritto in italiano", then Inbuild will
 read a file of Preform declarations called `Syntax.preform` inside the bundle:
 in this example, at `Italian/Syntax.preform`. Should such a file not exist (or
 not declare any nonterminals) then Inform will produce a problem like so:
-= (text)
+
+``` None
 Problem. The project says that its syntax is written in a language other than
 English (specifically, Italian), but the language bundle for that language does
 not provide a file of Preform definitions.
-=
+```
 
 @ Finally, there is a very sketchy ability for a language bundle to localise
 the Index for a project: see e.g. `inform7/Internal/Languages/French/Index.txt`.
 Note that this takes effect only if the user asks it to with a use option:
-= (text as Inform 7)
+
+``` Inform7
 Use French language index.
-=
+```

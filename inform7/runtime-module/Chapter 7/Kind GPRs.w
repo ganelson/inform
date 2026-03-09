@@ -178,7 +178,7 @@ with `I_burnt_umber`, it would match only "burnt umber".
 Why is this needed? The answer is that whereas objects can have individual
 `parse_name` functions, allowing authors to customise the recognised names for
 them, instances of non-object enumerations do not have a `parse_name`. So this
-is the only way to allow, say, "Understand "sooty" as burnt umber." to work --
+is the only way to allow, say, "Understand "sooty" as burnt umber." to work —
 the grammar holding "sooty" comes out only in the following function.
 
 @<Compile the instance GPR@> =

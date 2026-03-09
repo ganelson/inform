@@ -93,7 +93,7 @@ int C_symbols_header_segments[] = {
 @d C_GEN_DATA(x) ((C_generation_data *) (gen->generator_private_data))->x
 
 =
-typedef struct C_generation_data {
+classdef C_generation_data {
 	int compile_main;
 	int compile_symbols;
 	struct dictionary *symbols_header_identifiers;
@@ -103,8 +103,7 @@ typedef struct C_generation_data {
 	struct C_generation_object_model_data objdata;
 	struct C_generation_literals_model_data litdata;
 	struct C_generation_variables_data vardata;
-	CLASS_DEFINITION
-} C_generation_data;
+}
 
 void CTarget::initialise_data(code_generation *gen) {
 	C_GEN_DATA(compile_main) = TRUE;

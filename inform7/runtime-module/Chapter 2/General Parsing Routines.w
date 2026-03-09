@@ -6,12 +6,12 @@ used to match noun phrases in the command parser.
 @h Introduction.
 At runtime, the command parser handles noun phrases in two ways. Simple
 nouns for an object are handled by giving it a `name` property listing
-some dictionary words which could refer to it -- see //Name Properties//.
+some dictionary words which could refer to it — see //Name Properties//.
 
 More complex nouns are handled with Inter functions called "general parsing
 routines", or GPRs: the term is traditional and goes back to Inform 1 to 6.
 GPRs are used for parsing values of kinds other than objects, too; in
-particular, each notation for a literal value needs its own GPR -- see
+particular, each notation for a literal value needs its own GPR — see
 //Literal Patterns//.
 
 The GPRs compiled automatically by today's Inform follow the same conventions
@@ -35,7 +35,7 @@ below, and they need to match each other.
 
 @h GPR kits.
 Since GPRs are needed for several different purposes, we provide a general
-API for compiling them, based around the idea of a "GPR kit" -- slogan, it's
+API for compiling them, based around the idea of a "GPR kit" — slogan, it's
 everything you need to compile your own GPR.
 
 This is not an elegant structure. It mainly keeps track of the many local

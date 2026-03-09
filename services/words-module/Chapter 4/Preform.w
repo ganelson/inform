@@ -6,13 +6,13 @@ To parse the word stream against a general grammar defined by Preform.
 The purpose of this section is to write //Preform::parse_nt_against_word_range//,
 the function which is called whenever Preform grammar is matched against a
 wording: the //inweb// preprocessor converts code like:
-= (text as InC)
+
 	if (<aquarium-name>(W)) ...
-=
+
 into
-= (text as C)
+
 	if (Preform::parse_nt_against_word_range(aquarium_name_NTM, W, NULL, NULL)) ...
-=
+
 Those last two parameters, `result` and `result_p`, are set only when we are
 recursively calling the function from inside itself. Recall that a match against
 a NT either succeeds or fails, and that produces the return value of this
@@ -201,7 +201,7 @@ function for the nonterminal, we call it.
 If there's no compositor then the integer result is the production's number,
 and the pointer result is null.
 
-This is the range of fail nonterminal values -- `FAIL_NONTERMINAL` to one
+This is the range of fail nonterminal values — `FAIL_NONTERMINAL` to one
 less than `FAIL_NONTERMINAL_TO`:
 
 @d FAIL_NONTERMINAL -100000
@@ -269,9 +269,11 @@ The strategy is:
 - then making sure brackets match, if there were any.
 
 For example, if the production is
-= (text as Preform)
+
+``` Preform
 	adjust the <achingly-slow> to the <exhaustive> at once
-=
+```
+
 then the fast scan verifies the presence of "adjust the" and "at once";
 the slow scan next looks for all occurrences of "to the", the single strut
 for this production; and only then does it test the two slow nonterminals
@@ -502,9 +504,11 @@ or else know exactly where the next ptoken starts: because its position is
 known, or because it's a strut.
 
 This is why two elastic nonterminals in a row won't parse correctly:
-= (text as Preform)
+
+``` Preform
 	frog <amphibian> <pond-preference> toad
-=
+```
+
 Preform is unable to work out where the central boundary will occur. In theory
 it should try every possibility. But that's inefficient: in practice the
 solution is to write the grammar to minimise these cases, and then to set up
@@ -547,9 +551,11 @@ probably gives the wrong answer.)
 @ Here we find the next possible match position for the strut beginning `start`
 and of width `len` in words, which begins at word `from` or after. Note that
 the strut might run up right to the end of the input text: for example, in
-= (text as Preform)
+
+``` Preform
 	neckties ... tied ***
-=
+```
+
 the word "tied" is a strut, because the `***` makes its position uncertain,
 but since `***` might match the empty text, "tied" might legally be the
 last word in the input text.

@@ -64,16 +64,13 @@ function togglePopup(material_id) {
 there is otherwise nothing exotic about it. In as simple a way as possible, we
 take a text <code>from</code> and break it into Inform 6 tokens. What we return is not
 literally a linked list, but it amounts to the same thing: a single node
-holding an unstructured run of tokens --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">EXPRESSION_ISNT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T1</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T2</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">T3</span>
-<span class="plain-syntax">        ...</span>
-</pre>
-<div class="lsmarkdown">
+holding an unstructured run of tokens —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+		...
+</span></pre>
 <p>We follow the syntax of Inform 6, except that we have to look for three extra
 syntaxes: <code>{-braced-commands}</code>, <code>(+ Inform 7 interpolation +)</code>, and, if the
 abbreviated syntax is allowed, also some cryptic notations such as <code>*1</code>.</p>
@@ -431,17 +428,14 @@ a bracing.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_5">&#167;1.5</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_5_1_1" class="paragraph-anchor"></a><b>&#167;1.5.1.1. </b>  A bracing can take any of the following forms:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">command</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">command:operand</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">command:operand:operand2</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">command:operand</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">command:operand</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {</span><span class="identifier-syntax">some</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    {-</span><span class="identifier-syntax">annotation:some</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	{-command}
+	{-command:operand}
+	{-command:operand:operand2}
+	{-command:operand&lt;property name}
+	{-command:operand&gt;property name}
+	{some text}
+	{-annotation:some text}
+</span></pre>
 <p>We parse this with the command or annotation in <code>command</code>, the &quot;some text&quot;
 or operand in <code>bracing</code>, the property name (if given) in <code>extremal_property</code>,
 the direction of the <code>&lt;</code> or <code>&gt;</code> in <code>extremal_property_sign</code>, and the second,
@@ -575,25 +569,19 @@ of modifiers are allowed. See <a href="../calculus-module/3-cs.html" class="inte
 <p class="commentary firstcommentary"><a id="SP1_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1. </b>  That leaves us with just the main case to handle: raw I6 code which is
 outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Frog</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="plain-syntax">*</span><span class="identifier-syntax">Toad</span><span class="plain-syntax">(</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Frog</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="plain-syntax">*</span><span class="identifier-syntax">Toad</span><span class="plain-syntax">(
+</span></pre>
 <p>(there is no reason to suppose that this stretch of code is complete or
 matches parentheses); we must tokenise it into</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Frog</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WHITE</span><span class="plain-syntax"> </span><span class="identifier-syntax">SPACE</span>
-<span class="plain-syntax">    +</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WHITE</span><span class="plain-syntax"> </span><span class="identifier-syntax">SPACE</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">    *</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Toad</span>
-<span class="plain-syntax">    (</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Frog
+	WHITE SPACE
+	+
+	WHITE SPACE
+	2
+	*
+	Toad
+	(
+</span></pre>
 <p>We scan through the text until we reach the start of a new token, and then break
 off what we scanned through since the last time.</p>
 </div>
@@ -626,12 +614,11 @@ off what we scanned through since the last time.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1_3_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1. </b>  Recall that in I6 notation, a dollar introduces a non-decimal number, and
 the character after the initial dollar determines which:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	$+3.14159E2
+	$$1001001
+	$1FE6
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    $+3.14159</span><span class="identifier-syntax">E2</span>
-<span class="plain-syntax">    $$1001001</span>
-<span class="plain-syntax">    $1</span><span class="identifier-syntax">FE6</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for real, binary or hexadecimal notation</span><span class="named-paragraph-number">1.3.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -673,20 +660,14 @@ the character after the initial dollar determines which:</p>
 <p class="commentary firstcommentary"><a id="SP1_3_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2. </b>  A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise <code>x-1</code> as</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	x
+	-
+	1
+</span></pre>
 <p>and not as</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">x</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	x
+	-1
+</span></pre>
 <p>This requires context, that is, remembering what the previous token was.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for negative number</span><span class="named-paragraph-number">1.3.1.2</span></span> =</p>
@@ -1015,8 +996,8 @@ mark. All other string escapes begin with <code>@</code>.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP2">&#167;2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1. </b>  This is not an I6 notation at all. If a character outside the range allowed
-by I6 in string literals is present in an I7 source text file -- for example,
-a capital Cyrillic ef -- then it is converted internally by the compiler to
+by I6 in string literals is present in an I7 source text file — for example,
+a capital Cyrillic ef — then it is converted internally by the compiler to
 something like <code>[unicode 1060]</code>, with 1060 here being the decimal code point
 for the character.</p>
 <p>We will recognise this notation and translate it back into Unicode. The reason

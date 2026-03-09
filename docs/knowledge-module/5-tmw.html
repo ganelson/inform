@@ -98,7 +98,7 @@ certain kinds and relationships better.</p>
 <p>Some instances change their kinds in Stage I, and this can result in further
 creations by assembly sentences like &quot;A handle is part of every door&quot;. Because
 of that, Stage I takes place at the end of traverse 2 of the source text and,
-uniquely, gets the opportunity to add fresh sentences to the source -- thus
+uniquely, gets the opportunity to add fresh sentences to the source — thus
 extending the traverse. But by the end of Stage I, all kinds are fixed, and
 no further instances can be created.</p>
 </div>
@@ -173,7 +173,7 @@ spatial-model plugin does), it must do so during Stage III, not Stage II.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Stage IV.</b>  This is for consistency checks or to store away useful data, but where
-nothing in the model may be changed -- no properties or relationships
+nothing in the model may be changed — no properties or relationships
 may be added.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -198,7 +198,7 @@ made, but also on what that subject inherits from. Suppose we are told:</p>
 <p>The cup is in the Yellow Cupboard. The Cupboard is lighted.</p>
 </blockquote>
 <p>When we make the &quot;lighted&quot; inference, we know for certain what subject
-it's about -- the Yellow Cupboard -- but not where this lives in the
+it's about — the Yellow Cupboard — but not where this lives in the
 inference-subject hierarchy, because that depends on the kind of the
 Cupboard. Is it a room, or a container? We don't yet know (and won't until
 Stage I of model-completion), so we aren't in a position to judge whether
@@ -239,7 +239,7 @@ convenience, and don't have to follow the I7 rules.</p>
 <span class="plain-syntax">            </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sign</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-inf.html#SP3" class="function-link"><span class="function-syntax">Inferences::get_certainty</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">narrow</span><span class="plain-syntax">) &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">sign</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-tmw.html#SP4_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Look for clashes concerning this property from wider inferences</span></span><span class="named-paragraph-number">4.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-prp.html#SP16" class="function-link"><span class="function-syntax">Properties::is_either_or</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-prp.html#SP13" class="function-link"><span class="function-syntax">Properties::is_either_or</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><a href="3-ep.html#SP6" class="function-link"><span class="function-syntax">EitherOrProperties::get_negation</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">prn</span><span class="plain-syntax"> = </span><a href="3-ep.html#SP6" class="function-link"><span class="function-syntax">EitherOrProperties::get_negation</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">sign</span><span class="plain-syntax"> = </span><span class="constant-syntax">-</span><span class="identifier-syntax">sign</span><span class="plain-syntax">;</span>
@@ -280,7 +280,7 @@ about the Portal, to stand.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">abcw</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">clash</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wide_sign</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-inf.html#SP3" class="function-link"><span class="function-syntax">Inferences::get_certainty</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wide</span><span class="plain-syntax">) &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">wide_sign</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-prp.html#SP16" class="function-link"><span class="function-syntax">Properties::is_either_or</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-prp.html#SP13" class="function-link"><span class="function-syntax">Properties::is_either_or</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">narrow_val</span><span class="plain-syntax"> = </span><a href="5-pi.html#SP8" class="function-link"><span class="function-syntax">PropertyInferences::get_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">narrow</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wide_val</span><span class="plain-syntax"> = </span><a href="5-pi.html#SP8" class="function-link"><span class="function-syntax">PropertyInferences::get_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wide</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Rvalues::compare_CONSTANT</span><span class="plain-syntax">(</span><span class="identifier-syntax">narrow_val</span><span class="plain-syntax">, </span><span class="identifier-syntax">wide_val</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
@@ -317,7 +317,7 @@ about the Portal, to stand.</p>
 between things and things, and then write &quot;X connects to Y&quot;. Inform must clearly
 check that X and Y are both things. It does indeed make some checks along those
 lines earlier on in compilation, but there are objects whose kinds are not known
-until model completion time -- in particular, there can be objects which might
+until model completion time — in particular, there can be objects which might
 be things or might be rooms, so that we cannot know if &quot;X connects to Y&quot; is
 legal until after the model is completed.</p>
 <p>But that's now! And so we make one last check, just in case.</p>

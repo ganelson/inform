@@ -8,12 +8,11 @@ on the action applying to "a closed door". This is stored in the following
 actions-feature corner of the //assertions: Runtime Context Data// for the rule.
 
 =
-typedef struct actions_rcd_data {
+classdef actions_rcd_data {
 	int always_test_actor; /* ...even if no AP was given, test that actor is player? */
 	int never_test_actor; /* ...for instance, for a parametrised rather than action rulebook */
 	int marked_for_anyone; /* any actor is allowed to perform this action */
-	CLASS_DEFINITION
-} actions_rcd_data;
+}
 
 actions_rcd_data *ActionRules::new_rcd_data(id_runtime_context_data *idrcd) {
 	actions_rcd_data *ard = CREATE(actions_rcd_data);

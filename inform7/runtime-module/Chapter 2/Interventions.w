@@ -13,14 +13,16 @@ the linking stage.
 Note that this is different from the ability to define phrases inline, which
 also uses I6 notation, but is fully decoded in the main compiler. Here we are
 looking at the consequences of, for example,
-= (text)
+
+``` None
 Use predictable randomisation translates as (- Constant FIX_RNG; -).
 Include (-
 	[ MyOddballFunction x;
 		print 2*x;
 	];
 -).
-=
+```
+
 See //assertions: Intervention Requests// for how such Include sentences are
 handled. Each one leads to the creation of a `source_text_intervention` object;
 so now we work through those objects and take the necessary action to put the
@@ -125,15 +127,19 @@ text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 
 @ Our biggest complication is that I7 expressions can be included in the I6
 matter with the `(+` and `+)` notation. For example,
-= (text)
+
+``` None
 	Constant FROG_CL = (+ pond-dwelling amphibian +);
-=
+```
+
 will expand "pond-dwelling amphibian" into the I6 translation of the kind
 of object with this name. Because of this syntax, one has to watch out for
 I6 code like so:
-= (text as Inform 6)
+
+``` Inform6
 	if (++counter_of_some_kind > 0) ...
-=
+```
+
 which can trigger an unwanted `(+`.
 
 @<Read up to the next plus close-bracket as an I7 expression@> =

@@ -20,12 +20,14 @@ The two virtual machines compiled to by I6 both support "properties" and
 not in a way which exactly matches their similarly-named I7 features. So for
 clarity we will call them VN-properties, VM-attributes, VM-objects and VM-classes
 in this section of code. For example, this I6 code:
-= (text as Inform 6)
+
+``` Inform6
 Object mandrake_root
 	class Mandragora
 	with potency 10,
 	has edible;
-=
+```
+
 creates a VM-object `mandrake_root` of VM-class `Mandragora`, which has the
 VM-property `potency` set to 10, and the VM-attribute `edible` set.
 
@@ -44,7 +46,7 @@ undeclared ones).
 (c) But VM-attributes, and declared VM-properties, can be accessed just a
 little faster at runtime, and take just a little less storage.
 
-Because of (c) we don't want to do the simplest possible thing -- i.e., to
+Because of (c) we don't want to do the simplest possible thing — i.e., to
 make everything an undeclared VM-property and be done with it. Instead, we
 do use our limited supplies of (a) and (b), prioritising properties which
 come from kits because that will include all the most frequently-used ones.
@@ -57,7 +59,8 @@ in a VM-property" or "store in a VM-attribute", respectively. Word 1 will
 then be the choice of VM-property or VM-attribute in question. For example,
 hypothetical I7 properties "potency" and "edible" might have metadata arrays
 like so:
-= (text)
+
+``` None
 	A_potency --> 1
 	              potency
 	              0	  (means "not either-or")
@@ -66,8 +69,9 @@ like so:
 	              edible
 	              1   (means "either-or")
 	              ... (permissions)
-=
-Note that at runtime VM-property and VM-attribute numbers may overlap -- so
+```
+
+Note that at runtime VM-property and VM-attribute numbers may overlap — so
 there is no way to tell from word 1 alone whether it is intended to be a
 VM-property number or a VM-attribute number. Indeed, `potency` might compile
 to the same number as `edible`. So word 0 is certainly necessary.
@@ -127,10 +131,12 @@ that definition to be the true one.
 of non-object kinds are not going to be implemented as VM-objects. So if a
 property needs to be given to such a kind, we cannot store it in a VM-attribute.
 For example:
-= (text as Inform 7)
+
+``` Inform7
 Colour is a kind of value. The colours are red, green and blue. A colour
 can be garish or dowdy.
-=
+```
+
 Here "red", "green" and "blue" are not going to be represented by VM-objects
 at runtime: they will be the numbers 1, 2, and 3. So the property "garish"
 cannot be a VM-attribute. (Numbers can't, of course, have VM-properties
@@ -186,21 +192,25 @@ We give it the property's "inner name": see //Vanilla Objects// for why.
 VM-property: so why is there code here? In fact, old-time Inform 6 coders will
 recognise this situation. Suppose we have a property called `example`, and
 we have some I6 code making reference to it:
-= (text as Inform 6)
+
+``` Inform6
 [ EnthuseOver p;
 	if (p == example) "Hey, the example property! How about that!";
 	"Shucks, just another anonymous property for the pile."
 ];
-=
+```
+
 But now suppose that the I6 user has this code available but has, in fact,
 never actually given the `example` property to any object. That means it is
 never implicitly declared as a VM-property; and so it does not exist as an
 identifier name, which leads to the `EnthuseOver` function failing to compile.
 We get around this with a trick called "stubbing the property": placing the
-following precautionary code at the end of the program --
-= (text as Inform 6)
+following precautionary code at the end of the program —
+
+``` Inform6
 #ifndef example; Constant example = 0; #endif;
-=
+```
+
 Now `example` exists. It's not a valid VM-property, so it will never be seen
 in the wild. `EnthuseOver` will never really enthuse, but won't throw syntax
 errors either.
@@ -216,14 +226,18 @@ odd-looking way because of yet another oddity in the I6 compiler whereby not all
 VM-property names can be used as array entries, whereas they can all be used
 as values of defined `Constant`s. (This in particular is true of the special
 property `name`.) So we define
-= (text as Inform 6)
+
+``` Inform6
 Constant subterfuge_20 = example;
 Array P_edible --> 1 subterfuge_20 ...
-=
+```
+
 rather than:
-= (text as Inform 6)
+
+``` Inform6
 Array P_edible --> 1 example ...
-=
+```
+
 The intent of these is the same, of course.
 
 @<Compile the two opening words of the property metadata@> =
@@ -319,9 +333,11 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 
 @ And instances of enumerated kinds are simply declared as constant values,
 equal to their enumeration numbers. So for e.g.
-= (text as Inform 7)
+
+``` Inform7
 Colour is a kind of value. Red, blue and green are colours.
-=
+```
+
 ...we would declare the constant `I_blue` as being equal to 2, Inform having
 enumerated these colours as 1, 2, 3.
 
@@ -349,7 +365,7 @@ all arrow counts are 0, and we define a flat sequence of free-standing objects.
 
 One last oddball thing is that direction objects have to be compiled in I6
 as if they were spatially inside a special VM-object called `Compass`. This
-doesn't really make much conceptual sense, and I7 dropped the idea -- it has no
+doesn't really make much conceptual sense, and I7 dropped the idea — it has no
 "compass".
 
 =
@@ -398,11 +414,13 @@ void I6TargetObjects::pseudo_object(code_generator *gtr, code_generation *gen, t
 
 @ That just leaves property values. The wrinkle here is the peculiar syntax
 used for I6's inline property arrays, which look like this:
-= (text as Inform 6)
+
+``` Inform6
 	with name 'hoochie' 'coochie' 'band',
-=
-At the Inter level, this is represented by having the property value -- i.e.
-the pair `val1`, `val2` below -- refer to a constant list containing three
+```
+
+At the Inter level, this is represented by having the property value — i.e.
+the pair `val1`, `val2` below — refer to a constant list containing three
 entries (the three dictionary words above). But if we compiled that directly,
 then an attempt to look up the property address `obj.&name` would return the
 address of the address of the array, not the address of the array itself. So

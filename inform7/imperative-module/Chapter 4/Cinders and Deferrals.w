@@ -4,12 +4,12 @@ Cinders are constants in deferred propositions referring to values in the
 original stack frame.
 
 @ The issues giving rise to cinders are explained in //Deciding to Defer//.
-When a proposition contains a constant -- in the predicate calculus sense;
-it may well be a variable or even a function call in Inform -- and this
+When a proposition contains a constant — in the predicate calculus sense;
+it may well be a variable or even a function call in Inform — and this
 cannot be accessed from the stack frame of the proposition's deferral
 function, the constant is a "cinder".[1]
 
-Clearly genuine constants -- literal numbers, names of rules, and so on -- and
+Clearly genuine constants — literal numbers, names of rules, and so on — and
 global variables need not be cindered: those are the same in any stack frame
 and can be evaluated without side-effects. We cinder everything else, which
 seems only prudent. For example:

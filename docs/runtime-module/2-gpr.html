@@ -64,11 +64,11 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  At runtime, the command parser handles noun phrases in two ways. Simple
 nouns for an object are handled by giving it a <code>name</code> property listing
-some dictionary words which could refer to it -- see <a href="7-np.html" class="internal">Name Properties</a>.</p>
+some dictionary words which could refer to it — see <a href="7-np.html" class="internal">Name Properties</a>.</p>
 <p>More complex nouns are handled with Inter functions called &quot;general parsing
 routines&quot;, or GPRs: the term is traditional and goes back to Inform 1 to 6.
 GPRs are used for parsing values of kinds other than objects, too; in
-particular, each notation for a literal value needs its own GPR -- see
+particular, each notation for a literal value needs its own GPR — see
 <a href="5-lp.html" class="internal">Literal Patterns</a>.</p>
 <p>The GPRs compiled automatically by today's Inform follow the same conventions
 and specification, so the tutorials in the Inform 6 manual, the DM4, may help
@@ -90,7 +90,7 @@ below, and they need to match each other.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. GPR kits.</b>  Since GPRs are needed for several different purposes, we provide a general
-API for compiling them, based around the idea of a &quot;GPR kit&quot; -- slogan, it's
+API for compiling them, based around the idea of a &quot;GPR kit&quot; — slogan, it's
 everything you need to compile your own GPR.</p>
 <p>This is not an elegant structure. It mainly keeps track of the many local
 variables needed inside GPRs, which tend to be large, wrangly functions:</p>

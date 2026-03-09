@@ -7,7 +7,7 @@ parsed for their contents until later, so we store several word ranges.
 Also as with tables, each can have a number, a name or both.
 
 =
-typedef struct equation {
+classdef equation {
 	struct wording equation_text; /* the text of the actual equation */
 	struct wording equation_no_text; /* the equation number (if any) */
 	struct wording equation_name_text; /* the equation name (if any) */
@@ -20,8 +20,7 @@ typedef struct equation {
 	struct equation_symbol *symbol_list; /* the symbols used */
 	
 	struct equation_compilation_data compilation_data;
-	CLASS_DEFINITION
-} equation;
+}
 
 @ Each equation is allowed to use one or more symbols. Some may correspond
 to local variables in surrounding code from time to time, but others will
@@ -34,17 +33,16 @@ might be symbols called $m$ in any number of other equations; if so each
 instance has its own `equation_symbol` structure.
 
 =
-typedef struct equation_symbol {
+classdef equation_symbol {
 	struct wording name; /* always just one word, in fact */
-	struct kind *var_kind; /* if a variable -- must be quasinumerical */
+	struct kind *var_kind; /* if a variable - must be quasinumerical */
 	struct id_body *function_notated; /* if a phrase QN to QN */
 	struct parse_node *var_const; /* if a symbol for a constant value */
 	int temp_constant; /* is this constant a substitution for one usage only? */
 	struct equation_symbol *next; /* in the list belonging to the equation */
 	struct local_variable *local_map; /* when being solved in a given stack frame */
 	int promote_local_to_real; /* from integer, if necessary */
-	CLASS_DEFINITION
-} equation_symbol;
+}
 
 @ In addition, there are some standing symbols used by all equations: the
 constant "pi", for example. They're stored in this linked list:
@@ -57,7 +55,8 @@ As usual, the leaves represent symbols or else constants not given symbol
 status (such as the 2 in $E = mc^2$); the non-leaf nodes represent operations,
 identified with the same codes as used in "Dimensions". Note
 that the equals sign `=` is itself considered an operation here.Thus:
-= (text)
+
+``` None
 	OPERATION_EQN =
 	    SYMBOL_EQN E
 	    OPERATION_EQN *
@@ -65,7 +64,7 @@ that the equals sign `=` is itself considered an operation here.Thus:
 	        OPERATION_EQN ^
 	            SYMBOL_EQN c
 	            CONSTANT_EQN 2
-=
+```
 
 @d CONSTANT_EQN 1 /* a leaf, representing a quasinumerical constant not given a symbol */
 @d SYMBOL_EQN 2 /* a leaf, representing a symbol */
@@ -86,7 +85,7 @@ can bind with different tightnesses, but both are represented just as
 `TIMES_OPERATION` nodes in the eventual tree.
 
 Implicit function application is similarly used to represent the unwritten
-operation in `log pi` -- where the function `log` is being applied to the
+operation in `log pi` — where the function `log` is being applied to the
 value `pi`.
 
 @d IMPLICIT_TIMES_OPERATION 100
@@ -97,7 +96,7 @@ value `pi`.
 @d MAX_EQN_ARITY 2 /* at present all operations are at most binary */
 
 =
-typedef struct equation_node {
+classdef equation_node {
 	int eqn_type; /* one of the `*_EQN` values */
 	int eqn_operation; /* one of the `*_OPERATION` values (see "Dimensions.w") */
 	int enode_arity; /* 0 for a leaf */
@@ -109,8 +108,7 @@ typedef struct equation_node {
 	int enode_promotion; /* promote this from an integer to a real number? */
 	int rational_n; /* represents the rational number `n/m`... */
 	int rational_m; /* ...unless `m` is zero */
-	CLASS_DEFINITION
-} equation_node;
+}
 
 @ Equation names follow the same conventions as table names.
 
@@ -355,7 +353,7 @@ example:
 This is split into four clauses, of which the trickiest is the third, reading
 just "m1". This abbreviated form is allowed only in permanent declarations
 (i.e., not in equations defined inside "let" phrases) and gives the symbol
-the same definition as the one following it -- so m1 becomes defined as a
+the same definition as the one following it — so m1 becomes defined as a
 mass, too.
 
 =
@@ -1028,8 +1026,8 @@ read `4 + 5` then we don't know yet whether the `+` will add the 4 to the 5;
 if the next token is `+` or `END_EQN` then it will, but if the next token
 is `*` then it won't, because we're looking at something like `4 + 5 * 6`.
 
-If the next token is of lower precedence than `+` then we "reduce" --
-telling the emitter about the addition, which we now understand -- but if
+If the next token is of lower precedence than `+` then we "reduce" —
+telling the emitter about the addition, which we now understand — but if
 it's higher, as with `*`, then we "shift", meaning, we postpone worrying
 about the addition and start worrying about the multiplication instead;
 our new problem, working out what `*` applies to, sits on top of the
@@ -1561,7 +1559,7 @@ Suppose we are solving for `v`, which occurs in just one place in the equation.
 Either it's at the top level under the `=`, in which case we now have an
 explicit formula for `v`, or it's stuck underneath some operation node. We
 rearrange the tree to move this operation over to the other side, which
-allows `v` to make progress -- see below for a proof that this terminates.
+allows `v` to make progress — see below for a proof that this terminates.
 
 =
 int Equations::eqn_rearrange(equation *eqn, equation_symbol *to_solve) {
@@ -1611,37 +1609,43 @@ point it is at the top level as required and we break out of the loop.
 
 @ So the rearrangement moves have to make sure the "(i) or (ii)" property
 always holds. The simplest case to understand is `+`. Suppose we have:
-= (text)
+
+``` None
 	=
 	    +
 	        V
 	        E
 	    R
-=
+```
+
 representing $(V+E) = R$, where $V$ is the sub-equation containing
 $v$. ($E$ is an arbitrary sub-equation, and $R$ is the right hand
 side.) One of the two operands of `+` will be "promoted", moving
 upwards in the tree, and since we can choose to promote either $V$ or
 $E$, we'll choose $V$, thus obtaining:
-= (text)
+
+``` None
 	=
 	    V
 	    -
 	        R
 	        E
-=
+```
+
 that is, $V = (R - E)$. Since $V$ has moved upwards, so has the unique instance
-of $v$, and therefore the tree depth of $v$ has decreased by 1 -- property (i).
+of $v$, and therefore the tree depth of $v$ has decreased by 1 — property (i).
 Multiplication is similar, but turns into division on the right hand side.
 
 But now consider `-`. When we rearrange:
-= (text)
+
+``` None
 	=
 	    -
 	        E
 	        V
 	    R
-=
+```
+
 representing $(E-V) = R$ we no longer have a choice of which operand of `-`
 to promote: we have to promote the right operand, and that produces $E = (R+V)$.
 The tree depth of $v$ is not improved, and it's now over on the right hand
@@ -1691,20 +1695,24 @@ hardly ever occurs in physical equations, and anyone wanting this will have
 to write more explicit source text.
 
 Anyway, rearrangement for our easy cases is indeed easy:
-= (text)
+
+``` None
 	=
 	    ^
 	        V
 	        2
 	    R
-=
+```
+
 becomes
-= (text)
+
+``` None
 	=
 	    V
 	    square-root
 	        R
-=
+```
+
 and $V$ is always promoted, so we achieve property (i); and similarly for
 cube roots.
 
@@ -1750,23 +1758,26 @@ cube roots.
 	}
 
 @ Here we have something like `log x = y` and want to rewrite as `x = exp y`,
-which is only possible if we have an inverse available for our function --
+which is only possible if we have an inverse available for our function —
 in this case, `exp` being the inverse of `log`. Thus:
-= (text)
+
+``` None
 	=
 	    apply
 	        function
 	        V
 	    R
-=
+```
+
 must become
-= (text)
+
+``` None
 	=
 	    V
 	    apply
 	        inverse-of-function
 	        R
-=
+```
 
 @<Rearrange using the inverse of function@> =
 	equation_node *fnode = old_LHS->enode_operands[0];
@@ -1792,11 +1803,11 @@ must become
 	eqn->parsed_equation->enode_operands[1] = old_LHS;
 	old_LHS->enode_operands[1] = old_RHS;
 
-@ The unary operations are easy in a similar way -- they only have one operand,
+@ The unary operations are easy in a similar way — they only have one operand,
 so we always promote $V$ and achieve property (i). A square root is rearranged
 as a square, and a cube root as a cube. (It's important that everything we do
-is reversible -- we generate exactly those powers which we are able to undo
-again if necessary.) Unary minus is easier still -- we need only move it to
+is reversible — we generate exactly those powers which we are able to undo
+again if necessary.) Unary minus is easier still — we need only move it to
 the other side; thus $-V = R$ becomes $V=-R$, and `v` again rises.
 
 @<Rearrange to move v upwards through this unary operator@> =

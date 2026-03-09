@@ -36,14 +36,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_WORDS_CALLBACK Emotions::wow
 	
 	=
 	void Emotions::wow(text_stream *OUT) {
 	    WRITE("My word!\n");
 	}
-=
+```
+
 The words module has only a few callbacks, and they are all optional. The
 following alphabetical list has references to fuller explanations:
 
@@ -67,6 +69,7 @@ attach such meanings to words. See //Vocabulary::vocab_entry_new//.
 @ If the selection of a natural language is a meaningful thing to the parent,
 it can define `NATURAL_LANGUAGE_WORDS_TYPE` to tell the Preform parser how
 to refer to these. For example, the //supervisor// module has:
-= (text as Inweb)
+
+``` None
 	@d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language
-=
+```

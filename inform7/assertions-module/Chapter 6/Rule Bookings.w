@@ -21,7 +21,7 @@ And each //booking// records which of these sections it belongs to.
 @e VERY_LAST_PLACEMENT
 
 =
-typedef struct booking {
+classdef booking {
 	struct rule *rule_being_booked; /* what appears on this page */
 	int placement; /* one of the `*_PLACEMENT` values above */
 	int place_automatically; /* should this be inserted automatically? */
@@ -29,8 +29,7 @@ typedef struct booking {
 	struct booking_commentary commentary; /* used only for indexing and code comments */
 
 	struct booking *next_booking; /* in its booking list */
-	CLASS_DEFINITION
-} booking;
+}
 
 @ Here's a rather arcane notation used in the debugging log:
 

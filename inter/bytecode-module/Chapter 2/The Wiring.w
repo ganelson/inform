@@ -11,7 +11,8 @@ symbol in one package to connect to a symbol in the other.
 For example, suppose the variable `draconia` is defined in package `Y`, but
 needs to be referred to in `X`. Then `X` will also contain a symbol `draconia`,
 but rather than being defined there, it is wired to the one in `Y`:
-= (text)
+
+``` BoxArt
     +-----------------+        +-------------------------------+
     | Package X       |        | Package Y                     |
     |                 |        |                               |
@@ -24,7 +25,8 @@ but rather than being defined there, it is wired to the one in `Y`:
 	|                 |   |
     | draconia ~~~~~~~~~~~/
     +-----------------+
-=
+```
+
 We write `A ~~> B` as a picturesque notation; the wiring is supposed to look
 coiled, or something like that. As this diagram shows, it can happen that more
 than one symbol is wired to the same destination; but each individual symbol
@@ -58,7 +60,7 @@ inter_symbol *Wiring::wired_to(inter_symbol *S) {
 	return NULL;
 }
 
-@ This metaphor only goes so far: wiring is directional -- if A is wired to B then
+@ This metaphor only goes so far: wiring is directional — if A is wired to B then
 B is not by virtue of that wired to A; and indeed, circuits are forbidden.
 
 Nevertheless it does happen that we have a sequence of symbols each wired to
@@ -149,7 +151,7 @@ void Wiring::shorten_wiring(inter_symbol *S) {
 
 @h Wiring to names.
 It is also possible to say that a symbol has a meaning whose location is not
-yet known -- we can't have `A ~~> B` because we don't know where `B` is, and
+yet known — we can't have `A ~~> B` because we don't know where `B` is, and
 maybe it does not even exist yet. All we know is that it will have a given
 name, `T`. In this case, we write `A ~~> "ogron"` to say that `A` should one
 day be wired to a `B` called `"ogron"`.
@@ -189,17 +191,19 @@ a "plug" in a special package of the tree at `/main/connectors`.
 (See //building: Large-Scale Structure// for more on this package.) That plug
 is left dangling, in the sense that it is wired to the name `"CreatePV"`,
 but that this name is unresolved.
-= (text)
+
+``` BoxArt
 	MAIN TREE
     +-----------------+      +--------------------------+
     | Package X       |      | Package /main/connectors |
     |                 |      |                          |
     | CreatePV ~~~~~~~~~~~~~~~> _plug_BlkValueCreate ~~~~~~~> "CreatePV"
     +-----------------+      +--------------------------+
-=
+```
 
 Meanwhile, suppose a second tree holds //BasicInformKit//. This looks like so:
-= (text)
+
+``` BoxArt
 	BASICINFORMKIT TREE
     +-------------------+      +--------------------------+
     | Package Y         |      | Package /main/connectors |
@@ -211,7 +215,8 @@ Meanwhile, suppose a second tree holds //BasicInformKit//. This looks like so:
     | function defn     |
     | of SecretFunction |
     +-------------------+
-=
+```
+
 Package `Y` in this tree holds two function definitions, let's say: `CreatePV`
 and `SecretFunction`. The latter is private to BasicInformKit, in that the linking
 process in //pipeline// does not allow symbols in other trees to be wired to it.
@@ -227,7 +232,8 @@ and no socket names do.
 tree like so, which has merged the connectors from the two original trees,
 and which now contains both `X` and `Y`. We can npw connect the plug
 `_plug_BlkValueCreate` with the socket `CreatePV`:
-= (text)
+
+``` BoxArt
 .. MERGED TREE ................................................
 .  +-----------------+      +--------------------------+      .
 .  | Package X       |      | Package /main/connectors |      .
@@ -243,11 +249,12 @@ and which now contains both `X` and `Y`. We can npw connect the plug
 .  | function defn   |                                        .
 .  +-----------------+                                        .
 ...............................................................                                                         
-=
+```
+
 The cable end from `CreatePV` in `X` is indeed the definition in `Y`,
 and all is well.
 
-Some sockets may never be used -- that would be a situation where one tree
+Some sockets may never be used — that would be a situation where one tree
 offers a meaning as being available to other trees, but where nobody takes
 up the offer. The only essential thing is that all plugs must find a socket.
 
@@ -259,9 +266,9 @@ it will one day be wired to a socket of that name.
 - All uses of, say, `CreatePV` in the main tree are wired to a single
 plug in its `/main/connectors` package.
 - By looking at the incoming count of a plug or socket, we can see if it is
-still needed -- if the count falls to 0, it is not.
+still needed — if the count falls to 0, it is not.
 - Connecting plugs to sockets is relatively fast, because only one package's
-symbols table needs to be searched -- `/main/connectors`.
+symbols table needs to be searched — `/main/connectors`.
 - Each tree can offer any number of meanings to other trees, but they are
 identified by name only. If two packages in a tree both define functions called
 `hulke`, then they cannot both be "exported" in this way, because the connectors
@@ -385,7 +392,7 @@ void Wiring::make_plug_wanting_identifier(inter_symbol *S, text_stream *wanted) 
 	InterSymbol::make_plug(S);
 }
 
-@ An unwired plug -- i.e., wired to a name but not to an actual symbol -- is
+@ An unwired plug — i.e., wired to a name but not to an actual symbol — is
 said to be "loose".
 
 =

@@ -90,7 +90,7 @@ saying &quot;now build this&quot;.</p>
 <ul>
 <li>
 <p><a href="index.html" class="internal">supervisor</a> has to be started and stopped at each end of the parent's
-run, by calling <a href="1-sm.html#SP3" class="internal">SupervisorModule::start</a> and <a href="1-sm.html#SP3" class="internal">SupervisorModule::end</a>.
+run, by calling <a href="1-sm.html#SP2" class="internal">SupervisorModule::start</a> and <a href="1-sm.html#SP2" class="internal">SupervisorModule::end</a>.
 The former calls <a href="1-ic.html#SP5" class="internal">Supervisor::start</a> in turn, and that activates a number of
 subsystems with further calls. But all modules do something like this.</p>
 </li>
@@ -109,7 +109,7 @@ The Supervisor is now ready for use!</p>
 </li>
 </ul>
 <p>There is no single &quot;go&quot; button: instead, the Supervisor provides a suite
-of functions to call, each acting on a &quot;copy&quot; -- an instance of some software
+of functions to call, each acting on a &quot;copy&quot; — an instance of some software
 at a given filing system location. When <a href="../inform7/index.html" class="internal">inform7</a> is the parent, it follows
 the call to <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
@@ -137,10 +137,10 @@ Short is an edition. These are represented by <a href="2-edt.html#SP1" class="in
 Such objects carry with them a note of which virtual machine architectures
 they work with: see <a href="../arch-module/2-cmp.html" class="internal">Compatibility (in arch)</a> for more on this.</p>
 <p>A &quot;copy&quot; is an instance of an edition actually present somewhere in the file
-system -- note that we might have several copies of the same edition in
+system — note that we might have several copies of the same edition in
 different places. Each copy known to the Supervisor is an <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object.</p>
-<p>When copies are claimed, they are typically scanned -- exactly how depends
-on the genre -- and this can reveal damage: if so, a <a href="2-ce.html#SP1" class="internal">copy_error</a> object is
+<p>When copies are claimed, they are typically scanned — exactly how depends
+on the genre — and this can reveal damage: if so, a <a href="2-ce.html#SP1" class="internal">copy_error</a> object is
 attached to the copy for each different defect turned up. These errors are not
 necessarily reported at once, or at all: if they are reported, the function
 <a href="2-ce.html#SP5" class="internal">CopyErrors::write</a> is used to write a suitable command-line error, but it's
@@ -162,17 +162,14 @@ go poking around without being asked.<sup id="fnred:3"><a href="#fn:3" rel="foot
 parent tool some locations at the command line: and those command-line
 instructions will be processed by <a href="index.html" class="internal">supervisor</a>. For example, if the user
 typed:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> inform7/Internal</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> ~/mystuff</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> Tadpoles.inform</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> inform7/Internal</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> ~/mystuff</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> Tadpoles.inform
+</span></pre>
 <p>then all three command-line switches here would actually be parsed by
 <a href="1-ic.html#SP9" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
 They would set the &quot;internal&quot; and &quot;external&quot; nest (see <a href="../inbuild/M-ui.html" class="internal">Manual (in inbuild)</a>),
 creating an <a href="2-nst.html#SP1" class="internal">inbuild_nest</a> object for each. The Inform 7 project for the
 run would also be set. This would become whose genre is <code>project_bundle_genre</code>.</p>
-<p>Other copies would swiftly be needed -- the definition of the English language
+<p>Other copies would swiftly be needed — the definition of the English language
 (found inside the Internal nest), the Standard Rules extension, and several more.
 These are not explicitly named on the command line: instead, they are found by
 searching through the nests. <a href="index.html" class="internal">supervisor</a> does this by creating an
@@ -232,8 +229,8 @@ object <code>K</code>; conversely, <code>K-&gt;as_copy</code> produces <code>C</
 a one-to-one fashion.</p>
 <p>This table summarises the genres, where they managed, what type of metadata
 object is attached to each copy of that genre, and where such metadata is
-handled. Note that the two Inform project genres -- one for single files,
-one for whole bundles -- share a metadata format: a project is a project,
+handled. Note that the two Inform project genres — one for single files,
+one for whole bundles — share a metadata format: a project is a project,
 however it is managed on disc.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -249,7 +246,7 @@ however it is managed on disc.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Build graph.</b>  See <a href="3-bg.html" class="internal">Build Graphs</a> for the infrastructure of how a dependency graph is stored.
 Basically these consist of <a href="3-bg.html#SP1" class="internal">build_vertex</a> objects joined together by edges,
-represented by lists of other vertices -- each vertex has two lists, one of
+represented by lists of other vertices — each vertex has two lists, one of
 &quot;use edges&quot;, the other of &quot;build edges&quot;. See the manual at <a href="../inbuild/M-ui.html" class="internal">Using Inbuild (in inbuild)</a>
 for an explanation and examples.</p>
 <p>There are three &quot;colours&quot; of vertex: copy, file and requirement. Each copy
@@ -271,7 +268,7 @@ placeholder.</p>
 <p>The answer in fact depends on genre. For pipelines, languages and website
 templates, there are no dependencies, so there's nothing to build. For kits,
 extensions and projects, the task is performed by <a href="5-ks.html#SP14" class="internal">Kits::construct_graph</a>,
-<a href="5-es.html#SP11" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP34" class="internal">Projects::construct_graph</a>. Kits are
+<a href="5-es.html#SP10" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP34" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor &quot;goes operational&quot;, because
 <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.</p>
@@ -292,25 +289,22 @@ without throwing copy errors. So we read only what we will use.<a href="#fnref:5
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reading source text.</b>  For any copy, <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> will instruct the Supervisor to
-read in the Inform source text associated with it -- if any: this does nothing
+read in the Inform source text associated with it — if any: this does nothing
 for languages, pipelines, website templates or kits. Text for a copy is read
 at most once, and is cached so that a second read produces the same result
 as the first.</p>
 <p>Reading is performed by <a href="5-ps2.html#SP37" class="internal">Projects::read_source_text_for</a> and
-<a href="5-es.html#SP12" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
+<a href="5-es.html#SP11" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
 only a single file, but for projects it can involve multiple files. Each
 such is read by a call to <a href="6-st.html#SP3" class="internal">SourceText::read_file</a>, which then sends out
 to the <a href="../words-module/index.html" class="internal">words</a> module to break the text file into a stream of words:
 see <a href="../words-module/3-tff.html" class="internal">Text From Files (in words)</a>. But it is <a href="6-st.html#SP3" class="internal">SourceText::read_file</a> which
 prints console messages like these:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    I've now read your source text, which is 70 words long.</span>
-<span class="ConsoleText-plain-syntax">    I've also read Basic Inform by Graham Nelson, which is 7645 words long.</span>
-<span class="ConsoleText-plain-syntax">    I've also read English Language by Graham Nelson, which is 2328 words long.</span>
-<span class="ConsoleText-plain-syntax">    I've also read Standard Rules by Graham Nelson, which is 32123 words long.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	I've now read your source text, which is 70 words long.
+	I've also read Basic Inform by Graham Nelson, which is 7645 words long.
+	I've also read English Language by Graham Nelson, which is 2328 words long.
+	I've also read Standard Rules by Graham Nelson, which is 32123 words long.
+</span></pre>
 <p>Any lexical errors arising in <a href="../words-module/index.html" class="internal">words</a> are converted by us into copy errors
 and attached to the <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object for the extension or project.</p>
 <p>The text is not left as a simple stream of words, but is also &quot;sentence-broken&quot;
@@ -341,9 +335,9 @@ given a <a href="6-hdn.html#SP6" class="internal">heading</a> object. We will do
 <li>Form them into a tree structure, to be able to determine quickly
 which is a subheading of which;</li>
 <li>Parse their bracketed caveats, such as &quot;for use with ... only&quot;,
-which we will soon need -- this is done by another Preform grammar; and</li>
+which we will soon need — this is done by another Preform grammar; and</li>
 <li>Move content around to satisfy annotations such as &quot;in place of...&quot;,
-though this stage is performed only later -- see below.</li>
+though this stage is performed only later — see below.</li>
 </ul>
 </div>
 <div class="lsmarkdown">
@@ -380,16 +374,16 @@ which of those states actually happens.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
 it decides is valid, it calls <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
-This performs a search for the best compatible copy of the extension named --
-see above -- and, once such a copy is found, calls <a href="6-inc.html#SP6" class="internal">Inclusions::load</a> to
+This performs a search for the best compatible copy of the extension named —
+see above — and, once such a copy is found, calls <a href="6-inc.html#SP6" class="internal">Inclusions::load</a> to
 merge its text into the current syntax tree. (Note: it doesn't form an
 isolated syntax tree of its own.) This is why Inform reads the text of an
 extension as if it appeared at the same position as the Include sentence.</p>
 <p>When a valid Include is found, <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>
 also puts a dependency edge in between the vertex for our copy and the vertex
 for the new extension's copy. That will be a use edge if our copy is also an
-extension -- i.e., you can't use Existing Extension unless you also have
-New Extension -- but a build edge if our copy is a project -- i.e., you can't
+extension — i.e., you can't use Existing Extension unless you also have
+New Extension — but a build edge if our copy is a project — i.e., you can't
 build Existing Project unless you also have New Extension.</p>
 <p>By the end of the process, therefore, all dependencies on or between extensions
 will have been added to the build graph.</p>

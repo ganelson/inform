@@ -25,13 +25,13 @@ in the proposition. This calculation does involve some work, so we cache
 the result in the `term_checked_as_kind` field.
 
 =
-typedef struct pcalc_term {
+classdef pcalc_term in 1000s {
 	int variable; /* 0 to 25, or `-1` for "not a variable" */
 	struct parse_node *constant; /* or `NULL` for "not a constant" */
 	struct pcalc_func *function; /* or `NULL` for "not a function of another term" */
 	int cinder; /* complicated, this: used to worry about scope of I6 local variables */
 	struct kind *term_checked_as_kind; /* or `NULL` if unchecked */
-} pcalc_term;
+}
 
 @ The `pcalc_func` structure represents a usage of a function inside a term.
 Terms such as $f_A(f_B(f_C(x)))$ often occur, an example which would be stored
@@ -49,11 +49,11 @@ field is
 - A `pcalc_term` structure which has a `variable` field set to 0 (which is $x$).
 
 =
-typedef struct pcalc_func {
+classdef pcalc_func in 1000s {
 	struct binary_predicate *bp; /* the predicate B */
 	int from_term; /* which term of the predicate this derives from */
 	struct pcalc_term fn_of; /* the term to which we apply the function */
-} pcalc_func;
+}
 
 @ Terms are really quite simple, as the following //calculus-test// exercise shows:
 = (text from Figures/terms.txt as REPL)
@@ -146,7 +146,7 @@ int Terms::variable_underlying(pcalc_term *t) {
 
 @h Adjective-noun conversions.
 As we shall see, a general unary predicate stores a type-reference
-pointer to an adjectival phrase -- the adjective it tests. But
+pointer to an adjectival phrase — the adjective it tests. But
 sometimes the same word acts both as adjective and noun in English. In
 "the green door", clearly "green" is an adjective; in "the door
 is green", it is possibly a noun; in "the colour of the door is

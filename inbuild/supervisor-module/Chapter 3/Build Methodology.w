@@ -15,14 +15,13 @@ for the tools `inter`, `inform6`, `inform7` and `inblorb`.
 @e INTERNAL_METHODOLOGY
 
 =
-typedef struct build_methodology {
+classdef build_methodology {
 	filename *to_inter;
 	filename *to_inform6;
 	filename *to_inform7;
 	filename *to_inblorb;
 	int methodology;
-	CLASS_DEFINITION
-} build_methodology;
+}
 
 @ If the `tangled` flag is set, we expect `inform7`, for example, to be at
 `tools_path/inform7/Tangled/inform7`; if it is clear, we expect it only to

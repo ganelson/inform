@@ -2,8 +2,8 @@
 
 To change the escape-character conventions used in text streams.
 
-@ The functions in this section -- which perhaps doesn't belong in the //values//
-module any better than anywhere else -- all work on text to change its encoding.
+@ The functions in this section — which perhaps doesn't belong in the //values//
+module any better than anywhere else — all work on text to change its encoding.
 This is not encoding in the sense of ASCII vs UTF-8, though it can have a bearing
 on whether the text can now be written as plain ASCII or not. Rather, it has
 to do with whether certain "difficult" characters are expressed as their literal

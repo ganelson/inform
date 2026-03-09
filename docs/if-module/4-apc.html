@@ -146,14 +146,13 @@ values.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Clauses and their ordering.</b>  A single clause is an instance of:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ap_clause</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">ap_clause</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">clause_ID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">shared_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stv_to_match</span><span class="plain-syntax">; </span><span class="comment-syntax">/* can be <code>NULL</code> for some built-in clause IDs */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">clause_spec</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what the pattern says about this value */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">clause_options</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a bitmap of flags: see below */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ap_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the linked list of clauses for an action pattern */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">ap_clause</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ap_clause is accessed in 2/ri, 3/tm, 3/scn, 3/ts, 3/mhr, 4/ap, 4/av, 4/ap2, 4/anl, 4/pc, 4/ea, 4/gng, 5/us, 6/db, 6/dl, 6/dc and here.</li></ul>
 <div class="lsmarkdown">

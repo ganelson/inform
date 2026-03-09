@@ -3,6 +3,10 @@
 To parse command-line arguments, then start the Blurb interpreter, then
 report back to the user.
 
+@h Identity check.
+
+@d PROGRAM_NAME "inblorb"
+
 @h Some globals.
 The following variables record HTML and Javascript-related points where
 Inblorb needs to behave differently on the different platforms. The default
@@ -48,8 +52,11 @@ reads the input and then writes the output.
 
 That's a little over-simplified, though, because it also produces auxiliary
 outputs along the way, in the course of parsing the blurb file. The blorb
-file is only the main output -- there might also be a web page and a solution
+file is only the main output — there might also be a web page and a solution
 file, for instance.
+
+@e RDES_MREASON
+@e CHUNK_STORAGE_MREASON
 
 =
 filename *blurb_filename = NULL;
@@ -57,7 +64,10 @@ filename *blorb_filename = NULL;
 
 int main(int argc, char *argv[]) {
 	Foundation::start(argc, argv);
-	Basics::register_mreasons();
+
+	Memory::reason_name(RDES_MREASON, "resource descriptions");
+	Memory::reason_name(CHUNK_STORAGE_MREASON, "chunk data storage");
+
 	blurb_filename = Filenames::in(NULL, I"Release.blurb");
 	blorb_filename = Filenames::in(NULL, I"story.zblorb");
 
@@ -155,7 +165,7 @@ within a Javascript string literal produces `%20`, the standard way to
 represent a space in a web URL;
 
 - "reversing slashes", where backslashes are converted to forward
-slashes -- useful if the separation character is a backslash, as on Windows,
+slashes — useful if the separation character is a backslash, as on Windows,
 since backslashes are escape characters in Javascript literals.
 
 @<Set platform-dependent HTML and Javascript variables@> =
@@ -214,9 +224,9 @@ void Main::print_banner(void) {
 	PRINT("as though in a strong box).\n");
 }
 
-@ The concluding banner is much smaller -- empty if all went well, a single
+@ The concluding banner is much smaller — empty if all went well, a single
 comment line if not. But we also generate the status report page (if that has
-been requested) -- a single HTML file generated from a template by expanding
+been requested) — a single HTML file generated from a template by expanding
 placeholders in the template. All of the meat of the report is in those
 placeholders, of course; the template contains only some fancy formatting.
 
@@ -233,7 +243,7 @@ void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
 }
 
 @ If it isn't apparent what these placeholders do, take a look at
-the template file called `CblorbModel.html` in the Inform application --
+the template file called `CblorbModel.html` in the Inform application —
 that's where they're used.
 
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =

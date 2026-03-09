@@ -3,15 +3,14 @@
 Behaviour specific to copies of the pipeline genre.
 
 @h Scanning metadata.
-Metadata for pipelines -- or rather, the complete lack of same -- is stored
+Metadata for pipelines — or rather, the complete lack of same — is stored
 in the following structure.
 
 =
-typedef struct inform_pipeline {
+classdef inform_pipeline {
 	struct inbuild_copy *as_copy;
 	struct semantic_version_number version;
-	CLASS_DEFINITION
-} inform_pipeline;
+}
 
 @ This is called as soon as a new copy `C` of the language genre is created.
 

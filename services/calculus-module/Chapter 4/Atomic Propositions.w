@@ -11,7 +11,7 @@ atomic is simply that their `next` links lead nowhere yet.
 @d MAX_ATOM_ARITY 2
 
 =
-typedef struct pcalc_prop {
+classdef pcalc_prop in 1000s {
 	int element; /* one of the `*_ATOM` constants below: always 1 or greater */
 	int arity; /* 1 for quantifiers and unary predicates; 2 for BPs; 0 otherwise */
 	struct general_pointer predicate; /* indicates which predicate structure is meant */
@@ -20,7 +20,7 @@ typedef struct pcalc_prop {
 	struct quantifier *quant; /* `QUANTIFIER_ATOM`: which one */
 	int quantification_parameter; /* `QUANTIFIER_ATOM`: e.g., the 3 in "all three" */
 	struct pcalc_prop *next; /* next atom in the list for this proposition */
-} pcalc_prop;
+}
 
 @ Each atom is an instance of an "element". There were never as many as 92 of
 these, but at one time the total was pushing 20, with many quasi-predicates

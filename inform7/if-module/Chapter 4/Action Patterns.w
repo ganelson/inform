@@ -22,8 +22,8 @@ of the action being tested. The individual conditions in this tuple are called
 the "clauses" of the AP, for want of a better word, and are the topic of the
 section //Action Pattern Clauses//.
 
-Complicating this relatively simple picture, the choice of action -- in this
-example, "putting it into" -- is not represented by a clause but by a special
+Complicating this relatively simple picture, the choice of action — in this
+example, "putting it into" — is not represented by a clause but by a special
 structure called an //action_name_list//. There are implementation reasons
 for this, but basically it is because the list tends to be a disjunction, i.e.,
 a choice of alternative actions, whereas the clauses tend to be conjunctions
@@ -51,7 +51,7 @@ is always just a single term. Non-parametric APs are said to be "action-based".
 of the text they came from; for which, see //Parse Action Patterns//.
 
 =
-typedef struct action_pattern {
+classdef action_pattern in 1000s {
 	struct wording text_of_pattern; /* text giving rise to this AP */
 
 	struct action_name_list *action_list; /* if this is action-based */
@@ -60,7 +60,7 @@ typedef struct action_pattern {
 	struct ap_clause *ap_clauses;
 
 	struct time_period *duration; /* to refer to repetitions in the past */
-} action_pattern;
+}
 
 @ =
 action_pattern *ActionPatterns::new(wording W) {

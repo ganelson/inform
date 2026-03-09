@@ -9,11 +9,13 @@ correct set of type data for it. Recall that the prototype includes the initial 
 "to", as in this example. We divide it further into a front part which gives the
 return data; the middle main part, giving the wording needed to invoke the phrase;
 and some annotations at the end, called doodads.
-= (text as Inform 7)
+
+``` Inform7
 To decide which number is (N - a number) doubled (deprecated) , slowly or quickly
 <--------------------------------- prototype ----------------------------------->
 <-- return data --------> <-- main prototype --> <- doodads ->  <--- options --->
-=
+```
+
 If we detect phrase options, after a comma, we pass the word range for them
 back. The IDTD we write to is factory-fresh except that it has already been
 adjusted for an inline definition (if that's the kind of definition this is).

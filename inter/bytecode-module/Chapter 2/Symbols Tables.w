@@ -25,7 +25,7 @@ anyway, so there's no real loss in speed.
 @d NO_SYMBOLS_WORTH_A_DICTIONARY 5
 
 =
-typedef struct inter_symbols_table {
+classdef inter_symbols_table {
 	struct inter_package *owning_package;
 
 	struct dictionary *symbols_dictionary; /* this is (a) */
@@ -35,8 +35,7 @@ typedef struct inter_symbols_table {
 	inter_ti next_free_symbol_ID;
 
 	inter_ti resource_ID; /* within the warehouse for the tree holding the package */
-	CLASS_DEFINITION
-} inter_symbols_table;
+}
 
 @ =
 inter_symbols_table *InterSymbolsTable::new(inter_ti resource_ID) {
@@ -83,7 +82,7 @@ executes once if `S` is non-null, and not at all if it is null.
 in a table by name.
 
 If a symbol called `name` exists, we return it; or, if `wire_following` is set,
-we follow the wiring to the symbol at the end of the cable -- this is what the
+we follow the wiring to the symbol at the end of the cable — this is what the
 `name` actually means; the name doesn't really have a local meaning within the
 package, in this case. (Note that the result is then a symbol outside the table
 being searched, and therefore belonging to a different package to the one we
@@ -315,7 +314,8 @@ inter_symbol *InterSymbolsTable::symbol_from_ID_in_package(inter_package *owner,
 @h From symbol to ID.
 If all we want is to read the ID of a symbol definitely present in the given
 symbols table, that's easy. Suppose we have this example:
-= (text)
+
+``` BoxArt
     +-----------------+
     | Package P       |
     |                 |
@@ -324,7 +324,8 @@ symbols table, that's easy. Suppose we have this example:
     | 2: plugh        |
     | 3: further      |
     +-----------------+
-=
+```
+
 Then if we want the ID of symbol `plugh` in package `P`, we just return 3,
 its symbol ID within the table.
 
@@ -350,7 +351,8 @@ inter_ti InterSymbolsTable::id_from_global_symbol(inter_tree *I, inter_symbol *S
 
 @ However, things become more interesting if we do not know that the symbol
 `S` belongs to `P`. Suppose:
-= (text)
+
+``` BoxArt
     +-----------------+    +-----------------+
     | Package P       |    | Package SP      |
     |                 |    |                 |
@@ -358,10 +360,12 @@ inter_ti InterSymbolsTable::id_from_global_symbol(inter_tree *I, inter_symbol *S
     | 1: another      |    | 1: plugh        |
     | 2: further      |    |                 |
     +-----------------+    +-----------------+
-=
+```
+
 and suppose we again want the ID for `plugh` within package `P`. The only way
 to do this is to create a new symbol in `P` and wire it to `plugh`:
-= (text)
+
+``` BoxArt
     +-----------------+
     | Package P       |
     |                 |    +-----------------+
@@ -370,7 +374,8 @@ to do this is to create a new symbol in `P` and wire it to `plugh`:
     | 2: further      |    |   0: xyzzy      |
     | 3: plugh ~~~~~~~~~~~~~~> 1: plugh      |
     +-----------------+    +-----------------+
-=
+```
+
 We can then return 3 as the ID of `plugh` within `P`. 
 
 Note that there are now two symbols named `plugh`, one in each package. But the
@@ -388,7 +393,8 @@ In effect, once the following function has been used, everything will work just
 as if the symbol were in `P` after all.
 
 Finally, note that this awkward case:
-= (text)
+
+``` BoxArt
     +-----------------+    +-----------------+
     | Package P       |    | Package SP      |
     |                 |    |                 |
@@ -396,10 +402,12 @@ Finally, note that this awkward case:
     | 1: another      |    | 1: plugh        |
     | 2: further      |    |                 |
     +-----------------+    +-----------------+
-=
+```
+
 also needs to be handled: i.e., where package `P` already contains a different
 and unrelated symbol coincidentally called `"plugh"`. In that case, we end up with:
-= (text)
+
+``` BoxArt
     +-----------------+
     | Package P       |
     |                 |    +-----------------+
@@ -408,7 +416,8 @@ and unrelated symbol coincidentally called `"plugh"`. In that case, we end up wi
     | 2: further      |    |   0: xyzzy      |
     | 3: plugh_1 ~~~~~~~~~~~~> 1: plugh      |
     +-----------------+    +-----------------+
-=
+```
+
 This time, the reference symbol has been named `"plugh_1"` to avoid a name
 collision with the original `plugh` in package `P`.
 

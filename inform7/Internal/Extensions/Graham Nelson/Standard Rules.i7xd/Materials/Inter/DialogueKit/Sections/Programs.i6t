@@ -350,7 +350,7 @@ to enter a command into the command parser. (In the latter case we can resume
 where we left off with just by calling `DirectorRun()` again.)
 
 Note that this loop should never hit a `CHOICE_DCODEI` instruction, because
-those are always underneath `DECISION_DCODEI` instructions -- which it does hit.
+those are always underneath `DECISION_DCODEI` instructions — which it does hit.
 
 =
 [ DirectorRun program pc last_pc instruction operand operand_at depth next_instruction sc;

@@ -155,11 +155,10 @@ void CompletionModule::write_RTP_path(OUTPUT_STREAM, pathname *P) {
 }
 
 @ =
-typedef struct heading_compilation_data {
+classdef heading_compilation_data {
 	struct package_request *heading_package;
 	struct inter_name *heading_ID;
-	CLASS_DEFINITION
-} heading_compilation_data;
+}
 
 heading_compilation_data CompletionModule::new_compilation_data(heading *h) {
 	heading_compilation_data hcd;
@@ -179,11 +178,10 @@ inter_name *CompletionModule::heading_id(heading *h) {
 	return h->compilation_data.heading_ID;
 }
 
-typedef struct contents_entry {
+classdef contents_entry {
 	struct heading *heading_entered;
 	struct contents_entry *next;
-	CLASS_DEFINITION
-} contents_entry;
+}
 
 @<Headings@> =
 	CompletionModule::index_heading_recursively(
@@ -285,8 +283,8 @@ typedef struct contents_entry {
 		}
 	}
 
-@ We index only headings of level 1 and up -- so, not the pseudo-heading or the
-File (0) ones -- and which are not within any extensions -- so, are in the
+@ We index only headings of level 1 and up — so, not the pseudo-heading or the
+File (0) ones — and which are not within any extensions — so, are in the
 primary source text written by the user.
 
 =

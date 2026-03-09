@@ -38,11 +38,13 @@ The mechanics of running through a pipeline can be found in //Running Pipelines/
 Pipelines can go wrong in two different ways: either by failing to be properly
 defined because of syntax errors in their definitions, or by failing to run
 properly. For example, if we compile this Basic Inform project:
-= (text as Inform 7)
+
+``` Inform7
 To begin: go awry.
 
 To go awry: (- Cryptid(); -).
-=
+```
+
 ...then the //inform7// compiler happily makes an Inter tree, on the
 assumption that an Inter function called `Cryptid` will be defined in one
 of the kits to be loaded in later. But when later comes, the `compile` pipeline
@@ -63,18 +65,18 @@ language source text, links in one or more binary Inter files from kits,
 optimises the result, and then generates final code.
 
 The //supervisor// module decides when these are to be "run", and sets them
-up with configuration details -- what Inter architecture to use, where to
+up with configuration details — what Inter architecture to use, where to
 put the resultant files, when a kit needs to be rebuilt, and so on. None of
 that is our problem here. Roughly speaking, though, `build-kit` is run only
-occasionally, when the source code for a kit is modified -- for most Inform
-users, that will be never -- whereas `compile` is run every time the user of
+occasionally, when the source code for a kit is modified — for most Inform
+users, that will be never — whereas `compile` is run every time the user of
 an Inform GUI app clicks the "Go" button.
 
 Speed is therefore unimportant for stages used in `build-kit`, but very
 important for stages used in `compile`. As a rule of thumb, if the user waits
 10 seconds for the result after clicking "Go" then the first 6 seconds are spent
 in //inform7//, the next 3 seconds running the `compile` pipeline, and the final
-second in whatever compiler turns the final code into an executable -- usually
+second in whatever compiler turns the final code into an executable — usually
 Inform 6.
 
 @ The `compile` pipeline is as follows. Here the //supervisor// module has
@@ -113,7 +115,7 @@ code is generated. At present this does relatively little, but it's a start.
 
 = (text from Figures/optimise.interpipeline as Inter Pipeline)
 
-@ To create a new stage, you may want to copy a simple existing one -- say,
-the //Eliminate Redundant Labels Stage// -- as a model. Note that a stage
+@ To create a new stage, you may want to copy a simple existing one — say,
+the //Eliminate Redundant Labels Stage// — as a model. Note that a stage
 must be "created", and your function to create it should be called from the
 function //ParsingPipelines::parse_stage//.

@@ -75,16 +75,16 @@ the ones students draw in school grammar classes. For example,</p>
 <blockquote>
 <p>most of the heavy bricks have been on top of the wall</p>
 </blockquote>
-<p>becomes a &quot;diagram&quot; -- a fragment of the tree provided by the <a href="../syntax-module/index.html" class="internal">syntax</a>
-module -- showing the linguistic structure of the sentence.</p>
-<p>This work is done by the nonterminal <sentence> -- see <a href="4-vp.html" class="internal">Verb Phrases</a>.
+<p>becomes a &quot;diagram&quot; — a fragment of the tree provided by the <a href="../syntax-module/index.html" class="internal">syntax</a>
+module — showing the linguistic structure of the sentence.</p>
+<p>This work is done by the nonterminal <sentence> — see <a href="4-vp.html" class="internal">Verb Phrases</a>.
 Many examples of sentence diagrams can be seen in <a href="P-asd.html" class="internal">About Sentence Diagrams</a>;
 read that first.</p>
 <p>To be in a position to parse like this, the module needs a way to accumulate
 knowledge about the possible nouns, verbs, adjectives, prepositions and so on
 which might appear in such sentences. Where sensible, a design goal here is
 for each of these grammatical categories to correspond closely to an object
-class of the same name -- that is, <a href="2-nns.html#SP3" class="internal">noun</a>, <a href="3-vrb.html#SP1" class="internal">verb</a>, <a href="2-adj.html#SP1" class="internal">adjective</a> and so on.
+class of the same name — that is, <a href="2-nns.html#SP3" class="internal">noun</a>, <a href="3-vrb.html#SP1" class="internal">verb</a>, <a href="2-adj.html#SP1" class="internal">adjective</a> and so on.
 For example, &quot;brick&quot; and &quot;wall&quot; correspond to two different instances of <a href="2-nns.html#SP3" class="internal">noun</a>,
 and &quot;to be&quot; to <a href="3-vrb.html#SP1" class="internal">verb</a>. The instances of these grammatical classes, taken
 together, form what is called the &quot;stock&quot;.</p>
@@ -113,7 +113,7 @@ about those meanings.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup
 </li>
 <li>
 <p>Only &quot;for the most part&quot;, because certain &quot;fixed&quot; grammatical categories
-are an exception -- for example, articles, or cardinal and ordinal
+are an exception — for example, articles, or cardinal and ordinal
 numbers, or determiners. In these categories, the linguistics module provides
 the stock and the user cannot change or add to it; and the linguistics
 module provides the meanings, too, which the user can read but cannot change.<sup id="fnred:3"><a href="#fn:3" rel="footnote">3</a></sup></p>
@@ -126,7 +126,7 @@ so that the second sentence is read with a stock which is one term larger.<a hre
 </li>
 <li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 Verbs are a partial exception in that we need to make some minimal
-assumptions about how verb meanings will work -- this is abstracted out in
+assumptions about how verb meanings will work — this is abstracted out in
 the section <a href="3-vm.html" class="internal">Verb Meanings</a>. Even there, though, the user will have to find
 her own way to define what verbs actually mean.<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
 </li>
@@ -142,7 +142,7 @@ and the demarcation line between the two is that <a href="../inflections-module/
 about the meaning or usage of words, while <a href="index.html" class="internal">linguistics</a> is largely free
 to ignore the complications brought in by inflected forms of words.</p>
 <p>For example, a single <a href="3-vrb.html#SP1" class="internal">verb</a> object represents &quot;to carry&quot;, even though it
-has many different expressions in words -- &quot;has not carried&quot;, &quot;will carry&quot;,
+has many different expressions in words — &quot;has not carried&quot;, &quot;will carry&quot;,
 and so on. A single <a href="2-nns.html#SP3" class="internal">noun</a> representing &quot;brick&quot; would include its plural
 &quot;bricks&quot; and indeed its declension into other cases, in a language which has
 noun cases. Our goal here is that the stock should never contain two different
@@ -174,7 +174,7 @@ used in verb phrases, <a href="3-vrb.html" class="internal">Chapter 3: VP Catego
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Each adjective in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. All senses of
-the same adjectival word -- &quot;empty&quot;, say -- are represented by the same
+the same adjectival word — &quot;empty&quot;, say — are represented by the same
 <a href="2-adj.html#SP1" class="internal">adjective</a>: it's for the user to manage multiple meanings, and to deduce
 which one applies from the context.<sup id="fnred:4"><a href="#fn:4" rel="footnote">1</a></sup></p>
 <p>The user creates the stock of adjectives by calling <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.</p>
@@ -192,7 +192,7 @@ See <a href="2-art.html" class="internal">Articles</a>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The determiners are a fixed stock of roughly 20, each being an instance of
-the class <a href="2-daq.html#SP4" class="internal">determiner</a>. Properly speaking some are families of determiners --
+the class <a href="2-daq.html#SP4" class="internal">determiner</a>. Properly speaking some are families of determiners —
 &quot;all but three&quot; and &quot;all but six&quot; are the same <a href="2-daq.html#SP4" class="internal">determiner</a> but with a
 different numerical parameter. But others, like &quot;most of&quot;, have fixed wording.
 The meaning of each determiner is a logical <a href="2-daq.html#SP2" class="internal">quantifier</a>.<sup id="fnred:5"><a href="#fn:5" rel="footnote">1</a></sup>
@@ -243,14 +243,14 @@ stock of these, at five certainty levels. See <a href="3-aoc.html" class="intern
 the <a href="3-prp.html#SP1" class="internal">preposition</a> class. See <a href="3-prp.html" class="internal">Prepositions</a>.</p>
 <p>The user creates the stock of prepositions by calling <a href="3-prp.html#SP6" class="internal">Prepositions::make</a>,
 but note that this function is also called when verbs are created, in order
-to implement participles like &quot;carrying&quot; as prepositions -- which is not
+to implement participles like &quot;carrying&quot; as prepositions — which is not
 linguistically ideal, but makes it possible to parse auxiliary uses of
 &quot;to be&quot; efficiently, as in &quot;X is carried by Y&quot;.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Each verb in the stock is an instance of <a href="3-vrb.html#SP1" class="internal">verb</a>. For example, &quot;to carry&quot;
 or &quot;to be&quot; might be verbs. One verb in the stock is special and is the
-copular verb -- in English, that's &quot;to be&quot;. A copular verb is one which has two
+copular verb — in English, that's &quot;to be&quot;. A copular verb is one which has two
 interacting subject phrases rather than a subject and an object.<sup id="fnred:8"><a href="#fn:8" rel="footnote">1</a></sup></p>
 <p>The user creates the stock of adjectives by calling <a href="3-vrb.html#SP3" class="internal">Verbs::new_verb</a> or
 <a href="3-vrb.html#SP5" class="internal">Verbs::new_operator_verb</a>. (Operator verbs are mathematical operators

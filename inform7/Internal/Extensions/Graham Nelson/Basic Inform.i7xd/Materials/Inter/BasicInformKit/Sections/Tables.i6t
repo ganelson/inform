@@ -36,8 +36,8 @@ Constant TB_COLUMN_NUMBER      $01ff; ! Mask to remove upper bit flags
 Constant COL_HSIZE 2; ! Column header size: two words (ID/flags, blank bits)
 
 @h Find Column.
-Columns can be referenced either by their physical column numbers -- from 1
-to, potentially, 99 -- or else by unique ID numbers associated with column
+Columns can be referenced either by their physical column numbers — from 1
+to, potentially, 99 — or else by unique ID numbers associated with column
 names. For instance, if a table has a column called "liquid capacity",
 then all references to its "liquid capacity entry" are via the ID number
 associated with this column name, which will be $\geq 100$ and on the other
@@ -99,7 +99,7 @@ in the column. We therefore provide a "blanks bitmap" for only some
 columns.
 
 This leads us to define the following dummy value, chosen so that it is
-both impossible for most kinds of value -- which is easy to arrange -- and
+both impossible for most kinds of value — which is easy to arrange — and
 also unlikely for even those kinds of value where it is legal. For
 instance, $-1$ would be impossible for enumerative kinds of value such as
 rulebooks and scenes, but it would be a poor choice for the dummy value
@@ -211,8 +211,8 @@ block allocated yet".)
 
 @h Force Entry Non-Blank.
 To unblank a cell, we need to clear the relevant bit in the bitmap. We then
-go on to write a new value in to the entry -- thus overwriting the
-`TABLE_NOVALUE` value -- but that isn't done here; the expectation is
+go on to write a new value in to the entry — thus overwriting the
+`TABLE_NOVALUE` value — but that isn't done here; the expectation is
 that whoever calls this routine is just about to write a new entry anyway.
 
 The exception is again for columns holding a kind of value pointing to a
@@ -711,9 +711,11 @@ in order of their physical row numbers - ascending if `D = 1`, descending
 if `D = -1`, so that using the routine with `D = -1` always produces the
 exact reverse ordering from using it with `D = 1` and the same parameters.
 Rows with blank entries in `C` are skipped.
-= (text as Inform 6)
+
+``` Inform6
 	for (R=TableNextRow(T,C,0,D): R : R=TableNextRow(T,C,R,D)) ...
-=
+```
+
 will perform a loop of valid row numbers in order of column `C`.
 
 =

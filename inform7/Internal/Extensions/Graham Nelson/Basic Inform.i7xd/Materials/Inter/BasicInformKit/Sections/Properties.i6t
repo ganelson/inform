@@ -11,7 +11,7 @@ when the routine is simply testing the condition.)
 Firstly, P has to be a property known to I7. Secondly, there has to be
 permission either for this individual object to have it, or for its kind to
 have it, or its kind's kind, and so on. Thirdly, the object has to actually
-have the property in question at an I6 level -- having permission to have
+have the property in question at an I6 level — having permission to have
 it doesn't mean it actually does have.
 
 =
@@ -63,7 +63,7 @@ The following searches from a given offset.
 
 @h Read Property.
 Some value properties belong to other values (those created in tables), and
-these are stored indirectly through a pseudo-object `V` -- an I6 object which
+these are stored indirectly through a pseudo-object `V` — an I6 object which
 is not part of the world model, and not a valid I7 "object" value, but which is
 used in order that properties belonging to values
 are still I6 property numbers. `V.P` is the table column address for this

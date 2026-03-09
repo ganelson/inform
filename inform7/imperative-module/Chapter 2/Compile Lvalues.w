@@ -2,7 +2,7 @@
 
 To compile storage references into Inter value opcodes.
 
-@ The following compiles an lvalue -- a piece of stored data: see //values: Lvalues// --
+@ The following compiles an lvalue — a piece of stored data: see //values: Lvalues// —
 but in one of three different ways:
 
 `COMPILE_LVALUE_AS_RVALUE` is a mode used when the storage is being compiled in
@@ -10,11 +10,13 @@ an rvalue context, i.e., having its value read but not being altered.
 
 `COMPILE_LVALUE_AS_LVALUE` is a mode used only when the lvalue really is being
 compiled as the recipient of an assignment, rather than being read. Thus:
-= (text as Inform 7)
+
+``` Inform7
 	let R be a number;
 	now R is 76;
 	showme R plus 1;
-=
+```
+
 In line 2 here, `R` must be compiled in `COMPILE_LVALUE_AS_LVALUE` mode; in line 3,
 it must not be.
 

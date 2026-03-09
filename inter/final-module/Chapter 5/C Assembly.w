@@ -31,11 +31,13 @@ void CAssembly::end(code_generation *gen) {
 language is the big hole in that. It is legal for Inter code to contain almost
 anything which purports to be assembly language. For example, the following
 code will successfully build as part of an Inter kit:
-= (text as Inform 6)
+
+``` Inform6
 	[ Peculiar x;
 	    @bandersnatch x;
 	];
-=
+```
+
 Kit code, and also material included in `(-` and `-)` brackets in I7 source text,
 can claim to use assembly language opcodes with any names it likes. No checking
 is done that these are "real" opcodes. (Spoilers: `@bandersnatch` is not.)
@@ -71,10 +73,12 @@ non-standard.
 
 So now we define some very minimal metadata on our opcodes. Each opcode will,
 when used, be followed by a number of operands, which we number from 1:
-= (text as Inform 6)
+
+``` Inform6
 	@fmod a b rem quot;
 	!     1 2 3   4
-=
+```
+
 This opcode, which performs floating-point division with remainder, reads in
 operands 1 and 2, and writes results out to operands 3 and 4. In the following,
 `store_this_operand[3]` and `store_this_operand[4]` would be `TRUE`, while
@@ -84,16 +88,20 @@ one store operand. But in principle we could have many.)
 
 Glulx assembly language also allows variable numbers of arguments to some opcodes,
 or "varargs". For example:
-= (text as Inform 6)
+
+``` Inform6
 	@glk 4 _vararg_count ret;
 	!    1 2             3
-=
+```
+
 Here operand 3 is a store, and operands 1 and 2 are read in. But operand 2 is
 special in that it is a count of additional operands which are found on the
 stack rather than in the body of the instruction. For example,
-= (text as Inform 6)
+
+``` Inform6
 	@glk 4 6 ret;
-=
+```
+
 would provide `@glk` with seven operands to read in: the one in the instruction
 itself, `4`, and then the top 6 items on the stack.
 
@@ -102,13 +110,12 @@ can be at most one for any opcode; `vararg_operand` is -1 if there isn't one,
 but for `@glk`, `vararg_operand` would be 2.
 
 =
-typedef struct C_supported_opcode {
+classdef C_supported_opcode {
 	struct text_stream *name; /* including the opening `@` character */
 	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
 	int vararg_operand; /* position of `_vararg_count` operand, or -1 if none */
 	int speculative; /* i.e., not part of the standard supported set */
-	CLASS_DEFINITION
-} C_supported_opcode;
+}
 
 @ On creation, a //C_supported_opcode// is automatically added to the dictionary:
 
@@ -221,9 +228,10 @@ are not part of our supported set, there's no code here to implement them.
 Instead we predeclare a function and simply assume that the user will have
 written this function somewhere and linked it to us. For example, we might
 predeclare this:
-= (text as C)
+
+``` C
 	void i7_opcode_bandersnatch(i7process_t *proc, i7word_t v1);
-=
+```
 
 @<Add a speculative new opcode to the dictionary@> =
 	opc = CAssembly::new_opcode(gen, name, -1, -1, -1);
@@ -314,7 +322,7 @@ to make a pointer.
 
 Again, `sp` is a pseudo-variable meaning "the top of the stack", but this time
 we have to push, not pull, and that's something we can't do until the function
-has returned -- the function will create the value we need to push. We get
+has returned — the function will create the value we need to push. We get
 around this by compiling a pointer to some temporary memory.
 
 Finally, assembly also allows `0` as a special value for a store operand, and
@@ -380,7 +388,7 @@ void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word
 
 @h copy.
 Though it doesn't look it, this is one of the main ways Glulx assembly language
-programs push or pull to the stack -- `@copy sp x` pulls the stack to `x`;
+programs push or pull to the stack — `@copy sp x` pulls the stack to `x`;
 `@copy sp 0` pops the stack; `@copy x sp` pushes `x` to the stack. But all of
 that is handled by the general mechanism above.
 
@@ -740,7 +748,7 @@ Note that the `random(...)` function built in to Inform is just a name for the
 
 We have no convincing need for a statistically good random number algorithm,
 but we do want cross-platform consistency in order that the test suite for Inform
-should behave equivalently on MacOS, Linux and Windows -- at least when the
+should behave equivalently on MacOS, Linux and Windows — at least when the
 generator is seeded with the same value. To that end, we borrow the algorithm
 used by the `frotz` Z-machine interpreter, which in turn is based on suggestions
 in the Z-machine standards document.

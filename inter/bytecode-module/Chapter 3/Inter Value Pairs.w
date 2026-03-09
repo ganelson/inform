@@ -37,7 +37,7 @@ existing Inter binary files, necessitating a bump of //The Inter Version//.
 @h Numeric pairs.
 These can represent any `inter_ti` value, and are used when the data is a
 literal integer. Note that they express both an integer and also a preferred
-way to print it out -- as decimal, hexadecimal, binary, or signed decimal.
+way to print it out — as decimal, hexadecimal, binary, or signed decimal.
 But these are all numerically equal. They affect only the way in which the
 Inter program is printed to text files, not the meaning of the program.
 
@@ -184,7 +184,7 @@ inter_pair InterValuePairs::real(inter_bookmark *IBM, double g) {
 	return pair;
 }
 
-@ Inform 6 notation begins with a dollar `$` -- for example, `$+3.1415` -- but
+@ Inform 6 notation begins with a dollar `$` — for example, `$+3.1415` — but
 otherwise is similar.
 
 =

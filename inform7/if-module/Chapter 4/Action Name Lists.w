@@ -8,11 +8,11 @@ An ANL is a head object, an //action_name_list//, which points to a linked
 list of //anl_entry// objects.
 
 =
-typedef struct action_name_list {
+classdef action_name_list in 1000s {
 	struct anl_entry *entries;
 	int negation_state;
 	int test_this_in_ap_match;
-} action_name_list;
+}
 
 action_name_list *ActionNameLists::new_list(anl_entry *first, int state) {
 	action_name_list *list = CREATE(action_name_list);
@@ -63,17 +63,17 @@ int ActionNameLists::testing(action_name_list *list) {
 }
 
 @ An entry has some book-keeping fields, and is otherwise divided into the
-item itself -- either an action name or a named action pattern -- and some
+item itself — either an action name or a named action pattern — and some
 parsing data needed by the complicated algorithms for turning text into an
 action list.
 
 =
-typedef struct anl_entry {
+classdef anl_entry in 1000s {
 	struct anl_item item;
 	struct anl_parsing_data parsing_data;
 	int marked_for_deletion;
 	struct anl_entry *next_entry; /* next in this ANL list */
-} anl_entry;
+}
 
 anl_entry *ActionNameLists::new_entry_at(wording W) {
 	anl_entry *entry = CREATE(anl_entry);
@@ -155,7 +155,7 @@ void ActionNameLists::join_to(anl_entry *earlier, anl_entry *later) {
 - Less abbreviated results come first, and if that doesn't decide it
 - Action names with longer non-it-length come before shorter, and if that doesn't decide it
 - Older action names come before younger, and if that doesn't decide it
-- Later-discovered results come before earlier ones -- which because of the
+- Later-discovered results come before earlier ones — which because of the
 way we parse them means that results with more fixed words in clauses come
 before those with fewer.
 
@@ -274,7 +274,7 @@ named_action_pattern *ActionNameLists::is_single_NAP(action_name_list *list) {
 @ The //anl_item// material is the actual content we are trying to get at.
 Like life, items are a mixture of naps and actions. At most one of these
 fields is non-`NULL`. If they are both `NULL`, this represents "doing
-anything" -- a completely unrestricted action.
+anything" — a completely unrestricted action.
 
 =
 typedef struct anl_item {
@@ -393,13 +393,13 @@ objects of that entry will be turned into a string of //ap_clause// objects
 in the final AP.
 
 =
-typedef struct anl_clause {
+classdef anl_clause in 1000s {
 	int clause_ID;
 	struct wording clause_text;
 	struct anl_clause *next_clause;
 	struct shared_variable *stv_to_match;
 	struct parse_node *evaluation;
-} anl_clause;
+}
 
 @ And this is convenient for looking through them:
 
@@ -686,8 +686,8 @@ this might match, for example, "doing something other than waiting", or
 part of the action: "dropping the box" is just "dropping (two words)" here.
 
 Note that it works in either `IS_TENSE` or `HASBEEN_TENSE`, and that `sense`
-is set to `FALSE` (if it is supplied) when the text had a negative sense --
-something other than something -- or `TRUE` for a positive one.
+is set to `FALSE` (if it is supplied) when the text had a negative sense —
+something other than something — or `TRUE` for a positive one.
 
 The test group `:actions` is helpful in catching errors here.
 
@@ -792,7 +792,7 @@ itself. So, for "irreverent behaviour in the presence of the Bishop", the
 `nap` may be the "irreverent behaviour", and `TW` the text "in the presence
 of the Bishop". We put that temporarily into the `TAIL_AP_CLAUSE`, and then
 ramify what had been a single-entry list so that it may now have multiple
-entries -- for example, "irreverent behaviour [in: the presence of the Bishop]"
+entries — for example, "irreverent behaviour [in: the presence of the Bishop]"
 or "irreverent behaviour [in-presence: the Bishop]".
 
 =
@@ -822,11 +822,12 @@ out an actual choice of action.
 
 For example, for the text "looking or taking inventory in the presence of Hans
 in the Laboratory", we get the following set of `results`:
-= (text)
+
+``` None
 (1). +2 taking inventory [tail: in the presence of hans in the laboratory]
 (2). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (3). +0 looking
-=
+```
 
 @<Parse the wording into a list of results@> =
 	anl_entry *trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
@@ -891,10 +892,10 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 @ For example, in "looking or taking inventory in the presence of Hans
 in the Laboratory", after finding "taking inventory" as a possible action,
 we are left with "in the presence of Hans in the Laboratory". These have to
-be stored into `TAIL_AP_CLAUSE`, since they cannot be part of any noun --
+be stored into `TAIL_AP_CLAUSE`, since they cannot be part of any noun —
 because taking inventory doesn't have a noun. But when finding "taking",
 the remaining words "inventory in the presence of Hans in the Laboratory"
-have to go into `NOUN_AP_CLAUSE` -- the taking action does have a noun.
+have to go into `NOUN_AP_CLAUSE` — the taking action does have a noun.
 
 @<Transfer remaining words to a trailing clause@> =
 	if (Wordings::nonempty(RW)) {
@@ -917,13 +918,16 @@ the trial entry for future trials.
 raw results has been produced. We "ramify" this by expanding it into multiple
 readings according to how the trailing clause might in fact be made up of
 sub-clauses. For example, our unramified set of results
-= (text)
+
+``` None
 (1). +2 taking inventory [tail: in the presence of hans in the laboratory]
 (2). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (3). +0 looking
-=
+```
+
 becomes the ramified set
-= (text)
+
+``` None
 (1). +2 taking inventory [in: the laboratory] [in-presence: hans]
 (2). +2 taking inventory [in-presence: hans in the laboratory]
 (3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
@@ -931,19 +935,24 @@ becomes the ramified set
 (5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
 (6). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (7). +0 looking
-=
+```
+
 Note that the `TAIL_AP_CLAUSE` clauses, which were just temporary holders
 for leftover text, have gone entirely. Had it been impossible to break them
 into legal subclauses, they would have caused the result to be struck out
 altogether. For example, this:
-= (text)
+
+``` None
 (1). +0 taking inventory [tail: book]
 (2). +0 taking [noun: inventory book]
-=
+```
+
 ramifies to just
-= (text)
+
+``` None
 (1). +0 taking [noun: inventory book]
-=
+```
+
 because the tail wording "book" after "taking inventory" cannot be read as
 a sequence of subclauses.
 
@@ -1019,7 +1028,7 @@ single words.
 This actually matters surprisingly rarely, but enables us to handle quite
 difficult cases like "Instead of buying the cheapest spice which is in the market"
 without typechecking errors occurring on the unwanted case of reading this as
-"Instead of buying the cheapest spice which is" plus the clause "in the market" --
+"Instead of buying the cheapest spice which is" plus the clause "in the market" —
 the latter being, in fact, valid.
 
 =
@@ -1027,7 +1036,7 @@ the latter being, in fact, valid.
 	is |
 	not
 
-@ Divergence points, then, must not unexpectedly use upper case -- so "taking
+@ Divergence points, then, must not unexpectedly use upper case — so "taking
 Puss In Boots" is never read as possibly having an "in: Boots" clause; and
 they either use the two standard wordings "in the presence of" or "in". or
 else wording provided by a matching variable in an action declaration.

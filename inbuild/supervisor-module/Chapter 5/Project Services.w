@@ -6,7 +6,7 @@ Behaviour specific to copies of either the projectbundle or projectfile genres.
 Metadata for projects is stored in the following structure.
 
 =
-typedef struct inform_project {
+classdef inform_project {
 	struct inbuild_copy *as_copy;
 	int stand_alone; /* rather than being in a .inform project bundle */
 	struct inbuild_nest *materials_nest;
@@ -32,8 +32,7 @@ typedef struct inform_project {
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
-	CLASS_DEFINITION
-} inform_project;
+}
 
 @ This is called as soon as a new copy `C` of the language genre is created.
 It doesn't actually do any scanning to speak of, in fact: we may eventually
@@ -335,8 +334,8 @@ filename *Projects::get_primary_source(inform_project *proj) {
 	return proj->primary_source;
 }
 
-@ The following constructs the list of "source vertices" -- vertices in the
-build graph representing the source files -- on demand. The reason this isn't
+@ The following constructs the list of "source vertices" — vertices in the
+build graph representing the source files — on demand. The reason this isn't
 done automatically when the `proj` is created is that we needed to give time
 for someone to call //Projects::set_primary_source//, since that will affect
 the outcome.
@@ -550,12 +549,11 @@ kit of pre-compiled Inter to merge into it, so all projects will depend on
 at least one kit, and probably several.
 
 =
-typedef struct kit_dependency {
+classdef kit_dependency {
 	struct inform_kit *kit;
 	struct inform_language *because_of_language;
 	struct inform_kit *because_of_kit;
-	CLASS_DEFINITION
-} kit_dependency;
+}
 
 @ =
 int Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
@@ -813,7 +811,7 @@ linked_list *Projects::list_of_kit_configurations(inform_project *project) {
 }
 
 @ Every source text read into Inform is automatically prefixed by a few words
-loading the fundamental "extensions" -- text such as "Include Basic Inform by
+loading the fundamental "extensions" — text such as "Include Basic Inform by
 Graham Nelson." If Inform were a computer, this would be the BIOS which boots
 up its operating system. Each kit can contribute such extensions, so there
 may be multiple sentences, which we need to count up.
@@ -904,10 +902,12 @@ void Projects::construct_graph(inform_project *proj) {
 
 @ So the structure here is a simple chain of dependencies, but note that
 they are upstream of the project's vertex `V`, not downstream:
-= (text)
+
+``` None
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
 	            inblorb        inform6     inter (in inform7)  inform7
-=
+```
+
 When looking at pictures like this, we must remember that time runs opposite
 to the arrows: that is, these are built from right to left. For example,
 the story file is made before the blorb package is made. The make algorithm
@@ -920,25 +920,31 @@ So where should it start? Not at `V`, the vertex representing the project
 itself, but somewhere upstream. The code below looks at the project's
 compilation settings and sets `proj->chosen_build_target` to this start
 position. In a simple //inform7// usage, we'll have:
-= (text)
+
+``` None
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
 	                                    ^
 	                                    chosen target
-=
+```
+
 so that we have a two-stage process: (i) generate inter code in memory,
 and (ii) code-generate the I6 source code file from that. But in a more
 elaborate use of //inblorb// to incrementally build a project, it will be:
-= (text)
+
+``` None
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
 	                       ^
 	                       chosen target
-=
+```
+
 if we are releasing a bare story file, or
-= (text)
+
+``` None
 	Blorb package --> Story file --> I6 file --> Inter in memory --> Project
 	   ^
 	   chosen target
-=
+```
+
 for a release of a blorbed one.
 
 @<Construct the graph upstream of V@> =
@@ -992,7 +998,7 @@ for a release of a blorbed one.
 
 @ The graph also extends downstream of `V`, representing the things we will
 need before we can run //inform7// on the project: and this is not a linear
-run of arrows at all, but fans considerably outwards -- to its languages,
+run of arrows at all, but fans considerably outwards — to its languages,
 kits and extensions, and then to their dependencies in turn.
 
 Note that the following does not create dependencies for extensions used by
@@ -1085,7 +1091,8 @@ text, where the Include... sentences are, and of course we cannot parse the
 source text to find those unless the Preform grammar is in place.
 
 But then we can make a syntax tree for the project. The large-scale structure is:
-= (text)
+
+``` None
 	root
 	    Implied inclusions (level 0 heading)
 	    	"Include Basic Inform by Graham Nelson."
@@ -1097,7 +1104,8 @@ But then we can make a syntax tree for the project. The large-scale structure is
 	    ...
 	    Invented sentences (level 0 heading)
 	    	"The colour understood is a colour that varies."
-=
+```
+
 Once this is made, any Include... sentences are expanded into syntax trees
 for the extensions they refer to, in a post-processing phase.
 

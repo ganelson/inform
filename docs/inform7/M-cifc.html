@@ -63,7 +63,7 @@ is mostly impractical to use those tricks to have Inform 7 work as part of a
 bigger program not written in Inform.</p>
 <p>However, it is now, as of 2021, possible to use Inform equally well as a
 command-line tool and to use it to generate code which can link into a C
-program, and indeed it's therefore quite easy to have a hybrid program --
+program, and indeed it's therefore quite easy to have a hybrid program —
 part Inform, part C/C++ (or indeed anything else which can call C functions).
 For example, one could imagine a game developed with Unity which uses a
 portion of Inform 7 code to manage, say, just world-modelling or text
@@ -73,13 +73,10 @@ generation services.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Example makes.</b>  The Inform source repository includes a small suite of examples of such hybrid
 programs, stored at:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">inform/inform7/Tests/Test Makes/Eg1-C</span>
-<span class="ConsoleText-plain-syntax">inform/inform7/Tests/Test Makes/Eg2-C</span>
-<span class="ConsoleText-plain-syntax">...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">inform/inform7/Tests/Test Makes/Eg1-C
+inform/inform7/Tests/Test Makes/Eg2-C
+...
+</span></pre>
 <p>These toy programs are automatically built and tested as part of the Inform 7
 test suite, but they can also be copied and then experimented with. We'll call
 these projects &quot;makes&quot;, and indeed each one contains a makefile. Change directory
@@ -93,60 +90,48 @@ so that opening will need to be edited if you move these projects out of
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Example 1: Hello World.</b>  This first example is not even a hybrid. It compiles the simplest of Basic Inform
 programs:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello world."</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello world."</span><span class="plain-syntax">;
+</span></pre>
 <p>...by translating it into a C program, which it then compiles, to produce a native
 executable. The following shows this working:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> "inform/inform7/Tests/Test Makes/Eg1-C"</span>
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">Eg1.i7          ideal_output.txt    makefile</span>
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -silent</span>
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">Eg1             Eg1-I.o             ideal_output.txt</span>
-<span class="ConsoleText-plain-syntax">Eg1-I.c         Eg1.i7              makefile</span>
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./Eg1</span>
-<span class="ConsoleText-plain-syntax">Hello world.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> "inform/inform7/Tests/Test Makes/Eg1-C"
+</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+Eg1.i7			ideal_output.txt	makefile
+</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -silent</span><span class="ConsoleText-plain-syntax">
+</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+Eg1			    Eg1-I.o			    ideal_output.txt
+Eg1-I.c			Eg1.i7			    makefile
+</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./Eg1</span><span class="ConsoleText-plain-syntax">
+Hello world.
+</span></pre>
 <p><code>ideal_output.txt</code> contains the text which the program should print, if it works
 correctly: this is used in testing. The make process accomplished the following:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax"> </span><span class="identifier-syntax">Eg1</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7</span><span class="plain-syntax">     </span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
-<span class="plain-syntax">   |</span>
-<span class="plain-syntax">   | </span><span class="identifier-syntax">inform7</span>
-<span class="plain-syntax">  \|/</span>
-<span class="plain-syntax"> </span><span class="identifier-syntax">Eg1</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span><span class="plain-syntax">    </span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span>
-<span class="plain-syntax">   |</span>
-<span class="plain-syntax">   | </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> (</span><span class="identifier-syntax">acting</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">compiler</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">  \|/</span>
-<span class="plain-syntax"> </span><span class="identifier-syntax">Eg1</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span>
-<span class="plain-syntax">   |</span>
-<span class="plain-syntax">   | </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> (</span><span class="identifier-syntax">acting</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">linker</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">  \|/</span>
-<span class="plain-syntax">  </span><span class="identifier-syntax">Eg1</span><span class="plain-syntax">       </span><span class="identifier-syntax">native</span><span class="plain-syntax"> </span><span class="identifier-syntax">executable</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> Eg1.i7     source in Inform 7
+   |
+   | inform7
+  \|/
+ Eg1-I.c    source in C
+   |
+   | clang (acting as C compiler)
+  \|/
+ Eg1-I.o    C object file
+   |
+   | clang (acting as linker)
+  \|/
+  Eg1       native executable
+</span></pre>
 <p>As with all of the examples, <code>make run</code> runs the program, building it if necessary;
 and <code>make clean</code> removes the files generated by the build process, returning the
 directory to its mint condition. In this case, that means deleting <code>Eg1-I.c</code>,
 <code>Eg1-I.o</code> and <code>Eg1</code>. Note the filenaming convention: the <code>-I</code> in the name of, say,
 <code>Eg1-I.c</code> is supposed to signal that the file was derived from an Inform original.</p>
 <p>The makefile for Example 1 is simple, and in a full build it runs the following:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span>
-<span class="ConsoleText-plain-syntax">../../../Tangled/inform7 -silence -basic -format=C -o Eg1-I.c Eg1.i7</span>
-<span class="ConsoleText-plain-syntax">clang -g -std=c99 -c -I ../../../Internal/Miscellany -o Eg1-I.o Eg1-I.c</span>
-<span class="ConsoleText-plain-syntax">clang -g -o Eg1 Eg1-I.o</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-plain-syntax">
+../../../Tangled/inform7 -silence -basic -format=C -o Eg1-I.c Eg1.i7
+clang -g -std=c99 -c -I ../../../Internal/Miscellany -o Eg1-I.o Eg1-I.c
+clang -g -o Eg1 Eg1-I.o
+</span></pre>
 <p>All three tools compile silently if no errors occur, though in the case of <a href="index.html" class="internal">inform7</a>
 that's only because <code>-silence</code> was asked for. <code>-basic</code> indicates that this is a
 Basic Inform program, which is not asked to contain a command parser, for example.
@@ -154,71 +139,55 @@ Basic Inform program, which is not asked to contain a command parser, for exampl
 <p>The <code>-I ../../../Internal/Miscellany</code> switch when using <code>clang</code> as C compiler
 tells it that this directory should be in the search path for <code>#include</code> files.
 This is needed so that:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span><span class="plain-syntax">
+</span></pre>
 <p>will work. This header file is supplied in every Inform installation at:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">inform7/Internal/Miscellany/inform7_clib.h
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">inform7</span><span class="plain-syntax">/</span><span class="identifier-syntax">Internal</span><span class="plain-syntax">/</span><span class="identifier-syntax">Miscellany</span><span class="plain-syntax">/</span><span class="identifier-syntax">inform7_clib</span><span class="plain-syntax">.</span><span class="element-syntax">h</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Example 2: Hello Hello.</b>  This time we begin with both a C program and an Inform program, both of which
 want to say hello: we want to compile these into a single executable. Now the
 makefile has an extra step:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span><span class="plain-syntax">        </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7</span><span class="plain-syntax">     </span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="identifier-syntax">respectively</span>
-<span class="plain-syntax">      |             |</span>
-<span class="plain-syntax">      |             | </span><span class="identifier-syntax">inform7</span>
-<span class="plain-syntax">      |            \|/</span>
-<span class="plain-syntax">      |          </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span><span class="plain-syntax">    </span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span>
-<span class="plain-syntax">      |             |</span>
-<span class="plain-syntax">      | </span><span class="identifier-syntax">clang</span><span class="plain-syntax">       | </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> (</span><span class="identifier-syntax">acting</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">compiler</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">     \|/           \|/</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax">        </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">files</span>
-<span class="plain-syntax">      |             |</span>
-<span class="plain-syntax">      +------+------+</span>
-<span class="plain-syntax">             |</span>
-<span class="plain-syntax">             | </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> (</span><span class="identifier-syntax">acting</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">linker</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            \|/</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Eg2</span><span class="plain-syntax">             </span><span class="identifier-syntax">native</span><span class="plain-syntax"> </span><span class="identifier-syntax">executable</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Eg2.c		 Eg2.i7     source in C and Inform 7 respectively
+	  |			    |
+	  |			    | inform7
+	  |			   \|/
+	  |			 Eg2-I.c    source in C
+	  |			    |
+	  |	clang	    | clang (acting as C compiler)
+	 \|/		   \|/
+	Eg2.o		 Eg2-I.o    C object files
+	  |			    |
+	  +------+------+
+		     |
+		     | clang (acting as linker)
+		    \|/
+		    Eg2       		native executable
+</span></pre>
 <p>That will be the basic plan for all the remaining examples too, so we'll stop
 with these diagrams. Here <code>Eg2.c</code> is the C part of our source code, and is not
 to be confused with <code>Eg2-I.c</code>, which is the conversion to C of the Inform part
 of our source. Each produces an object file, and the link unites these into a
 single executable.</p>
 <p>The Inform source reads:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello from the Inform source."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello from the Inform source."</span><span class="plain-syntax">
+</span></pre>
 <p>The C source could be very easy too:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span><span class="plain-syntax">
 
-<span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Hello from the C source code.\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {
+	</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Hello from the C source code.\n"</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);
+	</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;
+}
+</span></pre>
 <p>When run, this produces:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">Hello from the C source code.</span>
-<span class="ConsoleText-plain-syntax">Hello from the Inform source.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">Hello from the C source code.
+Hello from the Inform source.
+</span></pre>
 <p>Note that the C program is the one in command here: in particular, it contains
 <code>main</code>. That means of course that <code>Eg2-I.c</code> must not include a <code>main</code> function,
 or the linking stage will throw an error; whereas <code>Eg1-I.c</code>, in the previous example,
@@ -241,21 +210,15 @@ running a copy of the same program.</p>
 <p>It is essential to create a process as shown, with a call to <code>i7_new_process</code>.
 Once created, though, the same process can be run multiple times. If we had
 written,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);
+</span></pre>
 <p>then the result would have been:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">Hello from the C source code.</span>
-<span class="ConsoleText-plain-syntax">Hello from the Inform source.</span>
-<span class="ConsoleText-plain-syntax">Hello from the Inform source.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">Hello from the C source code.
+Hello from the Inform source.
+Hello from the Inform source.
+</span></pre>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
 Strictly speaking, typedef names ending <code>_t</code> are reserved for use by the
 POSIX standard, so this is a sin, but really, I don't see POSIX ever needing names
@@ -283,22 +246,19 @@ if it halted with a fatal error, for example through dividing by zero, or
 failing a memory allocation. In that event, an error message will be printed
 to <code>stderr</code>.</p>
 <p>So, for the sake of tidiness, the full <code>Eg2.c</code> reads:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span><span class="plain-syntax">
 
-<span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Hello from the C source code.\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">exit_code</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {
+	</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Hello from the C source code.\n"</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);
+	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">exit_code</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);
+	}
+	</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax">;
+}
+</span></pre>
 <p>Example 2 is in fact so simple that it is impossible for the exit code to be
 other than 0, but checking the exit code is good practice.</p>
 </div>
@@ -307,25 +267,19 @@ other than 0, but checking the exit code is good practice.</p>
 Inform 7 can be captured, processed, and in general handled however the C
 program would like. This is done by assigning a receiver to the process,
 after it is created, but before it is run:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_receiver</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">my_receiver</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">i7_set_process_receiver</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">my_receiver</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);
+</span></pre>
 <p>Here <code>my_receiver</code> is a function. The default receiver looks like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_default_receiver</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">style</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I7_BODY_TEXT_ID</span><span class="plain-syntax">) </span><span class="identifier-syntax">fputc</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">stdout</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_default_receiver</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">style</span><span class="plain-syntax">) {
+	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I7_BODY_TEXT_ID</span><span class="plain-syntax">) </span><span class="identifier-syntax">fputc</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">stdout</span><span class="plain-syntax">);
+}
+</span></pre>
 <p>This receives the text printed by the Inform process, one character at a time.</p>
 <ul>
 <li>
 <p>The <code>id</code> is a &quot;window ID&quot;, a detail which doesn't matter to a Basic Inform
-project -- it will always in fact be <code>I7_BODY_TEXT_ID</code>. For a full Inform project
+project — it will always in fact be <code>I7_BODY_TEXT_ID</code>. For a full Inform project
 such as an IF work, it might be any of three possibilities:</p>
 <ul>
 <li><code>I7_BODY_TEXT_ID</code>, the main transcript of text in the story;</li>
@@ -359,20 +313,14 @@ is that it asked for text to be sent to the receiver encoded as UTF-8. This in f
 is the default receiver's arrangement, too. Call <code>i7_set_process_receiver(&amp;proc, my_receiver, 0)</code>
 to have the characters arrive raw as a series of unencoded Unicode code-points.</p>
 <p>In Example 3, the Inform source is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello &amp; [italic type]welcome[roman type] from &lt;Inform code&gt;!"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello &amp; [italic type]welcome[roman type] from &lt;Inform code&gt;!"</span><span class="plain-syntax">
+</span></pre>
 <p>The example receiver function converts this to HTML:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;</span>
-<span class="ConsoleText-plain-syntax">Hello &amp;amp; &lt;span class="italic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
-<span class="ConsoleText-plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;
+Hello &amp;amp; &lt;span class="italic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!
+&lt;/html&gt;&lt;/body&gt;
+</span></pre>
 <p>The word &quot;welcome&quot; here was printed with the style <code>&quot;italic&quot;</code>; all else was
 plain.</p>
 <p>This example just prints the result, of course, but a receiver function could
@@ -385,98 +333,79 @@ i.e., it is not limited to bold and italic markup.</p>
 more interesting. We're going to need to do something unusual here, and define
 two new phrases using inline definitions as raw Inter code, written in Inform 6
 notation:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> {</span><span class="identifier-syntax">T</span><span class="plain-syntax">}; -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax">):
+	(- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> {</span><span class="identifier-syntax">T</span><span class="plain-syntax">}; -).
+</span></pre>
 <p>The result of this will be something which Inform 6 would not compile, because
 in I6 the only legal uses of <code>style</code> are <code>style bold</code> and so on: there is no
 legal way for <code>style</code> to be followed by an arbitrary value, as it is here. But
 Inform 6 will not be compiling this: Inform will convert <code>style V;</code> directly to
 the Inter statement <code>!style V</code>, which will then be translated to C as the function
-call <code>i7_styling(proc, 2, V)</code> -- and that function, in our library of C code
+call <code>i7_styling(proc, 2, V)</code> — and that function, in our library of C code
 supporting Inform, can handle any textual value of <code>V</code>.</p>
 <p>With that bit of fancy footwork out of the way, we can make a pair of text
 substitutions <code>[style NAME]</code> and <code>[end style]</code>, with the possible range of
 styles enumerated by name, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">styles</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">decorative</span><span class="plain-syntax">, </span><span class="identifier-syntax">calligraphic</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">enlarged</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">.
+</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">styles</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">decorative</span><span class="plain-syntax">, </span><span class="identifier-syntax">calligraphic</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">enlarged</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"[T]"</span><span class="plain-syntax">.</span>
+</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">):
+	</span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"[T]"</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">roman</span><span class="plain-syntax">; -).</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">:
+	(- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">roman</span><span class="plain-syntax">; -).
+</span></pre>
 <p>Finally, then, we can have:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[style as enlarged]Hello[end style] &amp; [style as calligraphic]welcome[end style] from &lt;Inform code&gt;!"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[style as enlarged]Hello[end style] &amp; [style as calligraphic]welcome[end style] from &lt;Inform code&gt;!"</span><span class="plain-syntax">
+</span></pre>
 <p>And the result is:</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;
+&lt;span class="enlarged"&gt;Hello&lt;/span&gt; &amp;amp; &lt;span class="calligraphic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!
+&lt;/html&gt;&lt;/body&gt;
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;</span>
-<span class="ConsoleText-plain-syntax">&lt;span class="enlarged"&gt;Hello&lt;/span&gt; &amp;amp; &lt;span class="calligraphic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
-<span class="ConsoleText-plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Example 5: Sender.</b>  It's now time to make a traditional piece of interactive fiction with Inform,
 with a world model, a command parser, and the standard command-and-response
 play loop. But we will call this from C, and decide the commands there.</p>
 <p>This means a small change to the makefile, to remove <code>-basic</code> from the options
 for <code>inform7</code>, since we're no longer confining ourselves to Basic Inform.</p>
-<p>The I7 source could be that for almost any game -- any of the examples in the
+<p>The I7 source could be that for almost any game — any of the examples in the
 Inform documentation would do. The C source is more interesting here. Just as
 an <code>i7_process</code> can be given a &quot;receiver&quot; function, which receives text from
 it, it can also be given a &quot;sender&quot; which sends text to it. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">);
+</span></pre>
 <p>Here <code>the_quitter</code> is the following sender function:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"quit"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"y"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">) {
+	</span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">""</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) {
+		</span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"quit"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;
+		</span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"y"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;
+	}
+	</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);
+	</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">;
+}
+</span></pre>
 <p>This must return a C string (that is, a <code>char *</code> pointer to a null-terminated
 sequence of non-control ASCII characters) which represents a whole line of
 imaginary &quot;typing&quot; by the player. The argument <code>count</code> counts upwards from 0,
 incrementing after each call to the sender. So the effect of <code>the_quitter</code>
 is to simulate the effect of typing &quot;quit&quot; and then &quot;y&quot;.</p>
 <p>The resulting transcript of play looks like this:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archeologist, invites you to explore...</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archeologist, invites you to explore...
 
-<span class="ConsoleText-plain-syntax">Welcome</span>
-<span class="ConsoleText-plain-syntax">An Interactive Fiction</span>
-<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210917 / Inform 7 v10.1.0 / D</span>
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210917 / Inform 7 v10.1.0 / D
 
-<span class="ConsoleText-plain-syntax">Jarn Mound</span>
+Jarn Mound
 
-<span class="ConsoleText-plain-syntax">&gt;quit</span>
-<span class="ConsoleText-plain-syntax">Are you sure you want to quit? y</span>
-</pre>
-<div class="lsmarkdown">
+&gt;quit
+Are you sure you want to quit? y
+</span></pre>
 <p>Thus, the &quot;y&quot; is needed in order to respond to the followup question &quot;Are you
 sure...?&quot;.</p>
 <p>Note that the process is stalled while waiting for the sender to return a
@@ -494,60 +423,54 @@ feed a textual command back to I7 which would then be parsed into actions.
 In this example we do just that, and also examine and modify the data belonging
 to the I7 program from C.</p>
 <p>The story, such as it is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Jarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Jarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">Age</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ages</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">, </span><span class="identifier-syntax">antique</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span>
-<span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">.</span>
+</span><span class="identifier-syntax">Age</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ages</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">, </span><span class="identifier-syntax">antique</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax">
+</span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">In</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">Linear</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">wearing</span>
-<span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">.</span>
+</span><span class="identifier-syntax">In</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">Linear</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">wearing</span><span class="plain-syntax">
+</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"4 oxen, 1 broken tripod table."</span>
+</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"4 oxen, 1 broken tripod table."</span><span class="plain-syntax">
 
-<span class="identifier-syntax">Instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is approximately [time of day]."</span>
+</span><span class="identifier-syntax">Instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is approximately [time of day]."</span><span class="plain-syntax">
 
-<span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is [age of tablet], and translates to '[meaning]'."</span>
+</span><span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is [age of tablet], and translates to '[meaning]'."</span><span class="plain-syntax">
 
-<span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">prompt</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Sir Arthur Evans, hero and archeologist, invites you to explore..."</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:
+	</span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">prompt</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Sir Arthur Evans, hero and archeologist, invites you to explore..."</span><span class="plain-syntax">
+</span></pre>
 <p>In this example the C program is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_symbols.h"</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span><span class="plain-syntax">
+#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_symbols.h"</span><span class="plain-syntax">
 
-<span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'time of day' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'age of Linear B tablet' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Take</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Inv</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">985</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">995</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_modern</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {
+	</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();
+	</span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);
+	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {
+		</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'time of day' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'age of Linear B tablet' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Take</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Inv</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">985</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">995</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_write_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_modern</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+		</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;
+	} </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);
+		</span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);
+		</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;
+	}
+}
+</span></pre>
 <p>Note that a header file called <code>inform7_symbols.h</code> is included. This defines
 useful constants like <code>i7_A_Take</code> (for the &quot;taking&quot; action) and <code>i7_I_Linear_B_tablet</code>
 (for the object called &quot;Linear B tablet&quot;). But where did this header come from?</p>
@@ -557,50 +480,44 @@ we use <code>-format=C/no-main/symbols-header</code>. This also needs a subtle c
 the makefile logic; the difference being that <code>Eg6-C.o</code> is now dependent on
 <code>Eg6-I.c</code>. This forces <code>make</code> to create <code>Eg6-I.c</code>, and as a byproduct <code>inform7_symbols.h</code>,
 before compiling <code>Eg6-C.c</code> to make <code>Eg6-C.o</code>.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Eg6:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">C</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span>
-<span class="plain-syntax">    $(</span><span class="identifier-syntax">LINK</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">C</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Eg6: Eg6-C.o Eg6-I.o
+	$(LINK) -o Eg6 Eg6-C.o Eg6-I.o
 
-<span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">C</span><span class="plain-syntax">.</span><span class="identifier-syntax">o:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span>
-<span class="plain-syntax">    $(</span><span class="identifier-syntax">CC</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">C</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span>
+Eg6-C.o: Eg6.c Eg6-I.c
+	$(CC) -o Eg6-C.o Eg6.c
 
-<span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span>
-<span class="plain-syntax">    $(</span><span class="identifier-syntax">CC</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span>
+Eg6-I.o: Eg6-I.c
+	$(CC) -o Eg6-I.o Eg6-I.c
 
-<span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7</span>
-<span class="plain-syntax">    $(</span><span class="identifier-syntax">INFORM</span><span class="plain-syntax">) </span><span class="constant-syntax">-</span><span class="identifier-syntax">format</span><span class="plain-syntax">=</span><span class="identifier-syntax">C</span><span class="plain-syntax">/</span><span class="identifier-syntax">no</span><span class="plain-syntax">-</span><span class="function-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">symbols</span><span class="plain-syntax">-</span><span class="identifier-syntax">header</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">-</span><span class="identifier-syntax">I</span><span class="plain-syntax">.</span><span class="identifier-syntax">c</span><span class="plain-syntax"> </span><span class="identifier-syntax">Eg6</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7</span>
-</pre>
-<div class="lsmarkdown">
+Eg6-I.c: Eg6.i7
+	$(INFORM) -format=C/no-main/symbols-header -o Eg6-I.c Eg6.i7
+</span></pre>
 <p>Anyway, the result of this is:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archaeologist, invites you to explore...</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archaeologist, invites you to explore...
 
-<span class="ConsoleText-plain-syntax">Welcome</span>
-<span class="ConsoleText-plain-syntax">An Interactive Fiction</span>
-<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D</span>
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D
 
-<span class="ConsoleText-plain-syntax">Jarn Mound</span>
-<span class="ConsoleText-plain-syntax">You can see a Linear B tablet here.</span>
+Jarn Mound
+You can see a Linear B tablet here.
 
-<span class="ConsoleText-plain-syntax">[C program reads 'time of day' as 540]</span>
-<span class="ConsoleText-plain-syntax">[C program reads 'age of Linear B tablet' as 3]</span>
-<span class="ConsoleText-plain-syntax">Taken.</span>
+[C program reads 'time of day' as 540]
+[C program reads 'age of Linear B tablet' as 3]
+Taken.
 
-<span class="ConsoleText-plain-syntax">You are carrying:</span>
-<span class="ConsoleText-plain-syntax">  a Linear B tablet</span>
-<span class="ConsoleText-plain-syntax">  a watch (being worn)</span>
+You are carrying:
+  a Linear B tablet
+  a watch (being worn)
 
-<span class="ConsoleText-plain-syntax">It is approximately 4:25 pm.</span>
+It is approximately 4:25 pm.
 
-<span class="ConsoleText-plain-syntax">It is approximately 4:35 pm.</span>
+It is approximately 4:35 pm.
 
-<span class="ConsoleText-plain-syntax">You see nothing special about the Linear B tablet.</span>
+You see nothing special about the Linear B tablet.
 
-<span class="ConsoleText-plain-syntax">It is modern, and translates to "4 oxen, 1 broken tripod table.".</span>
-</pre>
-<div class="lsmarkdown">
+It is modern, and translates to "4 oxen, 1 broken tripod table.".
+</span></pre>
 <p>Here we see a run of responses, as if to unheard commands: those of course
 are the actions sent directly to the process by <code>i7_try</code>.</p>
 <p>The data inside the Inform program is represented in C by values of the type
@@ -642,61 +559,48 @@ most often needed.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Example 7: Reading and writing lists and texts from C.</b>  Following on from Example 6, suppose we want to deal with Inform variables (or
-property values) containing texts, or lists -- these, for instance:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"4 oxen, 1 broken tripod table."</span>
+property values) containing texts, or lists — these, for instance:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"4 oxen, 1 broken tripod table."</span><span class="plain-syntax">
 
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">dial</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">numbers</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">dial</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> { </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">, </span><span class="constant-syntax">9</span><span class="plain-syntax">, </span><span class="constant-syntax">12</span><span class="plain-syntax"> }.</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">dial</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">numbers</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">dial</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> { </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">, </span><span class="constant-syntax">9</span><span class="plain-syntax">, </span><span class="constant-syntax">12</span><span class="plain-syntax"> }.
+</span></pre>
 <p>If we call, say, <code>i7_read_variable</code> on <code>i7_V_meaning</code> then the return value is
 an <code>i7word_t</code> which is, in fact, an address somewhere in the Inform process memory.
 What are we to do with this? In fact, it's easy to convert to and from a C string:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">));</span>
-<span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'meaning' as %s]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">i7_write_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"the goddess of the winds beckons you!"</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">));
+</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'meaning' as %s]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_write_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">),
+	</span><span class="string-syntax">"the goddess of the winds beckons you!"</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+</span></pre>
 <p>And this produces the following:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">[C program reads 'meaning' as 4 oxen, 1 broken tripod table.]</span>
-<span class="ConsoleText-plain-syntax">It is ancient, and translates to "4 oxen, 1 broken tripod table.".</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">[C program reads 'meaning' as 4 oxen, 1 broken tripod table.]
+It is ancient, and translates to "4 oxen, 1 broken tripod table.".
 
-<span class="ConsoleText-plain-syntax">It is ancient, and translates to "the goddess of the winds beckons you!".</span>
-</pre>
-<div class="lsmarkdown">
+It is ancient, and translates to "the goddess of the winds beckons you!".
+</span></pre>
 <p>Here we repeat the action of examining the tablet: we examine once before changing
 the &quot;meaning&quot; and once after.</p>
 <p>Similarly for lists:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_list</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_dial</span><span class="plain-syntax">), &amp;</span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'dial' as"</span><span class="plain-syntax">);</span>
-<span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">" %d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
-<span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"]\n"</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">D</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">D</span><span class="plain-syntax">[1] = </span><span class="constant-syntax">10</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">i7_write_list</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_dial</span><span class="plain-syntax">), </span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
-<span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_list</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_dial</span><span class="plain-syntax">), &amp;</span><span class="identifier-syntax">L</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'dial' as"</span><span class="plain-syntax">);
+</span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">" %d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);
+</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"]\n"</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">D</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">2</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">D</span><span class="plain-syntax">[1] = </span><span class="constant-syntax">10</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">i7_write_list</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_dial</span><span class="plain-syntax">), </span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
+</span></pre>
 <p>which produces:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">[C program reads 'dial' as 3 6 9 12]</span>
-<span class="ConsoleText-plain-syntax">It is approximately 9:00 am, according to a dial showing 3, 6, 9 and 12.</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">[C program reads 'dial' as 3 6 9 12]
+It is approximately 9:00 am, according to a dial showing 3, 6, 9 and 12.
 
-<span class="ConsoleText-plain-syntax">It is approximately 9:00 am, according to a dial showing 2 and 10.</span>
-</pre>
+It is approximately 9:00 am, according to a dial showing 2 and 10.
+</span></pre>
+</div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  The following functions are available:</p>
 <ul>
@@ -731,48 +635,33 @@ then <code>L</code> is left as the empty list.</p>
 functions, albeit with some minor restrictions.</p>
 <p>First, we have a C function called <code>collatz</code>, and we want to call it from Inform.
 This function must have a prototype like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">) {
+	...
+}
+</span></pre>
 <p>In particular, it must receive a single value (other than the process) and
 return a single value.</p>
 <p>At the Inform side, we need to give this a wrapper as a phrase. Say, this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    (- </span><span class="identifier-syntax">external__collatz</span><span class="plain-syntax">({</span><span class="identifier-syntax">N</span><span class="plain-syntax">}); -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):
+	(- </span><span class="identifier-syntax">external__collatz</span><span class="plain-syntax">({</span><span class="identifier-syntax">N</span><span class="plain-syntax">}); -).
+</span></pre>
 <p>Note that we've written that definition inline, and that the function is here
 called <code>external__collatz</code>. (The prefix <code>external__</code> signals that the function
 won't be found in the Inter code generated by Inform; without that, Inform
 would throw a problem message.) With that done, the Inform code:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span><span class="plain-syntax">;
+</span></pre>
 <p>will perform <code>collatz(proc, 17)</code>, as expected.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Now we want to do this the other way round: have C make a function call into
 Inform. The function to call this time is the one implied by this phrase declaration:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">run</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):</span>
-<span class="plain-syntax">    ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">run</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Collatz</span><span class="plain-syntax"> </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">):
+	...
+</span></pre>
 <p>And the C needed to call this is simple enough:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7_F_run_the_collatz_algorithm_on_X</span><span class="plain-syntax">(17);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">i7_F_run_the_collatz_algorithm_on_X</span><span class="plain-syntax">(17);
+</span></pre>
 <p><code>i7_F_run_the_collatz_algorithm_on_X</code> is in fact a defined name: see the
 include file <code>inform7_symbols.h</code> for a list of the functions available for
 calling like this. (Phrases defined inline cannot be called, because they
@@ -785,23 +674,20 @@ first way round.</p>
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Example 8 shows both of these mechanisms working, with control tossed back
 and forth between the two programs. They are pretending to be two people, Mr C
 and Mrs I, playing a simple number game: the winner is the one who reaches 1.</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 17, so I triple and add one.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 52 is an interesting number. And so I halve.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 26, so I divide by two.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 13 is an interesting number. And so I treble and add 1.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 40, so I divide by two.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 20 is an interesting number. And so I halve.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 10, so I divide by two.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 5 is an interesting number. And so I treble and add 1.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 16, so I divide by two.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 8 is an interesting number. And so I halve.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 4, so I divide by two.</span>
-<span class="ConsoleText-plain-syntax">MRS I: I have heard Mr C tell that 2 is an interesting number. And so I halve.</span>
-<span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 1, so I win! Haha!</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">MR C: My friend Mrs I calls my attention to 17, so I triple and add one.
+MRS I: I have heard Mr C tell that 52 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 26, so I divide by two.
+MRS I: I have heard Mr C tell that 13 is an interesting number. And so I treble and add 1.
+MR C: My friend Mrs I calls my attention to 40, so I divide by two.
+MRS I: I have heard Mr C tell that 20 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 10, so I divide by two.
+MRS I: I have heard Mr C tell that 5 is an interesting number. And so I treble and add 1.
+MR C: My friend Mrs I calls my attention to 16, so I divide by two.
+MRS I: I have heard Mr C tell that 8 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 4, so I divide by two.
+MRS I: I have heard Mr C tell that 2 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 1, so I win! Haha!
+</span></pre>
 <p>Here the function calls reached 11 deep: Inform called C which called Inform
 which called C which... and so on. But everything then terminated cleanly.</p>
 </div>

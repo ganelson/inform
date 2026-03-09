@@ -8,10 +8,9 @@ providing the predicate's implementation. In effect, a family is a collection
 of UPs which share an implementation.
 
 =
-typedef struct up_family {
+classdef up_family {
 	struct method_set *methods;
-	CLASS_DEFINITION
-} up_family;
+}
 
 up_family *UnaryPredicateFamilies::new(void) {
 	up_family *f = CREATE(up_family);

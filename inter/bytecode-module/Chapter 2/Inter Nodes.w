@@ -7,15 +7,18 @@ tree locations.
 It's essential to be able to walk an Inter tree quickly, while movements
 of nodes within the tree are relatively uncommon. So we provide every
 imaginable link. Suppose the structure is:
-= (text)
+
+``` None
 	A
 		B
 		C
 			D
 		E
-=
+```
+
 Then the links are:
-= (text)
+
+``` None
               of |	A		B		C		D		E
 	-------------+--------------------------------------
 	parent		 |	NULL	A		A		C		A
@@ -23,7 +26,8 @@ Then the links are:
 	last_child   |  E		NULL	D		NULL	NULL
 	previous     |  NULL	NULL	B		NULL	C
 	next         |  NULL	C		E		NULL	NULL
-=
+```
+
 Each node also knows the tree and the package it belongs to. We really aren't
 concerned about memory consumption here. The Inter trees we deal with will be
 large (typically 400,000 nodes), so on a 64-bit processor we might be looking
@@ -32,7 +36,7 @@ memory consumption is also considered. But this is no longer prohibitive: speed
 of access matters more.
 
 =
-typedef struct inter_tree_node {
+classdef inter_tree_node in 8192s {
 	struct inter_tree *tree;
 	struct inter_package *package;
 	struct inter_tree_node *parent_itn;
@@ -41,7 +45,7 @@ typedef struct inter_tree_node {
 	struct inter_tree_node *previous_itn;
 	struct inter_tree_node *next_itn;
 	struct warehouse_floor_space W;
-} inter_tree_node;
+}
 
 @ Do not call this directly in order to create a node.
 
@@ -257,13 +261,15 @@ inter_warehouse *Inode::warehouse(inter_tree_node *F) {
 Each node represents one instruction, which is encoded with a contiguous
 block of bytecode. That bytecode is not stored in the //inter_tree_node//
 structure, but in warehouse memory. 
-= (text)
+
+``` None
 ......+------+-----------------+----+-------+-------------+........
       | Skip | Origin/Verified | ID | Level | Data        |
 ......+------+-----------------+----+-------+-------------+........
        <----------------------> <------------------------>
         Preframe                             Frame
-=
+```
+
 This stretch of memory is divided into a "preframe" and a "frame": the frame
 holds the words of data described above, with position 0 being the ID, and
 so on. Unlike the frame, the preframe data is not part of the instruction, and
@@ -331,12 +337,12 @@ void Inode::set_preframe(inter_tree_node *F, int at, inter_ti V) {
 }
 
 @ As noted above, the size of the frame varies from instruction to instruction.
-For most instructions, it's determined as soon as the inode is created -- for
+For most instructions, it's determined as soon as the inode is created — for
 example, a `PROPERTYVALUE_IST` is always of a fixed length, and it's created
 already being that length, so that it doesn't need to be extended.
 
 But just a few instructions are of variable length depending on what they are
-doing -- `CONSTANT_IST`, for example. Those are created at their minimum
+doing — `CONSTANT_IST`, for example. Those are created at their minimum
 length and then extended as needed.
 
 Note that `by` is unsigned, so cannot be negative: the bytecode can extend
@@ -390,11 +396,11 @@ but it's just stored in what amounts to an array of unsigned integers: what is
 stored is just an ID representing one of those things. The conversion from an ID
 to the actual resource it represents depends on:
 
-- What it is meant to be (symbols table, text, package, ...) -- there is no
+- What it is meant to be (symbols table, text, package, ...) — there is no
 indication in the bytecode as to which that is, so we need to know what we're
 looking for, e.g. that what is in position 3 is a text;
 
-- Which node the value came from -- because these depend on the warehouse
+- Which node the value came from — because these depend on the warehouse
 where data is stored (and some nodes are in different warehouses than others),
 and sometimes also on the local symbols table (which depends on the package
 we are in, which in turn depends on the node).

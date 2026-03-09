@@ -20,8 +20,8 @@ void TheHeap::ensure_basic_heap_present(void) {
 @ By now, we know that we need at least `total_heap_allocation` bytes on the
 heap, but the initial heap size has to be a power of 2, so we compute the
 smallest such which is big enough. On Glulx, we then multiply by 4: one factor
-of 2 is because the word size is twice as much -- words are 4-byte, not 2-byte
-as on the Z-machine -- while the other is, basically, because we can, and
+of 2 is because the word size is twice as much — words are 4-byte, not 2-byte
+as on the Z-machine — while the other is, basically, because we can, and
 because we want to store text in particular using 2-byte characters (capable
 of storing Unicode) rather than 1-byte characters as on the Z-machine. Glulx
 has essentially no memory constraints compared with the Z-machine.
@@ -47,7 +47,7 @@ a text or list, which can be used either globally or temporarily when a
 function runs. For more on the latter, see //imperative: Stack Frames//.
 
 It increases the heap size estimate accordingly, and returns a convenient
-structure to describe the new value -- recording its kind and its position
+structure to describe the new value — recording its kind and its position
 in the local M-stack frame. The `stack_offset` should be -1 for a global value,
 which is then not stored on the stack.
 
@@ -58,7 +58,7 @@ typedef struct heap_allocation {
 } heap_allocation;
 
 @ We want to make an estimate of the likely size needs of such a value if placed
-on the heap -- its exact size needs if it is fixed in size, and a reasonable
+on the heap — its exact size needs if it is fixed in size, and a reasonable
 overestimate of typical usage if it is flexible.
 
 The `multiplier` is used when we need to calculate the size of, say, a list of

@@ -187,7 +187,7 @@ The Z-machine buffer and parse buffer formats are documented in the DM4.
 `VM_PrintToBuffer(buf, len, a, b, c)` prints something into a buffer.
 
 `VM_Tokenise(buff, parse_buff)` takes the text in the buffer `buff` and
-produces the corresponding data in the parse buffer `parse_buff` -- this is
+produces the corresponding data in the parse buffer `parse_buff` — this is
 called tokenisation since the characters are divided into words: in traditional
 computing jargon, such clumps of characters treated syntactically as units
 are called tokens.
@@ -370,7 +370,7 @@ screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
 `VM_MoveCursorInStatusLine(line, column)` switches printing to the status line,
-positioning the "cursor" -- the position at which printing will begin --
+positioning the "cursor" — the position at which printing will begin —
 at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.

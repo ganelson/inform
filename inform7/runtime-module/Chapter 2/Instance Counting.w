@@ -30,12 +30,11 @@ will in practice use that only for subjects representing kinds:
 @d COUNTING_DATA(subj) FEATURE_DATA_ON_SUBJECT(counting, subj)
 
 =
-typedef struct counting_data {
+classdef counting_data {
 	int has_instances; /* are there any instances of this kind? */
 	struct property *IK_count_prop;
 	struct property *next_in_IK_sequence_prop; /* the IK-Link property for this kind */
-	CLASS_DEFINITION
-} counting_data;
+}
 
 @ =
 int InstanceCounting::counting_new_subject_notify(inference_subject *subj) {
@@ -287,8 +286,8 @@ would be the number for "vehicle", not for "thing".
 
 @ And otherwise, for every kind that the instance belongs to (directly or
 indirectly) it gets the relevant instance count as a property value. For
-example, the red door might have `IK4_Count` set to 3 -- it's door number 3,
-let's suppose -- and `IK2_Count` set to 19 -- it's thing number 19. It doesn't
+example, the red door might have `IK4_Count` set to 3 — it's door number 3,
+let's suppose — and `IK2_Count` set to 19 — it's thing number 19. It doesn't
 have an `IK7_Count` property at all, since it isn't a backdrop (kind number 7),
 and so on for all other kinds.
 

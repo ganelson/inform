@@ -54,7 +54,7 @@ being declared in source text.
 
 @ The model is constructed entirely from a stream of logical propositions
 sent here by the //assertions// module. Those propositions may be mutually
-inconsistent -- either flatly contradictory or just impossible to reconcile.
+inconsistent — either flatly contradictory or just impossible to reconcile.
 
 The stream of supposed truthful statements comes to this module through calls
 to either //Assert::true// or //Assert::true_about//. These reduce a

@@ -99,7 +99,7 @@ week more). Still, the result seems to be robust. The main compromise made
 is that backtracking is not always comprehensive with regexps like
 <code>^(a\1?){4}$</code>, because we do not allocate individual storage to backtrack
 individually through all possibilities of each of the four uses of the
-bracketed subexpression -- which means we miss some cases, since the
+bracketed subexpression — which means we miss some cases, since the
 subexpression contains a reference to itself, so that its content can vary
 in the four uses. PCRE's approach here is to expand the expression as if it
 were a sequence of four bracketed expressions, thus removing the awkward
@@ -246,8 +246,8 @@ memory is too short.)</p>
 counting <code>\0</code>. During the compiling stage, <code>RE_Subexpressions--&gt;N</code> is set
 to point to the node representating <code>\N</code>, where <code>N</code> varies from 1 to 9.
 When matching is complete, and assuming we care about the contents of
-these variables -- which we might not, and if not we certainly don't want
-to waste time and memory -- we call <code>TEXT_TY_RE_CreateMatchVars</code> to allocate
+these variables — which we might not, and if not we certainly don't want
+to waste time and memory — we call <code>TEXT_TY_RE_CreateMatchVars</code> to allocate
 text variables and fill them in as appropriate, memory permitting.</p>
 <p><code>TEXT_TY_RE_EmptyMatchVars</code> empties any such variables which may survive from
 a previous match, setting them to the empty text.</p>
@@ -987,8 +987,8 @@ given here.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Parser.</b>  The virtue of all of that tree compilation is that the code which actually
-does the work -- which parses the source text to see if the regular expression
-matches it -- is much shorter and quicker: indeed, it takes up fewer lines
+does the work — which parses the source text to see if the regular expression
+matches it — is much shorter and quicker: indeed, it takes up fewer lines
 than the compiler part, which goes to show that decoding regular expression
 syntax is a more complex task than acting upon it. This would have surprised
 the pioneers of regexp, but the syntax has become much more complicated over
@@ -999,7 +999,7 @@ regexp syntax there could be. However: to work.</p>
 <p>The main matcher simply starts a recursive subroutine to perform the match.
 However, the subroutine tests for a match at a particular position in the
 source text; so the main routine tries the subroutine everywhere convenient
-in the source text, from left to right, until a match is made -- unless the
+in the source text, from left to right, until a match is made — unless the
 regexp is constrained by a <code>^</code> glyph to begin matching at the start of the
 source text, which will cause a <code>START_RE_CC</code> node to be the eldest child
 of the <code>\0</code> root.</p>
@@ -1441,7 +1441,7 @@ if not in the entire expression, and the simple method above disposes of
 them efficiently.</p>
 <p>But in an expression like <code>ab+bb</code>, there is no alternative to backtracking
 if we are going to try to match the nodes from left to right: we match the
-&quot;a&quot;, then we match as many &quot;b&quot;s as we can -- but then we find that we
+&quot;a&quot;, then we match as many &quot;b&quot;s as we can — but then we find that we
 have to match &quot;bb&quot;, and this is necessarily impossible because we have
 just eaten all of the &quot;b&quot;s available. We therefore backtrack one node
 to the <code>b+</code> and try again. We obviously can't literally try again because
@@ -1452,7 +1452,7 @@ consider it to be <code>b{1,22}</code>, that is, to match at least 1 and at most
 letter &quot;b&quot;s. That still won't work, as it happens, so we backtrack again
 with a constraint tightened to make it <code>b{1,21}</code>, and now the match occurs
 as we would hope. When the expression becomes more complex, backtracking
-becomes a longer-distance, recursive procedure -- we have to exhaust all
+becomes a longer-distance, recursive procedure — we have to exhaust all
 possibilities of a more recent node before tracking back to one from longer
 ago. (This is why the worst test cases are those which entice us into a long,
 long series of matches only to find that a guess made right back at the
@@ -1522,13 +1522,13 @@ more useful to suggest that the reader observe it in action by setting
 failed: that means that any subexpressions which were matched in the course of
 the attempt must also in retrospect be considered unmatched. So we work down
 through the subtree at <code>token</code> and empty any markers for subexpressions,
-which in effect clears their backslash variables -- this is important as,
+which in effect clears their backslash variables — this is important as,
 otherwise, the contents left over could cause the alternative reading of the
 <code>token</code> to be misparsed if it refers to the backslash variables in question.
 (If you think nobody would ever be crazy enough to write a regular expression
 like that, you haven't see Perl's test suite.)</p>
 <p>If the <code>downwards</code> flag is clear, it not only invalidates subexpression
-matches below the node but also to the right of the node -- this is useful
+matches below the node but also to the right of the node — this is useful
 for a backtrack which runs back quite some distance.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1666,7 +1666,7 @@ only to be a simple string of characters taken literally, such as <code>frog</co
 <p>Each match found is replaced with the contents of <code>rtxt</code>, except
 that if the blob type is <code>REGEXP_BLOB</code> then we recognise a few syntaxes
 as special: for instance, <code>\2</code> expands to the value of subexpression 2
-as it was matched -- see <em>Writing with Inform</em> for details.</p>
+as it was matched — see <em>Writing with Inform</em> for details.</p>
 <p>The optional argument <code>insens</code> is a flag which, if set, causes the matching
 to be done case insensitively; the optional argument <code>exactly</code>, if set,
 causes the matching to work only if the entire <code>txt</code> is matched. (This

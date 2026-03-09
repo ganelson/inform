@@ -9,7 +9,7 @@ in existence: they are shared by some process carried out by rulebooks.
 
 The semantics of shared variables are unusual because rules can be
 in multiple rulebooks, or can be moved out of their expected rulebooks.
-Their names are therefore not limited in scope -- they are global, and
+Their names are therefore not limited in scope — they are global, and
 they belong to the same namespace as global variables. But access to them
 is restricted to just those rules with permission.
 
@@ -23,7 +23,7 @@ As can be seen, a shared variable is really just some additional expectations
 placed on a nonlocal variable (for which, see //knowledge: Nonlocal Variables//):
 
 =
-typedef struct shared_variable {
+classdef shared_variable in 100s {
 	struct shared_variable_set *owner; /* who owns this */
 	int index_in_owner; /* counting upwards from 0 */
 	struct wording name; /* text of the name */
@@ -31,8 +31,7 @@ typedef struct shared_variable {
 	struct nonlocal_variable *underlying_var; /* the variable in question */
 	struct wording match_wording_text; /* matching text (relevant for action variables only) */
 	int is_actor; /* set only for the special "actor" variable */
-	CLASS_DEFINITION
-} shared_variable;
+}
 
 @ And it can only be created within a set:
 
@@ -98,11 +97,10 @@ Sets are identified by an identifier which will be defined during linking so
 that it is unique among all variable sets in the executable.
 
 =
-typedef struct shared_variable_set {
+classdef shared_variable_set {
 	struct inter_name *recognition_iname;
 	struct linked_list *variables; /* of `shared_variable` */
-	CLASS_DEFINITION
-} shared_variable_set;
+}
 
 shared_variable_set *SharedVariables::new_set(inter_name *iname) {
 	shared_variable_set *set = CREATE(shared_variable_set);
@@ -147,10 +145,9 @@ shared_variable *SharedVariables::parse_match_clause(shared_variable_set *set,
 These could hardly be simpler:
 
 =
-typedef struct shared_variable_access_list {
+classdef shared_variable_access_list in 100s {
 	struct linked_list *sets; /* of `shared_variable_set` */
-	CLASS_DEFINITION
-} shared_variable_access_list;
+}
 
 shared_variable_access_list *SharedVariables::new_access_list(void) {
 	shared_variable_access_list *nshvol = CREATE(shared_variable_access_list);
@@ -210,7 +207,7 @@ shared_variable *SharedVariables::parse_from_access_list(shared_variable_access_
 =
 void SharedVariables::log_access_list(shared_variable_access_list *list) {
 	if (list) {
-		LOG("Shared access list %d = { ", list->allocation_id);
+		LOG("Shared access list = { ");
 		int n = 1;
 		shared_variable_set *set;
 		LOOP_OVER_LINKED_LIST(set, shared_variable_set, list->sets) {

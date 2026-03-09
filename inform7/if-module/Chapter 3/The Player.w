@@ -117,7 +117,7 @@ problem is that "top prize" describes some object, but it's not clear which.
 (Inform generally disallows this even if the source text explicitly gives a
 value for top prize.) But "player" is unusual because Inform authors are
 encouraged always to describe the player object that way, and often don't
-realise that it's a variable at all -- and most of the time it never changes
+realise that it's a variable at all — and most of the time it never changes
 its value, of course, but simply remains equal to "yourself" throughout play.
 So we want to allow this sort of thing:
 
@@ -125,7 +125,7 @@ So we want to allow this sort of thing:
 
 even though it has exactly the same problem as the top prize. We get around
 this by treating "player", in assertions, as if it were its own initial
-value ("yourself") -- in effect, we silently dereference it. This is
+value ("yourself") — in effect, we silently dereference it. This is
 aliasing.
 
 @<Alias the player variable to the yourself object@> =
@@ -232,8 +232,8 @@ int Player::irregular_genitive(inference_subject *owner, text_stream *genitive,
 	return FALSE;
 }
 
-@ The adjectives "worn" and "carried" -- as in, "The nautical chart is
-carried." -- implicitly refer to the player as the unstated term in the
+@ The adjectives "worn" and "carried" — as in, "The nautical chart is
+carried." — implicitly refer to the player as the unstated term in the
 relationship; that makes them our business here. "Initially carried" is
 now deprecated, but is provided as synonymous with "carried" because it
 was once an either/or property in the clumsier early stages of Inform 7,

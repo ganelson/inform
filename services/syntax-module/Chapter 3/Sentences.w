@@ -23,9 +23,9 @@ This means that context is important even here, where it might have been
 expected that all we needed to do was to spot the punctuation marks.
 
 @h Finite state machine.
-So we carry out the sentence breaking with a simple finite state machine --
+So we carry out the sentence breaking with a simple finite state machine —
 the last sentence having been a rule preamble tells us that the current one
-is probably a phrase, and so on -- and the following is its state. It is
+is probably a phrase, and so on — and the following is its state. It is
 inelegant that we have a singleton copy of this object and use a pointer
 to it as a global variable; but it saves an awful lot of parameter-passing
 in Preform grammar functions.
@@ -170,11 +170,13 @@ since their entries are governed by different lexical and semantic rules.)
 
 @ We now come to the definition of a sentence break, which is more complicated
 than might have been expected. Some people like to write paragraphs like this:
-= (text as Inform 7)
+
+``` Inform7
 	Before going north:
 	    say "Northward ho!";
 	    now the compass points north;
-=
+```
+
 And properly speaking that ends with a semicolon then a paragraph break,
 which is a doubled sentence division. But we forgive it as harmless, and
 that forgiveness is provided by the loop arrangement below.
@@ -252,8 +254,8 @@ the colon is being used not as punctuation but within a literal pattern.
 clause, not two clauses divided by the colon; but "He went out at 1 PM:
 the snow was still falling." is indeed divided. Our rule here correctly
 distinguishes these cases, and although it can be fooled by really contrived
-sentences -- "He went out at 1: 22 Company, the Parachute Regiment, was
-marching." -- it's robust enough in practice. The exception is forbidden
+sentences — "He went out at 1: 22 Company, the Parachute Regiment, was
+marching." — it's robust enough in practice. The exception is forbidden
 if a line break occurs between the colon and the succeeding numeral, as
 then we might be looking at switch cases in an "if".)
 
@@ -617,10 +619,12 @@ The other arises somewhat less officially when people treat phrases as
 if they were C (or Inform 6) statements, always to be terminated with
 semicolons, and also run two rules together with no skipped paragraph
 between:
-= (text as Inform 7)
+
+``` Inform7
 	To do one thing: something here;
 	To do another thing: something else here;
-=
+```
+
 A strict reading of our rules would oblige us to consider "To do another
 thing:" as a phrase within the definition of "To do one thing", and
 we would then have to issue a problem message. But this would be pettifogging.

@@ -32,7 +32,7 @@ This is more important than it may sound because many extensions are published
 under a Creative Commons attribution license which requires users to give credit
 to the authors: Inform thus ensures that this happens automatically.
 
-There are two forms of exemption from this --
+There are two forms of exemption from this —
 
 - specific authorial modesty suppresses the author's name for one extension,
 at that extension author's discretion;

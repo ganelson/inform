@@ -353,11 +353,8 @@ indicating what the mistake was, exactly. We do this by beginning the line
 with an additional token matching the empty text (and thus, always matching)
 but with the side-effect of setting a special global variable. Thus a mistaken
 line <code>act [thing]</code> comes out as something like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">* </span><span class="identifier-syntax">Mistake_Token_12</span><span class="plain-syntax"> </span><span class="character-syntax">'act'</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">MistakeAction</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* Mistake_Token_12 'act' noun -&gt; MistakeAction
+</span></pre>
 <p>Since the command parser accepts the first command which matches, and since
 none of this can be recursive, the value of this variable at the end of
 command parsing is guaranteed to be the one set during the line causing the
@@ -576,12 +573,11 @@ once per conditional grammar line:</p>
 so, for example, <code>fish/fowl/duck/drake</code> could be handled by a slash GPR.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">slash_gpr</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">slash_gpr</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_choice</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_choice</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sgpr_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">slash_gpr</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure slash_gpr is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b> </p>

@@ -29,7 +29,7 @@ in a function here. The special value `PLAYER_CONVERSATIONALIST` can also
 be used to mean "the player, whoever that currently is".
 
 - `INTERLOCUTOR_DLMETADATA` is similar, but for the interlocutor, and is
-more often 0 -- many lines have no interlocutor. The special value
+more often 0 — many lines have no interlocutor. The special value
 `PLAYER_CONVERSATIONALIST` can also be used to mean "the player, whoever that
 currently is".
 

@@ -83,14 +83,11 @@ parent tool specifies that, with some type of its own. The constant
 it should be the name of a class of objects. (If it isn't defined, then no
 meaning is attached to verbs at all.)</p>
 <p>For example, the <a href="../core-module/index.html" class="internal">core</a> module sets:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
+</span></pre>
 <p>The parent may also want to define <code>VERB_MEANING_UNIVERSAL_CALCULUS_RELATION</code>,
 which should be a value of this type, and represents the &quot;to relate&quot; verb which
-can assert any verb meaning -- for example, &quot;X relates to Y by R&quot;. See <a href="3-vu.html" class="internal">Verb Usages</a>.</p>
+can assert any verb meaning — for example, &quot;X relates to Y by R&quot;. See <a href="3-vu.html" class="internal">Verb Usages</a>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Using callbacks.</b>  Shared modules like this one are tweaked in behaviour by defining &quot;callback
@@ -102,16 +99,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_LINGUISTICS_CALLBACK Emotions::gosh</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_LINGUISTICS_CALLBACK Emotions::gosh
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::gosh(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("Good gracious!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::gosh(text_stream *OUT) {
+	    WRITE("Good gracious!\n");
+	}
+</span></pre>
 <p>The linguistics module has many callbacks, but they are all optional. The
 following alphabetical list has references to fuller explanations:</p>
 <ul>
@@ -137,23 +131,23 @@ it allows them in any form in non-assertion contexts. See
 <li>
 <p><code>ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK</code>, if provided, should accompany a
 declaration of a structure called <code>adjecttve_compilation_data</code>; this function should
-then set up that data for the given adjective -- see <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.</p>
+then set up that data for the given adjective — see <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.</p>
 </li>
 <li>
 <p><code>ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</code>, if provided, should accompany a
 declaration of a structure called <code>adjective_meaning_data</code>; this function should
-then set up that data for the given adjective -- see <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.</p>
+then set up that data for the given adjective — see <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.</p>
 </li>
 <li>
 <p><code>NOUN_COMPILATION_LINGUISTICS_CALLBACK</code>, if provided, should accompany a
 declaration of a structure called <code>name_compilation_data</code>; this function should
-then set up that data for the given noun -- see <a href="2-nns.html#SP8" class="internal">Nouns::new_inner</a>.</p>
+then set up that data for the given noun — see <a href="2-nns.html#SP8" class="internal">Nouns::new_inner</a>.</p>
 </li>
 <li>
 <p><code>NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK</code>, if provided, should accompany a
 declaration of a structure called <code>name_resolution_data</code>; this function should
 decide which possible reading of the meaning of a noun makes the best sense in
-context -- see <a href="2-nns.html#SP14" class="internal">Nouns::disambiguate</a>.</p>
+context — see <a href="2-nns.html#SP14" class="internal">Nouns::disambiguate</a>.</p>
 </li>
 <li>
 <p><code>TRACING_LINGUISTICS_CALLBACK</code>, if provided, can return <code>TRUE</code> to allow

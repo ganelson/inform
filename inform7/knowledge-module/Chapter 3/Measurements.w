@@ -13,7 +13,7 @@ Here the domain of the definition is "container", and we must assign an adjectiv
 meaning for "roomy" which involves the comparison of a property (here "carrying
 capacity") against a threshold value $t$ (here, $t=10$). "roomy" is said to
 be the headword; the comparative form would be roomier, and the superlative
-form roomiest. The comparative will make a relation -- see //Comparative Relations// --
+form roomiest. The comparative will make a relation — see //Comparative Relations// —
 while and the must be a phrase. It can't be an adjective, since its domain
 would be too ambiguous in text such as:
 
@@ -64,14 +64,14 @@ timing during Inform's run: the names of kinds, properties and values become
 available at different times; whereas we need the name of the adjective
 itself to become available very early on. This is why the structure below
 appears to record a lot of extraneous clutter apparently needed only
-temporarily during parsing -- because parsing does not happen all at once,
+temporarily during parsing — because parsing does not happen all at once,
 and partial results have to be parked in the structure after one stage to
 be picked up at the next.
 
 At any rate, here goes:
 
 =
-typedef struct measurement_definition {
+classdef measurement_definition {
 	struct parse_node *measurement_node; /* where the actual definition is */
 
 	struct wording headword; /* adjective being defined (must be single word) */
@@ -88,8 +88,7 @@ typedef struct measurement_definition {
 	struct wording region_threshold_text; /* text of threshold value */
 
 	struct measurement_compilation_data compilation_data;
-	CLASS_DEFINITION
-} measurement_definition;
+}
 
 @ =
 measurement_definition *Measurements::new(parse_node *q, wording AW, wording THRESW,

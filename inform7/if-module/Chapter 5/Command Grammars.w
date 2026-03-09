@@ -36,7 +36,7 @@ world we would not impose a limit here.
 form, so this is not as bloated a structure as it looks.
 
 =
-typedef struct command_grammar {
+classdef command_grammar {
 	int cg_is; /* one of the `CG_IS_*` values above */
 	struct parse_node *where_cg_created; /* for problem message reports */
 
@@ -60,7 +60,6 @@ typedef struct command_grammar {
 	struct property *prn_understood; /* `CG_IS_PROPERTY_NAME`: which prn this names */
 
 	struct cg_compilation_data compilation_data;
-	CLASS_DEFINITION
 } command_grammar;
 
 @ We begin as usual with a constructor and some debug log tracing.
@@ -312,11 +311,13 @@ command_grammar *CommandGrammars::for_subject(inference_subject *subj) {
 @h The CG_IS_VALUE form.
 This is used to store names for, say, particular numbers, or enumeration
 values. The following examples both involve `CG_IS_VALUE` grammars:
-= (text as Inform 7)
+
+``` Inform7
 Understand "deuce" as 2.
 Colour is a kind of value. Red, blue and green are colours.
 Understand "scarlet" as red.
-=
+```
+
 Note however that a `CG_IS_VALUE` grammar is associated with a kind: unlike
 the case of `CG_IS_SUBJECT`, there isn't a different one for each individual
 value. There is just one grammar holding all possible fancy names for
@@ -349,8 +350,8 @@ type ASK JETHRO ABOUT ... and put almost anything after ABOUT, and we need ways
 to parse that material.
 
 The model here is rather different. Because the topic being discussed could be
-almost anything -- maybe Jethro knows about WHEAT PRICES, the HARVEST and
-QUANTUM CHROMODYNAMICS (he has hidden depths) -- there is no obvious data
+almost anything — maybe Jethro knows about WHEAT PRICES, the HARVEST and
+QUANTUM CHROMODYNAMICS (he has hidden depths) — there is no obvious data
 structure in Inform to attach such a grammar to. Instead, code wishing to
 create a new consultation should first call //CommandGrammars::prepare_consultation_cg//,
 then access the current one being made using //CommandGrammars::get_consultation_cg//.
@@ -447,7 +448,7 @@ void CommandGrammars::prepare(void) {
 }
 
 @ Determining is more involved, and is also recursive. What we are doing is
-trying to work values a CG can produce, in terms of what value it refers to --
+trying to work values a CG can produce, in terms of what value it refers to —
 if any. For `CG_IS_COMMAND` grammars, for example, it will be `NULL`, but
 for `CG_IS_VALUE`, it might for example be a description meaning "any value
 with kind `K_number`.

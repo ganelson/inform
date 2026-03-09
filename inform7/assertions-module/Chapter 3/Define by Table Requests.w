@@ -13,7 +13,7 @@ subtly different versions:
 
 The subject in (1) is the name of a kind; in (2), it's a description which
 incorporates a kind, but can include relative clauses and adjectives; in (3),
-it's something second-order -- a kind of a kind. Given this variety of
+it's something second-order — a kind of a kind. Given this variety of
 possibilities, we treat "defined by" sentences as if they were abbreviations
 for a mass of assertion sentences, one for each row of the table. We do
 however reject:
@@ -24,7 +24,7 @@ where the "okapi" is an existing single animal (or indeed where it's a new
 name, meaning as yet unknown).
 
 @ So this function handles the special meaning "X is defined by Y"; it is
-a special meaning of "to be", recognised when Y matches --
+a special meaning of "to be", recognised when Y matches —
 
 =
 <defined-by-sentence-object> ::=
@@ -233,7 +233,7 @@ cause a new object instance to be created with that name.
 
 @ The following code has a curious history: it has evolved backwards from
 something much higher-level. When definition by tables began, it was a device
-to create new instances -- the names in column 1 would be, say, the instances
+to create new instances — the names in column 1 would be, say, the instances
 of the kind "colour". Inform did this by writing propositions to assert their
 existence, in an elegantly high-level way; and all was well. But people also
 wanted things like this:

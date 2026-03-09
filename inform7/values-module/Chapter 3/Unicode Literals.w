@@ -163,9 +163,10 @@ dictionary pointers will be invalid.)
 
 =
 dictionary *UnicodeData_lookup = NULL;
-typedef struct unicode_lookup_value {
+
+classdef unicode_lookup_value in 1000s {
 	int code_point;
-} unicode_lookup_value;
+}
 
 void UnicodeLiterals::ensure_data(void) {
 	if (UnicodeData_lookup == NULL) {
@@ -178,11 +179,13 @@ void UnicodeLiterals::ensure_data(void) {
 }
 
 @ The format of this file is admirably stable. Lines look like so:
-= (text)
+
+``` None
 	0067;LATIN SMALL LETTER G;Ll;0;L;;;;;N;;;0047;;0047
 	1C85;CYRILLIC SMALL LETTER THREE-LEGGED TE;Ll;0;L;;;;;N;;;0422;;0422
 	1FAA1;SEWING NEEDLE;So;0;ON;;;;;N;;;;;
-=
+```
+
 Each line corresponds to a code point. They're presented in the file in ascending
 order of these values, but we make no use of that fact. Each line contains fields
 divided by semicolons, and semicolon characters are illegal in any field.
@@ -289,9 +292,11 @@ void UnicodeLiterals::read_line(text_stream *text, text_file_position *tfp, void
 
 @ Control codes in Unicode, a residue of ASCII, are given no names by the
 standard. For example:
-= (text)
+
+``` None
 	0004;<control>;Cc;0;BN;;;;;N;END OF TRANSMISSION;;;;
-=
+```
+
 Indeed, at present every code with category `Cc` has the pseudo-name `<control>`.
 So we will mostly not allow these to be referred to by name in Inform. (In theory we
 could read the ISO-10646 comment as if it were a name: here, that would be

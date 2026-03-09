@@ -11,7 +11,8 @@ because the call stack does not exist in memory. What to do?
 What we do is to stash them into a "local parking" array, make the call to B,
 and then in the code for B retrieve them again. A paraphrase might look
 like this:
-= (text)
+
+``` None
 void A(void) {
 	int alpha = 2, beta = 3, gamma = 5;
 	lp[0] = alpha;
@@ -26,7 +27,8 @@ void B(void) {
 	int gamma = lp[2];
 	...
 }
-=
+```
+
 Note that B can now read, but not write, the locals from A. The scratch array
 `lp` used here for storage is meaningless except for immediately before and
 after the call to B, so we don't need to worry about multiple uses of local
@@ -100,11 +102,10 @@ single shared parking lot when we can prove that the values in it will not be
 corrupted before use.
 
 =
-typedef struct local_parking_lot {
+classdef local_parking_lot {
 	int capacity;
 	struct inter_name *storage_iname;
-	CLASS_DEFINITION
-} local_parking_lot;
+}
 
 local_parking_lot *shared_parking = NULL;
 

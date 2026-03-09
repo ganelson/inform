@@ -13,7 +13,7 @@ and we will need to generate data about them, some of which is most usefully
 stored here.
 
 =
-typedef struct inbuild_copy {
+classdef inbuild_copy {
 	struct inbuild_edition *edition; /* what is this a copy of? */
 	struct pathname *location_if_path; /* exactly one of these must be non-`NULL` */
 	struct filename *location_if_file;
@@ -30,8 +30,7 @@ typedef struct inbuild_copy {
 	struct linked_list *warnings; /* of `copy_error` */
 	int last_scanned;
 	struct inbuild_licence *licence; /* optional licence declaration which seems to apply */
-	CLASS_DEFINITION
-} inbuild_copy;
+}
 
 @ Copies are created by the managers for the respective genres, usually when
 claiming. If you are a manager, do not call this...

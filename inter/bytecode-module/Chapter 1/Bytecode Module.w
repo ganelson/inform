@@ -8,39 +8,6 @@ which use this module:
 
 @d BYTECODE_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e inter_tree_CLASS
-@e inter_tree_node_CLASS
-@e inter_warehouse_CLASS
-@e inter_warehouse_room_CLASS
-@e inter_symbols_table_CLASS
-@e inter_symbol_CLASS
-@e inter_annotation_CLASS
-@e inter_construct_CLASS
-@e inter_annotation_form_CLASS
-@e inter_error_message_CLASS
-@e inter_error_stash_CLASS
-@e inter_package_CLASS
-@e inter_node_list_CLASS
-@e inter_node_array_CLASS
-
-=
-DECLARE_CLASS(inter_tree)
-DECLARE_CLASS(inter_warehouse)
-DECLARE_CLASS(inter_warehouse_room)
-DECLARE_CLASS(inter_symbols_table)
-DECLARE_CLASS(inter_construct)
-DECLARE_CLASS(inter_annotation_form)
-DECLARE_CLASS(inter_error_message)
-DECLARE_CLASS(inter_package)
-DECLARE_CLASS(inter_node_list)
-DECLARE_CLASS(inter_node_array)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_error_stash, 1024)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_symbol, 1024)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_tree_node, 8192)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_annotation, 8192)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 =

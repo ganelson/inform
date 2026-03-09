@@ -15,7 +15,7 @@ int Inflect::suffix(OUTPUT_STREAM, match_avinue *T, text_stream *from) {
 
 @ The //foundation// code returns a `result` which may be null, if no match
 was found. In that event, we leave the text unchanged, just as if the result
-had been `0` -- meaning "change nothing".
+had been `0` — meaning "change nothing".
 
 =
 int Inflect::follow_suffix_instruction(OUTPUT_STREAM, text_stream *from,

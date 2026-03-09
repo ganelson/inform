@@ -11,16 +11,18 @@ end-to-end test anyway.
 
 But Inform does have a mechanism for "internal tests". These involve running
 the top half of the compiler more or less as normal, and then making a sharp
-turn to perform some test, printing the output to a file, and -- since there
-is no point continuing -- stopping the compiler there.
+turn to perform some test, printing the output to a file, and — since there
+is no point continuing — stopping the compiler there.
 
 Such internal tests are performed only if the source text instructs it, which is
 done with a special, intentionally undocumented, and subject-to-change-without-notice,
 syntax like so:
-= (text as Inform 7)
+
+``` Inform7
 Test pattern (internal) with putting the counter on the bench.
-=
-Internal tests are identified by name -- here, "pattern" -- and are marked
+```
+
+Internal tests are identified by name — here, "pattern" — and are marked
 `(internal)`. Optionally, they can supply some text to give them variation, as
 here: "putting the counter on the bench".
 
@@ -31,12 +33,11 @@ object. See //assertions: Test Requests// for how sentences like the above are
 parsed; that's the code which calls us here.
 
 =
-typedef struct internal_test_case {
+classdef internal_test_case {
 	struct internal_test *which_method;
 	struct wording text_supplying_the_case;
 	struct parse_node *itc_defined_at;
-	CLASS_DEFINITION
-} internal_test_case;
+}
 
 internal_test_case *InternalTests::new(internal_test *it, wording W) {
 	internal_test_case *itc = CREATE(internal_test_case);
@@ -49,13 +50,12 @@ internal_test_case *InternalTests::new(internal_test *it, wording W) {
 @ Each differently-named test, such as "pattern", corresponds to one of these:
 
 =
-typedef struct internal_test {
+classdef internal_test {
 	struct wording test_name;
 	void (*perform)(struct text_stream *, struct internal_test_case *);
 	int via_log;
 	int at_stage;
-	CLASS_DEFINITION
-} internal_test;
+}
 
 @ Inform modules wanting to provide internal tests should call the following
 when they start up:
@@ -94,8 +94,8 @@ internal_test *InternalTests::by_name(wording W) {
 is set at the command like with `-test-output`. (The Intest script for testing
 `inform7` shows how this works in practice.)
 
-It's a deliberate policy choice to run internal texts this way -- i.e., with
-the correct textual output stored in the Inform repository, and open to view --
+It's a deliberate policy choice to run internal texts this way — i.e., with
+the correct textual output stored in the Inform repository, and open to view —
 rather than just as code which is either silent (for a pass) or fails assertions
 (for a fail). It's much harder to check that such tests are themselves correctly
 written.
@@ -106,7 +106,7 @@ void InternalTests::set_file(filename *F) {
 	 internal_test_output_file = F;
 }
 
-@ And now we run the tests, returning the number actually run -- which for
+@ And now we run the tests, returning the number actually run — which for
 end users of Inform, not concerned with compiler maintenance, will always be 0.
 Output from the tests is spooled together, and divided up with textual labels
 for convenience of reading.

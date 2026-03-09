@@ -158,15 +158,12 @@ For instance:</p>
 <p>To decide which text is (N - a number) as text: (- {N} -).</p>
 </blockquote>
 <p>is analogous to a C function like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">number_as_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">char</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
-<p>This is a legal C function but the deliberate disregard of type safety -- in
-the use of the <code>(char *)</code> cast notation -- is a kind of waiver, where the
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">number_as_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {
+		</span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">char</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">N</span><span class="plain-syntax">;
+	}
+</span></pre>
+<p>This is a legal C function but the deliberate disregard of type safety — in
+the use of the <code>(char *)</code> cast notation — is a kind of waiver, where the
 author chooses to accept the risk. In a similar way, there are no victims of
 Inform's <code>(-</code> and <code>-)</code> notation, only volunteers.</p>
 </div>
@@ -205,8 +202,8 @@ time or at run-time.</p>
 </ul>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Dimensional analysis.</b>  Inform subjects all calculations with its &quot;quasinumerical&quot; kinds -- basically,
-all those on which calculation can be performed -- to dimensional checking.</p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Dimensional analysis.</b>  Inform subjects all calculations with its &quot;quasinumerical&quot; kinds — basically,
+all those on which calculation can be performed — to dimensional checking.</p>
 <p>Dimension in this sense is a term drawn from physics. The idea is that when
 quantities are multiplied together, their natures are combined as well as
 the actual numbers involved. For instance, in
@@ -230,7 +227,7 @@ to kinds of kinds: <code>number</code> conforms to <code>arithmetic value</code>
 produces a hierarchical order among possible kinds.</p>
 <p>Conformance is an &quot;is-a&quot; relationship: thus a <code>vehicle</code> can safely be stored in
 a variable of kind <code>thing</code> because a vehicle is a thing. But a <code>number</code> cannot
-be stored in a <code>real number</code> variable directly -- integers and real numbers
+be stored in a <code>real number</code> variable directly — integers and real numbers
 have completely different data representations at run-time, so the compiler
 must generate conversion code (a &quot;cast&quot;) to adapt the <code>number</code> value before
 it is stored. Sometimes this is possible, sometimes not. A kind \INWEBMATH(K\INWEBMATH) is
@@ -247,7 +244,7 @@ unique role in Inform's kind hierarchy.</p>
 need not even exist.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Kind variables.</b>  The 26 letters A to Z, written in upper case, can serve as kind variables --
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Kind variables.</b>  The 26 letters A to Z, written in upper case, can serve as kind variables —
 placeholders for kinds.<sup id="fnred:3"><a href="#fn:3" rel="footnote">1</a></sup> In practice A is best avoided because it looks too
 much like an indefinite article, but it's very rare to need more than two.<sup id="fnred:4"><a href="#fn:4" rel="footnote">2</a></sup>
 Phrase definitions in the standard Inform extensions use only K and L.</p>
@@ -261,19 +258,19 @@ where <code>K</code> remains a placeholder but can only be a kind conforming to 
 <li>If <code>K</code> remains unknown then any kind using <code>K</code> is necessarily indefinite.
 So a variable cannot have the kind <code>list of K</code>, for example.</li>
 <li>A process called &quot;substitution&quot; enables <code>list of K</code> to be transformed to
-<code>list of numbers</code>, or whatever may be. See <a href="2-knd.html#SP20" class="internal">Kinds::substitute</a>.</li>
+<code>list of numbers</code>, or whatever may be. See <a href="2-knd.html#SP17" class="internal">Kinds::substitute</a>.</li>
 </ul>
 <li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 Using letters seemed the nearest point of contact with natural
 language conventions. In English, we do say pseudo-algebraic things like
-&quot;So, let's call our spy Mr X.&quot; -- or at least we do if we lead slightly
+&quot;So, let's call our spy Mr X.&quot; — or at least we do if we lead slightly
 more exciting lives than the present author. The use of letters emphasises
 that this is some kind of reference, not a direct identification.<a href="#fnref:3" title="return to text"> &#x21A9;</a></p>
 </li>
 <li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
 At one time I was tempted by the syntax used in the early functional
 programming language Miranda (1985), which uses rows of asterisks <code>*</code>, <code>**</code>,
-<code>***</code>, and so on as needed -- a syntax making clear that nobody expected
+<code>***</code>, and so on as needed — a syntax making clear that nobody expected
 to see many of them at once. But asterisks in natural language have an air
 of censorship, of something that must not be named: compare Stéphanie de
 Genlis's gothic novella &quot;Histoire de la duchesse de C***&quot; (1782).<a href="#fnref:4" title="return to text"> &#x21A9;</a></p>
@@ -317,7 +314,7 @@ values by writing <code>K = number</code>, or similar. For example:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Overview of facilities.</b>  A kind is represented by a <code>kind *</code> pointer. These actually point to
-small trees of <a href="2-knd.html#SP1" class="internal">kind</a> objects -- see <a href="index.html" class="internal">kinds</a> -- because many kinds are
+small trees of <a href="2-knd.html#SP1" class="internal">kind</a> objects — see <a href="index.html" class="internal">kinds</a> — because many kinds are
 constructed out of others: thus <code>list of texts</code> is the result of applying the
 &quot;list of ...&quot; construction to the kind <code>text</code>.<sup id="fnred:5"><a href="#fn:5" rel="footnote">1</a></sup> Kinds not constructed from
 other kinds are called &quot;base kinds&quot;. Briefly:</p>
@@ -331,19 +328,14 @@ set equal to them, like <code>K_number</code> or <code>K_text</code>. See <a hre
 </li>
 <li>
 <p>Kinds can otherwise be made with <a href="2-knd.html#SP6" class="internal">Kinds::base_construction</a>,
-<a href="2-knd.html#SP9" class="internal">Kinds::unary_con</a> or <a href="2-knd.html#SP9" class="internal">Kinds::binary_con</a>. For example,
+<a href="2-knd.html#SP6_3" class="internal">Kinds::unary_con</a> or <a href="2-knd.html#SP6_3" class="internal">Kinds::binary_con</a>. For example,
 <code>list of numbers</code> and <code>relation of numbers to texts</code> can be made by:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">)
+</span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_relation</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_text</span><span class="plain-syntax">)
+</span></pre>
 </li>
-</ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_relation</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_text</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<ul>
 <li>
-<p>Kinds for functions are a bit laborious to put together, so <a href="2-knd.html#SP10" class="internal">Kinds::function_kind</a>
+<p>Kinds for functions are a bit laborious to put together, so <a href="2-knd.html#SP7" class="internal">Kinds::function_kind</a>
 is a convenience.</p>
 </li>
 <li>
@@ -353,22 +345,22 @@ is a convenience.</p>
 <li>
 <p>Two different <code>kind *</code> values can represent the same kind, so don't test
 whether \INWEBMATH(K\INWEBMATH) is the same kind as \INWEBMATH(L\INWEBMATH) by the pointer comparison <code>K == L</code>. Instead
-call <a href="2-knd.html#SP27" class="internal">Kinds::eq</a> or its negation <a href="2-knd.html#SP27" class="internal">Kinds::ne</a>.</p>
+call <a href="2-knd.html#SP24" class="internal">Kinds::eq</a> or its negation <a href="2-knd.html#SP24" class="internal">Kinds::ne</a>.</p>
 </li>
 <li>
-<p>Call <a href="2-knd.html#SP28" class="internal">Kinds::conforms_to</a> to test whether \INWEBMATH(K\INWEBMATH) conforms to \INWEBMATH(L\INWEBMATH). This is
+<p>Call <a href="2-knd.html#SP25" class="internal">Kinds::conforms_to</a> to test whether \INWEBMATH(K\INWEBMATH) conforms to \INWEBMATH(L\INWEBMATH). This is
 either true or not true. To find a kind able to hold values of either \INWEBMATH(K\INWEBMATH) or \INWEBMATH(L\INWEBMATH),
 call <a href="2-tlok.html#SP7" class="internal">Latticework::join</a>.</p>
 </li>
 <li>
-<p>Call <a href="2-knd.html#SP28" class="internal">Kinds::compatible</a> to test whether \INWEBMATH(K\INWEBMATH) is compatible with \INWEBMATH(L\INWEBMATH),
+<p>Call <a href="2-knd.html#SP25" class="internal">Kinds::compatible</a> to test whether \INWEBMATH(K\INWEBMATH) is compatible with \INWEBMATH(L\INWEBMATH),
 but note that the reply is three-valued: always, sometimes or never.</p>
 </li>
 <li>
 <p>Inform makes frequent use of &quot;weakening&quot;, where we deliberately weaken a
 kind (i.e., make it less restrictive) by ignoring distinctions between subkinds
 of some \INWEBMATH(W\INWEBMATH). For example, the weakening of <code>list of things</code> with respect to
-<code>object</code> is <code>list of objects</code>. See <a href="2-knd.html#SP21" class="internal">Kinds::weaken</a>.</p>
+<code>object</code> is <code>list of objects</code>. See <a href="2-knd.html#SP18" class="internal">Kinds::weaken</a>.</p>
 </li>
 <li>
 <p>An extensive API of functions is provided in <a href="2-uk.html" class="internal">Using Kinds</a> to test whether
@@ -376,7 +368,7 @@ given kinds have given properties. The most important is <a href="2-uk.html#SP4"
 which determines whether \INWEBMATH(K\INWEBMATH) is definite.</p>
 </li>
 <li>
-<p>New base kinds can be created either by calling <a href="2-knd.html#SP23" class="internal">Kinds::new_base</a>,<sup id="fnred:6"><a href="#fn:6" rel="footnote">2</a></sup> or in
+<p>New base kinds can be created either by calling <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>,<sup id="fnred:6"><a href="#fn:6" rel="footnote">2</a></sup> or in
 the process of reading in &quot;Neptune files&quot;.<sup id="fnred:7"><a href="#fn:7" rel="footnote">3</a></sup> New constructors can only
 be made the latter way. See <a href="4-nf.html#SP1" class="internal">NeptuneFiles::load</a>, which sends individual commands
 to <a href="4-nf.html#SP1" class="internal">NeptuneFiles::read_command</a>, which in turn deals with the low-level code in
@@ -385,7 +377,7 @@ manual to the syntax.</p>
 </li>
 <li>
 <p>It is possible to move kinds within the lattice of kinds, i.e., to change
-their hierarchical relationship, even after creation. See <a href="2-knd.html#SP24" class="internal">Kinds::make_subkind</a>.
+their hierarchical relationship, even after creation. See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.
 Inform does this very sparingly and only with kinds of object.<sup id="fnred:9"><a href="#fn:9" rel="footnote">5</a></sup></p>
 </li>
 <li>
@@ -400,11 +392,11 @@ functional languages mean something related but different by this.<a href="#fnre
 </li>
 <li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>
 So, for example, Inform acts on text like &quot;A weight is a kind of value.&quot; by
-calling <a href="2-knd.html#SP23" class="internal">Kinds::new_base</a>.<a href="#fnref:6" title="return to text"> &#x21A9;</a></p>
+calling <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.<a href="#fnref:6" title="return to text"> &#x21A9;</a></p>
 </li>
 <li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
 Inform's built-in kinds like <code>number</code> or <code>text</code> all come from such files,
-not by calls to <a href="2-knd.html#SP23" class="internal">Kinds::new_base</a>.<a href="#fnref:7" title="return to text"> &#x21A9;</a></p>
+not by calls to <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.<a href="#fnref:7" title="return to text"> &#x21A9;</a></p>
 </li>
 <li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
 Inform stores Neptune files inside kits of Inter, because in practice

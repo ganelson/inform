@@ -73,7 +73,7 @@ effect as each other.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyRequests::either_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NewPropertyRequests::either_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyRequests::either_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NewPropertyRequests::either_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;A room is either dark or lighted.&quot; */</span>
@@ -96,7 +96,7 @@ effect as each other.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyRequests::optional_either_SMF</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">NewPropertyRequests::optional_either_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyRequests::optional_either_SMF</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">NewPropertyRequests::optional_either_SMF</span></span>:<br/>Booting Verbs - <a href="2-bv.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax">/* &quot;A room can be dark or lighted.&quot; */</span>
@@ -115,7 +115,7 @@ effect as each other.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  From a syntax point of view, such sentences come in two forms -- those which
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  From a syntax point of view, such sentences come in two forms — those which
 give a range of possible named alternative states, and those which create
 named value properties. We'll take the first of those first.</p>
 <p>We are concerned here with the syntax of sentences like</p>
@@ -160,7 +160,7 @@ in the speedy/sluggish example that's just what it does, but if there are
 three or more alternatives then it has to do something trickier: create a
 value property, and a new kind of value of which these alternatives form
 the legal range. Such a property is customarily called a &quot;condition&quot; (in
-the sense of a state of something, not a test -- as in &quot;this antique is in
+the sense of a state of something, not a test — as in &quot;this antique is in
 good condition&quot;, not &quot;you can come in on one condition&quot;).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -177,47 +177,47 @@ good condition&quot;, not &quot;you can come in on one condition&quot;).</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">CNW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">the_owner</span><span class="plain-syntax">, </span><span class="constant-syntax">FORBID_CREATION</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Possession must be time-independent</span></span><span class="named-paragraph-number">5.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Possession must be time-independent</span></span><span class="named-paragraph-number">5.4</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><a href="3-npr.html#SP6" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">An optional condition name can only be given to a condition</span></span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><a href="3-npr.html#SP5_1" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">An optional condition name can only be given to a condition</span></span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">FW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">FW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">FW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow the word &quot;either&quot; as syntactic sugar when there are two alternatives</span></span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Allow the word &quot;either&quot; as syntactic sugar when there are two alternatives</span></span><span class="named-paragraph-number">5.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_list</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;forbidden-property-owners&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_owner</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the proud owner, and see if it's someone we consider worthy</span></span><span class="named-paragraph-number">5.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for an unworthy owner</span></span><span class="named-paragraph-number">5.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the proud owner, and see if it's someone we consider worthy</span></span><span class="named-paragraph-number">5.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_7" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for an unworthy owner</span></span><span class="named-paragraph-number">5.7</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Be very wary about nameclashes among either/or properties like these</span></span><span class="named-paragraph-number">5.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_8" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Be very wary about nameclashes among either/or properties like these</span></span><span class="named-paragraph-number">5.8</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">already_created_instances</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_7" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the property and have the new owner provide it</span></span><span class="named-paragraph-number">5.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_9" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the property and have the new owner provide it</span></span><span class="named-paragraph-number">5.9</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">already_created_instances</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_8" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the second option an either/or property which negates the first</span></span><span class="named-paragraph-number">5.8</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_9" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the three or more options the range of possibilities for this new kind</span></span><span class="named-paragraph-number">5.9</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_10" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the second option an either/or property which negates the first</span></span><span class="named-paragraph-number">5.10</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_11" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make the three or more options the range of possibilities for this new kind</span></span><span class="named-paragraph-number">5.11</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b> </p>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NewPropertyRequests::list_length</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">NewPropertyRequests::list_length</span></span>:<br/><a href="3-npr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Ooops"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">) == </span><span class="identifier-syntax">AND_NT</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-npr.html#SP6" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) + </span><a href="3-npr.html#SP6" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-npr.html#SP5_1" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) + </span><a href="3-npr.html#SP5_1" class="function-link"><span class="function-syntax">NewPropertyRequests::list_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  And the following parses the object noun phrase of a &quot;can be&quot; sentence,
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b>  And the following parses the object noun phrase of a &quot;can be&quot; sentence,
 which might take forms such as:</p>
 <blockquote>
 <p>either speedy or sluggish</p>
@@ -253,7 +253,7 @@ which might take forms such as:</p>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-unparsed&gt;</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, RP[1] }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An optional condition name can only be given to a condition</span><span class="named-paragraph-number">5.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An optional condition name can only be given to a condition</span><span class="named-paragraph-number">5.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">CNW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">3</span><span class="plain-syntax">)) {</span>
@@ -269,7 +269,7 @@ which might take forms such as:</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Possession must be time-independent</span><span class="named-paragraph-number">5.2</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Possession must be time-independent</span><span class="named-paragraph-number">5.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_owner</span><span class="plain-syntax">) == </span><span class="identifier-syntax">WITH_NT</span><span class="plain-syntax">) {</span>
@@ -284,18 +284,18 @@ which might take forms such as:</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3. </b>  This allows for natural sentences such as:</p>
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5. </b>  This allows for natural sentences such as:</p>
 <blockquote>
 <p>An animal can be either alive or dead.</p>
 </blockquote>
 <p>Here &quot;either&quot; has a slight sense of emphasis, implying the exclusivity of the
-two choices -- the lack of a middle way. That's not useful information for us,
+two choices — the lack of a middle way. That's not useful information for us,
 because to Inform all either/or properties have that Aristotelian nature. But
 we found in testing that users wrote the word &quot;either&quot; now and then,
 regardless of what the documentation said. So we'll allow it but do nothing
 differently as a result.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Allow the word &quot;either&quot; as syntactic sugar when there are two alternatives</span><span class="named-paragraph-number">5.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Allow the word &quot;either&quot; as syntactic sugar when there are two alternatives</span><span class="named-paragraph-number">5.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">either_flag</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> != </span><span class="constant-syntax">2</span><span class="plain-syntax">)) {</span>
@@ -309,14 +309,14 @@ differently as a result.</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the proud owner, and see if it's someone we consider worthy</span><span class="named-paragraph-number">5.4</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the proud owner, and see if it's someone we consider worthy</span><span class="named-paragraph-number">5.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_evaluation</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_owner</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Lvalues::is_actual_NONLOCAL_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">owner_spec</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_4_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this variable as a new owner of a property</span></span><span class="named-paragraph-number">5.4.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this variable as a new owner of a property</span></span><span class="named-paragraph-number">5.6.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Descriptions::is_qualified</span><span class="plain-syntax">(</span><span class="identifier-syntax">owner_spec</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_4_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this as an owner not time-independent</span></span><span class="named-paragraph-number">5.4.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this as an owner not time-independent</span></span><span class="named-paragraph-number">5.6.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">the_owner</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">owner_spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -325,10 +325,10 @@ differently as a result.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KindSubjects::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">K</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">KindSubjects::has_properties</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this kind as a new owner of an either/or or condition</span></span><span class="named-paragraph-number">5.4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this kind as a new owner of an either/or or condition</span></span><span class="named-paragraph-number">5.6.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1" class="paragraph-anchor"></a><b>&#167;5.4.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this kind as a new owner of an either/or or condition</span><span class="named-paragraph-number">5.4.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_6_1" class="paragraph-anchor"></a><b>&#167;5.6.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this kind as a new owner of an either/or or condition</span><span class="named-paragraph-number">5.6.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
@@ -346,8 +346,8 @@ differently as a result.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_2" class="paragraph-anchor"></a><b>&#167;5.4.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this variable as a new owner of a property</span><span class="named-paragraph-number">5.4.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_6_2" class="paragraph-anchor"></a><b>&#167;5.6.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this variable as a new owner of a property</span><span class="named-paragraph-number">5.6.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
@@ -366,8 +366,8 @@ differently as a result.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_3" class="paragraph-anchor"></a><b>&#167;5.4.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this as an owner not time-independent</span><span class="named-paragraph-number">5.4.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_6_3" class="paragraph-anchor"></a><b>&#167;5.6.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this as an owner not time-independent</span><span class="named-paragraph-number">5.6.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_OwnerTimeDependent</span><span class="plain-syntax">),</span>
@@ -380,8 +380,8 @@ differently as a result.</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"other conditions."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for an unworthy owner</span><span class="named-paragraph-number">5.5</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for an unworthy owner</span><span class="named-paragraph-number">5.7</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonObjectCanBe</span><span class="plain-syntax">),</span>
@@ -392,10 +392,10 @@ differently as a result.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6. </b>  There are seven different ways this can go wrong, and they all share a
+<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8. </b>  There are seven different ways this can go wrong, and they all share a
 &quot;miscellaneous&quot; problem message.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Be very wary about nameclashes among either/or properties like these</span><span class="named-paragraph-number">5.6</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Be very wary about nameclashes among either/or properties like these</span><span class="named-paragraph-number">5.8</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">already</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">alreadybar</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -404,13 +404,13 @@ differently as a result.</p>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">EW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FW</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;property-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">FW</span><span class="plain-syntax">)) </span><span class="identifier-syntax">already</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the first option already means something incompatible with this</span></span><span class="named-paragraph-number">5.6.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_8_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the first option already means something incompatible with this</span></span><span class="named-paragraph-number">5.8.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">error_text</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SW</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the second option is &quot;not&quot; plus an existing property</span></span><span class="named-paragraph-number">5.6.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_8_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the second option is &quot;not&quot; plus an existing property</span></span><span class="named-paragraph-number">5.8.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;property-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">EW</span><span class="plain-syntax">)) </span><span class="identifier-syntax">alreadybar</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_6_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the second option already means something incompatible with this</span></span><span class="named-paragraph-number">5.6.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_8_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">See if the second option already means something incompatible with this</span></span><span class="named-paragraph-number">5.8.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">already</span><span class="plain-syntax">))</span>
@@ -429,7 +429,7 @@ differently as a result.</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6_1" class="paragraph-anchor"></a><b>&#167;5.6.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the first option already means something incompatible with this</span><span class="named-paragraph-number">5.6.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_8_1" class="paragraph-anchor"></a><b>&#167;5.8.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the first option already means something incompatible with this</span><span class="named-paragraph-number">5.8.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">already</span><span class="plain-syntax">) {</span>
@@ -443,8 +443,8 @@ differently as a result.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6_2" class="paragraph-anchor"></a><b>&#167;5.6.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the second option is &quot;not&quot; plus an existing property</span><span class="named-paragraph-number">5.6.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_8">&#167;5.8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_8_2" class="paragraph-anchor"></a><b>&#167;5.8.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the second option is &quot;not&quot; plus an existing property</span><span class="named-paragraph-number">5.8.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;negated-clause&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">EW</span><span class="plain-syntax">)) {</span>
@@ -457,8 +457,8 @@ differently as a result.</p>
 <span class="plain-syntax">            </span><span class="string-syntax">"property, which would cause horrible ambiguities"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6_3" class="paragraph-anchor"></a><b>&#167;5.6.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the second option already means something incompatible with this</span><span class="named-paragraph-number">5.6.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_8">&#167;5.8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_8_3" class="paragraph-anchor"></a><b>&#167;5.8.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if the second option already means something incompatible with this</span><span class="named-paragraph-number">5.8.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">alreadybar</span><span class="plain-syntax">) {</span>
@@ -480,8 +480,8 @@ differently as a result.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_6">&#167;5.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the property and have the new owner provide it</span><span class="named-paragraph-number">5.7</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_8">&#167;5.8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_9" class="paragraph-anchor"></a><b>&#167;5.9. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the property and have the new owner provide it</span><span class="named-paragraph-number">5.9</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
@@ -494,7 +494,7 @@ differently as a result.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the second option an either/or property which negates the first</span><span class="named-paragraph-number">5.8</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP5_10" class="paragraph-anchor"></a><b>&#167;5.10. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the second option an either/or property which negates the first</span><span class="named-paragraph-number">5.10</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prnbar</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::obtain</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner_infs</span><span class="plain-syntax">);</span>
@@ -507,7 +507,7 @@ differently as a result.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_9" class="paragraph-anchor"></a><b>&#167;5.9. </b>  An interesting anomaly in the language here is that when an either/or
+<p class="commentary firstcommentary"><a id="SP5_11" class="paragraph-anchor"></a><b>&#167;5.11. </b>  An interesting anomaly in the language here is that when an either/or
 pair is created, like so:</p>
 <blockquote>
 <p>A vehicle can be speedy or sluggish.</p>
@@ -523,7 +523,7 @@ three or more alternatives, like so:</p>
 <blockquote>
 <p>A vehicle can be petrol, diesel, electric or hybrid.</p>
 </blockquote>
-<p>the default is the first option -- petrol. This accords with the
+<p>the default is the first option — petrol. This accords with the
 convention that the first-created value for an enumerated kind is always
 its default value.</p>
 <p>But the beta-testers felt that this was an anomaly in the language. I
@@ -532,11 +532,11 @@ would be. And there does seem to be some subtle difference in English
 meaning as to the suggested likelihood of possibilities, here. &quot;You can
 be useful&quot; has the sense that you aren't useful right at the moment,
 but &quot;it can be blue, green or purple&quot; tends to favour the front end
-of the list as likelier, if anything -- as when people offer an
+of the list as likelier, if anything — as when people offer an
 exaggeratedly unlikely final choice: &quot;you can be black, white, brown,
 or sky blue pink&quot;.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the three or more options the range of possibilities for this new kind</span><span class="named-paragraph-number">5.9</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the three or more options the range of possibilities for this new kind</span><span class="named-paragraph-number">5.11</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">option</span><span class="plain-syntax">;</span>
@@ -547,21 +547,21 @@ or sky blue pink&quot;.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">option</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">option</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_9_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this option name if it clashes with something non-adjectival</span></span><span class="named-paragraph-number">5.9.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_9_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this option name if it clashes with an either-or</span></span><span class="named-paragraph-number">5.9.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_11_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this option name if it clashes with something non-adjectival</span></span><span class="named-paragraph-number">5.11.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-npr.html#SP5_11_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Disallow this option name if it clashes with an either-or</span></span><span class="named-paragraph-number">5.11.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="8-cu.html#SP1" class="function-link"><span class="function-syntax">Propositions::Abstract::to_create_something</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cnd_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">PW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Assert::true</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5">&#167;5</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_9_1" class="paragraph-anchor"></a><b>&#167;5.9.1. </b>  The interesting thing here is that we do allow name-clashes with either/or
+<p class="commentary firstcommentary"><a id="SP5_11_1" class="paragraph-anchor"></a><b>&#167;5.11.1. </b>  The interesting thing here is that we do allow name-clashes with either/or
 properties, with other condition values (since those are adjectival and
 therefore parse to description specifications), and indeed adjectives
 in general. What we don't want is for it to clash with a noun, because then
 there would be horrible ambiguities in parsing.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this option name if it clashes with something non-adjectival</span><span class="named-paragraph-number">5.9.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this option name if it clashes with something non-adjectival</span><span class="named-paragraph-number">5.11.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-type-expression-or-value&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">PW</span><span class="plain-syntax">)) {</span>
@@ -585,11 +585,11 @@ there would be horrible ambiguities in parsing.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_9">&#167;5.9</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_11">&#167;5.11</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5_9_2" class="paragraph-anchor"></a><b>&#167;5.9.2. </b>  And similarly:</p>
+<p class="commentary firstcommentary"><a id="SP5_11_2" class="paragraph-anchor"></a><b>&#167;5.11.2. </b>  And similarly:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this option name if it clashes with an either-or</span><span class="named-paragraph-number">5.9.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow this option name if it clashes with an either-or</span><span class="named-paragraph-number">5.11.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">already</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -607,7 +607,7 @@ there would be horrible ambiguities in parsing.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_9">&#167;5.9</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-npr.html#SP5_11">&#167;5.11</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-nrr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-dlr.html">dlr</a></li><li class="progresssection"><a href="3-pr.html">pr</a></li><li class="progresssection"><a href="3-tr.html">tr</a></li><li class="progresssection"><a href="3-nuor.html">nuor</a></li><li class="progresssection"><a href="3-uor.html">uor</a></li><li class="progresssection"><a href="3-tr2.html">tr2</a></li><li class="progresssection"><a href="3-dbtr.html">dbtr</a></li><li class="progresssection"><a href="3-rpr.html">rpr</a></li><li class="progresssection"><a href="3-nar.html">nar</a></li><li class="progresssection"><a href="3-nlpr.html">nlpr</a></li><li class="progresssection"><a href="3-nrr.html">nrr</a></li><li class="progresscurrent">npr</li><li class="progresssection"><a href="3-nvr.html">nvr</a></li><li class="progresssection"><a href="3-nar2.html">nar2</a></li><li class="progresssection"><a href="3-ir.html">ir</a></li><li class="progresssection"><a href="3-ldr.html">ldr</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-id.html">5</a></li><li class="progresschapter"><a href="6-rls.html">6</a></li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progresschapter"><a href="8-kpr.html">8</a></li><li class="progressnext"><a href="3-nvr.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

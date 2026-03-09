@@ -144,7 +144,7 @@ int ActionsNodes::creation(parse_node *px, parse_node *py) {
 
 Here `Refiner::refine` will correctly report that "proactive behaviour" is
 a new term, and give it a `CREATED_NT` node. But we don't want it to become an
-object or a value -- we want it to be a new named action pattern. So we
+object or a value — we want it to be a new named action pattern. So we
 amend the node to `ACTION_NT`. And in general, whenever both sides of a
 copular assertion are actionlike, we want to make them `ACTION_NT` nodes.
 
@@ -156,7 +156,7 @@ copular assertion are actionlike, we want to make them `ACTION_NT` nodes.
 		ActionsNodes::convert_stored_action_constant(py);
 	}
 
-@ The second case occurs much less often -- for instance, the only time it comes
+@ The second case occurs much less often — for instance, the only time it comes
 up in the test suite is `CHS`, the example "Chronic Hinting Syndrome":
 
 > Setting is a kind of value. The settings are bright and dull.

@@ -14,10 +14,10 @@ really only meaningful for turn-based simulations, as in: "for three turns".
 @d TURNS_UNIT 2 /* used for "for three turns" */
 
 @ And the following constants are used to record how to measure the
-threshold value -- "for more than three turns" would be `GT_REPM`, and so
+threshold value — "for more than three turns" would be `GT_REPM`, and so
 on. The default, `NO_REPM`, means that nothing is specified by way of
-comparison -- "four times" -- and the meaning of that may depend on
-context; Inform treats a `NO_REPM` occurrence quite carefully -- see
+comparison — "four times" — and the meaning of that may depend on
+context; Inform treats a `NO_REPM` occurrence quite carefully — see
 //runtime: Chronology//.
 
 @e EQ_REPM from 1
@@ -32,15 +32,14 @@ a time period. For example, "X is 7 for the second time" would have as
 its used wording "for the second time", and unused wording "X is 7".
 
 =
-typedef struct time_period {
+classdef time_period {
 	int units; /* one of the two above */
 	int length; /* the duration or else the lower limit of an interval */
 	int until; /* `-1` or else the upper limit of an interval */
 	int test_operator; /* one of the `*_REPM` constants */
 	struct wording used_wording;
 	struct wording unused_wording;
-	CLASS_DEFINITION
-} time_period;
+}
 
 @ Logging:
 

@@ -63,7 +63,7 @@ test case names beginning with "BIP-".
 
 @h Say phrases.
 We begin with saying phrases: the very first phrase to exist is the one
-printing a single value -- literal text, a number, a time, an object, or
+printing a single value — literal text, a number, a time, an object, or
 really almost anything, since the vast majority of kinds in Inform are
 sayable. There used to be separate definitions for saying text, numbers
 and unicode characters here, but they were removed in June 2015 as being
@@ -267,13 +267,15 @@ To decide if a paragraph break is pending
 usage of `jump` statements, I6's form of goto. For instance, the text
 "[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
 thus:
-= (text as Inform 6)
+
+``` Inform6
 	if (~~(score == 10)) jump L_Say3;
 	    ...
 	jump L_SayX2; .L_Say3;
 	    ...
 	.L_Say4; .L_SayX2;
-=
+```
+
 Though labels actually have local namespaces in I6 routines, we use
 globally unique labels throughout the whole program: compiling the same
 phrase again would involve say labels 5 and 6 and "say exit" label 3.
@@ -285,7 +287,8 @@ machines there is no speed penalty for branches.) We also need the same
 definitions to accommodate what amounts to a switch statement. The trickier
 text "[if the score is 10]It's ten![otherwise if the score is 8]It's
 eight?[otherwise]It's not ten, alas." comes out as:
-= (text as Inform 6)
+
+``` Inform6
 	if (~~(score == 10)) jump L_Say5;
 	    ...
 	jump L_SayX3; .L_Say5; if (~~(score == 8)) jump L_Say6;
@@ -293,11 +296,12 @@ eight?[otherwise]It's not ten, alas." comes out as:
 	jump L_SayX3; .L_Say6;
 	    ...
 	.L_Say7; .L_SayX3;
-=
+```
+
 In either form of the construct, control passes into at most one of the
 pieces of text. The terminal labels (the two on the final line) are
-automatically generated; often -- when there is a simple "otherwise" or
-"end if" to conclude the construct -- they are not needed, but labels are
+automatically generated; often — when there is a simple "otherwise" or
+"end if" to conclude the construct — they are not needed, but labels are
 quick to process in I6, are soon discarded from I6's memory when not needed
 any more, and compile no code.
 
@@ -816,7 +820,7 @@ To if (V - value) is begin -- end conditional
 for example, does not have a NOP function); it entered Inform in the earliest
 days, when it was useful mainly when natural language syntax had painted users
 into a corner. (In the examples, it used to be used when conditions were
-awkward to negate -- if condition, do nothing, otherwise blah blah blah -- but
+awkward to negate — if condition, do nothing, otherwise blah blah blah — but
 the creation of "unless" made it possible to remove most of the "do
 nothing"s.) It is now hardly ever useful.
 
@@ -861,7 +865,7 @@ To repeat with (loopvar - nonexisting object variable)
 		(- {-primitive-definition:repeat-through-list} -).
 
 @ The following are all repeats where the range is the set of rows of a table,
-taken in some order, and the repeat variable -- though it does exist -- is
+taken in some order, and the repeat variable — though it does exist — is
 never specified since the relevant row is instead the one selected during
 each iteration of the loop.
 
@@ -1266,8 +1270,8 @@ which we will take in that order.
 
 Tables mimic tables of data as seen in books or scientific papers. Note that
 changing a table entry is not something defined here as a phrase: the
-ever-powerful "now" can do that. But changing something to a non-value --
-or "blanking" it -- requires specialist phrases.
+ever-powerful "now" can do that. But changing something to a non-value —
+or "blanking" it — requires specialist phrases.
 
 See test case `BIP-Tables`.
 
@@ -1483,7 +1487,7 @@ To sort (L - a list of objects) in/into reverse (P - property) order
 
 @ Relations are the final data structure given here. In some ways they are
 the most fundamental of all, but they're not either set or tested by
-procedural phrases -- they lie in the linguistic structure of conditions.
+procedural phrases — they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:
 
 See test case `BIP-Relations`.

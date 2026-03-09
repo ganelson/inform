@@ -66,7 +66,7 @@ function togglePopup(material_id) {
 <span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">Lexicon::register</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">    </span><span class="type-syntax">unsigned</span><span class="plain-syntax"> </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to register empty excerpt meaning"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-em.html#SP13" class="function-link"><span class="function-syntax">ExcerptMeanings::register</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-em.html#SP12" class="function-link"><span class="function-syntax">ExcerptMeanings::register</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">data</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
@@ -74,7 +74,7 @@ function togglePopup(material_id) {
 can call this to extract their attached data:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="function-syntax">Lexicon::get_data</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Lexicon::get_data</span></span>:<br/>Parse Excerpts - <a href="2-pe.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="function-syntax">Lexicon::get_data</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Lexicon::get_data</span></span>:<br/>Parse Excerpts - <a href="2-pe.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -89,7 +89,7 @@ But that wouldn't enable us to return multiple results in the (frequent) case
 of ambiguity. Instead, we need to return a list of possibilities, and we do
 that by returning fragment of syntax tree material, using the infrastructure
 from <a href="../syntax-module/index.html" class="internal">syntax</a>. This will be a list of nodes joined by <code>-&gt;next_alternative</code> limks.</p>
-<p>This list of nodes is disposable -- even if it is a copy of something from the
+<p>This list of nodes is disposable — even if it is a copy of something from the
 syntax tree, it is never the only copy. It can freely be ignored or changed.
 A return value of <code>NULL</code> means there were no results at all.</p>
 <ul>

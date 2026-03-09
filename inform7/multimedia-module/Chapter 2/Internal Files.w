@@ -40,7 +40,7 @@ int InternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name,
 This structure of additional data is attached to each figure instance.
 
 =
-typedef struct internal_files_data {
+classdef internal_files_data {
 	struct wording name; /* text of name */
 	int unextended_filename; /* word number of text like `"ice extents.usgs"` */
 	struct filename *local_filename; /* of where this file is, in Materials directory */
@@ -49,8 +49,7 @@ typedef struct internal_files_data {
 	struct instance *as_instance;
 	struct parse_node *where_created;
 	int resource_id;
-	CLASS_DEFINITION
-} internal_files_data;
+}
 
 @ We allow instances of "internal file" to be created only through the code
 from //External Files// calling //InternalFiles::files_create//. If any other

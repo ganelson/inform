@@ -15,7 +15,6 @@ Manual
 
 Chapter 1: Blurbs
 "A little infrastructure, but basically, parsing of our instructions."
-	Basics
 	Main
 	Blorb Errors
 	Blurb Parser

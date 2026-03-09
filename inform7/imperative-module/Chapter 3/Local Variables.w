@@ -100,7 +100,7 @@ local_variable *LocalVariables::new_let_value(wording W, kind *K) {
 	return lvar;
 }
 
-@ Some `LET_VALUE_LV` variables are protected from being changed by "let" or "now" --
+@ Some `LET_VALUE_LV` variables are protected from being changed by "let" or "now" —
 that sounds contradictory, but for example loop counters in "repeat" constructs are
 also `LET_VALUE_LV` locals, and we want to stop the source text from altering
 those. Protection is opt-out for let values: we have to call //LocalVariables::unprotect//
@@ -312,7 +312,7 @@ for it, so it doesn't seem worth hashing this:
 
 @ Earlier builds of Inform went to some trouble to parse these in reverse
 creation order, so that if the same name existed both as a loop variable
-and outside it, the inner one would always be parsed -- compare C, where
+and outside it, the inner one would always be parsed — compare C, where
 this is legal (if doubtful in style). But since the Inform language no
 longer permits local names to be overloaded like this, there's no longer
 any need.
@@ -466,8 +466,8 @@ extension he's using. So we do allow this, and certain other overloadings
 of meanings, too, but it would be too much to say that every phrase has its
 own namespace.
 
-Callings get one extra benefit, because they typically exist more fleetingly --
-often only for the sentence where they're defined -- and because the syntax
+Callings get one extra benefit, because they typically exist more fleetingly —
+often only for the sentence where they're defined — and because the syntax
 is more explicit. So you can write:
 
 > if an infected person can see a healthy person (called random bystander), ...

@@ -92,7 +92,7 @@ The triple `(0, 0, 0)` ends the array.
 
 @ Finally, a function used when printing values of the `K_response` kind;
 the main compiler created this as a mostly empty function with two local
-variables -- `R`, the ID for the response we should print, and `RPR`, the
+variables — `R`, the ID for the response we should print, and `RPR`, the
 address of a function for printing rule names.
 
 This is in effect a big switch statement, so it's not fast; but being a print

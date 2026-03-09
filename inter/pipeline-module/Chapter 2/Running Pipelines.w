@@ -214,7 +214,7 @@ pipeline_step *RunningPipelines::current_step(void) {
 
 @h Popular symbols cache.
 While working on a tree, the execution functions will frequently need
-its most popular symbols -- searching for these is not too slow, but even so,
+its most popular symbols — searching for these is not too slow, but even so,
 once is enough. But we cache them on each step, wiping the cache at the end
 of the step, since running a step changes the Inter tree and could conceivably
 move, add or remove some of these symbols.

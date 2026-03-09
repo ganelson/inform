@@ -11,12 +11,15 @@ the phrase being invoked has an inline definition.
 
 Inline definitions vary considerably in both simplicity and their legibility
 to human eyes. Here is the text substitution "[bold type]":
-= (text)
+
+``` None
 To say bold type -- running on:
 	(- style bold; -).
-=
+```
+
 On the other hand, here is how to repeat through a table:
-= (text)
+
+``` None
 To repeat through (T - table name) in (TC - table column) order begin -- end loop
 	(-
 		@push {-my:ct_0}; @push {-my:ct_1};
@@ -26,7 +29,8 @@ To repeat through (T - table name) in (TC - table column) order begin -- end loo
 				{-block}
 		@pull {-my:ct_1}; @pull {-my:ct_0};
 	-).
-=
+```
+
 Inline definitions are written in a highly annotated and marked-up version of
 Inform 6 notation, but are not actually I6 code.
 
@@ -58,7 +62,7 @@ new code block finishes. We won't live to see it; in this function, all we do
 is pass the tailpiece to the code block handler, to be spliced in later on.
 
 Note that if there is a code block, then any "my" variables created in this
-invocation are preserved -- the back part of the definition may want to use
+invocation are preserved — the back part of the definition may want to use
 them. They will disappear anyway in that event, because their scope is set to
 the code block in question.
 
@@ -102,27 +106,31 @@ are mostly not used. The "repeat" example above uses `{-my:1}`, `{-my:2}`, and
 
 @ But phrases can create local variables through notation in the prototype as
 well as in the definition. Consider the prototype:
-= (text)
+
+``` None
 To repeat with (loopvar - nonexisting object variable)
 	running through (L - list of values) begin -- end loop:
 	...
-=
+```
+
 Here, token 0, "nonexisting object variable", calls for us to create a new
 local variable of kind "object" each time the phrase is invoked. This variable
 may have a short lifetime, since its scope will be tied to the block of code
 about to open.
 
-Note that we do not initialise the variable -- that would be inefficient, in that
+Note that we do not initialise the variable — that would be inefficient, in that
 such stores would be unnecessary in some cases. So the responsibility of ensuring
 that the variable contains a typesafe value is placed on the inline definition.
 If it abuses that responsibility, type safety is simply lost. Consider:
-= (text)
+
+``` None
 To conjure (bus - nonexisting object variable):
 	(- {bus} = 26201; -).
 When play begins:
 	conjure the magic bus;
 	showme the magic bus.
-=
+```
+
 This will end horribly unless 26201 happens to be a valid object number, and it
 almost certainly is not. But the Inform compiler throws no problem message, because
 the code is legal. See the discussion of `{-initialise:...}` for how to deal with
@@ -186,7 +194,7 @@ In particular, it calls //CSIInline::from_schema_token// on each "token" of
 the schema, and calls //CSIInline::from_source_text// on any material enclosed
 in `(+ ... +)` notation.
 
-`CSIS` is passed to this function as our "opaque state" -- meaning that it is
+`CSIS` is passed to this function as our "opaque state" — meaning that it is
 passed through unchanged to our callback functions, and means that the code
 below can share some private state variables.
 
@@ -401,10 +409,12 @@ These all modify the way a token is compiled.
 @ This affects only block values. When it's used, the token accepts the pointer
 to the block value directly, that is, not copying the data over to a fresh
 copy and using that instead. This means a definition like:
-= (text as Inform 7)
+
+``` Inform7
 To zap (L - a list of numbers):
 	(- Zap({-by-reference:L}, 10); -).
-=
+```
+
 will call `Zap` on the actual list supplied to it. If `Zap` chooses to change
 this list, the original will change.
 
@@ -473,9 +483,11 @@ but honestly having this annotation seems the smaller of the two warts.
 
 @ Suppose we are invoking "decide on 102" from the Basic Inform inline definition
 of "decide on ...", which is:
-= (text)
+
+``` None
 	(- return {-return-value:something}; -)
-=
+```
+
 We clearly need to police this: if the phrase is deciding a number, we need to
 object to `decide on "fish fingers"`.
 
@@ -765,9 +777,10 @@ getting started. We now go through all of the special syntaxes which make
 invocation-language so baroque.
 
 We'll start with a suite of details about kinds:
-= (text)
+
+``` None
 	{-command:kind name}
-=
+```
 
 @<Expand a bracing containing a kind command@> =
 	Problems::quote_stream(4, ist->operand);
@@ -808,9 +821,11 @@ its own when kind variables are in play.
 
 @ The following complication makes lists of a given description. The inline
 definition:
-= (text)
+
+``` None
 	LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})
-=
+```
+
 is not good enough, because it fails if the description D makes reference to
 local variables (as it well may); instead we must construe D as a deferred
 proposition.
@@ -933,25 +948,33 @@ Here we want to generate unique numbers, or uniquely named labels, on demand.
 
 @ We can have any number of sets of labels, each with its own base name,
 which should be supplied as the argument. For example:
-= (text)
+
+``` None
 	{-label:pineapple}
-=
+```
+
 generates the current label in the "pineapple" set. (Sets don't need to be
 declared: they can be mentioned the first time they are used.) These label
 names take the form `L_pineapple_0`, `L_pineapple_1`, and so on; each named
 set has its own counter (0, 1, 2, ...). So this inline definition works
 safely:
-= (text)
+
+``` None
 	jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};
-=
+```
+
 if a little pointlessly, generating first
-= (text)
+
+``` None
 	jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;
-=
+```
+
 and then
-= (text)
+
+``` None
 	jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;
-=
+```
+
 and so on. The point of this is that it guarantees we won't define two labels
 with identical names in the same Inform 6 routine, which would fail to compile.
 
@@ -994,27 +1017,35 @@ internal error will halt Inform.)
 
 @ We can use counters for anything, not just to generate labels, and one
 useful trick is to allocate storage at run-time. Invoking
-= (text)
+
+``` None
 	{-counter-makes-array:pineapple}
-=
+```
+
 at any time during compilation (once or many times over, it makes no
 difference) causes Inform to generate an array called `I7_ST_pineapple`
 guaranteed to contain one entry for each counter value reached. Thus:
-= (text as Inform 7)
+
+``` Inform7
 To remember (N - a number) for later: ...
-=
+```
+
 might be defined inline as
-= (text)
+
+``` None
 	{-counter-makes-array:pineapple}I7_ST_pineapple-->{-counter:pineapple} = {N};
-=
+```
+
 and the effect will be to accumulate an array of numbers during compilation.
 Note that the value of a counter can also be read in template language,
 so with a little care we can get the final extent of the array, too. If more
 than one word of storage per count is needed, try:
-= (text)
+
+``` None
 	{-counter-makes-array:pineapple:3}
-=
-or similar -- this ensures that the array contains not fewer than three times
+```
+
+or similar — this ensures that the array contains not fewer than three times
 as many cells as the final value of the count. (If multiple invocations are
 made with different numbers here, the maximum is taken.)
 
@@ -1078,12 +1109,14 @@ the ones we create will be different from those made by any other invocation
 `tmp_3`, which we have no control over. Here we get to make a local with
 exactly the name we want. This can't be reallocated, of course; it's there
 throughout the routine, so there's no question of setting its scope. For example:
-= (text as Inform 7)
+
+``` Inform7
 To be warned:
 	(- {-my:warn} = true; -).
 To decide if we have been warned:
 	(- ({-my:warn}) -).
-=
+```
+
 The net result here is that if either phrase is used, then `warn` becomes a
 local variable. The second phrase tests if the first has been used.
 
@@ -1100,9 +1133,10 @@ though there are hardly any circumstances where this is necessary, since Inter
 is typeless. But in a few cases where I7 is embedded inside Inter inside I7,
 or when a block value is needed, or where we need to match against descriptions
 (see below) where kind-checking comes into play, it could arise. For example:
-= (text)
+
+``` None
 	{-my:1:list of numbers}
-=
+```
 
 @<Set the kind of the new variable@> =
 	kind *K = NULL;
@@ -1144,9 +1178,11 @@ doesn't matter because it is immediately written with some value which is
 indeed typesafe, and there's no problem. But if not, `{-initialise:var:kind}`
 takes the named local variable and gives it the default value for that kind.
 If the kind is omitted, the default is to use the kind of the variable. For example,
-= (text)
+
+``` None
 	{-my:1:time}{-initialise:1}
-=
+```
+
 Note that this works only for kinds of word value, like "time". For kinds
 of block value, like "list of numbers", it does nothing. This may seem odd,
 but the point is that locals of that kind are automatically set to their
@@ -1155,12 +1191,14 @@ default values when created, so they are always typesafe anyway.
 Note also that the Dash typechecker allows the creation of local variables
 whose kinds are subkinds of objects which may have no instances. For example,
 in this program:
-= (text)
+
+``` None
 	A cat is a kind of animal.
 	To discuss the felines:
 		let C be a cat;
 		...
-=
+```
+
 ...it is legal to construct the variable `C` with kind `cat`, even though there
 are no cats in the world, so that a call to `DefaultValues::val` would
 generate a problem message. But we call `DefaultValues::val_allowing_nothing`
@@ -1219,15 +1257,19 @@ do exist, but which should still compile without errors even if they do not.
 @ The `{-copy:...}` command allows us to copy the content in a token or variable
 into any storage item (a local variable, a global, a table entry, a list entry),
 regardless of its kind of value. For example:
-= (text as Inform 7)
+
+``` Inform7
 To let (t - nonexisting variable) be (u - value) (assignment operation):
 	(- {-unprotect:t}{-copy:t:u} -).
-=
+```
+
 This may look superfluous: for example, in response to "let X be 10" it generates
 code equivalent to `tmp_0 = 10;`, which could have been achieved equally well with:
-= (text)
+
+``` None
 	(- {-unprotect:t}{t} = {u}; -)
-=
+```
+
 But it makes something much more elaborate in response to, say, "let Y be the
 list of people in dark rooms", where it's important to keep track of the allocation
 and deallocation of dynamic lists, since Y is a block value. The point of the
@@ -1256,10 +1298,12 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 @ If the `from` part is prefaced with a plus sign `+`, the new value is added
 to the current value rather than replacing it; if `-`, it's subtracted. For
 example,
-= (text as Inform 7)
+
+``` Inform7
 To increase (S - storage) by (w - value) (assignment operation):
 	(- {-copy:S:+w} -).
-=
+```
+
 Lastly, it's also legal to write just a `+` or `-` sign alone, which increments
 or decrements. But be wary here, because `{-copy:S:+}` adds 1 to S, whereas
 `{-copy:S:+1}` adds the value of the variable {-my:1} to S.
@@ -1359,7 +1403,7 @@ There are two forms according to which domain is implied.
 	}
 
 @ The next command generates code able to test if a token in the invocation,
-or an Inter variable, matches a given description -- which need not be constant.
+or an Inter variable, matches a given description — which need not be constant.
 For example, if the phrase prototype includes the token `(OS - description of objects)`
 then the bracing `{-matches-description:1:OS}` compiles a condition testing whether
 the object in variable `{-my:1}` matches the description or not.
@@ -1750,19 +1794,22 @@ parse_node *CSIInline::parse_bracing_operand_as_identifier(text_stream *operand,
 If the kind named involves kind variables A, B, C, ..., then these are
 substituted with their values in the context of the invocation being made.
 In addition two special kind names are recognised:
-= (text)
+
+``` None
 	return-kind
 	rule-return-kind
-=
+```
+
 The former being the return kind from the phrase we are being invoked in
 (if it's a phrase to decide a value), and the latter being the kind of value
 which this rule should produce (if it's a rule, and if it's in a rulebook
 which wants to produce a value). For example, you could define a phrase
 which would safely abandon any attempt to define a value like this:
-= (text as Inform 7)
+
+``` Inform7
 To give up deciding:
 	(- return {-new:return-kind}; -).
-=
+```
 
 =
 kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand,
@@ -1790,9 +1837,11 @@ as expressive as it is today, was that "template files" of Inform 6 code, and
 inline phrase definitions, could use the notation `(+ ... +)` to reinsert
 high-level Inform 7 source text inside lower-level Inform 6 notation. Thus, for
 example,
-= (text)
+
+``` None
 	(- print (+ time of day +); -)
-=
+```
+
 is a valid inline definition.
 
 This is not (yet) deprecated, but is inelegant, and is used very little in Inform's

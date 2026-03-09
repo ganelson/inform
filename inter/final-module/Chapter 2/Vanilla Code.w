@@ -7,7 +7,8 @@ some structural nodes, breaking up code-blocks and the like: and these we
 simply recurse down through, except that in the case of `code` we keep track
 of the "void level". This is the level in the hierarchy where evaluation is
 in a void context. For example,
-= (text)
+
+``` None
 	code
 		inv !printnumber
 			inv !plus
@@ -16,7 +17,8 @@ in a void context. For example,
 		^
 		|
 		void level
-=
+```
+
 here the invocation of `!printnumber` is in a void context (i.e., any value
 produced is discarded), whereas the invocation of `!plus` is not.
 

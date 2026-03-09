@@ -81,7 +81,7 @@ void ActionNameNames::log(action_name *an) {
 	else LOG("%W", ActionNameNames::tensed(an, IS_TENSE));
 }
 
-@ Object pronouns -- let's just say, the word "it" for brevity -- in an action
+@ Object pronouns — let's just say, the word "it" for brevity — in an action
 name are significant: they are placeholders for where the first of two nouns
 is supposed to go. Thus, in the action name "unlocking it with", the word "it"
 shows where to put the name of what is being unlocked.

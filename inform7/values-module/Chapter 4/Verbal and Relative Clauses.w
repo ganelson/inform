@@ -8,7 +8,7 @@ a more complex NP).
 English is an SVO language, where the main parts of the sentence occur in the
 order subject, verb, object. The following grammar parses that crucial division,
 and note that it can be used either to form a complete sentence, where there
-is an active verb --
+is an active verb —
 
 > now the silver bars are in the Hall of Mists;
 
@@ -39,7 +39,7 @@ object to be a value. This removes cases like "if there is 21", but in fact
 we do it to avoid problem messages whenever a table column exists with the
 name "there". (Because of the unfortunately worded phrase "there is T"
 for a table reference; the phrase should never have been called something
-so ambiguous -- a bad decision in about 2003.)
+so ambiguous — a bad decision in about 2003.)
 
 @<Make SV provided object is descriptive@> =
 	parse_node *op = RP[2];
@@ -55,7 +55,7 @@ We've just seen one special point: "to be" can take the placeholder
 "there", which no other verb can.[1] The verb "to be" is "copular" because it
 acts to combine its subject and object: "X is 5", "Y is blue", and so on, refer
 to just one thing but make a statement about its nature or identity.
-Other verbs -- "to carry", say -- normally refer to two different things, at
+Other verbs — "to carry", say — normally refer to two different things, at
 least in their most general forms: "X carries the briefcase".
 
 The universal verb "to relate" needs a special syntax in order to handle its
@@ -113,7 +113,7 @@ In this case the verb is implicitly the copular verb "to be" and our
 grammar has to differ from the sentence grammar above.
 
 Some prepositions imply the player as object: "carried", in the sense of
-"to be carried", for instance -- "The briefcase is carried". We fill the
+"to be carried", for instance — "The briefcase is carried". We fill the
 relevant noun subtree with a representation of the player-object for those.
 
 =

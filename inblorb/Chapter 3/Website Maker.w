@@ -10,39 +10,37 @@ scanning the source text for typographically significant structures:
 @d ABBREVIATED_HEADING_LENGTH 1000
 
 =
-typedef struct table {
+classdef table {
 	int table_line_start; /* line number in the source where the table heading appears */
 	int table_line_end; /* line number of the blank line which marks the end of the table body */
-	CLASS_DEFINITION
-} table;
+}
 
-typedef struct heading {
+classdef heading {
 	int heading_line; /* line number in the source at which the heading appears */
 	int heading_level; /* a low number makes this a more significant heading than a high number */
 	int heading_has_content; /* is there anything other than white space before the next heading? */
 	struct segment *heading_to_segment; /* which segment contains the heading */
 	struct text_stream *heading_text;
-	CLASS_DEFINITION
-} heading;
+}
 
 @ Segments are used to divide the source text into pieces of what we hope will
 be a manageable size.
 
 It is not true that the source text is partitioned exactly by segments. The
 topmost segment begins at the first heading in the source text. So there
-will usually be at least a few prefatory lines before this point -- perhaps
-the title, some extension inclusions, and so on -- and it's even possible,
+will usually be at least a few prefatory lines before this point — perhaps
+the title, some extension inclusions, and so on — and it's even possible,
 if there are no headings at all, for there to be no segments so that the
 entire source text is "prefatory". If we have three segments, then, we
 will split the source text into four HTML files:
 
-`source0.html` -- "Page 1 of 4", the preface and then contents
+`source0.html` — "Page 1 of 4", the preface and then contents
 
-`source1.html` -- "Page 2 of 4", first segment (with allocation ID 0)
+`source1.html` — "Page 2 of 4", first segment (with allocation ID 0)
 
-`source2.html` -- "Page 3 of 4", second segment (with allocation ID 1)
+`source2.html` — "Page 3 of 4", second segment (with allocation ID 1)
 
-`source3.html` -- "Page 4 of 4", third segment (with allocation ID 2)
+`source3.html` — "Page 4 of 4", third segment (with allocation ID 2)
 
 Note that the prefatory lines contain no headings, that every heading
 belongs to a unique segment (hence the `heading_to_segment` field above)
@@ -61,7 +59,7 @@ segment just containing the "Part I" heading followed by a second segment
 opening with "Section I.1".
 
 =
-typedef struct segment {
+classdef segment {
 	int begins_at; /* line number on which the segment begins */
 	int ends_at; /* line number of the last line of the segment, or `MAX_SOURCE_TEXT_LINES` if it runs to the end */
 	int documentation; /* is this in the documentation of an extension? */
@@ -74,8 +72,7 @@ typedef struct segment {
 	struct text_stream *link_previous;
 	struct text_stream *link_next;
 	int page_number;
-	CLASS_DEFINITION
-} segment;
+}
 
 @h Styling with CSS.
 We try to give the template files as much freedom as possible to define
@@ -84,16 +81,18 @@ variables, so Inblorb itself has to choose CSS styles for anything interesting
 that is displayed there. We use the following style names, which a CSS file
 is required to define:
 
-- `columnhead` -- the heading of a column in a Table in I7 source text
-- `comment` -- comments in I7 source text
-- `filetype` -- the "(pdf, 150KB)" text annotating links
-- `heading` -- heading or top line of a Table in I7 source text
-- `i6code` -- verbatim I6 code in I7 source text
-- `notecue` -- footnote cues which annotate I7 source text
-- `notesheading` -- the little "Notes" subheading above the footnotes to source text
-- `notetext` -- texts of footnotes which annotate I7 source text
-- `quote` -- double-quoted text in I7 source text
-- `substitution` -- text substitution inside double-quoted text in I7 source text
+style          | purpose
+-------------- | -------------------------------------------------------
+`columnhead`   | the heading of a column in a Table in I7 source text
+`comment`      | comments in I7 source text
+`filetype`     | the "(pdf, 150KB)" text annotating links
+`heading`      | heading or top line of a Table in I7 source text
+`i6code`       | verbatim I6 code in I7 source text
+`notecue`      | footnote cues which annotate I7 source text
+`notesheading` | the little "Notes" subheading above the footnotes to source text
+`notetext`     | texts of footnotes which annotate I7 source text
+`quote`        | double-quoted text in I7 source text
+`substitution` | text substitution inside double-quoted text in I7 source text
 
 In addition it must provide paragraph classes `indent0` to `indent9` for code
 which begins at tab positions 0 to 9 (see below). Although "Standard.css"
@@ -317,7 +316,7 @@ int position_of_documentation_bar; /* line count of the `---- Documentation ----
 for each line in the source, and `Websites::scan_source_line` looks only at a single line
 and at the current table, heading and segment.
 
-@d MAX_SOURCE_TEXT_LINES 2000000000; /* enough for 300 copies of the Linux kernel source -- plenty! */
+@d MAX_SOURCE_TEXT_LINES 2000000000; /* enough for 300 copies of the Linux kernel source... */
 
 =
 void Websites::scan_source_text(void) {
@@ -336,7 +335,7 @@ void Websites::scan_source_text(void) {
 
 @ Suppose our source contains only headings at levels 3 and 4: we can reduce these
 to levels 0 and 1 without disturbing their relative importance, and that makes it
-easier for us to typeset them in a sensible way -- there's no point making any
+easier for us to typeset them in a sensible way — there's no point making any
 typographic allowance for three sizes of headings greater than are found anywhere
 in the source text.
 
@@ -704,12 +703,12 @@ int Websites::write_source_line(text_stream *line, text_file_position *tfp) {
 }
 
 @ Recall that the source text is divided into an initial portion containing
-no headings -- the "preface" -- and then segments, each of which begins with
+no headings — the "preface" — and then segments, each of which begins with
 a heading.
 
 Here we are handling the case of typesetting the preface. We allow the line
 to appear as normal if it is before the first segment; once we reach the
-first segment -- if there's a first segment to reach -- we then typeset the
+first segment — if there's a first segment to reach — we then typeset the
 contents listing. (If there's no first segment, then there are no headings,
 and there's no need for a contents listing.) If we've output the contents
 listing then we are finished writing the preface and don't need to read the
@@ -827,11 +826,11 @@ line is underlined; and the material inside appears in an HTML table, with
 `tabulate` mode set.
 
 The `while` loop here needs a careful look, since on the face of it this
-could mean $O(N)$ iterations -- since the number of tables is probably
-proportional to $N$ -- made in the course of the current "[SOURCE]"
+could mean $O(N)$ iterations — since the number of tables is probably
+proportional to $N$ — made in the course of the current "[SOURCE]"
 expansion. Since the number of "[SOURCE]" expansions needed to make the
-website is also $O(N)$ -- the number of HTML pages in the site is proportional
-to the number of headings, which is also proportional to $N$ -- there's a
+website is also $O(N)$ — the number of HTML pages in the site is proportional
+to the number of headings, which is also proportional to $N$ — there's a
 risk that this `while` loop makes the whole website algorithm $O(N^2)$.
 This is why, on each "[SOURCE]" expansion, `latest_table` is initialised
 not to the first table but to the most recent one at the start position of
@@ -935,7 +934,7 @@ space and we turn it into a single space.
 	}
 
 @ The following enters or exits quoted-matter mode, and is structured so that
-the quotation marks are not coloured -- only the material inside them.
+the quotation marks are not coloured — only the material inside them.
 
 Our code in handling quoted and comment matter is greatly simplified by the
 fact that a valid Inform text cannot contain mismatched square brackets;
@@ -999,7 +998,7 @@ span `notecue` if we have CSS, and otherwise render in grey superscript.
 	Websites::close_style(SPAGE, "notecue");
 	next_footnote_number++;
 
-@ That just leaves the little contents listings -- one for the source, and
+@ That just leaves the little contents listings — one for the source, and
 another for the documentation (if any).
 
 =
@@ -1025,7 +1024,7 @@ $b-1$, and can only change its value by executing the following loops. Since
 it never changes to a value lower than 0 except when returning to $b-1$ at
 the end, we are always inside at least the outermost `<ul>`, and since the
 net change over the whole process is 0, there must be as many steps upward
-as downward -- so every `<ul>` is closed by a matching `</ul>`.
+as downward — so every `<ul>` is closed by a matching `</ul>`.
 
 @<Open or close UL tags to move to the new heading level@> =
 	while (new_level > current_level) { WRITE_TO(SPAGE, "<ul>"); current_level++; }

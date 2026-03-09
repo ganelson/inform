@@ -34,12 +34,14 @@ it should be the name of a class of objects. (If it isn't defined, then no
 meaning is attached to verbs at all.)
 
 For example, the //core// module sets:
-= (text as Inweb)
+
+``` None
 	@d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
-=
+```
+
 The parent may also want to define `VERB_MEANING_UNIVERSAL_CALCULUS_RELATION`,
 which should be a value of this type, and represents the "to relate" verb which
-can assert any verb meaning -- for example, "X relates to Y by R". See //Verb Usages//.
+can assert any verb meaning — for example, "X relates to Y by R". See //Verb Usages//.
 
 @h Using callbacks.
 Shared modules like this one are tweaked in behaviour by defining "callback
@@ -52,14 +54,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_LINGUISTICS_CALLBACK Emotions::gosh
 	
 	=
 	void Emotions::gosh(text_stream *OUT) {
 	    WRITE("Good gracious!\n");
 	}
-=
+```
+
 The linguistics module has many callbacks, but they are all optional. The
 following alphabetical list has references to fuller explanations:
 
@@ -81,20 +85,20 @@ it allows them in any form in non-assertion contexts. See
 
 - `ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK`, if provided, should accompany a
 declaration of a structure called `adjecttve_compilation_data`; this function should
-then set up that data for the given adjective -- see //Adjectives::declare//.
+then set up that data for the given adjective — see //Adjectives::declare//.
 
 - `ADJECTIVE_MEANING_LINGUISTICS_CALLBACK`, if provided, should accompany a
 declaration of a structure called `adjective_meaning_data`; this function should
-then set up that data for the given adjective -- see //Adjectives::declare//.
+then set up that data for the given adjective — see //Adjectives::declare//.
 
 - `NOUN_COMPILATION_LINGUISTICS_CALLBACK`, if provided, should accompany a
 declaration of a structure called `name_compilation_data`; this function should
-then set up that data for the given noun -- see //Nouns::new_inner//.
+then set up that data for the given noun — see //Nouns::new_inner//.
 
 - `NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK`, if provided, should accompany a
 declaration of a structure called `name_resolution_data`; this function should
 decide which possible reading of the meaning of a noun makes the best sense in
-context -- see //Nouns::disambiguate//.
+context — see //Nouns::disambiguate//.
 
 - `TRACING_LINGUISTICS_CALLBACK`, if provided, can return `TRUE` to allow
 extensive details of verb parsing to be copied to the debugging log. See

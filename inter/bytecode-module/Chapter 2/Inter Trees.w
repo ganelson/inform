@@ -10,7 +10,7 @@ components can also be huge. Note that the latter is managed entirely by
 the //building// module, but that everything else here is ours.
 
 =
-typedef struct inter_tree {
+classdef inter_tree {
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
 	struct inter_warehouse *housed;
@@ -18,8 +18,7 @@ typedef struct inter_tree {
 	struct building_site site;
 	struct filename *blame_errors_on_this_file;
 	int cross_referencing_suspended;
-	CLASS_DEFINITION
-} inter_tree;
+}
 
 @ The warehouse must be created before anything else can be done, since we can't
 make symbols tables without it:
@@ -181,7 +180,7 @@ inter_tree_node *InterTree::parent(inter_tree_node *F) {
 	return F->parent_itn;
 }
 
-@ Accessing child nodes one by one -- //InterTree::third_child//, etc. --
+@ Accessing child nodes one by one — //InterTree::third_child//, etc. —
 can only take you so far. Here's a convenient fast way to loop through:
 
 @d LOOP_THROUGH_INTER_CHILDREN(F, P)
@@ -301,7 +300,7 @@ int InterTree::test_history(inter_tree *I, int bit) {
 @h The file to blame.
 The `blame_errors_on_this_file` field for a tree is meaningful only during the
 period when an instruction is being read in from a text or binary Inter file.
-Such a file is untrustworthy -- we didn't make it ourselves -- and so we
+Such a file is untrustworthy — we didn't make it ourselves — and so we
 check it in many ways, and need a way to throw error messages if it is corrupt.
 
 Since Inter instructions can come in either from a binary or a text file, we
@@ -338,11 +337,10 @@ memory, since an //inter_error_location// only holds pointers to the position
 data, not the position data itself. So:
 
 =
-typedef struct inter_error_stash {
+classdef inter_error_stash in 1024s {
 	struct inter_error_location stashed_eloc;
 	struct text_file_position stashed_tfp;
-	CLASS_DEFINITION
-} inter_error_stash;
+}
 
 @ =
 inter_error_location *InterTree::origin_word_to_eloc(inter_tree *tree, inter_ti C) {

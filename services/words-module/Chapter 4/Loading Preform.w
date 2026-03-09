@@ -200,13 +200,12 @@ one French definition both in memory at the same time. Each would be an
 independent //production_list// object.
 
 =
-typedef struct production_list {
+classdef production_list {
 	NATURAL_LANGUAGE_WORDS_TYPE *definition_language;
 	struct production_list *next_pl; /* in the list of PLs for a NT */
 	struct production *first_pr; /* start of linked list of productions */
 	struct match_avinue *as_avinue; /* when compiled to a trie rather than for Preform */
-	CLASS_DEFINITION
-} production_list;
+}
 
 @ =
 production_list *LoadPreform::find_list_for_language(nonterminal *nt,
@@ -251,9 +250,11 @@ void LoadPreform::add_production(production *pr, production_list *pl) {
 @h Productions and ptokens.
 So now we reach the production, which encodes a typical "row" of grammar:
 for example,
-= (text as Preform)
+
+``` Preform
 	runner no <cardinal-number>
-=
+```
+
 is a production. This is implemented as still another list, of "ptokens" (the
 "p" is silent): that example has three ptokens. Note that the stroke sign and
 the defined-by sign are not ptokens; they divide up productions, but aren't
@@ -268,7 +269,7 @@ only confuses the picture here.
 @d MAX_STRUTS_PER_PRODUCTION 10
 
 =
-typedef struct production {
+classdef production {
 	struct ptoken *first_pt; /* the linked list of ptokens */
 	int match_number; /* 0 for `/a/`, 1 for `/b/` and so on: see //About Preform// */
 
@@ -278,8 +279,7 @@ typedef struct production {
 	struct production_instrumentation_data ins; /* see //Instrumentation// */
 
 	struct production *next_pr; /* within its production list */
-	CLASS_DEFINITION
-} production;
+}
 
 @ And at the bottom of God's great chain, the lowly ptoken. Even this can spawn
 another list, though: the token `fried/green/tomatoes` is a list of three ptokens
@@ -298,7 +298,7 @@ the `balanced_wildcard` flag set.
 @d NONTERMINAL_PTC 5
 
 =
-typedef struct ptoken {
+classdef ptoken {
 	/* How to parse text against this ptoken */
 	int ptoken_category; /* one of the `*_PTC` values */
 	int balanced_wildcard; /* for `MULTIPLE_WILDCARD_PTC` ptokens: brackets balanced? */
@@ -317,15 +317,16 @@ typedef struct ptoken {
 	struct ptoken_instrumentation_data ins; /* see //Instrumentation// */
 
 	struct ptoken *next_pt; /* within its production list */
-	CLASS_DEFINITION
-} ptoken;
+}
 
 @ Each ptoken has a `range_starts` and `range_ends` number. This is either -1,
 or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production
-= (text as InC)
+
+``` Preform
 	make ... from {rice ... onions} and peppers
-=
+```
+
 the first `...` ptoken has start and end set to 1; `rice` has start 2; `onions`
 has end 2. Note that the second `...`, inside the braces, doesn't start or
 end anything; it normally would, but the wider range consumes it.
@@ -353,9 +354,11 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 }
 
 @ So, then, we have to turn a wording like:
-= (text as Preform)
+
+``` Preform
 	make ... from {rice ... onions/shallots} and peppers
-=
+```
+
 into a sequence of ptokens, setting `head` to the first and `tail` to the last.
 This particular example will produce two word ranges: one for the initial `...`,
 one for the matter in the braces. Because of that, we need to keep track of

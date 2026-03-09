@@ -4,14 +4,14 @@ Predicate calculus is a largely symbolic exercise, and its rules of
 working tend to assume that all predicates are meaningful for all terms: this
 means, for instance, that "if blue is 14" is likely to make a well-formed
 sentence in predicate calculus. In this section we reject such propositions
-on the grounds that they violate type-checking requirements on relations --
+on the grounds that they violate type-checking requirements on relations —
 in this example, the equality relation.
 
 @ We can unambiguously find the kind of value of any constant $C$, so if a
 proposition's terms are all constant then type-checking is easy. ${\it is}(4, `score`)$
 good, ${\it is}(4, `"fish"`)$ bad. The subtlety comes in interpreting
 ${\it is}(4, x)$, where $x$ is a variable. Our calculus allows variables to
-range over many domains -- numbers, texts, scenes, objects, and so on.
+range over many domains — numbers, texts, scenes, objects, and so on.
 
 @h Problem reporting kit.
 The caller to `TypecheckPropositions::type_check` has to fill this form out first. Paperwork,
@@ -106,7 +106,7 @@ sentences like
 
 > A thing usually weighs 10kg.
 
-...can work -- here the generic constant for "thing" is treated as a noun,
+...can work — here the generic constant for "thing" is treated as a noun,
 since it can be the subject of inferences all by itself. So it can legitimately
 be a term in a proposition.
 
@@ -134,12 +134,14 @@ be a term in a proposition.
 @ If the proposition contains contradictory `KIND` atoms, it automatically fails
 type-checking, even if there is no implication that both apply at once. This
 throws out, for instance:
-= (text)
+
+``` None
 	1. a scene which is not a number
 	[ scene(x) & NOT[ number(x) NOT] ]
 	Failed: proposition would not type-check
 	x is both scene and number
-=
+```
+
 It could be argued that all scenes ought to pass this proposition, but we will
 treat it as a piece of nonsense, like "if Wednesday is not custard".
 
@@ -185,11 +187,13 @@ instance, if we define
 > Definition: a container is empty if the number of things in it is 0.
 
 then we find that, say:
-= (text)
+
+``` None
 	1. empty which is empty
 	[ 'empty'(x) & 'empty'(x) ]
 	x (free) - object.
-=
+```
+
 though in fact it would also have been viable for $x$ to be a rulebook, a list,
 or various other kinds of value.
 
@@ -223,7 +227,7 @@ ${\it is}(t, C)$, where $C$ is a constant representing a value of an enumerated
 kind. Sentence conversion is actually quite good at distinguishing these cases
 and can see the difference between "the bus is red" and "the fashionable hue
 is red", but it is defeated by cases where adjectives representing values are
-used about other values -- "the Communist Rally is red", where "Communist
+used about other values — "the Communist Rally is red", where "Communist
 Rally" is a scene rather than an object, for instance. We first try requiring
 `Rally` to be a colour: when that fails, we see if the atom ${\it red}(`Rally`)$
 would work instead. If it would, we make the change within the proposition.
@@ -310,7 +314,7 @@ kind *TypecheckPropositions::kind_of_term_inner(pcalc_term *pt, variable_type_as
 
 @ Some relations specify a kind for their terms, others do not. When they do
 specify a kind of object, we usually want to be forgiving about nuances of
-the kind of object -- for our purposes here, any object will do. (Run-time
+the kind of object — for our purposes here, any object will do. (Run-time
 type checking takes care of those nuances better.)
 
 The following gives the kind of a given term. It should be used only where
@@ -340,8 +344,8 @@ int TypecheckPropositions::type_check_unary_predicate(pcalc_prop *pl, variable_t
 
 @ Binary predicates (BPs) are both easier and harder. Easier because they
 have only one definition at a time (unlike, say, the adjective "empty"),
-harder because the work hasn't already been done and because some BPs --
-like "is" -- are polymorphic. Here goes:
+harder because the work hasn't already been done and because some BPs —
+like "is" — are polymorphic. Here goes:
 
 =
 int TypecheckPropositions::type_check_binary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
@@ -392,7 +396,7 @@ int TypecheckPropositions::type_check_binary_predicate(pcalc_prop *pl, variable_
 }
 
 @ Once again we treat any kind of object as just "object", but we do take
-note that some BPs -- like "is" -- specify no kinds at all, and so
+note that some BPs — like "is" — specify no kinds at all, and so
 produce a `kinds_required` which is `NULL`.
 
 @<Work out what kinds we should have found@> =

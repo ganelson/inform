@@ -65,7 +65,7 @@ pcalc_prop *Simplifications::nothing_constant(pcalc_prop *prop, int *changed) {
 
 @ Formally, if $B$ is a predicate other than equality, and $N$ is the "nothing" constant,
 $$ \Sigma = \cdots B(t, f_X(f_Y(\cdots(N))))\cdots \quad \longrightarrow \quad \Sigma' = \cdots \not\exists v\in\lbrace v\mid K_1(v)\rbrace: B(t, f_X(f_Y(\cdots(v))))\cdots $$
-where $v$ is unused in $\Sigma$, and -- note the difference in placing --
+where $v$ is unused in $\Sigma$, and — note the difference in placing —
 $$ \Sigma = \cdots B(f_X(f_Y(\cdots(N))), t)\cdots \quad \longrightarrow \quad \Sigma' = \not\exists v\in\lbrace v\mid K_2(v)\rbrace: \cdots B(f_X(f_Y(\cdots(v))), t)\cdots $$
 where $K_1$ and $K_2$ are the kinds of terms 1 and 2 in the predicate $B$.
 
@@ -76,7 +76,7 @@ sentences. Consider these:
 
 which produces $\Sigma = \lnot({\it contains}(B, N))$. Here,
 `nothing` is part of the object phrase, not the subject phrase, and we need
-to quantify it within the OP -- which means, within the negation, because our
+to quantify it within the OP — which means, within the negation, because our
 recipe for negated sentences was (roughly) SP $\land\lnot($ OP $\land$ VP$)$.
 We thus make $\Sigma' = \lnot(\not\exists x:{\it contains}(B, x))$,
 although later simplification converts that to $\exists x: {\it contains}(B, x)$,
@@ -234,17 +234,17 @@ pcalc_prop *Simplifications::negated_determiners(pcalc_prop *prop, int *changed,
 tricky point here is that we store $\exists v$ without domain brackets; so
 if $Q$ happens to be $\exists v$ then we have to turn $\lnot(\exists v: \cdots)$
 into $\not\exists v\in \lbrace v\mid \cdots\rbrace\cdots$, and it's not
-obvious where to place the $\rbrace$. While there's no logical difference --
-the proposition means the same wherever we put it -- the assert-propositions
+obvious where to place the $\rbrace$. While there's no logical difference —
+the proposition means the same wherever we put it — the assert-propositions
 code is better at handling $\exists v\in X: \phi(v)$ than $\exists v\in Y$.
-So we want the braces to enclose fixed, unassertable matter -- $v$ being
-a container, say -- and the $\phi$ outside the braces should then contain
+So we want the braces to enclose fixed, unassertable matter — $v$ being
+a container, say — and the $\phi$ outside the braces should then contain
 predicates which can be asserted.
 
 In practice that's way too hard for this function to handle. If `add_domain_brackets`
 is true, then it converts
 $$ \lnot(\exists v: \cdots) \quad\longrightarrow\quad \not\exists v\in \lbrace v\mid \cdots\rbrace $$
--- that is, it will make the entire negated subproposition the domain of the
+— that is, it will make the entire negated subproposition the domain of the
 quantifier. If `add_domain_brackets` is false, the function will return a
 syntactically incorrect proposition lacking the domain brackets, and it's
 the caller's responsibility to put that right.
@@ -389,7 +389,7 @@ at that point. This is 1 for the main proposition, but 0 for subexpressions,
 so that inside the brackets the main content will be at level 1.
 
 This would all go wrong if the proposition were not well-formed, but we
-know that it is -- an internal error would have been thrown if not.
+know that it is — an internal error would have been thrown if not.
 
 =
 pcalc_prop *Simplifications::simp_redundant_kinds_dash(pcalc_prop *prop,
@@ -442,7 +442,7 @@ statement.
 Rule (iv) there looks a little surprising. For instance, it causes
 $$ \Sigma = \not\exists x\in\lbrace x\mid {\it thing}(x)\land{\it contains}(B, x)\rbrace : {\it container}(x)\land {\it open(x)} \quad \longrightarrow \quad $$
 $$ \Sigma' = \not\exists x\in\lbrace x\mid {\it container}(x)\land{\it thing}(x)\land{\it contains}(B, x)\rbrace : {\it open(x)}. $$
-These are logically equivalent because $\not\exists$ behaves that way --
+These are logically equivalent because $\not\exists$ behaves that way —
 they wouldn't be equivalent for other quantifiers. Rule (iii) would have
 said no movement was necessary; the reason we made the move is that it
 makes $\Sigma'$ possible to assert with "now", as in the phrase "now
@@ -505,8 +505,8 @@ This is why the simplification is run twice, and why it's important that
 the process of moving predicates back to their optimal position reverses
 their order. Suppose we start with ${\it person}(x)\land{\it vehicle}(y)\land{\it woman}(x)$.
 
-(1a) On pass 1, "person" occurs before "woman", but it is weaker --
-every woman is a person, but not necessarily vice versa -- so neither is
+(1a) On pass 1, "person" occurs before "woman", but it is weaker —
+every woman is a person, but not necessarily vice versa — so neither is
 deleted.
 (1b) But pass 1 also moves the kinds back, and this produces
 ${\it woman}(x)\land{\it vehicle}(y)\land{\it person}(x)$.
@@ -552,7 +552,7 @@ and we are working on the $K(v)$ term. If we continue only to the end of
 the current subexpression, that runs out at the $\rbrace$, the end of
 the domain specification. So in that one case alone we allow ourselves
 to sidestep the domain closure and continue looking for $L(v)$ in the
-outer subexpression -- the one which is governed by the quantifier.
+outer subexpression — the one which is governed by the quantifier.
 
 @<Strike out any subsequent but weaker kind predicate on the same variable@> =
 	TRAVERSE_VARIABLE(gpl);
@@ -608,7 +608,7 @@ practice it will protect against the `nothing` value. The other reason is
 to ensure that text like "Peter is a man" is not simplified all the way
 down to the null proposition (as it clearly can be, if Peter is indeed a man).
 That might seem harmless, but means that "now Peter is a man" doesn't produce
-the problem message saying that kinds can't be asserted -- a common mistake
+the problem message saying that kinds can't be asserted — a common mistake
 made by beginners. It's better consistently to reject all such attempts than
 to be clever and allow the ones which are logically redundant.
 
@@ -876,10 +876,10 @@ The simplest example of such circularity is ${\it is}(v, v)$, true for all $v$.
 More problematic is ${\it is}(v, f_C(v))$, "$v$ is the container of $v$",
 which is never true. Still worse is
 $$ \exists v: V_{=2} w: {\it is}(v, w) $$
-which literally says there is a value of $v$ equal to two different things --
+which literally says there is a value of $v$ equal to two different things —
 certainly false. But if we eliminated $v$, we would get just
 $$ V_{=2} w $$
-which asserts "there are exactly two objects" -- which is certainly not a
+which asserts "there are exactly two objects" — which is certainly not a
 valid deduction.
 
 Here `var_to_sub` is $v$ and `var_in_other_term` is $w$, or else they are $-1$
@@ -917,7 +917,7 @@ and such that the values of $f_B$ are objects. Let $K$ be a kind of object.
 Then:
 $$ \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t), N) \cdots $$
 
-A similar trick for kinds of value is not possible, because -- unlike objects --
+A similar trick for kinds of value is not possible, because — unlike objects —
 they have no "not a valid case" value analogous to the non-object `nothing`.
 
 =
@@ -956,10 +956,12 @@ pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *cha
 
 @h Convert gerunds to nouns (deduction).
 Suppose we write:
-= (text as Inform 7)
+
+``` Inform7
 The funky thing to do is a stored action that varies.
 The funky thing to do is waiting.
-=
+```
+
 Here "waiting" is a gerund, and although it describes an action it is a
 noun (thus a value) rather than a condition. We coerce its constant value
 accordingly.
@@ -990,12 +992,12 @@ where it's the numerical "weight" property which is owned by the balloon.
 At this stage of simplification, the above has produced
 $$ {\it atmost}(w, 1)\land {\it is}(B, f_H(w)) $$
 where $H$ is the predicate `a_has_b_predicate`. As it stands, this proposition
-will fail type-checking, because it contains an implicit free variable -- the
+will fail type-checking, because it contains an implicit free variable — the
 object which owns the weight. We make this explicit by removing
 ${\it is}(B, f_H(w))$ and replacing all other references to $w$ with "the
 weight of $B$".
 
-This is a fudge because it assumes -- possibly wrongly -- that all references
+This is a fudge because it assumes — possibly wrongly — that all references
 to the weight are to the weight of the same thing. In sufficiently contrived
 sentences, this wouldn't be true. No bugs have ever been reported which suggest
 that real users run into this.
@@ -1075,7 +1077,7 @@ pcalc_prop *Simplifications::prop_substitute_prop_cons(pcalc_prop *prop, propert
 @h Turn all rooms to everywhere (fudge).
 This rather special rule handles the consequences of the English word
 "everywhere". Inform reads that as "all rooms", literally "every where",
-which is logical but loses the connotation of place -- by "everywhere", we
+which is logical but loses the connotation of place — by "everywhere", we
 usually mean "in all rooms", so that the sentence
 
 > The sky is everywhere.

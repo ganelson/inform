@@ -33,13 +33,13 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTIC
 We can now define an object to wrap up this abstracted idea of verb meaning:
 
 =
-typedef struct verb_meaning {
+classdef verb_meaning in 100s {
 	int take_meaning_reversed; /* `TRUE` if this has been reversed */
 	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
 	struct special_meaning_holder *special_meaning;
 	struct verb *take_meaning_from;
 	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
-} verb_meaning;
+}
 
 @ All VMs begin as meaningless, which indicates (e.g.) that no meaning
 has been specified.
@@ -79,7 +79,7 @@ verb_meaning VerbMeanings::special(special_meaning_holder *sm) {
 }
 
 @ You can, however, have neither one, if you instead choose to "indirect" the
-meaning -- this means saying "the same meaning as the regular sense of the base
+meaning — this means saying "the same meaning as the regular sense of the base
 form of a given verb", possibly reversed. Note that
 
 - An indirected VM must never be used as the meaning for the base form of a

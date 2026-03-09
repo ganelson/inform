@@ -82,13 +82,10 @@ the single exception of <code>main</code>, and even that only when <code>main</c
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  To that end, we &quot;mangle&quot; identifier names, and this is how. Examples:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">example</span><span class="plain-syntax">         </span><span class="identifier-syntax">i7_mgl_example</span>
-<span class="plain-syntax">    ##</span><span class="identifier-syntax">Attack</span><span class="plain-syntax">        </span><span class="identifier-syntax">i7_ss_Attack</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">g</span><span class="plain-syntax">$</span><span class="identifier-syntax">self</span><span class="plain-syntax">         </span><span class="identifier-syntax">i7_ss_gself</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	example         i7_mgl_example
+	##Attack        i7_ss_Attack
+	#g$self         i7_ss_gself
+</span></pre>
 <p>This is not quite a faithful scheme because, say, <code>#a#a</code> and <code>#aa</code> both mangle
 to the same result, <code>i7_ss_aa</code>. But <code>#</code> and <code>$</code> characters are used extremely
 sparingly in Inter, and these can never arise.</p>
@@ -112,11 +109,10 @@ sparingly in Inter, and these can never arise.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Opcode names are also mangled. Each assembly language opcode will use a
 corresponding C function, whose name is mangled from that of the opcode. For
 example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    @jz             i7_opcode_jz
+    @streamnum		i7_opcode_streamnum
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jz</span><span class="plain-syntax">             </span><span class="identifier-syntax">i7_opcode_jz</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">streamnum</span><span class="plain-syntax">      </span><span class="identifier-syntax">i7_opcode_streamnum</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CNamespace::mangle_opcode</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CNamespace::mangle_opcode</span></span>:<br/>C Assembly - <a href="5-cas.html#SP5_2">&#167;5.2</a>, <a href="5-cas.html#SP6_3">&#167;6.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opcode</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7_opcode_"</span><span class="plain-syntax">);</span>
@@ -127,10 +123,9 @@ example:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Global variable names are similarly mangled:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    howmayyou       i7_var_howmayyou
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">howmayyou</span><span class="plain-syntax">       </span><span class="identifier-syntax">i7_var_howmayyou</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CNamespace::mangle_variable</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">CNamespace::mangle_variable</span></span>:<br/>C Global Variables - <a href="5-cgv.html#SP3_1">&#167;3.1</a>, <a href="5-cgv.html#SP3_2">&#167;3.2</a>, <a href="5-cgv.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7_var_%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">var</span><span class="plain-syntax">);</span>
@@ -139,41 +134,32 @@ example:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Local variable names have to be handled slightly differently. This is because
 Inter frequently makes use of local variables whose identifiers are also used
-for some global construct. Of course, C also allows for this: for example --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">govern_Sophene</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+for some global construct. Of course, C also allows for this: for example —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">govern_Sophene</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {
+		</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax">);
+	}
+</span></pre>
 <p>...is legal, and prints 2 when the function is called. So at first sight, there's
 no problem giving a local variable the same name as some global construct.</p>
 <p>But that does not work if the global definition is made by the C preprocessor
 rather than its syntax analyser. Consider:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">govern_Sophene</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">govern_Sophene</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {
+		</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;
+		</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">xerxes</span><span class="plain-syntax">);
+	}
+</span></pre>
 <p>This throws an error message: <code>int xerxes = 2;</code> then reads as <code>int 1 = 2;</code>. And
 since some of our Inter constructs will indeed result in <code>#define</code>d values
 rather than named C variables, we cannot allow a local variable name to coincide
 with the name of anything else (after mangling).</p>
 <p>We avoid this by changing the pre-mangled identifiers for all local variables
 to begin with <code>local_</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">original</span><span class="plain-syntax">        </span><span class="identifier-syntax">translation</span><span class="plain-syntax">         </span><span class="identifier-syntax">mangled</span><span class="plain-syntax"> </span><span class="identifier-syntax">translation</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"xerxes"</span><span class="plain-syntax">        </span><span class="string-syntax">"local_xerxes"</span><span class="plain-syntax">      </span><span class="string-syntax">"i7_mgl_local_xerxes"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	original	    translation			mangled translation
+    "xerxes"		"local_xerxes"      "i7_mgl_local_xerxes"
+</span></pre>
 <p>This is not an elegant trick, but it works nicely enough.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

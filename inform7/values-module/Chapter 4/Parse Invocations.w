@@ -117,9 +117,11 @@ void ParseInvocations::register_phrasal(unsigned int phrase_mc, id_body *idb, wo
 	return;
 
 @ The remaining work is to look out for this sort of thing:
-= (text as Inform 7)
+
+``` Inform7
 To rearrange the deckchairs/loungers on (S - a ship): ...
-=
+```
+
 where the slash indicates an alternative wording:
 
 @<Look for slash-divided alternative phrasings and recurse to register all variations@> =
@@ -139,15 +141,17 @@ where the slash indicates an alternative wording:
 	}
 
 @ What we do is to reconstruct this as two different registrations:
-= (text as Inform 7)
+
+``` Inform7
 To rearrange the deckchairs on (S - a ship): ...
 To rearrange the loungers on (S - a ship): ...
-=
+```
+
 and then recursively call ourselves to handle each individual one. We'll call
 the left and right hand sides of "deckchairs/loungers" the A and B forms.
 
 Note than a phrase with many slashed words will register a frightening number of
-possibilities -- for example,
+possibilities — for example,
 
 > To meld/blend/merge (O - object) onto/into/amongst/with (P - object) quickly/rapidly/pronto: ...
 
@@ -212,13 +216,15 @@ first word, though.)
 Suppose, then, that the excerpt parser has identified a phrase which it
 thinks may be being invoked in some text. It will have given us this subtree
 as its preliminary findings `p`:
-= (text)
+
+``` None
 	VOID_PHRASE_MC "add 17 to the list of small primes, if absent"
 	    UNKNOWN_NT "if absent" {is-phrase-option}
 	    UNKNOWN_NT "17"
 	    UNKNOWN_NT "the list of small primes"
-=
-and we need to return a two-token invocation subtree -- see //Invocations// for
+```
+
+and we need to return a two-token invocation subtree — see //Invocations// for
 what these look like.
 
 =
@@ -312,14 +318,16 @@ for what these contextual codes mean.
 
 @h A more detailed view later on.
 In the invocation subtrees constructed above, the wording in the tokens has
-not even been looked at: we now have something like this --
-= (text)
+not even been looked at: we now have something like this —
+
+``` None
 	INVOCATION_NT "add 17 to the list of small primes, if absent"
 		RVALUE_CONTEXT_NT
 		    UNKNOWN_NT "17"
 		RVALUE_CONTEXT_NT
 	   		UNKNOWN_NT "the list of small primes"
-=
+```
+
 It is now time to look inside those `UNKNOWN_NT` nodes.
 
 =

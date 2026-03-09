@@ -60,7 +60,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#3">Chapter 3: Space and Time</a></li><li><b>Spatial Model</b></li></ul></div>
 <p class="purpose">A feature which constructs the fundamental spatial model used by IF, to represent containment, support, carrying, wearing, and incorporation.</p>
 
-<ul class="toc"><li><a href="3-sm.html#SP1">&#167;1. Introduction</a></li><li><a href="3-sm.html#SP2">&#167;2. Kinds of interest</a></li><li><a href="3-sm.html#SP12">&#167;12. Properties of interest</a></li><li><a href="3-sm.html#SP15">&#167;15. Spatial data on instances</a></li><li><a href="3-sm.html#SP18">&#167;18. Composite noun-quantifiers</a></li><li><a href="3-sm.html#SP20">&#167;20. Nowhere</a></li><li><a href="3-sm.html#SP23">&#167;23. Here</a></li><li><a href="3-sm.html#SP26">&#167;26. Completing the world model</a></li><li><a href="3-sm.html#SP33">&#167;33. Completing the model, stages III and IV</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-sm.html#SP1">&#167;1. Introduction</a></li><li><a href="3-sm.html#SP2">&#167;2. Kinds of interest</a></li><li><a href="3-sm.html#SP12">&#167;12. Properties of interest</a></li><li><a href="3-sm.html#SP15">&#167;15. Spatial data on instances</a></li><li><a href="3-sm.html#SP18">&#167;18. Composite noun-quantifiers</a></li><li><a href="3-sm.html#SP20">&#167;20. Nowhere</a></li><li><a href="3-sm.html#SP23">&#167;23. Here</a></li><li><a href="3-sm.html#SP26">&#167;26. Completing the world model</a></li><li><a href="3-sm.html#SP32">&#167;32. Completing the model, stages III and IV</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  The &quot;spatial model&quot; is the aspect of the IF model world which represents
@@ -190,7 +190,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  This tests whether an object is an instance of &quot;room&quot;:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::object_is_a_room</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Spatial::object_is_a_room</span></span>:<br/><a href="3-sm.html#SP27">&#167;27</a>, <a href="3-sm.html#SP31_3_2">&#167;31.3.2</a>, <a href="3-sm.html#SP31_3_3">&#167;31.3.3</a>, <a href="3-sm.html#SP32">&#167;32</a>, <a href="3-sm.html#SP41">&#167;41</a><br/>The Player - <a href="3-tp.html#SP13_1">&#167;13.1</a>, <a href="3-tp.html#SP13_3">&#167;13.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_1">&#167;33.1</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a><br/>Mapping Hint Requests - <a href="3-mhr.html#SP11_2">&#167;11.2</a>, <a href="3-mhr.html#SP11_4_1">&#167;11.4.1</a>, <a href="3-mhr.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::object_is_a_room</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Spatial::object_is_a_room</span></span>:<br/><a href="3-sm.html#SP27">&#167;27</a>, <a href="3-sm.html#SP30_3_2">&#167;30.3.2</a>, <a href="3-sm.html#SP30_3_3">&#167;30.3.3</a>, <a href="3-sm.html#SP31">&#167;31</a>, <a href="3-sm.html#SP39">&#167;39</a><br/>The Player - <a href="3-tp.html#SP10_1">&#167;10.1</a>, <a href="3-tp.html#SP10_3">&#167;10.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_1">&#167;33.1</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a><br/>Mapping Hint Requests - <a href="3-mhr.html#SP10_2">&#167;10.2</a>, <a href="3-mhr.html#SP10_4_1">&#167;10.4.1</a>, <a href="3-mhr.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">K_room</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -313,7 +313,7 @@ carries, wears, supports or incorporates it.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SPATIAL_DATA(I)</span> <span class="identifier-syntax">FEATURE_DATA_ON_INSTANCE</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">spatial_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">spatial_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* fundamental spatial information about an object's location */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">progenitor</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">progenitor_set_at</span><span class="plain-syntax">;</span>
@@ -328,9 +328,7 @@ carries, wears, supports or incorporates it.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">incorp_tree_child</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">incorp_tree_sibling</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">definition_depth</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">spatial_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure spatial_data is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -398,8 +396,8 @@ inference.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP17">&#167;17</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Composite noun-quantifiers.</b>  Words like &quot;something&quot; or &quot;everywhere&quot; combine a common noun -- thing,
-and implicitly room -- with a determiner -- one thing, all rooms.</p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Composite noun-quantifiers.</b>  Words like &quot;something&quot; or &quot;everywhere&quot; combine a common noun — thing,
+and implicitly room — with a determiner — one thing, all rooms.</p>
 <p>&quot;Nothing&quot; is conspicuously absent from the possibilities below. It gets
 special treatment elsewhere since it can also double as a value (the &quot;not
 an object&quot; pseudo-value).</p>
@@ -425,8 +423,8 @@ be asked to parse &quot;something&quot; before this point, as when it scans the 
 of adjective definitions, but that it's okay that it produces a null result.)</p>
 <p>With the &quot;some-&quot; words, no quantifier is set because the meaning here is the
 <code>exists_quantifier</code>. Since this is the default behaviour for unquantified
-descriptions anyway -- &quot;a door is in the Great Hall&quot; means that such a door
-exists -- we needn't set the variable.</p>
+descriptions anyway — &quot;a door is in the Great Hall&quot; means that such a door
+exists — we needn't set the variable.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::parse_composite_NQs</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Spatial::parse_composite_NQs</span></span>:<br/><a href="3-sm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DW</span><span class="plain-syntax">,</span>
@@ -491,7 +489,7 @@ node using this wording in order to produce better problem messages if need be.<
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Here.</b>  A sentence like &quot;The sonic screwdriver is here.&quot; is not copular, but instead
-expresses a relationship -- &quot;here&quot; is not a value but a relation to an
+expresses a relationship — &quot;here&quot; is not a value but a relation to an
 unstated object. That object is the room we're currently talking about, which
 sounds easy to work out, but isn't: we don't yet know which of the objects
 being talked about will eventually turn out to be rooms. As a result, &quot;here&quot;
@@ -540,10 +538,10 @@ to the model world.</p>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::IF_complete_model</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup16">Usage of <span class="code-font"><span class="function-syntax">Spatial::IF_complete_model</span></span>:<br/><a href="3-sm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><a href="3-sm.html#SP27" class="function-link"><span class="function-syntax">Spatial::spatial_stage_I</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><a href="3-sm.html#SP31" class="function-link"><span class="function-syntax">Spatial::spatial_stage_II</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><a href="3-sm.html#SP38" class="function-link"><span class="function-syntax">Spatial::spatial_stage_III</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><a href="3-sm.html#SP41" class="function-link"><span class="function-syntax">Spatial::spatial_stage_IV</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax">: </span><a href="3-sm.html#SP42" class="function-link"><span class="function-syntax">Spatial::spatial_stage_V</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><a href="3-sm.html#SP30" class="function-link"><span class="function-syntax">Spatial::spatial_stage_II</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><a href="3-sm.html#SP36" class="function-link"><span class="function-syntax">Spatial::spatial_stage_III</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">Spatial::spatial_stage_IV</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax">: </span><a href="3-sm.html#SP40" class="function-link"><span class="function-syntax">Spatial::spatial_stage_V</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -554,8 +552,8 @@ course, created, and they have kinds associated with them if the source
 text has said explicitly what kind they have: but that is not good enough.
 It often happens that the source implicitly specifies a kind, and we need
 to take note. If X is in Y, then Y might be a room, or a region, or a
-container, and we might need to look at other sentences -- say, establishing
-that Y is the destination of a map connection -- to see which.</p>
+container, and we might need to look at other sentences — say, establishing
+that Y is the destination of a map connection — to see which.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -565,12 +563,12 @@ that Y is the destination of a map connection -- to see which.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">potential_stage_room_kind_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform kind determination for this object</span></span><span class="named-paragraph-number">27.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform kind determination for this object</span></span><span class="named-paragraph-number">27.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">count</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create an implied room</span></span><span class="named-paragraph-number">27.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create an implied room</span></span><span class="named-paragraph-number">27.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">KIND_CHANGES</span><span class="plain-syntax">, </span><span class="string-syntax">"Setting kind of potential implied room $O as %u\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">, </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax">);</span>
@@ -579,14 +577,14 @@ that Y is the destination of a map connection -- to see which.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b> </p>
+<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1. </b> </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;implied-room-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">stage</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create an implied room</span><span class="named-paragraph-number">27.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP27_2" class="paragraph-anchor"></a><b>&#167;27.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create an implied room</span><span class="named-paragraph-number">27.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
@@ -615,9 +613,9 @@ that Y is the destination of a map connection -- to see which.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27">&#167;27</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27_2" class="paragraph-anchor"></a><b>&#167;27.2. </b>  Our main problem in what follows is caused by &quot;in&quot; being so ambiguous,
+<p class="commentary firstcommentary"><a id="SP27_3" class="paragraph-anchor"></a><b>&#167;27.3. </b>  Our main problem in what follows is caused by &quot;in&quot; being so ambiguous,
 or perhaps it might be said that the real problem is that we choose to
-distinguish between rooms and containers on a world-modelling level -- when it
+distinguish between rooms and containers on a world-modelling level — when it
 could well be argued that they are linguistically the same thing.</p>
 <p>It means that Inform is often reading code such as:</p>
 <blockquote>
@@ -625,7 +623,7 @@ could well be argued that they are linguistically the same thing.</p>
 </blockquote>
 <p>and not being sure whether &quot;Boxed Set&quot; is a container or a room.</p>
 <p>In the following determination, we use two sources of information. One is explicit
-data given by the source text or unambiguously implied in it, like so --</p>
+data given by the source text or unambiguously implied in it, like so —</p>
 <blockquote>
 <p>The Boxed Set is a container. The spoon is on the low table.</p>
 </blockquote>
@@ -636,13 +634,13 @@ its kind.</p>
 like &quot;in&quot;, and from the spatial context in which the object appears. This
 is the &quot;geography choice&quot; for its kind.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform kind determination for this object</span><span class="named-paragraph-number">27.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform kind determination for this object</span><span class="named-paragraph-number">27.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the designer choice</span></span><span class="named-paragraph-number">27.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the designer choice</span></span><span class="named-paragraph-number">27.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;implied-room-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -655,11 +653,11 @@ is the &quot;geography choice&quot; for its kind.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">geography_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">UNKNOWN_CE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the geography choice</span></span><span class="named-paragraph-number">27.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine the geography choice</span></span><span class="named-paragraph-number">27.3.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Attempt to reconcile the two choices</span></span><span class="named-paragraph-number">27.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Attempt to reconcile the two choices</span></span><span class="named-paragraph-number">27.3.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I</span><span class="plain-syntax"> != </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)))</span>
@@ -667,12 +665,12 @@ is the &quot;geography choice&quot; for its kind.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27">&#167;27</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27_2_1" class="paragraph-anchor"></a><b>&#167;27.2.1. </b>  By this point, any explicit information is reflected in the hierarchy of
+<p class="commentary firstcommentary"><a id="SP27_3_1" class="paragraph-anchor"></a><b>&#167;27.3.1. </b>  By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
-we simply take its broadest kind -- usually &quot;thing&quot;, &quot;room&quot;, &quot;direction&quot;
+we simply take its broadest kind — usually &quot;thing&quot;, &quot;room&quot;, &quot;direction&quot;
 or &quot;region&quot;.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the designer choice</span><span class="named-paragraph-number">27.2.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the designer choice</span><span class="named-paragraph-number">27.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -691,13 +689,13 @@ or &quot;region&quot;.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2">&#167;27.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27_2_2" class="paragraph-anchor"></a><b>&#167;27.2.2. </b>  If there is any positive information that this is a room, that's the
+<p class="commentary firstcommentary"><a id="SP27_3_2" class="paragraph-anchor"></a><b>&#167;27.3.2. </b>  If there is any positive information that this is a room, that's the
 geography choice; otherwise it's whichever of room or container is more
 probably suggested by inferences.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the geography choice</span><span class="named-paragraph-number">27.2.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the geography choice</span><span class="named-paragraph-number">27.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
@@ -715,30 +713,30 @@ probably suggested by inferences.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">geography_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2">&#167;27.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27_2_3" class="paragraph-anchor"></a><b>&#167;27.2.3. </b>  Since the designer choice is the one currently in force, we have basically
+<p class="commentary firstcommentary"><a id="SP27_3_3" class="paragraph-anchor"></a><b>&#167;27.3.3. </b>  Since the designer choice is the one currently in force, we have basically
 three choices here: impose the geography choice instead; do nothing; or issue
 a problem message. The case where we do nothing is if geography suggests
 something is a room, when it's actually a door: this is because sentences
 like &quot;East is the Marble Portal&quot; can suggest the &quot;Marble Portal&quot; is a room
 when it's legitimately a door.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.2.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.3.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sentence_setting_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_kind_set_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">))))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Accept the geography choice, since it only refines what we already know</span></span><span class="named-paragraph-number">27.2.3.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Accept the geography choice, since it only refines what we already know</span></span><span class="named-paragraph-number">27.3.3.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (!((</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">)))))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message, since the choices are irreconcilable</span></span><span class="named-paragraph-number">27.2.3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message, since the choices are irreconcilable</span></span><span class="named-paragraph-number">27.3.3.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2">&#167;27.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_2_3_1" class="paragraph-anchor"></a><b>&#167;27.2.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.2.3.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_1" class="paragraph-anchor"></a><b>&#167;27.3.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.3.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax"> == </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
@@ -752,23 +750,23 @@ when it's legitimately a door.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2_3">&#167;27.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_2_3_2" class="paragraph-anchor"></a><b>&#167;27.2.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.2.3.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3">&#167;27.3.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2" class="paragraph-anchor"></a><b>&#167;27.3.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.3.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Choices: designer %u, geography %u.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">decider</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sentence_setting_kind</span><span class="plain-syntax">) </span><span class="identifier-syntax">decider</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sentence_setting_kind</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for implied containment by a person</span></span><span class="named-paragraph-number">27.2.3.2.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for implied containment by a person</span></span><span class="named-paragraph-number">27.3.3.2.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_supporter</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for simultaneous containment and support</span></span><span class="named-paragraph-number">27.2.3.2.2</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a problem message for simultaneous containment and support</span></span><span class="named-paragraph-number">27.3.3.2.2</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2_3_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a more generic problem message for irreconcilable kinds</span></span><span class="named-paragraph-number">27.2.3.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a more generic problem message for irreconcilable kinds</span></span><span class="named-paragraph-number">27.3.3.2.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2_3">&#167;27.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_2_3_2_1" class="paragraph-anchor"></a><b>&#167;27.2.3.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.2.3.2.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3">&#167;27.3.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_1" class="paragraph-anchor"></a><b>&#167;27.3.3.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.3.3.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::contradiction_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PersonContaining</span><span class="plain-syntax">),</span>
@@ -779,12 +777,12 @@ when it's legitimately a door.</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"so 'The briefcase is in Daphne.' is disallowed, but 'The briefcase is "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"carried by Daphne.' is fine, or indeed 'Daphne carries the briefcase.'"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2_3_2">&#167;27.2.3.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27_2_3_2_2" class="paragraph-anchor"></a><b>&#167;27.2.3.2.2. </b>  A notorious problem message for a notorious limitation of the traditional
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_2" class="paragraph-anchor"></a><b>&#167;27.3.3.2.2. </b>  A notorious problem message for a notorious limitation of the traditional
 Inform spatial model:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.2.3.2.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.3.3.2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::contradiction_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_CantContainAndSupport</span><span class="plain-syntax">),</span>
@@ -796,8 +794,8 @@ Inform spatial model:</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"container called the drawer is part of the desk. In the drawer is a "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"stapler.'"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2_3_2">&#167;27.2.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_2_3_2_3" class="paragraph-anchor"></a><b>&#167;27.2.3.2.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.2.3.2.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_3" class="paragraph-anchor"></a><b>&#167;27.3.3.2.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.3.3.2.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::contradiction_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BothRoomAndSupporter</span><span class="plain-syntax">),</span>
@@ -807,19 +805,19 @@ Inform spatial model:</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"sentences true"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and this is a contradiction."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_2_3_2">&#167;27.2.3.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  Stage II at last. Now the kinds are all known, and it's time to work out
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  Stage II at last. Now the kinds are all known, and it's time to work out
 the spatial arrangements. Inform's spatial model assigns every instance object
 a unique &quot;progenitor&quot;, which may be <code>NULL</code>, representing the object which
 immediately contains, carries, wears, supports or incorporates it.</p>
 <p>Clearly if we know every object's progenitor, then we know the whole spatial
-layout -- it's all just elaboration from there. (See Stage III below.) But
+layout — it's all just elaboration from there. (See Stage III below.) But
 since other features can decide on this, not just Spatial, we had better
 provide access routines to read and write:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Spatial::progenitor</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Spatial::progenitor</span></span>:<br/><a href="3-sm.html#SP31_2">&#167;31.2</a>, <a href="3-sm.html#SP37">&#167;37</a>, <a href="3-sm.html#SP38_1">&#167;38.1</a>, <a href="3-sm.html#SP38_1_1">&#167;38.1.1</a>, <a href="3-sm.html#SP38_2">&#167;38.2</a>, <a href="3-sm.html#SP38_3">&#167;38.3</a><br/>The Player - <a href="3-tp.html#SP13_3">&#167;13.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_6">&#167;33.6</a>, <a href="3-tm.html#SP33_7">&#167;33.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Spatial::progenitor</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Spatial::progenitor</span></span>:<br/><a href="3-sm.html#SP30_2">&#167;30.2</a>, <a href="3-sm.html#SP35">&#167;35</a>, <a href="3-sm.html#SP36_1">&#167;36.1</a>, <a href="3-sm.html#SP36_1_1">&#167;36.1.1</a>, <a href="3-sm.html#SP36_2">&#167;36.2</a>, <a href="3-sm.html#SP36_3">&#167;36.3</a><br/>The Player - <a href="3-tp.html#SP10_3">&#167;10.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_6">&#167;33.6</a>, <a href="3-tm.html#SP33_7">&#167;33.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FEATURE_INACTIVE</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">progenitor</span><span class="plain-syntax">;</span>
@@ -831,7 +829,7 @@ provide access routines to read and write:</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">progenitor_set_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::set_progenitor</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Spatial::set_progenitor</span></span>:<br/><a href="3-sm.html#SP31_3">&#167;31.3</a><br/>The Map - <a href="3-tm.html#SP33_7">&#167;33.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">of</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reason</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::set_progenitor</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Spatial::set_progenitor</span></span>:<br/><a href="3-sm.html#SP30_3">&#167;30.3</a><br/>The Map - <a href="3-tm.html#SP33_7">&#167;33.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">of</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reason</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FEATURE_INACTIVE</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"spatial feature inactive"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"set progenitor of nothing"</span><span class="plain-syntax">);</span>
@@ -841,10 +839,10 @@ provide access routines to read and write:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  This is used for error recovery only.</p>
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  This is used for error recovery only.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::void_progenitor</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Spatial::void_progenitor</span></span>:<br/><a href="3-sm.html#SP38_1">&#167;38.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">of</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::void_progenitor</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Spatial::void_progenitor</span></span>:<br/><a href="3-sm.html#SP36_1">&#167;36.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">of</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FEATURE_INACTIVE</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"spatial feature inactive"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">of</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">progenitor</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -852,26 +850,26 @@ provide access routines to read and write:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>  We need to establish what the rooms are before we worry about objects which
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  We need to establish what the rooms are before we worry about objects which
 are &quot;here&quot;; rooms are never &quot;here&quot;, so there's no circularity in that,
 and we solve this problem by determining the kind of non-here objects before
 the kind of here-objects.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::spatial_stage_II</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Spatial::spatial_stage_II</span></span>:<br/><a href="3-sm.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the here flag for all those objects whose parentage is only thus known</span></span><span class="named-paragraph-number">31.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the here flag for all those objects whose parentage is only thus known</span></span><span class="named-paragraph-number">30.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">here_flag</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Position this object spatially</span></span><span class="named-paragraph-number">31.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Position this object spatially</span></span><span class="named-paragraph-number">30.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">here_flag</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Position this object spatially</span></span><span class="named-paragraph-number">31.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue problem messages if non-physical objects are spatially enclosed</span></span><span class="named-paragraph-number">31.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Position this object spatially</span></span><span class="named-paragraph-number">30.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue problem messages if non-physical objects are spatially enclosed</span></span><span class="named-paragraph-number">30.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31_1" class="paragraph-anchor"></a><b>&#167;31.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the here flag for all those objects whose parentage is only thus known</span><span class="named-paragraph-number">31.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP30_1" class="paragraph-anchor"></a><b>&#167;30.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the here flag for all those objects whose parentage is only thus known</span><span class="named-paragraph-number">30.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -882,19 +880,19 @@ the kind of here-objects.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">here_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31">&#167;31</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31_2" class="paragraph-anchor"></a><b>&#167;31.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem messages if non-physical objects are spatially enclosed</span><span class="named-paragraph-number">31.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30">&#167;30</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP30_2" class="paragraph-anchor"></a><b>&#167;30.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem messages if non-physical objects are spatially enclosed</span><span class="named-paragraph-number">30.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="3-rgn.html#SP9" class="function-link"><span class="function-syntax">Regions::object_is_a_region</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(3, </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(3, </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(4, </span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonThingInModel</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
@@ -908,41 +906,41 @@ the kind of here-objects.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31">&#167;31</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30">&#167;30</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP31_3" class="paragraph-anchor"></a><b>&#167;31.3. </b>  At last we come to it: determining the progenitor, and part-flag, for the
+<p class="commentary firstcommentary"><a id="SP30_3" class="paragraph-anchor"></a><b>&#167;30.3. </b>  At last we come to it: determining the progenitor, and part-flag, for the
 object under investigation.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Position this object spatially</span><span class="named-paragraph-number">31.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Position this object spatially</span><span class="named-paragraph-number">30.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Find the inference which will decide the progenitor</span></span><span class="named-paragraph-number">31.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Find the inference which will decide the progenitor</span></span><span class="named-paragraph-number">30.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">            </span><a href="3-si.html#SP9" class="function-link"><span class="function-syntax">SpatialInferences::get_inferred_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">here_flag</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Find the whereabouts of something here</span></span><span class="named-paragraph-number">31.3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">here_flag</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Find the whereabouts of something here</span></span><span class="named-paragraph-number">30.3.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::set_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">, </span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::set_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">, </span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">OBJECT_TREE</span><span class="plain-syntax">, </span><span class="string-syntax">"Progenitor of $O is $O\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine whether the object in question is a component part</span></span><span class="named-paragraph-number">31.3.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Determine whether the object in question is a component part</span></span><span class="named-paragraph-number">30.3.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31">&#167;31</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP31_3_1" class="paragraph-anchor"></a><b>&#167;31.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the inference which will decide the progenitor</span><span class="named-paragraph-number">31.3.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30">&#167;30</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP30_3_1" class="paragraph-anchor"></a><b>&#167;30.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the inference which will decide the progenitor</span><span class="named-paragraph-number">30.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">parentage_nowhere_inf</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">31.3.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">30.3.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">parentage_here_inf</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">31.3.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">30.3.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">parentage_inf</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">31.3.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make this the determining inference</span></span><span class="named-paragraph-number">30.3.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31_3">&#167;31.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31_3_1_1" class="paragraph-anchor"></a><b>&#167;31.3.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this the determining inference</span><span class="named-paragraph-number">31.3.1.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30_3">&#167;30.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP30_3_1_1" class="paragraph-anchor"></a><b>&#167;30.3.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this the determining inference</span><span class="named-paragraph-number">30.3.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">) {</span>
@@ -955,8 +953,8 @@ object under investigation.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31_3_1">&#167;31.3.1</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP31_3_2" class="paragraph-anchor"></a><b>&#167;31.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the whereabouts of something here</span><span class="named-paragraph-number">31.3.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30_3_1">&#167;30.3.1</a> (three times).</li></ul>
+<p class="commentary firstcommentary"><a id="SP30_3_2" class="paragraph-anchor"></a><b>&#167;30.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the whereabouts of something here</span><span class="named-paragraph-number">30.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -964,7 +962,7 @@ object under investigation.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">here_sentence</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Inferences::where_inferred</span><span class="plain-syntax">(</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP31_3_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the whereabouts to the last discussed room prior to this inference being drawn</span></span><span class="named-paragraph-number">31.3.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the whereabouts to the last discussed room prior to this inference being drawn</span></span><span class="named-paragraph-number">30.3.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 
 <span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">here_sentence</span><span class="plain-syntax">;</span>
@@ -976,20 +974,20 @@ object under investigation.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31_3">&#167;31.3</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30_3">&#167;30.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP31_3_2_1" class="paragraph-anchor"></a><b>&#167;31.3.2.1. </b>  This runs through the source text from the beginning up to the &quot;here&quot;
+<p class="commentary firstcommentary"><a id="SP30_3_2_1" class="paragraph-anchor"></a><b>&#167;30.3.2.1. </b>  This runs through the source text from the beginning up to the &quot;here&quot;
 sentence, setting <code>whereabouts</code> to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the whereabouts to the last discussed room prior to this inference being drawn</span><span class="named-paragraph-number">31.3.2.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the whereabouts to the last discussed room prior to this inference being drawn</span><span class="named-paragraph-number">30.3.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse_up_to_ip</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">here_sentence</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><a href="3-sm.html#SP32" class="function-link"><span class="function-syntax">Spatial::seek_room</span></a><span class="plain-syntax">, (</span><span class="type-syntax">void</span><span class="plain-syntax"> **) &amp;</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-sm.html#SP31" class="function-link"><span class="function-syntax">Spatial::seek_room</span></a><span class="plain-syntax">, (</span><span class="type-syntax">void</span><span class="plain-syntax"> **) &amp;</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31_3_2">&#167;31.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31_3_3" class="paragraph-anchor"></a><b>&#167;31.3.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine whether the object in question is a component part</span><span class="named-paragraph-number">31.3.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30_3_2">&#167;30.3.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP30_3_3" class="paragraph-anchor"></a><b>&#167;30.3.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine whether the object in question is a component part</span><span class="named-paragraph-number">30.3.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
@@ -1010,11 +1008,11 @@ when it finishes this will be set to the most recently mentioned.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">part_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP31_3">&#167;31.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b> </p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP30_3">&#167;30.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::seek_room</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Spatial::seek_room</span></span>:<br/><a href="3-sm.html#SP31_3_2_1">&#167;31.3.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sent</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">v_I</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::seek_room</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Spatial::seek_room</span></span>:<br/><a href="3-sm.html#SP30_3_2_1">&#167;30.3.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sent</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">v_I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> **</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">v_I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isub</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_interpretation_of_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">sent</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sub</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InstanceSubjects::to_object_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">isub</span><span class="plain-syntax">);</span>
@@ -1022,7 +1020,7 @@ when it finishes this will be set to the most recently mentioned.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Completing the model, stages III and IV.</b>  By the beginning of Stage III, the progenitor of every object is known, and
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Completing the model, stages III and IV.</b>  By the beginning of Stage III, the progenitor of every object is known, and
 so is whether it is a part. It's time to start work on compiling the I6
 representation of all this, but unfortunately that will need to be quite a
 bit more complicated. So we're going to do this in two stages, the first
@@ -1037,14 +1035,14 @@ other: an object is not allowed to have a parent in both trees at once.
 If it has a parent in either one, then that parent is required to be its progenitor.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  The following logs the more interesting tree:</p>
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  The following logs the more interesting tree:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::log_object_tree</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Spatial::log_object_tree</span></span>:<br/><a href="3-sm.html#SP38">&#167;38</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::log_object_tree</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Spatial::log_object_tree</span></span>:<br/><a href="3-sm.html#SP36">&#167;36</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><a href="3-sm.html#SP34" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-sm.html#SP33" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::log_object_tree_recursively</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
@@ -1052,45 +1050,45 @@ If it has a parent in either one, then that parent is required to be its progeni
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">&gt;0) { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"  "</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">--; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"$O\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="3-sm.html#SP34" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+1);</span>
+<span class="plain-syntax">        </span><a href="3-sm.html#SP33" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="3-sm.html#SP34" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-sm.html#SP33" class="function-link"><span class="function-syntax">Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  The initial state of both trees is total disconnection. They are then produced
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  The initial state of both trees is total disconnection. They are then produced
 using only two operations, which we'll call &quot;adoption&quot; and &quot;parting&quot;.</p>
 <p>The adoption routine moves X and its children to become the youngest child of Y.
 The tree is grown entirely from its root by repeated use of this one operation.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::adopt_object</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Spatial::adopt_object</span></span>:<br/><a href="3-sm.html#SP38_2">&#167;38.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">foster</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::adopt_object</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Spatial::adopt_object</span></span>:<br/><a href="3-sm.html#SP36_2">&#167;36.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">foster</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">OBJECT_TREE</span><span class="plain-syntax">, </span><span class="string-syntax">"Grafting $O to be child of $O\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">, </span><span class="identifier-syntax">foster</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">orphan</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"orphan is null in adoption"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">foster</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"foster is null in adoption"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP35_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Remove the object from the main object tree</span></span><span class="named-paragraph-number">35.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP35_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Adopt the object into the main object tree</span></span><span class="named-paragraph-number">35.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP34_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Remove the object from the main object tree</span></span><span class="named-paragraph-number">34.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP34_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Adopt the object into the main object tree</span></span><span class="named-paragraph-number">34.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  &quot;Parting&quot; is the operation of being removed from the main tree and placed
+<p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1. </b>  &quot;Parting&quot; is the operation of being removed from the main tree and placed
 in the incorporation tree instead, but with the same parent.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::part_object</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Spatial::part_object</span></span>:<br/><a href="3-sm.html#SP38_2">&#167;38.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::part_object</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Spatial::part_object</span></span>:<br/><a href="3-sm.html#SP36_2">&#167;36.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">OBJECT_TREE</span><span class="plain-syntax">, </span><span class="string-syntax">"Parting $O\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">orphan</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"new part is null in parting"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"new part is without parent"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP35_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Remove the object from the main object tree</span></span><span class="named-paragraph-number">35.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Adopt the object into the incorporation tree</span></span><span class="named-paragraph-number">36.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP34_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Remove the object from the main object tree</span></span><span class="named-paragraph-number">34.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP34_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Adopt the object into the incorporation tree</span></span><span class="named-paragraph-number">34.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35_1" class="paragraph-anchor"></a><b>&#167;35.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove the object from the main object tree</span><span class="named-paragraph-number">35.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP34_2" class="paragraph-anchor"></a><b>&#167;34.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove the object from the main object tree</span><span class="named-paragraph-number">34.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax"> == </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">) {</span>
@@ -1108,8 +1106,8 @@ in the incorporation tree instead, but with the same parent.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP35">&#167;35</a> and <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35_2" class="paragraph-anchor"></a><b>&#167;35.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the main object tree</span><span class="named-paragraph-number">35.2</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP34">&#167;34</a> and <a href="3-sm.html#SP34_1">&#167;34.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP34_3" class="paragraph-anchor"></a><b>&#167;34.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the main object tree</span><span class="named-paragraph-number">34.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">foster</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -1122,8 +1120,8 @@ in the incorporation tree instead, but with the same parent.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">foster</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP35">&#167;35</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP36_1" class="paragraph-anchor"></a><b>&#167;36.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the incorporation tree</span><span class="named-paragraph-number">36.1</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP34">&#167;34</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP34_1_1" class="paragraph-anchor"></a><b>&#167;34.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the incorporation tree</span><span class="named-paragraph-number">34.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">incorp_tree_child</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -1136,44 +1134,44 @@ in the incorporation tree instead, but with the same parent.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">incorp_tree_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP34_1">&#167;34.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  What will we use the trees for? Well, one use is to tell other features
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  What will we use the trees for? Well, one use is to tell other features
 which depend on Spatial whether or not one object spatially contains another:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::encloses</span><button class="popup" onclick="togglePopup('usagePopup26')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup26">Usage of <span class="code-font"><span class="function-syntax">Spatial::encloses</span></span>:<br/>Regions - <a href="3-rgn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I1</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">I1</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I2</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  But the main use for the trees is, as noted above, to form a convenient
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  But the main use for the trees is, as noted above, to form a convenient
 intermediate state between the mass of progenitor data and the messy Inter
 code it turns into. Here goes:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::spatial_stage_III</span><button class="popup" onclick="togglePopup('usagePopup27')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup27">Usage of <span class="code-font"><span class="function-syntax">Spatial::spatial_stage_III</span></span>:<br/><a href="3-sm.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">well_founded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Check the well-foundedness of the hierarchy of the set of progenitors</span></span><span class="named-paragraph-number">38.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">well_founded</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Expand the progenitor data into the two object trees</span></span><span class="named-paragraph-number">38.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert the portability of any item carried or supported by a person</span></span><span class="named-paragraph-number">38.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert Inter-level properties to express the spatial structure</span></span><span class="named-paragraph-number">38.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set up the compilation sequence so that it traverses the main object tree</span></span><span class="named-paragraph-number">38.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">OBJECT_TREE_DA</span><span class="plain-syntax">)) </span><a href="3-sm.html#SP34" class="function-link"><span class="function-syntax">Spatial::log_object_tree</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Check the well-foundedness of the hierarchy of the set of progenitors</span></span><span class="named-paragraph-number">36.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">well_founded</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Expand the progenitor data into the two object trees</span></span><span class="named-paragraph-number">36.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert the portability of any item carried or supported by a person</span></span><span class="named-paragraph-number">36.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert Inter-level properties to express the spatial structure</span></span><span class="named-paragraph-number">36.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set up the compilation sequence so that it traverses the main object tree</span></span><span class="named-paragraph-number">36.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">OBJECT_TREE_DA</span><span class="plain-syntax">)) </span><a href="3-sm.html#SP33" class="function-link"><span class="function-syntax">Spatial::log_object_tree</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_1" class="paragraph-anchor"></a><b>&#167;38.1. </b>  The following verifies, in a brute-force way, that there are no cycles in
+<p class="commentary firstcommentary"><a id="SP36_1" class="paragraph-anchor"></a><b>&#167;36.1. </b>  The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
 now, rather than at Stage II above, because other features may also have
 changed progenitors at Stage II.)</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the well-foundedness of the hierarchy of the set of progenitors</span><span class="named-paragraph-number">38.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the well-foundedness of the hierarchy of the set of progenitors</span><span class="named-paragraph-number">36.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -1181,21 +1179,21 @@ changed progenitors at Stage II.)</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">k</span><span class="plain-syntax">=0; (</span><span class="identifier-syntax">I2</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">k</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">max_loop</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">), </span><span class="identifier-syntax">k</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">k</span><span class="plain-syntax">=0; (</span><span class="identifier-syntax">I2</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">k</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">max_loop</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">I2</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">), </span><span class="identifier-syntax">k</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Diagnose the ill-foundedness with a problem message</span></span><span class="named-paragraph-number">38.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><a href="3-sm.html#SP30" class="function-link"><span class="function-syntax">Spatial::void_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">); </span><span class="comment-syntax">/* thus cutting the cycle */</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Diagnose the ill-foundedness with a problem message</span></span><span class="named-paragraph-number">36.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::void_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">); </span><span class="comment-syntax">/* thus cutting the cycle */</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">well_founded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_1_1" class="paragraph-anchor"></a><b>&#167;38.1.1. </b>  The cutest of all the object problem messages, really:</p>
+<p class="commentary firstcommentary"><a id="SP36_1_1" class="paragraph-anchor"></a><b>&#167;36.1.1. </b>  The cutest of all the object problem messages, really:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose the ill-foundedness with a problem message</span><span class="named-paragraph-number">38.1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose the ill-foundedness with a problem message</span><span class="named-paragraph-number">36.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
@@ -1210,22 +1208,22 @@ changed progenitors at Stage II.)</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">"%2 (created by %3) "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I3</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">part_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">"part of "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">"in "</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">I3</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I3</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">I3</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I3</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I3</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">"%1... and so on. This is forbidden."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_1">&#167;38.1</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_1">&#167;36.1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_2" class="paragraph-anchor"></a><b>&#167;38.2. </b>  Intermediate states are always suspect in program design, and we might
+<p class="commentary firstcommentary"><a id="SP36_2" class="paragraph-anchor"></a><b>&#167;36.2. </b>  Intermediate states are always suspect in program design, and we might
 ask what's wrong with simply making the trees as we go along, rather than
 storing all of those progenitors and then converting them into the trees.
 We don't do that because (for reasons to do with &quot;here&quot; and with how work
 is shared among the features) the progenitors are determined in an undefined
 order; if we made the object tree as we went along, the spatial model would
-be perfectly correct, but siblings -- say, the three things on the grass in
-the Croquet Lawn -- would be compiled in the Inter code in some undefined
+be perfectly correct, but siblings — say, the three things on the grass in
+the Croquet Lawn — would be compiled in the Inter code in some undefined
 order. This order matters because it affects the text produced by typical
 room descriptions: &quot;You can also see a box, a ball and a peg here.&quot; might
 become &quot;You can also see a ball, a box and a peg here.&quot;</p>
@@ -1234,25 +1232,25 @@ siblings appear in their order of creation in the I7 source text, with the
 first created being the eldest child. Looping over the objects to add them
 to the trees in creation order achieves this nicely:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand the progenitor data into the two object trees</span><span class="named-paragraph-number">38.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand the progenitor data into the two object trees</span><span class="named-paragraph-number">36.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">            </span><a href="3-sm.html#SP35" class="function-link"><span class="function-syntax">Spatial::adopt_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><a href="3-sm.html#SP34" class="function-link"><span class="function-syntax">Spatial::adopt_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">part_flag</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><a href="3-sm.html#SP36" class="function-link"><span class="function-syntax">Spatial::part_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-sm.html#SP34_1" class="function-link"><span class="function-syntax">Spatial::part_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_3" class="paragraph-anchor"></a><b>&#167;38.3. </b>  As a brief aside: if something is carried by a living person, we can
+<p class="commentary firstcommentary"><a id="SP36_3" class="paragraph-anchor"></a><b>&#167;36.3. </b>  As a brief aside: if something is carried by a living person, we can
 reasonably assume it's portable. (This is needed in particular to ensure that
 supporters which are initially carried don't pick up &quot;fixed in place&quot; in
 the absence of other information.)</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the portability of any item carried or supported by a person</span><span class="named-paragraph-number">38.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the portability of any item carried or supported by a person</span><span class="named-paragraph-number">36.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -1260,7 +1258,7 @@ the absence of other information.)</p>
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">portable</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">J</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">part_flag</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">J</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">); </span><span class="identifier-syntax">J</span><span class="plain-syntax">; </span><span class="identifier-syntax">J</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP29" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">J</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">J</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">); </span><span class="identifier-syntax">J</span><span class="plain-syntax">; </span><span class="identifier-syntax">J</span><span class="plain-syntax"> = </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">J</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">J</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">part_flag</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">J</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">portable</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -1274,24 +1272,24 @@ the absence of other information.)</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_4" class="paragraph-anchor"></a><b>&#167;38.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert Inter-level properties to express the spatial structure</span><span class="named-paragraph-number">38.4</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP36_4" class="paragraph-anchor"></a><b>&#167;36.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert Inter-level properties to express the spatial structure</span><span class="named-paragraph-number">36.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert an explicit default description value for the room kind</span></span><span class="named-paragraph-number">38.4.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_4_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert room and thing indicator properties</span></span><span class="named-paragraph-number">38.4.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_4_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert container and supporter indicator properties</span></span><span class="named-paragraph-number">38.4.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_4_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert incorporation tree properties</span></span><span class="named-paragraph-number">38.4.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert an explicit default description value for the room kind</span></span><span class="named-paragraph-number">36.4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_4_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert room and thing indicator properties</span></span><span class="named-paragraph-number">36.4.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_4_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert container and supporter indicator properties</span></span><span class="named-paragraph-number">36.4.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_4_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Assert incorporation tree properties</span></span><span class="named-paragraph-number">36.4.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_4_1" class="paragraph-anchor"></a><b>&#167;38.4.1. </b>  We need to make sure that every room does have an Inter <code>description</code> value
+<p class="commentary firstcommentary"><a id="SP36_4_1" class="paragraph-anchor"></a><b>&#167;36.4.1. </b>  We need to make sure that every room does have an Inter <code>description</code> value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
 that any room with no explicit description will inherit <code>EMPTY_TEXT_VALUE</code>
 as a value for <code>description</code> from the room class.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert an explicit default description value for the room kind</span><span class="named-paragraph-number">38.4.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert an explicit default description value for the room kind</span><span class="named-paragraph-number">36.4.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K_room</span><span class="plain-syntax">) {</span>
@@ -1309,14 +1307,14 @@ as a value for <code>description</code> from the room class.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_4">&#167;38.4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_4">&#167;36.4</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_4_2" class="paragraph-anchor"></a><b>&#167;38.4.2. </b>  These Inter-only properties exist for speed. They're implemented in Inter as
+<p class="commentary firstcommentary"><a id="SP36_4_2" class="paragraph-anchor"></a><b>&#167;36.4.2. </b>  These Inter-only properties exist for speed. They're implemented in Inter as
 attributes, which means that testing them is very fast and there is no memory
 overhead for their storage. That shaves a little time off route-finding in
 extensive maps.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert room and thing indicator properties</span><span class="named-paragraph-number">38.4.2</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert room and thing indicator properties</span><span class="named-paragraph-number">36.4.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_mark_as_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"mark_as_room"</span><span class="plain-syntax">);</span>
@@ -1331,8 +1329,8 @@ extensive maps.</p>
 <span class="plain-syntax">                </span><span class="identifier-syntax">P_mark_as_thing</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_4">&#167;38.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_4_3" class="paragraph-anchor"></a><b>&#167;38.4.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert container and supporter indicator properties</span><span class="named-paragraph-number">38.4.3</span></span> =</p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_4">&#167;36.4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP36_4_3" class="paragraph-anchor"></a><b>&#167;36.4.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert container and supporter indicator properties</span><span class="named-paragraph-number">36.4.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_container</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"container"</span><span class="plain-syntax">);</span>
@@ -1347,13 +1345,13 @@ extensive maps.</p>
 <span class="plain-syntax">                </span><span class="identifier-syntax">P_supporter</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_4">&#167;38.4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_4">&#167;36.4</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_4_4" class="paragraph-anchor"></a><b>&#167;38.4.4. </b>  The main spatial tree is expressed in the compiled Inter code in an implicit
+<p class="commentary firstcommentary"><a id="SP36_4_4" class="paragraph-anchor"></a><b>&#167;36.4.4. </b>  The main spatial tree is expressed in the compiled Inter code in an implicit
 way, using the Inter object tree, but the incorporation tree is expressed using
 a triplet of Inter-only properties:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert incorporation tree properties</span><span class="named-paragraph-number">38.4.4</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert incorporation tree properties</span><span class="named-paragraph-number">36.4.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_component_parent</span><span class="plain-syntax"> =</span>
@@ -1386,38 +1384,38 @@ a triplet of Inter-only properties:</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Rvalues::from_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">cs</span><span class="plain-syntax">), </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_4">&#167;38.4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_4">&#167;36.4</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38_5" class="paragraph-anchor"></a><b>&#167;38.5. </b>  Because Inform 6 requires objects to be defined in a traversal order for
+<p class="commentary firstcommentary"><a id="SP36_5" class="paragraph-anchor"></a><b>&#167;36.5. </b>  Because Inform 6 requires objects to be defined in a traversal order for
 the main spatial tree (only the main one because Inter has no concept of
 incorporation), we use the main tree to determine the compilation sequence
 for objects:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set up the compilation sequence so that it traverses the main object tree</span><span class="named-paragraph-number">38.5</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set up the compilation sequence so that it traverses the main object tree</span><span class="named-paragraph-number">36.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">OrderingInstances::begin</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-sm.html#SP37" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b> </p>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::add_to_object_sequence</span><button class="popup" onclick="togglePopup('usagePopup28')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup28">Usage of <span class="code-font"><span class="function-syntax">Spatial::add_to_object_sequence</span></span>:<br/><a href="3-sm.html#SP38_5">&#167;38.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::add_to_object_sequence</span><button class="popup" onclick="togglePopup('usagePopup28')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup28">Usage of <span class="code-font"><span class="function-syntax">Spatial::add_to_object_sequence</span></span>:<br/><a href="3-sm.html#SP36_5">&#167;36.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">OrderingInstances::place_next</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">definition_depth</span><span class="plain-syntax"> = </span><span class="identifier-syntax">depth</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+1);</span>
+<span class="plain-syntax">        </span><a href="3-sm.html#SP37" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-sm.html#SP37" class="function-link"><span class="function-syntax">Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPATIAL_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. </b>  The &quot;definition depth&quot; is the same thing as the depth in the main tree;
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  The &quot;definition depth&quot; is the same thing as the depth in the main tree;
 0 for a room, 1 for a player standing in that room, 2 for his hat, and so on.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1428,9 +1426,9 @@ for objects:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. </b>  By Stage IV we're nearly all done, except for a little checking of the
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  By Stage IV we're nearly all done, except for a little checking of the
 degenerate case where Inform is just binding up an existing story file, so
-that there's really no spatial model at all -- the world is, or should be,
+that there's really no spatial model at all — the world is, or should be,
 empty.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1455,14 +1453,14 @@ empty.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>  At last Stage V, where the only remaining task is to set the benchmark room.
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. </b>  At last Stage V, where the only remaining task is to set the benchmark room.
 It's where the player begins, or if the player begins out of play for some
 reason, it's the first-created room. (The benchmark is used only in indexing.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">benchmark_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::spatial_stage_V</span><button class="popup" onclick="togglePopup('usagePopup30')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup30">Usage of <span class="code-font"><span class="function-syntax">Spatial::spatial_stage_V</span></span>:<br/><a href="3-sm.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">benchmark_room</span><span class="plain-syntax"> = </span><a href="3-tp.html#SP7" class="function-link"><span class="function-syntax">Player::get_start_room</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">benchmark_room</span><span class="plain-syntax"> = </span><a href="3-tp.html#SP4_3" class="function-link"><span class="function-syntax">Player::get_start_room</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">benchmark_room</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">) {</span>
@@ -1473,7 +1471,7 @@ reason, it's the first-created room. (The benchmark is used only in indexing.)</
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Spatial::get_benchmark_room</span><button class="popup" onclick="togglePopup('usagePopup31')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup31">Usage of <span class="code-font"><span class="function-syntax">Spatial::get_benchmark_room</span></span>:<br/>Mapping Hint Requests - <a href="3-mhr.html#SP11_4_1">&#167;11.4.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Spatial::get_benchmark_room</span><button class="popup" onclick="togglePopup('usagePopup31')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup31">Usage of <span class="code-font"><span class="function-syntax">Spatial::get_benchmark_room</span></span>:<br/>Mapping Hint Requests - <a href="3-mhr.html#SP10_4_1">&#167;10.4.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">benchmark_room</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

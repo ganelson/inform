@@ -4,29 +4,33 @@ Rules contain imperative code which is executed when certain actions, activities
 or other processes are being followed.
 
 @h Introduction.
-Rule and phrase definitions have a similar syntax, in some ways -- they open
+Rule and phrase definitions have a similar syntax, in some ways — they open
 with a declaration, there's a colon, and then we (often) have a block of
 imperative code to show what they do:
-= (text as Inform 7)
+
+``` Inform7
 RULE                                        PHRASE
 Before eating:                              To extinguish (C - a candle):
 	say "The candle flickers ominously."        now C is unlit;
 	                                            say "Suddenly [the C] blows out."
-=
+```
+
 Despite the similarities, rules are not the same thing as phrases. Some rules,
 such as the one in this example, give a definition which looks like the body
 of a phrase, and indeed inside the compiler it is stored as such, in the 
 `defn_as_I7_source` field of a //rule//. But other rules are written quite
 differently:
-= (text as Inform 7)
+
+``` Inform7
 The can't reach inside rooms rule translates into Inter as "CANT_REACH_INSIDE_ROOMS_R".
-=
+```
+
 and this one is defined by a low-level Inter function, and not a phrase at all.
 In any case, rules and phrases have quite different header syntax, and have
 different dynamics altogether. In short, then: rules are not phrases.
 
 =
-typedef struct rule {
+classdef rule {
 	struct wording name; /* name of the rule being booked */
 
 	struct kind *kind_of_rule; /* determined from its rulebook(s) */
@@ -44,8 +48,7 @@ typedef struct rule {
 	struct rule_response responses[26]; /* responses (A), (B), ... */
 
 	struct rule_compilation_data compilation_data;
-	CLASS_DEFINITION
-} rule;
+}
 
 @ Rules are created before their definitions can be parsed or compiled. A
 typical rule like so:
@@ -157,8 +160,8 @@ rule *Rules::by_name(wording W) {
 Given that Inform authors can refer to (named) rules as constant values, they
 need to have kinds, and it is not obvious what those should be. Clearly
 some form of "K-based rule producing U" would be reasonable, but leaving K
-and L just to be "value" -- as the earliest versions of Inform 7 did, in the
-mid-2000s -- would be indefinite. Constants should always have definite kinds,
+and L just to be "value" — as the earliest versions of Inform 7 did, in the
+mid-2000s — would be indefinite. Constants should always have definite kinds,
 because otherwise kind inference will fail on phrases like:
 
 > let R be the foo rule;
@@ -201,7 +204,7 @@ void Rules::set_kind_from(rule *R, rulebook *RB) {
 	R->kind_of_rule_set_from = RB;
 }
 
-@ If a rule has no known kind -- if it is not in a rulebook, for example --
+@ If a rule has no known kind — if it is not in a rulebook, for example —
 then the following says it is an action-based rule producing nothing, unless
 we are in Basic Inform only, in which case it is a nothing-based rule producing
 nothing.
@@ -294,10 +297,12 @@ void Rules::log(rule *R) {
 @h Equality and priority.
 Two different //rule// pointers can in fact refer to what will be the same rule
 at run-time if this should happen:
-= (text as Inform 7)
+
+``` Inform7
 The alpha rule translates into Inter as `"SAME_R"`.
 The beta rule translates into Inter as `"SAME_R"`.
-=
+```
+
 And so we have the following:
 
 =
@@ -353,13 +358,12 @@ for it, and this can be either conditional or unconditional. There can be any
 number of constraints attached to a given rule, so these are stored in a list.
 
 =
-typedef struct applicability_constraint {
+classdef applicability_constraint {
 	struct wording text_of_condition;
 	int sense_of_applicability; /* `TRUE` if condition must hold for rule to have effect */
 	struct rule *substituted_rule; /* rule to use instead if not, or `NULL` to do nothing */
 	struct parse_node *where_imposed;
-	CLASS_DEFINITION
-} applicability_constraint;
+}
 
 void Rules::impose_constraint(rule *S, rule *R, wording W, int sense) {
 	applicability_constraint *ac = CREATE(applicability_constraint);
@@ -558,7 +562,7 @@ void Rules::now_rule_needs_response(rule *R, int code, wording W) {
 }
 
 @ That function did not check that the rule actually had the response it
-was trying to change -- it didn't check this because, for timing reasons, it
+was trying to change — it didn't check this because, for timing reasons, it
 couldn't yet do so. Instead, we check retrospectively, at a time when all
 response messages have been discovered:
 

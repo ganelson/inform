@@ -66,12 +66,11 @@ function togglePopup(material_id) {
 these, each represented by a single instance of:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_category</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_category</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">methods</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_of_items</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">grammatical_category</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure grammatical_category is accessed in 2/art, 2/prn and here.</li></ul>
 <div class="lsmarkdown">
@@ -79,7 +78,7 @@ these, each represented by a single instance of:</p>
 of code, as called from this function when the module starts up:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Stock::create_categories</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Stock::create_categories</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Stock::create_categories</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Stock::create_categories</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-adj.html#SP2" class="function-link"><span class="function-syntax">Adjectives::create_category</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-art.html#SP4" class="function-link"><span class="function-syntax">Articles::create_category</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-nns.html#SP6" class="function-link"><span class="function-syntax">Nouns::create_category</span></a><span class="plain-syntax">();</span>
@@ -116,11 +115,10 @@ of code, as called from this function when the module starts up:</p>
 instance of the following:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_category</span><span class="plain-syntax"> *</span><span class="identifier-syntax">category</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure linguistic_stock_item is accessed in 2/adj, 2/art, 3/vrb and here.</li></ul>
 <div class="lsmarkdown">
@@ -217,7 +215,7 @@ The &quot;plus 1&quot; is so that a reference ID of zeri can mean &quot;no item&
 Consider nouns, for example. In many languages, declensions do not distinguish
 cases fully. In English, the accusative and nominative form of almost every
 noun are the same. So it would not be possible for this object to say for
-sure what case was used -- for example, the lexicon can't know that the
+sure what case was used — for example, the lexicon can't know that the
 use of &quot;Jane&quot; in the sentences &quot;Peter knows Jane&quot; and &quot;Jane knows Peter&quot; has
 a different case in those sentences: it's only looking at the word itself,
 and can't know the wider context. If we parse the word &quot;Jane&quot; the best we can
@@ -231,13 +229,12 @@ or accusative case&quot;.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_GU_FORMS</span> <span class="constant-syntax">2</span><span class="plain-syntax">*</span><span class="identifier-syntax">MAX_GRAMMATICAL_CASES</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_possible_forms</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lcon_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">possible_forms</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_GU_FORMS</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="function-syntax">Stock::new_usage</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Stock::new_usage</span></span>:<br/>Articles - <a href="2-art.html#SP11">&#167;11</a><br/>Nouns - <a href="2-nns.html#SP11_1">&#167;11.1</a><br/>Pronouns - <a href="2-prn.html#SP6">&#167;6</a>, <a href="2-prn.html#SP7">&#167;7</a><br/>Verb Usages - <a href="3-vu.html#SP7_1_3">&#167;7.1.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">item</span><span class="plain-syntax">, </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gu</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax">);</span>
@@ -282,26 +279,24 @@ or accusative case&quot;.</p>
 <ul class="endnotetexts"><li>The structure grammatical_usage is accessed in 2/art, 2/prn and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Small word sets.</b>  Sometimes we want a very fast way to parse a single word to see if it belongs
-to a small set of possibilities -- for example, to see if it is a pronoun.
+to a small set of possibilities — for example, to see if it is a pronoun.
 If there are very few such, even using Preform is unnecessary overhead. The
 following is a lightweight alternative:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">small_word_set</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">small_word_set</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">extent</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> **</span><span class="identifier-syntax">word_ve</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">results</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">small_word_set</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure small_word_set is accessed in 2/art, 2/prn and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Small word sets do not expand: they must be created large enough. But really,
 if we expect them to contain more than about 20 words at the outside, then
 we ought to be using standard Preform nonterminals instead.</p>
-<p>Small word sets are, however, initially empty -- i.e., no capacity is used.</p>
+<p>Small word sets are, however, initially empty — i.e., no capacity is used.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">small_word_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Stock::new_sws</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Stock::new_sws</span></span>:<br/>Articles - <a href="2-art.html#SP10">&#167;10</a><br/>Pronouns - <a href="2-prn.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">capacity</span><span class="plain-syntax">) {</span>

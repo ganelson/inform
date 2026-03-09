@@ -8,7 +8,7 @@ be pragmatic. We're not storing the true state of the legal status of the materi
 in the copy, only what this copy claims about itself.
 
 =
-typedef struct inbuild_licence {
+classdef inbuild_licence {
 	struct open_source_licence *standard_licence;
 	struct inbuild_copy *on_copy;
 	struct text_stream *rights_owner;
@@ -19,8 +19,7 @@ typedef struct inbuild_licence {
 	int read_from_JSON;
 	int discussed_in_source;
 	int modified;
-	CLASS_DEFINITION
-} inbuild_licence;
+}
 
 @ Copies begin with this blank sort of non-licence:
 

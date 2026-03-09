@@ -61,44 +61,32 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This section exists to support usages such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">containers</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">keys</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">, </span><span class="identifier-syntax">giving</span><span class="plain-syntax"> </span><span class="identifier-syntax">articles</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">coins</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"filthy lucre"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">containers</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">keys</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">, </span><span class="identifier-syntax">giving</span><span class="plain-syntax"> </span><span class="identifier-syntax">articles</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">coins</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"filthy lucre"</span><span class="plain-syntax">;
+</span></pre>
 <p>At the Inter level, the different groupings of an object are stored in a text
 property called <code>list_together</code>.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> That's fine for the <code>&quot;filthy lucre&quot;</code> case,
 but for the other two usages we will have to make a text substitution, in order
 to have a valid value here. It's those substitutions which concern us here:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                      </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span>
-<span class="plain-syntax">                      </span><span class="identifier-syntax">GTF</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">                      small block:
+	----------------&gt; CONSTANT_PACKED_TEXT_STORAGE
+                      GTF function
+</span></pre>
 <p>A critical point is that even if the GTF functions do the same thing as each
-other (and they likely do -- there are only two possibilities), we need to
+other (and they likely do — there are only two possibilities), we need to
 compile a different function each time, so that <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a> can
 distinguish them as values. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">woodwind</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruments</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">brass</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruments</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">woodwind</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruments</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;
+	</span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">brass</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruments</span><span class="plain-syntax"> </span><span class="identifier-syntax">together</span><span class="plain-syntax">;
+</span></pre>
 <p>must compile to</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                      </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span>
-<span class="plain-syntax">                      </span><span class="identifier-syntax">GTF</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span>
-<span class="plain-syntax">                      </span><span class="identifier-syntax">GTF</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">                      small block:
+	----------------&gt; CONSTANT_PACKED_TEXT_STORAGE
+                      GTF function 1
+	----------------&gt; CONSTANT_PACKED_TEXT_STORAGE
+                      GTF function 2
+</span></pre>
 <p>even though GTF functions 1 and 2 are identical; we need them to be at different
 addresses in memory.</p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
@@ -107,12 +95,11 @@ For backwards compatibility with Inform 6, where this same feature was called
 </li></ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">group_together_function</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">group_together_function</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text_value_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">printing_fn_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">articles_bit</span><span class="plain-syntax">; </span><span class="comment-syntax">/* list with indefinite articles, or not */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">group_together_function</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure group_together_function is private to this section.</li></ul>
 <div class="lsmarkdown">

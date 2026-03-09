@@ -14,11 +14,10 @@ these three named possibilities; and this is also the name of a new kind,
 which is an enumeration of which these are the only three legal values.
 
 @ =
-typedef struct condition_of_subject {
+classdef condition_of_subject {
 	struct inference_subject *condition_of; /* is it a condition of an object? */
 	int condition_anonymously_named; /* if so, is it named just "... condition"? */
-	CLASS_DEFINITION	
-} condition_of_subject;
+}
 
 condition_of_subject *ConditionsOfSubjects::new(inference_subject *subj, int anon) {
 	condition_of_subject *cos = CREATE(condition_of_subject);

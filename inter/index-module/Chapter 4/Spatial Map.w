@@ -65,7 +65,7 @@ the current arrangement of rooms relative to each other within the submap
 as the "heat", a term to be explained later.
 
 =
-typedef struct connected_submap {
+classdef connected_submap {
 	struct faux_instance *first_room_in_submap; /* double-headed linked list of rooms */
 	struct faux_instance *last_room_in_submap;
 	struct cuboid bounds;
@@ -77,8 +77,7 @@ typedef struct connected_submap {
 	int superpositions; /* number of pairs of rooms which share the same grid location */
 	struct index_session *for_session;
 	int discarded;
-	CLASS_DEFINITION
-} connected_submap;
+}
 
 @ One special room is the "benchmark", from which the map is arranged.
 This is usually the room in which the player begins.
@@ -210,7 +209,7 @@ void SpatialMap::lock_one_exit(faux_instance *F, int exit, faux_instance *T,
 These are any of the 12 standard IF directions (N, NE, NW, S, SE, SW, E, W,
 U, D, IN, OUT), and are indexed with an number between 0 and 11 inclusive.
 These are so called because they refer to directions on the page on which
-the map will be plotted -- the page direction 6 really means rightwards, not
+the map will be plotted — the page direction 6 really means rightwards, not
 east, but it's still convenient to think of them that way.
 
 For most Inform projects, page directions correspond to directions in the
@@ -693,7 +692,7 @@ void SpatialMap::add_room_to_submap(faux_instance *R, connected_submap *sub) {
 
 @ Here is how we read from the incidence cache. Its purpose is to provide
 a constant running-time way to find out if a given position would collide
-with that of an existing room in the submap -- something we could otherwise
+with that of an existing room in the submap — something we could otherwise
 find out only by an $O(R)$ search. If we had to maintain enormous submaps
 of rooms, we'd probably want a balanced geographical tree structure, of the
 sort used for collision detection in first-person shooters; but as it is,
@@ -1403,8 +1402,8 @@ then populated with answers.
 
 This calculation runs in $O(S)$ time, where $S$ is the number of rooms in
 the submap. It's guaranteed to find the optimal single cut, if one exists;
-it's not guaranteed to find the optimal double cut -- I suspect this is
-not possible in $O(S)$ running time, though possibly in $O(S\log S)$ -- but
+it's not guaranteed to find the optimal double cut — I suspect this is
+not possible in $O(S)$ running time, though possibly in $O(S\log S)$ — but
 in any case we have heuristic reasons why we don't always want the optimal
 double cut. What can be said is that we at least try to find good spreads,
 usually succeed in practice, and are guaranteed to find at least one double
@@ -1549,8 +1548,8 @@ int SpatialMap::assign_generation_count(faux_instance *at, faux_instance *from, 
 
 @ We eliminate: routes from the current room to itself, or back the way
 we just came to get here; routes to rooms with equal or higher generation
-counts than the current one -- those are places already visited; and
-routes to rooms with lower generations -- but those are contacts, so
+counts than the current one — those are places already visited; and
+routes to rooms with lower generations — but those are contacts, so
 we may need to record them before moving on.
 
 What this leaves is cases where `T_generation` is zero, that is, where
@@ -1583,7 +1582,7 @@ intersection, mighty soon I would be ten-percented to death" (Heinlein).
 We must be careful of men, too: we can't afford to send out explorers
 indefinitely because the running time and stack consumption would then be
 prohibitive. The traditional approach is to unwind a ball of wool to avoid
-going around in circles, but we'll instead use the generation counts -- we
+going around in circles, but we'll instead use the generation counts — we
 might imagine writing these on the ground everywhere we go.
 
 So let us think of ourselves as dividing the party, and sending out a team of
@@ -1610,8 +1609,8 @@ there, maybe just a broom cupboard.
 		@<Consider this link as a potential cut-position@>;
 
 @ Each fresh team of explorers gets a fresh clipboard on which to record what
-they see -- hence the new set of `inner_contact_*` arrays. (They don't get
-individual copies of the `best_*` arrays, though -- that's the point of these;
+they see — hence the new set of `inner_contact_*` arrays. (They don't get
+individual copies of the `best_*` arrays, though — that's the point of these;
 they're shared in common among all of the explorers.)
 
 @<Give the new team of explorers a fresh clipboard@> =
@@ -1622,7 +1621,7 @@ they're shared in common among all of the explorers.)
 	}
 
 @ When the explorers get back, tired but happy, we look at their clipboard,
-and see if those contacts excite us too -- which they may not, because what
+and see if those contacts excite us too — which they may not, because what
 seemed to them a rediscovery might not seem that way to us; they've seen
 more of the world than we have. So we copy their contacts onto our own
 clipboard only if they are contacts to places we know about, too.
@@ -1752,12 +1751,12 @@ int SpatialMap::divide_into_zones_onecut(connected_submap *sub, faux_instance *R
 	return FALSE;
 }
 
-@ And this is the recursive flooding function -- essentially it's a much
+@ And this is the recursive flooding function — essentially it's a much
 simplified version of the exploration code above. `from` is the room we're
 currently at; `zone_capital` is the one we started from, within our zone;
 `foreign_capital` is corresponding room of the other zone, so (a) we
-mustn't travel on the direct route between the capitals -- that's the line
-which has been cut -- and (b) we abandon the moment we find our zone
+mustn't travel on the direct route between the capitals — that's the line
+which has been cut — and (b) we abandon the moment we find our zone
 impinging on the foreign zone, because that means there's no way to divide
 our original component into two disjoint connected zones.
 
@@ -1950,7 +1949,7 @@ This frequently happens in IF maps:
 
 Now there are two exits from Z to E: up and north. They cannot simultaneously
 be cooled. The rule we follow is that we never cool an exit if another exit
-between the two rooms is already cold -- this keeps us from endless flipping
+between the two rooms is already cold — this keeps us from endless flipping
 our choice (up from Z to E on cooling round 1, then north on round 2, then up
 on round 3, and so on).
 
@@ -2025,7 +2024,7 @@ void SpatialMap::cool_exit(faux_instance *R, int exit, index_session *session) {
 After the age of cooling, we can expect the universe to be mostly cold, but
 with local hot-spots where the geometry is distorted because the map is
 simply awkward nearby. Because this tends to be a local problem, we try to
-find a local solution -- it's actually just individualised exit cooling.
+find a local solution — it's actually just individualised exit cooling.
 
 This theoretically runs in $O(S^3)$ time: note that the measurement of
 submap heat is itself $O(S)$, and we perform this inside a loop of $O(S)$,
@@ -2448,7 +2447,7 @@ such as exist in IF works where rooms are being plaited together live during
 play and have no initial map. Side-by-side placement would be horrible for
 such rooms. We will form the most nearly square rectangle which can hold
 them, arranged so that it's slightly wider than it is tall. In effect, this
-rectangle -- the "drill square" -- is then placed side-by-side as if it's
+rectangle — the "drill square" — is then placed side-by-side as if it's
 one big component.
 
 @<Use the drill-square strategy to place this component@> =
@@ -2693,7 +2692,7 @@ running time in check.
 enormous penalty for being wrong vertically; people just don't like
 reading maps where an inside room is displayed on the floor above or below.
 It also gives preference to the green jagged arrow directions when placing
-insets -- this makes the map line up elegantly.
+insets — this makes the map line up elegantly.
 
 =
 int SpatialMap::find_cross_link_heat(faux_instance *R, faux_instance *S, int dir) {

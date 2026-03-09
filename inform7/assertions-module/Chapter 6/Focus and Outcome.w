@@ -13,7 +13,7 @@ other task.
 
 - Regard them as "stored action-based rulebooks". But quite apart from the
 unnatural look of this text, action-focus rulebooks are not really working on
-a stored action -- they can only work on the current action being processed.
+a stored action — they can only work on the current action being processed.
 They actually have no parameter value at all.
 
 And so we end up with a compromise:
@@ -77,11 +77,10 @@ it other possible endings. Those, if any, are listed in the `named_outcomes`.
 Note that they still have to count as failures, successes or not.
 
 =
-typedef struct rulebook_outcome {
+classdef rulebook_outcome {
 	struct named_rulebook_outcome *outcome_name;
 	int kind_of_outcome; /* one of the three `*_OUTCOME` values abov */
-	CLASS_DEFINITION
-} rulebook_outcome;
+}
 
 @ And each individual named ending corresponds to one of the following. Note
 that the same named ending can be used in multiple rulebooks, and can have
@@ -89,11 +88,10 @@ a different `kind_of_outcome` in each; that's why we distinguish the
 structures //rulebook_outcome// and //named_rulebook_outcome//.
 
 =
-typedef struct named_rulebook_outcome {
+classdef named_rulebook_outcome {
 	struct noun *name; /* Name in source text */
 	struct nro_compilation_data compilation_data;
-	CLASS_DEFINITION
-} named_rulebook_outcome;
+}
 
 @ That awkward distinction between a //rulebook_outcome// and a //named_rulebook_outcome//
 brings us edge cases if a rule has been written for use in one rulebook, but then

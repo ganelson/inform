@@ -11,12 +11,11 @@ discussing stars and to "dwarves" when reading Tolkien, but it is devoutly
 to be hoped that few works of IF will contain both at once.)
 
 =
-typedef struct plural_dictionary_entry {
+classdef plural_dictionary_entry {
 	NATURAL_LANGUAGE_WORDS_TYPE *defined_in;
 	struct wording singular_form; /* words of singular form */
 	struct wording plural_form; /* words of plural form */
-	CLASS_DEFINITION
-} plural_dictionary_entry;
+}
 
 @ Note that we are entirely allowed to register a new plural for a phrase
 which already has a plural in the dictionary, even for the same language,
@@ -32,8 +31,8 @@ void Pluralisation::register(wording S, wording P, NATURAL_LANGUAGE_WORDS_TYPE *
 }
 
 @h Searching the plural dictionary.
-The following routine can either be called once only -- in which case it
-yields up the best known plural for the phrase -- or iteratively, in which
+The following routine can either be called once only — in which case it
+yields up the best known plural for the phrase — or iteratively, in which
 case it serves up all known plurals of the given phrase, starting with the
 best (the earliest defined in the text, if any plural for this phrase has
 been so defined) and finishing up with the worst (a mechanically-made

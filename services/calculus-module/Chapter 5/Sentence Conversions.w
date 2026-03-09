@@ -4,13 +4,13 @@ Turning parse trees from English sentences into logical propositions.
 
 @h The meaning of a sentence.
 "Again and again Haddon thought he had found the key to the strange writings,
-but always he was disappointed. And then one day -- he was an old man of seventy
-now -- he fed a trial programme into his computer, and for the first time a
-translated sentence was delivered -- his life-long task was rewarded. Yes,
+but always he was disappointed. And then one day — he was an old man of seventy
+now — he fed a trial programme into his computer, and for the first time a
+translated sentence was delivered — his life-long task was rewarded. Yes,
 but for the fact that one man had been prepared to devote every spare hour of
 his life to solving the riddle, the amazing story of the Trigan Empire would
 never have been given to the world. WHAT FOLLOWS IS THAT STORY."
-("The Rise and Fall of the Trigan Empire", 1965)
+(_The Rise and Fall of the Trigan Empire_, 1965)
 
 Inform turns sentences into parse trees: see //linguistics: About Sentence Diagrams//
 for many examples. In such parse trees,
@@ -107,8 +107,8 @@ $x$ is free, then bind it with $\exists x$ to form $\exists x: \phi(x)$.
 	sentence_prop = SentencePropositions::from_spec(spec);
 	sentence_prop = Binding::bind_existential(sentence_prop, NULL);
 
-@ Here we only locate the subject and object subtrees -- their meanings we
-leave for later -- but we do find the content of the verb phrase. Given
+@ Here we only locate the subject and object subtrees — their meanings we
+leave for later — but we do find the content of the verb phrase. Given
 the combination of verb and preposition usage (the latter optional), we
 extract a binary predicate $B$. Note that we ignore the parity (whether
 negated or not), because we've been told that from above.
@@ -161,14 +161,14 @@ $v$ is the unique free variable of $\psi$, and $Q$ is a generalised quantifier w
 is not $\exists$.
 
 @ As examples of all four cases:
-- "Reverend Green" returns $t=RG$, $\phi = T$ -- a single definite thing.
+- "Reverend Green" returns $t=RG$, $\phi = T$ — a single definite thing.
 - "Colonel Mustard in the Library" returns $t=x$ such that
-$\phi = \exists x: {\it is}(x, CM)\land{\it in}(CM, L)$ -- a single definite
+$\phi = \exists x: {\it is}(x, CM)\land{\it in}(CM, L)$ — a single definite
 thing but subject to conditions.
 - "A suspect carrying the lead piping" returns $t=x$ and
-$\phi = {\it suspect}(x)\land{\it carries}(x, LP)$ -- a single but vague thing.
+$\phi = {\it suspect}(x)\land{\it carries}(x, LP)$ — a single but vague thing.
 - "All the weapons in the Billiard Room" returns $t=x$ and
-$\phi = \forall x: x\in\lbrace x\mid {\it weapon}(x)\land{\it in}(x, BR)\rbrace$ --
+$\phi = \forall x: x\in\lbrace x\mid {\it weapon}(x)\land{\it in}(x, BR)\rbrace$ —
 a range of things.
 
 @ Thus $\phi$ can contain at most 1 free variable, and then only in case (c).
@@ -179,10 +179,12 @@ The answer is that if we were only parsing whole sentences (SV-trees) then
 it would make no difference, because $x$ ends up bound by $\exists x$
 anyway when the final sentence is being put together. But we also want to
 parse descriptions. Consider:
-= (text as Inform 7)
+
+``` Inform7
 (1) let L be the list of open doors in the Dining Room;
 (2) let L be the list of two open doors in the Dining Room;
-=
+```
+
 Here (1) is legal in Inform, (2) is not, because it implies a requirement about
 the list which will probably not be satisfied. (Maybe there are three open
 doors there, maybe none.) In case (1), `NPstp` applied to "open doors" will
@@ -236,8 +238,8 @@ The SP is called the "subject phrase" because it contributes the subject of
 a sentence: what it is a sentence about.
 For instance, for an SV-subtree for "a woman is carrying an animal", we
 produce $\phi_S = \exists x: {\it woman}(x)$ and $\phi_O = \exists x: {\it animal}(x)$.
-But for an SN-subtree for "a woman carrying an animal" -- which vaguely
-describes something, in a way that can be tested for any given candidate $x$ --
+But for an SN-subtree for "a woman carrying an animal" — which vaguely
+describes something, in a way that can be tested for any given candidate $x$ —
 we produce $\phi_S = {\it woman}(x)$ with $x$ remaining free.
 
 @<Bind up any free variable in the OP and sometimes the SP, too@> =
@@ -298,7 +300,7 @@ $\phi_S = \forall x\in\lbrace x\mid {\it man}(x)\rbrace$ and then need to
 apply the relation ${\it in}(x, G)$. If we used formula (1)
 we would then have
 $$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\rbrace: {\it in}(x, G) $$
-which means "every man is in the Garden" -- making a statement about
+which means "every man is in the Garden" — making a statement about
 everything covered by $\phi_S$, not restricting the coverage of $\phi_S$,
 as a relative clause should. Using formula (2), however, we get:
 $$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\land {\it in}(x, G)\rbrace $$
@@ -395,12 +397,12 @@ propositions for relative clauses within a sentence are always simplified
 before being used to build the whole sentence.
 
 What happens here is that we try a sequence of tactical moves to change
-the proposition for the better -- which usually means eliminating bound
+the proposition for the better — which usually means eliminating bound
 variables, where we can: they are a bad thing because they compile to loops
 which may be slow and awkward to construct.
 
-Simplifications are allowed to change $\Sigma$ -- indeed that's the whole
-idea -- but not $t_S$, the term representing what the sentence talks about.
+Simplifications are allowed to change $\Sigma$ — indeed that's the whole
+idea — but not $t_S$, the term representing what the sentence talks about.
 (Indeed, they aren't even shown what it is.) Moreover, a simplification can
 only turn $\Sigma$ to $\Sigma'$ if:
 
@@ -527,7 +529,7 @@ pcalc_prop *SentencePropositions::NP_subtree(pcalc_term *subject_of_NP, parse_no
 
 @ Here we find a constant $C$ and return $t=C$ with a null $\phi$, except
 in one case: where $C$ is the name of an either/or property, such as
-"closed". In the context of a value, this is a noun -- it identifies
+"closed". In the context of a value, this is a noun — it identifies
 which property we are talking about. But inside a sentence, it
 has to be considered an adjective, so rather than returning
 $t = {\it closed}, \phi = T$, we return $t=x$ and $\phi = {\it closed}(x)$.
@@ -602,21 +604,25 @@ of view, this is just another constant.
 	#endif
 
 @ Suppose we have a situation like this:
-= (text as Inform 7)
+
+``` Inform7
 Texture is a kind of value. Rough, smooth and jagged are textures.  A thing has a texture.
 Feeling relates various rooms to one texture. The verb to feel (he feels) implies the feeling relation.
-=
+```
+
 and consider the sentences:
-= (text as Inform 7)
+
+``` Inform7
 [1] the broken bottle is jagged
 [2] the Spiky Cavern feels jagged
-=
+```
+
 Now suppose we are working on the NP "jagged". In (1), it's an adjective: we
 are talking about a quality of the bottle. But in (2), it's a noun: we are
 establishing a relation between two values, the Cavern and the jagged texture.
 
 Up to this point, "jagged" will have produced $t=x$, $\phi={\it jagged}(x)$
-in both cases -- the adjectival reading of the word. The way we can tell if we
+in both cases — the adjectival reading of the word. The way we can tell if we
 are in case (2) is if a value of a specific kind (and not an object) is
 expected as the outcome. In the case of the equality relation used in (1),
 "is", the terms can be anything; but in the case of the feeling relation
@@ -628,9 +634,11 @@ into noun form, and return $t={\it texture}, \phi = T$.
 one arising above, which is to do with either/or properties.)
 
 Another case which can occur is:
-= (text as Inform 7)
+
+``` Inform7
 the bottle provides the property closed
-=
+```
+
 where the presence of the words "the property" needs to alert us that
 "closed" is a noun referring to the property itself, not to a nameless
 object possessing that property. When the S-parser matches a property in
@@ -650,9 +658,11 @@ show this. (Score values otherwise aren't used for property names.)
 $\phi$, then we convert $t$ to a new free variable, say $t = y$, we then bind
 any free variable in the old $\phi$ and then change to $\exists y: {\it is}(y, C)\land\phi$.
 For instance, if we are working on the OP "the box in a room" from this:
-= (text as Inform 7)
+
+``` Inform7
 a thing in the box in a room
-=
+```
+
 then the constant is $C = `box`$, and Sstp returned
 $\phi = \exists x: {\it room}(x)\land{\it is}(x, `ContainerOf(box)`)$.
 
@@ -709,11 +719,13 @@ pcalc_prop *SentencePropositions::from_spec(parse_node *spec) {
 }
 
 @ For example, if we have written:
-= (text as Inform 7)
+
+``` Inform7
 Colour is a kind of value. The colours are pink, green and black. A thing has a colour.
-=
+```
+
 then "pink" is both a noun and an adjective. If SP is its representation as a
-noun, we return the proposition testing it adjectivally: {\it pink}($x$).
+noun, we return the proposition testing it adjectivally: ${\it pink}(x)$.
 
 @<If this is an instance of a kind, but can be used adjectivally, convert it as such@> =
 	instance *I = Rvalues::to_instance(spec);
@@ -725,7 +737,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 		}
 	}
 
-@ For example, if the SP is "scenery", we return the proposition {\it scenery}($x$).
+@ For example, if the SP is "scenery", we return the proposition ${\it scenery}(x)$.
 
 @<If it's an either-or property name, it must be being used adjectivally@> =
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
@@ -737,7 +749,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 		}
 	}
 
-@ For example, if the SP is the number 17, we return the proposition {\it is}($x$, 17).
+@ For example, if the SP is the number 17, we return the proposition ${\it is}(x, 17)$.
 
 @<It must be an ordinary noun@> =
 	prop = Atoms::prop_x_is_constant(Node::duplicate(spec));

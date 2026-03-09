@@ -91,11 +91,10 @@ MathJax = {
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">index_wording</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">adjective_compilation_data</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">adjective_iname_holder</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">adjective_iname_holder</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">weakened_domain</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">task_fn_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">adjective_iname_holder</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_compilation_data is private to this section.</li><li>The structure adjective_iname_holder is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -114,8 +113,8 @@ MathJax = {
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  An adjective can be defined in multiple senses -- &quot;empty&quot; for containers does
-not mean the same thing as &quot;empty&quot; for rulebooks -- and so the following can
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  An adjective can be defined in multiple senses — &quot;empty&quot; for containers does
+not mean the same thing as &quot;empty&quot; for rulebooks — and so the following can
 return a variety of different runtime functions.</p>
 <p>The following generates names for functions to carry out adjective tasks on
 different domains, though they are distinguished only weakly. So &quot;empty&quot; for
@@ -280,8 +279,8 @@ prefaced &quot;(of a rulebook)&quot;, &quot;(of an activity)&quot;, and so on.</
 <p class="commentary firstcommentary"><a id="SP6_1_1" class="paragraph-anchor"></a><b>&#167;6.1.1. </b>  The stack frame has just one call parameter: the value \INWEBMATH(x\INWEBMATH) which might, or
 might not, be such that adjective(\INWEBMATH(x\INWEBMATH)) is true. We allow this to be called
 &quot;it&quot;, though it can also have a calling name in some cases (see below).</p>
-<p>Clearly it ought to have the kind which defines the domain -- so it's a rulebook
-if the domain is all rulebooks, and so on -- but it doesn't always do so. The
+<p>Clearly it ought to have the kind which defines the domain — so it's a rulebook
+if the domain is all rulebooks, and so on — but it doesn't always do so. The
 exception is that it is bogusly given the kind &quot;number&quot; if the adjective is
 being defined only by I6 routines. This is done to avoid compiling very
 inefficient code from the Standard Rules. For instance, the SR reads, in

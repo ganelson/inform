@@ -8,7 +8,7 @@ the Preform parser quickly to reject non-matches, the other being
 //Nonterminal Incidences//, which is harder to understand.
 
 It may elucidate both to see the actual optimisation data for nonterminals
-as used in a typical run of Inform 7 -- see //inform7: Performance Metrics//.
+as used in a typical run of Inform 7 — see //inform7: Performance Metrics//.
 
 @ The "extremes" of something to be matched against are the minimum and maximum
 number of words in a successful match; with `INFINITE_WORD_COUNT` as maximum
@@ -108,7 +108,7 @@ length_extremes LengthExtremes::calculate_for_pr(production *pr) {
 
 @ An interesting point here is that the negation of a ptoken can in principle
 have any length, except that we specified `^ example` to match only a single
-word -- any word other than "example". So the extremes for `^ example` are
+word — any word other than "example". So the extremes for `^ example` are
 1 and 1, whereas for `^ <sample-nonterminal>` they would have to be 0 and
 infinity.
 

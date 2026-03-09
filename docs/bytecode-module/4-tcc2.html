@@ -79,7 +79,7 @@ function togglePopup(material_id) {
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Instructions.</b>  In bytecode, the frame of an <code>comment</code> instruction is laid out with the
-compulsory words -- see <a href="2-in.html" class="internal">Inter Nodes</a> -- followed by these fields. Note
+compulsory words — see <a href="2-in.html" class="internal">Inter Nodes</a> — followed by these fields. Note
 that the data then occupies a varying number of further data pairs, depending on
 the value of <code>FORMAT_CONST_IFLD</code>. As a result, the length of a <code>constant</code>
 instruction can be any odd number of words from 5 upwards.</p>
@@ -289,7 +289,7 @@ can therefore be calculated as half of (the instruction extent minus <code>DATA_
 <span class="plain-syntax">        </span><span class="identifier-syntax">type_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[0];</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">name_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[1];</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">con_type</span><span class="plain-syntax"> = </span><a href="3-idt.html#SP19" class="function-link"><span class="function-syntax">InterTypes::parse_simple</span></a><span class="plain-syntax">(</span><a href="2-bkm.html#SP7" class="function-link"><span class="function-syntax">InterBookmark::scope</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IBM</span><span class="plain-syntax">), </span><span class="identifier-syntax">eloc</span><span class="plain-syntax">, </span><span class="identifier-syntax">type_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">con_type</span><span class="plain-syntax"> = </span><a href="3-idt.html#SP18" class="function-link"><span class="function-syntax">InterTypes::parse_simple</span></a><span class="plain-syntax">(</span><a href="2-bkm.html#SP7" class="function-link"><span class="function-syntax">InterBookmark::scope</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IBM</span><span class="plain-syntax">), </span><span class="identifier-syntax">eloc</span><span class="plain-syntax">, </span><span class="identifier-syntax">type_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> = </span><a href="3-iitf.html#SP4" class="function-link"><span class="function-syntax">TextualInter::new_symbol</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eloc</span><span class="plain-syntax">, </span><a href="2-bkm.html#SP7" class="function-link"><span class="function-syntax">InterBookmark::scope</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IBM</span><span class="plain-syntax">), </span><span class="identifier-syntax">name_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
@@ -488,13 +488,10 @@ can therefore be calculated as half of (the instruction extent minus <code>DATA_
 other constants have depth 1 more than those other constants. Constants equal
 to lists have depth 1 more than the sum of the depths of the values in the
 lists. For example, if:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> x = </span><span class="constant-syntax">23</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> y = x</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> z = { x, y, </span><span class="constant-syntax">17</span><span class="plain-syntax"> }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> x = </span><span class="constant-syntax">23</span><span class="plain-syntax">
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> y = x
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> z = { x, y, </span><span class="constant-syntax">17</span><span class="plain-syntax"> }
+</span></pre>
 <p>then <code>x</code> has depth 1, <code>y</code> has depth 1+1 = 2, and <code>z</code> has depth 1+(1+2+1) = 5.
 It is a requirement that every constant must always have finite depth. The
 point of this is to guarantee that if constant declarations are written in
@@ -526,12 +523,9 @@ be defined.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Direct evaluation.</b>  Some numerical constants can be evaluated at compile-time: for example, given</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> x = </span><span class="constant-syntax">23</span>
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> y = x + </span><span class="constant-syntax">3</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> x = </span><span class="constant-syntax">23</span><span class="plain-syntax">
+	</span><span class="type-syntax">constant</span><span class="plain-syntax"> y = x + </span><span class="constant-syntax">3</span><span class="plain-syntax">
+</span></pre>
 <p>the following function would return 23 and 26 on <code>x</code> and <code>y</code> respectively. On
 anything non-numerical the function aims to return 0, but this should probably
 not be relied on.</p>

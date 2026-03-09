@@ -3,7 +3,7 @@
 Functions to create sets of shared variables.
 
 @ Shared variables are fleeting things: they come and go at runtime, and
-therefore they can't be set up statically by the compiler -- they must be
+therefore they can't be set up statically by the compiler — they must be
 dynamically created by a function which is called at runtime each time they
 need to come into being.
 

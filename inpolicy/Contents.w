@@ -14,7 +14,6 @@ Manual
 	Reference Card
 
 Chapter 1: Setting Up
-	Basics
 	Main
 
 Chapter 2: Policies

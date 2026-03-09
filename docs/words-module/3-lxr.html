@@ -296,7 +296,7 @@ in effect to the first free character.</p>
 <span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lexer_hwm</span><span class="plain-syntax">; </span><span class="comment-syntax">/* High water mark of workspace */</span>
 <span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lexer_workspace_end</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Pointer to just past the end of the workspace: HWM must not exceed this */</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lexer::start</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Lexer::start</span></span>:<br/>Words Module - <a href="1-wm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lexer::start</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Lexer::start</span></span>:<br/>Words Module - <a href="1-wm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-lxr.html#SP13" class="function-link"><span class="function-syntax">Lexer::ensure_space_up_to</span></a><span class="plain-syntax">(50000); </span><span class="comment-syntax">/* the Standard Rules are about 44,000 words */</span>
 <span class="plain-syntax">    </span><a href="3-lxr.html#SP14" class="function-link"><span class="function-syntax">Lexer::allocate_lexer_workspace_chunk</span></a><span class="plain-syntax">(1);</span>
@@ -304,8 +304,8 @@ in effect to the first free character.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  These are quite hefty memory allocations, with the expensive one --
-<code>lw_source</code> -- also being the least essential to Inform's running. But at least
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  These are quite hefty memory allocations, with the expensive one —
+<code>lw_source</code> — also being the least essential to Inform's running. But at least
 we use memory in a way at least vaguely related to the size of the source
 text, never using more than twice what we need, and we impose no absolute
 upper limits.</p>
@@ -524,7 +524,7 @@ distinguished. We'll do this with the letters <code>A</code> to <code>Z</code>.<
 <span class="plain-syntax">    </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">to</span><span class="plain-syntax">] = </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">from</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lexer::writer</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Lexer::writer</span></span>:<br/>Words Module - <a href="1-wm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lexer::writer</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Lexer::writer</span></span>:<br/>Words Module - <a href="1-wm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">[0]) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'+'</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%w"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lw_array</span><span class="plain-syntax">[</span><span class="identifier-syntax">wn</span><span class="plain-syntax">].</span><span class="element-syntax">lw_rawtext</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -552,7 +552,7 @@ It is therefore used only twice, with care, and only in this section below.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Internal lexer states.</b>  The current situation of the lexer is specified by the collective values
 of all of the following. First, the start of the current word being
-recorded, and the current high water mark -- those are defined above.
+recorded, and the current high water mark — those are defined above.
 Second, we need the feeder machinery to maintain a variable telling us
 the previous character in the raw, un-respaced source.</p>
 </div>
@@ -580,8 +580,8 @@ the variable <code>lxs_kind_of_word</code> holds what it is currently believed t
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  While there are a pile of state variables below, the basic situation is that
 the lexer has two main modes: ordinary mode and literal mode, determined
 by whether <code>lxs_literal_mode</code> is false or true. It might look as if this
-variable is redundant -- can't we simply see whether <code>lxs_kind_of_word</code>
-is <code>ORDINARY_KW</code> or not? -- but in fact we return to ordinary mode slightly
+variable is redundant — can't we simply see whether <code>lxs_kind_of_word</code>
+is <code>ORDINARY_KW</code> or not? — but in fact we return to ordinary mode slightly
 before we finish recording a literal, as we shall see, so it is important
 to be able to switch in and out of literal mode without changing the kind
 of word.</p>
@@ -951,7 +951,7 @@ Inform print a paragraph break at run-time.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-lxr.html#SP28">&#167;28</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP28_5" class="paragraph-anchor"></a><b>&#167;28.5. Completing a word.</b>  Outside of whitespace, then, our word (whatever it was -- ordinary word,
+<p class="commentary firstcommentary"><a id="SP28_5" class="paragraph-anchor"></a><b>&#167;28.5. Completing a word.</b>  Outside of whitespace, then, our word (whatever it was — ordinary word,
 literal string, I6 insertion or comment) has been stored character by
 character at the steadily rising high water mark. We have now hit the end
 by reaching whitespace (in the case of a literal, this has happened because
@@ -1023,7 +1023,7 @@ array.</p>
 <code>lw_text</code> is lowered in case. The original is preserved in <code>lw_rawtext</code> and
 is used to print more attractive error messages, and also to enable a few
 semantic parts of Inform to be case sensitive. This copying means that in the
-worst case -- when we complete an ordinary word of maximal length -- we need
+worst case — when we complete an ordinary word of maximal length — we need
 to consume an additional <code>MAX_WORD_LENGTH+2</code> bytes of the lexer's workspace,
 which is why that was the amount we checked to ensure existed when the
 lexer was called. The lowering loop can therefore never overspill the

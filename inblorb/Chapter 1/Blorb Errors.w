@@ -9,7 +9,7 @@ format for possible use on a status HTML page. Hence this section.
 
 Inblorb is in any case only minimally helpful when diagnosing problems,
 because it's intended to be used as the back end of a system which only
-generates correct blurb files, so that everything will work -- ideally, the
+generates correct blurb files, so that everything will work — ideally, the
 Inform user will never know that Inblorb exists.
 
 First, the current position of errors is recorded so that we can report

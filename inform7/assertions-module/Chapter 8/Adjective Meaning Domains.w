@@ -10,7 +10,7 @@ domain, whereas the sense here:
 
 > Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
 
-has only a single instance as domain -- Mrs Spong herself.
+has only a single instance as domain — Mrs Spong herself.
 
 We represent this as an inference subject, since that can represent either an
 instance or a base kind; but note also the `domain_kind` field. At first sight
@@ -60,7 +60,7 @@ Determination on these domains then does nothing, because they are already
 pre-determined.
 
 Note that we round up the kind to "object" if it's more specialised than that
--- say, if it's "door" -- because run-time rather than compile-time disambiguation
+— say, if it's "door" — because run-time rather than compile-time disambiguation
 is used when applying adjectives to objects.
 
 =
@@ -256,7 +256,7 @@ given kind, or inference subject. It comes in two flavours: weak and strong.
 
 - Weak checking only says that the kind is close enough for run-time
 checking to be able to do the rest. Any two base kinds are different even in
-weak checking -- "scene" and "number", for instance. On the other hand,
+weak checking — "scene" and "number", for instance. On the other hand,
 "list of scenes" weakly matches "list of numbers", and because domain kinds
 inside "object" are treated as just "object", "container" weakly matches "animal".
 - Strong checking imposes the further requirement that if the term is a
@@ -283,7 +283,7 @@ int AdjectiveMeaningDomains::strong_match(kind *K1, inference_subject *infs,
 }
 
 @ The following sorting function is used in the process of sorting the meanings
-of an adjective into precedence order -- see //AdjectiveAmbiguity::sort//.
+of an adjective into precedence order — see //AdjectiveAmbiguity::sort//.
 It takes two domains $D_1$ and $D_2$, and returns
 
 - 1 if $D_1$ is inside $D_2$,

@@ -15,14 +15,16 @@ only when it is preceded by a property name, but this means we need to know
 the property names early in Inform's run.
 
 @ We therefore look for this configuration:
-= (text)
+
+``` None
 	SENTENCE_NT "A container has a number called volume"
 	    VERB_NT "has"
 	    UNPARSED_NOUN_NT "container"
 	    CALLED_NT "called"
 	        UNPARSED_NOUN_NT "number"
 	        UNPARSED_NOUN_NT "volume"
-=
+```
+
 ...and then extract the bottom-most, rightmost noun-phrase as the name of
 a new property. It's sufficient to create it with no other details; the
 sentence will be properly parsed later on.

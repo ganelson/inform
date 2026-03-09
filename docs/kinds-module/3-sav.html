@@ -95,7 +95,7 @@ stored at run-time as <code>1</code>.</p>
 <p>It must be emphasised that this is scaled, fixed-point arithmetic: there
 are no mantissas or exponents. In such schemes the scale factor is usually
 \INWEBMATH(2^{16}\INWEBMATH) or some similar power of 2, but here we want to use exactly the
-scale factors laid out by the source text -- partly because the user
+scale factors laid out by the source text — partly because the user
 knows best, partly so that it is unambiguous how to print values, partly
 so that source text like &quot;0.001N&quot; determines an exact value rather than
 being approximated by a binary equivalent.</p>
@@ -117,7 +117,7 @@ we do either by dividing by this factor or multiplying by its reciprocal.</p>
 since \INWEBMATH(k_Xk_Y/k_O\INWEBMATH) is itself evaluated in integer arithmetic. In an ideal
 world we might use the same \INWEBMATH(k\INWEBMATH) for many units (e.g., \INWEBMATH(k=1000\INWEBMATH) throughout)
 and then of course this cancels to just \INWEBMATH(1000\INWEBMATH). But in practice people
-won't always do this -- they may use some Babylonian, base 60, units, such
+won't always do this — they may use some Babylonian, base 60, units, such
 as minutes and degrees, for instance, where \INWEBMATH(k=3600\INWEBMATH) would be more natural.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -341,7 +341,7 @@ benchmark scaling is always 1.0.</p>
 would be unable to express any distance smaller than that, and &quot;1 cm&quot;
 or &quot;1 mm&quot; would vanish completely. Instead we scale so that the value
 1 stored at run-time equals 1 unit of our smallest scale: in the length
-example, 1 mm. The <code>M</code> value for the benchmark is now usually not 1 --
+example, 1 mm. The <code>M</code> value for the benchmark is now usually not 1 —
 in this example, it's 1000, because one benchmark unit (1 m) is stored
 as the integer 1000.</p>
 </li>
@@ -456,7 +456,7 @@ to increase the <code>M</code> values of everything else in the list.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1. </b>  This is the easy case -- there's no list yet, and no benchmark yet. The <code>M</code>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1. </b>  This is the easy case — there's no list yet, and no benchmark yet. The <code>M</code>
 value will usually therefore be 1, unless the source text explicitly asked
 for it to be something else:</p>
 <blockquote>
@@ -475,7 +475,7 @@ some existing notation, in which case the <code>equiv</code> flag is set.</p>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaling_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">LP_SCALED_DOWN</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">equiv</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaling_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">LP_SCALED_AT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">use_integer_scaling</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))))</span>
-<span class="plain-syntax">        </span><a href="1-km.html#SP5" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleYet_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="1-km.html#SP4" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleYet_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_scalar</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13">&#167;13</a>.</li></ul>
@@ -490,7 +490,7 @@ scalings (metric units such as mm, km, etc.) already have their <code>M</code> v
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (((</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_scalar</span><span class="plain-syntax"> != </span><span class="constant-syntax">1</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">real_scalar</span><span class="plain-syntax"> != </span><span class="constant-syntax">1</span><span class="plain-syntax">.0)) &amp;&amp;</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">alt</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaling_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">LP_SCALED_AT</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">        </span><a href="1-km.html#SP5" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleTwice_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="1-km.html#SP4" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleTwice_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">equiv</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP13_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Calculate the multiplier for this equivalent scaling</span></span><span class="named-paragraph-number">13.2.1</span></a></span>
@@ -525,25 +525,16 @@ either up or down.</p>
 <code>k</code> probably doesn't divide <code>B</code>, and extreme cases frequently occur: for
 example, where <code>k</code> is 1000 and <code>B</code> is 1.</p>
 <p>We get around this by increasing every <code>M</code>-value in the list by a factor of:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">k</span><span class="plain-syntax"> / </span><span class="identifier-syntax">gcd</span><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	k / gcd(B, k)
+</span></pre>
 <p>Note that <code>B</code> also increases in this process, and in fact becomes</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Bk</span><span class="plain-syntax"> / </span><span class="identifier-syntax">gcd</span><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Bk / gcd(B, k)
+</span></pre>
 <p>which is the smallest multiple of <code>B</code> which has <code>k</code> as a factor. (If in fact
 <code>k</code> always divided <code>B</code>, then the scale multiple is 1 and no change is made.)
 That means that the new value of <code>B</code> divided by <code>k</code> will be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax"> / </span><span class="identifier-syntax">gcd</span><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	B / gcd(B, k)
+</span></pre>
 <p>so this is what we set <code>M</code> to.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the multiplier for the LP relative to the benchmark</span><span class="named-paragraph-number">13.2.2</span></span> =</p>
@@ -757,11 +748,8 @@ value is held in the I6 variable named <code>V_var</code>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  The integer case of this is extracted as a utility routine because it's useful
 for other calculations too. This performs the operation</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">v</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">kv</span><span class="plain-syntax"> + </span><span class="identifier-syntax">l</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	v --&gt; kv + l
+</span></pre>
 <p>carefully checking that the result does not overflow the virtual machine's
 signed integer size limit in the process. <code>k</code> is a constant known at compile
 time, but <code>l</code> is an arbitrary I6 expression whose value can't be known until
@@ -1031,17 +1019,11 @@ recurring decimals. If it can't, then we must approximate.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP25">&#167;25</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25_1_1" class="paragraph-anchor"></a><b>&#167;25.1.1. </b>  In this exact case,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cl10M</span><span class="plain-syntax"> / </span><span class="identifier-syntax">t</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	M = cl10M / t
+</span></pre>
 <p>for some natural number <code>t</code>, which means our example <code>26/M</code> is equal to</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">26</span><span class="identifier-syntax">t</span><span class="plain-syntax">/</span><span class="identifier-syntax">Mt</span><span class="plain-syntax"> = </span><span class="constant-syntax">26</span><span class="identifier-syntax">t</span><span class="plain-syntax"> / </span><span class="identifier-syntax">cl10M</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	26t/Mt = 26t / cl10M
+</span></pre>
 <p>Once we've done that, we simply work out how many initial 0s there should
 be; print that many zeroes; and then print <code>26t</code> as if it's an integer.</p>
 </div>

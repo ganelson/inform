@@ -80,7 +80,7 @@ before, the corresponding calls to <a href="../foundation/index.html" class="int
 assigned &quot;meaning codes&quot;, and these affect the way that parsing is done.
 The user should define <code>EXACT_PARSING_BITMAP</code>, <code>SUBSET_PARSING_BITMAP</code>
 and <code>PARAMETRISED_PARSING_BITMAP</code> to be sums of the meaning codes for
-which these methods are used -- see <a href="2-pe.html" class="internal">Parse Excerpts</a>.</p>
+which these methods are used — see <a href="2-pe.html" class="internal">Parse Excerpts</a>.</p>
 <p>For example, the parent could define <code>INGREDIENTS_MC</code> and <code>RECIPES_MC</code> to
 have two different namespaces, and then define <code>EXACT_PARSING_BITMAP</code> to
 be <code>INGREDIENTS_MC + RECIPES_MC</code> to make both of them parsed exactly.</p>
@@ -97,16 +97,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_LEXICON_CALLBACK Emotions::gosh</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_LEXICON_CALLBACK Emotions::gosh
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::gosh(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("Zowie!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::gosh(text_stream *OUT) {
+	    WRITE("Zowie!\n");
+	}
+</span></pre>
 <p>The lexicon module has many callbacks, but they are all optional. The
 following alphabetical list has references to fuller explanations:</p>
 <ul>
@@ -119,14 +116,14 @@ and <a href="1-lxc.html#SP1" class="internal">Lexicon::register</a>.</p>
 </li>
 <li>
 <p><code>PARSE_EXACTLY_LEXICON_CALLBACK</code> is called when an excerpt is about to be
-parsed in &quot;subset mode&quot; -- allowing just a subset of its words to be used,
+parsed in &quot;subset mode&quot; — allowing just a subset of its words to be used,
 i.e., not requiring exact wording. This function can refuse to allow that in
 certain cases. See <a href="1-lxc.html#SP3" class="internal">Lexicon::retrieve</a>.</p>
 </li>
 <li>
 <p><code>PROBLEM_LEXICON_CALLBACK</code> is called when an error is found, and can
 prevent this from being issued to the terminal as an error message: see
-<a href="2-em.html#SP14" class="internal">ExcerptMeanings::problem_handler</a>.</p>
+<a href="2-em.html#SP13" class="internal">ExcerptMeanings::problem_handler</a>.</p>
 </li>
 </ul>
 </div>

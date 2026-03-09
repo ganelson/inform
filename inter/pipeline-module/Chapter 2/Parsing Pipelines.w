@@ -8,7 +8,7 @@ some associated storage used when it runs: this is for storing variables and
 pointers to trees being worked on.
 
 =
-typedef struct inter_pipeline {
+classdef inter_pipeline {
 	struct linked_list *steps; /* of `pipeline_step` */
 	struct dictionary *variables;
 	int erroneous; /* a syntax error occurred when parsing this */
@@ -16,8 +16,7 @@ typedef struct inter_pipeline {
 	struct linked_list *search_list; /* used when parsing only */
 	struct pathname *local;
 	int run_depth;
-	CLASS_DEFINITION
-} inter_pipeline;
+}
 
 inter_pipeline *ParsingPipelines::new_pipeline(dictionary *D, linked_list *L, pathname *local) {
 	inter_pipeline *S = CREATE(inter_pipeline);
@@ -36,7 +35,7 @@ along with a wide variety of options and parameter settings, so that it looks
 much more complicated than it actually is.
 
 =
-typedef struct pipeline_step {
+classdef pipeline_step {
 	struct inter_pipeline *pipeline;
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
@@ -45,8 +44,7 @@ typedef struct pipeline_step {
 	struct text_stream *package_URL_argument;
 	int tree_argument;
 	struct pipeline_step_ephemera ephemera; /* temporary storage when running */
-	CLASS_DEFINITION
-} pipeline_step;
+}
 
 pipeline_step *ParsingPipelines::new_step(inter_pipeline *pipeline) {
 	pipeline_step *step = CREATE(pipeline_step);
@@ -75,13 +73,12 @@ combined with details of what tree to apply to in order to become a step.
 @e KIT_STAGE_ARG
 
 =
-typedef struct pipeline_stage {
+classdef pipeline_stage {
 	struct text_stream *stage_name;
 	int (*execute)(void *);
 	int stage_arg; /* one of the `*_ARG` values above */
 	int takes_tree;
-	CLASS_DEFINITION
-} pipeline_stage;
+}
 
 pipeline_stage *ParsingPipelines::new_stage(text_stream *name,
 	int (*X)(struct pipeline_step *), int arg, int tr) {
@@ -114,8 +111,8 @@ int ParsingPipelines::will_write_a_file(pipeline_step *step) {
 
 @h Parsing.
 All pipelines originate as textual descriptions, either from a text file or
-supplied on the command line. Here, we turn such a description -- in effect
-a program for a very simple programming language -- into an //inter_pipeline//.
+supplied on the command line. Here, we turn such a description — in effect
+a program for a very simple programming language — into an //inter_pipeline//.
 
 =
 inter_pipeline *ParsingPipelines::from_file(filename *F, dictionary *D,

@@ -88,7 +88,7 @@ consists of a title and perhaps an author, like so:</p>
 <p>&quot;Le Port des brumes&quot; by Georges Simenon (in French)</p>
 </blockquote>
 <p>This bracketed note can take two forms. If it begins &quot;in&quot;, then the rest must
-be the English form of the name of a language -- in this instance, &quot;French&quot;.
+be the English form of the name of a language — in this instance, &quot;French&quot;.
 This must be a language for which Inbuild can find a language bundle (see below).
 The LOP will be French, and the LOS will be English.</p>
 <p>If the note does not begin &quot;in&quot;, then it must be text recognised by a language
@@ -127,39 +127,33 @@ is now forbidden to exist, and instead there must be a file called <code>languag
 This is a JSON file very similar to the ones used for kit metadata: see <a href="M-agtk.html" class="internal">A Guide to Kits</a>,
 which it is probably helpful to read before going much further with this.</p>
 <p>For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">{</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"is"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"type"</span><span class="plain-syntax">: </span><span class="string-syntax">"language"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"title"</span><span class="plain-syntax">: </span><span class="string-syntax">"French"</span>
-<span class="plain-syntax">    },</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"needs"</span><span class="plain-syntax">: [ {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"need"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"type"</span><span class="plain-syntax">: </span><span class="string-syntax">"kit"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"title"</span><span class="plain-syntax">: </span><span class="string-syntax">"FrenchLanguageKit"</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    } ],</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"language-details"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"translated-name"</span><span class="plain-syntax">: </span><span class="string-syntax">"Français"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"iso-639-1-code"</span><span class="plain-syntax">: </span><span class="string-syntax">"fr"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"translated-syntax-cue"</span><span class="plain-syntax">: </span><span class="string-syntax">"en français"</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{
+    "is": {
+        "type": "language",
+        "title": "French"
+    },
+    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "FrenchLanguageKit"
+		}
+	} ],
+    "language-details": {
+		"translated-name": "Français",
+		"iso-639-1-code": "fr",
+		"translated-syntax-cue": "en français"
+    }
+}
+</span></pre>
 <p>Note that at present language bundles have no authorship, so that the <code>&quot;is&quot;</code>
 object does not give an <code>&quot;author&quot;</code> field. (This may change in later builds.)
 Language bundles can have version numbers, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="string-syntax">"is"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"type"</span><span class="plain-syntax">: </span><span class="string-syntax">"language"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"title"</span><span class="plain-syntax">: </span><span class="string-syntax">"French"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"version"</span><span class="plain-syntax">: </span><span class="string-syntax">"2.3.17"</span>
-<span class="plain-syntax">    },</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    "is": {
+        "type": "language",
+        "title": "French",
+        "version": "2.3.17"
+    },
+</span></pre>
 <p>But the English language kit shipped with Inform is not version-numbered.</p>
 </div>
 <div class="lsmarkdown">
@@ -172,34 +166,30 @@ where <code>Whatever</code> is the English form of the language's name. Thus
 when compiling a project whose LOP is that language.</p>
 <p>Note that a language bundle does not have an extension among its &quot;needs&quot;. It
 would be incorrect to write:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="string-syntax">"needs"</span><span class="plain-syntax">: [ {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"need"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"type"</span><span class="plain-syntax">: </span><span class="string-syntax">"kit"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"title"</span><span class="plain-syntax">: </span><span class="string-syntax">"FrenchLanguageKit"</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }, {</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"need"</span><span class="plain-syntax">: {</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"type"</span><span class="plain-syntax">: </span><span class="string-syntax">"extension"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"title"</span><span class="plain-syntax">: </span><span class="string-syntax">"French Language"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"author"</span><span class="plain-syntax">: </span><span class="string-syntax">"Paul Mensonge"</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    } ],</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "FrenchLanguageKit"
+		}
+	}, {
+		"need": {
+			"type": "extension",
+			"title": "French Language",
+			"author": "Paul Mensonge"
+		}
+	} ],
+</span></pre>
 <p>Although the extension is indeed necessary, it should be given in the &quot;needs&quot;
 of the kit <code>FrenchLanguageKit</code>, not of the language bundle &quot;French&quot;. Thus</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">French --- needs --&gt; FrenchLanguageKit --- needs --&gt; French Language by Paul Mensonge
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-- </span><span class="identifier-syntax">needs</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">FrenchLanguageKit</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-- </span><span class="identifier-syntax">needs</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="identifier-syntax">Language</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">Paul</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mensonge</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The <code>language-details.translated-name</code> field is required, and should the the
 language as it is normally written in the language itself: thus, <code>Deutsch</code> not
 <code>German</code>.</p>
 <p>As its name suggests, the <code>language-details.iso-639-1-code</code> field should be
-a valid ISO 639-1 code for the language in question -- a two-letter code such
+a valid ISO 639-1 code for the language in question — a two-letter code such
 as &quot;de&quot; (German) or &quot;hr&quot; (Croatian). See for example
 <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" class="external">Wikipedia</a> for a complete list.</p>
 <p>The field <code>language-details.translated-syntax-cue</code> is optional. If given, it's
@@ -211,20 +201,18 @@ set. So, for example, <code>scritto in italiano</code> not <code>in italiano</co
 read a file of Preform declarations called <code>Syntax.preform</code> inside the bundle:
 in this example, at <code>Italian/Syntax.preform</code>. Should such a file not exist (or
 not declare any nonterminals) then Inform will produce a problem like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Problem. The project says that its syntax is written in a language other than
+English (specifically, Italian), but the language bundle for that language does
+not provide a file of Preform definitions.
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Problem</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">project</span><span class="plain-syntax"> </span><span class="identifier-syntax">says</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">its</span><span class="plain-syntax"> </span><span class="identifier-syntax">syntax</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">written</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">other</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span>
-<span class="identifier-syntax">English</span><span class="plain-syntax"> (</span><span class="identifier-syntax">specifically</span><span class="plain-syntax">, </span><span class="identifier-syntax">Italian</span><span class="plain-syntax">), </span><span class="identifier-syntax">but</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">bundle</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">does</span>
-<span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">provide</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Preform</span><span class="plain-syntax"> </span><span class="identifier-syntax">definitions</span><span class="plain-syntax">.</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Finally, there is a very sketchy ability for a language bundle to localise
 the Index for a project: see e.g. <code>inform7/Internal/Languages/French/Index.txt</code>.
 Note that this takes effect only if the user asks it to with a use option:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">.
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">.</span>
-</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-agtk.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresssection"><a href="M-agtk.html">agtk</a></li><li class="progresscurrent">agtlb</li><li class="progresssection"><a href="M-agtpm.html">agtpm</a></li><li class="progresssection"><a href="M-agtr.html">agtr</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtpm.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

@@ -5,11 +5,10 @@ Allowing Neptune files to generate additional source text.
 @ Each "recorded" invention, a.k.a., "star template", generates one of the following:
 
 =
-typedef struct kind_template_definition {
+classdef kind_template_definition {
 	struct text_stream *template_name; /* including the asterisk, e.g., `"*PRINTING-ROUTINE"` */
 	struct text_stream *template_text;
-	CLASS_DEFINITION
-} kind_template_definition;
+}
 
 kind_template_definition *StarTemplates::new(text_stream *name) {
 	kind_template_definition *ttd = CREATE(kind_template_definition);
@@ -62,12 +61,11 @@ and squeeze it into the main source text. This happens in two stages: first,
 we simply record the user's intention:
 
 =
-typedef struct star_invention {
+classdef star_invention {
 	struct kind_template_definition *template;
 	struct kind_constructor *apropos;
 	struct text_file_position *origin;
-	CLASS_DEFINITION
-} star_invention;
+}
 
 void StarTemplates::note(kind_template_definition *ttd, kind_constructor *con,
 	text_file_position *tfp) {

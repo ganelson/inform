@@ -12,9 +12,11 @@ arbitrary non-empty text can appear in the given position. It is forbidden
 for the token list to contain two nulls in a row.
 
 For instance, the token list:
-= (text)
+
+``` None
 	drink # milk #
-=
+```
+
 matches "drink more milk today and every day", but not "drink milk". The
 sharp symbol `#` is printed in place of a null token, both here and in the
 debugging log.
@@ -25,14 +27,13 @@ generated from its token list, and a pointer to some structure.
 @d MAX_TOKENS_PER_EXCERPT_MEANING 32
 
 =
-typedef struct excerpt_meaning {
+classdef excerpt_meaning {
 	unsigned int meaning_code; /* what kind of meaning: a single MC, not a bitmap */
 	struct general_pointer data; /* data structure being referred to */
 	int no_em_tokens; /* length of token list */
 	struct vocabulary_entry *em_tokens[MAX_TOKENS_PER_EXCERPT_MEANING]; /* token list */
 	int excerpt_hash; /* hash code generated from the token list */
-	CLASS_DEFINITION
-} excerpt_meaning;
+}
 
 @h Meaning codes.
 These assign a context to a meaning, and so decide how the `data` pointer for
@@ -233,7 +234,7 @@ rewards of saving unnecessary tests are greatest.
 
 @h EM Listing.
 We are clearly not going to store the excerpt meanings in a hash table
-keyed by the hash values of excerpts -- with hash values as large as
+keyed by the hash values of excerpts — with hash values as large as
 $2^{31}-1$, that would be practically impossible.
 
 Instead we key using the actual words. Each vocabulary entry has four
@@ -317,7 +318,7 @@ void ExcerptMeanings::register_em(unsigned int meaning_code, excerpt_meaning *em
 	ExcerptMeanings::hash_code_from_token_list(em);
 
 @ Another important optimisation is to flag each word in the meaning with
-the given meaning code -- this is why vocabulary flags and excerpt meaning
+the given meaning code — this is why vocabulary flags and excerpt meaning
 codes share the same numbering space. If we register "Table of Surgical
 Instruments" as a table name, the word "surgical", for instance, picks
 up the `TABLE_MC` bit in its `flags` bitmap.
@@ -476,9 +477,11 @@ sensitivity.)
 
 and transcribe it into the token list, collapsing bracketed parts into `#`
 tokens denoting gaps, to result in something like:
-= (text)
+
+``` None
 	award # points
-=
+```
+
 with a token count of 3.
 
 @<Build the token list for the new EM@> =

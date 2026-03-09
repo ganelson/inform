@@ -173,7 +173,7 @@ fiscal", "postmaster general"). Otherwise we omit only two cases, both
 involving capitalised proper nouns: nationality adjectives used as if they were
 nouns ("I saw two Japanese walking into the airport") and names of people used
 as if they were count nouns for a category of people like the one named ("We
-need more Wills, more Henrys.") -- these are not likely to arise much in Inform
+need more Wills, more Henrys.") — these are not likely to arise much in Inform
 usage, and they are awkward to implement with our tries because they depend on
 prefix as well as suffix and require case-dependency.
 
@@ -522,7 +522,7 @@ Our approach will follow Greenbaum, "Oxford English Grammar", at 4.14.
 Like Greenbaum, we will use the term "form type" for the different possible
 inflected versions of a verb word. The verb "to be" has eight form
 types (be, am, is, are, was, were, been, being), but it's unique in that
-respect -- so this is one we will consider to be "too irregular", and will
+respect — so this is one we will consider to be "too irregular", and will
 handle as a special case.
 
 All other English verbs have five form types, though in many cases two or more
@@ -540,7 +540,7 @@ he flaunted (past); he had flaunted (past participle). But English has around
 600 commonly occurring irregular verbs in which they are different, sometimes
 unpredictably so: he went (past); he had gone (past participle). Irregularity
 sometimes makes these forms coincide rather than making them different: for
-example, to set has just three distinct forms -- to set, he sets, he set, he
+example, to set has just three distinct forms — to set, he sets, he set, he
 had set, setting.
 
 @ Form types are numbered from 0 up to, potentially, a constant
@@ -589,7 +589,7 @@ for example, `-er` detects first-conjugation verbs such as "donner".
 
 Note that we have to make sure every possible infinitive text matches at
 least one line, and the best way to ensure that is to finish up with `...`
-as the last pattern -- this matches anything.
+as the last pattern — this matches anything.
 
 @ The instructions for English are quite concise, except for the presence
 of the awkward contracted informal forms of verbs. (These aren't used in
@@ -650,9 +650,9 @@ differs only in its negative forms. We're only going to give this present
 and past tenses since it's never needed except as an auxiliary.
 
 Anyway, this is an example of a "conjugation". The purpose of this is to
-set a few special verb forms -- such as the present and past participles --
+set a few special verb forms — such as the present and past participles —
 and then give a recipe to make all of the many forms which the verb can
-take within sentences. The verb forms are numbered -- see above -- and
+take within sentences. The verb forms are numbered — see above — and
 the recipe is called a "tabulation". We'll specify the format for this
 below, when we get to a more complicated example, but briefly: this one
 sets the present participle (2) to "having", the past participle (3) to
@@ -739,9 +739,10 @@ For example, 2 expands into the present participle for the verb. If the
 number is followed by an open bracket, then an infinitive, then a close
 bracket, then it expands to the verb form for that verb. For example, the
 following expands to "sought":
-= (text as InC)
+
+``` Preform
 	3 ( seek )
-=
+```
 
 (b) Text in the form `1+xyz` expands into verb form 1 but with the letters
 "xyz" added. For example, `1+ed` for the verb "to mark" would expand to
@@ -756,7 +757,7 @@ the matching persons are used, i.e., if we're expanding this to make the
 first person singular, we use the first person singular of the verb we're
 borrowing. Finally, we can change the tense by placing a tense marker inside
 the open brackets: `a3+ ( t1 have ) grabbed` sets the perfects to "I have
-grabbed", "you have grabbed", and so on -- without the tense marker it
+grabbed", "you have grabbed", and so on — without the tense marker it
 would have been "I have have had grabbed", because "have" would expand
 to its perfect tense and not its present tense. The `t1` means present tense;
 `t2` means past tense, and so on.
@@ -784,20 +785,24 @@ they have. (This is more excitingly varied in other languages, of course.)
 @ Next we have "to do", which is like "to have" in being fairly regular,
 as irregular verbs go. But we treat this as a special case because, again,
 we're going to need as an auxiliary verb when forming negatives ("Peter
-does not wear the hat" -- note the "does not"). But this time we give
+does not wear the hat" — note the "does not"). But this time we give
 the full treatment, creating all 60 active forms.
 
 For the passive, though, we do something new. The selector `p*` is actually
 a way to set all 60 passive forms (which would normally be written `p`), but
 it tells Inform to use "to be" as an auxiliary. When we write the `p*`
 step:
-= (text as InC)
+
+``` Preform
 	p*     done by
-=
+```
+
 the effect is the same as writing:
-= (text as InC)
+
+``` Preform
 	p      ( be ) done by
-=
+```
+
 The difference is that Inform more efficiently implements the `p*` version,
 by implementing "done by" as if it were a preposition rather than as part
 of a verb. This parses more quickly and makes English passive forms play
@@ -838,16 +843,18 @@ may have to revisit this for languages other than English.)
 make heavy use of our numbered verb forms: for example, for the verb
 "to take", they would be "take" (1), "taking" (2), "taken" (3),
 "takes" (5) and "took" (6). We start with the infinitive ("take")
-in verb form 1, but (2), (3), (5) and (6) are initially blank -- we have
+in verb form 1, but (2), (3), (5) and (6) are initially blank — we have
 to make them somehow.
 
 We do this by giving their definitions not as fixed wording, as we did
 for the verbs above, but as tries which act on the infinitive to produce
 a wording. For example, `<en-trie-present-participle>` is a trie which
 performs:
-= (text as InC)
+
+``` Preform
 	take --> taking
-=
+```
+
 We will have to define these tries below. Note that the infinitive can consist
 of multiple words; if so, the first word is run through the tries, and the
 remaining words are left alone. For example, "grab onto" would be inflected
@@ -863,10 +870,10 @@ to "grabs onto", "grabbing onto" and so on.
 
 @ Here we see our auxiliary verbs in use. For the negated present tense,
 "Peter does not carry the ball"; for the negated past tense, "Peter did
-not carry the ball" -- in both cases, this is "to do" plus the infinitive
-"take". For the perfect tenses, "to have" plus the past participle --
+not carry the ball" — in both cases, this is "to do" plus the infinitive
+"take". For the perfect tenses, "to have" plus the past participle —
 "Peter has carried the ball", "Peter had carried the ball". For the
-future tense, "will" plus the infinitive -- "Peter will carry the ball".
+future tense, "will" plus the infinitive — "Peter will carry the ball".
 (We're actually not going to implement this as a verb because all its
 forms are just "will", and because "to will" also means "to leave
 a bequest".)
@@ -964,9 +971,11 @@ the instructions grammar, right back at the start of this discussion of
 verbs, chooses which conjugation to use, it converts the text matching
 the wild-card `...` into the "adjoint infinitive" form (4). We get to
 this conjugation by matching
-= (text as InC)
+
+``` Preform
 	be able to ...
-=
+```
+
 so, for example, "be able to reach" results in 4 being set to "reach".
 
 Note also the construction `3 ( 4 )` in the passive. The 3 means "take the
@@ -1010,7 +1019,7 @@ being modified should appear in verb form 1, and so on: for example,
 	a5-       4 not ++1
 
 @ That completes our basic kit of verbs nicely. What's left is used only
-for generating text at run-time -- for printing adaptive messages, that is;
+for generating text at run-time — for printing adaptive messages, that is;
 none of these oddball exceptional cases is otherwise used as a verb in
 Inform source text. None of them has any meaning to Inform.
 
@@ -1031,9 +1040,9 @@ and have them adapt to other tenses and viewpoints?
 
 First we'll tackle "to 's", the contracted form of "to be": I'm, you're,
 and so on. Exactly how these contractions are used in different tenses is
-something that varies with different dialects of English -- for example,
+something that varies with different dialects of English — for example,
 "you'll not take the ball" is now a little obsolete except in rural
-dialects -- and we aren't even going to try to cope with that.
+dialects — and we aren't even going to try to cope with that.
 
 =
 <contracted-to-be-conjugation> ::=
@@ -1110,7 +1119,7 @@ it to conjugate it as if it were a verb in its own right. So "to aren't" will be
 conjugated "I am not", "you aren't", "he isn't", and so on. (We don't
 say "I amn't", possibly because the "mn" is too awkward, but possibly
 also because we'd more likely say "I'm not". Because this would make the
-spacing awkwardly difficult -- we would need to backspace -- we won't take
+spacing awkwardly difficult — we would need to backspace — we won't take
 that option here.)
 
 =
@@ -1225,7 +1234,7 @@ signs can be used if we absolutely have to introduce spaces.
 	couldn't    couldn't |
 	shouldn't   shouldn't
 
-@ That's the end of the conjugations -- the easy part, it turns out. We now
+@ That's the end of the conjugations — the easy part, it turns out. We now
 need to create the four tries to make verb forms out of the infinitive:
 the present participle, the past participle, the third-person singular
 present tense, and the past tense.
@@ -1280,7 +1289,7 @@ version of Greenbaum's rules above.
 	... <en-trie-regular-b-present-participle> |
 	... <en-trie-regular-c-present-participle>
 
-@ First of all there are some irregular cases -- some for the usual suspects,
+@ First of all there are some irregular cases — some for the usual suspects,
 but others for oddball verbs where English breaks the normal phonetic rules
 for the sake of clarity. For example, the participle of "singe" ought to
 be "singing", but in fact we write "singeing", purely to make it different
@@ -1723,7 +1732,7 @@ removed.
 @ That's the mandatory participles sorted out; so now we move on to the two
 additional verb forms used by English. First, the present form: a curiosity
 of English is that this is almost always formed as if it were the plural of the
-infinitive -- thus "touch" becomes "touches". There are just a handful
+infinitive — thus "touch" becomes "touches". There are just a handful
 of exceptions to this.
 
 =
@@ -2384,8 +2393,8 @@ inflection we need is the past participle ("smoothed"), and we need a trie
 which generates it from the present. This process is called "pasturising",
 which is, er, not actually an approved term from linguistics.
 
-English is replete with exceptions -- "catching" must become "caught",
-not "catched", for instance -- so this trie consists of about 460 special
+English is replete with exceptions — "catching" must become "caught",
+not "catched", for instance — so this trie consists of about 460 special
 cases followed by two general rules.
 
 =

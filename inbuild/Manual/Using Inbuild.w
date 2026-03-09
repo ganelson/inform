@@ -40,43 +40,51 @@ what is called an "edition", which in turn is a version of a "work".
 For example, perhaps the user has two copies of version 3 of the extension
 Locksmith by Emily Short, in different places in the file system, and also
 a further copy of version 4. These are three different "copies", but only two
-different "editions", and all are of the same "work". A work -- in this case,
-Locksmith by Emily Short -- is identified by its title, author name and
-genre -- in this case, an Inform extension.
+different "editions", and all are of the same "work". A work — in this case,
+Locksmith by Emily Short — is identified by its title, author name and
+genre — in this case, an Inform extension.
 
 @ Inbuild has a plethora of command-line options, but at its most basic, the
 user should specify what to do and then give a list of things to do it to.
 For example, here we run `-inspect` on a single copy, and get a one-line
 description of what it is:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
 	extension: Locksmith by Emily Short v12 in directory inform7/Internal/Extensions/Emily Short
-=
-This is reassuring -- the file which looks as if it ought to be a copy of
+```
+
+This is reassuring — the file which looks as if it ought to be a copy of
 Locksmith actually is. Inbuild always looks at the contents of something,
 and doesn't trust its location as any indication of what it is. For
 example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
 	extension: Complex Listing by Emily Short v9 in directory junk.
-=
+```
+
 If Inbuild can see that something is damaged in some way, it will report that.
 For example,
-= (text as ConsoleText)
+
+``` ConsoleText
 	extension: Skeleton Keys by Emily Short - 1 error
 	    1. extension misworded: the opening line does not end 'begin(s) here'
-=
+```
+
 Only superficial problems can be spotted so far in advance of actually using
 the software, but it's still helpful.
 
 @h Graphs.
 More ambitiously, we can look at the "graph" of a copy.
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'
 	[c0] Basic Help Menu by Emily Short
 	  --use---> [c26] Menus by Emily Short v3
 	    --use---> [c34] Basic Screen Effects by Emily Short v8
-=
+```
+
 The graph begins at the copy we asked for, and then continues through arrows
 to other copies. It gives a systematic answer to the question "how do I
 build or use this?". There are two kinds of arrows, use arrows and build
@@ -87,20 +95,25 @@ order to use Menus.
 
 @ Now suppose we have an Inform project called `Menu Time.inform`, whose
 source text is as follows:
-= (text as Inform 7)
+
+``` Inform7
 	Include Basic Help Menu by Emily Short.
 	
 	The French Laundry is a room.
-=
+```
+
 Once again, we can inspect this:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect 'Menu Time.inform'
 	projectbundle: Menu Time.inform at path Menu Time.inform
-=
+```
+
 We can also use `-graph`, but the output from this is surprisingly long,
 because an innocent-looking source text like the above depends on many other
 resources.
-= (text as ConsoleText)
+
+``` ConsoleText
 	[f59] Menu Time.inform/Build/output.ulx
 	  --build-> [f58] Menu Time.inform/Build/auto.inf
 	    --build-> [f57] Menu Time.inform/Build/auto.inf
@@ -110,7 +123,8 @@ resources.
 	            --use---> [c55] Basic Screen Effects by Emily Short v8
 	        --build-> [f1] Menu Time.inform/Source/story.ni
 	        --build-> [c12] BasicInformKit
-=
+```
+
 ...and so on. What's going on here is that if the user wants to compile the
 source text, that will (by default) mean making a story file in Glulx format,
 called `output.ulx`, which sits inside the project bundle. So that is the top
@@ -142,24 +156,31 @@ we need various build-in extensions and kits, the first of which is
 want to know is: what do I need to use, or to build, something?
 
 The command `-use-needs` applied to our example extension gives:
-= (text as ConsoleText)
+
+``` ConsoleText
 	extension: Basic Help Menu by Emily Short
 	  extension: Menus by Emily Short v3
 	    extension: Basic Screen Effects by Emily Short v8
-=
+```
+
 and applied to our example story gives just:
-= (text as ConsoleText)
+
+``` ConsoleText
 	projectbundle: Menu Time.inform
-=
+```
+
 That's because once Menu Time is built, nothing else is needed to use it.
 On the other hand, `-build-needs` has the opposite effect. Applied to the
 extension, we get:
-= (text as ConsoleText)
+
+``` ConsoleText
 	extension: Basic Help Menu by Emily Short
-=
+```
+
 because extensions need no building, so certainly nothing else is needed
 to build them. But `-build-needs` on our story produces:
-= (text as ConsoleText)
+
+``` ConsoleText
 	projectbundle: Menu Time.inform
 	  extension: Basic Help Menu by Emily Short
 	    extension: Menus by Emily Short v3
@@ -174,7 +195,8 @@ to build them. But `-build-needs` on our story produces:
 	  language: English
 	    kit: EnglishLanguageKit
 	      extension: English Language by Graham Nelson v1
-=
+```
+
 And there it is: six extensions, four kits and one natural language definition
 are needed. Two of the extensions are listed twice: that's because they are
 each needed for two different reasons.
@@ -204,17 +226,21 @@ such as:
 
 No such extension exists. If we look at the graph, or the `-build-needs` list
 for the project, we see that it includes:
-= (text as ConsoleText)
+
+``` ConsoleText
 	missing extension: Xylophones by Jimmy Stewart, any version will do
-=
+```
+
 If we had instead written:
 
 > Include version 6.2 of Xylophones by Jimmy Stewart.
 
 we would see:
-= (text as ConsoleText)
+
+``` ConsoleText
 	missing extension: Xylophones by Jimmy Stewart, need version in range [6.2,7-A)
-=
+```
+
 This slightly arcane mathematical notation means that Inform would accept any
 version from 6.2 upwards, provided it still begins with a 6. This is a change
 over pre-2020 versions of Inform, and has been brought about by the adoption
@@ -240,9 +266,11 @@ does is to "assimilate" the Inform 6-notation source files inside the kit into
 binary files of Inter, one for each possible architecture.
 
 But building is mostly done with projects. If we run:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -build Example.inform
-=
+```
+
 then Inbuild will first build everything needed to build the Example story
 file, including everything needed to use the things needed to build it, and
 so on; and then will build Example itself. As with the Unix utility `make`,
@@ -260,15 +288,17 @@ As noted above, the `-release` switch tells Inbuild that we want to go all
 the way to a release of the project, not just a build. This makes a more
 extensive graph, and is likely to mean that the final step followed by
 Inbuild is a call to `inblorb`, the releasing tool for Inform.
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -release -build Example.inform
-=
+```
+
 Using the `-rebuild` command performs a build in a way which isn't incremental:
 timestamps of files are ignored and everything is remade from scratch.
 
 @ It takes a certain trust to just let Inbuild rip, and if you don't feel that
 trust, adding the `-dry` switch causes shell commands to be printed out but
-not actually executed -- a dry run. If you are debugging Inbuild, you may
+not actually executed — a dry run. If you are debugging Inbuild, you may
 also want to look at the copious output produced when `-build-trace` is used.
 These are not commands: they simply modify the behaviour of `-build` and
 `-rebuild`.
@@ -288,17 +318,21 @@ can be an Inform project. Multiple extensions, or kits, are fine.
 
 We can also tell Inbuild to work on everything it finds in a given directory
 `D` using `-contents-of D`:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter
 	kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit
 	kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit
 	...
-=
+```
+
 For compatibility with the `inform7` command line syntax, we can also specify
 the project target using `-project`:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -build -project Example.inform
-=
+```
+
 But this is quite unnecessary: the effect is the same as if `-project` had
 been missed out.
 
@@ -308,13 +342,17 @@ these copies are; and sometimes we do not.
 
 If we instead specify `-matching R`, where `R` is a list of requirements,
 Inbuild will act on every copy it can find which matches that. For example,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'
-=
+```
+
 lists all the kits which Inbuild can see; and
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'
-=
+```
+
 lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
 specify are `title`, `author`, `genre` and `version`. Note that `version=5.1.1`
 would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
@@ -324,9 +362,11 @@ the release date being treated as a patch number: see the Inform language
 documentation for examples.)
 
 To specify an explicit maximum and minimum version number, use `max` and `min`. For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'
-=
+```
+
 @h Nests and searches.
 When searching with `-matching R`, or indeed when running Inform and needing
 to find certain resources, Inbuild looks inside what are called "nests".
@@ -338,21 +378,25 @@ this contains the extensions, kits and so on which are built in to Inform
 when it's used as an app.
 
 Inbuild recognises the following subdirectories of a nest as significant:
-= (text)
+
+``` None
 	Templates
 	Pipelines
 	Inter
 	Languages
 	Extensions
-=
+```
+
 Other subdirectories can also exist, and Inbuild ignores those. The above
 five containers hold website templates (used by Inblorb), Inter pipelines,
 kits, language definitions, and extensions. In the case of extensions, where
 there may be very many in total, a further level of subdirectory is used
 for the author's name. Thus:
-= (text)
+
+``` None
 	Extensions/Emily Short/Locksmith.i7x
-=
+```
+
 (In some early releases of Inform 7, it was legal for this file not to have
 the `.i7x` extension: but now it is compulsory.)
 
@@ -360,10 +404,12 @@ As of 2020, nests can contain multiple versions of the same work. To do
 this, they should have a filename (or pathname) which ends with `-vN`, where
 `N` is semantic version number but with any dots replaced by underscores.
 Thus, we can have e.g.:
-= (text)
+
+``` None
 	Extensions/Emily Short/Locksmith-v3_2.i7x
 	Extensions/Emily Short/Locksmith-v4_0_0-prealpha_13.i7x
-=
+```
+
 co-existing side by side. If the user asks to
 
 > Include Locksmith by Emily Short.
@@ -399,8 +445,8 @@ nest is of course not present.
 
 In addition, extra nests can be specified with `-nest N`.
 
-@ When Inbuild searches for some resource needed by Inform -- let's continue
-to use the Locksmith extension as an example -- it always has some range of
+@ When Inbuild searches for some resource needed by Inform — let's continue
+to use the Locksmith extension as an example — it always has some range of
 version numbers in mind: it will only accept a version in that range. (The
 range can be unlimited, in which case any version is acceptable.)
 
@@ -434,12 +480,14 @@ Clerical work is generally best done automatically, and Inbuild offers some
 useful filing commands.
 
 The command `-copy-to N` makes a duplicate copy in the nest `N`. For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
 	extension: Complex Listing by Emily Short v9 in directory junk.
 	$ inbuild/Tangled/inbuild -copy-to MyNest junk/Mystery.i7x
 	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing-v9.i7x'
-=
+```
+
 Note that Inbuild replies to the `-copy-to N` command by executing a shell
 command to copy what is, in this case, a single file. As when building, the
 `-dry` option puts Inbuild into dry-run mode, where it prints the commands it
@@ -450,12 +498,13 @@ already in `N`, rather than producing an error if a collision occurs.
 
 @ If the version numbers are not wanted in the filenames which `-copy-to`
 and `-sync-to` write to, set `-no-versions-in-filenames`:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
 	extension: Complex Listing by Emily Short v9 in directory junk.
 	$ inbuild/Tangled/inbuild -no-versions-in-filenames -copy-to MyNest junk/Mystery.i7x
 	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing.i7x'
-=
+```
 
 @ The `-archive-to N` command performs `-sync-to N` on any resource needed
 to build the copy it is working on (with one exception, for technical reasons:

@@ -32,12 +32,11 @@ void DocumentationRenderer::close_subpage(void) {
 @
 
 =
-typedef struct cd_manifest_item {
+classdef cd_manifest_item {
 	struct filename *source;
 	struct text_stream *label;
 	struct text_stream *title;
-	CLASS_DEFINITION
-} cd_manifest_item;
+}
 
 @ Our tree is turned into a tiny website, with a single index page for everything
 except the examples, and then up to 26 pages holding the content of examples A to Z.

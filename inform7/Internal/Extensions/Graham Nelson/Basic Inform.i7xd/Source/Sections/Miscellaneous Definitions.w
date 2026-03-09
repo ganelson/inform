@@ -51,7 +51,7 @@ The proper-named property is defined by Inter as "proper".
 @h Variables.
 Most of the built-in kinds and kind constructors, such as "number" and
 "list of K", are defined in special low-level files read in by Inform early
-in its run -- not here. "Natural language" is an exception.
+in its run — not here. "Natural language" is an exception.
 
 "Language of play" should no longer be taken to imply play; it's really the
 natural language of our output text, if any. It affects how verbs conjugate,

@@ -112,7 +112,7 @@ if we did. Instead they're scanned for words which are marked with the appropria
 numbers.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Cardinals::preform_optimiser</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Cardinals::preform_optimiser</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Cardinals::preform_optimiser</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Cardinals::preform_optimiser</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::every_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;cardinal-number&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::every_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;ordinal-number&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">lexer_wordcount</span><span class="plain-syntax">; </span><span class="identifier-syntax">wn</span><span class="plain-syntax">++) {</span>
@@ -131,7 +131,7 @@ numbers.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::mark_vocabulary</span><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="function-syntax">&lt;ordinal-number&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Cardinals::enable_in_word_form</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Cardinals::enable_in_word_form</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Cardinals::enable_in_word_form</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Cardinals::enable_in_word_form</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;cardinal-number&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">CARDINAL_RES_NT_BIT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;ordinal-number&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ORDINAL_RES_NT_BIT</span><span class="plain-syntax">);</span>
 
@@ -175,7 +175,7 @@ being compiled to, so &quot;42000&quot;, for instance, is not a valid literal if
 is parsing text in a work intended for a 16-bit VM.</p>
 <p>Why do we catch this here? The answer is probably that it's an excess of
 caution, but this is a rare case where the choice of virtual machine affects
-the legal syntax for Inform source text -- text originally written for use on
+the legal syntax for Inform source text — text originally written for use on
 Glulx, which allows for larger integers, might be moved over to a Z-machine
 project, with the user not realising the consequences.</p>
 </div>

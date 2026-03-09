@@ -198,11 +198,8 @@ calls itself in order to provide for alternate wordings in prototypes:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-pi.html#SP3_1">&#167;3.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b>  The remaining work is to look out for this sort of thing:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">deckchairs</span><span class="plain-syntax">/</span><span class="identifier-syntax">loungers</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">deckchairs</span><span class="plain-syntax">/</span><span class="identifier-syntax">loungers</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...
+</span></pre>
 <p>where the slash indicates an alternative wording:</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for slash-divided alternative phrasings and recurse to register all variations</span><span class="named-paragraph-number">3.2</span></span> =</p>
@@ -226,16 +223,13 @@ calls itself in order to provide for alternate wordings in prototypes:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-pi.html#SP3">&#167;3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_2_1" class="paragraph-anchor"></a><b>&#167;3.2.1. </b>  What we do is to reconstruct this as two different registrations:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">deckchairs</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...</span>
-<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">loungers</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">deckchairs</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...
+</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">rearrange</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">loungers</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">ship</span><span class="plain-syntax">): ...
+</span></pre>
 <p>and then recursively call ourselves to handle each individual one. We'll call
 the left and right hand sides of &quot;deckchairs/loungers&quot; the A and B forms.</p>
 <p>Note than a phrase with many slashed words will register a frightening number of
-possibilities -- for example,</p>
+possibilities — for example,</p>
 <blockquote>
 <p>To meld/blend/merge (O - object) onto/into/amongst/with (P - object) quickly/rapidly/pronto: ...</p>
 </blockquote>
@@ -317,19 +311,16 @@ first word, though.)</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Converting excerpt parser results to invocation lists.</b>  Suppose, then, that the excerpt parser has identified a phrase which it
 thinks may be being invoked in some text. It will have given us this subtree
 as its preliminary findings <code>p</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">VOID_PHRASE_MC</span><span class="plain-syntax"> </span><span class="string-syntax">"add 17 to the list of small primes, if absent"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"if absent"</span><span class="plain-syntax"> {</span><span class="identifier-syntax">is</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">-</span><span class="identifier-syntax">option</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"17"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"the list of small primes"</span>
-</pre>
-<div class="lsmarkdown">
-<p>and we need to return a two-token invocation subtree -- see <a href="4-inv.html" class="internal">Invocations</a> for
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	VOID_PHRASE_MC "add 17 to the list of small primes, if absent"
+	    UNKNOWN_NT "if absent" {is-phrase-option}
+	    UNKNOWN_NT "17"
+	    UNKNOWN_NT "the list of small primes"
+</span></pre>
+<p>and we need to return a two-token invocation subtree — see <a href="4-inv.html" class="internal">Invocations</a> for
 what these look like.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ParseInvocations::results_as_invocation</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ParseInvocations::results_as_invocation</span></span>:<br/>Conditions and Phrases - <a href="4-cap.html#SP12_1">&#167;12.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ParseInvocations::results_as_invocation</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ParseInvocations::results_as_invocation</span></span>:<br/>Conditions and Phrases - <a href="4-cap.html#SP10_1">&#167;10.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"parse against null subtree"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">WW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
@@ -426,16 +417,13 @@ for what these contextual codes mean.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-pi.html#SP4">&#167;4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. A more detailed view later on.</b>  In the invocation subtrees constructed above, the wording in the tokens has
-not even been looked at: we now have something like this --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">INVOCATION_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"add 17 to the list of small primes, if absent"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RVALUE_CONTEXT_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"17"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RVALUE_CONTEXT_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"the list of small primes"</span>
-</pre>
-<div class="lsmarkdown">
+not even been looked at: we now have something like this —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	INVOCATION_NT "add 17 to the list of small primes, if absent"
+		RVALUE_CONTEXT_NT
+		    UNKNOWN_NT "17"
+		RVALUE_CONTEXT_NT
+	   		UNKNOWN_NT "the list of small primes"
+</span></pre>
 <p>It is now time to look inside those <code>UNKNOWN_NT</code> nodes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

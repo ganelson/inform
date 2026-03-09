@@ -17,12 +17,13 @@ int StandardProblems::internal_errors_have_occurred(void) {
 in order that they can supply the current filename and line number
 automatically to the actual internal error functions. The result is, for
 instance,
-= (text as ConsoleText)
+
+``` ConsoleText
 >--> Problem. An internal error has occurred: Unknown verb code. The current
   sentence is "A room is a kind"; the error was detected at line 133 of
   "Chapter 5/Traverse for Objects.w". This should never happen, and I am
   now halting in abject failure.
-=
+```
 
 @d internal_error_tree_unsafe(X)
 	StandardProblems::internal_error_tu_fn(NULL, X, __FILE__, __LINE__)
@@ -48,7 +49,7 @@ void StandardProblems::internal_error_end(void) {
 @ And now for the functions which the above macros invoke. There are two
 versions: one which cites the current sentence, and another which doesn't,
 for use if either there is no current sentence (because Inform wasn't traversing
-the parse tree at the time) or if the parse tree is unsafe -- it's possible
+the parse tree at the time) or if the parse tree is unsafe — it's possible
 that the internal error occurred during parse tree construction, so we need
 to be cautious.
 

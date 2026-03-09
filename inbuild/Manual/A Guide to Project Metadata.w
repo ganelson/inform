@@ -21,7 +21,8 @@ This is a JSON file very similar to the ones used for kit metadata: see //A Guid
 which it is probably helpful to read before going much further with this.
 
 For example:
-= (text)
+
+``` None
 {
     "is": {
         "type": "project",
@@ -42,7 +43,8 @@ For example:
         }
     } ]
 }
-=
+```
+
 This example tells inbuild, and hence inform7, that the project is a command-parser
 work of IF, but that it also needs an unusual extra kit called "ChoraleKit".
 Moreover, it will build only with a version of that kit compatible (in the semantic
@@ -61,13 +63,17 @@ number. The major part of that semver is then used as the value of the
 "release number" variable; this must not contradict what the source text says.
 For example, if `is.version` is `"3.2"`, then an IF story if built from this
 project would identify itself as Release 3. If the sentence contained
-= (text as Inform 7)
+
+``` Inform7
 The release number is 3.
-=
+```
+
 that would cause no problems; but if it contained
-= (text as Inform 7)
+
+``` Inform7
 The release number is 5.
-=
+```
+
 then Inform would halt with a problem message about the contradiction.
 
 @ The `needs` object identifies any kits to be included with the project when
@@ -77,14 +83,15 @@ So for a Basic Inform only project, which uses a version of the Inform language
 with no IF-like ingredients, no command parser, and no world model, there is
 no need to have a `needs` object at all. But for a more standard use of Inform
 to make command-parser IF, CommandParserKit must be included, like so:
-= (text)
+
+``` None
     "needs": [ {
         "need": {
             "type": "kit",
             "title": "CommandParserKit"
         }
     } ]
-=
+```
 
 Because kits can include other kits automatically, other kits may well be
 included too (for example, the presence of CommandParserKit causes WorldModelKit
@@ -97,9 +104,11 @@ not need to be specified.
 be active or inactive when compiling this project. For example, suppose the
 compiler has an experimental feature called `fruit cultivation`, switched
 off by default, and a project needs to test this. It can do so by specifying:
-= (text)
+
+``` None
     "activates": [ "fruit cultivation" ],
-=
+```
+
 Similarly for `"deactivates"`. Both clauses are optional and take a list of
 feature names: those features must all exist inside the compiler, or a
 problem will be thrown on compilation. (Note that the JSON here is identical

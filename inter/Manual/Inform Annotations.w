@@ -18,35 +18,44 @@ figure is now below 10.
 
 @h Translation.
 The final code we generate is itself (probably) the source code of a program
-in some other language -- C, for example. That means that most of the symbols
+in some other language — C, for example. That means that most of the symbols
 in our Inter program will be "translated" into identifiers in that final
 program. For example, the Inter declaration:
-= (text as Inter)
+
+``` Inter
 	constant BakersDozen = 13
-=
+```
+
 might ultimately be compiled to:
-= (text as C)
+
+``` C
 	#define CON_019900_BKRSDZN 13
-=
+```
+
 An exaggerated example, perhaps, but the point is that it's normally none of
 our business what identifiers the final code-generator chooses to use.
 
 However, we can override its choice like so:
-= (text as Inter)
+
+``` Inter
 	constant BakersDozen = 13 __translation="BAKERS_DOZEN"
-=
+```
+
 And now it would come out as:
-= (text as C)
+
+``` C
 	#define BAKERS_DOZEN 13
-=
+```
 
 The `__translation` annotation is sometimes added by the final code-generator
 itself, to keep track of its translation decisions, but can also be added by
 the Inform 7 front-end compiler. Ideally it wouldn't ever do so, but this is
 the only sensible way to implement the low-level language feature:
-= (text as Inform 7)
+
+``` Inform7
 The tally is a number that varies. The tally translates into Inter as "SHAZAM".
-=
+```
+
 And this is in turn is a feature we can't simply abolish, or not without
 inventing some similar bodge, because it's needed in order to reconcile the
 natural-language names for certain standard properties (e.g., "lighted")
@@ -59,13 +68,16 @@ syntax. This can be added to any definition of an instance of an object type,
 or to the type itself.
 
 For example, the I7 source text:
-= (text as Inform 7)
+
+``` Inform7
 Include (- has door, -) when defining a door.
-=
+```
+
 leads to:
-= (text as Inter)
+
+``` Inter
 	kind K4_door <= K1_thing __append=" has door, "
-=
+```
 
 Whereas to some extent `insert` can work even if the target is not I6, the
 `__append` annotation ties the program to I6 only. At some point we may
@@ -80,20 +92,23 @@ Inform 6-syntax code in the source of a kit is given the boolean annotation
 In addition, if the definition is of a fake action or an object, the annotation
 `__fake_action` or `__object` will be applied. For example:
 
-= (text as Inform 6)
+``` Inform6
 Constant Dozen = 12;
 Fake_action PluralFound;
 Object thedark "(darkness object)";
-=
+```
+
 assimilates to:
-= (text as Inter)
+
+``` Inter
 	package Dozen_con _plain
 		constant Dozen = 12 __assimilated
 	package ##PluralFound_con _plain
 		constant ##PluralFound = 0 __assimilated __fake_action
 	package thedark_con _plain
 		constant thedark = 0 __assimilated __object
-=
+```
+
 See the Inter test case `Assim`.
 
 These three markers are applied only during assimilation, and thus only by Inter.

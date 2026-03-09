@@ -63,34 +63,25 @@ function togglePopup(material_id) {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Runtime representation.</b>  Literal lists arise from source text such as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> { </span><span class="constant-syntax">60</span><span class="plain-syntax">, </span><span class="constant-syntax">168</span><span class="plain-syntax"> };</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> { </span><span class="constant-syntax">60</span><span class="plain-syntax">, </span><span class="constant-syntax">168</span><span class="plain-syntax"> };
+</span></pre>
 <p>The data to hold <code>{ 60, 168 }</code> has to be stored somehow. As with all
 kinds for which values cannot be stored in a single word, we use a double
 pointer:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span><span class="plain-syntax">              </span><span class="identifier-syntax">large</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">pointer</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">header</span>
-<span class="plain-syntax">                        </span><span class="constant-syntax">0</span><span class="plain-syntax">                         </span><span class="identifier-syntax">strong</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span>
-<span class="plain-syntax">                                                  </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span>
-<span class="plain-syntax">                                                  </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:              large block:
+	Q ----------------&gt; pointer ----------------&gt; block value header
+	                    0                         strong kind ID for entries
+	                                              number of entries
+	                                              the entries
+</span></pre>
 <p>So in this particular example, the result would be:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                        </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span><span class="plain-syntax">              </span><span class="identifier-syntax">large</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">pointer</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">header</span>
-<span class="plain-syntax">                        </span><span class="constant-syntax">0</span><span class="plain-syntax">                         </span><span class="identifier-syntax">NUMBER_TY</span>
-<span class="plain-syntax">                                                  </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">                                                  </span><span class="constant-syntax">60</span>
-<span class="plain-syntax">                                                  </span><span class="constant-syntax">168</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	                    small block:              large block:
+	Q ----------------&gt; pointer ----------------&gt; block value header
+	                    0                         NUMBER_TY
+	                                              2
+	                                              60
+	                                              168
+</span></pre>
 <p>So the small block always occupies 2 words, the second being initially 0 and
 used at runtime; the large block can be any size we need. The runtime code has
 elaborate ways to extend or contract dynamic lists, but these of course are
@@ -127,19 +118,16 @@ constants, so we simply make the large blocks exactly the right size.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Default values for list kinds.</b>  The default list is the empty list, but note from the above representation
 that the empty list of numbers (say) is different from the empty list of texts:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">          </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span><span class="plain-syntax">              </span><span class="identifier-syntax">large</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">---&gt; </span><span class="identifier-syntax">pointer</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">header</span>
-<span class="plain-syntax">                                    </span><span class="identifier-syntax">NUMBER_TY</span>
-<span class="plain-syntax">                                    </span><span class="constant-syntax">0</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	      small block:              large block:
+	----&gt; pointer ----------------&gt; block value header
+	                                NUMBER_TY
+	                                0
 
-<span class="plain-syntax">          </span><span class="identifier-syntax">small</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span><span class="plain-syntax">              </span><span class="identifier-syntax">large</span><span class="plain-syntax"> </span><span class="identifier-syntax">block:</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">---&gt; </span><span class="identifier-syntax">pointer</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">---------------&gt; </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">header</span>
-<span class="plain-syntax">                                    </span><span class="identifier-syntax">TEXT_TY</span>
-<span class="plain-syntax">                                    </span><span class="constant-syntax">0</span>
-</pre>
-<div class="lsmarkdown">
+	      small block:              large block:
+	----&gt; pointer ----------------&gt; block value header
+	                                TEXT_TY
+	                                0
+</span></pre>
 <p>So each different kind K needs its own large block for making the default value
 of &quot;list of K&quot;: see <a href="5-ki.html#SP9" class="internal">RTKindIDs::compile_structures</a>. This block is easily made:</p>
 </div>
@@ -151,11 +139,8 @@ of &quot;list of K&quot;: see <a href="5-ki.html#SP9" class="internal">RTKindIDs
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Literals.</b>  To return to the example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> { </span><span class="constant-syntax">60</span><span class="plain-syntax">, </span><span class="constant-syntax">168</span><span class="plain-syntax"> };</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> { </span><span class="constant-syntax">60</span><span class="plain-syntax">, </span><span class="constant-syntax">168</span><span class="plain-syntax"> };
+</span></pre>
 <p>Each list literal like <code>{ 60, 168 }</code> in imperative code results in a <code>literal_list</code>
 object, and here we return its value:</p>
 </div>

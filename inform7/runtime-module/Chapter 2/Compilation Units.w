@@ -10,13 +10,12 @@ reflected in the Inter hierarchy, where each different compilation unit has its
 own sub-hierarchy, a `module_request`.
 
 =
-typedef struct compilation_unit {
+classdef compilation_unit {
 	struct module_request *to_module;
 	struct parse_node *head_node;
 	struct inter_name *extension_id;
 	struct inform_extension *extension;
-	CLASS_DEFINITION
-} compilation_unit;
+}
 
 void CompilationUnits::log(compilation_unit *cu) {
 	if (cu == NULL) LOG("<null>");
@@ -144,9 +143,9 @@ compiled from the compilation unit will go into a package of that name.
 				Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
 
-@ For timing reasons, this second round of metadata -- which provides
+@ For timing reasons, this second round of metadata — which provides
 cross-references between the compilation unit modules, to show which ones
-caused which other ones to be included -- can only be written later. (It's
+caused which other ones to be included — can only be written later. (It's
 used only for indexing.)
 
 =
@@ -197,7 +196,7 @@ inter_name *CompilationUnits::extension_id(inform_extension *owner) {
 @h What unit a node belongs to.
 We are going to need to determine, for any node `p`, which compilation unit it
 belongs to. If there were a fast way to go up in the syntax tree, that would be
-easy -- we could simply run upward until we reach a level-0 heading. But the
+easy — we could simply run upward until we reach a level-0 heading. But the
 node links all run downwards. Instead, we'll annotate the nodes in a given unit.
 The annotations propagates downwards thus:
 

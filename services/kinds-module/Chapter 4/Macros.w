@@ -7,12 +7,11 @@ Neptune supports named macros, though they are only lists of kind commands.
 @d MAX_KIND_MACRO_LENGTH 20 /* maximum number of commands in any one macro */
 
 =
-typedef struct kind_macro_definition {
+classdef kind_macro_definition {
 	struct text_stream *kind_macro_name; /* including the sharp, e.g., `"#UNIT"` */
 	int kind_macro_line_count;
 	struct single_kind_command kind_macro_line[MAX_KIND_MACRO_LENGTH];
-	CLASS_DEFINITION
-} kind_macro_definition;
+}
 
 kind_macro_definition *current_km = NULL; /* the one now being recorded */
 

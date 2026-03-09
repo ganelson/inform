@@ -135,7 +135,7 @@ _Some_ bread. The following routine allows us to choose:
 uncapitalised definite (1), or uncapitalised indefinite (2);
 - `pluralise`, a flag forcing to a plural form (e.g., "some" being the
 pluralised form of an indefinite article in English);
-- `capitalise`, a flag forcing us to capitalise the article -- it's by
+- `capitalise`, a flag forcing us to capitalise the article — it's by
 setting this that we can achieve the fourth option missing from (b), viz.,
 capitalised indefinite. (All of this is a legacy design from a time when
 the I6 library did not support capitalised indefinite articles.)

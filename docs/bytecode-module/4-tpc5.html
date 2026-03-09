@@ -78,11 +78,11 @@ function togglePopup(material_id) {
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Instructions.</b>  In bytecode, the frame of a <code>primitive</code> instruction is laid out with the
-compulsory words -- see <a href="2-in.html" class="internal">Inter Nodes</a> -- followed by a variable number of
+compulsory words — see <a href="2-in.html" class="internal">Inter Nodes</a> — followed by a variable number of
 words depending on the length of the signature.</p>
 <p>Note that <code>cat1 cat2 ... catN -&gt; result</code> takes N+1 words, one for each primitive
 category: but that <code>void -&gt; result</code> takes only 1. (Thus the not-really-a-category
-<code>void</code> is not stored when it is an argument, though it is stored -- as 0 -- when
+<code>void</code> is not stored when it is an argument, though it is stored — as 0 — when
 it is the result: the result is always stored.) It follows that the shortest
 possible signature, say <code>void -&gt; void</code>, occupies 1 word, so the minimum extent of
 a <code>primitive</code> instruction is 4.</p>

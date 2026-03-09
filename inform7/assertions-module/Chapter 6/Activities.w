@@ -7,7 +7,7 @@ An activity is just a triple of rulebooks with related names, a common focus
 and a shared set of variables, so this will not be a long section of code.
 
 =
-typedef struct activity {
+classdef activity {
 	struct wording name; /* text of the name of the activity */
 	struct rulebook *before_rules; /* rulebooks for when this is followed */
 	struct rulebook *for_rules;
@@ -17,8 +17,7 @@ typedef struct activity {
 	struct activity_compilation_data compilation_data;
 	int future_action_flag;
 	int hide_in_debugging_flag;
-	CLASS_DEFINITION
-} activity;
+}
 
 @ Whereas rulebooks can turn values into other values, activities are more like
 void functions: they work on a value, but produce nothing.

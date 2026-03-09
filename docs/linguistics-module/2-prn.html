@@ -71,12 +71,10 @@ them their own category rather than making them into a special <a href="2-nns.ht
 is an enumeration.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pronoun</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">pronoun</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">pronoun</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pronoun is accessed in 1/sc, 2/adj, 2/art, 2/daq, 2/nns, 3/vrb, 3/vu, 3/prp and here.</li></ul>
 <div class="lsmarkdown">
@@ -84,11 +82,10 @@ is an enumeration.</p>
 matched against some form of a pronoun.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pronoun_usage</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">pronoun_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pronoun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pronoun_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">grammatical_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">pronoun_usage</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pronoun_usage is accessed in 2/art, 2/nns, 3/vu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
@@ -103,8 +100,8 @@ matched against some form of a pronoun.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The stock of pronouns is fixed, as follows. We are going to regard the three
 persons as being different pronouns, since they make different references,
-though not every grammarian would agree. So we have three &quot;agent pronouns&quot; --
-those standing for subject or object -- and then three possessives, and &quot;here&quot;,
+though not every grammarian would agree. So we have three &quot;agent pronouns&quot; —
+those standing for subject or object — and then three possessives, and &quot;here&quot;,
 which stands in the place of a noun referring to a location, and is thus also
 a pronoun.</p>
 </div>

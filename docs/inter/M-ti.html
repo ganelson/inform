@@ -62,16 +62,13 @@ Inter to see if inter works; or we can write out memory inter to the
 debugging log to see if inform7 works.</p>
 <p>A textual inter file is a UTF-8 encoded text file which conventionally takes
 the file extension &quot;.intert&quot;. Here is an example, the test case <code>Hello</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">package</span><span class="plain-syntax"> main _plain</span>
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">package</span><span class="plain-syntax"> main _plain
+	</span><span class="type-syntax">package</span><span class="plain-syntax"> Main _code
+		</span><span class="type-syntax">code</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span><span class="plain-syntax">
+</span></pre>
 <p>Some basic characteristics of textual Inter can be seen at a glance. It's line-based:
 each line makes a single use of a &quot;construct&quot; like <code>package</code> or <code>code</code>. Lines
 can be of arbitrary length. A line beginning with a <code>#</code> (in column 1) is
@@ -126,11 +123,8 @@ is intended.</p>
 <p>At present Inform 7 uses this to pass on ICL (Inform Command Language)
 commands to Inform 6, such as memory settings or command-line switches.
 For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">pragma</span><span class="plain-syntax"> Inform6 </span><span class="string-syntax">"$MAX_LABELS=200000"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">pragma</span><span class="plain-syntax"> Inform6 </span><span class="string-syntax">"$MAX_LABELS=200000"</span><span class="plain-syntax">
+</span></pre>
 <p>When a program containing this instruction is generated to C, say, then this
 is ignored completely. And in fact, now that Inform has adopted Inform 6.36 as
 its preferred copy of I6, memory settings have become unnecessary and are
@@ -140,12 +134,9 @@ ignored by I6 anyway, so even this use of <code>pragma</code> may yet disappear.
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  <code>packagetype _NAME</code> declares that <code>_NAME</code> can be used as a package type.
 It's actually unnecessary to write this explicitly, which is why the <code>Hello</code>
 example did not begin with:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">packagetype</span><span class="plain-syntax"> _plain</span>
-<span class="plain-syntax">    </span><span class="type-syntax">packagetype</span><span class="plain-syntax"> _code</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">packagetype</span><span class="plain-syntax"> _plain
+	</span><span class="type-syntax">packagetype</span><span class="plain-syntax"> _code
+</span></pre>
 <p>If the program creates, say, <code>package MOMA _museum</code>, then the necessary
 package type instruction <code>packagetype _museum</code> will be inferred automatically.
 Nevertheless, it's valid to spell this out.</p>
@@ -163,31 +154,22 @@ this name and signature can be used in the program. Primitives occur only
 inside of functions, where they are &quot;invoked&quot;, and they are operations
 sufficiently basic that they cannot themselves be written as other Inter
 functions. For example, in <code>Hello</code> we saw:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span><span class="plain-syntax">
+</span></pre>
 <p>This is an invocation of the primitive <code>!print</code>, which prints text. The
 &quot;signature&quot; of this is <code>val -&gt; void</code>, meaning that it expects to have one
 argument, a value, and produces no result.</p>
 <p>The declarations for the two primitives in <code>Hello</code> would look like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-<span class="plain-syntax">    </span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+	</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+</span></pre>
 <p>But once again they do not need to be given, because they are part of the
 standard set of Inter primitives supported by <a href="index.html" class="internal">inter</a>. So these definitions
 are implicitly made as needed.</p>
 <p>In principle, though, the program could create entirely novel primitives:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!flytoarabia</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!flytoarabia</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+</span></pre>
 <p>And this will work perfectly well... except that <a href="index.html" class="internal">inter</a> will not be able
 to code-generate from the result without modification, because it won't know
 how to fly to Arabia. So in practice, unless you are experimenting with
@@ -199,29 +181,23 @@ the package's owner. For <code>main</code>, it should be unindented, and this is
 only package allowed to appear at the top level: all other packages should
 be inside <code>main</code> in some way.</p>
 <p>The contents of the package are then one tab stop in from the declaration. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> main _plain</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">        </span><span class="type-syntax">package</span><span class="plain-syntax"> m1_RBLK1 _code</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        </span><span class="type-syntax">package</span><span class="plain-syntax"> m1_RBLK2 _code</span>
-<span class="plain-syntax">            ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> main _plain
+	    ...
+	    </span><span class="type-syntax">package</span><span class="plain-syntax"> m1_RBLK1 _code
+	        ...
+	    </span><span class="type-syntax">package</span><span class="plain-syntax"> m1_RBLK2 _code
+	        ...
+</span></pre>
 <p>Here, <code>main</code> contains two sub-packages, <code>m1_RBLK1</code> and <code>m1_RBLK2</code>, and
 indentation is used to show which package a statement belongs to.</p>
 <p>Packages of any type can freely be created inside packages of any other type,
 except that <code>_code</code> packages cannot have subpackages. So this hypothetical bit of
 Inter is illegal:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> my_function _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">package</span><span class="plain-syntax"> inner_part _code</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> my_function _code
+		</span><span class="type-syntax">package</span><span class="plain-syntax"> inner_part _code
+			...
+		...
+</span></pre>
 <p>Here, <code>inner_part</code> cannot be made a subpackage of <code>my_function</code> because <code>_code</code>
 packages have no subpackages.</p>
 </div>

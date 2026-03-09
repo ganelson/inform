@@ -70,12 +70,11 @@ discussing stars and to &quot;dwarves&quot; when reading Tolkien, but it is devo
 to be hoped that few works of IF will contain both at once.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">plural_dictionary_entry</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">plural_dictionary_entry</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defined_in</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">singular_form</span><span class="plain-syntax">; </span><span class="comment-syntax">/* words of singular form */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_form</span><span class="plain-syntax">; </span><span class="comment-syntax">/* words of plural form */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">plural_dictionary_entry</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure plural_dictionary_entry is accessed in 3/vc and here.</li></ul>
 <div class="lsmarkdown">
@@ -93,8 +92,8 @@ which is why we do not trouble to search the existing dictionary here.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Searching the plural dictionary.</b>  The following routine can either be called once only -- in which case it
-yields up the best known plural for the phrase -- or iteratively, in which
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Searching the plural dictionary.</b>  The following routine can either be called once only — in which case it
+yields up the best known plural for the phrase — or iteratively, in which
 case it serves up all known plurals of the given phrase, starting with the
 best (the earliest defined in the text, if any plural for this phrase has
 been so defined) and finishing up with the worst (a mechanically-made

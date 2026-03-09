@@ -35,7 +35,7 @@ never needed in practice, but we must avoid any risk of buffer overrun for safet
 @d TYPICAL_I6_SCHEMA_LENGTH 128 /* in practice 40 is plenty */
 
 =
-typedef struct i6_schema {
+classdef i6_schema in 100s {
 	inchar32_t prototype_storage[TYPICAL_I6_SCHEMA_LENGTH]; /* used just to make space for... */
 	struct text_stream prototype; /* ...this */
 	int no_quoted_inames;
@@ -43,7 +43,7 @@ typedef struct i6_schema {
 	struct inter_schema *compiled;
 	struct inter_name *quoted_inames[2];
 	#endif
-} i6_schema;
+}
 
 @h Annotated schemas.
 It is sometimes convenient to carry around a schema together with calculus
@@ -78,13 +78,15 @@ even more elaborate syntax, with escapes like `%s` in them. But this is because
 they are generated with the following `printf`-style function. Those `%` escapes
 are expanded now, when the schema is created, and not later when code is generated
 from it. For example, the function call:
-= (text as InC)
-Calculus::Schemas::new("*1.%n = *2.%n", X, Y)
-=
+
+	Calculus::Schemas::new("*1.%n = *2.%n", X, Y)
+
 might produce a schema whose `prototype` text came out as
-= (text)
+
+``` None
 *1.x100 = *2.y62
-=
+```
+
 ...supposing that `x100` and `y62` were the Inter identifiers for whatever was
 referred to by the `inter_name` values `X` and `Y` supplied in the arguments.
 Here then is that `printf`-like function:

@@ -22,7 +22,7 @@ void InvInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of an `inv` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d METHOD_INV_IFLD  (DATA_IFLD + 0)
 @d INVOKEE_INV_IFLD (DATA_IFLD + 1)

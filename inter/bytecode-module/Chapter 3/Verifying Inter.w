@@ -153,7 +153,7 @@ inter_error_message *VerifyingInter::GSID_field(inter_tree_node *P, int field,
 	return NULL;
 }
 
-@ This checks an ID for a symbol which has to represent a property owner -- so,
+@ This checks an ID for a symbol which has to represent a property owner — so,
 either the typename for an enumerated type, or an instance.
 
 =

@@ -52,7 +52,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#2">Chapter 2: Declarations</a></li><li><b>Booting Verbs</b></li></ul></div>
 <p class="purpose">In Inform even verbs are created with natural language sentences, but this process has to start somewhere.</p>
 
-<ul class="toc"><li><a href="2-bv.html#SP1">&#167;1. Verbs</a></li><li><a href="2-bv.html#SP5">&#167;5. Built-in relation names</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-bv.html#SP1">&#167;1. Verbs</a></li><li><a href="2-bv.html#SP2">&#167;2. Built-in relation names</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verbs.</b>  &quot;Booting&quot; is the traditional computing term for &quot;pulling yourself up by
@@ -72,13 +72,13 @@ means? We break this circularity by hard-wiring it, as follows.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BootVerbs::make_built_in</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_mean</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">special_meaning_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">meaning_of_mean</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the special meanings</span></span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the verbs to be and to mean</span></span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Give meaning to mean</span></span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the special meanings</span></span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create the verbs to be and to mean</span></span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bv.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Give meaning to mean</span></span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  &quot;Regular&quot; meanings involve relations between two values: for example, carrying
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>  &quot;Regular&quot; meanings involve relations between two values: for example, carrying
 and numerical greater-than are both regular meanings, of the verbs &quot;to carry&quot;
 and <code>&gt;</code> respectively.</p>
 <p>&quot;Special&quot; meanings are different. The noun phrases need not represent values,
@@ -92,7 +92,7 @@ module decides which if any is meant in a given case by calling the &quot;specia
 meaning functions&quot; to see which if any wants to accept the sentence in question.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  When the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module looks for a primary verb, it may find
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  When the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module looks for a primary verb, it may find
 multiple candidates: consider &quot;fruit flies like a banana&quot;, where &quot;flies&quot; and
 &quot;like&quot; are both candidate verbs. We decide by (a) ranking verbs in tiers by
 &quot;priority number&quot;, and failing that (b) choosing the leftmost. Priority 0
@@ -115,13 +115,13 @@ meaning (priority 4). This is why the sentence:</p>
 the regular one (4).</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>  So, then, here are the core module's special meanings. Just like regular
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b>  So, then, here are the core module's special meanings. Just like regular
 meanings, which have names like &quot;containment relation&quot;, special meanings have
 names. But as these names are only used in early boot sentences in the
 <a href="../basic_inform/index.html" class="internal">basic_inform</a> extension, the user never sees them. They are required to
 be a single word, and are hyphenated.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the special meanings</span><span class="named-paragraph-number">1.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the special meanings</span><span class="named-paragraph-number">1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-nrr.html#SP2" class="function-link"><span class="function-syntax">RelationRequests::new_relation_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"new-relation"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -130,13 +130,13 @@ be a single word, and are hyphenated.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-rpr.html#SP10" class="function-link"><span class="function-syntax">RulePlacement::does_nothing_if_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"rule-does-nothing-if"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-rpr.html#SP11" class="function-link"><span class="function-syntax">RulePlacement::does_nothing_unless_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"rule-does-nothing-unless"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP5" class="function-link"><span class="function-syntax">Translations::translates_into_unicode_as_SMF</span></a><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP4" class="function-link"><span class="function-syntax">Translations::translates_into_unicode_as_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"translates-into-unicode"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP9" class="function-link"><span class="function-syntax">Translations::translates_into_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP8" class="function-link"><span class="function-syntax">Translations::translates_into_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"translates-into-i6"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP11" class="function-link"><span class="function-syntax">Translations::defined_by_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP10" class="function-link"><span class="function-syntax">Translations::defined_by_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"defined-by-inter"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP13" class="function-link"><span class="function-syntax">Translations::accessible_to_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP12" class="function-link"><span class="function-syntax">Translations::accessible_to_Inter_as_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"accessible-to-inter"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-tr.html#SP2" class="function-link"><span class="function-syntax">Translations::translates_into_language_as_SMF</span></a><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"translates-into-language"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -165,15 +165,15 @@ be a single word, and are hyphenated.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-bv.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  We need the English infinitive forms of two verbs to get started. In each
-case we use the <a href="../inflections-module/index.html" class="internal">inflections</a> module to conjugate them -- i.e., to generate
-all the other forms, &quot;is&quot;, &quot;did not mean&quot; and so on -- and then hand them to
+<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4. </b>  We need the English infinitive forms of two verbs to get started. In each
+case we use the <a href="../inflections-module/index.html" class="internal">inflections</a> module to conjugate them — i.e., to generate
+all the other forms, &quot;is&quot;, &quot;did not mean&quot; and so on — and then hand them to
 the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module to add to its stock of known verbs. (It starts out
 with none, so these are initially the only two.)</p>
 <p>We need to create &quot;to be&quot; first because (a) it is the only copular verb in
 Inform, and there is no way to create a copular verb using Inform source text;
 and (b) because this enables us to conjugate forms of &quot;mean&quot; such as &quot;X is
-meant by&quot; -- note the use of &quot;is&quot;.</p>
+meant by&quot; — note the use of &quot;is&quot;.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;bootstrap-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -181,7 +181,7 @@ meant by&quot; -- note the use of &quot;is&quot;.</p>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">mean</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the verbs to be and to mean</span><span class="named-paragraph-number">1.2</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the verbs to be and to mean</span><span class="named-paragraph-number">1.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">infinitive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PreformUtilities::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;bootstrap-verb&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
@@ -198,10 +198,10 @@ meant by&quot; -- note the use of &quot;is&quot;.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-bv.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b>  Those two verbs are now part of our linguistic stock, but do not yet mean
+<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6. </b>  Those two verbs are now part of our linguistic stock, but do not yet mean
 anything. We need to give the build-in &quot;verb-means&quot; meaning to &quot;to mean&quot;:</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give meaning to mean</span><span class="named-paragraph-number">1.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give meaning to mean</span><span class="named-paragraph-number">1.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">to_mean</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">meaning_of_mean</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"could not make to mean"</span><span class="plain-syntax">);</span>
@@ -209,7 +209,7 @@ anything. We need to give the build-in &quot;verb-means&quot; meaning to &quot;t
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-bv.html#SP1">&#167;1</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Built-in relation names.</b>  These have to be defined somewhere, and it may as well be here.</p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Built-in relation names.</b>  These have to be defined somewhere, and it may as well be here.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EQUALITY_RELATION_NAME</span> <span class="constant-syntax">0</span>
 </pre>
@@ -262,7 +262,7 @@ anything. We need to give the build-in &quot;verb-means&quot; meaning to &quot;t
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DIALOGUE_CONTAINMENT_RELATION_NAME</span> <span class="constant-syntax">24</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  These are the English names of the built-in relations. The use of hyphenation
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  These are the English names of the built-in relations. The use of hyphenation
 here is a fossil from the times when Inform allowed only single-word relation
 names; but it doesn't seem worth changing, especially as the hyphenated
 relations are almost never needed for anything. All the same, translators into

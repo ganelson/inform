@@ -14,7 +14,7 @@ example, "Henry taking the brick". Here Henry is the "actor", and the brick is
 right; thus, a variable could be set to the value "Henry taking the brick",
 and this would have kind `K_stored_action`. Inside the compiler they are
 represented by //explicit_action// objects.
-- An "action name" -- not an ideal thing to call it, but traditional -- is the
+- An "action name" — not an ideal thing to call it, but traditional — is the
 type of action involved, taken in isolation: for example, "taking". These can
 also be values at run-time, they have kind `K_action_name`, and they are
 represented in the compiler by //action_name// objections.
@@ -218,7 +218,7 @@ new action, and the OP can include a wide range of details about it.
 			<action-sentence-object>(Node::get_text(V->next->next));
 		}
 
-@ The subject noun phrase needs little further parsing -- it's the name of the
+@ The subject noun phrase needs little further parsing — it's the name of the
 action-to-be. A successful match here causes the new //action_name// structure
 to be created.
 

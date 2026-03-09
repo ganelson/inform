@@ -13,21 +13,25 @@ the "translated" name is the identifier used for it in the code we generated.)
 
 So the following gives unique translated names to symbols marked with the
 `MAKE_NAME_UNIQUE_ISYMF` bit. So for example
-= (text)
+
+``` None
 	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
 	call		TRUE				    --
 	call		TRUE			    	--
 	example		FALSE				    --
 	call		TRUE				    --
-=
+```
+
 will become
-= (text)
+
+``` None
 	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
 	call		FALSE				    call_U1
 	call		FALSE				    call_U2
 	example		FALSE				    --
 	call		FALSE				    call_U3
-=
+```
+
 Only the translation changes, not the name itself, which remains `call`.
 
 Note that this operation is done at the end of linking because these `call`
@@ -59,10 +63,9 @@ integers, only to structures allocated by the memory manager: so we must use
 the following.
 
 =
-typedef struct uniqueness_count {
+classdef uniqueness_count {
 	int count;
-	CLASS_DEFINITION
-} uniqueness_count;
+}
 
 @ Note that if `S` is equated to some other symbol, then its translated
 name will never matter, because identifiers in the eventual code will come

@@ -11,14 +11,13 @@ there are none.
 = (early code)
 bp_family *explicit_bp_family = NULL;
 bp_family *by_function_bp_family = NULL;
-typedef struct explicit_bp_data {
+classdef explicit_bp_data {
 	int form_of_relation; /* one of the `Relation_*` constants defined below */
 	struct property *i6_storage_property; /* provides run-time storage */
 	struct equivalence_bp_data *equiv_data; /* only used for `Relation_Equiv` */
 	struct inter_name *v2v_bitmap_iname; /* only used for `Relation_VtoV` and `Relation_Sym_VtoV` */
 	int store_dynamically;
-	CLASS_DEFINITION
-} explicit_bp_data;
+}
 
 @ =
 void ExplicitRelations::start(void) {
@@ -92,7 +91,7 @@ int ExplicitRelations::relates_values_not_objects(binary_predicate *bp) {
 
 @ When the source text declares new relations, it turns out to be convenient
 to make their BPs in a two-stage process: to make sketchy, mostly-blank BP
-structures for them early on -- but getting their names registered -- and
+structures for them early on — but getting their names registered — and
 then fill in the correct details later. This is where such sketchy pairs are
 made:
 

@@ -20,7 +20,7 @@ vector Geometry::zero(void) {
 }
 
 @ Now for vectors pointing in each direction. Note that not all of these are of
-unit length -- rather, they are the ideal grid offsets on the map we will
+unit length — rather, they are the ideal grid offsets on the map we will
 eventually draw.
 
 =

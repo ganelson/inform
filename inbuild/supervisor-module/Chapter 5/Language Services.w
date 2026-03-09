@@ -16,7 +16,7 @@ small resource folder called its "bundle". (This includes English.)
 @d MAX_LSUPPORTS 5
 
 =
-typedef struct inform_language {
+classdef inform_language {
 	struct inbuild_copy *as_copy;
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
@@ -27,8 +27,7 @@ typedef struct inform_language {
 	int adaptive_person; /* which person text substitutions are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */
 	int supports[MAX_LSUPPORTS];
-	CLASS_DEFINITION
-} inform_language;
+}
 
 @ This is called as soon as a new copy `C` of the language genre is created.
 
@@ -176,7 +175,7 @@ void Languages::construct_graph(inform_language *L) {
 @h Finding by name.
 Given the name of a natural language (e.g., "German") we find the
 corresponding definition. That will mean searching for a copy, and that
-raises the question of where to look -- in particular, it's important to
+raises the question of where to look — in particular, it's important to
 include the Materials folder for any relevant project.
 
 =

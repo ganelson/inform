@@ -6,12 +6,12 @@ To build tree structures which represent Inform's universe of kinds.
 Kinds are represented by pointers to trees made up of //kind// objects, like so:
 
 =
-typedef struct kind {
+classdef kind in 1000s {
 	struct kind_constructor *construct; /* which can never be `NULL` */
 	int kind_variable_number; /* only used if construct is `CON_KIND_VARIABLE` */
 	struct unit_sequence *intermediate_result; /* only used if construct is `CON_INTERMEDIATE` */
 	struct kind *kc_args[MAX_KIND_CONSTRUCTION_ARITY]; /* used if arity positive, or for `CON_KIND_VARIABLE` */
-} kind;
+}
 
 @ Some kinds, like `number`, are atomic while others, like `relation of numbers to texts`,
 are composite. Each //kind// object is formally a "construction" resulting from
@@ -19,12 +19,14 @@ applying a //kind_constructor// to other kinds. Each different possible construc
 has a fixed "arity", the number of other kinds it builds on. For example, to make
 the kind `relation of texts to lists of times`, we need four constructions in
 a row:
-= (text)
+
+``` None
 	(nothing) --> text
 	(nothing) --> time
 	time --> list of times
 	text, list of times --> relation of texts to lists of times
-=
+```
+
 At each step there is only a finite choice of possible "kind constructions"
 which can be made, but since there can in principle be an unlimited number
 of steps, the set of all possible kinds is infinite. At each step we make
@@ -47,7 +49,8 @@ this, for testing different features of //kinds//.)
 arity, or needing different arity in different usages, so the scheme of
 having fixed arities in the range 0 to 2 looks limited. In practice we get
 around that by using "punctuation nodes" in a kind tree. For example,
-= (text)
+
+``` None
 	function ... -> ...
 		CON_TUPLE_ENTRY
 			text
@@ -55,7 +58,8 @@ around that by using "punctuation nodes" in a kind tree. For example,
 				text
 				CON_VOID
 		number
-=
+```
+
 represents `function (text, text) -> number`. Note two special constructors
 used here: `CON_TUPLE_ENTRY` and `CON_NIL`. These cannot occur in isolation.
 No Inform variable can have kind `CON_TUPLE_ENTRY`, for example.
@@ -131,9 +135,11 @@ kind *Kinds::var_construction(int N, kind *declaration) {
 
 @ That completes the possible base constructions. Proper constructions are made
 using the following. For example,
-= (text)
+
+``` None
 	Kinds::unary_con(CON_list_of, K_number)
-=
+```
+
 produces a kind structure meaning "list of numbers". This is not cached
 anywhere, so a second request for the same thing will produce a different copy
 in memory of the same structure. Profiling shows that little memory is in
@@ -179,19 +185,23 @@ making use of the punctuation nodes `CON_TUPLE_ENTRY` and `CON_NIL`. Note
 that we use `K_nil` to represent the absence of a return kind (the "nothing"
 in a function to nothing). Note also that a function from X to Y, with just
 one argument, comes out as:
-= (text)
+
+``` None
 	CON_phrase
 		CON_TUPLE_ENTRY
 			X
 			CON_VOID
 		Y
-=
+```
+
 rather than as:
-= (text)
+
+``` None
 	CON_phrase
 		X
 		Y
-=
+```
+
 (It's more convenient to have a predictable form than to save on kind nodes.)
 
 =

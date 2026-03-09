@@ -8,7 +8,7 @@ the Preform parser quickly to reject non-matches, the other being
 //Length Extremes//, which is easier to understand.
 
 It may elucidate both to see the actual optimisation data for nonterminals
-as used in a typical run of Inform 7 -- see //inform7: Performance Metrics//.
+as used in a typical run of Inform 7 — see //inform7: Performance Metrics//.
 
 @h Incidence bits.
 Each NT is assigned an "incidence bit", but this is generated on demand;
@@ -19,8 +19,8 @@ these are signed integers and `1 << 31` has undefined behaviour in C;
 compiling `-fsanitize=undefined` produces errors in the function below if it
 is used.
 
-The lowest 6 bits are reserved -- see //NTI::give_nt_reserved_incidence_bit//
-below -- but bits 7 to 31 are free, and the following function cycles through
+The lowest 6 bits are reserved — see //NTI::give_nt_reserved_incidence_bit//
+below — but bits 7 to 31 are free, and the following function cycles through
 those 26 possibilities. Those 26 don't have any semantic significance; they
 simply divide up the nonterminals into 26 different bins of roughly equal
 sizes, in the same sort of way that keys are divided up in hash tables.
@@ -101,17 +101,19 @@ int NTI::get_range_conjunction(wording W) {
 The NTI bitmaps for words are not easy to put together, but provided this
 can be done correctly then we can benefit from systematic criteria to reject
 doomed matches quickly when parsing. For example, suppose we have grammar:
-= (text as Preform)
+
+``` Preform
 	<recipe> ::=
 	    pan-fried <fish> |
 	    <fish> veronique |
 	    battered <fish>
-=
+```
+
 and we are trying to match the text "galvanised zinc". The Optimiser has
 already determined that the word "galvanised" is not used anywhere in the
-grammar for <fish>, and similarly the word "zinc" -- so neither word has
+grammar for <fish>, and similarly the word "zinc" — so neither word has
 the incidence bit for <fish> in its NTI. But the Optimiser can also see that
-each of the three productions involves <fish> somewhere -- not always in
+each of the three productions involves <fish> somewhere — not always in
 the same position, but somewhere. It therefore knows that for a wording to
 match, one of the words must have the <fish> incidence bit. And since
 neither "galvanised" nor "zinc" have it, the wording "galvanised zinc"
@@ -137,7 +139,7 @@ And a rule can apply to the NTI bits in two ways:
 
 That makes six combinations in all: DW, DS, CW, CS, FW, and FS.
 
-For example, suppose a NTIC has `DS_req` set to `0x280` -- i.e., to a bitmap
+For example, suppose a NTIC has `DS_req` set to `0x280` — i.e., to a bitmap
 in which bits 7 and 9 are set (counting upwards from 0). This is then saying
 that a word range such as "sense and prejudice" can only be a match if one
 of the three words "sense", "and" or "prejudice" has both bits 7 and 9 set.
@@ -394,7 +396,7 @@ int NTI::disjoin_fs(int m1, int m2) {
 
 @h Range requirement simplification.
 Once the bitmaps in all the necessary requirements have been made, the following
-is used to simplify them -- paring down any logical redundancy in them, so
+is used to simplify them — paring down any logical redundancy in them, so
 that the simplest possible tests will be applied by //NTI::nt_bitmap_violates//.
 
 =
@@ -413,7 +415,7 @@ void NTI::simplify_requirement(nti_constraint *ntic) {
 
 @ Suppose the NTIC says "one of these words has to have bit X", a disjunction
 test, but also "the first word has to have bit X", a first word text. Then we
-can get rid of the disjunction test -- it is implied by the first word text,
+can get rid of the disjunction test — it is implied by the first word text,
 and is both slower and weaker.
 
 @<Remove a disjunction test contained in a first-word test@> =
@@ -445,7 +447,7 @@ of A. Then the first, weak, test can go, since it is implied by the strong one.
 	if ((ntic->CW_req & ntic->CS_req) == ntic->CW_req) ntic->CW_req = 0;
 
 @ The "ditto flag" on a requirement is used when there are two requirements,
-here `prev` then `ntic`, representing alternatives for parsing the same text --
+here `prev` then `ntic`, representing alternatives for parsing the same text —
 i.e., it must match either `prev` or `ntic`. If these two requirements are
 the same, we needn't check the second one after the first has been checked.
 So we give `ntic` the ditto flag, to say "same as the one before".
@@ -560,8 +562,8 @@ currently have no constraints.
 So the parent (i.e., the tool using //words//) may want to intervene. It does
 that at two points:
 
-(a) When it starts up, it can call //NTI::give_nt_reserved_incidence_bit// --
-see below -- or //Nonterminals::make_numbering// or //Nonterminals::flag_words_with//.
+(a) When it starts up, it can call //NTI::give_nt_reserved_incidence_bit// —
+see below — or //Nonterminals::make_numbering// or //Nonterminals::flag_words_with//.
 
 (b) When //The Optimiser// runs, it calls two callback functions which have
 a chance to add NTI constraints to nonterminals.

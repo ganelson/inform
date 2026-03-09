@@ -9,14 +9,13 @@ pattern here is empty, while the right pattern is `+action+`.
 @d MAX_PATTERN_LENGTH 1024
 
 =
-typedef struct index_markup_notation {
+classdef index_markup_notation {
 	inchar32_t left_pattern[MAX_PATTERN_LENGTH];  /* null-terminated wide C string */
 	int left_width;
 	inchar32_t right_pattern[MAX_PATTERN_LENGTH]; /* null-terminated wide C string */
 	int right_width;
 	struct indexing_category *category;
-	CLASS_DEFINITION
-} index_markup_notation;
+}
 
 index_markup_notation *IndexMarkupNotations::add(compiled_documentation *cd,
 	text_stream *L, text_stream *R, indexing_category *category) {

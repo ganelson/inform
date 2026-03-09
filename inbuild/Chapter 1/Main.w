@@ -324,7 +324,7 @@ void Main::add_target(inbuild_copy *to_add) {
 
 @ The following sorts the list of targets before returning it. This is partly
 to improve the quality of the output of `-inspect`, but also to make the
-behaviour of //inbuild// more predictable across platforms -- the raw target
+behaviour of //inbuild// more predictable across platforms — the raw target
 list tends to be in order of discovery of the copies, which in turn depends on
 the order in which filenames are read from a directory listing.
 

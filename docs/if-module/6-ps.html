@@ -151,11 +151,10 @@ identifier <code>PERFORMANCE_STYLE_TY</code>.</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Internally, styles have the following additional data:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">performance_style</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">performance_style</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_instance</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the constant for the name of the style */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">stem_of_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">performance_style</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::get_name</span><span class="plain-syntax">(</span><span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -168,7 +167,7 @@ identifier <code>PERFORMANCE_STYLE_TY</code>.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::default</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::default</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::default</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::default</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -187,8 +186,8 @@ structure is just going to be <a href="6-ps.html#SP8" class="internal">performan
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::new</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::new</span></span>:<br/><a href="6-ps.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">performance_style</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Connect the performance style structure to the instance</span></span><span class="named-paragraph-number">11.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Initialise the performance style structure</span></span><span class="named-paragraph-number">11.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Connect the performance style structure to the instance</span></span><span class="named-paragraph-number">11.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Initialise the performance style structure</span></span><span class="named-paragraph-number">11.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;performance-style-name-convention&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;performance-style-name-convention&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -217,21 +216,21 @@ structure is just going to be <a href="6-ps.html#SP8" class="internal">performan
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b> </p>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1. </b> </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;performance-style-name-convention&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spoken</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the performance style structure</span><span class="named-paragraph-number">11.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the performance style structure</span><span class="named-paragraph-number">11.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  This is a style name which Inform provides special support for; it recognises
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3. </b>  This is a style name which Inform provides special support for; it recognises
 the English name, so there is no need to translate this to other languages.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -239,7 +238,7 @@ the English name, so there is no need to translate this to other languages.</p>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spoken</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">normally</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect the performance style structure to the instance</span><span class="named-paragraph-number">11.2</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect the performance style structure to the instance</span><span class="named-paragraph-number">11.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -249,11 +248,11 @@ the English name, so there is no need to translate this to other languages.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  So we sometimes want to be able to get from an instance to its performance style
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  So we sometimes want to be able to get from an instance to its performance style
 structure.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::from_named_constant</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::from_named_constant</span></span>:<br/><a href="6-ps.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::from_named_constant</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::from_named_constant</span></span>:<br/><a href="6-ps.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">))</span>
@@ -262,7 +261,7 @@ structure.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  We parse the name of a style first by the regular excerpt parser, which
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  We parse the name of a style first by the regular excerpt parser, which
 would pick up something like &quot;spoken normally&quot;, and then by hand if that
 fails, looking for the abbreviated form &quot;normally&quot;. Speed isn't very important
 here, since the only context in which the word &quot;spoken&quot; can be omitted is in
@@ -270,14 +269,14 @@ the bracketed clauses of a line, so the total number of calls to this function
 will never be more than the number of dialogue lines in the story.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::parse_style</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::parse_style</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::parse_style</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::parse_style</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-type-expression-uncached&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">CW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">desc</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><a href="6-ps.html#SP14" class="function-link"><span class="function-syntax">PerformanceStyles::from_named_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="type-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><a href="6-ps.html#SP12" class="function-link"><span class="function-syntax">PerformanceStyles::from_named_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ps</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ps</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>

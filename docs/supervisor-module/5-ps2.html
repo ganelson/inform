@@ -65,7 +65,7 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scanning metadata.</b>  Metadata for projects is stored in the following structure.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stand_alone</span><span class="plain-syntax">; </span><span class="comment-syntax">/* rather than being in a .inform project bundle */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">materials_nest</span><span class="plain-syntax">;</span>
@@ -91,8 +91,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">fix_rng</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compile_for_release</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compile_only</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inform_project</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inform_project is accessed in 1/sm, 2/edt, 2/cps, 2/rqr, 2/nst, 2/jm, 3/bg, 3/ib, 3/is3, 4/em, 4/ebm, 4/pbm, 4/pfm, 5/es, 5/ks, 5/ls, 5/ps, 5/ts, 6/st, 6/hdn, 6/inc, 6/vmg, 7/tm, 7/eip, 7/ti, 7/tc, 7/dc, 7/dr and here.</li></ul>
 <div class="lsmarkdown">
@@ -360,7 +359,7 @@ reasons, this list is created on demand.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::add_language_extension_nest</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Projects::add_language_extension_nest</span></span>:<br/><a href="5-ps2.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_of_play</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_of_play</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">belongs_to</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_of_play</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">belongs_to</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP6" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP5" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax">, </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
@@ -368,10 +367,10 @@ reasons, this list is created on demand.</p>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::add_standard_rules_nest</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Projects::add_standard_rules_nest</span></span>:<br/><a href="5-ps2.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">SR</span><span class="plain-syntax"> = </span><a href="5-es.html#SP23" class="function-link"><span class="function-syntax">Extensions::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Standard Rules"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Graham Nelson"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">SR</span><span class="plain-syntax"> = </span><a href="5-es.html#SP22" class="function-link"><span class="function-syntax">Extensions::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Standard Rules"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Graham Nelson"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="5-ps2.html#SP8" class="function-link"><span class="function-syntax">Projects::nest_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">proj</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SR</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP6" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SR</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP5" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SR</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax">) </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax">, </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Unable to locate Standard Rules\n"</span><span class="plain-syntax">);</span>
@@ -379,10 +378,10 @@ reasons, this list is created on demand.</p>
 <span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::add_basic_inform_nest</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Projects::add_basic_inform_nest</span></span>:<br/><a href="5-ps2.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">SR</span><span class="plain-syntax"> = </span><a href="5-es.html#SP23" class="function-link"><span class="function-syntax">Extensions::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Basic Inform"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Graham Nelson"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">SR</span><span class="plain-syntax"> = </span><a href="5-es.html#SP22" class="function-link"><span class="function-syntax">Extensions::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Basic Inform"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Graham Nelson"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="5-ps2.html#SP8" class="function-link"><span class="function-syntax">Projects::nest_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">proj</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SR</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP6" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SR</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="5-es.html#SP5" class="function-link"><span class="function-syntax">Extensions::materials_nest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SR</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax">) </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="type-syntax">inbuild_nest</span><span class="plain-syntax">, </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Unable to locate Basic Inform\n"</span><span class="plain-syntax">);</span>
@@ -413,8 +412,8 @@ has a single, &quot;primary&quot;, one.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The following constructs the list of &quot;source vertices&quot; -- vertices in the
-build graph representing the source files -- on demand. The reason this isn't
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The following constructs the list of &quot;source vertices&quot; — vertices in the
+build graph representing the source files — on demand. The reason this isn't
 done automatically when the <code>proj</code> is created is that we needed to give time
 for someone to call <a href="5-ps2.html#SP10" class="internal">Projects::set_primary_source</a>, since that will affect
 the outcome.</p>
@@ -638,18 +637,17 @@ kit of pre-compiled Inter to merge into it, so all projects will depend on
 at least one kit, and probably several.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">kit_dependency</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">kit_dependency</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_kit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">because_of_language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inform_kit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">because_of_kit</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">kit_dependency</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure kit_dependency is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::add_kit_dependency</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Projects::add_kit_dependency</span></span>:<br/><a href="5-ps2.html#SP23_1">&#167;23.1</a>, <a href="5-ps2.html#SP33">&#167;33</a><br/>Extension Services - <a href="5-es.html#SP10">&#167;10</a><br/>Kit Services - <a href="5-ks.html#SP9">&#167;9</a><br/>Language Services - <a href="5-ls.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit_name</span><span class="plain-syntax">,</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::add_kit_dependency</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Projects::add_kit_dependency</span></span>:<br/><a href="5-ps2.html#SP23_1">&#167;23.1</a>, <a href="5-ps2.html#SP33">&#167;33</a><br/>Extension Services - <a href="5-es.html#SP9">&#167;9</a><br/>Kit Services - <a href="5-ks.html#SP9">&#167;9</a><br/>Language Services - <a href="5-ls.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kit_name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">because_of_language</span><span class="plain-syntax">, </span><span class="type-syntax">inform_kit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">because_of_kit</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nests</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-ps2.html#SP22" class="function-link"><span class="function-syntax">Projects::uses_kit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">, </span><span class="identifier-syntax">kit_name</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -860,7 +858,7 @@ reads them in for every kit which is included in the project.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::activate_extension_elements</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Projects::activate_extension_elements</span></span>:<br/><a href="5-ps2.html#SP37_4">&#167;37.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ext</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="type-syntax">inform_extension</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extensions_included</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="5-es.html#SP10" class="function-link"><span class="function-syntax">Extensions::activate_elements</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-es.html#SP9" class="function-link"><span class="function-syntax">Extensions::activate_elements</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">kit_dependency</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kd</span><span class="plain-syntax">, </span><span class="type-syntax">kit_dependency</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kits_to_include</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="5-ks.html#SP12" class="function-link"><span class="function-syntax">Kits::activate_elements</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kit</span><span class="plain-syntax">);</span>
@@ -930,7 +928,7 @@ Index. Last kit wins:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  Every source text read into Inform is automatically prefixed by a few words
-loading the fundamental &quot;extensions&quot; -- text such as &quot;Include Basic Inform by
+loading the fundamental &quot;extensions&quot; — text such as &quot;Include Basic Inform by
 Graham Nelson.&quot; If Inform were a computer, this would be the BIOS which boots
 up its operating system. Each kit can contribute such extensions, so there
 may be multiple sentences, which we need to count up.</p>
@@ -1023,12 +1021,9 @@ rather like a family tree for a minor European royal family.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1. </b>  So the structure here is a simple chain of dependencies, but note that
 they are upstream of the project's vertex <code>V</code>, not downstream:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Blorb</span><span class="plain-syntax"> </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Story</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Project</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">inblorb</span><span class="plain-syntax">        </span><span class="identifier-syntax">inform6</span><span class="plain-syntax">     </span><span class="identifier-syntax">inter</span><span class="plain-syntax"> (</span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7</span><span class="plain-syntax">)  </span><span class="identifier-syntax">inform7</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Blorb package --&gt; Story file --&gt; I6 file --&gt; Inter in memory --&gt; Project
+	            inblorb        inform6     inter (in inform7)  inform7
+</span></pre>
 <p>When looking at pictures like this, we must remember that time runs opposite
 to the arrows: that is, these are built from right to left. For example,
 the story file is made before the blorb package is made. The make algorithm
@@ -1040,31 +1035,22 @@ the tool needed to make <code>A</code> from <code>B</code>.</p>
 itself, but somewhere upstream. The code below looks at the project's
 compilation settings and sets <code>proj-&gt;chosen_build_target</code> to this start
 position. In a simple <a href="../inform7/index.html" class="internal">inform7</a> usage, we'll have:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Blorb</span><span class="plain-syntax"> </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Story</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Project</span>
-<span class="plain-syntax">                                        ^</span>
-<span class="plain-syntax">                                        </span><span class="identifier-syntax">chosen</span><span class="plain-syntax"> </span><span class="identifier-syntax">target</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Blorb package --&gt; Story file --&gt; I6 file --&gt; Inter in memory --&gt; Project
+	                                    ^
+	                                    chosen target
+</span></pre>
 <p>so that we have a two-stage process: (i) generate inter code in memory,
 and (ii) code-generate the I6 source code file from that. But in a more
 elaborate use of <a href="../inblorb/index.html" class="internal">inblorb</a> to incrementally build a project, it will be:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Blorb</span><span class="plain-syntax"> </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Story</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Project</span>
-<span class="plain-syntax">                           ^</span>
-<span class="plain-syntax">                           </span><span class="identifier-syntax">chosen</span><span class="plain-syntax"> </span><span class="identifier-syntax">target</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Blorb package --&gt; Story file --&gt; I6 file --&gt; Inter in memory --&gt; Project
+	                       ^
+	                       chosen target
+</span></pre>
 <p>if we are releasing a bare story file, or</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Blorb</span><span class="plain-syntax"> </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Story</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">Project</span>
-<span class="plain-syntax">       ^</span>
-<span class="plain-syntax">       </span><span class="identifier-syntax">chosen</span><span class="plain-syntax"> </span><span class="identifier-syntax">target</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Blorb package --&gt; Story file --&gt; I6 file --&gt; Inter in memory --&gt; Project
+	   ^
+	   chosen target
+</span></pre>
 <p>for a release of a blorbed one.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Construct the graph upstream of V</span><span class="named-paragraph-number">34.1</span></span> =</p>
@@ -1122,7 +1108,7 @@ elaborate use of <a href="../inblorb/index.html" class="internal">inblorb</a> to
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP34_2" class="paragraph-anchor"></a><b>&#167;34.2. </b>  The graph also extends downstream of <code>V</code>, representing the things we will
 need before we can run <a href="../inform7/index.html" class="internal">inform7</a> on the project: and this is not a linear
-run of arrows at all, but fans considerably outwards -- to its languages,
+run of arrows at all, but fans considerably outwards — to its languages,
 kits and extensions, and then to their dependencies in turn.</p>
 <p>Note that the following does not create dependencies for extensions used by
 the project: that's because <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> has already done so.</p>
@@ -1207,11 +1193,11 @@ each extension against the intersection of all requirements put on it:</p>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::check_extension_versions_d</span><span class="plain-syntax">(</span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax">, </span><span class="type-syntax">build_vertex</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">genre</span><span class="plain-syntax"> == </span><span class="identifier-syntax">extension_genre</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="5-es.html#SP6" class="function-link"><span class="function-syntax">Extensions::from_copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-es.html#SP25" class="function-link"><span class="function-syntax">Extensions::satisfies</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="type-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="5-es.html#SP5" class="function-link"><span class="function-syntax">Extensions::from_copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-es.html#SP24" class="function-link"><span class="function-syntax">Extensions::satisfies</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="type-syntax">copy_error</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CE</span><span class="plain-syntax"> = </span><a href="2-ce.html#SP2" class="function-link"><span class="function-syntax">CopyErrors::new_T</span></a><span class="plain-syntax">(</span><span class="constant-syntax">SYNTAX_CE</span><span class="plain-syntax">, </span><span class="constant-syntax">ExtVersionTooLow_SYNERROR</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"two incompatible versions"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="2-ce.html#SP3" class="function-link"><span class="function-syntax">CopyErrors::supply_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CE</span><span class="plain-syntax">, </span><a href="5-es.html#SP21" class="function-link"><span class="function-syntax">Extensions::get_inclusion_sentence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><a href="2-ce.html#SP3" class="function-link"><span class="function-syntax">CopyErrors::supply_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CE</span><span class="plain-syntax">, </span><a href="5-es.html#SP20" class="function-link"><span class="function-syntax">Extensions::get_inclusion_sentence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><a href="2-cps.html#SP5" class="function-link"><span class="function-syntax">Copies::attach_error</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">, </span><span class="identifier-syntax">CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
@@ -1227,21 +1213,18 @@ each extension against the intersection of all requirements put on it:</p>
 text, where the Include... sentences are, and of course we cannot parse the
 source text to find those unless the Preform grammar is in place.</p>
 <p>But then we can make a syntax tree for the project. The large-scale structure is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">root</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Implied</span><span class="plain-syntax"> </span><span class="identifier-syntax">inclusions</span><span class="plain-syntax"> (</span><span class="identifier-syntax">level</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"Include Basic Inform by Graham Nelson."</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Source</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> (</span><span class="identifier-syntax">level</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Source</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> (</span><span class="identifier-syntax">level</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Invented</span><span class="plain-syntax"> </span><span class="identifier-syntax">sentences</span><span class="plain-syntax"> (</span><span class="identifier-syntax">level</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"The colour understood is a colour that varies."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	root
+	    Implied inclusions (level 0 heading)
+	    	"Include Basic Inform by Graham Nelson."
+	    	...
+	    Source text from file 1 (level 0 heading)
+	    	...
+	    Source text from file 2 (level 0 heading)
+	    	...
+	    ...
+	    Invented sentences (level 0 heading)
+	    	"The colour understood is a colour that varies."
+</span></pre>
 <p>Once this is made, any Include... sentences are expanded into syntax trees
 for the extensions they refer to, in a post-processing phase.</p>
 <p>For a real-world example of the result, see <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>.</p>

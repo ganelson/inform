@@ -82,52 +82,39 @@ are the subject of this section (and which are allowed only in <code>_code</code
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The basic structure of a function body like this is that it begins with some
 local variable declarations, and then has its actual content inside a <code>code</code>
 block, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> double _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">local</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span>
-<span class="plain-syntax">                </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!plus</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">val</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">val</span><span class="plain-syntax"> x</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> double _code
+	    </span><span class="type-syntax">local</span><span class="plain-syntax"> x
+	    </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!plus</span><span class="plain-syntax">
+	    			</span><span class="type-syntax">val</span><span class="plain-syntax"> x
+	    			</span><span class="type-syntax">val</span><span class="plain-syntax"> x
+</span></pre>
 <p>As with its global analogue, <code>variable</code>, a <code>local</code> instruction can optionally
 specify a type:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">local</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) x</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">local</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) x
+</span></pre>
 <p>There can be at most one <code>code</code> instruction at the top level. This is incorrect:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> fails _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"I am dismal.\n"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> fails _code
+	    </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax">
+	    </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"I am dismal.\n"</span><span class="plain-syntax">
+</span></pre>
 <p>and should instead be:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> succeeds _code
+	    </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"I am glorious.\n"</span><span class="plain-syntax">
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> succeeds _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"I am glorious.\n"</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Surprisingly, perhaps, it's legal not to have a <code>code</code> block at all. This
 function works:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> succeeds _code</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> succeeds _code
+</span></pre>
 <p>But of course it does nothing. If the return value of such a function is used,
 it will be 0.</p>
 </div>
@@ -154,25 +141,22 @@ marking a position in that same function.</p>
 </li>
 </ul>
 <p>In a <code>code</code> block, the context is initially <code>code</code>. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> double _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">local</span><span class="plain-syntax"> x                             top level has no context</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span><span class="plain-syntax">                                top level has no context</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!jump</span><span class="plain-syntax">                       context is </span><span class="type-syntax">code</span>
-<span class="plain-syntax">                </span><span class="type-syntax">lab</span><span class="plain-syntax"> .SkipWarning            context is </span><span class="type-syntax">lab</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">                      context is </span><span class="type-syntax">code</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"It'll get bigger!\n"</span><span class="plain-syntax">   context is </span><span class="type-syntax">val</span>
-<span class="plain-syntax">            .SkipWarning                    context is </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">                      context is </span><span class="type-syntax">code</span>
-<span class="plain-syntax">                </span><span class="type-syntax">ref</span><span class="plain-syntax"> x                       context is </span><span class="type-syntax">ref</span>
-<span class="plain-syntax">                </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!plus</span><span class="plain-syntax">                   context is </span><span class="type-syntax">val</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">val</span><span class="plain-syntax"> x                   context is </span><span class="type-syntax">val</span>
-<span class="plain-syntax">                    </span><span class="type-syntax">val</span><span class="plain-syntax"> x                   context is </span><span class="type-syntax">val</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">                     context is </span><span class="type-syntax">code</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> x                       context is </span><span class="type-syntax">val</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> double _code
+	    </span><span class="type-syntax">local</span><span class="plain-syntax"> x                             top level has no context
+	    </span><span class="type-syntax">code</span><span class="plain-syntax">                                top level has no context
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!jump</span><span class="plain-syntax">                       context is </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">lab</span><span class="plain-syntax"> .SkipWarning            context is </span><span class="type-syntax">lab</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">                      context is </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"It'll get bigger!\n"</span><span class="plain-syntax">   context is </span><span class="type-syntax">val</span><span class="plain-syntax">
+	    	.SkipWarning                    context is </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">                      context is </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">ref</span><span class="plain-syntax"> x                       context is </span><span class="type-syntax">ref</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!plus</span><span class="plain-syntax">                   context is </span><span class="type-syntax">val</span><span class="plain-syntax">
+	    			</span><span class="type-syntax">val</span><span class="plain-syntax"> x                   context is </span><span class="type-syntax">val</span><span class="plain-syntax">
+	    			</span><span class="type-syntax">val</span><span class="plain-syntax"> x                   context is </span><span class="type-syntax">val</span><span class="plain-syntax">
+	    	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">                     context is </span><span class="type-syntax">code</span><span class="plain-syntax">
+	    		</span><span class="type-syntax">val</span><span class="plain-syntax"> x                       context is </span><span class="type-syntax">val</span><span class="plain-syntax">
+</span></pre>
 <p>In this function, the <code>code</code> block contains five instructions, each of which
 is read in a <code>code</code> context. Each of those then has its own expectations which
 set the context for its child instructions, and so on. For example, <code>inv !store</code>
@@ -182,11 +166,8 @@ second in <code>val</code> context.</p>
 like function calls, but where the function is built in to Inter and is not
 itself defined in Inter. Each such has a &quot;signature&quot;. For example, the
 internal declaration of <code>!store</code> is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax"> </span><span class="type-syntax">ref</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">val</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax"> </span><span class="type-syntax">ref</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax">
+</span></pre>
 <p>So its signature is <code>ref val -&gt; val</code>. This expresses that its two children
 should be read in <code>ref</code> and <code>val</code> context, and that its result is a <code>val</code>.
 (As in most C-like languages, stores are values in Inter, though in
@@ -204,105 +185,80 @@ requires a <code>ref</code> result, and similarly for <code>val</code> and <code
 <p>For example, <code>!return</code> has the signature <code>val -&gt; void</code>, which makes it legal
 to use in a <code>code</code> context as in the above example. But these two attempts
 to use it would both be incorrect:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">
+	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span><span class="plain-syntax">
+		</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span><span class="plain-syntax">
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">
+</span></pre>
 <p>The first fails because it tries to use <code>!return</code> as if it were <code>void -&gt; void</code>,
 i.e., with no supplied value; the second fails because it tries to use it as if
 it were <code>val -&gt; val</code>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Some primitives have <code>code</code> as one or more of their arguments. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!ifelse</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">code</span><span class="plain-syntax"> </span><span class="type-syntax">code</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!ifelse</span><span class="plain-syntax"> </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="type-syntax">code</span><span class="plain-syntax"> </span><span class="type-syntax">code</span><span class="plain-syntax"> </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="type-syntax">void</span><span class="plain-syntax">
+</span></pre>
 <p>This evaluates the first argument (a value), then executes the second argument
 (a code block) if the value is non-zero, or alternatively the third if it is zero.
 There is no result. For example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!ifelse</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> x
+		</span><span class="type-syntax">code</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span><span class="plain-syntax">
+				x
+		</span><span class="type-syntax">code</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax">
+				</span><span class="string-syntax">"I refuse to print zeroes on principle."</span><span class="plain-syntax">
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!ifelse</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span>
-<span class="plain-syntax">                x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">code</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"I refuse to print zeroes on principle."</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Rather like <code>code</code>, which executes a run of instructions as if they were a
 single instruction, <code>evaluation</code> makes a run of evaluations. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span>
-<span class="plain-syntax">        </span><span class="type-syntax">evaluation</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">23</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> -1</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">12</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span><span class="plain-syntax">
+		</span><span class="type-syntax">evaluation</span><span class="plain-syntax">
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">23</span><span class="plain-syntax">
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> -1
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">12</span><span class="plain-syntax">
+</span></pre>
 <p>prints just &quot;12&quot;. The point of this is that there may be side-effects in the
 earlier evaluations, of course, though there weren't in this example.</p>
 <p>Another converter, so to speak, is <code>reference</code>, but this is much more limited
 in what it is allowed to do.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span>
-<span class="plain-syntax">        </span><span class="type-syntax">reference</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">
+		</span><span class="type-syntax">reference</span><span class="plain-syntax">
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> x
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax">
+</span></pre>
 <p>is exactly equivalent to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span>
-<span class="plain-syntax">        </span><span class="type-syntax">ref</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
-</pre>
-<div class="lsmarkdown">
-<p>This is not a very useful example: but consider --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span>
-<span class="plain-syntax">        </span><span class="type-syntax">reference</span>
-<span class="plain-syntax">            </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!propertyvalue</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> Odessa</span>
-<span class="plain-syntax">                </span><span class="type-syntax">val</span><span class="plain-syntax"> area</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5000</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">
+		</span><span class="type-syntax">ref</span><span class="plain-syntax"> x
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax">
+</span></pre>
+<p>This is not a very useful example: but consider —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">
+		</span><span class="type-syntax">reference</span><span class="plain-syntax">
+			</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!propertyvalue</span><span class="plain-syntax">
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> Odessa
+				</span><span class="type-syntax">val</span><span class="plain-syntax"> area
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5000</span><span class="plain-syntax">
+</span></pre>
 <p>which changes the property <code>area</code> for <code>Odessa</code> to 5000. The signature of
 <code>!propertyvalue</code> is <code>val val -&gt; val</code>, and ordinarily it evaluates the property.
 But placed under a <code>reference</code>, it becomes a reference to where that property
 is stored, and thus allows the value to be changed with <code>!store</code>. This:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!propertyvalue</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> Odessa</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> area</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5000</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!store</span><span class="plain-syntax">
+		</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!propertyvalue</span><span class="plain-syntax">
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> Odessa
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> area
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5000</span><span class="plain-syntax">
+</span></pre>
 <p>would by contrast be rejected with an error, as trying to use a <code>val</code> in a <code>ref</code>
 context.</p>
 <p><code>reference</code> cannot be applied to anything other than storage (a local or global
 variable, a memory location or a property value), so for example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">reference</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">reference</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax">
+</span></pre>
 <p>is meaningless and will be rejected. There is in general no way to make, say,
 a pointer to a function or instance using <code>reference</code>. It is much more circumscribed
 than the <code>&amp;</code> operator in C.</p>
@@ -310,13 +266,10 @@ than the <code>&amp;</code> operator in C.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Function calls.</b>  This seems a good point to say how to make function calls, since it's almost
 exactly the same. This:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span>
-<span class="plain-syntax">        </span><span class="type-syntax">inv</span><span class="plain-syntax"> double</span>
-<span class="plain-syntax">            </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!printnumber</span><span class="plain-syntax">
+		</span><span class="type-syntax">inv</span><span class="plain-syntax"> double
+			</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">
+</span></pre>
 <p>prints &quot;20&quot;. Note the lack of a <code>!</code> in front of the function name: this means
 it is a regular function, not a primitive.</p>
 </div>
@@ -330,13 +283,10 @@ any number of arguments.</p>
 call it with any number of arguments. Again: beware.</p>
 <p>Those arguments become the initial values of the local variables. So for
 example, if:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> example _code</span>
-<span class="plain-syntax">        </span><span class="type-syntax">local</span><span class="plain-syntax"> x</span>
-<span class="plain-syntax">        </span><span class="type-syntax">local</span><span class="plain-syntax"> y</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> example _code
+	    </span><span class="type-syntax">local</span><span class="plain-syntax"> x
+	    </span><span class="type-syntax">local</span><span class="plain-syntax"> y
+</span></pre>
 <p>then:</p>
 <ul>
 <li>a call with no arguments results in <code>x</code> and <code>y</code> equal to 0 and 0;</li>
@@ -366,12 +316,9 @@ function body, in a <code>lab</code> context.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The <code>val</code> and <code>ref</code> instructions both allow optional type markers to be placed,
 so for example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) x</span>
-<span class="plain-syntax">    </span><span class="type-syntax">ref</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) y</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) x
+	</span><span class="type-syntax">ref</span><span class="plain-syntax"> (</span><span class="type-syntax">text</span><span class="plain-syntax">) y
+</span></pre>
 <p>Where no type marker is given, the type is always considered <code>unchecked</code>.</p>
 <p>Types of <code>val</code> or <code>ref</code> tend not to be checked or looked at anyway, so this
 feature is currently little used. For many primitives, some of which are quite
@@ -383,18 +330,12 @@ tightened up to typecheck explicitly typed values.</p>
 say &quot;consider this value as if it had a different type&quot;. For example, if we
 are using an enumerated type <code>city</code>, we could read the enumeration values as
 numbers like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">cast</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span><span class="plain-syntax"> &lt;- city</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> (city) Odessa</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">cast</span><span class="plain-syntax"> </span><span class="type-syntax">int32</span><span class="plain-syntax"> &lt;- city
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> (city) Odessa
+</span></pre>
 <p>Right now this is no different from:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) Odessa</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">val</span><span class="plain-syntax"> (</span><span class="type-syntax">int32</span><span class="plain-syntax">) Odessa
+</span></pre>
 <p>but we keep <code>cast</code> around as a hedge against future developments, in case we
 ever want to typecheck strictly enough that <code>val (int32) Odessa</code> is rejected
 as a contradiction in terms.</p>
@@ -414,13 +355,10 @@ target virtual machine we are expecting our program to run on.</p>
 arithmetic functions in BasicInformKit are written to use heavy amounts of
 Glulx assembly language, in order to access functionality not present in the
 Inform language itself. Here is a sample:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">fdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="constant-syntax">$40135D8E</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax">; </span><span class="comment-syntax">! $40135D8E is log(10)</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">floor</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">ftonumn</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@</span><span class="identifier-syntax">fdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="constant-syntax">$40135D8E</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax">; </span><span class="comment-syntax">! $40135D8E is log(10)</span><span class="plain-syntax">
+	@</span><span class="identifier-syntax">floor</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax">;
+	@</span><span class="identifier-syntax">ftonumn</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span><span class="plain-syntax">;
+</span></pre>
 <p>Those &quot;opcodes&quot; beginning <code>@</code> are part of the instruction set for the
 Glulx virtual machine: real number arithmetic is impossible on the smaller
 Z-machine, so we couldn't meaningfully compile this code to that platform,
@@ -440,20 +378,17 @@ assumptions about what assembly opcodes do, or do not, exist. Inter allows
 absolutely anything, and would be quite happy to accept, say, <code>inv @flytothemoon</code>,
 even though this opcode does not exist in any known system of assembly language.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
 <p>And so the above is in fact compiled to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">fdiv</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">assembly</span><span class="plain-syntax"> </span><span class="identifier-syntax">stack</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="identifier-syntax">x40135D8E</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">floor</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">ftonumn</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> @fdiv
+		assembly stack
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">x40135D8E
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> log10val
+	</span><span class="type-syntax">inv</span><span class="plain-syntax"> @floor
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> log10val
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> fexpo
+	</span><span class="type-syntax">inv</span><span class="plain-syntax"> @ftonumn
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> fexpo
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> expo
+</span></pre>
 <p>And when the <a href="../building-module/index.html" class="internal">building</a> module performed that compilation, it knew nothing
 about <code>@fdiv</code> and the rest: it just took on trust that this is meaningful.</p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
@@ -472,7 +407,7 @@ instruction set when compiling for Z via Inform 6, and how to deal with the
 Glulx instruction set when compiling either for Glulx via Inform 6 or a
 native executable via a C compiler like <code>clang</code>. Any further code-generators
 are also likely to follow Glulx conventions. So: if you really must use
-assembly language in your Inter code, good advice would be --</p>
+assembly language in your Inter code, good advice would be —</p>
 <ul>
 <li>
 <p>Use the Glulx instruction set, for better chances of portability.</p>
@@ -485,16 +420,13 @@ somewhere, since those will probably be implemented.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  If we look at this example in more detail:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> @fdiv</span>
-<span class="plain-syntax">        assembly stack</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">x40135D8E</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> log10val</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> @fdiv
+		assembly stack
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">x40135D8E
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> log10val
+</span></pre>
 <p>we see some general features of assembly language. Inter allows any number
-of child instructions to be supplied -- here, there are three. Since Inter knows
+of child instructions to be supplied — here, there are three. Since Inter knows
 nothing about the meaning of <code>@fdiv</code>, it has no way to know how many are
 expected. They should all be usages of <code>val</code>, <code>lab</code>, or <code>assembly</code>.</p>
 <p><code>val</code> and <code>lab</code> we have seen already. <code>assembly</code> is a sort of punctuation
@@ -524,14 +456,11 @@ branches on a successful test. But alternatively it can:</p>
 <li><code>assembly return_false_if_false</code></li>
 </ul>
 <p>So for example the Z-machine instruction <code>@random sp -&gt; i;</code> compiles to Inter as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> @fdiv</span>
-<span class="plain-syntax">        assembly stack</span>
-<span class="plain-syntax">        assembly store_to</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> i</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> @fdiv
+		assembly stack
+		assembly store_to
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> i
+</span></pre>
 <p>And note the use of <code>val i</code>, not <code>ref i</code>, even though the variable is being
 written to here. Even Inter's normal rules of category checking do not apply
 to assembly language, the lowest of the low.</p>

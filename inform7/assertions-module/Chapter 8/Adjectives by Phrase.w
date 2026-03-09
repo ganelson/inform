@@ -4,11 +4,13 @@ Adjectives defined by an I7 phrase written out longhand.
 
 @ These are adjectives where a phrase written out explicitly will determine
 the answer, like so:
-= (text as Inform 7)
+
+``` Inform7
 Definition: A container is possessed by the Devil:
 	if its carrying capacity is 666, decide yes;
 	decide no.
-=
+```
+
 Adjectival families are mostly chosen by being claimed because of some special
 wording, but an adjective falls into this family when //AdjectivalDefinitionFamily::given_body//
 sees the body of the definition phrase and calls //AdjectivesByPhrase::define_adjective_by_phrase//

@@ -15,7 +15,7 @@ the number 33, but has no subject.
 - If the noun phrase gives a number of items, the `multiplicity` annotation
 records how many; thus, for "six lorries" it would be 6.
 - If the noun phrase describes some properties or relations which must be
-true -- "an open door", say, or "a woman in London" -- these are recorded
+true — "an open door", say, or "a woman in London" — these are recorded
 in a `creation_proposition` annotation.
 
 =
@@ -102,7 +102,7 @@ details to the nodes so that sentences like this one...
 
 ...can work; here "scenery", though an adjective, is effectively a common
 noun in disguise. (It's a deficiency of English that a surprising number of
-common objects, which ought to have count nouns, in fact have mass nouns --
+common objects, which ought to have count nouns, in fact have mass nouns —
 compare "clothing" and "clothes", which has no adequate singular.)
 
 =
@@ -158,13 +158,13 @@ void Refiner::refine_from_simple_description(parse_node *p, parse_node *desc) {
 }
 
 @ Crucially, the headword node gets one extra annotation: its "full phrase
-evaluation", which retains the original description information -- in
+evaluation", which retains the original description information — in
 particular, quantification data such as that in "four doors", which
 would be lost if we simply applied `Refiner::give_subject_to_noun` to the inference
 subject for "door".
 
 If `head` is not set, it doesn't matter what we do, because there'll be
-no headword node -- this is why we don't bother to find any subject to
+no headword node — this is why we don't bother to find any subject to
 set for it.
 
 @<Set the attachment node to the headword, if there is one@> =
@@ -184,7 +184,7 @@ set for it.
 
 @ We put a WITH node in the attachment position, displacing the headword
 content to its first child, and making its second child the new attachment
-position -- so that that is where the adjectives subtree will go.
+position — so that that is where the adjectives subtree will go.
 
 @<Insert a WITH node joining adjective tree to headword@> =
 	parse_node *lower_copy = Node::new(PROPER_NOUN_NT);
@@ -302,7 +302,7 @@ subtree.
 	Refiner::refine(p->down->next, FORBID_CREATION);
 
 @ `WITH_NT` is used to create something with a list of properties. This
-leads to some awkward cases -- for instance, where a "with" in an action
+leads to some awkward cases — for instance, where a "with" in an action
 pattern like "doing something with the bucket" has been misinterpreted.
 We fix those cases by hand, by reconstructing the text before it was
 divided, then parsing it as an action pattern; if that works, that reading
@@ -388,7 +388,7 @@ direction object for "north".
 
 @ A `KIND_NT` node may have no children, and if so it represents the bare
 word "kind": the reference must be to the kind "kind" itself.
-Otherwise it has one child -- the name of an existing kind of value or
+Otherwise it has one child — the name of an existing kind of value or
 object. After refinement, it will be annotated with a valid non-null
 inference subject representing the domain to which any new kind would belong.
 
@@ -590,7 +590,7 @@ we change it to a new node type to mark this. We don't keep the pattern:
 it will be reparsed much later on.
 
 We have to be a little cautious, because of the way English allows participles
-as nouns to mean the result of some action having taken place on something --
+as nouns to mean the result of some action having taken place on something —
 consider "the scoring", for instance, in the sense of a mark scored on a
 piece of wood. So we parse action patterns with a lower priority than values
 here, given that we know we are looking for a noun.
@@ -607,7 +607,7 @@ here, given that we know we are looking for a noun.
 
 @ This case has been left to last, since it's so much the most difficult.
 Descriptions have to be converted into a surprising range of different
-subtrees -- otherwise it will not be possible to issue a wide range of
+subtrees — otherwise it will not be possible to issue a wide range of
 to-the-point problem messages for badly constructed sentences.
 
 Oddly, it's not the complicated descriptions which give trouble...
@@ -632,7 +632,7 @@ kettle which can be in several states, described adjectivally, and one of
 those is "heating". This means the S-parser reads "heating kettle" as if it
 meant "the kettle when in the heating state". But we don't want this to be
 recognised in an assertion, because it's not useful to talk about individual
-objects in particular states when setting up the initial state -- the kettle
+objects in particular states when setting up the initial state — the kettle
 either starts out as heating, or it doesn't. Moreover, we don't want to
 misread a line like:
 
@@ -643,8 +643,8 @@ similar ambiguities, we ignore the S-parser's recommendation of reading
 adjective(s) plus proper noun as a reference to that noun in a special state.
 
 Case (b) comes out of a point of difference between proper and common nouns:
-use of an indefinite article is fine with common nouns -- "a container", for
-example -- but not with proper nouns: talking about "a silver bar" suggests
+use of an indefinite article is fine with common nouns — "a container", for
+example — but not with proper nouns: talking about "a silver bar" suggests
 that this is not the same silver bar referred to in some previous
 sentence.
 
@@ -675,21 +675,25 @@ neither of which is altered by and surgery. The difficulty arises with
 which, we notice, has exactly the same grammatical structure as the first of
 the two sentences above, yet a very different meaning, since "openable" is a
 property whereas "bat" was an object. We perform surgery on:
-= (text)
+
+``` None
 	AND_NT
 	    ADJECTIVE_NT "openable"
 	    WITH_NT
 	        COMMON_NOUN_NT "door"
 	        ADJECTIVE_NT "open"
-=
+```
+
 to restructure the nodes as:
-= (text)
+
+``` None
 	WITH_NT
 	    COMMON_NOUN_NT "door"
 	    AND_NT
 	        ADJECTIVE_NT "openable"
 	        ADJECTIVE_NT "open"
-=
+```
+
 This innocent-looking little function involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.
 
@@ -719,26 +723,29 @@ void Refiner::perform_and_surgery(parse_node *p) {
 > In the Pitch is an open container with description "The box of stumps and bails."
 
 The initial parse tree for such a sentence will have two nested `WITH_NT`
-clauses, which is arguably correct -- "a (container with property open)
-with description ..." -- but which is inconvenient for our implementation
+clauses, which is arguably correct — "a (container with property open)
+with description ..." — but which is inconvenient for our implementation
 of `WITH_NT` later on. So we construe the sentence instead with a single
 "with", as "a container with properties open and description ..." In
 terms of the tree,
-= (text)
+
+``` None
 	WITH_NT
 	    WITH_NT
 	        COMMON_NOUN_NT "container"
 	        ADJECTIVE_NT "open"
 	    PROPERTY_LIST_NT "The box..."
-=
+```
+
 is reconstructed as:
-= (text)
+
+``` None
 	WITH_NT
 	    COMMON_NOUN_NT "container"
 	    AND_NT
 	        ADJECTIVE_NT "open"
 	        PROPERTY_LIST_NT "The box..."
-=
+```
 
 =
 void Refiner::perform_with_surgery(parse_node *p) {
@@ -756,7 +763,7 @@ void Refiner::perform_with_surgery(parse_node *p) {
 
 @h Un-WITH.
 We may subsequently learn that what appeared to be a property setting was
-actually some other noun phrase containing the word "with" -- a particular
+actually some other noun phrase containing the word "with" — a particular
 issue for sentences like:
 
 > The agreeing with policy action has an object called the hat.

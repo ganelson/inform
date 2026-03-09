@@ -13,12 +13,11 @@ and another to 16-bit. In effect, an "architecture" holds the settings which
 Each different architecture is represented by one of these:
 
 =
-typedef struct inter_architecture {
+classdef inter_architecture {
 	struct text_stream *shorthand; /* such as `32d` */
 	int sixteen_bit;
 	int debug_enabled;
-	CLASS_DEFINITION
-} inter_architecture;
+}
 
 @ =
 inter_architecture *Architectures::new(text_stream *code, int s, int d) {

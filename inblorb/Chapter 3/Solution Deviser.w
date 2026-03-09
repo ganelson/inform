@@ -21,7 +21,7 @@ options where choices have to be made. The `branch_parent` and `branch_count`
 fields are used to keep these labels: see below.
 
 =
-typedef struct skein_node {
+classdef skein_node {
 	struct text_stream *id; /* uniquely identifying ID used within the Skein file */
 	struct text_stream *command; /* text of the command at this node */
 	struct text_stream *annotation; /* text of any annotation added by the user */
@@ -31,8 +31,7 @@ typedef struct skein_node {
 	struct skein_node *parent; /* within the Skein tree: `NULL` for the root only */
 	struct skein_node *child; /* within the Skein tree: `NULL` if a leaf */
 	struct skein_node *sibling; /* within the Skein tree: `NULL` if the final option from its parent */
-	CLASS_DEFINITION
-} skein_node;
+}
 
 @ The root of the Skein, representing the start position before any command
 is typed, lives here:
@@ -319,8 +318,8 @@ void Solution::write_solution_file(filename *walkthrough_filename) {
 	STREAM_CLOSE(SOL);
 }
 
-@ The following prints commands to the solution file from the position `skn` --
-which means just after typing its command -- with the aim of reaching all
+@ The following prints commands to the solution file from the position `skn` —
+which means just after typing its command — with the aim of reaching all
 relevant endings we can get to from there.
 
 =
@@ -337,7 +336,7 @@ call `Solution::recursively_solve` down from it. That would make the code shorte
 clearer, perhaps, but it would clobber the C stack: our recursion depth
 might be into the tens of thousands on long solution files. So we tail-recurse
 instead of calling ourselves, so to speak, and just run down the thread
-until we reach a choice. (If we never do reach a choice, we can return --
+until we reach a choice. (If we never do reach a choice, we can return —
 there is nowhere else to reach.)
 
 @<Follow the skein down until we reach a divergence, if we do@> =

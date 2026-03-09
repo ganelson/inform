@@ -1832,12 +1832,11 @@ the sorting measure.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DIGITTOVALUE_HL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">digit_manager</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">digit_manager</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">category</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">digit_manager</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">RTLiteralPatterns::digits_iname_inner</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">digits_iname_D</span><span class="plain-syntax">[</span><span class="identifier-syntax">cat</span><span class="plain-syntax">] == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>

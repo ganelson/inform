@@ -7,7 +7,8 @@ scope, as in more traditional programming languages.
 forming the body of "if", "while" or "repeat". The phrase as a whole does
 not count as a block as such, unlike in C. In the following example, `S`
 is the "scope level", i.e., the number of blocks currently open:
-= (text as Inform 7)
+
+``` Inform7
 To show what this means:
     if the player is in the Arboretum:                                   [S = 0]
         say "You are surrounded by trees.";                              [S = 1]
@@ -15,7 +16,8 @@ To show what this means:
             say "[The menace] crowds in.";                               [S = 2]
     otherwise:                                                           [S = 0]
     	say "This is a thankfully open space."                           [S = 1]
-=
+```
+
 In principle, this information belongs to the current stack frame, since
 it's within the context of a stack frame that code is compiled. But it
 would be wasteful to store arrays for statement blocks inside every stack

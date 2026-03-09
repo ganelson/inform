@@ -8,29 +8,6 @@ which use this module:
 
 @d PIPELINE_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e inter_pipeline_CLASS
-@e pipeline_step_CLASS
-@e uniqueness_count_CLASS
-@e text_literal_holder_CLASS
-@e function_body_request_CLASS
-@e pipeline_stage_CLASS
-@e attachment_instruction_CLASS
-@e tree_inventory_CLASS
-@e tree_inventory_item_CLASS
-
-=
-DECLARE_CLASS(inter_pipeline)
-DECLARE_CLASS(pipeline_step)
-DECLARE_CLASS(uniqueness_count)
-DECLARE_CLASS(text_literal_holder)
-DECLARE_CLASS(function_body_request)
-DECLARE_CLASS(pipeline_stage)
-DECLARE_CLASS(attachment_instruction)
-DECLARE_CLASS(tree_inventory)
-DECLARE_CLASS(tree_inventory_item)
-
 @ Like all modules, this one must define a `start` and `end` function:
 
 =

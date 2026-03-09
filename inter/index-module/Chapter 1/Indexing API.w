@@ -8,7 +8,7 @@ and so it is simple to control. Other modules or tools should do this only by
 calling the functions below.
 
 To produce one or more index products (see below), first open a session; then
-set its localisation -- essentially, choose what language it should be written
+set its localisation — essentially, choose what language it should be written
 in; then call functions to make the actual products; and finally close the session.
 Note that:
 
@@ -94,7 +94,7 @@ This is a miscellany, plain and simple, but it contains all of the workspace
 and caches needed to index an Inter tree.
 
 =
-typedef struct index_session {
+classdef index_session {
 	struct inter_tree *tree;
 	struct tree_inventory *inv;
 	struct inter_lexicon *lexicon;
@@ -110,8 +110,7 @@ typedef struct index_session {
 	struct map_calculation_data calc;
 	int story_dir_to_page_dir[MAX_DIRECTIONS];
 	int session_closed;
-	CLASS_DEFINITION
-} index_session;
+}
 
 @ =
 index_session *Indexing::new_session(inter_tree *I) {

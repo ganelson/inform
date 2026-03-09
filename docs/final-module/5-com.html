@@ -131,7 +131,7 @@ function togglePopup(material_id) {
 <li>Instances of object;</li>
 <li>Classes, which include kinds of object such as &quot;container&quot;, but not other
 kinds such as &quot;number&quot;;</li>
-<li>Constant text values -- note: this does not mean values of the I7 &quot;text&quot;
+<li>Constant text values — note: this does not mean values of the I7 &quot;text&quot;
 kind, this means only text literals in Inter;</li>
 <li>Functions;</li>
 <li>0, which is also the value of the non-object <code>nothing</code>.</li>
@@ -145,7 +145,7 @@ function implements the <code>!metaclass</code> primitive.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  In this C runtime, <code>nothing</code> will be 0, as is mandatory; <code>Class</code>, <code>Object</code>,
 <code>String</code> and <code>Routine</code> will be 1 to 4 respectively; values from 5 upwards will
-be assigned to objects and classes as they arise -- note that these mix freely;
+be assigned to objects and classes as they arise — note that these mix freely;
 string values will occupy a contiguous range <code>I7VAL_STRINGS_BASE</code> to
 <code>I7VAL_FUNCTIONS_BASE-1</code>; and function values will be in tha range
 <code>I7VAL_FUNCTIONS_BASE</code> to <code>0x7FFFFFFF</code>, though they will certainly not fill it.</p>
@@ -201,7 +201,7 @@ containment tree; so we record the initial state of that three here. For classes
 of course, <code>initial_parent</code>, <code>initial_sibling</code> and <code>initial_child</code> will remain <code>NULL</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_class</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
@@ -210,8 +210,7 @@ of course, <code>initial_parent</code>, <code>initial_sibling</code> and <code>i
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">initial_parent</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">initial_sibling</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">initial_child</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">C_property_owner</span><span class="plain-syntax"> *</span><span class="function-syntax">CObjectModel::new_owner</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">CObjectModel::new_owner</span></span>:<br/><a href="5-com.html#SP13">&#167;13</a>, <a href="5-com.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">class_name</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_class</span><span class="plain-syntax">) {</span>
@@ -407,7 +406,7 @@ object is declared. Here is (i):</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Runtime instances.</b>  These arise either (i) as pseudo-objects provided by kits -- the Inform 7
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Runtime instances.</b>  These arise either (i) as pseudo-objects provided by kits — the Inform 7
 compiler never itself generates pseudo-objects; or (ii) as property-holder
 objects to hold the properties of an enumerated non-object kind, where one
 such object exists for each such kind; or (iii), the most obvious way, as
@@ -523,12 +522,11 @@ freely overlap with owner IDs or anything else. Their order is not significant.<
 <p>Properties are recognised here by name, using a dictionary.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">C_property</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">either_or</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">C_property</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">C_property</span><span class="plain-syntax"> *</span><span class="function-syntax">CObjectModel::property_by_name</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup16">Usage of <span class="code-font"><span class="function-syntax">CObjectModel::property_by_name</span></span>:<br/><a href="5-com.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">either_or</span><span class="plain-syntax">) {</span>
@@ -665,12 +663,11 @@ instances of a single enumerated kind:</p>
 all it really does is to stash it away for now:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_pv_pair</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">C_pv_pair</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">C_property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inlined</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">C_pv_pair</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CObjectModel::assign_one_prop</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">CObjectModel::assign_one_prop</span></span>:<br/><a href="5-com.html#SP21">&#167;21</a>, <a href="5-com.html#SP22">&#167;22</a>, <a href="5-com.html#SP24_1">&#167;24.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="type-syntax">C_property_owner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">C_property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline_this</span><span class="plain-syntax">) {</span>
@@ -684,7 +681,7 @@ all it really does is to stash it away for now:</p>
 <ul class="endnotetexts"><li>The structure C_pv_pair is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  Creating all those <a href="5-com.html#SP23" class="internal">C_pv_pair</a>s was just playing for time, though: eventually
-we have to do this --</p>
+we have to do this —</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CObjectModel::write_i7_initialiser</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">CObjectModel::write_i7_initialiser</span></span>:<br/><a href="5-com.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
@@ -1105,7 +1102,7 @@ the tree.</p>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Reading, writing and changing general properties.</b>  And these are the exactly analogous functions which more generally read, write
-or change properties which can be held by either objects or enumerated instances --
+or change properties which can be held by either objects or enumerated instances —
 in other words, all properties. The additional kind argument <code>K</code> is then needed
 to distinguish these cases (since the <code>obj</code> values for different kinds may well
 coincide).</p>

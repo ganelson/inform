@@ -38,15 +38,19 @@ int DialogueBeats::dialogue_exists(void) {
 @h Beats.
 The following is called each time the cue paragraph for a new beat is found:
 a whole paragraph, which might, for example, read:
-= (text as Inform 7)
+
+``` Inform7
 	(About the carriage clock; this is the horological beat.)
-=
+```
+
 `PN` is that text, but it has already been partially parsed:
-= (text)
+
+``` None
 	DIALOGUE_CUE_NT
 		DIALOGUE_CLAUSE_NT "About the carriage clock"
 		DIALOGUE_CLAUSE_NT "this is the horological beat"
-=
+```
+
 Here we have a simple tree where the beat node has any number of child nodes,
 each of which is a `DIALOGUE_CLAUSE_NT`.
 
@@ -89,7 +93,7 @@ dialogue, so the internal error here should be impossible to hit.
 @ We represent beats internally as follows:
 
 =
-typedef struct dialogue_beat {
+classdef dialogue_beat {
 	struct wording beat_name;
 	struct parse_node *cue_at;
 	struct heading *under_heading;
@@ -109,8 +113,7 @@ typedef struct dialogue_beat {
 
 	struct dialogue_node *root;
 	struct dialogue_beat_compilation_data compilation_data;
-	CLASS_DEFINITION
-} dialogue_beat;
+}
 
 @<Initialise the beat@> =
 	db->beat_name = EMPTY_WORDING;
@@ -134,11 +137,12 @@ typedef struct dialogue_beat {
 @ Each clause can be one of about 10 possibilities, as follows, and the
 wording tells us immediately which possibility it is, even early in the run.
 We annotate each clause with the answer. Thus we might have:
-= (text)
+
+``` None
 	DIALOGUE_CUE_NT
 		DIALOGUE_CLAUSE_NT "About the carriage clock" {ABOUT_DBC}
 		DIALOGUE_CLAUSE_NT "this is the horological beat" {BEAT_NAME_DBC}
-=
+```
 
 @e BEAT_NAME_DBC from 1
 @e SCENE_NAME_DBC

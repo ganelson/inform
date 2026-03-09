@@ -85,16 +85,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_WORDS_CALLBACK Emotions::wow</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_WORDS_CALLBACK Emotions::wow
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::wow(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("My word!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::wow(text_stream *OUT) {
+	    WRITE("My word!\n");
+	}
+</span></pre>
 <p>The words module has only a few callbacks, and they are all optional. The
 following alphabetical list has references to fuller explanations:</p>
 <ul>
@@ -125,10 +122,9 @@ attach such meanings to words. See <a href="2-vcb.html#SP5" class="internal">Voc
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  If the selection of a natural language is a meaningful thing to the parent,
 it can define <code>NATURAL_LANGUAGE_WORDS_TYPE</code> to tell the Preform parser how
 to refer to these. For example, the <a href="../supervisor-module/index.html" class="internal">supervisor</a> module has:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language</span>
-</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progressnext"><a href="1-wm.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

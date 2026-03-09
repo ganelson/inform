@@ -26,15 +26,14 @@ int website_requested = FALSE; /* has a `WEBSITE_REQ` been made? */
 @ Each request produces an instance of:
 
 =
-typedef struct request {
+classdef request {
 	int what_is_requested; /* one of the `*_REQ` values above */
 	struct text_stream *details1;
 	struct text_stream *details2;
 	struct text_stream *details3;
 	int private; /* is this request private, i.e., not to contribute to a website? */
 	int outcome_data; /* e.g. number of bytes copied */
-	CLASS_DEFINITION
-} request;
+}
 
 @h Receiving requests.
 These can have from 0 to 3 textual details attached:
@@ -262,17 +261,19 @@ because it allows each interpreter to provide some metadata about its own
 identity and exactly how it wants to be interfaced with the website which
 Inblorb will generate. This isn't the place to document what those metadata
 placeholders are and what they mean, since (except for a consistency check
-below) Inblorb doesn't know anything about them -- it's the Standard
+below) Inblorb doesn't know anything about them — it's the Standard
 website template which they need to match up to. Anyway, the best way
 to get an idea of this is to read the manifest file for the default,
 Parchment, interpreter.
 
 Placeholders are set thus:
-= (text)
+
+``` None
 	[INTERPRETERVERSION]
 	Parchment for Inform 7
 	[]
-=
+```
+
 where the opening line names the placeholder, then one or more lines give
 the contents, and the box line ends the definition.
 
@@ -559,7 +560,7 @@ application, called `openUrl`.
 	Placeholders::append_to(ph, I"</center></p>");
 
 @ Since Inblorb has no knowledge of what the Inform source text producing
-this blorb was, it can't finish the status report from its own knowledge --
+this blorb was, it can't finish the status report from its own knowledge —
 it must rely on details supplied to it by Inform via blurb commands. First,
 Inform gives it source-text links for any "Release along with..." sentences,
 which have by now become `INSTRUCTION_REQ` requests:

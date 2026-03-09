@@ -124,11 +124,8 @@ NTI constraint:</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  There's a new idea here as well, though: struts. A &quot;strut&quot; is a run of
 ptokens in the interior of the production whose position relative to the
 ends is not known. For example, if we match:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">frogs</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">like</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">but</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">eat</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">frogs</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">like</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">but</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">eat</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>then we know that in a successful match, &quot;frogs&quot; and &quot;like&quot; must be the
 first two words in the text matched, and &quot;eat&quot; and &quot;to&quot; the last two.
 They are said to have positions 1, 2, -1 and -2 respectively: a positive
@@ -201,7 +198,7 @@ results. So the following may in principle be called multiple times.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Although it's not obvious from here, the following function is recursive,
 because it calls <a href="4-ni.html#SP25" class="internal">NTI::calculate_constraint</a>, and that in turn needs all the
-nonterminals in the grammar for <code>nt</code> to have been optimised already -- to
+nonterminals in the grammar for <code>nt</code> to have been optimised already — to
 ensure which, it calls <a href="4-to.html#SP8" class="internal">Optimiser::optimise_nonterminal</a>. A similar thing
 also happens in <a href="4-le.html#SP8" class="internal">LengthExtremes::calculate_for_nt</a>.</p>
 <p>Since we cannot rely on grammar to be well-founded, we rig the function to
@@ -236,7 +233,7 @@ elastic (it always matches a single word). If the first ptoken is inelastic,
 we know it must match words 1 to \INWEBMATH(L_1\INWEBMATH) of whatever text is to be matched,
 and we give it position 1; if the second is also inelastic, that will match
 \INWEBMATH(L_1+1\INWEBMATH) to \INWEBMATH(L_2\INWEBMATH), and it gets position \INWEBMATH(L_1+1\INWEBMATH); and so on. As soon as we
-hit an elastic token -- a wildcard like <code>...</code>, for example -- this
+hit an elastic token — a wildcard like <code>...</code>, for example — this
 predictability stops, and we can only assign position 0, which means that
 we don't know.</p>
 <p>Note that we only assign a nonzero position if we know where the ptoken both

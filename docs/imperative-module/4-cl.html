@@ -87,7 +87,7 @@ is the proposition inside the description <code>desc</code>. The loop variable w
 be <code>v1</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::through_matches</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::through_matches</span></span>:<br/>Compile Invocations Inline - <a href="5-cii.html#SP6_7">&#167;6.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v1</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::through_matches</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::through_matches</span></span>:<br/>Compile Invocations Inline - <a href="5-cii.html#SP6_8">&#167;6.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v1</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DK</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">DK</span><span class="plain-syntax">) != </span><span class="identifier-syntax">CON_description</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"repeat through non-description"</span><span class="plain-syntax">);</span>
@@ -112,11 +112,8 @@ loop construction a little too complex for a schema, so we generate the code
 by hand.</p>
 <p>In fact we secretly make a second loop variable <code>v2</code> as well, though it is
 invisible from source text, and construct a loop analogous to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v1</span><span class="plain-syntax">=</span><span class="identifier-syntax">D</span><span class="plain-syntax">(0), </span><span class="identifier-syntax">v2</span><span class="plain-syntax">=</span><span class="identifier-syntax">D</span><span class="plain-syntax">(</span><span class="identifier-syntax">v1</span><span class="plain-syntax">); </span><span class="identifier-syntax">v1</span><span class="plain-syntax">; </span><span class="identifier-syntax">v1</span><span class="plain-syntax">=</span><span class="identifier-syntax">v2</span><span class="plain-syntax">, </span><span class="identifier-syntax">v2</span><span class="plain-syntax">=</span><span class="identifier-syntax">D</span><span class="plain-syntax">(</span><span class="identifier-syntax">v1</span><span class="plain-syntax">))</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	for (v1=D(0), v2=D(v1); v1; v1=v2, v2=D(v1))
+</span></pre>
 <p>where <code>D</code> is a function deferred from the proposition which is such that:</p>
 <ul>
 <li><code>D(0)</code> produces the first \INWEBMATH(x\INWEBMATH) such that \INWEBMATH(\phi(x)\INWEBMATH), and otherwise</li>
@@ -126,19 +123,13 @@ there are no further matches.</li>
 <p>This arrangement is possible because object values, and enumerated values, are
 never equal to 0 at runtime.</p>
 <p>The reason we do not simply compile</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v1</span><span class="plain-syntax">=</span><span class="identifier-syntax">D</span><span class="plain-syntax">(0); </span><span class="identifier-syntax">v1</span><span class="plain-syntax">; </span><span class="identifier-syntax">v1</span><span class="plain-syntax">=</span><span class="identifier-syntax">D</span><span class="plain-syntax">(</span><span class="identifier-syntax">v1</span><span class="plain-syntax">))</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	for (v1=D(0); v1; v1=D(v1))
+</span></pre>
 <p>is to protects us in case the body of the loop takes action which moves <code>v1</code> out
-of the domain -- e.g., in the case of:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">items</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+of the domain — e.g., in the case of:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">items</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax">.
+</span></pre>
 <p>This is the famous &quot;broken <code>objectloop</code>&quot; hazard of Inform 6. Experience shows
 that authors value safety over the slight speed overhead incurred.</p>
 </div>
@@ -194,13 +185,10 @@ that authors value safety over the slight speed overhead incurred.</p>
 <p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  It would be nice to generate the whole loop from the schema for the kind,
 but of course our description is unlikely to be just \INWEBMATH({\it kind}_K(x)\INWEBMATH). So
 the idea is roughly:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">loop</span><span class="plain-syntax"> </span><span class="identifier-syntax">over</span><span class="plain-syntax"> </span><span class="identifier-syntax">each</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">phi</span><span class="plain-syntax">(</span><span class="identifier-syntax">v1</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	loop over each v1 in K
+	    if phi(v1)
+	        ...
+</span></pre>
 <p>We can optimise out the &quot;if&quot; part in the case when \INWEBMATH(\phi(x) = {\it kind}_K(x)\INWEBMATH).</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile from the kind's loop schema</span><span class="named-paragraph-number">1.2</span></span> =</p>
@@ -314,7 +302,7 @@ performance.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_LOOP_DOMAIN_SCHEMA_LENGTH</span> <span class="constant-syntax">1000</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::schema</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::schema</span></span>:<br/><a href="4-cl.html#SP1">&#167;1</a><br/>Compile Deferred Propositions - <a href="4-cdp.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::schema</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::schema</span></span>:<br/><a href="4-cl.html#SP1">&#167;1</a><br/>Compile Deferred Propositions - <a href="4-cdp.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">InstanceCounting::optimise_loop</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
@@ -356,14 +344,14 @@ performance.</p>
 a list (whose contents are not known at compile time).</p>
 <p>We need three variables, of which only <code>val_var</code> is visible in source text:</p>
 <ul>
-<li><code>index_var_s</code> is the position in the list -- 0, 1, 2, ...;</li>
+<li><code>index_var_s</code> is the position in the list — 0, 1, 2, ...;</li>
 <li><code>val_var_s</code> is the entry at that position;</li>
-<li><code>copy_var_s</code> is the list itself -- which we stash into this temporary
+<li><code>copy_var_s</code> is the list itself — which we stash into this temporary
 variable to avoid having to evaluate it more than once.</li>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::through_list</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::through_list</span></span>:<br/>Compile Invocations Inline - <a href="5-cii.html#SP6_7">&#167;6.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_var</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileLoops::through_list</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CompileLoops::through_list</span></span>:<br/>Compile Invocations Inline - <a href="5-cii.html#SP6_8">&#167;6.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_var</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_var</span><span class="plain-syntax"> = </span><a href="3-lv.html#SP7" class="function-link"><span class="function-syntax">LocalVariables::new_let_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">copy_var</span><span class="plain-syntax"> = </span><a href="3-lv.html#SP7" class="function-link"><span class="function-syntax">LocalVariables::new_let_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>

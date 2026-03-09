@@ -17,8 +17,10 @@ that Inform 7 is installed in the directory `inform7` with respect to your
 current working directory. `inform7` is a composite of various files, and
 the executable inside is at `inform7/Tangled/inform7`. To test that it has
 been built successfully, try:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7/Tangled/inform7 -help
+```
 
 @ When it runs, Inform 7 needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
@@ -38,9 +40,11 @@ with respect to the current working directory.
 @h How the UI apps call Inform 7.
 The full range of options is complex, so it seems helpful to start by showing
 what the Inform UI apps typically call when the user clicks "Go":
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7/Tangled/inform7 -internal I -external E -project P -format=F
-=
+```
+
 for suitable pathnames `I`, `E`, `P` and a choice of `F`.
 
 The format `F` can have quite a complex syntax. It takes the form of a
@@ -63,7 +67,7 @@ The project `P` is the directory holding the project to compile, such as
 opaque binary file in the Finder, but it is a directory nevertheless.
 
 The directories `I` and `E` tell Inform where to find its resources. Internal
-means "inside the app" -- in other words, fixed material supplied with Inform
+means "inside the app" — in other words, fixed material supplied with Inform
 and always present; external means "outside the app", and is where the user
 installs her own choice of extra resources.
 
@@ -129,7 +133,7 @@ for more.
 rather than from its normal location inside the project bundle. Note that if
 this switch is used from within the GUI app, by means of a settings file (see
 below), then on some platforms there may be permissions errors if `F` does
-not lie inside the bundle or Materials folder -- in particular, sandboxing
+not lie inside the bundle or Materials folder — in particular, sandboxing
 for the Mac App Store editions of the executables has this effect.
 
 @ If the app has a feature for systematically testing each example in an
@@ -149,7 +153,8 @@ variety of other things.
 But it is also perfectly possible to use Inform 7 on isolated, single files of
 source code, rather as a C compiler might work on a single source file for
 a simple program. At its simplest, for example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ ls
 	helloworld.i7
 	$ cat helloworld.i7
@@ -166,12 +171,14 @@ a simple program. At its simplest, for example:
 	Inform 7 has finished.
 	$ ls
 	helloworld.i6       helloworld.i7
-=
+```
+
 (This was a Basic Inform program, hence `-basic`.) That produced quite a bit of
 console chatter: the traditional Unix doctrine is that command-line tools should
-shut up when they operate without errors -- "silence is golden", as the usual
+shut up when they operate without errors — "silence is golden", as the usual
 slogan has it. Use `-silence` to impose this on Inform:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ ls
 	helloworld.i7
 	$ cat helloworld.i7
@@ -180,7 +187,8 @@ slogan has it. Use `-silence` to impose this on Inform:
 	$ inform7/Tangled/inform7 -basic -silence helloworld.i7
 	$ ls
 	helloworld.i6       helloworld.i7
-=
+```
+
 In `-silence` mode, any problem messages will also be rendered in a conventional
 Unix style, opening with `filename:line:` for the convenience of text editors
 or IDEs which throw back to source lines where errors occur.
@@ -193,19 +201,22 @@ by command line settings, however.)
 
 The output file can be specified with the traditional Unix compiler switch `-o`
 for "output":
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -o my-fancy-file.txt
 	$ ls
 	helloworld.i7       my-fancy-file.txt
-=
+```
+
 The default output filename is the source filename but with the file extension
 changed from `i7` to whatever is standard for the format being output. For
 example,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -format=C
 	$ ls
 	helloworld.c        helloworld.i7
-=
+```
 
 @h Testing and debugging switches.
 The following switches are used only when testing or maintaining Inform,
@@ -213,7 +224,7 @@ and are unlikely to be useful to end users. Many of these are, however,
 used in the Intest scripts for testing Inform 7 and Inblorb.
 
 - `-crash-all` performs a deliberate hard crash, dividing by zero, in
-the event of any Problem message being issues -- this makes it easier to
+the event of any Problem message being issues — this makes it easier to
 obtain stack backtraces in a debugger.
 - `-no-index` skips the production of an Index, which reduces file system
 writes in a big testing run, and also saves a little time.

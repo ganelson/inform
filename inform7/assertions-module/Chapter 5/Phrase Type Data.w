@@ -10,7 +10,8 @@ those as examples throughout, but even rule and adjective definitions set
 the "manner of return" (see below).
 
 Type data for a "To..." phrase comes from its prototype text. For example:
-= (text as Inform 7)
+
+``` Inform7
 To sort (T - table name) in (TC - table column) order: ...
 
 Word sequence:             Token sequence:
@@ -19,12 +20,13 @@ Word sequence:             Token sequence:
 2  in
 3  1
 4  order
-=
+```
+
 The "word sequence" consists of five integers. Values below `MAX_TOKENS_PER_PHRASE`
 mean that a token appears in that position; higher values are word numbers in
 the lexed source. (So a phrase prototype cannot appear in the first 10 words of
 the source text. Those words are always used on inclusion sentences anyway.)
-The "token sequence" lists the flexibly-worded "tokens" in the prototype -- the
+The "token sequence" lists the flexibly-worded "tokens" in the prototype — the
 parts in brackets.
 
 @d MAX_TOKENS_PER_PHRASE 10
@@ -72,7 +74,7 @@ not representable with a `parse_node`, such as "name of a kind of enumerated
 value", the `construct` field is occasionally not `STANDARD_IDTC`.
 
 [1] The early design of Inform did not permit values as token specifications,
-but this lack was in fact reported as a bug -- always a sign that users considered
+but this lack was in fact reported as a bug — always a sign that users considered
 it a natural thing to do.
 
 @d ERRONEOUS_IDTC       0 /* used only in parsing, never in an IDTT */
@@ -117,7 +119,7 @@ void IDTypeData::substitute_spec(id_type_data *idtd, int i, kind **declarations)
 		idtd->token_sequence[i].to_match = Specifications::from_kind(substituted);
 }
 
-@ Say phrases -- text substitutions, that is -- need more:
+@ Say phrases — text substitutions, that is — need more:
 
 =
 typedef struct say_details {
@@ -130,7 +132,7 @@ typedef struct say_details {
 } say_details;
 
 @ These are for "say control structures", as in "fish [if day is Friday]of
-course[end if]" -- the "[if ...]" and "[end if]" both being say phrases which
+course[end if]" — the "[if ...]" and "[end if]" both being say phrases which
 are control structures.
 
 @d NO_SAY_CS 0
@@ -700,7 +702,7 @@ int IDTypeData::block_follows(id_body *idb) {
 }
 
 @h Return value polymorphism.
-Inform has two sorts of polymorphism -- that is, there are two ways in which
+Inform has two sorts of polymorphism — that is, there are two ways in which
 the kinds of phrases can vary. One is by means of kind variables, the other
 is for arithmetic operations such as "plus" or "times": where the range of
 kinds which can go in is quite large, and the kind which comes out is then

@@ -76,7 +76,7 @@ void CLiteralsModel::compile_literal_real(code_generator *gtr,
 
 @h Texts.
 These are sometimes being used in `inv !print` or `inv !box`, in which case they
-are never needed as values -- they're just printed. If that's the case, we
+are never needed as values — they're just printed. If that's the case, we
 render directly as a double-quoted C text literal.
 
 Otherwise, we are in `REGULAR_LTM` mode. In that case, a text must be represented

@@ -7,23 +7,20 @@ Article objects contain no interesting data: in effect, the //article// class
 is an enumeration.
 
 =
-typedef struct article {
+classdef article {
 	struct text_stream *name;
 	struct linguistic_stock_item *in_stock;
-
-	CLASS_DEFINITION
-} article;
+}
 
 @ An //article_usage// object is what a lexicon search returns when text is
 matched against some form of a pronoun.
 
 =
-typedef struct article_usage {
+classdef article_usage {
 	struct article *article_used;
 	struct vocabulary_entry *word_used;
 	struct grammatical_usage *usage;
-	CLASS_DEFINITION
-} article_usage;
+}
 
 @ =
 void Articles::write_usage(OUTPUT_STREAM, article_usage *au) {

@@ -7,19 +7,18 @@ See //What This Module Does// for an introduction to what an Inter schema is.
 For this section of code, it's sufficient to know that an //inter_schema//
 is an annotated syntax tree made up of //inter_schema_node// nodes.
 
-Relatively few inter schemas are generated during Inform's run -- typically a
-few hundred -- so they do not need to be stored compactly or compiled quickly.
+Relatively few inter schemas are generated during Inform's run — typically a
+few hundred — so they do not need to be stored compactly or compiled quickly.
 
 =
-typedef struct inter_schema {
+classdef inter_schema {
 	struct text_stream *converted_from; /* a copy of the source notation */
 	struct inter_schema_node *node_tree; /* the structure */
 	int mid_case; /* does this seem to be used inside a switch case? */
 	int dereference_mode; /* emit from this in dereference-pointers mode */
 	struct linked_list *parsing_errors; /* of `schema_parsing_error` */
 	struct text_provenance provenance;
-	CLASS_DEFINITION
-} inter_schema;
+}
 
 @ =
 inter_schema *InterSchemas::new(text_stream *source, text_provenance provenance) {
@@ -51,7 +50,7 @@ we now more efficiently remove them.)
 @e CALLMESSAGE_ISNT
 
 =
-typedef struct inter_schema_node {
+classdef inter_schema_node {
 	struct inter_schema *parent_schema;
 
 	struct inter_schema_node *parent_node;
@@ -71,8 +70,7 @@ typedef struct inter_schema_node {
 	int blocked_by_conditional;						/* used in code generation */
 
 	struct text_provenance provenance; 				/* used for error reporting */
-	CLASS_DEFINITION
-} inter_schema_node;
+}
 
 @ =
 inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt,
@@ -110,19 +108,25 @@ inter_schema_node *InterSchemas::new_node_near_node(inter_schema *sch, int isnt,
 
 @ Ordinarily, a `CODE_ISNT` node represents a complete block of I6 code.
 For example, in
-= (text as Inform 6)
+
+``` Inform6
 	if (x == 1) { print "Hello!"; }
-=
+```
+
 the print statement occurs inside a complete block, which will eventually
 be represented as a `CODE_ISNT`. But some inline phrase definitions leave
 blocks half-open. For example,
-= (text as Inform 6)
+
+``` Inform6
 	if (x == 1)
-=
+```
+
 is a legal phrase definition: we read it as
-= (text as Inform 6)
+
+``` Inform6
 	if (x == 1) {
-=
+```
+
 and the schema has to contain a `CODE_ISNT` marked as having been left
 unclosed. Similarly, some definitions close an I6 block which is assumed
 as having been opened by an earlier phrase invocation.
@@ -170,9 +174,11 @@ void InterSchemas::mark_unopened(inter_schema_node *isn) {
 only in the middle of switch statements; they contain neither the start nor
 the end of the construct, so the above mechanisms are not sufficient.
 For example, the inline definition
-= (text as Inform 6)
+
+``` Inform6
 	{X}:
-=
+```
+
 implies, by use of the colon, that it's a switch case. We can't conveniently
 associate this with any single node, so we mark the schema as a whole.
 
@@ -220,7 +226,7 @@ compilation process, and never survive into the final schema:
 @e ASM_NEGATED_LABEL_ISTT   /* the label sign `?~` used in assembly language only */
 
 =
-typedef struct inter_schema_token {
+classdef inter_schema_token {
 	struct inter_schema_node *owner;			/* these form a linked list attached to the owner node */
 	struct inter_schema_token *next;
 
@@ -246,8 +252,7 @@ typedef struct inter_schema_token {
 	int preinsert;								/* fleeting markers only */
 	int postinsert;
 	int line_offset;							/* counting lines for error message use */
-	CLASS_DEFINITION
-} inter_schema_token;
+}
 
 @ =
 inter_schema_token *InterSchemas::new_token(int type, text_stream *material,

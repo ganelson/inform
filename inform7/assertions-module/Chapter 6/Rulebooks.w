@@ -16,7 +16,7 @@ game-based purpose nevertheless still shows through in places, as with the
 quaint idea of having enumerated ways in which they finish (see //outcomes//).
 
 =
-typedef struct rulebook {
+classdef rulebook {
 	struct wording primary_name; /* name in source text */
 	struct wording alternative_name; /* alternative form of name */
 	int action_stem_length; /* to do with parsing, but 0 for most rulebooks */
@@ -34,8 +34,7 @@ typedef struct rulebook {
 	struct shared_variable_access_list *accessible_variables; /* and which can be named here */
 
 	struct rulebook_compilation_data compilation_data;
-	CLASS_DEFINITION
-} rulebook;
+}
 
 @ The following creates one:
 
@@ -221,7 +220,7 @@ void Rulebooks::set_alt_name(rulebook *B, wording AW) {
 @ And these up to four nouns can be matched with the following nonterminal.
 
 The process of noticing rulebook names inside parts of rule names is much
-more complex -- see //Rulebooks::rb_match_from_description// below.
+more complex — see //Rulebooks::rb_match_from_description// below.
 
 =
 <rulebook-name> internal {
@@ -464,7 +463,7 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	}
 
 @ Rulebooks can also be given access to other sets of variables which are
-defined somewhere else -- but they still don't belong to `B`, so they do not
+defined somewhere else — but they still don't belong to `B`, so they do not
 go into `B->my_variables`.
 
 =
@@ -686,11 +685,11 @@ int Rulebooks::rb_match_from_description(wording W, rulebook *SB, int len, ruleb
 
 @ `action_stem_length` is zero except for rulebooks derived from actions, such
 as "check taking". It is by definition the difference in length between the
-rulebook name and the action name -- here, therefore, it's 2 - 1 = 1.
+rulebook name and the action name — here, therefore, it's $2 - 1 = 1$.
 
-If the entire text `W` is the rulebook name -- in this case, "check taking" --
-we match that as normal. But if there is more text -- say, "check taking an
-open container" -- then we retreat slightly and match only the prefix "check".
+If the entire text `W` is the rulebook name — in this case, "check taking" —
+we match that as normal. But if there is more text — say, "check taking an
+open container" — then we retreat slightly and match only the prefix "check".
 This ensures that something like "check taking or dropping something" is
 initially, at least, put into the general check rulebook and not the specific
 one for taking, where the "or dropping" part would never have effect.

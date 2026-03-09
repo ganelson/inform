@@ -65,26 +65,20 @@ function defined in kit B; and suppose further that <code>Mystery</code> is not 
 a function, but the name of a variable in kit B, whose value at runtime will be
 the address of the function which must be called. The original call in Kit A
 will be a function invocation like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> Mystery</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> Mystery
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">
+</span></pre>
 <p>But this is incorrect, because only explicitly identified functions can be
 invoked like this, and <code>Mystery</code> turns out to be a variable. (The compiler
 of kit A has no way to know this.) We must correct to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!indirect3v</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> Mystery</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">        </span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!indirect3v</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> Mystery
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">
+		</span><span class="type-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">
+</span></pre>
 <p>This looks like an edge case, and it would certainly be possible to rewrite the
 kits so that it doesn't arise. But rejecting such usages with an error message
 would be as slow as correcting them, so we might as well get them right.</p>

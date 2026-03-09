@@ -70,7 +70,7 @@ that time is at Nought. His less accurate grandmother Poetry has always been
 understood to start in the middle; but on reflection it appears that her
 proceeding is not very different from his; since Science, too, reckons backwards
 as well as forwards, divides his unit into billions, and with his clock-finger
-at Nought really sets off in medias res&quot; (George Eliot, &quot;Daniel Deronda&quot;).</p>
+at Nought really sets off in medias res&quot; (George Eliot, <em>Daniel Deronda</em>).</p>
 <p>Our make-believe here is midnight, our unit is divided not into billions but
 into 1440, and a value of this kind holds one of two possibilities:</p>
 <ul>
@@ -79,12 +79,12 @@ into 1440, and a value of this kind holds one of two possibilities:</p>
 </ul>
 <p>Thus the value 70 might mean 1:10 AM, or it might mean 70 minutes, and
 type-checking does not try to distinguish the two. This is so that arithmetic
-will be easier -- we can add 70 minutes to 1:10 AM to get 2:20 AM, but if they
+will be easier — we can add 70 minutes to 1:10 AM to get 2:20 AM, but if they
 had different kinds, this would be illegal.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
 The down side is that it allows adding, say, 4:52 PM to 3:31 PM, which
 Inform does by considering each as time since the previous midnight, but makes
-little sense. We also need two different notations for time -- compare the
+little sense. We also need two different notations for time — compare the
 command parser tokens &quot;[a time]&quot;, recognising, say, &quot;4:12 AM&quot; and &quot;[a
 time period]&quot;, for &quot;3 HOURS&quot;.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
 </li></ul>
@@ -134,7 +134,7 @@ appear.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Parsing.</b>  Although they are eventually stored in variables of the same kind (&quot;time&quot;),
-relative and absolute times are parsed differently -- they really are not
+relative and absolute times are parsed differently — they really are not
 linguistically the same thing at all.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -160,9 +160,9 @@ linguistically the same thing at all.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>  Note that we allow &quot;12:01 AM&quot; (one minute past midnight) and &quot;12:01 PM&quot;
 (ditto noon), and also &quot;0:01 AM&quot; and &quot;00:01 AM&quot;, but not &quot;0:01 PM&quot;.
-Lawrence Sanders's sci-fi thriller &quot;The Tomorrow File&quot;, if that can be
-mentioned on the same page as &quot;Daniel Deronda&quot;, had a terrific cover of
-a digital clock glowing with &quot;24:01&quot; -- but we won't allow that, either.</p>
+Lawrence Sanders's sci-fi thriller <em>The Tomorrow File</em>, if that can be
+mentioned on the same page as <em>Daniel Deronda</em>, had a terrific cover of
+a digital clock glowing with &quot;24:01&quot; — but we won't allow that, either.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Vet the time for clock range</span><span class="named-paragraph-number">4.1</span></span> =</p>
 

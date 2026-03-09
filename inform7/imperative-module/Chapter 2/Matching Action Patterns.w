@@ -23,7 +23,7 @@ void RTActionPatterns::compile_pattern_match_actorless(action_pattern *ap) {
 Matching a typical action pattern involves testing several different things:
 for example, "going from the Casino in the presence of Le Chiffre" means
 testing that the action is "going", that the origin is the Casino, and that
-Le Chiffre is there -- three CPMC clauses.
+Le Chiffre is there — three CPMC clauses.
 
 The basic roster of CPMC clauses is here, but features can add more. In
 particular, see //Matching Going Action Patterns//.
@@ -71,9 +71,9 @@ features to fall into range 2.
 @e LOOP_OVER_SCOPE_NOT_CALLING_CPMC
 
 @h Matching.
-When a pattern is written in a way which refers to the past -- "if we are examining
-the table for the third time", say -- we divert to the past-tense code, though
-in fact the underlying pattern -- "examining the table" -- will eventually come
+When a pattern is written in a way which refers to the past — "if we are examining
+the table for the third time", say — we divert to the past-tense code, though
+in fact the underlying pattern — "examining the table" — will eventually come
 back here, shorn of its `duration` marker. Anyway, we get rid of that case first.
 
 The strategy is to work out a list of clauses needed, and then compile them.
@@ -215,7 +215,7 @@ if the pattern is, and also that it isn't if the pattern isn't.
 		CPMC_NEEDED(PARAMETER_MATCHES_CPMC, NULL);
 
 @ There's an optimisation here. Some rules with premisses like "After dropping
-something" are auto-filed into rulebooks tied to individual actions -- in this
+something" are auto-filed into rulebooks tied to individual actions — in this
 case, the "after dropping rulebook". When testing that premiss, which is an
 action pattern match, it would be redundant to test that the action is "dropping",
 because this can be proved from the context; so we skip this test.
@@ -224,8 +224,8 @@ because this can be proved from the context; so we skip this test.
 	if ((ap->action_list) && (ActionNameLists::testing(ap->action_list)))
 		CPMC_NEEDED(ACTION_MATCHES_CPMC, NULL);
 
-@ In the case where no action is specified, but the noun is -- for example,
-"doing something with a container" -- we need to check that it is an object
+@ In the case where no action is specified, but the noun is — for example,
+"doing something with a container" — we need to check that it is an object
 which is not "nothing". The slightly odd practice of the command parser is
 such that the way to do with is `(noun) && (noun == inp1)`.
 
@@ -397,8 +397,8 @@ we still have to compile `true`, to ensure that every action will match.
 examining the box", which matches any action except "examining the box". It
 might seem that this could be negated just as the negation of the positive
 case, but that overlooks the hidden clauses about who the actor is, whether
-the action is a request, and so on -- the `ACTOR_CPMCRANGE` -- and any
-condition supplied -- the `WHEN_CPMCRANGE`.
+the action is a request, and so on — the `ACTOR_CPMCRANGE` — and any
+condition supplied — the `WHEN_CPMCRANGE`.
 
 For example, "doing something other than examining the box when the red door is
 open" matches "dropping the box" only if the door is open at the time.
@@ -919,7 +919,7 @@ void RTActionPatterns::value_matches_specification(parse_node *val, int is_param
 		@<Match as a proposition@>;
 	}
 
-@ So there are four different implementations -- three exceptions, then one
+@ So there are four different implementations — three exceptions, then one
 general case.
 
 The first handles, say, "a Queen listed in the Table of Monarchs".

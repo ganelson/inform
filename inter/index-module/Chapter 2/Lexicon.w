@@ -17,7 +17,7 @@ under a single umbrella:
 @d MVERB_TLEXE 9 /* a meaningless verb */
 
 =
-typedef struct index_lexicon_entry {
+classdef index_lexicon_entry {
 	struct text_stream *lemma;
 	int part_of_speech; /* one of those above */
 	char *category; /* textual description of said, e.g., `"adjective"` */
@@ -27,18 +27,16 @@ typedef struct index_lexicon_entry {
 	int link_to; /* word number in source text */
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
 	struct index_lexicon_entry *sorted_next; /* next in lexicographic order */
-	CLASS_DEFINITION
-} index_lexicon_entry;
+}
 
 @ A lexicon is then a set of entries. These are accumulated in no particular
 order, then sorted.
 
 =
-typedef struct inter_lexicon {
+classdef inter_lexicon {
 	struct linked_list *unsorted;
 	index_lexicon_entry *first; /* head of list in lexicographic order */
-	CLASS_DEFINITION
-} inter_lexicon;
+}
 
 @h Creating a lexicon.
 And this is where that happens:
@@ -200,9 +198,11 @@ indentation and no interparagraph spacing, so we need to insert regular
 paragraphs between the As and the Bs, then between the Bs and the Cs, and so on.
 Each entry consists of the wording, then maybe some icons, then an explanation
 of what it is: for instance,
-= (text)
+
+``` None
 player's holdall [icon]    noun, a kind of container
-=
+```
+
 In a few cases, there is a further textual gloss to add.
 
 =

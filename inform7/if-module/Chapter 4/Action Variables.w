@@ -162,7 +162,7 @@ but action variables cannot.
 	}
 
 @ An owner list is maintained for all sets of actions which actually have
-variables (hence "nonempty") -- many will not, in practice:
+variables (hence "nonempty") — many will not, in practice:
 
 = (early code)
 shared_variable_access_list *all_nonempty_stacked_action_vars = NULL;

@@ -110,16 +110,13 @@ I6S code can only come from within the compiler itself, and means a bug.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Inline phrase definitions.</b>  This is a typical inline phrase definition which <a href="../inform7/index.html" class="internal">inform7</a> must handle:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">values</span><span class="plain-syntax">) </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">brace</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        (- </span><span class="identifier-syntax">LIST_OF_TY_Say</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, </span><span class="constant-syntax">1</span><span class="plain-syntax">); -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">values</span><span class="plain-syntax">) </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">brace</span><span class="plain-syntax"> </span><span class="identifier-syntax">notation</span><span class="plain-syntax">:
+		(- </span><span class="identifier-syntax">LIST_OF_TY_Say</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, </span><span class="constant-syntax">1</span><span class="plain-syntax">); -).
+</span></pre>
 <p>Essentially, this defines &quot;say ... in brace notation&quot; as meaning the schema
 coming from the text <code>LIST_OF_TY_Say({-by-reference:L}, 1);</code>.</p>
 <p>Note that the <a href="../inform7/index.html" class="internal">inform7</a> compiler calls <a href="2-pis.html#SP4" class="internal">ParsingSchemas::from_inline_phrase_definition</a>
-only once on such a definition -- it would clearly be slow and wasteful to parse
+only once on such a definition — it would clearly be slow and wasteful to parse
 it anew each time it is used. Because of that, only 100 or so calls to this function
 are made in a typical run, and so speed is not critical here.</p>
 </div>
@@ -127,7 +124,7 @@ are made in a typical run, and so speed is not critical here.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  That was a simple example, in that only one schema was involved: it is a
 head which has no tail.</p>
 <p>However, a few inline phrases make use of the notation <code>{-block}</code>, which
-represents a block of code -- usually a loop body -- and which divides the
+represents a block of code — usually a loop body — and which divides the
 definition into a head part, before the block, and a tail part, after. So
 in general we may have to compile two schemas, not one.</p>
 <p>The text <code>from</code> is in a wide C string because it's coming raw from the lexer,
@@ -158,30 +155,23 @@ white space from each. Note that <code>{-block}</code> is not legal anywhere els
 <p>To repeat with a King's Court begin -- end loop:</p>
 </blockquote>
 <p>could be given the definition:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">};</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">&lt;=3; </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        {-</span><span class="identifier-syntax">block</span><span class="plain-syntax">}</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@</span><span class="identifier-syntax">push</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">};
+	</span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">&lt;=3; </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">++)
+	    {-</span><span class="identifier-syntax">block</span><span class="plain-syntax">}
+	@</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">trcount</span><span class="plain-syntax">;
+</span></pre>
 <p>This then repeats what it's given three times, while guaranteeing that the
 counter is always a local variable called <code>trcount</code>, and that no matter how
 such operations are nested, they will work. We might then write:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">iteration</span><span class="plain-syntax">: (- </span><span class="identifier-syntax">print</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">}; -).</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">iteration</span><span class="plain-syntax">: (- </span><span class="identifier-syntax">print</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">trcount</span><span class="plain-syntax">}; -).
+</span></pre>
 <p>and then this will work as might be hoped:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">King</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">Court</span><span class="plain-syntax">:
+	    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[iteration]..."</span><span class="plain-syntax">;
+	        </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">King</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">Court</span><span class="plain-syntax">:
+	            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[iteration]. You play a Shanty Town, getting +2 Actions."</span><span class="plain-syntax">;
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">King</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">Court</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[iteration]..."</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">King</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">Court</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[iteration]. You play a Shanty Town, getting +2 Actions."</span><span class="plain-syntax">;</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fetch the head and tail definitions</span><span class="named-paragraph-number">4.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">

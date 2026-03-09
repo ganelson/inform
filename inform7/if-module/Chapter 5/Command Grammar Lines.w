@@ -18,7 +18,7 @@ removing it from action. That's a feature only seen in lines for
 `CG_IS_COMMAND` grammars, in fact.
 
 =
-typedef struct cg_line {
+classdef cg_line {
 	struct cg_line *next_line; /* linked list in creation order */
 	struct cg_line *sorted_next_line; /* and in applicability order */
 	int general_sort_bonus; /* temporary values used in grammar line sorting */
@@ -41,8 +41,7 @@ typedef struct cg_line {
 	struct wording mistake_response_text; /* if so, reply thus */
 
 	struct cg_line_compilation_data compilation_data;
-	CLASS_DEFINITION
-} cg_line;
+}
 
 @ =
 cg_line *CGLines::new(wording W, action_name *ac,
@@ -277,10 +276,12 @@ void CGLines::slash(command_grammar *cg) {
 }
 
 @ The tokenised text of a CG line can contain "slashes":
-= (text)
+
+``` None
 given in Inform source text   "take up/in all washing/laundry/linen"
 tokenised                     take up / in all washing / laundry / linen
-=
+```
+
 This is a run of 10 CG tokens, three of them forward slashes which are actually
 markers to indicate disjunction: thus the three tokens "up / all" intend to
 match just one word of the player's command, which can be either UP or ALL.
@@ -289,20 +290,24 @@ Slashing consolidates this line to 7 CG tokens, giving each one a `slash_class`
 value to show which group it belongs to. 0 means that a token is not part of a
 slashed group; otherwise, the group number should be shared by all the tokens
 in the group, and should be different from that of other groups. Thus:
-= (text)
+
+``` None
                      take up in all washing laundry linen
 slash_class          0    1  1  0   2       2       2
-=
+```
+
 In addition, Inform allows the syntax `--` to mean the empty word, or rather,
 to mean that it is permissible for the player's command to miss this word out.
 If one option in a group is `--` then this does not get a token of its own,
 but instead results in the `slash_dash_dash` field to be set. For example,
 consider "near --/the/that tree/shrub":
-= (text)
+
+``` None
                        near  the  that  tree  shrub
 slash_class            0     1    1     2     2
 slash_dash_dash        FALSE TRUE FALSE FALSE FALSE
-=
+```
+
 Note that `--` occurring on its own, outside of a run of slashes, has by
 definition no effect, and disappears without trace in this process.
 
@@ -348,17 +353,20 @@ definition no effect, and disappears without trace in this process.
 
 @ It is now easy to count the number of "lexemes", that's to say, the number
 of groups arising from the calculations just done. In this example there are 4:
-= (text)
+
+``` None
                      take   up in   all   washing laundry linen
 slash_class          0      1  1    0     2       2       2
 lexemes              +--+   +---+   +-+   +-------------------+
-=
+```
+
 And in this one 3:
-= (text)
+
+``` None
                      near   the  that   tree  shrub
 slash_class          0      1    1      2     2
 lexemes              +--+   +-------+   +---------+
-=
+```
 
 @<Calculate the lexeme count@> =
 	cgl->lexeme_count = 0;
@@ -372,9 +380,11 @@ lexemes              +--+   +-------+   +---------+
 	}
 
 @ The following catches grammar such as:
-= (text as Inform 7)
+
+``` Inform7
 Understand "Prof/--" as Professor Zaphier.
-=
+```
+
 which would otherwise compile fine, but lead to a hang of the story file when
 attempting to recognise Zaphier's name.
 
@@ -444,7 +454,7 @@ which are such that $0\leq s_i<R$; or if none of the $n$ tokens describes a valu
 the GSB is $R^2n$, which is guaranteed to be much larger.
 
 However, there is also an understanding sort bonus, which is really a penalty
-incurred by "[text]" tokens -- which are very free-form topics of conversation.
+incurred by "[text]" tokens — which are very free-form topics of conversation.
 A "[text]" at token position $i$, where $0\leq i<n$, scores $R^2(i-R^2) + (n - 1 - i)$.
 Given that $i$ is small and $R^2$ is big, this is basically a huge negative
 number, but is such that a "[text]" earlier in the line is penalised just a
@@ -453,7 +463,8 @@ little bit more than a "[text]" later.
 For $R=10$, the following might thus happen. (I've simplified this table by
 having the individual tokens all score 1, but in fact they can score a range
 of small numbers: see //CGTokens::score_bonus//.)
-= (text)
+
+``` None
                         n       s_0     s_1     gsb     usb
 inventory               1       --      --      100     0
 [thing]                 1       1       --      10      0
@@ -461,7 +472,8 @@ inventory               1       --      --      100     0
 umbrage over [text]     3       1       --      10      -9800
 umbrage [text]          2       1       --      10      -9900
 umbrage [text] issue    3       1       --      10      -9899
-=
+```
+
 It is roughly true that if we sort these lines in descending order of the
 sum of those scores, they come out in the order we need to try them when
 parsing the player's command at run-time. For the exact sorting rules, see below.
@@ -623,10 +635,12 @@ the early days of Inform 7. The issue here is that the command parser at
 run-time accepts the first match it can make, when given a list of options.[1]
 Because of that, it is essential to put these options in the right order, or
 some can never happen. For example,
-= (text)
+
+``` None
 ask [someone] about [something]
 ask [someone] about [text]
-=
+```
+
 have to be that way around, because any command which matches the first line
 here also matches the second. Putting these lines into order used to be part
 of the craft of the Inform 6 programmer, but it was always difficult to do,
@@ -683,8 +697,8 @@ might be a sorting criterion, but what we do looks asymmetric. Why should
 CG_IS_COMMAND grammars have the opposite convention from all others?
 
 This arises because the command parser we use at run time works that way. The
-difference is that when the parser is working on an entire command -- thus,
-working through a `CG_IS_COMMAND` grammar -- it always knows how many words
+difference is that when the parser is working on an entire command — thus,
+working through a `CG_IS_COMMAND` grammar — it always knows how many words
 it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
 has to make sense of all of the words. It needs to consider the possibility
 "take [something]" before "take [something] from [something]" because there
@@ -716,7 +730,7 @@ thus fail to check subsequent commands.
 
 For this reason, `"look behind [something]"` as a mistake needs to be checked
 after `"look"`, or else the command parser will respond to LOOK by replying
-"What do you want to look behind?" -- and then saying that you are mistaken.
+"What do you want to look behind?" — and then saying that you are mistaken.
 
 @<Mistakes precede correct readings@> =
 	if ((L1->mistaken) && (L2->mistaken == FALSE)) return TRUE;
@@ -757,20 +771,22 @@ necessary under the strict superset principle.
 		(CGLines::conditional(L2))) return FALSE;
 
 @ Getting down to here looks difficult, given the number of things about `L1`
-and `L2` which have to match up -- same USB, GSB, number of lexemes,
+and `L2` which have to match up — same USB, GSB, number of lexemes,
 number of resulting types, equivalent resulting types, same mistake and
-conditional status -- but in fact it isn't all that uncommon. Equivalent pairs
+conditional status — but in fact it isn't all that uncommon. Equivalent pairs
 produced by the Standard Rules include:
-= (text)
+
+``` None
 get off [something]
 get in/into/on/onto [something]
 
 turn on [something]
 turn [something] on
-=
+```
+
 Only the second of these pairs leads to ambiguity, and even then only if
-an object has a name like ON VISION ON -- perhaps a book about the antique
-BBC children's television programme "Vision On" -- so that the command
+an object has a name like ON VISION ON — perhaps a book about the antique
+BBC children's television programme _Vision On_ — so that the command
 TURN ON VISION ON would match both of the alternative CGLs.
 
 @<Lines created earlier precede lines created later in the source text@> =

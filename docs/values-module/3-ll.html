@@ -67,9 +67,9 @@ function togglePopup(material_id) {
 </blockquote>
 <p>Here &quot;{2, 12, 13}&quot; is parsed to an rvalue specification. Various syntactic
 things can go wrong with those commas and braces, which must be detected, and
-Inform must also work out the kind -- here, it's &quot;list of numbers&quot;.</p>
+Inform must also work out the kind — here, it's &quot;list of numbers&quot;.</p>
 <p>Note that the empty list &quot;{}&quot; is valid as a constant, but that it contains
-no indication of its kind -- this must be determined from context.</p>
+no indication of its kind — this must be determined from context.</p>
 <p>The following Preform grammar handles the syntax, at least:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -104,7 +104,7 @@ braces and commas balance; and</li>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">literal_list</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">literal_list</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">unbraced_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* position in the source of quoted text, excluding braces */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used for problem reporting only */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed_within_code</span><span class="plain-syntax">; </span><span class="comment-syntax">/* appears within a phrase, rather than (say) a table entry? */</span>
@@ -116,19 +116,17 @@ braces and commas balance; and</li>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ll_package</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which will be the enclosure for... */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ll_iname</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">literal_list</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_list is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  I believe &quot;llath&quot; is the Welsh word for &quot;yard&quot;: not sure about &quot;llist&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">llist_entry</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">llist_entry</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">llist_entry_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">llist_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_llist_entry</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">llist_entry</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure llist_entry is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -189,7 +187,7 @@ recursing right to left (i.e., reversing the direction of reading):</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  With all the entries in place, we now have to reconcile their kinds, if
 that's possible. Problems are only issued on request, and with the current
-sentence cut down to just the list itself -- since otherwise we might be
+sentence cut down to just the list itself — since otherwise we might be
 printing out an entire huge table to report a problem in a single entry
 which happens to be a malformed list.</p>
 </div>
@@ -314,7 +312,7 @@ incomparable, and &quot;thing&quot; being the max of &quot;person&quot; and &quo
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The following allow other parts of Inform to find the kind of a constant
 list at a given word position; either to discover the answer, or to force
-problem messages out into the open --</p>
+problem messages out into the open —</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">Lists::kind_of_list_at</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Lists::kind_of_list_at</span></span>:<br/>Rvalues - <a href="2-rvl.html#SP25_4">&#167;25.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -324,7 +322,7 @@ problem messages out into the open --</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lists::check_one</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Lists::check_one</span></span>:<br/>Dash - <a href="5-dsh.html#SP14_1_1_2">&#167;14.1.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lists::check_one</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Lists::check_one</span></span>:<br/>Dash - <a href="5-dsh.html#SP13_1_1_2">&#167;13.1.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">incipit</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">literal_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ll</span><span class="plain-syntax"> = </span><a href="3-ll.html#SP6" class="function-link"><span class="function-syntax">Lists::find_literal</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">incipit</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ll</span><span class="plain-syntax">) </span><a href="3-ll.html#SP8" class="function-link"><span class="function-syntax">Lists::kind_of_ll</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ll</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>

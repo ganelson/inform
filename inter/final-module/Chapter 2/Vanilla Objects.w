@@ -25,15 +25,19 @@ some cases, with multiple property declarations for what is actually the same
 property.
 
 For example, this arises when a property is defined in Inform 7 source like so:
-= (text as Inform 7)
+
+``` Inform7
 A room can be privately-named or publicly-named.
 The privately-named property translates into Inter as "privately_named".
-=
+```
+
 ...where the property `privately_named` actually originates in a kit, written
 in Inform 6 notation like so:
-= (text as Inform 6)
+
+``` Inform6
 Attribute privately_named;
-=
+```
+
 We now have two property declarations, one in the Standard Rules module, the
 other in the BasicInformKit module. It's tempting to have the linker delete
 the Standard Rules one and convert references to it to point them to the kit
@@ -41,8 +45,8 @@ definition, but this is not a good idea because the kit definition doesn't
 have the metadata or permissions which the Standard Rules definition has. So
 we keep both in play, and reconcile them in the code below.
 
-It gets worse: the Standard Rules properties "lighted" and "lit", though different --
-one applies to rooms, one to things -- both translate to the same BasicInformKit
+It gets worse: the Standard Rules properties "lighted" and "lit", though different —
+one applies to rooms, one to things — both translate to the same BasicInformKit
 property `light`. At present that's the worst case scenario (i.e., three different
 properties all coinciding) but we won't assume that.
 
@@ -93,7 +97,7 @@ void VanillaObjects::declare_properties(code_generation *gen) {
 
 @ So here's an annoyance. We will need two identifier names for each property.
 One is the metadata array, while the other will probably be used by the generator
-to hold the actual storage -- that other is called the "inner name".
+to hold the actual storage — that other is called the "inner name".
 
 In the case of our `privately_named` example, the metadata array will be called
 something like `A_privately_named`, and any references to the property in kit
@@ -101,13 +105,15 @@ code or in Inform 7 source text will compile to this array. The inner name will
 preserve the original identifier `privately_named`, and will likely be used by
 the final generator for where a property value is actually stored. For Inform 6,
 for example, we will have:
-= (text)
+
+``` None
 	A_privately_named --> 0		2
 	                  --> 1		privately_named (an I6 attribute)
 	                  --> 2     1
 	                  --> 3     "privately named"
 	                  --> 4     ... permissions follow
-=
+```
+
 In some ways it would be more convenient to use these names the other way around:
 to call the array itself `privately_named` and have the inner identifier be
 something like `I_privately_named`. But this fails on Inform 6 in exasperating
@@ -196,7 +202,7 @@ a list of permissions to be stored in memory. This is where.
 Note that permissions are accumulated for all of the properties in a given
 name set. In the case of "lighted" and "lit" and `light`, therefore, the
 permissions written will be those for "lighted" (rooms, basically) and then
-those for "lit" (things); `light`, the WorldModelKit original, has no permissions --
+those for "lit" (things); `light`, the WorldModelKit original, has no permissions —
 assimilated properties never do have.
 
 @<Write a list of kinds or objects which are permitted to have this property@> =
@@ -238,7 +244,7 @@ can be given properties, even when other objects of the same kind may lack them.
 			}
 		}
 
-@ It's happily a rare occurrence, but "object" itself can have properties -- so
+@ It's happily a rare occurrence, but "object" itself can have properties — so
 that every object of any kind has permission to have that. We convey that by giving
 permission for every top-level kind of object. (There are typically only four of
 these top-level kinds, and not many properties have these permissions, so it's
@@ -335,7 +341,8 @@ so we use "marks" on those already done.
 	}
 
 @ In the case where a kind of value has been created by table, as in this example:
-= (text as Inform 7)	
+
+``` Inform7	
 	Planet is a kind of value. The planets are defined by the Table of Outer Planets.
 
 	Table of Outer Planets
@@ -345,7 +352,8 @@ so we use "marks" on those already done.
 	Uranus		19 AU
 	Neptune		30 AU
 	Pluto		39 AU
-=
+```
+
 the property "semimajor axis" is already stored in a table column. That becomes
 our stick array. But in other cases, where the instances have not been created
 by table, no sticks exist and we must compile them.
@@ -464,11 +472,13 @@ which the generator is making.
 
 This is a bad idea, because it presupposes which generator is being used, or
 at any rate what the syntax will be. It arises from source text like this:
-= (text as Inform 7)
+
+``` Inform7
 Include (-
 	with before [; Go: return 1; ],
 -) when defining a rideable vehicle.
-=
+```
+
 ...which should probably not be allowed. The splat is the text between `(-`
 and `-)` here, and as can be seen, it's in Inform 6 syntax, which would be bad
 news for, say, the C generator.

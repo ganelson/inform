@@ -18,11 +18,13 @@ a feature of //inweb// available only for programs written in InC.)
 In particular, the tangler compiles the function `Inweb_InC_register_nonterminals`,
 called from below, with invocations of the `REGISTER_NONTERMINAL` and
 `INTERNAL_NONTERMINAL` macros. For example, the function includes the C line:
-= (text as C)
+
+``` C
 	INTERNAL_NONTERMINAL(U"<any-integer>", any_integer_NTM, 1, 1);
-=
+```
+
 since this is an "internal" nonterminal; and the macro will then expand
-to code which sets up `any_integer_NTM` -- see below.
+to code which sets up `any_integer_NTM` — see below.
 
 =
 void Nonterminals::register(void) {
@@ -39,21 +41,25 @@ void Nonterminals::register(void) {
 macro for any standard nonterminal, and also tangles a compositor function for
 it; the name of which is the nonterminal's name with a `C` suffix. For example,
 suppose //inweb// sees the following in the web it is tangling:
-= (text as Preform)
+
+``` Preform
 	<competitor> ::=
 		the pacemaker |              ==> { 1, - }
 		<ordinal-number> runner |    ==> { pass 1 }
 		runner no <cardinal-number>  ==> { pass 1 }
-=
+```
+
 It then tangles this macro usage into //Nonterminals::register// above:
-= (text as C)
+
+``` C
 	REGISTER_NONTERMINAL(U"<competitor>", competitor_NTM);
-=
+```
+
 And it also tangles matching declarations for:
 
 - the global variable `competitor_NTM`, of type `nonterminal *`;
 - the "compositor function" `competitor_NTMC`, which is a function to
-deal with what happens when a successful match is made against the grammar --
+deal with what happens when a successful match is made against the grammar —
 this incorporates the material which //inweb// finds to the right of the `==>`
 markers in the Preform definition.
 
@@ -72,10 +78,12 @@ compositor function:
 	identifier->compositor_fn = identifier##C;
 
 @ For example, this might expand to:
-= (text as C)
+
+``` C
 	competitor_NTM = Nonterminals::find(Vocabulary::entry_for_text(U"<competitor>"));
 	competitor_NTM->compositor_fn = competitor_NTMC;
-=
+```
+
 Note that it is absolutely necessary that `Nonterminals::find` does
 return a nonterminal. But we can be sure that it does, since the function creates
 a nonterminal object of that name even if one does not already exist.
@@ -106,7 +114,7 @@ names: there can be only one called, say, <any-integer>. This is why its
 textual name is referred to as an "ID".
 
 =
-typedef struct nonterminal {
+classdef nonterminal {
 	struct vocabulary_entry *nonterminal_id; /* e.g. `"<any-integer>"` */
 
 	/* For internal nonterminals */
@@ -126,9 +134,7 @@ typedef struct nonterminal {
 
 	struct nonterminal_optimisation_data opt; /* see //The Optimiser// */
 	struct nonterminal_instrumentation_data ins; /* see //Instrumentation// */
-
-	CLASS_DEFINITION
-} nonterminal;
+}
 
 @ A few notes on this are in order:
 
@@ -157,7 +163,7 @@ For example, if the optimiser can determine that <competitor> only ever matches
 texts of between 3 and 7 words in length, it can quickly reject any run of
 words outside that range. (However: note that a maximum of 0 means that the
 maximum and minimum word counts are disregarded.) The other fields are harder
-to explain -- see //The Optimiser//.
+to explain — see //The Optimiser//.
 
 @ So, then, as noted above, nonterminals are identified by their name-words.
 The following is not especially fast but doesn't need to be: it's used only
@@ -231,7 +237,7 @@ by the nonterminal, though at present we don't need that.
 
 @h Other results.
 The parser records the result of the most recently matched nonterminal in the
-following global variables -- which, unlike word ranges, are not attached to
+following global variables — which, unlike word ranges, are not attached to
 any single NT.
 
 //inweb// translates the notation `<<r>>` and `<<rp>>` to these variable names:
@@ -242,13 +248,15 @@ void *most_recent_result_p = NULL; /* the variable which `inweb` writes `<<rp>>`
 
 @h Flagging and numbering.
 The following mechanism arranges for words used in the grammar for a NT to
-be given properties just because of that -- either flags or numerical values.
+be given properties just because of that — either flags or numerical values.
 For example, if we wanted the numbers from Stoppard's play "Dogg's Hamlet",
 we might have:
-= (text as Preform)
+
+``` Preform
 	<dogg-numbers> ::=
 		sun ` dock ` trog ` slack ` pan
-=
+```
+
 And if <dogg-numbers> were made a "numbering" NT, the effect would be that
 these five words would pick up the numerical values 1, 2, 3, 4, 5, because
 they occur in production number 1, 2, 3, 4, 5 for the NT.

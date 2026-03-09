@@ -16,15 +16,14 @@ hash-code the combination for speed. The following structure holds a
 combination of the textual names and the hash code:
 
 =
-typedef struct inbuild_work {
+classdef inbuild_work {
 	struct inbuild_genre *genre;
 	struct text_stream *author_name;
 	struct text_stream *raw_author_name;
 	struct text_stream *title;
 	struct text_stream *raw_title;
 	int inbuild_work_hash_code; /* hash code derived from the above */
-	CLASS_DEFINITION
-} inbuild_work;
+}
 
 @ Each work structure is written only once, and its title and author name are
 not subsequently altered.

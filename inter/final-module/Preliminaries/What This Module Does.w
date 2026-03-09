@@ -29,7 +29,7 @@ simply provides a single Inter pipeline stage called `generate`. See
 //CodeGen::run_pipeline_stage// is run. This then creates a //code_generation//
 object, which holds all the temporary storage and configuration details for a
 single act of code-generation. The most important of those details is the
-choice of which //code_generator// to use -- see below.
+choice of which //code_generator// to use — see below.
 
 @ The module creates a small number of //code_generator//s, one for each
 possible output format. For example, //I6Target::create_generator// creates
@@ -40,7 +40,7 @@ If you are considering adding a new output format, say for JavaScript or Python,
 that should be done by adding a new //code_generator//. Although the default
 generator is the Inform 6 one, that is in some ways misleadingly simple in
 design because Inter, our intermediate format, was originally designed as a
-sort of abstract paraphrase of Inform 6 -- which means that it's quite easy
+sort of abstract paraphrase of Inform 6 — which means that it's quite easy
 to turn Inter to I6. The C code generator is a much better example of the real
 issues likely to present themselves. So reading through the chapter on C is
 probably the best way to get an idea of the task.

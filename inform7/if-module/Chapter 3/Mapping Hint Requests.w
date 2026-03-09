@@ -454,7 +454,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 @ 
 
 =
-typedef struct mapping_hint {
+classdef mapping_hint {
 	struct instance *from;
 	struct instance *to;
 	struct instance *dir;
@@ -472,9 +472,7 @@ typedef struct mapping_hint {
 	inchar32_t *colour;
 	int at_offset;
 	struct instance *offset_from;
-	
-	CLASS_DEFINITION
-} mapping_hint;
+}
 
 mapping_hint *MappingHints::new_hint(void) {
 	mapping_hint *hint = CREATE(mapping_hint);

@@ -81,7 +81,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_BUD_STACK_SIZE</span> <span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="comment-syntax">/* must be at least the number of heading levels plus 3 */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">root_node</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bud_parent_sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bud_parent_stack</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BUD_STACK_SIZE</span><span class="plain-syntax">];</span>
@@ -90,8 +90,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">contains_dialogue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">trace_sentences</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">HEADING_TREE_SYNTAX_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">headings</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="function-syntax">SyntaxTree::new</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax">);</span>
@@ -128,7 +127,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Sentences are grafted onto the bud position at the top of the stack.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxTree::graft_sentence</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">SyntaxTree::graft_sentence</span></span>:<br/>Sentences - <a href="3-snt.html#SP7_1">&#167;7.1</a>, <a href="3-snt.html#SP7_6">&#167;7.6</a>, <a href="3-snt.html#SP7_7_2">&#167;7.7.2</a>, <a href="3-snt.html#SP7_7_8_1">&#167;7.7.8.1</a>, <a href="3-snt.html#SP7_7_8_2">&#167;7.7.8.2</a>, <a href="3-snt.html#SP7_7_8_3">&#167;7.7.8.3</a>, <a href="3-snt.html#SP7_7_8_3_1_1">&#167;7.7.8.3.1.1</a>, <a href="3-snt.html#SP7_7_8_3_3">&#167;7.7.8.3.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxTree::graft_sentence</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">SyntaxTree::graft_sentence</span></span>:<br/>Sentences - <a href="3-snt.html#SP6_1">&#167;6.1</a>, <a href="3-snt.html#SP6_6">&#167;6.6</a>, <a href="3-snt.html#SP6_9_3">&#167;6.9.3</a>, <a href="3-snt.html#SP6_9_9_1">&#167;6.9.9.1</a>, <a href="3-snt.html#SP6_9_9_2">&#167;6.9.9.2</a>, <a href="3-snt.html#SP6_9_9_3">&#167;6.9.9.3</a>, <a href="3-snt.html#SP6_9_9_3_1_1">&#167;6.9.9.3.1.1</a>, <a href="3-snt.html#SP6_9_9_3_3">&#167;6.9.9.3.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bud_parent_sp</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no attachment point"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-pn.html#SP5" class="function-link"><span class="function-syntax">Node::get_type</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">) == </span><span class="constant-syntax">HEADING_NT</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-st.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Adjust bud point for a heading</span></span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sentence_attachment_point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bud_parent_stack</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bud_parent_sp</span><span class="plain-syntax">-1];</span>
@@ -184,7 +183,7 @@ that is, it returns the previously youngest child of the <code>rootstock</code> 
 if it previously had no children).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SyntaxTree::graft</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">SyntaxTree::graft</span></span>:<br/><a href="2-st.html#SP4">&#167;4</a><br/>Sentences - <a href="3-snt.html#SP7_7_8_2">&#167;7.7.8.2</a>, <a href="3-snt.html#SP7_7_8_3">&#167;7.7.8.3</a>, <a href="3-snt.html#SP11_1">&#167;11.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scion</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rootstock</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SyntaxTree::graft</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">SyntaxTree::graft</span></span>:<br/><a href="2-st.html#SP4">&#167;4</a><br/>Sentences - <a href="3-snt.html#SP6_9_9_2">&#167;6.9.9.2</a>, <a href="3-snt.html#SP6_9_9_3">&#167;6.9.9.3</a>, <a href="3-snt.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scion</span><span class="plain-syntax">, </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rootstock</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">elder</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scion</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"scion is null"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rootstock</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"rootstock is null"</span><span class="plain-syntax">);</span>
@@ -475,7 +474,7 @@ it very much.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Cautious traverses.</b>  When logging or verifying the tree, we cannot use the carefree functions
 above: the tree might be malformed. As a way to detect cycles, we call for
-a new &quot;traverse token&quot; -- just a unique integer value -- and mark all nodes
+a new &quot;traverse token&quot; — just a unique integer value — and mark all nodes
 visited with that value.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -516,24 +515,18 @@ Then:</p>
 <li><code>SyntaxTree::add_reading(NULL, fruit_node, W)</code> returns <code>noun_node</code>,</li>
 <li>but <code>SyntaxTree::add_reading(fruit_node, colour_node, W)</code> returns this subtree:</li>
 </ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">AMBIGUITY_NT</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">fruit_node</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">colour_node</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	AMBIGUITY_NT A
+	    fruit_node
+		colour_node
+</span></pre>
 <ul>
 <li>and <code>SyntaxTree::add_reading(A, adj_node, W)</code> returns the subtree:</li>
 </ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">AMBIGUITY_NT</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">fruit_node</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">colour_node</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">adj_node</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	AMBIGUITY_NT A
+	    fruit_node
+		colour_node
+		adj_node
+</span></pre>
 <p>Thus it accumulates possible readings of a given text.</p>
 <p>A complication is that the following callback function is offered the chance
 to amend this process in individual cases; it's called whenever <code>reading</code>

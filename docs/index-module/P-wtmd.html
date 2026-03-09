@@ -79,24 +79,23 @@ to generate an EPS (encapsulated PostScript) file of a spatial map, for example.
 but a radical refactoring then moved the entire <a href="index.html" class="internal">index</a> module into <a href="../inter/index.html" class="internal">inter</a>
 instead. Index products are now generated from trees of Inter code, not from
 Inform projects as such:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">                      </span><span class="element-syntax">source</span><span class="plain-syntax"> </span><span class="element-syntax">text</span><span class="plain-syntax">
+                          |
+                          | </span><span class="element-syntax">inform7</span><span class="plain-syntax">
+                         \|/
+                      </span><span class="element-syntax">inter</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">
+                       /     \
+               </span><span class="element-syntax">inter</span><span class="plain-syntax">  /       \  </span><span class="element-syntax">inter</span><span class="plain-syntax">
+    (</span><span class="element-syntax">final</span><span class="plain-syntax"> </span><span class="element-syntax">module</span><span class="plain-syntax">)   /         \   (</span><span class="element-syntax">index</span><span class="plain-syntax"> </span><span class="element-syntax">module</span><span class="plain-syntax">)
+                    |           |
+                   \|/         \|/
+           </span><span class="element-syntax">generated</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">     </span><span class="element-syntax">Index</span><span class="plain-syntax"> </span><span class="element-syntax">products</span><span class="plain-syntax">
+                    |
+                    | </span><span class="element-syntax">inform6</span><span class="plain-syntax"> (</span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="element-syntax">similar</span><span class="plain-syntax">)
+                   \|/
+       </span><span class="element-syntax">Executable</span><span class="plain-syntax"> </span><span class="element-syntax">products</span><span class="plain-syntax">
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                      </span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span>
-<span class="plain-syntax">                          |</span>
-<span class="plain-syntax">                          | </span><span class="identifier-syntax">inform7</span>
-<span class="plain-syntax">                         \|/</span>
-<span class="plain-syntax">                      </span><span class="identifier-syntax">inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span>
-<span class="plain-syntax">                       /     \</span>
-<span class="plain-syntax">               </span><span class="identifier-syntax">inter</span><span class="plain-syntax">  /       \  </span><span class="identifier-syntax">inter</span>
-<span class="plain-syntax">    (</span><span class="identifier-syntax">final</span><span class="plain-syntax"> </span><span class="identifier-syntax">module</span><span class="plain-syntax">)   /         \   (</span><span class="identifier-syntax">index</span><span class="plain-syntax"> </span><span class="identifier-syntax">module</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                    |           |</span>
-<span class="plain-syntax">                   \|/         \|/</span>
-<span class="plain-syntax">           </span><span class="identifier-syntax">generated</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax">     </span><span class="identifier-syntax">Index</span><span class="plain-syntax"> </span><span class="identifier-syntax">products</span>
-<span class="plain-syntax">                    |</span>
-<span class="plain-syntax">                    | </span><span class="identifier-syntax">inform6</span><span class="plain-syntax"> (</span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">similar</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                   \|/</span>
-<span class="plain-syntax">       </span><span class="identifier-syntax">Executable</span><span class="plain-syntax"> </span><span class="identifier-syntax">products</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The <a href="index.html" class="internal">index</a> module has a very simple API: point it at a tree of Inter code,
 say what sort of index you want, and go. See <a href="1-ia.html" class="internal">Indexing API</a> for the details,
@@ -108,12 +107,9 @@ Index, that is, to produce an Index in a language other than English. This does
 not of course aim to translate source text: simply to translate subheadings, notes,
 and other fixed-wording text in the Index.</p>
 <p>As a demonstration, try running a project with:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
-<p>You should then find that the index has a French-titled Contents section -- only
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">French</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">.
+</span></pre>
+<p>You should then find that the index has a French-titled Contents section — only
 a couple of strings have been localised at present, and those not localised
 revert to English, so the index still looks basically English. This is all really
 just laying groundwork.</p>

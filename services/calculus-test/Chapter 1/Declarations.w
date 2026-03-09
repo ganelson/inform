@@ -5,7 +5,7 @@ Reading declarations from a file.
 @h Keeping the syntax module happy.
 We are going to need to use the sentence-breaking apparatus from the //syntax//
 module, which means that the following four nonterminals need to exist. But in
-fact they are really just placeholders -- they are wired so that they can never
+fact they are really just placeholders — they are wired so that they can never
 match any text.
 
 =
@@ -23,33 +23,22 @@ match any text.
 
 @h REPL variables.
 
-@e repl_var_CLASS
-@e named_function_CLASS
-@e named_unary_predicate_CLASS
-
 =
-DECLARE_CLASS(repl_var)
-DECLARE_CLASS(named_function)
-DECLARE_CLASS(named_unary_predicate)
-
-typedef struct repl_var {
+classdef repl_var {
 	struct wording name;
 	struct pcalc_prop *val;
-	CLASS_DEFINITION
-} repl_var;
+}
 
-typedef struct named_function {
+classdef named_function {
 	struct wording name;
 	struct binary_predicate *bp;
 	int side;
-	CLASS_DEFINITION
-} named_function;
+}
 
-typedef struct named_unary_predicate {
+classdef named_unary_predicate {
 	struct wording name;
 	struct unary_predicate *up;
-	CLASS_DEFINITION
-} named_unary_predicate;
+}
 
 <new-repl-variable> internal {
 	repl_var *rv;

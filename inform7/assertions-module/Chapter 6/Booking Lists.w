@@ -8,10 +8,9 @@ Bookings are intended to be bound together in linked lists, each of which
 represents the interior pages of a single rulebook.
 
 =
-typedef struct booking_list {
+classdef booking_list {
 	struct booking *list_head; /* the dummy entry at the front */
-	CLASS_DEFINITION
-} booking_list;
+}
 
 @ There are only three operations on lists: creation, addition of a booking,
 and removal of a booking. The following invariants are preserved:
@@ -35,7 +34,7 @@ and R was added to the list before S.
 whose rules are equal, in the sense of //Rules::eq//.
 
 @ These macros are useful for iterating through the contents in sequence;
-note that `br` is never equal to the dummy head, and that `pr` is never `NULL` --
+note that `br` is never equal to the dummy head, and that `pr` is never `NULL` —
 though it is initially equal to the dummy, which of course is the point of
 having the dummy.
 
@@ -124,7 +123,7 @@ because nothing need be done: the rule's there already, so be happy. Otherwise,
 we remove R's existing booking in order that it can be rebooked in a new position.
 
 This is a change in semantics from the original Inform 7 design for rulebooks,
-under which a rule could be booked multiple times in the same rulebook -- which
+under which a rule could be booked multiple times in the same rulebook — which
 was then called "duplication". Following debate on the Usenet newsgroup
 `rec.arts.int-fiction` in February and March 2009, it was decided to abolish
 duplication in favour of the clean principle that a rule can only be in a

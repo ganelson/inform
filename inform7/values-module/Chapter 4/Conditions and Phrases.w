@@ -71,7 +71,7 @@ this, for instance:
 
 As a result, we can't handle negation in <s-cond-pure>, and have to
 work into the grammar below on a case by case basis. And where we do allow
-"not", we always check the positive sense first -- people do sometimes
+"not", we always check the positive sense first — people do sometimes
 create phrase options like "not printing anything", for example, which
 begin with the word "not".
 
@@ -300,7 +300,7 @@ S-tree as we run sideways through the alternative readings.
 
 @ This problem used to be experienced for long say phrases in a situation
 where many kinds of value have been created, so that "say V" for a value V
-was heavily ambiguous -- pumping up the number of invocations generated. In
+was heavily ambiguous — pumping up the number of invocations generated. In
 2010, the introduction of generics into Inform made it possible to define
 "say V" just once, and after that it became so difficult to reach this
 limit that we were unable to construct a test case for it.

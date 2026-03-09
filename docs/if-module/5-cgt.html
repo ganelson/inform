@@ -69,7 +69,7 @@ it was also obfuscatory, and now each CG token corresponds to a <a href="5-cgt.h
 object as follows:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_of_token</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">grammar_token_code</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">what_token_describes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* 0 or else one of the <code>*_GTC</code> values */</span>
@@ -79,8 +79,7 @@ object as follows:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slash_class</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used in slashing: see <a href="5-cgl.html#SP15" class="internal">CGLines::slash</a> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">slash_dash_dash</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_token</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in the list for a CG line */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">cg_token</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="function-syntax">CGTokens::cgt_of</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CGTokens::cgt_of</span></span>:<br/><a href="5-cgt.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lit</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">cg_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">cg_token</span><span class="plain-syntax">);</span>
@@ -103,18 +102,14 @@ is parsed, from an Understand sentence or elsewhere. What happens is much
 the same as when text with substitutions is read: the text is retokenised
 by the lexer to produce the following, in which the square brackets have
 become commas:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="string-syntax">"drill"</span><span class="plain-syntax"> , </span><span class="identifier-syntax">something</span><span class="plain-syntax"> , </span><span class="string-syntax">"with"</span><span class="plain-syntax"> , </span><span class="identifier-syntax">something</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"drill" , something , "with" , something
+</span></pre>
 <p>In fact we use a different punctuation set from the lexer's default, because
 we want forward slashes to break words, so that we need <code>/</code> to be a punctuation
 mark: thus &quot;get away/off/out&quot; becomes</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"get" "away" / "off" / "out"
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="string-syntax">"get"</span><span class="plain-syntax"> </span><span class="string-syntax">"away"</span><span class="plain-syntax"> / </span><span class="string-syntax">"off"</span><span class="plain-syntax"> / </span><span class="string-syntax">"out"</span>
-</pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">GRAMMAR_PUNCTUATION_MARKS</span> <span class="identifier-syntax">U</span><span class="string-syntax">".,:;?!(){}[]/"</span><span class="plain-syntax"> </span><span class="comment-syntax">/* note the slash */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -643,8 +638,8 @@ pointer returned by <grammar-token> is the result.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1. </b>  If the token determines an actual constant value -- as it can when it is a
-named token which always refers to a specific thing, for example -- it is
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1. </b>  If the token determines an actual constant value — as it can when it is a
+named token which always refers to a specific thing, for example — it is
 possible for <code>result</code> not to be a description. Otherwise, though, it has to
 be a description which is true or false for any given value, so:</p>
 </div>
@@ -760,7 +755,7 @@ not significant if a problem is generated.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Relational tokens are the hardest to cope with at runtime, not least because
 Inform has so many different implementations for different relations, and not every
-relation can legally be used. The following function polices that -- either
+relation can legally be used. The following function polices that — either
 doing nothing (okay) or issuing exactly one problem message (not okay).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

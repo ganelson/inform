@@ -10,9 +10,9 @@ not simply regard them as properties holding truth state values? And then
 there would just be one type of property.
 
 The answer is that whereas a computer-science view of the "open" property,
-say, would take exactly this line -- i.e., that it simply holds a truth
+say, would take exactly this line — i.e., that it simply holds a truth
 state, and that the word "closed" is only syntactic sugar for saying that
-this value is false -- natural language is different. In natural language,
+this value is false — natural language is different. In natural language,
 the words "open" and "closed" are just as good as each other. One might
 talk equally about "the closed property" as about "the open property".
 
@@ -26,7 +26,7 @@ P or Q".
 Each either-or property has the following small block of data attached:
 
 =
-typedef struct either_or_property_data {
+classdef either_or_property_data {
 	struct property *negation; /* see above: the other, if it's one of a pair */
 	int is_default; /* `TRUE` if this is a negation and was declared second */
 	struct parse_node *where_negated; /* the sentence making these antonyms */
@@ -34,8 +34,7 @@ typedef struct either_or_property_data {
 	#ifdef IF_MODULE
 	struct command_grammar *eo_parsing_grammar; /* exotic forms used in parsing */
 	#endif
-	CLASS_DEFINITION
-} either_or_property_data;
+}
 
 either_or_property_data *EitherOrProperties::new_eo_data(property *prn) {
 	either_or_property_data *eod = CREATE(either_or_property_data);
@@ -74,7 +73,7 @@ property *EitherOrProperties::obtain(wording W, inference_subject *subj) {
 
 @h Requesting new nameless properties.
 These are properties needed for implementation reasons by //runtime//, or by
-features in //if//, but which have no existence at the Inform 7 source text level --
+features in //if//, but which have no existence at the Inform 7 source text level —
 and hence have no names. An author cannot refer to them, knows nothing of them.
 
 Setting them up as adjectives may seem a little over the top, since they cannot

@@ -71,7 +71,7 @@ void RelationSubjects::complete_model(inference_subject_family *family,
 @ We now check 1-to-1 relations to see if the initial conditions have
 violated the 1-to-1-ness. Because of the way these relations are implemented
 using a property, it seems in fact to be impossible to violate the left-hand
-count -- a contradiction problem is reported when the inference was generated.
+count — a contradiction problem is reported when the inference was generated.
 But in case the implementation is ever changed, it seems prudent to leave this
 checking in.
 

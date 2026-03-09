@@ -59,7 +59,7 @@ void CompileSchemas::from_annotated_schema(annotated_i6_schema *asch) {
 
 @ And this is where the actual emission is done, though in fact the heavy
 lifting is all done in //building: Inter Schemas//. Essentially all we do is
-to call `EmitInterSchemas::emit`, with our compilation state -- such as it is --
+to call `EmitInterSchemas::emit`, with our compilation state — such as it is —
 stored in an `i6s_emission_state`. It then calls our nominated function on
 each component part of the scheme, in its parsed and dismantled form.
 
@@ -231,7 +231,7 @@ void CompileSchemas::compile_term(pcalc_term pt, kind *K, int by_reference) {
 }
 
 @ Variables (in the predicate calculus sense) are compiled to Inter locals
-with the same names -- that is, they are called `x`, `y`, `z`, ... and so on.
+with the same names — that is, they are called `x`, `y`, `z`, ... and so on.
 
 @<Compile variable term@> =
 	local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);

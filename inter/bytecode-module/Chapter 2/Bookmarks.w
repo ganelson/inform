@@ -2,8 +2,8 @@
 
 Write positions for inter code being generated.
 
-@ A bookmark does not record an actual position in an Inter tree -- if we needed
-that, a pointer to the relevant `inter_tree_node` would do fine -- but to a
+@ A bookmark does not record an actual position in an Inter tree — if we needed
+that, a pointer to the relevant `inter_tree_node` would do fine — but to a
 hypothetical position. It describes where to put a node which has not yet been
 put into position.
 
@@ -27,11 +27,11 @@ used in a way which causes them to move forwards through that tree, much as
 a bookmark will migrate through a book as it is slowly read.
 
 Because of this, the bookmark structure is one of the few in the Inform tool
-chain to be used sometimes as a value and sometimes a reference -- that is,
+chain to be used sometimes as a value and sometimes a reference — that is,
 we make use both of `inter_bookmark` and `inter_bookmark *` as types. So a
 function which simply needs to know where to do something will take the
-type `inter_bookmark` as an argument -- see //NodePlacement::move_to//, for
-example -- whereas a function which does something but then nudges the
+type `inter_bookmark` as an argument — see //NodePlacement::move_to//, for
+example — whereas a function which does something but then nudges the
 bookmark onwards will take an `inter_bookmark *`, as in the case of
 //NodePlacement::move_to_moving_bookmark//.
 

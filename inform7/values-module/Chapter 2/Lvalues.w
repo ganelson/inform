@@ -54,7 +54,7 @@ The arguments are X, Y, Z, T respectively.
 there are two arguments, the list and the numerical index, which counts from 1.
 
 Note that property names, table names, and lists themselves are not storage
-items as such -- they are places where storage items are found. They are
+items as such — they are places where storage items are found. They are
 all in the `VALUE` family.
 
 @ And here are some convenient creators. Variables:
@@ -167,7 +167,7 @@ int Lvalues::is_constant_NONLOCAL_VARIABLE(parse_node *spec) {
 	return FALSE;
 }
 
-@ Not all non-local variables are global -- some have scope local to rulebooks,
+@ Not all non-local variables are global — some have scope local to rulebooks,
 actions and the like:
 
 =

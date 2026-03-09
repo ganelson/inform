@@ -4,36 +4,44 @@ The "group together" phrase in the Standard Rules needs support functions, which
 are compiled within the user's enclosure.
 
 @ This section exists to support usages such as:
-= (text as Inform 7)
+
+``` Inform7
 	group containers together;
 	group keys together, giving articles;
 	group coins together as "filthy lucre";
-=
+```
+
 At the Inter level, the different groupings of an object are stored in a text
 property called `list_together`.[1] That's fine for the `"filthy lucre"` case,
 but for the other two usages we will have to make a text substitution, in order
 to have a valid value here. It's those substitutions which concern us here:
-= (text)
+
+``` None
                       small block:
 	----------------> CONSTANT_PACKED_TEXT_STORAGE
                       GTF function
-=
+```
+
 A critical point is that even if the GTF functions do the same thing as each
-other (and they likely do -- there are only two possibilities), we need to
+other (and they likely do — there are only two possibilities), we need to
 compile a different function each time, so that //BasicInformKit// can
 distinguish them as values. Thus:
-= (text as Inform 7)
+
+``` Inform7
 	group woodwind instruments together;
 	group brass instruments together;
-=
+```
+
 must compile to
-= (text)
+
+``` None
                       small block:
 	----------------> CONSTANT_PACKED_TEXT_STORAGE
                       GTF function 1
 	----------------> CONSTANT_PACKED_TEXT_STORAGE
                       GTF function 2
-=
+```
+
 even though GTF functions 1 and 2 are identical; we need them to be at different
 addresses in memory.
 
@@ -41,12 +49,11 @@ addresses in memory.
 "list together" and not "group together".
 
 =
-typedef struct group_together_function {
+classdef group_together_function {
 	struct inter_name *text_value_iname;
 	struct inter_name *printing_fn_iname;
 	int articles_bit; /* list with indefinite articles, or not */
-	CLASS_DEFINITION
-} group_together_function;
+}
 
 @ When //imperative: Compile Invocations Inline// wants a new GTF, it calls the
 following, which returns a text literal to print a listing grouped as asked.

@@ -5,16 +5,15 @@ with a given title, and/or version number.
 
 @h Creation.
 A requirement is, in effect, the criteria for performing a search. We can
-specify the title, and/or the author name, and/or the genre -- all given
-in the `work` field below, with those unspecified left blank -- and/or
+specify the title, and/or the author name, and/or the genre — all given
+in the `work` field below, with those unspecified left blank — and/or
 we can give a semantic version number range:
 
 =
-typedef struct inbuild_requirement {
+classdef inbuild_requirement {
 	struct inbuild_work *work;
 	struct semver_range *version_range;
-	CLASS_DEFINITION
-} inbuild_requirement;
+}
 
 @ Here are some creators:
 
@@ -39,9 +38,11 @@ inbuild_requirement *Requirements::anything(void) {
 }
 
 @ The most involved of the creators parses text. An involved example might be:
-= (text)
+
+``` None
 	genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2
-=
+```
+
 We should return a requirement if this is valid, and write an error message if
 it is not. (If the text has multiple things wrong with it, we write only the
 first error message arising.)

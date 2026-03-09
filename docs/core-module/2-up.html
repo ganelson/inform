@@ -133,12 +133,12 @@ non-problem messages when everything was fine. That all happens here:</p>
 <p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. </b>  One of the slightly annoying things about internal errors is that Inform's
 users persistently refer to them as &quot;crashes&quot; on bug report forms. I mean,
 the effort we go to! These are entirely clean exits from the program! The
-ingratitude of some -- oh, all right.</p>
+ingratitude of some — oh, all right.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem summary for an internal error</span><span class="named-paragraph-number">3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="1-htc.html#SP11" class="function-link"><span class="function-syntax">Sequence::backtrace</span></a><span class="plain-syntax">(); </span><span class="comment-syntax">/* to the debugging log */</span>
+<span class="plain-syntax">    </span><a href="1-htc.html#SP10" class="function-link"><span class="function-syntax">Sequence::backtrace</span></a><span class="plain-syntax">(); </span><span class="comment-syntax">/* to the debugging log */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"What has happened here is that one of the checks Inform carries "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"out internally, to see if it is working properly, has failed. "</span>
@@ -183,14 +183,14 @@ ingratitude of some -- oh, all right.</p>
 <p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3. </b>  The success message needs to take different forms in <code>stdout</code> and in
 the Problems log file. In the latter, we write as though the subsequent
 conversion of Inform's output to a story file via Inform 6 had already been
-completed successfully -- this is because the Problems log is intended
+completed successfully — this is because the Problems log is intended
 to be viewed inside the Inform application, which will instead divert to
 an error page if I6 should fail. So although the Problems file contains
 an unwarranted claim, if not an actual falsehood, no human eye should see
 it unless and until it comes true.</p>
-<p>We don't want to make similar claims on <code>stdout</code>, where the user -- who
+<p>We don't want to make similar claims on <code>stdout</code>, where the user — who
 might well not be running in the Inform application, but only on the
-command line -- deserves the truth.</p>
+command line — deserves the truth.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem summaries for a run without problems</span><span class="named-paragraph-number">3.3</span></span> =</p>
 
@@ -308,8 +308,8 @@ to issue its first problem of the run:</p>
 used when an assertion sentence has gone wrong. Experience from the early
 builds of the Public Beta showed that many people tried syntaxes which
 Inform did not recognise, and which cause Inform to misread the primary
-verb of the sentence. It would then issue a Problem -- because the sentence
-would be peculiar -- but this problem report would itself be odd, and
+verb of the sentence. It would then issue a Problem — because the sentence
+would be peculiar — but this problem report would itself be odd, and
 make little sense to the user. So we look to see if the current sentence
 is an assertion with a primary verb: and if it is, we hunt through it
 for alternative verbs which might have been intended, and try to produce

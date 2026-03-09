@@ -19,7 +19,7 @@ void LabInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `lab` instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+compulsory words — see //Inter Nodes// — followed by:
 
 @d LABEL_LAB_IFLD (DATA_IFLD + 0)
 

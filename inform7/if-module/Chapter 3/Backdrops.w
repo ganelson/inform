@@ -30,11 +30,10 @@ following minimal structure, though it will only be relevant for instances of
 @d BACKDROPS_DATA(I) FEATURE_DATA_ON_INSTANCE(backdrops, I)
 
 =
-typedef struct backdrops_data {
+classdef backdrops_data {
 	struct inter_name *found_in_fn_iname;
 	int many_places;
-	CLASS_DEFINITION
-} backdrops_data;
+}
 
 int Backdrops::new_subject_notify(inference_subject *subj) {
 	backdrops_data *bd = CREATE(backdrops_data);
@@ -238,10 +237,9 @@ void Backdrops::create_inference_families(void) {
 backdrop.
 
 =
-typedef struct found_in_inference_data {
+classdef found_in_inference_data {
 	struct inference_subject *location;
-	CLASS_DEFINITION
-} found_in_inference_data;
+}
 
 inference *Backdrops::new_found_in_inference(inference_subject *loc, int certitude) {
 	PROTECTED_MODEL_PROCEDURE;

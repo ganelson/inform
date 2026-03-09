@@ -30,29 +30,33 @@ The Inform tools represent syntax trees by //parse_node_tree// structures
 (see //SyntaxTree::new//), but there are very few of these: the entire
 source text compiled by //inform7// is just one syntax tree. When //supervisor//
 manages extensions, it may generate one //parse_node_tree// object for each
-extension whose text it reads. Still -- there are few trees.
+extension whose text it reads. Still — there are few trees.
 
 @ The trunk of the tree can be grown in any sequence: call //SyntaxTree::push_bud//
 to begin "budding" from a particular branch, and //SyntaxTree::pop_bud// to go back
 to where you were. These are also used automatically to ensure that sentences
 arriving at //SyntaxTree::graft_sentence// are grafted under the headings to
 which they belong. Thus, the sentences
-= (text as Inform 7)
+
+``` Inform7
 	Chapter 20
 	Section 1
 	The cat is in the cardboard box.
 	Section 2
 	The ball of yarn is here.
-=
+```
+
 would actually be grafted like so:
-= (text)
+
+``` None
 	RESULT                                      BUD STACK BEFORE THIS
 	Chapter 20                                  (empty)
 	    Section 1                               Chapter 20
             The cat is in the cardboard box.    Chapter 20 > Section 1
 	    Section 2                               Chapter 20 > Section 1
             The ball of yarn is here.           Chapter 20 > Section 2
-=
+```
+
 But it is also possible to graft smaller (not-whole-sentence) cuttings onto 
 each other using //SyntaxTree::graft//, which doesn't involve the bud stack
 at all.
@@ -60,18 +64,19 @@ at all.
 @ Meaning is an ambiguous thing, and so the tree needs to be capable of
 representing multiple interpretations of the same wording. So nodes have not
 only `next` and `down` links to other nodes, but also `next_alternative` links,
-which -- if used -- fork the syntax tree into different possible readings.
+which — if used — fork the syntax tree into different possible readings.
 
 These are not added to the tree by grafting: that's only done for definite
 meanings. Instead, multiple ambiguous readings mostly lie beneath `AMBIGUITY_NT`
-nodes -- see //SyntaxTree::add_reading//. For example, we might have:
-= (text)
+nodes — see //SyntaxTree::add_reading//. For example, we might have:
+
+``` None
 	sun is orange
 	    sun
 	    AMBIGUITY
 	        orange (read as being a fruit)
 	        orange (read as being a colour)
-=
+```
 
 @ An extensive suite of functions is provided to make it easy to traverse
 a syntax tree, calling a visitor function on each node: see //SyntaxTree::traverse//.
@@ -105,7 +110,7 @@ with these.
 
 - A node of type `A` can only be a child of a node of type `B` if
 //NodeType::parentage_allowed// says so, and this is (mostly) a matter
-of calling //NodeType::allow_parentage_for_categories// -- parentage depends
+of calling //NodeType::allow_parentage_for_categories// — parentage depends
 not on the type per se, but on the category of the type, which groups types
 together.
 

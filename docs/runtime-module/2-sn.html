@@ -97,8 +97,8 @@ way: <code>&quot;blue hat&quot;</code>, say. But if the property belongs to an o
 part of an assembly, then its name needs to contain that of the object it
 was assembled from: say <code>&quot;Marianne's blue hat&quot;</code>, where <code>&quot;Marianne&quot;</code> is the
 name of the owner.</p>
-<p>If, however, the short name for <code>&quot;Marianne&quot;</code> varies -- through the use of
-an activity -- then we want to respect that. So we don't give the name using
+<p>If, however, the short name for <code>&quot;Marianne&quot;</code> varies — through the use of
+an activity — then we want to respect that. So we don't give the name using
 static text, but as a dynamic function, which first prints Marianne's name
 through the usual apparatus, and then adds <code>&quot;'s blue hat&quot;</code> afterwards. That
 way, if Marianne changes her name to Emilia, the result will be
@@ -108,14 +108,13 @@ request for it. <code>capped</code> is <code>TRUE</code> if the function is to b
 short name, and <code>FALSE</code> for regular.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">short_name_notice</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">short_name_notice</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">routine_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">snn_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">namee</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">after_subject</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">capped</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">short_name_notice</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">ShortNames::iname_for_short_name_fn</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">capped</span><span class="plain-syntax">) {</span>

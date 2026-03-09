@@ -8,10 +8,9 @@ Well, these are short and sweet. An //inter_node_list// is just an efficiently
 stored linked list of //inter_tree_node//s.
 
 =
-typedef struct inter_node_list {
+classdef inter_node_list {
 	struct linked_list *the_nodes; /* of `inter_tree_node` */
-	CLASS_DEFINITION
-} inter_node_list;
+}
 
 inter_node_list *InterNodeList::new(void) {
 	inter_node_list *ifl = CREATE(inter_node_list);
@@ -45,12 +44,11 @@ Unlike an //inter_node_list//, an //inter_node_array// has entries which are
 accessible in O(1) time, and can easily be sorted; but it takes more memory.
 
 =
-typedef struct inter_node_array {
+classdef inter_node_array {
 	int list_extent;
 	int list_used;
 	struct ina_entry *list;
-	CLASS_DEFINITION
-} inter_node_array;
+}
 
 typedef struct ina_entry {
 	int sort_key;

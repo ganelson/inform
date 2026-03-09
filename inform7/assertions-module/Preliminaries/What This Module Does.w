@@ -55,8 +55,8 @@ pronouns such as "it". See //Anaphoric References//, but don't expect much.
 	- During the "pre-pass" names of tables and other top-level structures are
 	recorded, and sentences are classified by //Classifying::sentence//. This is
 	done by asking the //linguistics// module to diagram them and determine whether
-	the meaning is "regular" -- a typical sentence asserting some relationship,
-	such as "the ball is on the table" -- or "special" -- a sentence with some
+	the meaning is "regular" — a typical sentence asserting some relationship,
+	such as "the ball is on the table" — or "special" — a sentence with some
 	other purpose, such as "Test ... with ...", often but not always written in
 	the imperative.
 
@@ -120,13 +120,15 @@ At the top level, Inform source text consists of more than just assertion
 sentences: other constructions are made with different syntaxes. The most
 obvious of these are "imperative definitions", which are lists of instructions
 for what to do in different circumstances. They take the form
-= (text as Inform 7)
+
+``` Inform7
 a preamble text:
     first instruction;
     second instruction;
     ...
     last instruction.
-=
+```
+
 The preamble is parsed into an //imperative_defn//, which falls into one of
 a small range of //Imperative Definition Families//: the most important being
 the //Rule Family//, for interactive-fiction-style rules, and //To Phrase Family//,

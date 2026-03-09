@@ -86,13 +86,13 @@ MathJax = {
 list of <a href="4-anl.html#SP4" class="internal">anl_entry</a> objects.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_name_list</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">action_name_list</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">entries</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">negation_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_this_in_ap_match</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">action_name_list</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="type-syntax">action_name_list</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionNameLists::new_list</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::new_list</span></span>:<br/><a href="4-anl.html#SP30_1">&#167;30.1</a>, <a href="4-anl.html#SP30_2">&#167;30.2</a>, <a href="4-anl.html#SP30_3">&#167;30.3</a>, <a href="4-anl.html#SP30_4">&#167;30.4</a>, <a href="4-anl.html#SP30_5">&#167;30.5</a>, <a href="4-anl.html#SP30_6">&#167;30.6</a><br/>Parse Clauses - <a href="4-pc.html#SP4_4">&#167;4.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">action_name_list</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionNameLists::new_list</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::new_list</span></span>:<br/><a href="4-anl.html#SP30_1">&#167;30.1</a>, <a href="4-anl.html#SP30_2">&#167;30.2</a>, <a href="4-anl.html#SP30_3">&#167;30.3</a>, <a href="4-anl.html#SP30_4">&#167;30.4</a>, <a href="4-anl.html#SP30_5">&#167;30.5</a>, <a href="4-anl.html#SP30_6">&#167;30.6</a><br/>Parse Clauses - <a href="4-pc.html#SP3_4">&#167;3.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">action_name_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">action_name_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">list</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">entries</span><span class="plain-syntax"> = </span><span class="identifier-syntax">first</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">list</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negation_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
@@ -147,19 +147,19 @@ list can be marked accordingly:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  An entry has some book-keeping fields, and is otherwise divided into the
-item itself -- either an action name or a named action pattern -- and some
+item itself — either an action name or a named action pattern — and some
 parsing data needed by the complicated algorithms for turning text into an
 action list.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_item</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_parsing_data</span><span class="plain-syntax"> </span><span class="type-syntax">parsing_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marked_for_deletion</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_entry</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in this ANL list */</span>
-<span class="plain-syntax">} </span><span class="type-syntax">anl_entry</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionNameLists::new_entry_at</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::new_entry_at</span></span>:<br/><a href="4-anl.html#SP26">&#167;26</a>, <a href="4-anl.html#SP30_1">&#167;30.1</a>, <a href="4-anl.html#SP30_2">&#167;30.2</a>, <a href="4-anl.html#SP30_3">&#167;30.3</a>, <a href="4-anl.html#SP33">&#167;33</a>, <a href="4-anl.html#SP34_1">&#167;34.1</a>, <a href="4-anl.html#SP34_1_4">&#167;34.1.4</a><br/>Parse Clauses - <a href="4-pc.html#SP4_4">&#167;4.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionNameLists::new_entry_at</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::new_entry_at</span></span>:<br/><a href="4-anl.html#SP26">&#167;26</a>, <a href="4-anl.html#SP30_1">&#167;30.1</a>, <a href="4-anl.html#SP30_2">&#167;30.2</a>, <a href="4-anl.html#SP30_3">&#167;30.3</a>, <a href="4-anl.html#SP33">&#167;33</a>, <a href="4-anl.html#SP34_1">&#167;34.1</a>, <a href="4-anl.html#SP34_1_4">&#167;34.1.4</a><br/>Parse Clauses - <a href="4-pc.html#SP3_4">&#167;3.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">anl_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">entry</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">anl_entry</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">entry</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">item</span><span class="plain-syntax"> = </span><a href="4-anl.html#SP12" class="function-link"><span class="function-syntax">ActionNameLists::new_item</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> = </span><span class="constant-syntax">-1</span><span class="plain-syntax">;</span>
@@ -244,7 +244,7 @@ entries which fail to change the word position.</p>
 <li>Less abbreviated results come first, and if that doesn't decide it</li>
 <li>Action names with longer non-it-length come before shorter, and if that doesn't decide it</li>
 <li>Older action names come before younger, and if that doesn't decide it</li>
-<li>Later-discovered results come before earlier ones -- which because of the
+<li>Later-discovered results come before earlier ones — which because of the
 way we parse them means that results with more fixed words in clauses come
 before those with fewer.</li>
 </ul>
@@ -367,7 +367,7 @@ following function returns that NAP. Anything more complicated, <code>NULL</code
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  The <a href="4-anl.html#SP12" class="internal">anl_item</a> material is the actual content we are trying to get at.
 Like life, items are a mixture of naps and actions. At most one of these
 fields is non-<code>NULL</code>. If they are both <code>NULL</code>, this represents &quot;doing
-anything&quot; -- a completely unrestricted action.</p>
+anything&quot; — a completely unrestricted action.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_item</span><span class="plain-syntax"> {</span>
@@ -492,13 +492,13 @@ objects of that entry will be turned into a string of <a href="4-apc.html#SP3" c
 in the final AP.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_clause</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">anl_clause</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">clause_ID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">clause_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">anl_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_clause</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">shared_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stv_to_match</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">evaluation</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">anl_clause</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure anl_clause is accessed in 4/apc, 4/pc, 4/gng and here.</li></ul>
 <div class="lsmarkdown">
@@ -749,7 +749,7 @@ is no best action. (For example, in &quot;throwing or removing something&quot;.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ActionNameLists::log_clause</span><button class="popup" onclick="togglePopup('usagePopup39')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup39">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::log_clause</span></span>:<br/>Parse Clauses - <a href="4-pc.html#SP1_1_1">&#167;1.1.1</a>, <a href="4-pc.html#SP1_1_2">&#167;1.1.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">anl_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ActionNameLists::log_clause</span><button class="popup" onclick="togglePopup('usagePopup39')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup39">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::log_clause</span></span>:<br/>Parse Clauses - <a href="4-pc.html#SP1_1_1">&#167;1.1.1</a>, <a href="4-pc.html#SP1_1_3">&#167;1.1.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">anl_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"["</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-apc.html#SP2" class="function-link"><span class="function-syntax">APClauses::write_clause_ID</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">clause_ID</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stv_to_match</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">": %W]"</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">clause_text</span><span class="plain-syntax">);</span>
@@ -797,8 +797,8 @@ this might match, for example, &quot;doing something other than waiting&quot;, o
 &quot;dropping the box&quot;. We make no effort to understand the words which are not
 part of the action: &quot;dropping the box&quot; is just &quot;dropping (two words)&quot; here.</p>
 <p>Note that it works in either <code>IS_TENSE</code> or <code>HASBEEN_TENSE</code>, and that <code>sense</code>
-is set to <code>FALSE</code> (if it is supplied) when the text had a negative sense --
-something other than something -- or <code>TRUE</code> for a positive one.</p>
+is set to <code>FALSE</code> (if it is supplied) when the text had a negative sense —
+something other than something — or <code>TRUE</code> for a positive one.</p>
 <p>The test group <code>:actions</code> is helpful in catching errors here.</p>
 </div>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b> </p>
@@ -929,7 +929,7 @@ itself. So, for &quot;irreverent behaviour in the presence of the Bishop&quot;, 
 <code>nap</code> may be the &quot;irreverent behaviour&quot;, and <code>TW</code> the text &quot;in the presence
 of the Bishop&quot;. We put that temporarily into the <code>TAIL_AP_CLAUSE</code>, and then
 ramify what had been a single-entry list so that it may now have multiple
-entries -- for example, &quot;irreverent behaviour [in: the presence of the Bishop]&quot;
+entries — for example, &quot;irreverent behaviour [in: the presence of the Bishop]&quot;
 or &quot;irreverent behaviour [in-presence: the Bishop]&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -961,12 +961,11 @@ out an actual choice of action.</p>
 <p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1. </b>  The following makes a list of results before ramification.</p>
 <p>For example, for the text &quot;looking or taking inventory in the presence of Hans
 in the Laboratory&quot;, we get the following set of <code>results</code>:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1). +2 taking inventory [tail: in the presence of hans in the laboratory]
+(2). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(3). +0 looking
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> [</span><span class="identifier-syntax">tail:</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(2). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(3). +0 </span><span class="identifier-syntax">looking</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the wording into a list of results</span><span class="named-paragraph-number">34.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1041,10 +1040,10 @@ inelegant, but there's no elegant way to break out of nested loops in C.</p>
 <p class="commentary firstcommentary"><a id="SP34_1_3" class="paragraph-anchor"></a><b>&#167;34.1.3. </b>  For example, in &quot;looking or taking inventory in the presence of Hans
 in the Laboratory&quot;, after finding &quot;taking inventory&quot; as a possible action,
 we are left with &quot;in the presence of Hans in the Laboratory&quot;. These have to
-be stored into <code>TAIL_AP_CLAUSE</code>, since they cannot be part of any noun --
+be stored into <code>TAIL_AP_CLAUSE</code>, since they cannot be part of any noun —
 because taking inventory doesn't have a noun. But when finding &quot;taking&quot;,
 the remaining words &quot;inventory in the presence of Hans in the Laboratory&quot;
-have to go into <code>NOUN_AP_CLAUSE</code> -- the taking action does have a noun.</p>
+have to go into <code>NOUN_AP_CLAUSE</code> — the taking action does have a noun.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Transfer remaining words to a trailing clause</span><span class="named-paragraph-number">34.1.3</span></span> =</p>
 
@@ -1075,41 +1074,29 @@ the trial entry for future trials.</p>
 raw results has been produced. We &quot;ramify&quot; this by expanding it into multiple
 readings according to how the trailing clause might in fact be made up of
 sub-clauses. For example, our unramified set of results</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> [</span><span class="identifier-syntax">tail:</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(2). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(3). +0 </span><span class="identifier-syntax">looking</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1). +2 taking inventory [tail: in the presence of hans in the laboratory]
+(2). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(3). +0 looking
+</span></pre>
 <p>becomes the ramified set</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> [</span><span class="identifier-syntax">in:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">] [</span><span class="identifier-syntax">in</span><span class="plain-syntax">-</span><span class="identifier-syntax">presence:</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(2). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> [</span><span class="identifier-syntax">in</span><span class="plain-syntax">-</span><span class="identifier-syntax">presence:</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(3). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax">] [</span><span class="identifier-syntax">in:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">] [</span><span class="identifier-syntax">in</span><span class="plain-syntax">-</span><span class="identifier-syntax">presence:</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(4). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax">] [</span><span class="identifier-syntax">in</span><span class="plain-syntax">-</span><span class="identifier-syntax">presence:</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(5). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax">] [</span><span class="identifier-syntax">in:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(6). +2 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">presence</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">hans</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">laboratory</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(7). +0 </span><span class="identifier-syntax">looking</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+(2). +2 taking inventory [in-presence: hans in the laboratory]
+(3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+(4). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+(5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+(6). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(7). +0 looking
+</span></pre>
 <p>Note that the <code>TAIL_AP_CLAUSE</code> clauses, which were just temporary holders
 for leftover text, have gone entirely. Had it been impossible to break them
 into legal subclauses, they would have caused the result to be struck out
 altogether. For example, this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1). +0 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> [</span><span class="identifier-syntax">tail:</span><span class="plain-syntax"> </span><span class="identifier-syntax">book</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">(2). +0 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">book</span><span class="plain-syntax">]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1). +0 taking inventory [tail: book]
+(2). +0 taking [noun: inventory book]
+</span></pre>
 <p>ramifies to just</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(1). +0 </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> [</span><span class="identifier-syntax">noun:</span><span class="plain-syntax"> </span><span class="identifier-syntax">inventory</span><span class="plain-syntax"> </span><span class="identifier-syntax">book</span><span class="plain-syntax">]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(1). +0 taking [noun: inventory book]
+</span></pre>
 <p>because the tail wording &quot;book&quot; after &quot;taking inventory&quot; cannot be read as
 a sequence of subclauses.</p>
 <p>Ramification thus consists of a sudden increase in the number of possible
@@ -1186,7 +1173,7 @@ single words.</p>
 <p>This actually matters surprisingly rarely, but enables us to handle quite
 difficult cases like &quot;Instead of buying the cheapest spice which is in the market&quot;
 without typechecking errors occurring on the unwanted case of reading this as
-&quot;Instead of buying the cheapest spice which is&quot; plus the clause &quot;in the market&quot; --
+&quot;Instead of buying the cheapest spice which is&quot; plus the clause &quot;in the market&quot; —
 the latter being, in fact, valid.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1196,7 +1183,7 @@ the latter being, in fact, valid.</p>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  Divergence points, then, must not unexpectedly use upper case -- so &quot;taking
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  Divergence points, then, must not unexpectedly use upper case — so &quot;taking
 Puss In Boots&quot; is never read as possibly having an &quot;in: Boots&quot; clause; and
 they either use the two standard wordings &quot;in the presence of&quot; or &quot;in&quot;. or
 else wording provided by a matching variable in an action declaration.</p>
@@ -1294,7 +1281,7 @@ clauses anyway, this will never be too bad.</p>
 is otherwise never called.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ActionNameLists::test_list</span><button class="popup" onclick="togglePopup('usagePopup48')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup48">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::test_list</span></span>:<br/>Parse Clauses - <a href="4-pc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ActionNameLists::test_list</span><button class="popup" onclick="togglePopup('usagePopup48')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup48">Usage of <span class="code-font"><span class="function-syntax">ActionNameLists::test_list</span></span>:<br/>Parse Clauses - <a href="4-pc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Action name list for: %W\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">action_name_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">anl</span><span class="plain-syntax"> = </span><a href="4-anl.html#SP29" class="function-link"><span class="function-syntax">ActionNameLists::parse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">IS_TENSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"$L\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">anl</span><span class="plain-syntax">);</span>

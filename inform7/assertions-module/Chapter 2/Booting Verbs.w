@@ -111,15 +111,15 @@ be a single word, and are hyphenated.
 	PluginCalls::make_special_meanings();
 
 @ We need the English infinitive forms of two verbs to get started. In each
-case we use the //inflections// module to conjugate them -- i.e., to generate
-all the other forms, "is", "did not mean" and so on -- and then hand them to
+case we use the //inflections// module to conjugate them — i.e., to generate
+all the other forms, "is", "did not mean" and so on — and then hand them to
 the //linguistics// module to add to its stock of known verbs. (It starts out
 with none, so these are initially the only two.)
 
 We need to create "to be" first because (a) it is the only copular verb in
 Inform, and there is no way to create a copular verb using Inform source text;
 and (b) because this enables us to conjugate forms of "mean" such as "X is
-meant by" -- note the use of "is".
+meant by" — note the use of "is".
 
 =
 <bootstrap-verb> ::=

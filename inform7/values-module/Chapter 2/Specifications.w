@@ -186,7 +186,7 @@ will need a way of telling when one specification is more specific than
 another. For instance, "Will Parker in the vineyard" beats "Will Parker" beats
 "a man" beats "a person" beats "an object" beats "a value".
 
-A sequence of "laws" is used to decide this -- or at least, that's how we
+A sequence of "laws" is used to decide this — or at least, that's how we
 describe the outcome to the Index of a project. We simply remember the most
 recent law applied, because then when a decision finishes, it must have been
 the decisive one:
@@ -237,7 +237,7 @@ int Specifications::compare_specificity(parse_node *spec1, parse_node *spec2, in
 }
 
 @ Whether or not, as Bertrand Russell thought in 1894, existence is itself a good
-("Great God in Boots! -- the ontological argument is sound!"), a specification
+("Great God in Boots! — the ontological argument is sound!"), a specification
 which exists is certainly more significant than one which does not; and there
 is nothing to choose between two specifications, neither of which exists.
 
@@ -252,7 +252,7 @@ rate he changed his mind in 1896.
 
 @ Hard to argue with this one: "34", for instance, is more specific than
 "a number". (We might quibble about whether or not "a number which equals
-34" is really less specific than "34" -- Inform says it is; but in fact
+34" is really less specific than "34" — Inform says it is; but in fact
 it doesn't much matter either way.)
 
 @<An actual specification is more specific than a generic one@> =
@@ -318,9 +318,9 @@ a convention as a bug, which is usually telling.
 	if ((t1 == FALSE) && (t2 == TRUE)) return -1;
 
 @ To explicate the following: a description of an exact object beats any
-non-description -- thus "the open Marble Door" (a description) beats "the
+non-description — thus "the open Marble Door" (a description) beats "the
 Marble Door" (a constant instance). But any non-description beats a
-description which is vague about the object -- thus "the Marble Door" beats
+description which is vague about the object — thus "the Marble Door" beats
 "an open door", which is not news since rules above would enact that anyway,
 but also "the tallest door in the Castle" (a phrase) beats "an open door".
 

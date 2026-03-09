@@ -113,7 +113,7 @@ test case names beginning with &quot;BIP-&quot;.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Say phrases.</b>  We begin with saying phrases: the very first phrase to exist is the one
-printing a single value -- literal text, a number, a time, an object, or
+printing a single value — literal text, a number, a time, an object, or
 really almost anything, since the vast majority of kinds in Inform are
 sayable. There used to be separate definitions for saying text, numbers
 and unicode characters here, but they were removed in June 2015 as being
@@ -314,15 +314,12 @@ file &quot;Printing.i6t&quot;.</p>
 usage of <code>jump</code> statements, I6's form of goto. For instance, the text
 &quot;[if the score is 10]It's ten![otherwise]It's not ten, alas.&quot; compiles
 thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say3</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX2</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say3</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    .</span><span class="identifier-syntax">L_Say4</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_SayX2</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say3</span><span class="plain-syntax">;
+	    ...
+	</span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX2</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say3</span><span class="plain-syntax">;
+	    ...
+	.</span><span class="identifier-syntax">L_Say4</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_SayX2</span><span class="plain-syntax">;
+</span></pre>
 <p>Though labels actually have local namespaces in I6 routines, we use
 globally unique labels throughout the whole program: compiling the same
 phrase again would involve say labels 5 and 6 and &quot;say exit&quot; label 3.
@@ -334,21 +331,18 @@ machines there is no speed penalty for branches.) We also need the same
 definitions to accommodate what amounts to a switch statement. The trickier
 text &quot;[if the score is 10]It's ten![otherwise if the score is 8]It's
 eight?[otherwise]It's not ten, alas.&quot; comes out as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say5</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say5</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">8</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say6</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say6</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    .</span><span class="identifier-syntax">L_Say7</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say5</span><span class="plain-syntax">;
+	    ...
+	</span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say5</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">score</span><span class="plain-syntax"> == </span><span class="constant-syntax">8</span><span class="plain-syntax">)) </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_Say6</span><span class="plain-syntax">;
+	    ...
+	</span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_Say6</span><span class="plain-syntax">;
+	    ...
+	.</span><span class="identifier-syntax">L_Say7</span><span class="plain-syntax">; .</span><span class="identifier-syntax">L_SayX3</span><span class="plain-syntax">;
+</span></pre>
 <p>In either form of the construct, control passes into at most one of the
 pieces of text. The terminal labels (the two on the final line) are
-automatically generated; often -- when there is a simple &quot;otherwise&quot; or
-&quot;end if&quot; to conclude the construct -- they are not needed, but labels are
+automatically generated; often — when there is a simple &quot;otherwise&quot; or
+&quot;end if&quot; to conclude the construct — they are not needed, but labels are
 quick to process in I6, are soon discarded from I6's memory when not needed
 any more, and compile no code.</p>
 <p>We assume in each case that the next say label number to be free is always
@@ -860,7 +854,7 @@ how much a general syntax for phrases can encode control phrases.)</p>
 for example, does not have a NOP function); it entered Inform in the earliest
 days, when it was useful mainly when natural language syntax had painted users
 into a corner. (In the examples, it used to be used when conditions were
-awkward to negate -- if condition, do nothing, otherwise blah blah blah -- but
+awkward to negate — if condition, do nothing, otherwise blah blah blah — but
 the creation of &quot;unless&quot; made it possible to remove most of the &quot;do
 nothing&quot;s.) It is now hardly ever useful.</p>
 </div>
@@ -907,7 +901,7 @@ BASIC's <code>for</code> loop and of Inform 6's <code>objectloop</code>, respect
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  The following are all repeats where the range is the set of rows of a table,
-taken in some order, and the repeat variable -- though it does exist -- is
+taken in some order, and the repeat variable — though it does exist — is
 never specified since the relevant row is instead the one selected during
 each iteration of the loop.</p>
 </div>
@@ -1310,8 +1304,8 @@ subexpressions (which the plain text case doesn't have).</p>
 which we will take in that order.</p>
 <p>Tables mimic tables of data as seen in books or scientific papers. Note that
 changing a table entry is not something defined here as a phrase: the
-ever-powerful &quot;now&quot; can do that. But changing something to a non-value --
-or &quot;blanking&quot; it -- requires specialist phrases.</p>
+ever-powerful &quot;now&quot; can do that. But changing something to a non-value —
+or &quot;blanking&quot; it — requires specialist phrases.</p>
 <p>See test case <code>BIP-Tables</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1529,7 +1523,7 @@ mechanism, in &quot;Sort.i6t&quot;, which handles both lists and tables.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  Relations are the final data structure given here. In some ways they are
 the most fundamental of all, but they're not either set or tested by
-procedural phrases -- they lie in the linguistic structure of conditions.
+procedural phrases — they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:</p>
 <p>See test case <code>BIP-Relations</code>.</p>
 </div>

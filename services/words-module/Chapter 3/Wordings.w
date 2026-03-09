@@ -375,7 +375,7 @@ in preference to:
 
 > The auctioneer said : "I'm not through yet -" .
 
-Note that we are not actually preserving the spacing in the original source --
+Note that we are not actually preserving the spacing in the original source —
 that might have line breaks or other curiosities which we don't want: we are
 instead imposing what we think are normal English conventions. While this
 will sometimes be wrong, this is only likely to affect the index and problem

@@ -3,7 +3,7 @@
 Utility functions for generating the code in the synoptic module.
 
 @h Dealing with symbols.
-We are going to need to read and write these: for reading --
+We are going to need to read and write these: for reading —
 
 =
 inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {

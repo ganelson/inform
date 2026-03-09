@@ -22,9 +22,11 @@ imported module,
 
 - The contents page of the parent's web must identify and locate the
 module:
-= (text as Inweb)
+
+``` None
 Import: somepath/syntax
-=
+```
+
 - The parent must call `SyntaxModule::start()` just after it starts up, and
 `SyntaxModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
@@ -52,14 +54,16 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_SYNTAX_CALLBACK Emotions::gosh
 	
 	=
 	void Emotions::gosh(text_stream *OUT) {
 	    WRITE("Good gracious!\n");
 	}
-=
+```
+
 The syntax module has many callbacks, but they are all optional. The following
 alphabetical list has references to fuller explanations:
 

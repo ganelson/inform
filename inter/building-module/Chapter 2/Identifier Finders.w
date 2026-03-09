@@ -64,7 +64,7 @@ inter_symbol *IdentifierFinders::find(inter_tree *I, text_stream *name,
 }
 
 @ If the name begins with this magic character, we interpret it as an absolute
-URL within the tree -- the conventions are then unimportant: either the symbol
+URL within the tree — the conventions are then unimportant: either the symbol
 exists where we said it is, or nothing is found. And in that case we will
 halt with an internal error: so this must be done speculatively.
 

@@ -65,7 +65,7 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Keeping the syntax module happy.</b>  We are going to need to use the sentence-breaking apparatus from the <a href="../syntax-module/index.html" class="internal">syntax</a>
 module, which means that the following four nonterminals need to exist. But in
-fact they are really just placeholders -- they are wired so that they can never
+fact they are really just placeholders — they are wired so that they can never
 match any text.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -84,35 +84,22 @@ match any text.</p>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. REPL variables.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">repl_var_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">named_function_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">named_unary_predicate_CLASS</span> 
-</pre>
 <pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-identifier-syntax">DECLARE_CLASS</span><span class="Preform-plain-syntax">(</span><span class="Preform-type-syntax">repl_var</span><span class="Preform-plain-syntax">)</span>
-<span class="Preform-identifier-syntax">DECLARE_CLASS</span><span class="Preform-plain-syntax">(</span><span class="Preform-type-syntax">named_function</span><span class="Preform-plain-syntax">)</span>
-<span class="Preform-identifier-syntax">DECLARE_CLASS</span><span class="Preform-plain-syntax">(</span><span class="Preform-type-syntax">named_unary_predicate</span><span class="Preform-plain-syntax">)</span>
-
-<span class="Preform-reserved-syntax">typedef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">repl_var</span><span class="Preform-plain-syntax"> {</span>
+<span class="Preform-reserved-syntax">classdef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">repl_var</span><span class="Preform-plain-syntax"> {</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">wording</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">name</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">pcalc_prop</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">val</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">CLASS_DEFINITION</span>
-<span class="Preform-plain-syntax">} </span><span class="Preform-type-syntax">repl_var</span><span class="Preform-plain-syntax">;</span>
+<span class="Preform-plain-syntax">}</span>
 
-<span class="Preform-reserved-syntax">typedef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">named_function</span><span class="Preform-plain-syntax"> {</span>
+<span class="Preform-reserved-syntax">classdef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">named_function</span><span class="Preform-plain-syntax"> {</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">wording</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">name</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">binary_predicate</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">bp</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">int</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">side</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">CLASS_DEFINITION</span>
-<span class="Preform-plain-syntax">} </span><span class="Preform-type-syntax">named_function</span><span class="Preform-plain-syntax">;</span>
+<span class="Preform-plain-syntax">}</span>
 
-<span class="Preform-reserved-syntax">typedef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">named_unary_predicate</span><span class="Preform-plain-syntax"> {</span>
+<span class="Preform-reserved-syntax">classdef</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">named_unary_predicate</span><span class="Preform-plain-syntax"> {</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">wording</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">name</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">struct</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">unary_predicate</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">up</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">CLASS_DEFINITION</span>
-<span class="Preform-plain-syntax">} </span><span class="Preform-type-syntax">named_unary_predicate</span><span class="Preform-plain-syntax">;</span>
+<span class="Preform-plain-syntax">}</span>
 
 <span class="Preform-function-syntax">&lt;new-repl-variable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-type-syntax">repl_var</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">rv</span><span class="Preform-plain-syntax">;</span>

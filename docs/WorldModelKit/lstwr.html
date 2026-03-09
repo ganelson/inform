@@ -78,8 +78,8 @@ MathJax = {
 <li><code>WriteListOfMarkedObjects(style)</code>, where the set of objects listed is
 understood to be exactly those with the <code>workflag2</code> attribute set, and</li>
 </ul>
-<pre><code>- the `style` is a sum of `*_BIT` constants as defined in &quot;Definitions.i6t&quot;.
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> `</span><span class="reserved-syntax">style</span><span class="plain-syntax">` </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">sum</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> `*</span><span class="identifier-syntax">_BIT</span><span class="plain-syntax">` </span><span class="identifier-syntax">constants</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="string-syntax">"Definitions.i6t"</span><span class="plain-syntax">.
+</span></pre>
 <ul>
 <li>
 <p><code>WriteListFrom(obj, style, depth, noactivity, iterator)</code>, where only the
@@ -87,7 +87,7 @@ first two parameters are compulsory:</p>
 <ul>
 <li>the set of objects listed begins with <code>obj</code>;</li>
 <li>the <code>style</code> is a sum of <code>*_BIT</code> constants as defined in &quot;Definitions.i6t&quot;;</li>
-<li>the <code>depth</code> is the recursion depth within the list -- ordinarily 0, but
+<li>the <code>depth</code> is the recursion depth within the list — ordinarily 0, but
 by supplying a higher value, we can simulate a sublist of another list;</li>
 <li><code>noactivity</code> is a flag which forces the list-writer to ignore the
 &quot;listing the contents of&quot; activity (in cases where it would otherwise consult
@@ -142,7 +142,7 @@ being listed so that they appear in the tree in coalesced order. The
 side-effect if the marked objects all happen to share a common parent.
 It might seem odd for a list-writer to have side effects at all, but the
 idea is that occasional coalescing improves the quality of play in many
-small ways -- for instance, the sequence of matches to TAKE ALL is tidier --
+small ways — for instance, the sequence of matches to TAKE ALL is tidier —
 and that coalescing has a small speed cost, so we want to do it as little
 as possible. (The latter was more of a consideration for I6: interpreters
 are faster nowadays.)</p>
@@ -320,11 +320,8 @@ prior named list number and gender for everything matching a description.</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. About Iterator Functions.</b>  Suppose <code>Iter</code> is an iterator function and that we have a &quot;raw list&quot;
 \INWEBMATH(x_1, x_2, ..., x_n\INWEBMATH) of objects. Of these, the iterator function will
 choose a sublist of &quot;qualifying&quot; objects. It is called with arguments</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Iter</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">function</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Iter</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">function</span><span class="plain-syntax">)
+</span></pre>
 <p>where the <code>obj</code> is required to be \INWEBMATH(x_j\INWEBMATH) for some \INWEBMATH(j\INWEBMATH) and the function is one
 of the <code>*_ITF</code> constants defined below:</p>
 <ul>
@@ -709,7 +706,7 @@ circles, and never be able to see the individual objects in the group.)</p>
 where \INWEBMATH(R_1\INWEBMATH) and \INWEBMATH(R_2\INWEBMATH) are addresses of routines:</p>
 <p><code>coin</code> (\INWEBMATH(R_1\INWEBMATH)), <code>coin</code> (\INWEBMATH(R_1\INWEBMATH)), <code>box</code> (\INWEBMATH(R_2\INWEBMATH)), <code>statuette</code> (0), <code>coin</code> (\INWEBMATH(R_1\INWEBMATH)), <code>box</code> (\INWEBMATH(R_2\INWEBMATH))</p>
 <p>Then the partition is 1, 1, 2, 3, 1, 2, so that the final output will be
-something like &quot;three coins, two boxes and a statuette&quot; -- with three
+something like &quot;three coins, two boxes and a statuette&quot; — with three
 grouped terms. Here each partition class is the only member in its group,
 so the number of groups is the same as the number of classes. (The above
 list is not coalesced, so the \INWEBMATH(R_1\INWEBMATH) values, for instance, are not
@@ -876,15 +873,15 @@ in the above sense.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Write Multiple Class Group.</b>  The text of a single group which contains more than one partition class.
 We carry out the &quot;grouping together&quot; activity, so that the user can add
-text fore and aft -- this is how groups of objects such as &quot;X, Y and Z&quot;
-can be fluffed up to &quot;the letters X, Y and Z from a Scrabble set&quot; --
+text fore and aft — this is how groups of objects such as &quot;X, Y and Z&quot;
+can be fluffed up to &quot;the letters X, Y and Z from a Scrabble set&quot; —
 but the default is simple: we print the grouped items by calling
 <code>WriteListR</code> once again, but this time starting from X, and where
 <code>lt_value</code> is set to the common <code>list_together</code> value of X, Y and Z.
 (That restricts the list to just the objects in this group.) Because
 <code>lt_value</code> is set to this value, the grouping code won't then group X, Y
 and Z again, and they will instead be individual classes in the new
-list -- so each will end up being sent, in turn, to <code>WriteSingleClassGroup</code>
+list — so each will end up being sent, in turn, to <code>WriteSingleClassGroup</code>
 below, and <em>that</em> is where they are printed.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

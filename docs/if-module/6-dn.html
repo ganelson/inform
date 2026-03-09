@@ -62,17 +62,14 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Inside any given beat, we have to keep track of the indentation of material
 in order to see what is subordinate to what. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">(</span><span class="identifier-syntax">About</span><span class="plain-syntax"> </span><span class="identifier-syntax">Elsinore</span><span class="plain-syntax">.)</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">(</span><span class="identifier-syntax">About</span><span class="plain-syntax"> </span><span class="identifier-syntax">Elsinore</span><span class="plain-syntax">.)
 
-<span class="identifier-syntax">Marcellus</span><span class="plain-syntax">: </span><span class="string-syntax">"What, has this thing appear'd again to-night?"</span>
+</span><span class="identifier-syntax">Marcellus</span><span class="plain-syntax">: </span><span class="string-syntax">"What, has this thing appear'd again to-night?"</span><span class="plain-syntax">
 
-<span class="identifier-syntax">Bernardo</span><span class="plain-syntax">: </span><span class="string-syntax">"I have seen naught but [list of things in the Battlements]."</span>
+</span><span class="identifier-syntax">Bernardo</span><span class="plain-syntax">: </span><span class="string-syntax">"I have seen naught but [list of things in the Battlements]."</span><span class="plain-syntax">
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">Marcellus</span><span class="plain-syntax">: </span><span class="string-syntax">"Horatio says 'tis but our fantasy."</span>
-</pre>
-<div class="lsmarkdown">
+    </span><span class="identifier-syntax">Marcellus</span><span class="plain-syntax">: </span><span class="string-syntax">"Horatio says 'tis but our fantasy."</span><span class="plain-syntax">
+</span></pre>
 <p>Here the lines are at levels 0, 0 and 1. We actually allow them to go in as
 far as <code>MAX_DIALOGUE_NODE_NESTING</code>, which is a lot of tab stops: no human
 author would want that many.</p>
@@ -94,7 +91,7 @@ or choice seen at each level. These are called &quot;precursors&quot;.</p>
 union type: it can either be a line, a choice or a decision.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_choice</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_choice</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_decision</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_decision</span><span class="plain-syntax">;</span>
@@ -103,8 +100,7 @@ union type: it can either be a line, a choice or a decision.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_node</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">child_node</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_node</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure dialogue_node is accessed in 6/db and here.</li></ul>
 <div class="lsmarkdown">
@@ -214,17 +210,16 @@ impossible to hit.</p>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">STEP_STOP_CONTROL_DDT</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_decision</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_decision</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_DDT</code> constants above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dialogue_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_node</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">} </span><span class="type-syntax">dialogue_decision</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure dialogue_decision is accessed in 6/dl, 6/dc and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">DialogueNodes::find_decisions_in_beat</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">DialogueNodes::find_decisions_in_beat</span></span>:<br/>Dialogue Beats - <a href="6-db.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">dialogue_beat</span><span class="plain-syntax"> *</span><span class="identifier-syntax">db</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">DialogueNodes::find_decisions_in_beat</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">DialogueNodes::find_decisions_in_beat</span></span>:<br/>Dialogue Beats - <a href="6-db.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">dialogue_beat</span><span class="plain-syntax"> *</span><span class="identifier-syntax">db</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="6-dn.html#SP5" class="function-link"><span class="function-syntax">DialogueNodes::find_decisions_in_beat_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">, </span><span class="identifier-syntax">db</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-dn.html#SP5" class="function-link"><span class="function-syntax">DialogueNodes::examine_decisions_in_beat_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">, </span><span class="identifier-syntax">db</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>

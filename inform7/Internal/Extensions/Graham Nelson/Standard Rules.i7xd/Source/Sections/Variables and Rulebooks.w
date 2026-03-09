@@ -9,7 +9,7 @@ space and time.
 
 Although users often think of the protagonist object as a fixed object
 whose name is "player", this is a variable, and it is possible to change
-perspective during play and become somebody else -- at which point the
+perspective during play and become somebody else — at which point the
 "player" variable will point to a different object.
 
 =
@@ -79,7 +79,7 @@ The reason the action failed variable is defined by Inter as "reason_the_action_
 The item described variable is defined by Inter as "self".
 
 @ "Person reaching" turns out to have exactly the same meaning as "person
-asked" -- they are both the `actor`, in Inter terms, but are used in different
+asked" — they are both the `actor`, in Inter terms, but are used in different
 situations.
 
 =
@@ -158,7 +158,7 @@ second, we don't want users to think of them as manipulable during play.
 Rather sneakily, we also define a Figure here. This is done in order to
 make it legal to declare variables and properties of the kind of value
 "figure name" (because it ensures that such variables can always be
-initialised -- there is always at least one Figure in the world). Of
+initialised — there is always at least one Figure in the world). Of
 course plenty of Inform projects have no artwork at all: so the cover art
 figure is unique in that it might refer to nothing. That sounds a little
 arbitrary but in fact follows a convention used by the Blorb format for
@@ -306,7 +306,7 @@ Every turn rules is a rulebook.
 The every turn rulebook is accessible to Inter as "EVERY_TURN_RB".
 
 @ The action machinery requires some 16 rulebooks to work, though that is
-the result of gradual simplification -- in 2006 it required 25, for instance.
+the result of gradual simplification — in 2006 it required 25, for instance.
 The "action-processing" rulebook, like the turn sequence rulebook, is a
 master of ceremonies: it belongs to the Standard Rules and is only rarely if
 at all referred to by users.
@@ -319,7 +319,7 @@ global variables (and thus in scope everywhere).
 The main action-processing rulebook delegates most of its detailed work to
 a subsidiary, the "specific action-processing" rulebook, at the point where
 what rulebooks we consult next depends on what the action is (hence "specific")
--- see below for more on how check/carry out/report rules are filed.
+— see below for more on how check/carry out/report rules are filed.
 
 =
 Action-processing rules is a rulebook.
@@ -374,7 +374,7 @@ this way:
 - To try to encourage a distinction between:
 
 	- the general implementation of an action, made with carry out, check
-	and report rules -- say, a "photographing" action which could be used in
+	and report rules — say, a "photographing" action which could be used in
 	any situation and could be copied and pasted into another project; and
 	
 	- the contingent rules applying in particular situations in play, made
@@ -396,7 +396,7 @@ wasn't altogether popular. Before then, Inform rather cleverly filed rules like
 "Check doing something with the haddock" in the generic "check"
 rulebook and ran this rulebook as part of the action processing sequence.
 But this clearly broke principle (i) above, and meant that the six-stage
-process -- already quite complicated enough -- was actually a nine-stage
+process — already quite complicated enough — was actually a nine-stage
 process only pretending, by deceitful syntax, to be a six-stage one. Check
 rules sometimes appeared to be filed in the wrong order, breaking the
 ordinary precedence conventions, and this was not due to a bug but because
@@ -461,9 +461,9 @@ The multiple action processing rulebook is accessible to Inter as "MULTIPLE_ACTI
 
 @ And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities
-and actions are created -- when we create the "dropping" action, for
+and actions are created — when we create the "dropping" action, for
 instance, we also create the "check dropping", "carry out dropping" and
-"report dropping" rulebooks -- but there are no more stand-alone rulebooks.
+"report dropping" rulebooks — but there are no more stand-alone rulebooks.
 
 @h Rules.
 At run-time, the value of a rule is the (packed) address of an I6 routine.
@@ -589,7 +589,7 @@ just completed.
 
 - The "every turn stage rule" follows the every turn rulebook. This
 earns its place among the "first" rules in order for it to have priority
-over all the other book-keeping rules at the end of a turn -- including any
+over all the other book-keeping rules at the end of a turn — including any
 which the user, or an extension included by the user, chooses to add to the
 turn sequence rules.
 
@@ -600,8 +600,8 @@ that is). This prevents them from being used recursively, which would not
 work properly, and enables a popular trick from the time before the 2008
 reform to keep working: we can simulate six turns going by in which the
 player does nothing by running "follow the turn sequence rules" six
-times in a row. Everything happens exactly as it should -- the turn count,
-the time of day, timed events, and so on -- except that no commands are
+times in a row. Everything happens exactly as it should — the turn count,
+the time of day, timed events, and so on — except that no commands are
 read and no consequent actions generated.
 
 =
@@ -646,7 +646,7 @@ at the end of the turn.
 - First, we check for scene changes again. We did this only a short while
 ago, but scene changes might well have arisen as a result of rules which
 fired during the every turn rulebook, or from timed events, or in some other
-way, and it's important to start the next turn in the correct scene -- so we
+way, and it's important to start the next turn in the correct scene — so we
 check again to make sure.
 
 - Then we run the "adjust light rule". Keeping track of light and darkness
@@ -788,7 +788,7 @@ beginning, so we want the start of the SA-P stage to happen at the start of
 a rulebook.
 
 This does mean that an attempt by the user to move the before stage to just
-after the check stage (say) will fail -- the before and check stages happen
+after the check stage (say) will fail — the before and check stages happen
 in different rulebooks, so no amount of rearranging will do this.
 
 @ The upper level of action-processing consists of seeing whether the actor's
@@ -895,7 +895,7 @@ specific action-processing rulebook, but it's implemented as a primitive in
 the template I6 layer because it must also find out which are the
 specific check, carry out and report rulebooks for the current action (for
 instance, "check taking" is the specific check rulebook for the
-"taking" action -- which seems obvious from the names: but at run-time,
+"taking" action — which seems obvious from the names: but at run-time,
 the names aren't so visible).
 
 =
@@ -1089,7 +1089,7 @@ Does the player mean taking something which is carried by the player
 	it is very unlikely.
 
 @ And that completes the creation and stocking of the 25 rulebooks. More than
-half of them are initially empty, including before, instead and after -- at the
+half of them are initially empty, including before, instead and after — at the
 end of the day, these rulebooks are hooks allowing the user to change the
 ordinary behaviour of things, but ordinariness is exactly what the Standard
 Rules is all about.

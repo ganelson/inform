@@ -180,18 +180,17 @@ values, and at present Preform return values are <code>int</code>.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And here's how we pack everything in:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">            &lt;-- lsb     32 bits      msb --&gt;
+    gender  xx..............................
+    person  ..xx............................
+    number  ....x...........................
+    voice   .....x..........................
+    case    ......xxxxx.....................
+	tense   ...........xxx..................
+	sense   ..............x.................
+	id      ...............xxxxxxxxxxxxxxxxx
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">            &lt;-- </span><span class="identifier-syntax">lsb</span><span class="plain-syntax">     </span><span class="constant-syntax">32</span><span class="plain-syntax"> </span><span class="identifier-syntax">bits</span><span class="plain-syntax">      </span><span class="identifier-syntax">msb</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">gender</span><span class="plain-syntax">  </span><span class="identifier-syntax">xx</span><span class="plain-syntax">..............................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">person</span><span class="plain-syntax">  ..</span><span class="identifier-syntax">xx</span><span class="plain-syntax">............................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">number</span><span class="plain-syntax">  ....</span><span class="identifier-syntax">x</span><span class="plain-syntax">...........................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">voice</span><span class="plain-syntax">   .....</span><span class="identifier-syntax">x</span><span class="plain-syntax">..........................</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">case</span><span class="plain-syntax">    ......</span><span class="identifier-syntax">xxxxx</span><span class="plain-syntax">.....................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tense</span><span class="plain-syntax">   ...........</span><span class="identifier-syntax">xxx</span><span class="plain-syntax">..................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">sense</span><span class="plain-syntax">   ..............</span><span class="identifier-syntax">x</span><span class="plain-syntax">.................</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">id</span><span class="plain-syntax">      ...............</span><span class="identifier-syntax">xxxxxxxxxxxxxxxxx</span>
-</pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">GENDER_LCBASE</span> <span class="constant-syntax">0x00000001</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">GENDER_LCMASK</span> <span class="constant-syntax">0x00000003</span>
@@ -424,17 +423,14 @@ of 2, that is, it must be a single <code>*_LCW</code> value.</p>
 grammatical attributes. If we do that in the obvious way, by calling
 <a href="3-lc.html#SP12" class="internal">Lcon::write</a> on each of the constants in turn, we tend to get a list
 of tiresome length. We want to abbreviate so that, e.g.,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">1</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> + </span><span class="constant-syntax">3</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> + </span><span class="constant-syntax">3</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	1p s + 1p p + 2p s + 2p p + 3p s + 3p p
+</span></pre>
 <p>becomes just <code>1p/2p/3p s/p</code>.</p>
 <p>Doing this is surprisingly non-trivial: an optimal solution means finding
 the minimal number of disjoint 7-dimensional cuboids whose union is the
 set of coordinates in the list. &quot;Cuboid&quot; here really means &quot;Cartesian
 product of seven sets&quot;; the above case is a benign one because the set
-in question is a single cuboid --
+in question is a single cuboid —
 $$ \lbrace (1p, s), (2p, s), (3p, s), (1p, p), (2p, p), (3p, p) \rbrace = \lbrace 1p, 2p, 3p \rbrace\times\lbrace s, p\rbrace. $$</p>
 <p>We will aim for an adequately good answer, not an optimal one. The following
 code is really only needed for printing tidy debugging and test logs, so
@@ -443,7 +439,7 @@ it's probably not worth any further effort.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  To avoid the C extension for variable-length arrays, and to avoid memory
 allocation, we're simply going to make our working arrays quite large. But
-this is fine -- the function is for printing, so it's not used much.</p>
+this is fine — the function is for printing, so it's not used much.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_LCON_SET_SIZE</span> 
 <span class="plain-syntax">    </span><span class="constant-syntax">NO_KNOWN_GENDERS</span><span class="plain-syntax">*</span><span class="constant-syntax">NO_KNOWN_PERSONS</span><span class="plain-syntax">*</span><span class="constant-syntax">NO_KNOWN_NUMBERS</span><span class="plain-syntax">*</span><span class="constant-syntax">NO_KNOWN_VOICES</span><span class="plain-syntax">*</span>
@@ -467,7 +463,7 @@ included, and continue.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1. </b>  Note that there is always at least one cuboid containing the item \INWEBMATH(i\INWEBMATH) --
+<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1. </b>  Note that there is always at least one cuboid containing the item \INWEBMATH(i\INWEBMATH) —
 the \INWEBMATH(1\times 1\times 1\times 1\times 1\times 1\times 1\INWEBMATH) cuboid containing
 just that one point. So the following certainly finds something. The
 <code>elongated_sides</code> value accumulates the set of axis directions in which
@@ -513,8 +509,8 @@ which expands it the most. We stop when no further expansion is possible.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16_1_1_1" class="paragraph-anchor"></a><b>&#167;16.1.1.1. </b>  We start with the current cuboid. The <code>enlarged</code> array will be the same as
 the <code>cuboid_number</code> array except that some additional points <code>x</code> for which
-<code>cuboid_number[x]</code> is \INWEBMATH(-1\INWEBMATH) -- i.e., points not yet placed in any cuboid --
-will have <code>enlarged[x]</code> set to <code>cuboid</code> -- i.e., will be placed in the current
+<code>cuboid_number[x]</code> is \INWEBMATH(-1\INWEBMATH) — i.e., points not yet placed in any cuboid —
+will have <code>enlarged[x]</code> set to <code>cuboid</code> — i.e., will be placed in the current
 cuboid. In effect, <code>enlarged</code> is a speculative next version of <code>cuboid_number</code>.</p>
 <p>We first find the &quot;variations&quot; in the \INWEBMATH(d\INWEBMATH) direction: that is, \INWEBMATH(d\INWEBMATH) coordinates
 of points which are either \INWEBMATH(i\INWEBMATH) itself or are unplaced points whose other

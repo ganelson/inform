@@ -17,12 +17,12 @@ uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
 @h Inflections.
-Inflections are modifications of words -- usually word endings or beginnings --
+Inflections are modifications of words — usually word endings or beginnings —
 for different circumstances. English is often called an uninflected language,
 but this is an exaggeration. For example, we spell the word "tree" as
 "trees" when we refer to more than one of them. Inform sometimes needs
-to take text in one form and change it to another -- for example, to turn
-a singular noun into a plural one -- and ordinary Preform parsing isn't good
+to take text in one form and change it to another — for example, to turn
+a singular noun into a plural one — and ordinary Preform parsing isn't good
 enough to express this.
 
 Inform uses a data structure called a "trie" as an efficient way to match
@@ -43,12 +43,14 @@ cannot be mixed within the same NT.
 identifying the trie to make use of. One exception: the token `...` before the
 trie's name makes it work on the end of a word instead of the beginning.
 For example:
-= (text as Preform)
+
+``` Preform
 	<fiddle-with-words> ::=
 		<fiddle-with-exceptions> |
 		... <fiddle-with-irregular-endings> |
 		... <fiddle-with-regular-endings>
-=
+```
+
 means try <fiddle-with-exceptions> first (on the whole text), then
 <fiddle-with-irregular-endings> (on the tail), and finally <fiddle-with-regular-endings>
 (also on the tail).
@@ -62,12 +64,14 @@ means "truncate 0 letters and add nothing", and therefore leaves the text
 unchanged.
 
 Some examples:
-= (text as Preform)
+
+``` Preform
 	<pluralise> ::=
 		lead 0 |
 		codex codices |
 		*mouse 5mice
-=
+```
+
 This would pluralise "lead" as "lead", "codex" as "codices", "mouse" as "mice",
 and "fieldmouse" as "fieldmice".
 
@@ -111,10 +115,11 @@ to their grammatical case. A language should list its cases in a special
 nonterminal called <grammatical-case-names>, in which "nominative" or its
 equivalent should always come first. For example:
 
-= (text as Preform)
+``` Preform
 <grammatical-case-names> ::=
 	nominative | vocative | accusative | dative | genetive | ablative
-=
+```
+
 The function //Declensions::no_cases// returns a count of these for a given
 natural language. The actual names of cases are only needed by the function
 //Declensions::writer//, which prints out tables of declensions for debugging
@@ -135,14 +140,14 @@ in the form either `gender table` or `gender grouper table`, where `gender` is:
 
 In the two-token form `gender table`, the `table` is a nonterminal for
 irregular forms; if the three-token form `gender grouper table`, the `grouper`
-is a nonterminal which works out which "group" the word falls into -- groups
-are numbered, so perhaps, e.g., the word "device" falls into group 1 -- and
+is a nonterminal which works out which "group" the word falls into — groups
+are numbered, so perhaps, e.g., the word "device" falls into group 1 — and
 then the `table` provides declensions for the different groups needed.
 
 @ A simple example of using the irregular forms table is provided by the
 English language definition of <article-declension>:
 
-= (text as Preform)
+``` Preform
 <article-declension> ::=
 	*    <en-article-declension>
 
@@ -151,15 +156,17 @@ English language definition of <article-declension>:
 	     some some |
 	the  the  the
 	     the  the
-=
+```
+
 Here the declension NT is <article-declension> and contains only one possibility,
 applying to all genders (hence the `*`). The `table` of irregular forms is then
 <en-article-declension>. Each production begins with the possibility against
-which the stem is matched -- here, it's going to have to be "a" or "the". There
+which the stem is matched — here, it's going to have to be "a" or "the". There
 are then one possibility for each case (nominative and accusative) in each of
 the two numbers (singular and plural), making four forms in all. English, of
 course, is not very inflected: this would be more interesting for French:
-= (text as Preform)
+
+``` Preform
 <article-declension> ::=
 	m  <fr-masculine-article-declension> |
 	f  <fr-feminine-article-declension>
@@ -175,22 +182,27 @@ course, is not very inflected: this would be more interesting for French:
 	     des   des |
 	le   la    la
 	     les   les
-=
+```
 
 @ So much for irregular forms. Grouped forms are useful for languages like
 German, which has about 12 groups of nouns, each with its own way of declining.
 For example, there's one group which goes something like:
-= (text as Preform)
+
+``` Preform
 	Kraft	Kraft	Kraft	Kraft
 	Kräfte	Kräfte	Kräften	Kräfte
-=
+```
+
 and another which goes like:
-= (text as Preform)
+
+``` Preform
 	Kamera	Kamera	Kamera	Kamera
 	Kameras	Kameras	Kameras	Kameras
-=
+```
+
 For German, we might then have
-= (text as Preform)
+
+``` Preform
 <noun-declension> ::=
 	*  <de-noun-grouper> <de-noun-tables>
 
@@ -201,13 +213,16 @@ For German, we might then have
 <de-noun-tables> ::=
 	<de-noun-group1-table> |
 	<de-noun-group2-table>
-=
+```
+
 where for example:
-= (text as Preform)
+
+``` Preform
 <de-noun-group1-table> ::=
 	0 | 0 | 0 | 0 |
 	3äfte | 3äfte | 3äften | 3äfte
-=
+```
+
 giving inflection rules for the four cases of German in singular and then
 in plural. In practice, of course, <de-noun-grouper> will need to sort out
 nouns rather better than this, and there are about 12 groups. Groups are
@@ -233,9 +248,11 @@ the relevant language extension, or in `Syntax.preform` files.
 Except at the very top level, translators are free to created new tries
 and name them as they please, but the top-level tries must have the same
 names that they have here. For example, the Spanish implementation of
-= (text as Preform)
+
+``` Preform
 	<singular-noun-to-its-indefinite-article>
-=
+```
+
 may look entirely unlike its English version, but at the top level it still
 has to have that name.
 

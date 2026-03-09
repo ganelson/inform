@@ -10,11 +10,12 @@ text is inserted at the current cursor position in the Source panel of the
 Inform application.
 
 This is done with Javascript which looks something like this:
-= (text)
+
+``` None
 	var myProject = window.Project;
 	myProject.selectView('source');
 	myProject.pasteCode('Trying Taking Manhattan');
-=
+```
 
 @ The challenges here are that (a) the code to be pasted may be, say, as much
 as 5K in size, and that (b) it needs to include some special characters,
@@ -188,7 +189,7 @@ stops or more.
 	PasteButtons::put_code_char(OUT, '\n');
 
 @ The lexer also broke words around punctuation marks, so that, for instance,
-"fish, finger" would have been lexed as `fish , finger` -- three words.
+"fish, finger" would have been lexed as `fish , finger` — three words.
 But we want to restore the more natural spacing.
 
 @<Restore inter-word spaces unless this would be unnatural@> =

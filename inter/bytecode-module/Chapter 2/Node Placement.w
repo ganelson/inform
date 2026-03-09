@@ -158,7 +158,8 @@ if this is a different level from the bookmark's level, the bookmark is moved
 to that new level.
 
 For example, suppose we have this fragment of tree:
-= (text)
+
+``` None
 	Level	6...7...8...
 	Nodes	node1
 				node2
@@ -166,9 +167,11 @@ For example, suppose we have this fragment of tree:
 					node4 	<--- Bookmark is AFTER_NODEPLACEMENT wrt node4
 				node5
 			node6
-=
+```
+
 If `C` is to be at level 8, the same level as the bookmark, we get:
-= (text)
+
+``` None
 	Level	6...7...8...
 	Nodes	node1
 				node2
@@ -177,9 +180,11 @@ If `C` is to be at level 8, the same level as the bookmark, we get:
 					C 		<--- Bookmark is AFTER_NODEPLACEMENT wrt C
 				node5
 			node6
-=
+```
+
 If instead it is to be at level 6:
-= (text)
+
+``` None
 	Level	6...7...8...
 	Nodes	node1
 				node2
@@ -188,9 +193,11 @@ If instead it is to be at level 6:
 				node5
 			node6
 			C 				<--- Bookmark is AFTER_NODEPLACEMENT wrt C
-=
+```
+
 Here, C has "bubbled up" the tree. Finally, if it is to be at level 9:
-= (text)
+
+``` None
 	Level	6...7...8...
 	Nodes	node1
 				node2
@@ -199,7 +206,8 @@ Here, C has "bubbled up" the tree. Finally, if it is to be at level 9:
 						C 	<--- Bookmark is AFTER_NODEPLACEMENT wrt C
 				node5
 			node6
-=
+```
+
 Note that if C is to be at level 10, an internal error is thrown; there is no
 way to reach as low as that from `node4`.
 

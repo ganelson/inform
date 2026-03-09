@@ -61,14 +61,13 @@ void APClauses::write_clause_ID(OUTPUT_STREAM, int C, shared_variable *stv) {
 A single clause is an instance of:
 
 =
-typedef struct ap_clause {
+classdef ap_clause in 1000s {
 	int clause_ID;
 	struct shared_variable *stv_to_match; /* can be `NULL` for some built-in clause IDs */
 	struct parse_node *clause_spec; /* what the pattern says about this value */
 	int clause_options; /* a bitmap of flags: see below */
 	struct ap_clause *next; /* in the linked list of clauses for an action pattern */
-	CLASS_DEFINITION
-} ap_clause;
+}
 
 @ This loop conveniently runs through the clauses for `ap`:
 

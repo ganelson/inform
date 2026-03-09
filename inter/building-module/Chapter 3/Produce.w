@@ -42,7 +42,7 @@ For //inform7//, this stack in fact never exceeds size 2, i.e., that first
 interruption is never interrupted. If we ever need that, we can simply raise
 `MAX_CIP_STACK_SIZE`.
 
-Each CIP contains a further stack of "noted levels" -- where certain code
+Each CIP contains a further stack of "noted levels" — where certain code
 blocks, belonging to loop and conditional constructs, are placed. (Every Inter
 instruction has a level, meaning, its hierarchical depth within the code
 package: a level 3 instruction is three code blocks deep.) One of the easiest
@@ -275,7 +275,7 @@ void Produce::guard(inter_error_message *ERR) {
 
 @ "Level" is an issue outside of functions, too. In general, material will be
 generated either inside a package or at the root level. The following returns
-the level for material being generated in this location -- 0 for the root level,
+the level for material being generated in this location — 0 for the root level,
 or the baseline of the current package plus 1, if we're in a package.
 
 =
@@ -352,7 +352,7 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	return P;
 }
 
-@ We make a new package and return it; but note the `+1` here -- the package
+@ We make a new package and return it; but note the `+1` here — the package
 is created at the level below that in `IBM`.
 
 =
@@ -478,7 +478,7 @@ void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 }
 
 @ Which in turn falls into this, the general case: a value specified by an
-Inter pair --
+Inter pair —
 
 =
 void Produce::val(inter_tree *I, kind *K, inter_pair val) {
@@ -609,7 +609,7 @@ void Produce::lab(inter_tree *I, inter_symbol *L) {
 
 Note that this function is not intended as the way high-level code in //inform7//
 should create a local variable: see //imperative: Local Variables// for that.
-This function is at a lower level -- it does the necessary Inter business, but
+This function is at a lower level — it does the necessary Inter business, but
 doesn't add the name tp the current stack frame in //inform7//.
 
 =

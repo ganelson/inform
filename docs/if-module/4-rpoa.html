@@ -66,12 +66,11 @@ on the action applying to &quot;a closed door&quot;. This is stored in the follo
 actions-feature corner of the <a href="../assertions-module/5-rcd.html" class="internal">Runtime Context Data (in assertions)</a> for the rule.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">actions_rcd_data</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">actions_rcd_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">always_test_actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...even if no AP was given, test that actor is player? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">never_test_actor</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ...for instance, for a parametrised rather than action rulebook */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marked_for_anyone</span><span class="plain-syntax">; </span><span class="comment-syntax">/* any actor is allowed to perform this action */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">actions_rcd_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">actions_rcd_data</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionRules::new_rcd_data</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ActionRules::new_rcd_data</span></span>:<br/><a href="4-rpoa.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">actions_rcd_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ard</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">actions_rcd_data</span><span class="plain-syntax">);</span>

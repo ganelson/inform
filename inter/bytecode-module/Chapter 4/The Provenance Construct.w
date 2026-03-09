@@ -22,7 +22,7 @@ void ProvenanceInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a `provenance` instruction is laid out with the
-compulsory words -- see //Inter Nodes//.
+compulsory words — see //Inter Nodes//.
 
 If `ORIGIN_PROVENANCE_IFLD` is zero, the instruction means "Following
 bytecode is not from any specific source location." The line number is ignored

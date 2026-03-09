@@ -8,19 +8,6 @@ which use this module:
 
 @d SYNTAX_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e parse_node_CLASS
-@e parse_node_tree_CLASS
-@e parse_node_annotation_CLASS
-@e parse_node_annotation_type_CLASS
-
-=
-DECLARE_CLASS(parse_node)
-DECLARE_CLASS(parse_node_tree)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(parse_node_annotation, 500)
-DECLARE_CLASS(parse_node_annotation_type)
-
 @ Like all modules, this one must define a `start` and `end` function. Here,
 all we need do is set up some debugging log facilities.
 

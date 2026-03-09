@@ -14,7 +14,7 @@ A "zbyte" is a byte from a Z-machine story file.
 @d zbyte unsigned char
 
 =
-typedef struct release_instructions {
+classdef release_instructions {
 	int release_website; /* Release along with a website? */
 	inchar32_t *website_template_leafname; /* If so, the template name for it */
 	int release_interpreter; /* Release along with an interpreter? */
@@ -36,8 +36,7 @@ typedef struct release_instructions {
 	unsigned int width; /* in pixels */
 	unsigned int height; /* in pixels */
 	zbyte existing_story_header[LENGTH_OF_STORY_FILE_HEADER]; /* a byte array, not a C string */
-	CLASS_DEFINITION
-} release_instructions;
+}
 
 @ =
 release_instructions *ReleaseInstructions::new_set(void) {
@@ -82,13 +81,12 @@ file. (Because they are treated only as names and are never opened, the
 following structure contains no file handles.)
 
 =
-typedef struct auxiliary_file {
+classdef auxiliary_file {
 	struct filename *name_of_original_file; /* e.g., "Collegio.pdf" */
 	struct pathname *folder_to_release_to; /* e.g., "Sounds" */
 	struct text_stream *brief_description; /* e.g., "Collegio Magazine" */
 	int from_payload;
-	CLASS_DEFINITION
-} auxiliary_file;
+}
 
 @ =
 void ReleaseInstructions::add_aux_file(release_instructions *rel,
@@ -179,7 +177,7 @@ optionally be marked "public" (they appear on any website about it) or
 	library card
 
 @ And here is the special meaning function which uses the grammar above. Note
-that we accept almost any sentence here -- but that this is because the meaning
+that we accept almost any sentence here — but that this is because the meaning
 is only given for sentences beginning "Release with...".
 
 =
@@ -339,7 +337,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 
 @h Writing out files.
 So much for taking down instructions; now we must act on them. In this
-routine we combine writing the iFiction record and the release instructions --
+routine we combine writing the iFiction record and the release instructions —
 done together since they have so much in common, being essentially two ways
 of writing the same thing.
 

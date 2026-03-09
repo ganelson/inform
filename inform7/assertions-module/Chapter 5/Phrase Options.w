@@ -34,9 +34,9 @@ typedef struct id_options_data {
 	int multiple_options_permitted; /* can be combined, or mutually exclusive? */
 } id_options_data;
 
-typedef struct phrase_option {
+classdef phrase_option in 100s {
 	struct wording name; /* text of name */
-} phrase_option;
+}
 
 @h Creation.
 By default, a phrase has no options.
@@ -109,10 +109,12 @@ int PhraseOptions::parse(id_body *idb, wording W) {
 @h Parsing phrase options in a declaration.
 The following is called with `W` set to just the part of a phrase prototype
 containing its phrase options. In this example:
-= (text as Inform 7)
+
+``` Inform7
 To decide which object is best route from (R1 - object) to (R2 - object),
 	using doors or using even locked doors:
-=
+```
+
 `W` would be "using doors or using even locked doors".
 
 The syntax is just a list of names, but with the wrinkle that if the list is divided

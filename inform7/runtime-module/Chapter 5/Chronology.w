@@ -19,26 +19,25 @@ void Chronology::start_feature(void) {
 @h Past tense conditions.
 Each past tense condition, such as "if the green door has been open", causes
 one of these objects to be created, which records that we have to keep track
-of something -- in this case, whether or not the green door is open.
+of something — in this case, whether or not the green door is open.
 
 =
-typedef struct past_tense_condition_record {
+classdef past_tense_condition_record {
 	struct parse_node *condition; /* condition to be evaluated */
 	struct action_pattern *ap_to_test; /* condition to be evaluated */
 	struct parse_node *where_ptc_tested; /* sentence in which condition is found */
 	struct package_request *ptc_package;
 	struct inter_name *ptc_iname;
-	CLASS_DEFINITION
-} past_tense_condition_record;
+}
 
 @ This is called when a past tense condition is needed. The idea is simple
-enough -- we make a note to compile code monitoring whether the green door
+enough — we make a note to compile code monitoring whether the green door
 is open, which will end up being a "past state"; but for now we only call
 a function which tests that past state.
 
 Things are more complicated if the condition is an action pattern, as in
 "if we have taken something portable for the third time". There are a few
-easy cases -- e.g., "if we have taken" can be resolved using the action
+easy cases — e.g., "if we have taken" can be resolved using the action
 bitmap which always exists, and therefore does not need any request for a
 past state to be maintained.
 
@@ -229,13 +228,12 @@ but the action itself is referred to in the present tense. (Whereas "if we have
 taken something" would be a past tense condition: see above.)
 
 =
-typedef struct action_history_condition_record {
+classdef action_history_condition_record {
 	struct action_pattern historic_action; /* action pattern to be matched */
 	struct parse_node *where_ahcr_tested; /* sentence in which AP is found */
 	struct package_request *ahcr_package;
 	struct inter_name *ahcr_iname;
-	CLASS_DEFINITION
-} action_history_condition_record;
+}
 
 @ The `duration` here records the "for the third turn" part; the `ap`, the
 "taking something edible" part.

@@ -59,7 +59,7 @@ be installed, it should look at the first line. (Note that this might have
 any of <code>0a</code>, <code>0d</code>, <code>0a0d</code>, <code>0d0a</code>, or Unicode line division as its line
 ending: and that the file might, or might not, begin with a Unicode BOM,
 &quot;byte order marker&quot;, code. Characters within the line will be encoded as
-UTF-8, though -- except possibly for some exotic forms of space -- they
+UTF-8, though — except possibly for some exotic forms of space — they
 will all be found in the ISO Latin-1 set.) The first line is required to
 have one of the following forms, possibly with white space before or after,
 but definitely without line breaks before:</p>
@@ -94,9 +94,9 @@ the <a href="../inbuild/index.html" class="internal">inbuild</a> manual.)</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Ignoring any version number given, the Inform application should then
 store the file in the external extensions area. For instance,</p>
-<pre><code>`~/Library/Inform/Extensions/Emily Short/Glulx Text Effects` (OS X)
-`My Documents\Inform\Extensions\Emily Short\Glulx Text Effects` (Windows)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">`~/</span><span class="identifier-syntax">Library</span><span class="plain-syntax">/</span><span class="identifier-syntax">Inform</span><span class="plain-syntax">/</span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">/</span><span class="identifier-syntax">Emily</span><span class="plain-syntax"> </span><span class="identifier-syntax">Short</span><span class="plain-syntax">/</span><span class="identifier-syntax">Glulx</span><span class="plain-syntax"> </span><span class="identifier-syntax">Text</span><span class="plain-syntax"> </span><span class="identifier-syntax">Effects</span><span class="plain-syntax">` (</span><span class="identifier-syntax">OS</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">)
+`</span><span class="identifier-syntax">My</span><span class="plain-syntax"> </span><span class="identifier-syntax">Documents</span><span class="plain-syntax">\</span><span class="identifier-syntax">Inform</span><span class="plain-syntax">\</span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">\</span><span class="identifier-syntax">Emily</span><span class="plain-syntax"> </span><span class="identifier-syntax">Short</span><span class="plain-syntax">\</span><span class="identifier-syntax">Glulx</span><span class="plain-syntax"> </span><span class="identifier-syntax">Text</span><span class="plain-syntax"> </span><span class="identifier-syntax">Effects</span><span class="plain-syntax">` (</span><span class="identifier-syntax">Windows</span><span class="plain-syntax">)
+</span></pre>
 <p>Note that the file will probably not have the right name initially, and
 will need to be renamed as well as moved. (Note the lack of a file
 extension.) The subfolders <code>Inform</code>, <code>Extensions</code> and <code>Emily Short</code> must be
@@ -125,7 +125,7 @@ on three occasions:</p>
 <p>When <code>inform7</code> is run in &quot;census mode&quot;, it should be run with the command <code>-census</code>.
 All output from Inform should be ignored, including its return code: ideally,
 not even a fatal error should provoke a reaction from the application. If the
-census doesn't work for some file-system reason, never mind -- it's not
+census doesn't work for some file-system reason, never mind — it's not
 mission-critical.</p>
 </div>
 <div class="lsmarkdown">
@@ -133,18 +133,12 @@ mission-critical.</p>
 where needed for new and unused extensions; and second, to create the
 following index files in the external documentation area (not in
 the external extension area):</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    .../</span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span>
-<span class="plain-syntax">    .../</span><span class="identifier-syntax">ExtIndex</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	.../Extensions.html
+	.../ExtIndex.html
+</span></pre>
 <p>Documentation for any individual extension is stored at, e.g.,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    .../</span><span class="identifier-syntax">Extensions</span><span class="plain-syntax">/</span><span class="identifier-syntax">Victoria</span><span class="plain-syntax"> </span><span class="identifier-syntax">Saxe</span><span class="plain-syntax">-</span><span class="identifier-syntax">Coburg</span><span class="plain-syntax">-</span><span class="identifier-syntax">Gotha</span><span class="plain-syntax">/</span><span class="identifier-syntax">Werewolves</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html
+</span></pre>
 <p>Inform can generate such a file, for an individual extension, in two ways: (a)
 provisionally, with much less detail, and (b) fully. Whenever it
 successfully compiles a work using extension X, it rewrites the
@@ -156,7 +150,7 @@ provisional one; and again, it updates both the two indexing pages.</p>
 do nothing &quot;extra&quot; that a normal run of Inform does not also do. On every
 census, Inform automatically checks for misfiled or broken extensions, and
 places a descriptive report of what's wrong on the <code>Extensions.html</code> index
-page -- if people move around or edit extensions by hand, they may run into
+page — if people move around or edit extensions by hand, they may run into
 these errors.)</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

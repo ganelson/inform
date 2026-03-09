@@ -238,8 +238,8 @@ void ActionSemantics::check_valid_application(action_name *an, int nouns_supplie
 	return;
 
 @ A stricter check is performed when we might want to compile an action in the
-past tense; only very simple actions -- those with no parameter, or a single
-parameter which is a thing -- can be tested this way, for reasons which become
+past tense; only very simple actions — those with no parameter, or a single
+parameter which is a thing — can be tested this way, for reasons which become
 clear from the implementation in //runtime: Actions//.
 
 =

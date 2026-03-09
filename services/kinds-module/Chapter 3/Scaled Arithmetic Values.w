@@ -20,7 +20,7 @@ stored at run-time as `1`.
 It must be emphasised that this is scaled, fixed-point arithmetic: there
 are no mantissas or exponents. In such schemes the scale factor is usually
 $2^{16}$ or some similar power of 2, but here we want to use exactly the
-scale factors laid out by the source text -- partly because the user
+scale factors laid out by the source text — partly because the user
 knows best, partly so that it is unambiguous how to print values, partly
 so that source text like "0.001N" determines an exact value rather than
 being approximated by a binary equivalent.
@@ -46,7 +46,7 @@ This is all a little delicate since rounding errors may be an issue and
 since $k_Xk_Y/k_O$ is itself evaluated in integer arithmetic. In an ideal
 world we might use the same $k$ for many units (e.g., $k=1000$ throughout)
 and then of course this cancels to just $1000$. But in practice people
-won't always do this -- they may use some Babylonian, base 60, units, such
+won't always do this — they may use some Babylonian, base 60, units, such
 as minutes and degrees, for instance, where $k=3600$ would be more natural.
 
 =
@@ -248,7 +248,7 @@ benchmark scaling is always 1.0.
 would be unable to express any distance smaller than that, and "1 cm"
 or "1 mm" would vanish completely. Instead we scale so that the value
 1 stored at run-time equals 1 unit of our smallest scale: in the length
-example, 1 mm. The `M` value for the benchmark is now usually not 1 --
+example, 1 mm. The `M` value for the benchmark is now usually not 1 —
 in this example, it's 1000, because one benchmark unit (1 m) is stored
 as the integer 1000.
 
@@ -354,7 +354,7 @@ int Kinds::Scalings::determine_M(scaling_transformation *sc,
 	return rescale_the_others_by_this;
 }
 
-@ This is the easy case -- there's no list yet, and no benchmark yet. The `M`
+@ This is the easy case — there's no list yet, and no benchmark yet. The `M`
 value will usually therefore be 1, unless the source text explicitly asked
 for it to be something else:
 
@@ -414,19 +414,25 @@ Scaling down might look similar: we want `M = B/k`. But in integer arithmetic
 example, where `k` is 1000 and `B` is 1.
 
 We get around this by increasing every `M`-value in the list by a factor of:
-= (text)
+
+``` None
 	k / gcd(B, k)
-=
+```
+
 Note that `B` also increases in this process, and in fact becomes
-= (text)
+
+``` None
 	Bk / gcd(B, k)
-=
+```
+
 which is the smallest multiple of `B` which has `k` as a factor. (If in fact
 `k` always divided `B`, then the scale multiple is 1 and no change is made.)
 That means that the new value of `B` divided by `k` will be
-= (text)
+
+``` None
 	B / gcd(B, k)
-=
+```
+
 so this is what we set `M` to.
 
 @<Calculate the multiplier for the LP relative to the benchmark@> =
@@ -634,9 +640,11 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 
 @ The integer case of this is extracted as a utility routine because it's useful
 for other calculations too. This performs the operation
-= (text)
+
+``` None
 	v --> kv + l
-=
+```
+
 carefully checking that the result does not overflow the virtual machine's
 signed integer size limit in the process. `k` is a constant known at compile
 time, but `l` is an arbitrary I6 expression whose value can't be known until
@@ -897,13 +905,17 @@ recurring decimals. If it can't, then we must approximate.
 		@<Use an approximate method, since we can't have an exact one in all cases@>;
 
 @ In this exact case,
-= (text)
+
+``` None
 	M = cl10M / t
-=
+```
+
 for some natural number `t`, which means our example `26/M` is equal to
-= (text)
+
+``` None
 	26t/Mt = 26t / cl10M
-=
+```
+
 Once we've done that, we simply work out how many initial 0s there should
 be; print that many zeroes; and then print `26t` as if it's an integer.
 

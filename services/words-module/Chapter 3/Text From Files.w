@@ -8,7 +8,7 @@ Each separate file of text read into the lexer has its identity docketed
 in a `source_file` structure, as follows.
 
 =
-typedef struct source_file {
+classdef source_file {
 	struct filename *name;
 	int words_of_source; /* word count, omitting comments and verbatim matter */
 	struct wording text_read;
@@ -20,8 +20,7 @@ typedef struct source_file {
 	struct text_stream *torn_off_documentation;
 	struct text_stream *tangled;
 	int tangled_position;
-	CLASS_DEFINITION
-} source_file;
+}
 
 source_file *TextFromFiles::new_sf(filename *F, FILE *handle, void *W_void, general_pointer ref, int mode) {
 	source_file *sf = CREATE(source_file);

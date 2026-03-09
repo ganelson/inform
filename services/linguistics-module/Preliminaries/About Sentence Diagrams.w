@@ -21,11 +21,11 @@ others. The node types, such as `SENTENCE_NT`, are in capitals and all end
 in `_NT`. The text leading to the creation of the node then appears in quotes.
 After that are "annotations", written in braces.[2] In sentence (2), we see:
 
-- The `VERB_NT` node is annotated with its grammatical form -- it is "to be",
-in third person singular, active voice, present tense, and a negative sense --
-and also its semantic meaning -- the equality relationship "is".
+- The `VERB_NT` node is annotated with its grammatical form — it is "to be",
+in third person singular, active voice, present tense, and a negative sense —
+and also its semantic meaning — the equality relationship "is".
 - The second `UNPARSED_NOUN_NT` node is annotated with the article used to
-introduce it -- the indefinite article, "a", which could be any of masculine,
+introduce it — the indefinite article, "a", which could be any of masculine,
 feminine or neuter, could be either nominative or accusative, but is
 certainly singular.
 
@@ -34,7 +34,7 @@ phrase in the object position".
 
 [2] Since the 1850s a variety of tree-diagram schemes for sentence structure
 has been proposed: see //Wikipedia -> https://en.wikipedia.org/wiki/Sentence_diagram//.
-These tend to be quite large, with many optional features -- no bad thing when
+These tend to be quite large, with many optional features — no bad thing when
 the aim is to explain. But our aim is to process, not to illustrate, and
 whereas a typical dependency tree would have nodes for both "not" and "a",
 we use annotations instead. We want fairly flat sentence trees with a simple,
@@ -54,7 +54,7 @@ all examples shown will have that operation done. For example:
 
 Here the two `UNPARSED_NOUN_NT` nodes have been recognised as usages of a
 proper noun, Beth, and a common noun, sailor, respectively, and they are
-annotated with their grammatical usages -- in so far as we can tell. These
+annotated with their grammatical usages — in so far as we can tell. These
 two nouns do not inflect with case in English, but they are both singular.
 
 @ Clearly the //linguistics// module needs to know some vocabulary in order
@@ -74,7 +74,7 @@ sensitivity and if //linguistics// were a module to generate text, rather
 than recognise it, we would take much more care over this. Our interest
 is in grammatical gender, not the assignment of sexes to people.
 
-@ So, then, let us start with simple copular sentences -- that is,
+@ So, then, let us start with simple copular sentences — that is,
 sentences involving the verb "to be", which equate two subjects rather
 than having a subject act upon an object. This is why one "ought to" say
 "The traitor is I" instead of "The traitor is me", although nobody does.
@@ -121,7 +121,7 @@ In sentences (3) and (4) here, the resulting trees are essentially identical
 except for the existential annotation.
 
 Note that "there" as an object phrase is also defective, but not considered
-existential (it is more likely an anaphora -- "A woman is there" implies a
+existential (it is more likely an anaphora — "A woman is there" implies a
 reference to a location already being discussed, whereas "There is a woman"
 does not).
 

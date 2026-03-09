@@ -12,12 +12,11 @@ target virtual machines, because we can imagine that, for example, version 7
 might work with all VMs, while version 8 required a 32-bit architecture.
 
 =
-typedef struct inbuild_edition {
+classdef inbuild_edition {
 	struct inbuild_work *work;
 	struct semantic_version_number version;
 	struct compatibility_specification *compatibility;
-	CLASS_DEFINITION
-} inbuild_edition;
+}
 
 inbuild_edition *Editions::new(inbuild_work *work, semantic_version_number version) {
 	inbuild_edition *edition = CREATE(inbuild_edition);

@@ -200,7 +200,7 @@ library used to call this `inputobjs`), but others are in global variables:
 	multiple object list here"; or 1, meaning "not an object but a
 	value"; or a valid I6 object. (We use the scoping rules to ensure
 	that any I6 object visible to the parser is also a valid I7 object, so
-	-- unlike with actions -- we need not distinguish between the two.)
+	— unlike with actions — we need not distinguish between the two.)
 
 - 	The global variable `actor` is set to the person asked to carry out
 	the command, or is the same as `player` if nobody was mentioned. Thus it
@@ -218,7 +218,7 @@ library used to call this `inputobjs`), but others are in global variables:
 	object list. (And a multiple value list is forbidden.) If this happens, the
 	list of objects is stored in an I6 table array (i.e., with the 0th word
 	being the number of subsequent words) called `multiple_object`, and the
-	parser will have set the `toomany_flag` if an overflow occurred -- that is,
+	parser will have set the `toomany_flag` if an overflow occurred — that is,
 	if the list was truncated because it originally called for more than 63
 	objects.
 
@@ -334,7 +334,7 @@ the beginning.)
 
 Finally, note that an out of world action stops the turn sequence early, at
 the end of action generation: this is what prevents the time of day advancing,
-every turn rules from firing, and so forth -- see the Standard Rules.
+every turn rules from firing, and so forth — see the Standard Rules.
 
 =
 [ GENERATE_ACTION_R i;
@@ -422,7 +422,7 @@ zero entries in this table are ignored, and the sequence is significant
 only if more than one event goes off at the same moment, in which case
 earlier entries go off first. Each rule in the table has a corresponding
 timer value in `TimedEventTimesTable`. If this is negative, it represents
-a number of turns to go before the event happens -- or properly speaking, the
+a number of turns to go before the event happens — or properly speaking, the
 number of times the timed events rule is invoked. Otherwise the timer value
 must be a valid time of day at which the event happens (note that valid times
 are all non-negative integers). We allow a bracket of 30 minutes after the

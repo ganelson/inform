@@ -29,7 +29,7 @@ Class K_mica
   class K_stone
 ;
 #Ifdef TARGET_ZCODE;
-#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 170;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 169;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;

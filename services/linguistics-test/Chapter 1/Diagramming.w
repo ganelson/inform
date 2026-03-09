@@ -6,7 +6,7 @@ Turning a file of natural language into a syntax tree.
 and then hand each one to //linguistics// in turn to construct syntax diagrams.
 
 We need to tell //linguistics// which parts of a verb we will allow in these
-sentences -- the answer being, all of them. (Inform is more restrictive.)
+sentences — the answer being, all of them. (Inform is more restrictive.)
 
 @d ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK Diagramming::allow_in_assertions
 

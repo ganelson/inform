@@ -5,7 +5,7 @@ Reading declarations from a file.
 @h Keeping the syntax module happy.
 We are going to need to use the sentence-breaking apparatus from the //syntax//
 module, which means that the following four nonterminals need to exist. But in
-fact they are really just placeholders -- they are wired so that they can never
+fact they are really just placeholders — they are wired so that they can never
 match any text.
 
 =
@@ -67,17 +67,13 @@ void Declarations::parse(parse_node *p) {
 
 @
 
-@e kind_relationship_CLASS
 @d EXACT_PARSING_BITMAP (KIND_SLOW_MC)
 
 =
-DECLARE_CLASS(kind_relationship)
-
-typedef struct kind_relationship {
+classdef kind_relationship {
 	struct kind *sub;
 	struct kind *super;
-	CLASS_DEFINITION
-} kind_relationship;
+}
 
 
 @ =

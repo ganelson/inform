@@ -33,7 +33,7 @@ of closed doors and not the number of open ones.
 
 @ These different ways to describe multiple outcomes are represented in Inform by
 //quantifier// structures. One exists for each different meaning supported
-by Inform -- `ForAll`, `Exists` and so forth -- except that some quantifiers
+by Inform — `ForAll`, `Exists` and so forth — except that some quantifiers
 take a numerical parameter, and a single //quantifier// structure represents
 the meaning for any value of this parameter. For instance, the cardinality
 quantifiers `Card=3` and `Card=17` are both represented by the same
@@ -42,7 +42,7 @@ This is the result of parsing "exactly three" doors or "exactly 17"
 containers, for instance, where the parameter is 3 or 17 respectively.
 
 =
-typedef struct quantifier {
+classdef quantifier {
 	#ifdef CORE_MODULE
 	inter_ti operator_prim; /* inter opcode to compare successes against the threshold */
 	#endif
@@ -52,8 +52,7 @@ typedef struct quantifier {
 	int can_be_used_in_assertions; /* can be used in assertion sentences */
 	struct quantifier *negated_quant; /* the logically converse determiner */
 	char *log_text; /* to be used in the debugging log when logging propositions */
-	CLASS_DEFINITION
-} quantifier;
+}
 
 @ The built-in set of 16 quantifiers, arranged in eight pairs, is as follows:
 
@@ -69,7 +68,7 @@ quantifier
 	*exactly_quantifier = NULL,    *other_than_quantifier = NULL;
 
 @ Whereas "quantifier" is a term from mathematical logic, "determiner"
-is a term from linguistics which approximately -- but only approximately --
+is a term from linguistics which approximately — but only approximately —
 means the same thing.
 
 The determiner is the part of a noun phrase, always its head, which gives
@@ -86,15 +85,14 @@ are stored in the `determiner` structure, and each one points to the
 `quantifier` structure which is its meaning.
 
 =
-typedef struct determiner {
+classdef determiner {
 	int allows_prefixed_not; /* can the word "not" come before this? */
 	struct word_assemblage text_of_det; /* which is allowed to be empty */
 	int takes_number; /* does a number follow? (e.g. for "at least N" */
 	struct quantifier *quantifier_meant; /* meaning of this quantifier */
 	char *index_text; /* used in the Phrasebook index lexicon */
 	struct linguistic_stock_item *in_stock;
-	CLASS_DEFINITION
-} determiner;
+}
 
 @ Determiners are a grammatical category:
 
@@ -154,7 +152,7 @@ negation in our sense, then:
 
 Why do we do this? There are several reasons. First, we are using a richer
 set of quantifiers than traditional logic provides, and most of these have
-natural negations which we were going to be creating anyway -- so we may
+natural negations which we were going to be creating anyway — so we may
 as well exploit that. Second, we are going to try to represent propositions
 using as much conjunction ("and") and as little disjunction ("or") as
 possible. Consider what effect de Morgan's laws have if we simplify:
@@ -171,8 +169,8 @@ something much easier to handle:
 
 `NotAll x: closed(x) and locked(x) and lockable(x)`
 
-This is why we will be creating quantifiers `NotAll` and `DoesNotExist` --
-the negations of `ForAll` and `ThereExists` -- even though they might seem
+This is why we will be creating quantifiers `NotAll` and `DoesNotExist` —
+the negations of `ForAll` and `ThereExists` — even though they might seem
 puzzlingly redundant from a traditional logic point of view.
 
 =
@@ -512,7 +510,7 @@ condition:
 
 > if all six doors are open, ...
 
-is an attempt to use a determiner which Inform does not possess -- "all"
+is an attempt to use a determiner which Inform does not possess — "all"
 plus number. We don't allow this because if there happen to be eight doors,
 say, the condition would be meaningless.
 

@@ -66,11 +66,8 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specifying generated text.</b>  Our main operation here is a &quot;merge&quot;. This extracts the text from a production,
 substituting the ingredient text in place of any <code>...</code> it finds. (Other
 wildcards and nonterminals are ignored.) For example, merging the production</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">fried</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tomatoes</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">fried</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tomatoes</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>with &quot;orange&quot; results in &quot;fried orange tomatoes&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -188,17 +185,14 @@ single avinue.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5_1_1" class="paragraph-anchor"></a><b>&#167;5.1.1. </b>  Each production contains one or two tokens. There are four possibilities for
 the production:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (1)   ... </span><span class="function-syntax">&lt;some-nonterminal&gt;</span>
-<span class="plain-syntax">    (2)   </span><span class="function-syntax">&lt;some-nonterminal&gt;</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    (3)   </span><span class="function-syntax">&lt;some-nonterminal&gt;</span>
-<span class="plain-syntax">    (4)   </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-</span><span class="identifier-syntax">word</span><span class="plain-syntax"> </span><span class="identifier-syntax">instructions</span><span class="plain-syntax">-</span><span class="identifier-syntax">word</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(1)   ... &lt;some-nonterminal&gt;
+	(2)   &lt;some-nonterminal&gt; ...
+	(3)   &lt;some-nonterminal&gt;
+	(4)   pattern-word instructions-word
+</span></pre>
 <p>Cases (1), (2) and (3) are allowed only in list grammars; case (4) is allowed
 only in content grammars. The <code>...</code> indicates whether the trie in the named
-nonterminal will act on the start or end of a word -- this is needed only to
+nonterminal will act on the start or end of a word — this is needed only to
 override the normal convention.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consider the one- or two-token production in this nonterminal</span><span class="named-paragraph-number">5.1.1</span></span> =</p>
@@ -278,8 +272,8 @@ override the normal convention.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Errors.</b>  People are going to get their tries wrong; it's a very hard notation
-to learn. No end users of Inform will ever write them at all -- this is a
-low-level feature for translators only -- but translators need all the help
+to learn. No end users of Inform will ever write them at all — this is a
+low-level feature for translators only — but translators need all the help
 they can get, so we'll try to provide good problem messages.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

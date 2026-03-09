@@ -96,15 +96,14 @@ and then sees that they are carried out. The requests divide as follows:</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Each request produces an instance of:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">request</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">request</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">what_is_requested</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_REQ</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">details1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">details2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">details3</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">private</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this request private, i.e., not to contribute to a website? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome_data</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. number of bytes copied */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">request</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure request is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -183,7 +182,7 @@ further requests as consequences:</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Carrying out requests.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Requests::create_requested_material</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Requests::create_requested_material</span></span>:<br/>Main - <a href="1-mn.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Requests::create_requested_material</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Requests::create_requested_material</span></span>:<br/>Main - <a href="1-mn.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">release_folder</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"! Release folder: &lt;%p&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">release_folder</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">blorb_file_size</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="3-rls.html#SP11" class="function-link"><span class="function-syntax">Requests::declare_where_blorb_should_be_copied</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">release_folder</span><span class="plain-syntax">);</span>
@@ -366,18 +365,15 @@ because it allows each interpreter to provide some metadata about its own
 identity and exactly how it wants to be interfaced with the website which
 Inblorb will generate. This isn't the place to document what those metadata
 placeholders are and what they mean, since (except for a consistency check
-below) Inblorb doesn't know anything about them -- it's the Standard
+below) Inblorb doesn't know anything about them — it's the Standard
 website template which they need to match up to. Anyway, the best way
 to get an idea of this is to read the manifest file for the default,
 Parchment, interpreter.</p>
 <p>Placeholders are set thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [</span><span class="identifier-syntax">INTERPRETERVERSION</span><span class="plain-syntax">]</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Parchment</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
-<span class="plain-syntax">    []</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[INTERPRETERVERSION]
+	Parchment for Inform 7
+	[]
+</span></pre>
 <p>where the opening line names the placeholder, then one or more lines give
 the contents, and the box line ends the definition.</p>
 <p>We're in the mode if <code>current_placeholder</code> is a non-empty text, and
@@ -710,7 +706,7 @@ application, called <code>openUrl</code>.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-rls.html#SP12">&#167;12</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12_9" class="paragraph-anchor"></a><b>&#167;12.9. </b>  Since Inblorb has no knowledge of what the Inform source text producing
-this blorb was, it can't finish the status report from its own knowledge --
+this blorb was, it can't finish the status report from its own knowledge —
 it must rely on details supplied to it by Inform via blurb commands. First,
 Inform gives it source-text links for any &quot;Release along with...&quot; sentences,
 which have by now become <code>INSTRUCTION_REQ</code> requests:</p>
@@ -774,7 +770,7 @@ requests.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-bw.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">rls</li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-sd.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-bw.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">rls</li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-sd.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

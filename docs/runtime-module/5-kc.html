@@ -137,8 +137,8 @@ function togglePopup(material_id) {
 </pre>
 <ul class="endnotetexts"><li>The structure kind_constructor_compilation_data is accessed in 5/ins, 5/lp, 7/cg, 7/cgl and here.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The package.</b>  The Inter package for a kind constructor -- either a base kind, like &quot;door&quot;
-or &quot;number&quot;, or a derived kind like &quot;list of ...&quot; -- can appear more or less
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The package.</b>  The Inter package for a kind constructor — either a base kind, like &quot;door&quot;
+or &quot;number&quot;, or a derived kind like &quot;list of ...&quot; — can appear more or less
 anywhere in the Inter tree without making any real difference to the meaning
 of the program, but we try to be tidy about where to put it.</p>
 </div>
@@ -212,8 +212,8 @@ value is never used.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Iname for the weak ID.</b>  The &quot;weak ID&quot; for a kind is a runtime value identifying only its constructor.
-This distinguishes base kinds -- for example, &quot;number&quot; and &quot;text&quot; have different
-weak IDs -- but not derived kinds -- for example, &quot;list of numbers&quot; and
+This distinguishes base kinds — for example, &quot;number&quot; and &quot;text&quot; have different
+weak IDs — but not derived kinds — for example, &quot;list of numbers&quot; and
 &quot;list of texts&quot; have the same weak ID. (For that, the &quot;strong ID&quot; is needed.)</p>
 <p>An identifier like <code>NUMBER_TY</code>, then, begins life in a definition inside an
 Neptune file; becomes attached to a constructor here; and finally winds up
@@ -430,7 +430,7 @@ plausible.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Sometimes we want to cache the constant list produced by &quot;list of doors&quot;,
-say -- an Inform 7 list. This means that if there are multiple mentions of
+say — an Inform 7 list. This means that if there are multiple mentions of
 the &quot;list of doors&quot;, we will only compile the constant once. It goes here:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -697,8 +697,8 @@ enumeration&quot; if it has an out of order instance.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTKindConstructors::set_explicit_runtime_instance_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="5-ins.html#SP5" class="function-link"><span class="function-syntax">RTInstances::set_explicit_runtime_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-ins.html#SP5" class="function-link"><span class="function-syntax">RTInstances::out_of_place</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">    </span><a href="5-ins.html#SP4_1" class="function-link"><span class="function-syntax">RTInstances::set_explicit_runtime_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-ins.html#SP4_1" class="function-link"><span class="function-syntax">RTInstances::out_of_place</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">kc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">nonstandard_enumeration</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -733,7 +733,7 @@ overhead.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Assigning declaration sequence numbers.</b>  These provide a sequencing useful to code-generators, with superkinds earlier
-in the sequence than subkinds -- which may not be true of source code ordering.</p>
+in the sequence than subkinds — which may not be true of source code ordering.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_sequence_counter</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>

@@ -71,13 +71,12 @@ note that A is quite restricted in what it can be: it must be a simple-to-test
 description only, whereas B could be any subtree of an assertion.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">implication</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">implication</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_proposition</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which objects are affected */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">then_pn</span><span class="plain-syntax">; </span><span class="comment-syntax">/* what assertion is implied about them */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_declared</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">implied_likelihood</span><span class="plain-syntax">; </span><span class="comment-syntax">/* with what certainty level */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">implication</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure implication is accessed in 6/rlb and here.</li></ul>
 <div class="lsmarkdown">
@@ -193,7 +192,7 @@ already have definite knowledge that X is not wearable. We do this for each
 object X individually.</p>
 <p>We begin by checking implications associated with X and applying to X,
 but in fact because <code>Assertions::Implications::check_implications_of</code> recurses depth-first through
-the kinds, a typical object X -- a container, say -- will first have
+the kinds, a typical object X — a container, say — will first have
 implications associated with &quot;thing&quot; applied to it, then with
 those associated with &quot;container&quot;, and only then its own implications.</p>
 </div>

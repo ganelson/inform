@@ -20,7 +20,8 @@ and we need constants to identify these ways in the code we generate:
 
 @ Those seven ways correspond to seven Inter primitives, with the following
 signatures:
-= (text)
+
+``` None
 primitive !store         ref val -> val
 primitive !preincrement  ref -> val
 primitive !postincrement ref -> val
@@ -28,7 +29,8 @@ primitive !predecrement  ref -> val
 primitive !postdecrement ref -> val
 primitive !setbit        ref val -> void
 primitive !clearbit      ref val -> void
-=
+```
+
 Since C functions can have their return values freely ignored, we will in fact
 implement `!setbit` and `!clearbit` as if they too had the signature
 `ref val -> val`.

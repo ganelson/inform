@@ -20,14 +20,13 @@ Note that the following says nothing about the preposition's meaning, which
 will vary depending on the verb it's coupled with.
 
 =
-typedef struct preposition {
+classdef preposition {
 	struct word_assemblage prep_text;
 	struct verb_conjugation *prep_lex_entry; /* for use when indexing */
 	struct parse_node *where_prep_created; /* for use if problem messages needed */
 	int allow_unexpected_upper_case; /* for preps like "in Cahoots With" */
 	struct linguistic_stock_item *in_stock;
-	CLASS_DEFINITION
-} preposition;
+}
 
 @ Prepositions are a grammatical category:
 

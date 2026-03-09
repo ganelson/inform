@@ -349,9 +349,9 @@ name), with other actors oblivious.
 	if (found == FALSE) Produce::numeric_constant(I, iname, K_value, 0);
 
 @ The kind inheritance tree is represented by an array providing metadata on
-the kinds of object: there are just two words per kind -- the class, then
+the kinds of object: there are just two words per kind — the class, then
 the instance count for its own kind. For instance, "door" is usually
-kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
+kind number 4, so it occupies record 4 in this array — words 8 and 9. Word
 8 will be `K4_door`, and word 9 will be the number 2, meaning kind number 2,
 "thing". This tells us that a door is a kind of thing.
 

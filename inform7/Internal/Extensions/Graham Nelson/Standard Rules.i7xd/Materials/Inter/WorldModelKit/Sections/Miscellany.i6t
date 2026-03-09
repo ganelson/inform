@@ -10,7 +10,7 @@ Constant USE_SCORING = WorldModelKit`SCORING_CFGV;
 These are not the only global variables defined in the template layer:
 those needed locally only by single sections (and not used in definitions
 of phrases in the Standard Rules, or referred to by Inform directly) are defined
-within those sections -- they can be regarded as unimportant implementation
+within those sections — they can be regarded as unimportant implementation
 details, subject to change at whim. The variables here, on the other hand,
 are more important to understand.
 
@@ -30,7 +30,7 @@ differently on the two platforms according to whether they support multiple
 consecutive UNDOs. UNDO basically works by taking memory snapshots of the
 whole VM ("saving UNDO") to revert to at a later point ("performing UNDO"),
 so it is expensive on memory, and traditional VMs can only store a single
-memory snapshot -- making two UNDOs in a row, going back two steps,
+memory snapshot — making two UNDOs in a row, going back two steps,
 impossible. Given this, `undo_flag` has three possible states: 0 means
 UNDO is not available at all, 1 means it is not available now because
 there is no further saved state to go back to from here, and 2 means it

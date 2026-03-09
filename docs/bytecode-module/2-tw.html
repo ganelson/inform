@@ -75,7 +75,7 @@ data which falls into two categories:</p>
 contains a pointer to its warehouse.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* bytecode storage */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_room</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_room</span><span class="plain-syntax">;</span>
@@ -84,9 +84,7 @@ contains a pointer to its warehouse.</p>
 <span class="plain-syntax">    </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_free_resource_ID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_resource</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stored_resources</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">resources_capacity</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_warehouse is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -94,8 +92,8 @@ contains a pointer to its warehouse.</p>
 there is only one warehouse. If there are multiple trees, they all share the use
 of a single warehouse, though they don't know it. This would cause thread-safety
 issues if Inter had any aspiration to be threaded, but it does not have. And this
-single-warehouse design makes it much faster to carry out &quot;transmigration&quot; -- the
-movement of branches of Inter from one tree to another -- since the associated
+single-warehouse design makes it much faster to carry out &quot;transmigration&quot; — the
+movement of branches of Inter from one tree to another — since the associated
 bytecode and resources do not need to be copied from one warehouse to another.</p>
 <p>In this description we continue to talk about &quot;a&quot; warehouse, regardless of the
 secret fact that there is only one.</p>
@@ -169,7 +167,7 @@ about 10 times in a run of <a href="../inform7/index.html" class="internal">info
 <ul class="endnotetexts"><li>This code is used in <a href="2-tw.html#SP4">&#167;4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Every resource is tied to a package which owns it. This is only in fact used to
-determine the tree which owns it -- but we store the package, not the tree, because
+determine the tree which owns it — but we store the package, not the tree, because
 when material transmigrates from one tree to another, the owning package can then
 stay the same: it is just that <a href="2-pck.html#SP4" class="internal">InterPackage::tree</a> will return a different
 tree after the movement has taken place.</p>
@@ -263,12 +261,12 @@ been created, using <a href="2-tw.html#SP8" class="internal">InterWarehouse::set
 <span class="type-syntax">inter_symbols_table</span><span class="plain-syntax"> *</span><span class="function-syntax">InterWarehouse::get_symbols_table</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">InterWarehouse::get_symbols_table</span></span>:<br/>Inter Trees - <a href="2-it.html#SP2_1">&#167;2.1</a><br/>Inter Nodes - <a href="2-in.html#SP14">&#167;14</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_3_2_2">&#167;10.1.3.2.2</a>, <a href="3-iibf.html#SP10_2_3_2_2">&#167;10.2.3.2.2</a>, <a href="3-iibf.html#SP10_1_3_2_3">&#167;10.1.3.2.3</a>, <a href="3-iibf.html#SP10_1_4">&#167;10.1.4</a>, <a href="3-iibf.html#SP10_2_4">&#167;10.2.4</a><br/>The Package Construct - <a href="4-tpc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax"> = </span><a href="2-tw.html#SP11" class="function-link"><span class="function-syntax">InterWarehouse::get_ref</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="constant-syntax">inter_symbols_table_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="identifier-syntax">inter_symbols_table_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_inter_symbols_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">gp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Third, a resource can be a package -- or, really, a pointer to a package, a
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Third, a resource can be a package — or, really, a pointer to a package, a
 form of resource which allows bytecode to contain cross-references to packages.</p>
 <p>This may as well be its own owner, since it can be valid only if the package
 pointed to is in the same tree as the bytecode instruction using the resource.</p>
@@ -281,9 +279,9 @@ pointed to is in the same tree as the bytecode instruction using the resource.</
 <span class="plain-syntax">        </span><span class="identifier-syntax">new_pack</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="function-syntax">InterWarehouse::get_package</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">InterWarehouse::get_package</span></span>:<br/>Inter Trees - <a href="2-it.html#SP2_1">&#167;2.1</a><br/>Inter Nodes - <a href="2-in.html#SP14">&#167;14</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_3_2_3">&#167;10.1.3.2.3</a>, <a href="3-iibf.html#SP10_2_3_2_3">&#167;10.2.3.2.3</a>, <a href="3-iibf.html#SP10_1_5_1">&#167;10.1.5.1</a><br/>The Package Construct - <a href="4-tpc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="function-syntax">InterWarehouse::get_package</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">InterWarehouse::get_package</span></span>:<br/>Inter Trees - <a href="2-it.html#SP2_1">&#167;2.1</a><br/>Inter Nodes - <a href="2-in.html#SP14">&#167;14</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_3_2_3">&#167;10.1.3.2.3</a>, <a href="3-iibf.html#SP10_2_3_2_3">&#167;10.2.3.2.3</a>, <a href="3-iibf.html#SP10_1_5_2">&#167;10.1.5.2</a><br/>The Package Construct - <a href="4-tpc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax"> = </span><a href="2-tw.html#SP11" class="function-link"><span class="function-syntax">InterWarehouse::get_ref</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="constant-syntax">inter_package_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="identifier-syntax">inter_package_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_inter_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">gp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -298,7 +296,7 @@ pointed to is in the same tree as the bytecode instruction using the resource.</
 
 <span class="type-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="function-syntax">InterWarehouse::get_node_list</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">InterWarehouse::get_node_list</span></span>:<br/>Inter Nodes - <a href="2-in.html#SP14">&#167;14</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_3_2_4">&#167;10.1.3.2.4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax"> = </span><a href="2-tw.html#SP11" class="function-link"><span class="function-syntax">InterWarehouse::get_ref</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="constant-syntax">inter_node_list_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="identifier-syntax">run_time_type_code</span><span class="plain-syntax"> != </span><span class="identifier-syntax">inter_node_list_CLASS</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_inter_node_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">gp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -331,7 +329,7 @@ a typical machine-code arrangement, but:</p>
 <ul>
 <li>
 <p>the instructions themselves contain neither absolute addresses nor address
-offsets -- they are oblivious to where they are stored, and refer to code
+offsets — they are oblivious to where they are stored, and refer to code
 positions using labels instead;</p>
 </li>
 <li>
@@ -341,29 +339,25 @@ correspond to their order in the code.</p>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owning_warehouse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">room_usage</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">room_capacity</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bytecode</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_room</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inter_warehouse_room</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_warehouse_room is accessed in 2/in and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  The warehouse is divided into a series of rooms of steadily telescoping sizes.
 Unless an improbably large demand is made for a very long single instruction,
 they will typically look like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">      </span><span class="identifier-syntax">addresses</span><span class="plain-syntax"> </span><span class="constant-syntax">0x000000</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">0x000fff</span><span class="plain-syntax"> (4</span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">words</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">      </span><span class="identifier-syntax">addresses</span><span class="plain-syntax"> </span><span class="constant-syntax">0x001000</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">0x002fff</span><span class="plain-syntax"> (8</span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">words</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">      </span><span class="identifier-syntax">addresses</span><span class="plain-syntax"> </span><span class="constant-syntax">0x003000</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">0x006fff</span><span class="plain-syntax"> (16</span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">words</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">      </span><span class="identifier-syntax">addresses</span><span class="plain-syntax"> </span><span class="constant-syntax">0x007000</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00efff</span><span class="plain-syntax"> (32</span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">words</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	room 0      addresses 0x000000 to 0x000fff (4K words)
+	room 1      addresses 0x001000 to 0x002fff (8K words)
+	room 2		addresses 0x003000 to 0x006fff (16K words)
+	room 3      addresses 0x007000 to 0x00efff (32K words)
+	...
+</span></pre>
 <p>though probably not with boundaries as neat as that, since there will be a
 few words of unused space at the end of each room.</p>
 <p>In a typical <a href="../inform7/index.html" class="internal">inform7</a> run, we reach about the 9th room, so that the address
@@ -383,12 +377,9 @@ the frame, and the <code>extent</code> is the size of the frame, so the size of 
 instruction is <code>extent + PREFRAME_SIZE</code>.</p>
 <p>Note that <code>instruction</code> and <code>extent</code> are both in principle redundant in this
 structure. If you know <code>in_room</code> and <code>index</code> you know everything, because:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">instruction</span><span class="plain-syntax"> == </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">in_room</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bytecode</span><span class="plain-syntax"> + </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">index</span><span class="plain-syntax"> + </span><span class="constant-syntax">PREFRAME_SIZE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">extent</span><span class="plain-syntax"> == </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">in_room</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bytecode</span><span class="plain-syntax">[</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">index</span><span class="plain-syntax"> + </span><span class="constant-syntax">PREFRAME_SKIP_AMOUNT</span><span class="plain-syntax">] </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">PREFRAME_SIZE</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">instruction</span><span class="plain-syntax"> == </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">in_room</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">bytecode</span><span class="plain-syntax"> + </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">index</span><span class="plain-syntax"> + </span><span class="identifier-syntax">PREFRAME_SIZE</span><span class="plain-syntax">
+</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax"> == </span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">in_room</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">bytecode</span><span class="plain-syntax">[</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">index</span><span class="plain-syntax"> + </span><span class="identifier-syntax">PREFRAME_SKIP_AMOUNT</span><span class="plain-syntax">] </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREFRAME_SIZE</span><span class="plain-syntax">
+</span></pre>
 <p>But speed of access is so important that we store these two fields redundantly
 in order to cache the results of those two calculations.</p>
 </div>
@@ -457,7 +448,7 @@ if the system is out of memory.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tw.html#SP15">&#167;15</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Secondly, <a href="2-tw.html#SP16" class="internal">InterWarehouse::enlarge_floor_space</a> adds extra length to an
-existing instruction -- which may involve moving its bytecode to a bigger room,
+existing instruction — which may involve moving its bytecode to a bigger room,
 in the worst case, but is more typically very fast. Note that this function
 may only be called on the floor space for the most-recently creates instruction,
 so the floor space is guaranteed to be at the end of the space used in the

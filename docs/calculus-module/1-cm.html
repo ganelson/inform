@@ -67,43 +67,14 @@ which use this module:</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CALCULUS_MODULE</span> <span class="identifier-syntax">TRUE</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  This module defines the following classes:</p>
-</div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">i6_schema_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">binary_predicate_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">bp_family_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">up_family_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">pcalc_term_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">pcalc_func_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">pcalc_prop_CLASS</span> 
-</pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">unary_predicate_CLASS</span> 
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="type-syntax">binary_predicate</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="type-syntax">bp_family</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="type-syntax">up_family</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_func</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_term</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="type-syntax">unary_predicate</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Like all modules, this one must define a <code>start</code> and <code>end</code> function:</p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Like all modules, this one must define a <code>start</code> and <code>end</code> function:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PREDICATE_CALCULUS_DA</span> 
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PREDICATE_CALCULUS_WORKINGS_DA</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *, </span><a href="3-cs.html#SP9" class="function-link"><span class="function-syntax">Calculus::Schemas::log</span></a><span class="plain-syntax">)</span>
+<span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">i6_schema</span><span class="plain-syntax"> *, </span><a href="3-cs.html#SP7" class="function-link"><span class="function-syntax">Calculus::Schemas::log</span></a><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *, </span><a href="4-prp.html#SP7" class="function-link"><span class="function-syntax">Propositions::log</span></a><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *, </span><a href="4-ap.html#SP14" class="function-link"><span class="function-syntax">Atoms::log</span></a><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_term</span><span class="plain-syntax"> *, </span><a href="4-trm.html#SP11" class="function-link"><span class="function-syntax">Terms::log</span></a><span class="plain-syntax">)</span>
@@ -112,7 +83,7 @@ which use this module:</p>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::start</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'D'</span><span class="plain-syntax">, </span><a href="4-prp.html#SP7" class="function-link"><span class="function-syntax">Propositions::log</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'i'</span><span class="plain-syntax">, </span><a href="3-cs.html#SP9" class="function-link"><span class="function-syntax">Calculus::Schemas::log</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'i'</span><span class="plain-syntax">, </span><a href="3-cs.html#SP7" class="function-link"><span class="function-syntax">Calculus::Schemas::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'o'</span><span class="plain-syntax">, </span><a href="4-ap.html#SP14" class="function-link"><span class="function-syntax">Atoms::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'r'</span><span class="plain-syntax">, </span><a href="2-up.html#SP2" class="function-link"><span class="function-syntax">UnaryPredicates::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'0'</span><span class="plain-syntax">, </span><a href="4-trm.html#SP11" class="function-link"><span class="function-syntax">Terms::log</span></a><span class="plain-syntax">);</span>
@@ -120,7 +91,7 @@ which use this module:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"predicate calculus"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_WORKINGS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"predicate calculus workings"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::declare_type</span><span class="plain-syntax">(</span><span class="constant-syntax">subject_term_ANNOT</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><a href="1-cm.html#SP5" class="function-link"><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="1-cm.html#SP4" class="function-link"><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-kp.html#SP2" class="function-link"><span class="function-syntax">KindPredicates::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-ter.html#SP2" class="function-link"><span class="function-syntax">Calculus::Equality::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
@@ -128,17 +99,17 @@ which use this module:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  <a href="index.html" class="internal">calculus</a> provides one extra annotation for the syntax tree:</p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  <a href="index.html" class="internal">calculus</a> provides one extra annotation for the syntax tree:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">subject_term_ANNOT</span> <span class="comment-syntax">/* <code>pcalc_term</code>: what the subject of the subtree was */</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">subject_term</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_term</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">subject_term</span><span class="plain-syntax">, </span><span class="type-syntax">pcalc_term</span><span class="plain-syntax">)</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span></span>:<br/><a href="1-cm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span></span>:<br/><a href="1-cm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_subject_term</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" {term: "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="4-trm.html#SP11" class="function-link"><span class="function-syntax">Terms::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_subject_term</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
@@ -147,13 +118,13 @@ which use this module:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  We also have to make annotation functions for one special annotation needed
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  We also have to make annotation functions for one special annotation needed
 by <a href="../linguistics-module/index.html" class="internal">linguistics</a>:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relationship</span><span class="plain-syntax">, </span><span class="type-syntax">binary_predicate</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b> </p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relationship</span><span class="plain-syntax">, </span><span class="type-syntax">binary_predicate</span><span class="plain-syntax">)</span>

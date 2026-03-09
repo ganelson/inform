@@ -27,14 +27,18 @@ language. "To wear" is the reversal of "to be worn by". "Contains" is
 the reversal of being "inside".
 
 The following sentences express the same fact:
-= (text as Inform 7)
+
+``` Inform7
 The ball is inside the trophy case. The trophy case contains the ball.
-=
+```
+
 ...even though they involve different BPs:
-= (text)
+
+``` None
 	inside(ball, trophy case)
 	contains(trophy case, ball)
-=
+```
+
 So for every pair of BPs $X$ and $Y$ which are each other's reversal, Inform
 designates one as being "the right way round" and the other as being "the
 wrong way round".[2] Whenever a sentence's meaning involves a BP which is "the
@@ -57,7 +61,7 @@ by default this adopts the one given in the BP's `task_functions` field.
 @ Without further ado:
 
 =
-typedef struct binary_predicate {
+classdef binary_predicate {
 	struct bp_family *relation_family;
 	general_pointer family_specific; /* details for particular kinds of BP */
 
@@ -81,9 +85,7 @@ typedef struct binary_predicate {
 	#ifdef CORE_MODULE
 	struct bp_compilation_data compilation_data;
 	#endif
-
-	CLASS_DEFINITION
-} binary_predicate;
+}
 
 @ The //linguistics// module needs a data type for what verbs are supposed
 to mean: well, `binary_predicate` is perfect for that.

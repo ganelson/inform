@@ -95,12 +95,9 @@ of these to be non-<code>nothing</code>, so this is unambiguous.</p>
 placed into the model world, in cases where Inform is checking a past tense
 condition in the opening pre-turn. We don't want to return <code>nothing</code> then
 because that would make it true that</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">HolderOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">player</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ContainerOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">player</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<p>and similar conditions -- thus, it would appear that in the immediate past
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">HolderOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">player</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ContainerOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">player</span><span class="plain-syntax">)
+</span></pre>
+<p>and similar conditions — thus, it would appear that in the immediate past
 the player had been on the holder of the player, which is not in fact the
 case.</p>
 </div>
@@ -631,7 +628,7 @@ an assertion of the proposition &quot;is(<code>player</code>, \INWEBMATH(X\INWEB
 <code>ChangePlayer(X)</code> rather than a variable assignment <code>player = X</code>. So we
 cannot catch out the system by writing &quot;now the player is Mr Henderson&quot;.</p>
 <p>We must ensure that if <code>player</code> is initially X, is changed to Y, and is then
-changed back to X, that both X and Y end exactly as they began -- hence the
+changed back to X, that both X and Y end exactly as they began — hence the
 flummery below with using <code>remove_proper</code> to ensure that <code>proper</code> is left
 with the correct value. Note that:</p>
 <ul>
@@ -641,8 +638,8 @@ current player;</li>
 as its actual printed name &quot;yourself&quot;, we need to override this when
 something else takes over as player: we change to &quot;your former self&quot;, in
 fact. No such device is needed for other people being changed from because
-they are explicitly given printed names -- say &quot;Mr Darcy&quot;, &quot;the sous-chef&quot;,
-etc. -- in the source text.</li>
+they are explicitly given printed names — say &quot;Mr Darcy&quot;, &quot;the sous-chef&quot;,
+etc. — in the source text.</li>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -694,7 +691,7 @@ etc. -- in the source text.</li>
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Floating Objects.</b>  A single object can only be in one position in the object tree, yet backdrops
 and doors must be present in multiple rooms. This is accomplished by making
 them, in I6 jargon, &quot;floating objects&quot;: objects which move in the tree
-whenever the player does, so that -- from the player's perspective -- they
+whenever the player does, so that — from the player's perspective — they
 are always present when they should be. In I6, almost anything can be made
 a floating object, but in I7 this is strictly and only used for backdrops
 and two-sided doors.</p>
@@ -713,7 +710,7 @@ or absence of backdrops much affects what non-player characters do.</p>
 do not allow the user to create new categories of floating objects in I7.</p>
 <p>The I6 implementation of <code>MoveFloatingObjects</code> acted on the <code>location</code>
 rather than the <code>real_location</code>, which (a) meant that multiply-present objects
-could include <code>thedark</code> -- the generic Darkness place -- as one possible
+could include <code>thedark</code> — the generic Darkness place — as one possible
 location, but (b) assumed that the only sense by which the player could
 witness an object was sight. In I7, <code>thedark</code> is not a valid room, and we
 are a bit more careful about the senses.</p>

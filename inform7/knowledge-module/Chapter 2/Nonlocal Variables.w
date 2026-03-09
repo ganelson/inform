@@ -3,7 +3,7 @@
 To manage variables whose scope is wider than the current rule.
 
 @ The term "nonlocal variable" is less than elegant,[1] but it expresses a basic
-truth -- that Inform, in contrast to C-like languages, has two different sorts
+truth — that Inform, in contrast to C-like languages, has two different sorts
 of variables:
 
 - Local variables exist only in the current stack frame and therefore die
@@ -34,7 +34,7 @@ and was too vague.
 closer to global variables than to literals such as `true` or `false`?
 
 =
-typedef struct nonlocal_variable {
+classdef nonlocal_variable {
 	struct wording name; /* text of the name */
 	struct kind *nlv_kind; /* what kind of value it holds */
 
@@ -53,9 +53,7 @@ typedef struct nonlocal_variable {
 
 	struct parse_node *nlv_created_at; /* sentence creating the variable */
 	struct wording var_documentation_symbol; /* reference to manual, if any */
-
-	CLASS_DEFINITION
-} nonlocal_variable;
+}
 
 @ We can create a new variable provided we give its name, kind and scope.
 When the scope isn't global, the variable is said to be "stacked", which is a

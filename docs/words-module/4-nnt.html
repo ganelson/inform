@@ -76,16 +76,13 @@ a feature of <a href="../inweb/index.html" class="internal">inweb</a> available 
 <p>In particular, the tangler compiles the function <code>Inweb_InC_register_nonterminals</code>,
 called from below, with invocations of the <code>REGISTER_NONTERMINAL</code> and
 <code>INTERNAL_NONTERMINAL</code> macros. For example, the function includes the C line:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;any-integer&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">any_integer_NTM</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;any-integer&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">any_integer_NTM</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);
+</span></pre>
 <p>since this is an &quot;internal&quot; nonterminal; and the macro will then expand
-to code which sets up <code>any_integer_NTM</code> -- see below.</p>
+to code which sets up <code>any_integer_NTM</code> — see below.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nonterminals::register</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Nonterminals::register</span></span>:<br/>Words Module - <a href="1-wm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nonterminals::register</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Nonterminals::register</span></span>:<br/>Words Module - <a href="1-wm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* The following is not valid C, but causes Inweb to insert lines which are */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Inweb_InC_register_nonterminals</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* Back to regular C now */</span>
@@ -100,25 +97,19 @@ to code which sets up <code>any_integer_NTM</code> -- see below.</p>
 macro for any standard nonterminal, and also tangles a compositor function for
 it; the name of which is the nonterminal's name with a <code>C</code> suffix. For example,
 suppose <a href="../inweb/index.html" class="internal">inweb</a> sees the following in the web it is tangling:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pacemaker</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 1, - }</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pacemaker</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 1, - }
+		</span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }
+		</span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }
+</span></pre>
 <p>It then tangles this macro usage into <a href="4-nnt.html#SP1" class="internal">Nonterminals::register</a> above:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">REGISTER_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">);
+</span></pre>
 <p>And it also tangles matching declarations for:</p>
 <ul>
 <li>the global variable <code>competitor_NTM</code>, of type <code>nonterminal *</code>;</li>
 <li>the &quot;compositor function&quot; <code>competitor_NTMC</code>, which is a function to
-deal with what happens when a successful match is made against the grammar --
+deal with what happens when a successful match is made against the grammar —
 this incorporates the material which <a href="../inweb/index.html" class="internal">inweb</a> finds to the right of the <code>==&gt;</code>
 markers in the Preform definition.</li>
 </ul>
@@ -137,12 +128,9 @@ compositor function:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  For example, this might expand to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Nonterminals</span><span class="plain-syntax">::</span><span class="identifier-syntax">find</span><span class="plain-syntax">(</span><span class="identifier-syntax">Vocabulary</span><span class="plain-syntax">::</span><span class="identifier-syntax">entry_for_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compositor_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">competitor_NTMC</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Nonterminals</span><span class="plain-syntax">::</span><span class="identifier-syntax">find</span><span class="plain-syntax">(</span><span class="identifier-syntax">Vocabulary</span><span class="plain-syntax">::</span><span class="identifier-syntax">entry_for_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">));
+	</span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compositor_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">competitor_NTMC</span><span class="plain-syntax">;
+</span></pre>
 <p>Note that it is absolutely necessary that <code>Nonterminals::find</code> does
 return a nonterminal. But we can be sure that it does, since the function creates
 a nonterminal object of that name even if one does not already exist.</p>
@@ -175,7 +163,7 @@ names: there can be only one called, say, <any-integer>. This is why its
 textual name is referred to as an &quot;ID&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nonterminal_id</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g. <code>&quot;&lt;any-integer&gt;&quot;</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* For internal nonterminals */</span>
@@ -195,9 +183,7 @@ textual name is referred to as an &quot;ID&quot;.</p>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_optimisation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">opt</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-to.html" class="internal">The Optimiser</a> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">nonterminal_instrumentation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">ins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see <a href="4-ins.html" class="internal">Instrumentation</a> */</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">nonterminal</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure nonterminal is accessed in 4/lp, 4/to, 4/le, 4/ni, 4/prf, 4/ins, 4/pu and here.</li></ul>
 <div class="lsmarkdown">
@@ -233,7 +219,7 @@ For example, if the optimiser can determine that <competitor> only ever matches
 texts of between 3 and 7 words in length, it can quickly reject any run of
 words outside that range. (However: note that a maximum of 0 means that the
 maximum and minimum word counts are disregarded.) The other fields are harder
-to explain -- see <a href="4-to.html" class="internal">The Optimiser</a>.</p>
+to explain — see <a href="4-to.html" class="internal">The Optimiser</a>.</p>
 </li>
 </ul>
 </div>
@@ -313,7 +299,7 @@ by the nonterminal, though at present we don't need that.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Other results.</b>  The parser records the result of the most recently matched nonterminal in the
-following global variables -- which, unlike word ranges, are not attached to
+following global variables — which, unlike word ranges, are not attached to
 any single NT.</p>
 <p><a href="../inweb/index.html" class="internal">inweb</a> translates the notation <code>&lt;&lt;r&gt;&gt;</code> and <code>&lt;&lt;rp&gt;&gt;</code> to these variable names:</p>
 </div>
@@ -323,15 +309,12 @@ any single NT.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Flagging and numbering.</b>  The following mechanism arranges for words used in the grammar for a NT to
-be given properties just because of that -- either flags or numerical values.
+be given properties just because of that — either flags or numerical values.
 For example, if we wanted the numbers from Stoppard's play &quot;Dogg's Hamlet&quot;,
 we might have:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;dogg-numbers&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">sun</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dock</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">trog</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">slack</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pan</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-function-syntax">&lt;dogg-numbers&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span><span class="Preform-plain-syntax">
+		</span><span class="Preform-constant-syntax">sun</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dock</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">trog</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">slack</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">`</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pan</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>And if <dogg-numbers> were made a &quot;numbering&quot; NT, the effect would be that
 these five words would pick up the numerical values 1, 2, 3, 4, 5, because
 they occur in production number 1, 2, 3, 4, 5 for the NT.</p>

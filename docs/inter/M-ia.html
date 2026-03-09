@@ -67,43 +67,28 @@ figure is now below 10.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Translation.</b>  The final code we generate is itself (probably) the source code of a program
-in some other language -- C, for example. That means that most of the symbols
+in some other language — C, for example. That means that most of the symbols
 in our Inter program will be &quot;translated&quot; into identifiers in that final
 program. For example, the Inter declaration:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> BakersDozen = </span><span class="constant-syntax">13</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> BakersDozen = </span><span class="constant-syntax">13</span><span class="plain-syntax">
+</span></pre>
 <p>might ultimately be compiled to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">CON_019900_BKRSDZN</span><span class="plain-syntax"> </span><span class="constant-syntax">13</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">CON_019900_BKRSDZN</span><span class="plain-syntax"> </span><span class="constant-syntax">13</span><span class="plain-syntax">
+</span></pre>
 <p>An exaggerated example, perhaps, but the point is that it's normally none of
 our business what identifiers the final code-generator chooses to use.</p>
 <p>However, we can override its choice like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">constant</span><span class="plain-syntax"> BakersDozen = </span><span class="constant-syntax">13</span><span class="plain-syntax"> </span><span class="identifier-syntax">__translation</span><span class="plain-syntax">=</span><span class="string-syntax">"BAKERS_DOZEN"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">constant</span><span class="plain-syntax"> BakersDozen = </span><span class="constant-syntax">13</span><span class="plain-syntax"> </span><span class="identifier-syntax">__translation</span><span class="plain-syntax">=</span><span class="string-syntax">"BAKERS_DOZEN"</span><span class="plain-syntax">
+</span></pre>
 <p>And now it would come out as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">BAKERS_DOZEN</span><span class="plain-syntax"> </span><span class="constant-syntax">13</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">BAKERS_DOZEN</span><span class="plain-syntax"> </span><span class="constant-syntax">13</span><span class="plain-syntax">
+</span></pre>
 <p>The <code>__translation</code> annotation is sometimes added by the final code-generator
 itself, to keep track of its translation decisions, but can also be added by
 the Inform 7 front-end compiler. Ideally it wouldn't ever do so, but this is
 the only sensible way to implement the low-level language feature:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tally</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tally</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"SHAZAM"</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tally</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tally</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"SHAZAM"</span><span class="plain-syntax">.
+</span></pre>
 <p>And this is in turn is a feature we can't simply abolish, or not without
 inventing some similar bodge, because it's needed in order to reconcile the
 natural-language names for certain standard properties (e.g., &quot;lighted&quot;)
@@ -115,17 +100,11 @@ with their kit-source equivalents (e.g. <code>lit</code>).</p>
 syntax. This can be added to any definition of an instance of an object type,
 or to the type itself.</p>
 <p>For example, the I7 source text:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Include</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">, -) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Include</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">, -) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">.
+</span></pre>
 <p>leads to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">kind</span><span class="plain-syntax"> K4_door &lt;= K1_thing </span><span class="identifier-syntax">__append</span><span class="plain-syntax">=</span><span class="string-syntax">" has door, "</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">kind</span><span class="plain-syntax"> K4_door &lt;= K1_thing </span><span class="identifier-syntax">__append</span><span class="plain-syntax">=</span><span class="string-syntax">" has door, "</span><span class="plain-syntax">
+</span></pre>
 <p>Whereas to some extent <code>insert</code> can work even if the target is not I6, the
 <code>__append</code> annotation ties the program to I6 only. At some point we may
 simply abolish the &quot;Include... when defining...&quot; feature from I7, and then
@@ -137,24 +116,18 @@ Inform 6-syntax code in the source of a kit is given the boolean annotation
 <code>__assimilated</code>.</p>
 <p>In addition, if the definition is of a fake action or an object, the annotation
 <code>__fake_action</code> or <code>__object</code> will be applied. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Dozen</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">Fake_action</span><span class="plain-syntax"> </span><span class="identifier-syntax">PluralFound</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">thedark</span><span class="plain-syntax"> </span><span class="string-syntax">"(darkness object)"</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">Dozen</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">Fake_action</span><span class="plain-syntax"> </span><span class="identifier-syntax">PluralFound</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">thedark</span><span class="plain-syntax"> </span><span class="string-syntax">"(darkness object)"</span><span class="plain-syntax">;
+</span></pre>
 <p>assimilates to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> Dozen_con _plain</span>
-<span class="plain-syntax">        </span><span class="type-syntax">constant</span><span class="plain-syntax"> Dozen = </span><span class="constant-syntax">12</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span>
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> ##PluralFound_con _plain</span>
-<span class="plain-syntax">        </span><span class="type-syntax">constant</span><span class="plain-syntax"> ##PluralFound = </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span><span class="plain-syntax"> </span><span class="identifier-syntax">__fake_action</span>
-<span class="plain-syntax">    </span><span class="type-syntax">package</span><span class="plain-syntax"> thedark_con _plain</span>
-<span class="plain-syntax">        </span><span class="type-syntax">constant</span><span class="plain-syntax"> thedark = </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span><span class="plain-syntax"> </span><span class="identifier-syntax">__object</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="type-syntax">package</span><span class="plain-syntax"> Dozen_con _plain
+		</span><span class="type-syntax">constant</span><span class="plain-syntax"> Dozen = </span><span class="constant-syntax">12</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span><span class="plain-syntax">
+	</span><span class="type-syntax">package</span><span class="plain-syntax"> ##PluralFound_con _plain
+		</span><span class="type-syntax">constant</span><span class="plain-syntax"> ##PluralFound = </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span><span class="plain-syntax"> </span><span class="identifier-syntax">__fake_action</span><span class="plain-syntax">
+	</span><span class="type-syntax">package</span><span class="plain-syntax"> thedark_con _plain
+		</span><span class="type-syntax">constant</span><span class="plain-syntax"> thedark = </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">__assimilated</span><span class="plain-syntax"> </span><span class="identifier-syntax">__object</span><span class="plain-syntax">
+</span></pre>
 <p>See the Inter test case <code>Assim</code>.</p>
 <p>These three markers are applied only during assimilation, and thus only by Inter.
 The main Inform 7 compiler never applies them.</p>

@@ -70,7 +70,7 @@ int RTInstances::compile_all(inference_subject_family *family, int ignored) {
 }
 
 @ The code here assigns each instance `I` a sequence number in such a way that
-the object instances come out in a well-founded order spatially -- that is,
+the object instances come out in a well-founded order spatially — that is,
 so that each object X is followed immediately by its children (i.e., the
 objects inside or on top of it).
 

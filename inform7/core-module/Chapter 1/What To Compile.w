@@ -29,7 +29,7 @@ represent the program we have to compile; but we will need additional data
 about that compilation, and it's stored in the following.
 
 =
-typedef struct compile_task_data {
+classdef compile_task_data {
 	struct build_step *task;
 	struct inform_project *project;
 	
@@ -40,9 +40,7 @@ typedef struct compile_task_data {
 	
 	int stage_of_compilation;
 	int next_resource_number;
-
-	CLASS_DEFINITION
-} compile_task_data;
+}
 
 @ An early and perhaps arguable design decision for inform7 was that it would
 compile just one source text in its lifetime as a process: and because of that,

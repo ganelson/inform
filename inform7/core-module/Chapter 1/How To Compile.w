@@ -103,8 +103,8 @@ further steps; see //Task::advance_stage_to//.
 Before anything else can be done, we must create an empty Inter hierarchy
 into which we will "emit" an Inter program. No actual code will be emitted for
 some time yet, but identifier names and type declarations need somewhere to go.
-We then break the source into "compilation units" -- basically, one for the
-main source text and one for each extension -- because the Inter hierarchy
+We then break the source into "compilation units" — basically, one for the
+main source text and one for each extension — because the Inter hierarchy
 will divide according to these units.
 
 @<Divide into compilation units@> =
@@ -290,7 +290,8 @@ The issue here is that each time an imperative definition is compiled to a
 function, that can require other resources to be compiled in turn. The
 code compiled into the function body can involve calls to functions derived
 from other imperative definitions, or even the same one reinterpreted:
-= (text as Inform 7)
+
+``` Inform7
 To expose (X - a value):
 	say "You admire [X]."
 
@@ -301,7 +302,8 @@ To advertise (T - text):
 
 Every turn:
     advertise "a valuable antique silver coffee pot".
-=
+```
+
 Phrases are compiled on demand, but rules are always demanded, so the "every
 turn" rule here is compiled; that requires "advertise" to be compiled; which
 in turn requires a form of "expose X" to be compiled for X a text. But
@@ -313,19 +315,24 @@ function compilation in order to provide a context for execution of the phrase
 @ The only way to be sure of handling all needs here is to keep on compiling
 until the process exhausts itself, and this we do with a queue of tasks to
 perform.[1] Suppose we have this queue:
-= (text)
+
+``` None
 	T1 -> T2 -> T3 -> T4 -> ...
-=
+```
+
 and we are working on T2. That uncovers the need for three further tasks
-X1, X2, X3: those are added immediately after T2 --
-= (text)
+X1, X2, X3: those are added immediately after T2 —
+
+``` None
 	T1 -> T2 -> X1 -> X2 -> X3 -> T3 -> T4 -> ...
-=
+```
+
 Thus we never reach T3 until T2 has been completely exhausted, including its
 secondary tasks. To get a sense of how this works in practice, try:
-= (text)
+
+``` None
 Include task queue in the debugging log.
-=
+```
 
 [1] Until 2021 this process is structured as a set of coroutines rather than a
 queue. C does not strictly speaking support coroutines, though that hasn't stopped
@@ -338,15 +345,14 @@ quite came to that here, but it was sometimes difficult to reason about.
 a pointer to the relevant data.
 
 =
-typedef struct compilation_subtask {
+classdef compilation_subtask {
 	struct compilation_subtask *caused_by;
 	struct compilation_subtask *next_task;
 	void (*agent)(struct compilation_subtask *);
 	struct general_pointer data;
 	struct parse_node *current_sentence_when_queued;
 	struct text_stream *description;
-	CLASS_DEFINITION
-} compilation_subtask;
+}
 
 compilation_subtask *Sequence::new_subtask(void (*agent)(struct compilation_subtask *),
 	general_pointer gp, text_stream *desc) {

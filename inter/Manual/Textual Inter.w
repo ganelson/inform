@@ -12,14 +12,16 @@ debugging log to see if inform7 works.
 
 A textual inter file is a UTF-8 encoded text file which conventionally takes
 the file extension ".intert". Here is an example, the test case `Hello`:
-= (text as Inter)
+
+``` Inter
 package main _plain
 	package Main _code
 		code
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-=
+```
+
 Some basic characteristics of textual Inter can be seen at a glance. It's line-based:
 each line makes a single use of a "construct" like `package` or `code`. Lines
 can be of arbitrary length. A line beginning with a `#` (in column 1) is
@@ -78,9 +80,11 @@ is intended.
 At present Inform 7 uses this to pass on ICL (Inform Command Language)
 commands to Inform 6, such as memory settings or command-line switches.
 For example,
-= (text as Inter)
+
+``` Inter
 	pragma Inform6 "$MAX_LABELS=200000"
-=
+```
+
 When a program containing this instruction is generated to C, say, then this
 is ignored completely. And in fact, now that Inform has adopted Inform 6.36 as
 its preferred copy of I6, memory settings have become unnecessary and are
@@ -89,10 +93,12 @@ ignored by I6 anyway, so even this use of `pragma` may yet disappear.
 @ `packagetype _NAME` declares that `_NAME` can be used as a package type.
 It's actually unnecessary to write this explicitly, which is why the `Hello`
 example did not begin with:
-= (text as Inter)
+
+``` Inter
 	packagetype _plain
 	packagetype _code
-=
+```
+
 If the program creates, say, `package MOMA _museum`, then the necessary
 package type instruction `packagetype _museum` will be inferred automatically.
 Nevertheless, it's valid to spell this out.
@@ -110,27 +116,33 @@ this name and signature can be used in the program. Primitives occur only
 inside of functions, where they are "invoked", and they are operations
 sufficiently basic that they cannot themselves be written as other Inter
 functions. For example, in `Hello` we saw:
-= (text as Inter)
+
+``` Inter
 			inv !print
 				val "Hello, world.\n"
-=
+```
+
 This is an invocation of the primitive `!print`, which prints text. The
 "signature" of this is `val -> void`, meaning that it expects to have one
 argument, a value, and produces no result.
 
 The declarations for the two primitives in `Hello` would look like this:
-= (text as Inter)
+
+``` Inter
 	primitive !enableprinting void -> void
 	primitive !print val -> void
-=
+```
+
 But once again they do not need to be given, because they are part of the
 standard set of Inter primitives supported by //inter//. So these definitions
 are implicitly made as needed.
 
 In principle, though, the program could create entirely novel primitives:
-= (text as Inter)
+
+``` Inter
 	primitive !flytoarabia val val val -> void
-=
+```
+
 And this will work perfectly well... except that //inter// will not be able
 to code-generate from the result without modification, because it won't know
 how to fly to Arabia. So in practice, unless you are experimenting with
@@ -142,26 +154,30 @@ only package allowed to appear at the top level: all other packages should
 be inside `main` in some way.
 
 The contents of the package are then one tab stop in from the declaration. Thus:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 	    ...
 	    package m1_RBLK1 _code
 	        ...
 	    package m1_RBLK2 _code
 	        ...
-=
+```
+
 Here, `main` contains two sub-packages, `m1_RBLK1` and `m1_RBLK2`, and
 indentation is used to show which package a statement belongs to.
 
 Packages of any type can freely be created inside packages of any other type,
 except that `_code` packages cannot have subpackages. So this hypothetical bit of
 Inter is illegal:
-= (text as Inter)
+
+``` Inter
 	package my_function _code
 		package inner_part _code
 			...
 		...
-=
+```
+
 Here, `inner_part` cannot be made a subpackage of `my_function` because `_code`
 packages have no subpackages.
 

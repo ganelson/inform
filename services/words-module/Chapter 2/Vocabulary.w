@@ -34,7 +34,7 @@ The meaning codes alluded to below are also used for excerpts of text
 @d ORDINAL_MC				0x80000000 /* first, second, third, ..., twelfth */
 
 =
-typedef struct vocabulary_entry {
+classdef vocabulary_entry in 100s {
 	unsigned int flags; /* bitmap of "meaning codes" indicating possible usages */
 	int literal_number_value; /* evaluation as a literal number, if any */
 	inchar32_t *exemplar; /* text of one instance of this word */
@@ -47,7 +47,7 @@ typedef struct vocabulary_entry {
 	#ifdef VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK
 	struct vocabulary_lexicon_data means;
 	#endif
-} vocabulary_entry;
+}
 
 @ Some standard punctuation marks:
 
@@ -423,7 +423,7 @@ vocabulary_entry *Vocabulary::entry_for_text(inchar32_t *text) {
 @ Here the list for this word's hash code was empty, either meaning that this
 is a hash code never seen for any word before (in which case we start the
 list for that hash code with the new word), or that the word is a text
-literal -- because, for efficiency's sake, we deliberately keep the
+literal — because, for efficiency's sake, we deliberately keep the
 hash list for all text literals empty.
 
 @<Pi-ty? That word is not in my vocabulary banks@> =

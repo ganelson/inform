@@ -26,15 +26,15 @@ how units combine. When it reads, for example,
 
 > A mass times an acceleration specifies a force.
 
-Inform chooses one of the three units -- say, force -- and derives that from
+Inform chooses one of the three units — say, force — and derives that from
 the others.
 
 [1] Basically, any kind on which arithmetic can be done. To test this, call
 //Kinds::Behaviour::is_quasinumerical//.
 
 [2] Occasionally we have thought about allowing text to be duplicated by
-multiplication -- 2 times "zig" would be "zigzig", and maybe similarly for
-lists -- but it always seemed more likely to be used by mistake than intentionally.
+multiplication — 2 times "zig" would be "zigzig", and maybe similarly for
+lists — but it always seemed more likely to be used by mistake than intentionally.
 
 @ Multiplication rules are stored in a linked list associated with the left
 operand; so that the rule $A$ times $B$ specifies $C$ causes $(B, C)$ to be
@@ -45,12 +45,12 @@ typedef struct dimensional_rules {
 	struct dimensional_rule *multiplications;
 } dimensional_rules;
 
-typedef struct dimensional_rule {
+classdef dimensional_rule in 100s {
 	struct wording name;
 	struct kind *right;
 	struct kind *outcome;
 	struct dimensional_rule *next;
-} dimensional_rule;
+}
 
 @ The derivation process can be seen in action by feeding Inform
 definitions of the SI units (see the test case `SIUnits-G`) and looking at
@@ -58,9 +58,10 @@ the output of:
 
 > Test dimensions (internal) with --.
 
-(The dash is meaningless -- this is a test with no input.) In the output, we
+(The dash is meaningless — this is a test with no input.) In the output, we
 see that
-= (text)
+
+``` None
 	Base units: time, length, mass, elapsed time, electric current, temperature, luminosity
 	Derived units:
 	frequency = (elapsed time)-1
@@ -70,11 +71,12 @@ see that
 	power = (length)2.(mass).(elapsed time)-3
 	electric charge = (elapsed time).(electric current)
 	voltage = (length)2.(mass).(elapsed time)-3.(electric current)-1
-=
+```
+
 ...and so on. Those expressions on the right hand sides are "derived units",
 where the numbers are powers, so that negative numbers mean division.
 It's easy to see why we want to give names and notations for some of
-these derived units -- imagine going into a cycle shop and asking for a
+these derived units — imagine going into a cycle shop and asking for a
 $5 {\rm m}^2\cdot{\rm kg}\cdot{\rm s}^{-3}\cdot{\rm A}^{-1}$ battery.
 
 @ A "dimensionless" quantity is one which is just a number, and is not a
@@ -93,14 +95,14 @@ Inform deduces dimensionlessness from multiplication laws like so:
 Inform is not quite so careful about distinguishing dimensionless quantities
 as some physicists might be. The official SI units distinguish angle, measured
 in radians, and solid angle, in steradians, writing them as having units
-${\rm m}\cdot{\rm m}^{-1}$ and ${\rm m}^2\cdot{\rm m}^{-2}$ respectively --
+${\rm m}\cdot{\rm m}^{-1}$ and ${\rm m}^2\cdot{\rm m}^{-2}$ respectively —
 one is a ratio of lengths, the other of areas. Inform cancels the units
 and sees them as dimensionally equal. So if we write:
 
 > Solid angle is a kind of value. 1 srad specifies an solid angle. Area times solid angle specifies an area.
 
 then Inform treats angle and solid angle as having the same multiplicative
-properties -- but it still allows variables to have either one as a kind of
+properties — but it still allows variables to have either one as a kind of
 value, and prints them differently.
 
 @ In the process of calculations, we often need to create other and nameless
@@ -112,9 +114,11 @@ velocity again to get energy, then divides by a dimensionless constant. But
 another way would be to square the velocity first, then multiply by mass
 to get energy, then halve. If we do it that way, what units are the squared
 velocity in? The answer has to be
-= (text)
+
+``` None
 	(length)2.(elapsed time)-2
-=
+```
+
 but that's a unit which isn't useful for much, and doesn't have any everyday
 name. Inform creates what are called "intermediate kinds" like this in
 order to be able to represent the kinds of intermediate values which turn
@@ -163,11 +167,11 @@ if you're taking notes).
 @d MAX_BASE_UNITS_IN_SEQUENCE 16
 
 =
-typedef struct unit_sequence {
+classdef unit_sequence in 50s {
 	int no_unit_pairs; /* in range 0 to `MAX_BASE_UNITS_IN_SEQUENCE` */
 	struct unit_pair unit_pairs[MAX_BASE_UNITS_IN_SEQUENCE];
 	int scaling_factor; /* see discussion of scaling below */
-} unit_sequence;
+}
 
 @ Manipulating units like ${\rm m}^2\cdot{\rm kg}\cdot{\rm s}^{-2}$ looks
 a little like manipulating formal polynomials in several variables, and of
@@ -185,7 +189,7 @@ For instance, given seconds, Watts and Joules,
 $$ I = R[{\rm s}, {\rm s}^{-1}, {\rm W}, {\rm W}^{-1}, {\rm J}, {\rm J}^{-1}]/ ({\rm s}{\rm s}^{-1} = 1, {\rm W}{\rm W}^{-1}=1, {\rm J}{\rm J}^{-1} = 1, {\rm s}{\rm W} = {\rm J}) $$
 which by substituting all occurrences of J can be reduced to:
 $$ I = R[{\rm s}, {\rm s}^{-1}, {\rm W}, {\rm W}^{-1}]/ ({\rm s}{\rm s}^{-1} = 1, {\rm W}{\rm W}^{-1}=1). $$
-Of course there are other ways to calculate $I$ -- we could have
+Of course there are other ways to calculate $I$ — we could have
 eliminated any of the three units and kept the other two.
 
 If the derivations were ever more complex than $AB=C$, we might have to
@@ -516,7 +520,7 @@ accident, but we'll be careful:
 @ The second operation is taking roots.
 
 Surprisingly, perhaps, it's much easier to compute $\sqrt{X}$ or
-$^{3}\sqrt{X}$ for any unit $X$ -- it's just that it can't always be done.
+$^{3}\sqrt{X}$ for any unit $X$ — it's just that it can't always be done.
 Inform does not permit non-integer powers of units, so for instance
 $\sqrt{{\rm time}}$ does not exist, whereas $\sqrt{{\rm length}^2\cdot{\rm mass}^{-2}}$
 does. Square roots exist if each power in the sequence is even, cube roots
@@ -560,7 +564,7 @@ kind *Kinds::Dimensions::to_rational_power(kind *F, int n, int m) {
 
 @ The final operation on unit sequences is substitution. Given a fundamental type
 $B$, we substitute $B = K_D$ into an existing unit sequence $K_E$. (This is
-used when $B$ is becoming a derived type -- once we discover that $B=K_D$,
+used when $B$ is becoming a derived type — once we discover that $B=K_D$,
 we are no longer allowed to keep $B$ in any unit sequence.)
 
 We simply search for $B^p$, and if we find it, we remove it and then
@@ -719,8 +723,8 @@ and we do that by fixing the newest unit to make it so.
 	Kinds::Behaviour::now_derived(terms[newest_term]);
 
 @ Later in Inform's run, when we start compiling code, many more unit sequences
-will exist on a temporary basis -- as part of the kinds for intermediate results
-in calculations -- but early on, when we're here, the only unit sequences made
+will exist on a temporary basis — as part of the kinds for intermediate results
+in calculations — but early on, when we're here, the only unit sequences made
 are the derivations of the units. So it is easy to cover all of them.
 
 @<Substitute this new derivation to eliminate this fundamental unit from other sequences@> =
@@ -734,8 +738,8 @@ are the derivations of the units. So it is easy to cover all of them.
 @ If we have $AB = C$ but all three of $A$, $B$, $C$ are already derived,
 that puts us in a bind. Their definitions are fixed already, so we can't
 simply force the equation to come true by fixing one of them. That means
-either the derivation is redundant -- because it's already true that
-$AB = C$ -- or contradictory -- because we know $AB\neq C$. We silently
+either the derivation is redundant — because it's already true that
+$AB = C$ — or contradictory — because we know $AB\neq C$. We silently
 allow a redundancy, as it may have been put in for clarity, or so that
 the user can check the consistency of his own definitions, or to make
 the Kinds index page more helpful. But we must reject a contradiction.
@@ -825,7 +829,7 @@ kind *Kinds::Dimensions::arithmetic_on_kinds(kind *K1, kind *K2, int op) {
 	@<And otherwise create a kind as the intermediate result of a calculation@>;
 }
 
-@ Some operations -- like addition -- cannot be performed on mixed dimensions,
+@ Some operations — like addition — cannot be performed on mixed dimensions,
 and roots can only be taken where fractional powers are avoided, so we sometimes
 have to give up here and return `NULL`. Otherwise, though, the functions above
 make it possible to work out the correct unit sequence.
@@ -881,7 +885,7 @@ is a number, and not some more exotic dimensionless quantity like an angle.
 But it's not so good when the calculation is not really physical at all, but
 purely mathematical, and all we are doing is working on dimensionless units.
 For instance, if take an angle $\theta$ and double it to $2\theta$, we don't
-want Inform to say the result is number -- we want $2\theta$ to be
+want Inform to say the result is number — we want $2\theta$ to be
 another angle. So we make an exception.
 
 @<Handle calculations entirely between dimensionless units more delicately@> =

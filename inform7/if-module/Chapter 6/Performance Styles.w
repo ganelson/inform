@@ -83,11 +83,10 @@ void PerformanceStyles::write_constant_performance_style_ANNOT(text_stream *OUT,
 @ Internally, styles have the following additional data:
 
 =
-typedef struct performance_style {
+classdef performance_style {
 	struct instance *as_instance; /* the constant for the name of the style */
 	struct wording stem_of_name;
-	CLASS_DEFINITION
-} performance_style;
+}
 
 wording PerformanceStyles::get_name(performance_style *ps) {
 	return Instances::get_name(ps->as_instance, FALSE);

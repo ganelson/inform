@@ -67,7 +67,7 @@ storage would be a matter of either <code>S = W;</code> or some more exotic case
 along the lines of <code>StorageRoutineWrite(S, W);</code>.</p>
 <p>But once pointers to blocks are allowed, this becomes more interesting.
 Now the comparison needs to be a deep one, that is, we want to test whether
-two texts (say) have the same textual content -- not whether we are
+two texts (say) have the same textual content — not whether we are
 holding two pointers to the same blocks in memory, which is what a simple
 comparison would achieve. Such a test is called &quot;deep comparison&quot;, and
 similarly, we must assign by transferring the contents of the blocks of

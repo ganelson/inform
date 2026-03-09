@@ -10,13 +10,12 @@ existed only to serve the needs of an unusual single work of IF called
 "Trinity". But here we are.
 
 =
-typedef struct box_quotation {
+classdef box_quotation {
 	struct inter_name *function_iname;
 	struct inter_name *seen_flag_iname;
 	struct text_stream *content;
 	int function_compiled;
-	CLASS_DEFINITION
-} box_quotation;
+}
 
 void BoxQuotations::new(value_holster *VH, wording W) {
 	box_quotation *bq = CREATE(box_quotation);
@@ -42,12 +41,14 @@ is that a function was already being compiled at the time, and you can't
 compile two functions at the same time.
 
 The "box function", which displays the quotation, roughly translates to:
-= (text)
+
+``` None
 	if (flag == false) {
 		flag = true;
 		box "The quotation here.";
 	}
-=
+```
+
 and ensures that the quotation displays only once. The flag is stored as a
 tiny array inside the same enclosure as the box function.
 

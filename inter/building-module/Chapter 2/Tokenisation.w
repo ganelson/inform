@@ -6,14 +6,16 @@ Turning textual code written in Inform 6 syntax into a linked list of tokens.
 there is otherwise nothing exotic about it. In as simple a way as possible, we
 take a text `from` and break it into Inform 6 tokens. What we return is not
 literally a linked list, but it amounts to the same thing: a single node
-holding an unstructured run of tokens --
-= (text)
+holding an unstructured run of tokens —
+
+``` None
 	EXPRESSION_ISNT
 		T1
 		T2
 		T3
 		...
-=
+```
+
 We follow the syntax of Inform 6, except that we have to look for three extra
 syntaxes: `{-braced-commands}`, `(+ Inform 7 interpolation +)`, and, if the
 abbreviated syntax is allowed, also some cryptic notations such as `*1`.
@@ -341,7 +343,8 @@ a bracing.
 	preceding_token = t;
 
 @ A bracing can take any of the following forms:
-= (text)
+
+``` None
 	{-command}
 	{-command:operand}
 	{-command:operand:operand2}
@@ -349,7 +352,8 @@ a bracing.
 	{-command:operand>property name}
 	{some text}
 	{-annotation:some text}
-=
+```
+
 We parse this with the command or annotation in `command`, the "some text"
 or operand in `bracing`, the property name (if given) in `extremal_property`,
 the direction of the `<` or `>` in `extremal_property_sign`, and the second,
@@ -468,12 +472,15 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 @ That leaves us with just the main case to handle: raw I6 code which is
 outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,
-= (text as Inform 6)
+
+``` Inform6
 	Frog + 2*Toad(
-=
+```
+
 (there is no reason to suppose that this stretch of code is complete or
 matches parentheses); we must tokenise it into
-= (text)
+
+``` None
 	Frog
 	WHITE SPACE
 	+
@@ -482,7 +489,8 @@ matches parentheses); we must tokenise it into
 	*
 	Toad
 	(
-=
+```
+
 We scan through the text until we reach the start of a new token, and then break
 off what we scanned through since the last time.
 
@@ -511,11 +519,12 @@ off what we scanned through since the last time.
 
 @ Recall that in I6 notation, a dollar introduces a non-decimal number, and
 the character after the initial dollar determines which:
-= (text)
+
+``` None
 	$+3.14159E2
 	$$1001001
 	$1FE6
-=
+```
 
 @<Break off here for real, binary or hexadecimal notation@> =
 	int x = c_start, y = p-1;
@@ -554,16 +563,20 @@ the character after the initial dollar determines which:
 @ A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise `x-1` as
-= (text)
+
+``` None
 	x
 	-
 	1
-=
+```
+
 and not as
-= (text)
+
+``` None
 	x
 	-1
-=
+```
+
 This requires context, that is, remembering what the previous token was.
 
 @<Break off here for negative number@> =
@@ -866,8 +879,8 @@ mark. All other string escapes begin with `@`.
 	}
 
 @ This is not an I6 notation at all. If a character outside the range allowed
-by I6 in string literals is present in an I7 source text file -- for example,
-a capital Cyrillic ef -- then it is converted internally by the compiler to
+by I6 in string literals is present in an I7 source text file — for example,
+a capital Cyrillic ef — then it is converted internally by the compiler to
 something like `[unicode 1060]`, with 1060 here being the decimal code point
 for the character.
 

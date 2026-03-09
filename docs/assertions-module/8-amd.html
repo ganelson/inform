@@ -88,7 +88,7 @@ domain, whereas the sense here:</p>
 <blockquote>
 <p>Mrs Elspeth Spong can be odd, eccentric or mildly dotty.</p>
 </blockquote>
-<p>has only a single instance as domain -- Mrs Spong herself.</p>
+<p>has only a single instance as domain — Mrs Spong herself.</p>
 <p>We represent this as an inference subject, since that can represent either an
 instance or a base kind; but note also the <code>domain_kind</code> field. At first sight
 this is redundant, but in fact it isn't, since it enables us to define
@@ -137,7 +137,7 @@ and &quot;boojum&quot; is a kind yet to be created, we're stuck.</p>
 Determination on these domains then does nothing, because they are already
 pre-determined.</p>
 <p>Note that we round up the kind to &quot;object&quot; if it's more specialised than that
--- say, if it's &quot;door&quot; -- because run-time rather than compile-time disambiguation
+— say, if it's &quot;door&quot; — because run-time rather than compile-time disambiguation
 is used when applying adjectives to objects.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -358,7 +358,7 @@ given kind, or inference subject. It comes in two flavours: weak and strong.</p>
 <ul>
 <li>Weak checking only says that the kind is close enough for run-time
 checking to be able to do the rest. Any two base kinds are different even in
-weak checking -- &quot;scene&quot; and &quot;number&quot;, for instance. On the other hand,
+weak checking — &quot;scene&quot; and &quot;number&quot;, for instance. On the other hand,
 &quot;list of scenes&quot; weakly matches &quot;list of numbers&quot;, and because domain kinds
 inside &quot;object&quot; are treated as just &quot;object&quot;, &quot;container&quot; weakly matches &quot;animal&quot;.</li>
 <li>Strong checking imposes the further requirement that if the term is a
@@ -387,7 +387,7 @@ specific instance, then it must definitely lie within the domain.</li>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The following sorting function is used in the process of sorting the meanings
-of an adjective into precedence order -- see <a href="8-aa.html#SP7" class="internal">AdjectiveAmbiguity::sort</a>.
+of an adjective into precedence order — see <a href="8-aa.html#SP7" class="internal">AdjectiveAmbiguity::sort</a>.
 It takes two domains \INWEBMATH(D_1\INWEBMATH) and \INWEBMATH(D_2\INWEBMATH), and returns</p>
 <ul>
 <li>1 if \INWEBMATH(D_1\INWEBMATH) is inside \INWEBMATH(D_2\INWEBMATH),</li>

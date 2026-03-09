@@ -199,10 +199,10 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 }
 
 @h The opening sentence.
-The following is called in response to the bibliographic sentence -- the
+The following is called in response to the bibliographic sentence — the
 optional one at the start of a source text which gives its title and author.
 This isn't handled by the special meaning machinery above because it really
-isn't a conventional sentence at all -- there's no verb. Instead, //assertions//
+isn't a conventional sentence at all — there's no verb. Instead, //assertions//
 calls this function directly on pass 2.
 
 Should either title or author be unspecified, we use whatever the //supervisor//
@@ -488,9 +488,11 @@ converted to a single space. If this would result in an empty text or only
 a single space, we return the text "story" instead.
 
 Our example (if not truncated) then emerges as:
-= (text)
+
+``` None
 	St- Bartholemew's Fair- Etude for a Push-Me-Pull-You Machine
-=
+```
+
 Note that we do not write any filename extension (e.g., `.z5`) here.
 
 We change possible filename separators or extension indicators to hyphens,

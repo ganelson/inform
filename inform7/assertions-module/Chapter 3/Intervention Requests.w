@@ -166,7 +166,7 @@ code instructions; we remember what's needed ourselves:
 action: see //runtime: Interventions//.
 
 =
-typedef struct source_text_intervention {
+classdef source_text_intervention {
 	int stage; /* one of the `*_LINK_STAGE` enumerated constants */
 	struct text_stream *segment;
 	struct text_stream *part;
@@ -175,8 +175,7 @@ typedef struct source_text_intervention {
 	struct text_stream *matter;
 	struct parse_node *where_made;
 	struct text_stream *replacing;
-	CLASS_DEFINITION
-} source_text_intervention;
+}
 
 source_text_intervention *InterventionRequests::new_sti(parse_node *p) {
 	source_text_intervention *sti = CREATE(source_text_intervention);

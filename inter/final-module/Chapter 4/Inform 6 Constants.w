@@ -52,7 +52,7 @@ single values. These are, for some reason, called "inline arrays". The I6
 generator is going to take advantage of this feature: if it sees that a
 property is actually an address of a small array, it will compile that array
 directly into the body of the relevant object or class declaration. It therefore
-does not need to declare the name of this small array, and so --
+does not need to declare the name of this small array, and so —
 
 @<Leave undeclared any array used as a value of a property@> =
 	if (ConstantInstruction::is_inline(const_s))
@@ -181,13 +181,17 @@ they were any other arrays. Here goes:
 
 @ When an action is named in a `Verb` directive, it appears without its `##` prefix;
 so the following ensures that we write, say,
-= (text as Inform 6)
+
+``` Inform6
 	Verb 'help' * -> Help;
-=
+```
+
 rather than
-= (text as Inform 6)
+
+``` Inform6
 	Verb 'help' * -> ##Help;
-=
+```
+
 which would be a more consistent design, but is a syntax error in I6.
 
 @<Write without sharps@> =
@@ -197,22 +201,27 @@ which would be a more consistent design, but is a syntax error in I6.
 
 @ Enough of verbs. A general array is more straightforward, except for a quirk
 (read: blunder) in I6 syntax. In I6,
-= (text as Inform 6)
+
+``` Inform6
 	Array X table 10 20 30;
-=
+```
+
 makes a table array with three entries, so that `X` ends up as a pointer to a
 block of four words in memory: `3, 10, 20, 30`. However,
-= (text as Inform 6)
+
+``` Inform6
 	Array X table 10;
-=
+```
+
 makes a table with 10 entries, initially zeroes, so that `X` points to the
 block `10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0`. We do not want this: there are times
 when we genuinely need a 1-entry table array. So we use the alternate syntax,
 provided by Inform 6 since at least 2000 but for some reason not documented in
 the DM4:
-= (text as Inform 6)
+
+``` Inform6
 	Array X table [ 10 ];
-=
+```
 
 @<Begin an I6 Array directive@> =
 	if (saved) *saved = CodeGen::select(gen, arrays_I7CGS);
@@ -231,22 +240,26 @@ the DM4:
 	}
 
 @ A further quirk (again, blunder) is that I6 has no delimiter syntax to mark
-off one entry from the next -- in most languages, such as C, a comma would be
+off one entry from the next — in most languages, such as C, a comma would be
 used, but I6 uses only white space.
 
 That's fine until entries begin with operators which are ambiguously unary
-or binary -- in other words, with minus signs. In I6, this:
-= (text as Inform 6)
+or binary — in other words, with minus signs. In I6, this:
+
+``` Inform6
 	Array X --> [ 2 4 -5 ];
-=
+```
+
 makes a two-element array, with `X` pointing to `2, -1`, because `4 -5` is
 read as a binary operation (subtraction), not as 4 followed by a unary
 operation (negation) applied to 5.
 
 We avoid this by placing semicolons after every entry, just in case:
-= (text as Inform 6)
+
+``` Inform6
 	Array X --> [ 2; 4; -5; ];
-=
+```
+
 Again, though undocumented in the DM4, this is a long-established syntax in I6.
 
 =
@@ -306,7 +319,7 @@ void I6TargetConstants::compile_literal_real(code_generator *gtr,
 		WRITE("$%S", textual);
 }
 
-@ Dictionary words -- those used in the command parser grammar -- are written in
+@ Dictionary words — those used in the command parser grammar — are written in
 single quotation marks and have their own peculiar syntax: see the Inform
 Designer's Manual, 4th edition, for more. In particular note that we compile
 a one-character dword to, say, `'z//'` not `'z'`: the double-slash is meaningless

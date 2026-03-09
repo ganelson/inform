@@ -272,7 +272,7 @@ of the next two words are meaningful.</p>
 multiple object list here&quot;; or 1, meaning &quot;not an object but a
 value&quot;; or a valid I6 object. (We use the scoping rules to ensure
 that any I6 object visible to the parser is also a valid I7 object, so
--- unlike with actions -- we need not distinguish between the two.)</p>
+— unlike with actions — we need not distinguish between the two.)</p>
 </li>
 </ul>
 </li>
@@ -300,7 +300,7 @@ of the kind of these values: I6 is typeless.</li>
 object list. (And a multiple value list is forbidden.) If this happens, the
 list of objects is stored in an I6 table array (i.e., with the 0th word
 being the number of subsequent words) called <code>multiple_object</code>, and the
-parser will have set the <code>toomany_flag</code> if an overflow occurred -- that is,
+parser will have set the <code>toomany_flag</code> if an overflow occurred — that is,
 if the list was truncated because it originally called for more than 63
 objects.</li>
 </ul>
@@ -429,7 +429,7 @@ we finish this routine with the same action variable values that we set at
 the beginning.)</p>
 <p>Finally, note that an out of world action stops the turn sequence early, at
 the end of action generation: this is what prevents the time of day advancing,
-every turn rules from firing, and so forth -- see the Standard Rules.</p>
+every turn rules from firing, and so forth — see the Standard Rules.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">GENERATE_ACTION_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -516,7 +516,7 @@ zero entries in this table are ignored, and the sequence is significant
 only if more than one event goes off at the same moment, in which case
 earlier entries go off first. Each rule in the table has a corresponding
 timer value in <code>TimedEventTimesTable</code>. If this is negative, it represents
-a number of turns to go before the event happens -- or properly speaking, the
+a number of turns to go before the event happens — or properly speaking, the
 number of times the timed events rule is invoked. Otherwise the timer value
 must be a valid time of day at which the event happens (note that valid times
 are all non-negative integers). We allow a bracket of 30 minutes after the

@@ -70,17 +70,14 @@ full run of the compiler, in which case you may as well carry out an
 end-to-end test anyway.</p>
 <p>But Inform does have a mechanism for &quot;internal tests&quot;. These involve running
 the top half of the compiler more or less as normal, and then making a sharp
-turn to perform some test, printing the output to a file, and -- since there
-is no point continuing -- stopping the compiler there.</p>
+turn to perform some test, printing the output to a file, and — since there
+is no point continuing — stopping the compiler there.</p>
 <p>Such internal tests are performed only if the source text instructs it, which is
 done with a special, intentionally undocumented, and subject-to-change-without-notice,
 syntax like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Test</span><span class="plain-syntax"> </span><span class="identifier-syntax">pattern</span><span class="plain-syntax"> (</span><span class="identifier-syntax">internal</span><span class="plain-syntax">) </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">putting</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">counter</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">bench</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
-<p>Internal tests are identified by name -- here, &quot;pattern&quot; -- and are marked
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Test</span><span class="plain-syntax"> </span><span class="identifier-syntax">pattern</span><span class="plain-syntax"> (</span><span class="identifier-syntax">internal</span><span class="plain-syntax">) </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">putting</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">counter</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">bench</span><span class="plain-syntax">.
+</span></pre>
+<p>Internal tests are identified by name — here, &quot;pattern&quot; — and are marked
 <code>(internal)</code>. Optionally, they can supply some text to give them variation, as
 here: &quot;putting the counter on the bench&quot;.</p>
 <p>The Inform test group <code>:internal</code> runs a set of these.</p>
@@ -91,12 +88,11 @@ object. See <a href="../assertions-module/3-tr.html" class="internal">Test Reque
 parsed; that's the code which calls us here.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test</span><span class="plain-syntax"> *</span><span class="identifier-syntax">which_method</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_supplying_the_case</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">itc_defined_at</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">internal_test_case</span><span class="plain-syntax"> *</span><span class="function-syntax">InternalTests::new</span><span class="plain-syntax">(</span><span class="type-syntax">internal_test</span><span class="plain-syntax"> *</span><span class="identifier-syntax">it</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">itc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">internal_test_case</span><span class="plain-syntax">);</span>
@@ -111,13 +107,12 @@ parsed; that's the code which calls us here.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Each differently-named test, such as &quot;pattern&quot;, corresponds to one of these:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">perform</span><span class="plain-syntax">)(</span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax"> *);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">via_log</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at_stage</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">internal_test</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure internal_test is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -159,8 +154,8 @@ when they start up:</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The output from a test is written to a file, and this is its filename, which
 is set at the command like with <code>-test-output</code>. (The Intest script for testing
 <code>inform7</code> shows how this works in practice.)</p>
-<p>It's a deliberate policy choice to run internal texts this way -- i.e., with
-the correct textual output stored in the Inform repository, and open to view --
+<p>It's a deliberate policy choice to run internal texts this way — i.e., with
+the correct textual output stored in the Inform repository, and open to view —
 rather than just as code which is either silent (for a pass) or fails assertions
 (for a fail). It's much harder to check that such tests are themselves correctly
 written.</p>
@@ -172,13 +167,13 @@ written.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  And now we run the tests, returning the number actually run -- which for
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  And now we run the tests, returning the number actually run — which for
 end users of Inform, not concerned with compiler maintenance, will always be 0.
 Output from the tests is spooled together, and divided up with textual labels
 for convenience of reading.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InternalTests::run</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">InternalTests::run</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_8">&#167;2.8</a>, <a href="1-htc.html#SP2_14">&#167;2.14</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InternalTests::run</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">InternalTests::run</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_9">&#167;2.9</a>, <a href="1-htc.html#SP2_15">&#167;2.15</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="type-syntax">internal_test_case</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">itc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">itc</span><span class="plain-syntax">, </span><span class="type-syntax">internal_test_case</span><span class="plain-syntax">)</span>
@@ -455,7 +450,7 @@ and carry on regardless.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-itc.html#SP9">&#167;9</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="1-inaa.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresssection"><a href="1-cm.html">cm</a></li><li class="progresssection"><a href="1-cp.html">cp</a></li><li class="progresssection"><a href="1-wtc.html">wtc</a></li><li class="progresssection"><a href="1-htc.html">htc</a></li><li class="progresssection"><a href="1-cp2.html">cp2</a></li><li class="progresssection"><a href="1-pp.html">pp</a></li><li class="progresssection"><a href="1-cs.html">cs</a></li><li class="progresssection"><a href="1-inaa.html">inaa</a></li><li class="progresscurrent">itc</li><li class="progresssection"><a href="1-gtg.html">gtg</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-pc.html">3</a></li><li class="progressnext"><a href="1-gtg.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="1-inaa.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresssection"><a href="1-cm.html">cm</a></li><li class="progresssection"><a href="1-wtc.html">wtc</a></li><li class="progresssection"><a href="1-htc.html">htc</a></li><li class="progresssection"><a href="1-cp.html">cp</a></li><li class="progresssection"><a href="1-pp.html">pp</a></li><li class="progresssection"><a href="1-cs.html">cs</a></li><li class="progresssection"><a href="1-inaa.html">inaa</a></li><li class="progresscurrent">itc</li><li class="progresssection"><a href="1-gtg.html">gtg</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-pc.html">3</a></li><li class="progressnext"><a href="1-gtg.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

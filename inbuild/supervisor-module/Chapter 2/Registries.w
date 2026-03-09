@@ -9,12 +9,11 @@ example by making a directory: registries here are merely notes in memory of
 positions in the file system hierarchy which may or may not exist.
 
 =
-typedef struct inbuild_registry {
+classdef inbuild_registry {
 	struct pathname *location;
 	struct inbuild_nest *nest;
 	struct JSON_value *roster;
-	CLASS_DEFINITION
-} inbuild_registry;
+}
 
 @ =
 inbuild_registry *Registries::new(pathname *P) {

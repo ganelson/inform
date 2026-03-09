@@ -65,15 +65,12 @@ modules whenever an Inter function needs to be compiled. This will often not be
 a function corresponding to a definition in the source text; more often, it will
 be a support function needed to implement some feature at runtime.</p>
 <p>However it happens, every function is compiled using code like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="comment-syntax">/* work something out here */</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="function-syntax">Functions::begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/* declare some call parameters */</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/* now compile the code in the function */</span>
-<span class="plain-syntax">    </span><span class="function-syntax">Functions::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="comment-syntax">/* work something out here */</span><span class="plain-syntax">;
+</span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Functions::begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);
+</span><span class="comment-syntax">/* declare some call parameters */</span><span class="plain-syntax">
+</span><span class="comment-syntax">/* now compile the code in the function */</span><span class="plain-syntax">
+</span><span class="identifier-syntax">Functions::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);
+</span></pre>
 <p>This will create a new stack frame for the function, which is usually what is
 wanted. If we want to compile it using an existing frame <code>frame</code>, then instead
 call <code>Functions::begin_framed(iname, frame)</code>, not <code>Functions::begin(iname)</code>;
@@ -100,7 +97,7 @@ must be called before <a href="3-fnc.html#SP2" class="internal">Functions::begin
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">function_under_compilation</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_idb</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if any -- many functions do not arise this way */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_idb</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if any; many functions do not arise this way */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_stack_frame</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the stack frame for this function */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">currently_compiling_nnp</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this a nonphrasal stack frame we made ourselves? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into_package</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where Inter is being emitted to */</span>
@@ -119,7 +116,7 @@ must be called before <a href="3-fnc.html#SP2" class="internal">Functions::begin
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">function_compilation_is_happening_now</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="function-syntax">Functions::defn_being_compiled</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Functions::defn_being_compiled</span></span>:<br/>Compile Blocks and Lines - <a href="5-cbal.html#SP4_4_2">&#167;4.4.2</a><br/>Compile Invocations - <a href="5-ci.html#SP4_1">&#167;4.1</a>, <a href="5-ci.html#SP4_1_1">&#167;4.1.1</a><br/>Compile Invocations Inline - <a href="5-cii.html#SP6_1_1_4_8_1">&#167;6.1.1.4.8.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="function-syntax">Functions::defn_being_compiled</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Functions::defn_being_compiled</span></span>:<br/>Compile Blocks and Lines - <a href="5-cbal.html#SP4_4_2">&#167;4.4.2</a><br/>Compile Invocations - <a href="5-ci.html#SP2_1">&#167;2.1</a>, <a href="5-ci.html#SP2_1_1">&#167;2.1.1</a><br/>Compile Invocations Inline - <a href="5-cii.html#SP6_1_1_4_8_1">&#167;6.1.1.4.8.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">function_compilation_is_happening_now</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_function</span><span class="plain-syntax">.</span><span class="element-syntax">from_idb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -190,46 +187,37 @@ function, because it they were then we need to worry about memory allocation.
 The following pseudocode gives the general idea. Suppose we want to create
 a function called <code>public_name</code>. If no block values were needed, we do the
 obvious thing:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">public_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ... </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    public_name(t1, t2, ..., tn) {
+        ... package code here ...
+    }
+</span></pre>
 <p>But if block values are involved, we make two functions, a &quot;shell&quot; with the
 outward-facing name, and a &quot;kernel&quot; which does the actual work. If we suppose
 that the kernel returns an ordinary value, then this happens:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">public_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ...</span><span class="identifier-syntax">allocate</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax">...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RV</span><span class="plain-syntax"> = </span><span class="identifier-syntax">kernel_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        ...</span><span class="identifier-syntax">deallocate</span><span class="plain-syntax">...</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RV</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">kernel_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I7RBLK</span><span class="plain-syntax">, </span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ... </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    public_name(t1, t2, ..., tn) {
+        ...allocate memory...
+        RV = kernel_name(t1, t2, ..., tn)
+        ...deallocate...
+        return RV
+    }
+    kernel_name(I7RBLK, t1, t2, ..., tn) {
+        ... package code here ...
+    }
+</span></pre>
 <p>Since we do not support exceptions in the Inter VM, it follows that whatever
-<code>kernel_name</code> does -- even if it fails in some way at runtime -- all
+<code>kernel_name</code> does — even if it fails in some way at runtime — all
 allocated memory will safely be deallocated.</p>
 <p>A slight variation is needed if the kernel returns a block value, as follows:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">public_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ...</span><span class="identifier-syntax">allocate</span><span class="plain-syntax"> </span><span class="identifier-syntax">memory</span><span class="plain-syntax">...</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CopyPV</span><span class="plain-syntax">(</span><span class="identifier-syntax">BRV</span><span class="plain-syntax">, </span><span class="identifier-syntax">kernel_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        ...</span><span class="identifier-syntax">deallocate</span><span class="plain-syntax">...</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BRV</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">kernel_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">BRV</span><span class="plain-syntax">, </span><span class="identifier-syntax">t1</span><span class="plain-syntax">, </span><span class="identifier-syntax">t2</span><span class="plain-syntax">, ..., </span><span class="identifier-syntax">tn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ... </span><span class="identifier-syntax">package</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    public_name(t1, t2, ..., tn) {
+        ...allocate memory...
+        CopyPV(BRV, kernel_name(t1, t2, ..., tn))
+        ...deallocate...
+        return BRV
+    }
+    kernel_name(BRV, t1, t2, ..., tn) {
+        ... package code here ...
+    }
+</span></pre>
 <p>Here <code>BRV</code> is a pointer to memory in which to write the return value: note that
 we copy it before we deallocate any of the memory which was likely used to
 generate it.</p>

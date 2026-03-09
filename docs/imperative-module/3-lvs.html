@@ -102,13 +102,10 @@ these are of the type <code>INTERNAL_USE_LV</code>.</p>
 <p>During the time of its existence, each Inform 7 local is stored in a
 corresponding Inter local, but this is a little like register allocation in
 a conventional compiler. For example, consider this C code:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;10; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d... "</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"A moment of suspense. "</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">=9; </span><span class="identifier-syntax">j</span><span class="plain-syntax">&gt;=0; </span><span class="identifier-syntax">j</span><span class="plain-syntax">--) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d! "</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;10; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d... "</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);
+	</span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"A moment of suspense. "</span><span class="plain-syntax">);
+	</span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">=9; </span><span class="identifier-syntax">j</span><span class="plain-syntax">&gt;=0; </span><span class="identifier-syntax">j</span><span class="plain-syntax">--) </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d! "</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">);
+</span></pre>
 <p>A C compiler will allocate registers in the CPU to hold <code>i</code> and <code>j</code>, but it is
 also likely to notice that <code>i</code> ceases to exist before <code>j</code> comes into being: and
 therefore the same register can be used to hold both. It holds <code>i</code> for a while,
@@ -116,14 +113,11 @@ and then <code>j</code>; and there is a period in between when it is unused, and
 meaningful contents.</p>
 <p>Inside the Inter function we are compiling, Inter VM locals are like registers
 in this analogy. Inform 7 source text like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">things</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"The needle flickers over [the item]."</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">watcher</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">people</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Laboratory</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The watcher] looks on anxiously."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">things</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"The needle flickers over [the item]."</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">watcher</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">people</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Laboratory</span><span class="plain-syntax">:
+		</span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[The watcher] looks on anxiously."</span><span class="plain-syntax">
+</span></pre>
 <p>Here there are two <code>LET_VALUE_LV</code> variables, &quot;item&quot; and &quot;watcher&quot;, but &quot;watcher&quot;
 does not come into being until after &quot;item&quot; has ceased to exist, and Inform
 will compile both to use the same Inter local. Note that this causes it not
@@ -141,7 +135,7 @@ store an I7 local, or false if they are not (and are therefore free to be reused
 therefore be ignored if <code>allocated</code> is <code>FALSE</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">local_variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="identifier-syntax">s</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allocated</span><span class="plain-syntax">; </span><span class="comment-syntax">/* in existence at this point in the routine? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lv_purpose</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_LV</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index_with_this_purpose</span><span class="plain-syntax">; </span><span class="comment-syntax">/* counting up from 0 within locals of same purpose */</span>
@@ -149,8 +143,7 @@ therefore be ignored if <code>allocated</code> is <code>FALSE</code>.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">comment_on_use</span><span class="plain-syntax">; </span><span class="comment-syntax">/* purely to make the output more legible */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">I7_local_variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_usage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* meaningful only if <code>allocated</code> */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">local_variable</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">I7_local_variable</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">varname</span><span class="plain-syntax">; </span><span class="comment-syntax">/* name of local variable */</span>
@@ -184,11 +177,8 @@ therefore be ignored if <code>allocated</code> is <code>FALSE</code>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Default Inter identifier names are generated as follows. The result is that
 a typical Inter function will have locals looking something like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">t_0</span><span class="plain-syntax">  </span><span class="identifier-syntax">t_1</span><span class="plain-syntax">  </span><span class="identifier-syntax">phrase_options</span><span class="plain-syntax">  </span><span class="identifier-syntax">tmp_0</span><span class="plain-syntax">  </span><span class="identifier-syntax">tmp_1</span><span class="plain-syntax">  </span><span class="identifier-syntax">tmp_2</span><span class="plain-syntax">  </span><span class="identifier-syntax">ct_0</span><span class="plain-syntax">  </span><span class="identifier-syntax">ct_1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	t_0  t_1  phrase_options  tmp_0  tmp_1  tmp_2  ct_0  ct_1
+</span></pre>
 <p>where the defaults have been overridden for <code>phrase_options</code>, <code>ct_0</code> and <code>ct_1</code>,
 but allowed to stand for the rest.</p>
 </div>
@@ -297,7 +287,7 @@ names of existing frame variables and new ones.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Allocating.</b>  Adding a new I7 local variable to a slate may, or may not, result in the
-creation of a new <a href="3-lvs.html#SP3" class="internal">local_variable</a> object -- if we can reuse one that is no
+creation of a new <a href="3-lvs.html#SP3" class="internal">local_variable</a> object — if we can reuse one that is no
 longer needed, we will.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -479,8 +469,8 @@ and compile any necessary code to free their memory.</p>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><a href="3-lvs.html#SP13" class="function-link"><span class="function-syntax">LocalVariableSlates::deallocate_I7_local</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="comment-syntax">//	<pre><code>PreformCache::warn_of_changes();
-</code></pre>
+<span class="comment-syntax">//	<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">PreformCache::warn_of_changes</span><span class="plain-syntax">();
+</span></pre>
 </span>
 <span class="plain-syntax">}</span>
 </pre>

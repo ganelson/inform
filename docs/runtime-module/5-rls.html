@@ -167,15 +167,12 @@ a kit, like so:</p>
 <p>then how do we accommodate that? We cannot change the foreign function, so
 instead we route execution through a &quot;shell function&quot; to test those
 constraints. In pseudocode:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">SHELL</span><span class="plain-syntax">() {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">not</span><span class="plain-syntax"> (</span><span class="identifier-syntax">eating</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">lollipop</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RULE</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">SHELL() {
+	if (not (eating the lollipop)) {
+		RULE();
+	}
+}
+</span></pre>
 <p>The following provides an iname for that shell, constructed only if needed.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -191,17 +188,14 @@ constraints. In pseudocode:</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Note that the response handler function must be made available to the linker,
 because the idea is that the kit function will use it. For example, the code
 in the kit might read like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">MY_FOREIGN_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MY_FOREIGN_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MY_FOREIGN_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'B'</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[ </span><span class="identifier-syntax">MY_FOREIGN_R</span><span class="plain-syntax">;
+	...
+	</span><span class="identifier-syntax">MY_FOREIGN_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">);
+	...
+	</span><span class="identifier-syntax">MY_FOREIGN_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'B'</span><span class="plain-syntax">);
+	...
+];
+</span></pre>
 <p>This code is making calls to a function <code>MY_FOREIGN_RM</code> which does not exist
 in the kit; it's the handler function, which we will define here. But in order
 for the references in the kit to match up correctly, we must therefore make
@@ -265,7 +259,7 @@ want to run a rule, which of these inames should be used as its function?</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  This compiles (almost) everything needed for a single rule: the exception being
-response handlers for foreign rules -- see <a href="4-rsp.html#SP7" class="internal">Responses::via_Inter_compilation_agent</a>.</p>
+response handlers for foreign rules — see <a href="4-rsp.html#SP7" class="internal">Responses::via_Inter_compilation_agent</a>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTRules::compilation_agent</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">RTRules::compilation_agent</span></span>:<br/><a href="5-rls.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">compilation_subtask</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
@@ -484,20 +478,17 @@ failing; so it doesn't terminate the following of its rulebook.</p>
 opportunity might exist for the rule to fire: but it still sometimes won't
 fire, because the conditions might not be met. In pseudocode, the function
 looks like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">firing</span><span class="plain-syntax">-</span><span class="identifier-syntax">condition</span><span class="plain-syntax">-1) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">firing</span><span class="plain-syntax">-</span><span class="identifier-syntax">condition</span><span class="plain-syntax">-2) {</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">some</span><span class="plain-syntax">-</span><span class="reserved-syntax">default</span><span class="plain-syntax">-</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (firing-condition-1) {
+		if (firing-condition-2) {
+			...
+			return some-default-outcome;
+		} else {
+			fail 2
+		}
+	} else {
+		fail 1
+	}
+</span></pre>
 <p>Everything before the <code>...</code> is &quot;head&quot;, and everything after is the &quot;tail&quot;.
 The return statement isn't necessarily reached, because even if the firing
 condition holds, the <code>...</code> code may decide to return in some other way.

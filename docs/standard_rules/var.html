@@ -77,7 +77,7 @@ MathJax = {
 space and time.</p>
 <p>Although users often think of the protagonist object as a fixed object
 whose name is &quot;player&quot;, this is a variable, and it is possible to change
-perspective during play and become somebody else -- at which point the
+perspective during play and become somebody else — at which point the
 &quot;player&quot; variable will point to a different object.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -149,7 +149,7 @@ meanings from sentence to sentence.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  &quot;Person reaching&quot; turns out to have exactly the same meaning as &quot;person
-asked&quot; -- they are both the <code>actor</code>, in Inter terms, but are used in different
+asked&quot; — they are both the <code>actor</code>, in Inter terms, but are used in different
 situations.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -231,7 +231,7 @@ second, we don't want users to think of them as manipulable during play.</p>
 <p>Rather sneakily, we also define a Figure here. This is done in order to
 make it legal to declare variables and properties of the kind of value
 &quot;figure name&quot; (because it ensures that such variables can always be
-initialised -- there is always at least one Figure in the world). Of
+initialised — there is always at least one Figure in the world). Of
 course plenty of Inform projects have no artwork at all: so the cover art
 figure is unique in that it might refer to nothing. That sounds a little
 arbitrary but in fact follows a convention used by the Blorb format for
@@ -389,7 +389,7 @@ about quitting or restarting.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  The action machinery requires some 16 rulebooks to work, though that is
-the result of gradual simplification -- in 2006 it required 25, for instance.
+the result of gradual simplification — in 2006 it required 25, for instance.
 The &quot;action-processing&quot; rulebook, like the turn sequence rulebook, is a
 master of ceremonies: it belongs to the Standard Rules and is only rarely if
 at all referred to by users.</p>
@@ -400,7 +400,7 @@ global variables (and thus in scope everywhere).</p>
 <p>The main action-processing rulebook delegates most of its detailed work to
 a subsidiary, the &quot;specific action-processing&quot; rulebook, at the point where
 what rulebooks we consult next depends on what the action is (hence &quot;specific&quot;)
--- see below for more on how check/carry out/report rules are filed.</p>
+— see below for more on how check/carry out/report rules are filed.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Action-processing rules is a rulebook.</span>
@@ -460,7 +460,7 @@ this way:</p>
 <ul>
 <li>
 <p>the general implementation of an action, made with carry out, check
-and report rules -- say, a &quot;photographing&quot; action which could be used in
+and report rules — say, a &quot;photographing&quot; action which could be used in
 any situation and could be copied and pasted into another project; and</p>
 <ul>
 <li>the contingent rules applying in particular situations in play, made
@@ -487,7 +487,7 @@ wasn't altogether popular. Before then, Inform rather cleverly filed rules like
 &quot;Check doing something with the haddock&quot; in the generic &quot;check&quot;
 rulebook and ran this rulebook as part of the action processing sequence.
 But this clearly broke principle (i) above, and meant that the six-stage
-process -- already quite complicated enough -- was actually a nine-stage
+process — already quite complicated enough — was actually a nine-stage
 process only pretending, by deceitful syntax, to be a six-stage one. Check
 rules sometimes appeared to be filed in the wrong order, breaking the
 ordinary precedence conventions, and this was not due to a bug but because
@@ -553,9 +553,9 @@ something similar.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities
-and actions are created -- when we create the &quot;dropping&quot; action, for
+and actions are created — when we create the &quot;dropping&quot; action, for
 instance, we also create the &quot;check dropping&quot;, &quot;carry out dropping&quot; and
-&quot;report dropping&quot; rulebooks -- but there are no more stand-alone rulebooks.</p>
+&quot;report dropping&quot; rulebooks — but there are no more stand-alone rulebooks.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Rules.</b>  At run-time, the value of a rule is the (packed) address of an I6 routine.
@@ -692,7 +692,7 @@ just completed.</p>
 <li>
 <p>The &quot;every turn stage rule&quot; follows the every turn rulebook. This
 earns its place among the &quot;first&quot; rules in order for it to have priority
-over all the other book-keeping rules at the end of a turn -- including any
+over all the other book-keeping rules at the end of a turn — including any
 which the user, or an extension included by the user, chooses to add to the
 turn sequence rules.</p>
 </li>
@@ -704,8 +704,8 @@ that is). This prevents them from being used recursively, which would not
 work properly, and enables a popular trick from the time before the 2008
 reform to keep working: we can simulate six turns going by in which the
 player does nothing by running &quot;follow the turn sequence rules&quot; six
-times in a row. Everything happens exactly as it should -- the turn count,
-the time of day, timed events, and so on -- except that no commands are
+times in a row. Everything happens exactly as it should — the turn count,
+the time of day, timed events, and so on — except that no commands are
 read and no consequent actions generated.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -758,7 +758,7 @@ at the end of the turn.</p>
 <p>First, we check for scene changes again. We did this only a short while
 ago, but scene changes might well have arisen as a result of rules which
 fired during the every turn rulebook, or from timed events, or in some other
-way, and it's important to start the next turn in the correct scene -- so we
+way, and it's important to start the next turn in the correct scene — so we
 check again to make sure.</p>
 </li>
 <li>
@@ -922,7 +922,7 @@ a rulebook.</p>
 </li>
 </ul>
 <p>This does mean that an attempt by the user to move the before stage to just
-after the check stage (say) will fail -- the before and check stages happen
+after the check stage (say) will fail — the before and check stages happen
 in different rulebooks, so no amount of rearranging will do this.</p>
 </div>
 <div class="lsmarkdown">
@@ -1036,7 +1036,7 @@ specific action-processing rulebook, but it's implemented as a primitive in
 the template I6 layer because it must also find out which are the
 specific check, carry out and report rulebooks for the current action (for
 instance, &quot;check taking&quot; is the specific check rulebook for the
-&quot;taking&quot; action -- which seems obvious from the names: but at run-time,
+&quot;taking&quot; action — which seems obvious from the names: but at run-time,
 the names aren't so visible).</p>
 </li>
 </ul>
@@ -1236,7 +1236,7 @@ make only one rule as standard:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>  And that completes the creation and stocking of the 25 rulebooks. More than
-half of them are initially empty, including before, instead and after -- at the
+half of them are initially empty, including before, instead and after — at the
 end of the day, these rulebooks are hooks allowing the user to change the
 ordinary behaviour of things, but ordinariness is exactly what the Standard
 Rules is all about.</p>

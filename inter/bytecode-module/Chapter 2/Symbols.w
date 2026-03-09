@@ -33,7 +33,7 @@ be struck out with the //InterSymbolsTable::remove_symbol// function. If so,
 it cannot be reinserted into that or any other table: it is gone forever.
 
 =
-typedef struct inter_symbol {
+classdef inter_symbol in 1024s {
 	struct inter_symbols_table *owning_table;
 	inter_ti symbol_ID;
 	int symbol_status;
@@ -44,7 +44,7 @@ typedef struct inter_symbol {
 	struct wiring_data wiring;
 	struct transmigration_data transmigration;
 	struct general_pointer translation_data;
-} inter_symbol;
+}
 
 @ For the reasons given above, this function must only be called from
 //InterSymbolsTable::search_inner//. If what you want is just to create a
@@ -298,9 +298,10 @@ meaning is far away, in another package: see //The Wiring//.
 A definition in this sense is a pointer to an //inter_tree_node// holding an
 instruction which creates the symbol. For example, the definition of `magic_number`
 might be the node holding the instruction:
-= (text as Inter)
+
+``` Inter
 	constant magic_number K_int32 = 27
-=
+```
 
 =
 void InterSymbol::define(inter_symbol *S, inter_tree_node *P) {
@@ -358,8 +359,8 @@ void InterSymbol::set_int(inter_symbol *S, int N) {
 	internal_error("unable to set symbol");
 }
 
-@ A symbol wired to something in another package, or a plug -- which is not
-yet wired, but will be later on, when linking takes place -- has no definition
+@ A symbol wired to something in another package, or a plug — which is not
+yet wired, but will be later on, when linking takes place — has no definition
 in the current package. So:
 
 =
@@ -382,20 +383,25 @@ text_stream *InterSymbol::identifier(inter_symbol *S) {
 Any symbol can be marked with a "translation", which is the textual identifier
 to use when compiling final code which refers to it. For example, if our
 example constant is defined by:
-= (text as Inter)
+
+``` Inter
 	constant magic_number K_int32 = 27
-=
-then its translated form would normally just be `"magic_number"` -- the same
+```
+
+then its translated form would normally just be `"magic_number"` — the same
 as its identifier name in Inter. Any Inform 6 code generated to refer to this
 might then read:
-= (text as Inform 6)
+
+``` Inform6
 	print "The magic number is ", magic_number, ".";
-=
+```
+
 But if the `magic_number` had been given the translation text `"SHAZAM"`, that
 same Inter would compile instead to:
-= (text as Inform 6)
+
+``` Inform6
 	print "The magic number is ", SHAZAM, ".";
-=
+```
 
 There is something a little disorienting about storing this data as part of
 an //inter_symbol//. One might reasonably say: It's no business of the Inter
@@ -407,10 +413,12 @@ something equally annoying.
 However, we have to store translations within the Inter tree because the
 Inform 7 language includes low-level features which cannot be expressed any
 other way:
-= (text as Inform 7)
+
+``` Inform7
 The tally is a number that varies.
 The tally translates into Inter as "SHAZAM".
-=
+```
+
 In order for this instruction to reach the //final// code generators, this
 data clearly has to be expressed in the Inter tree. Well, this is where.
 

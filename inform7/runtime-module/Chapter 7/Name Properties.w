@@ -58,7 +58,7 @@ unlike customary practice when writing Inform 6 code, and is one of the few
 ways in which I7-generated code does not mimic I6 practice in command parsing.[1]
 
 We take special care to ensure that something called "your ..." in the source text
--- "your nose", say -- is altered to "my ..." for purposes of parsing during play.
+— "your nose", say — is altered to "my ..." for purposes of parsing during play.
 
 [1] This is because we do not want to imitate the unusual feature of I6 which
 makes `name` an "additive" property, i.e., in which arrays accumulate as objects

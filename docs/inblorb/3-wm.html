@@ -88,20 +88,18 @@ scanning the source text for typographically significant structures:</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ABBREVIATED_HEADING_LENGTH</span> <span class="constant-syntax">1000</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">table</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">table</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_line_start</span><span class="plain-syntax">; </span><span class="comment-syntax">/* line number in the source where the table heading appears */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_line_end</span><span class="plain-syntax">; </span><span class="comment-syntax">/* line number of the blank line which marks the end of the table body */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">table</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">heading</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* line number in the source at which the heading appears */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_level</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a low number makes this a more significant heading than a high number */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">heading_has_content</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is there anything other than white space before the next heading? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">segment</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading_to_segment</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which segment contains the heading */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading_text</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">heading</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure table is private to this section.</li><li>The structure heading is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -109,15 +107,15 @@ scanning the source text for typographically significant structures:</p>
 be a manageable size.</p>
 <p>It is not true that the source text is partitioned exactly by segments. The
 topmost segment begins at the first heading in the source text. So there
-will usually be at least a few prefatory lines before this point -- perhaps
-the title, some extension inclusions, and so on -- and it's even possible,
+will usually be at least a few prefatory lines before this point — perhaps
+the title, some extension inclusions, and so on — and it's even possible,
 if there are no headings at all, for there to be no segments so that the
 entire source text is &quot;prefatory&quot;. If we have three segments, then, we
 will split the source text into four HTML files:</p>
-<p><code>source0.html</code> -- &quot;Page 1 of 4&quot;, the preface and then contents</p>
-<p><code>source1.html</code> -- &quot;Page 2 of 4&quot;, first segment (with allocation ID 0)</p>
-<p><code>source2.html</code> -- &quot;Page 3 of 4&quot;, second segment (with allocation ID 1)</p>
-<p><code>source3.html</code> -- &quot;Page 4 of 4&quot;, third segment (with allocation ID 2)</p>
+<p><code>source0.html</code> — &quot;Page 1 of 4&quot;, the preface and then contents</p>
+<p><code>source1.html</code> — &quot;Page 2 of 4&quot;, first segment (with allocation ID 0)</p>
+<p><code>source2.html</code> — &quot;Page 3 of 4&quot;, second segment (with allocation ID 1)</p>
+<p><code>source3.html</code> — &quot;Page 4 of 4&quot;, third segment (with allocation ID 2)</p>
 <p>Note that the prefatory lines contain no headings, that every heading
 belongs to a unique segment (hence the <code>heading_to_segment</code> field above)
 and that the top line of every segment is always a heading. A single
@@ -133,7 +131,7 @@ segment just containing the &quot;Part I&quot; heading followed by a second segm
 opening with &quot;Section I.1&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">segment</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">segment</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* line number on which the segment begins */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ends_at</span><span class="plain-syntax">; </span><span class="comment-syntax">/* line number of the last line of the segment, or <code>MAX_SOURCE_TEXT_LINES</code> if it runs to the end */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">documentation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* is this in the documentation of an extension? */</span>
@@ -146,8 +144,7 @@ opening with &quot;Section I.1&quot;.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_previous</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">page_number</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">segment</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure segment is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -156,18 +153,56 @@ whatever CSS styles they need, but the template can't see inside the text of
 variables, so Inblorb itself has to choose CSS styles for anything interesting
 that is displayed there. We use the following style names, which a CSS file
 is required to define:</p>
-<ul>
-<li><code>columnhead</code> -- the heading of a column in a Table in I7 source text</li>
-<li><code>comment</code> -- comments in I7 source text</li>
-<li><code>filetype</code> -- the &quot;(pdf, 150KB)&quot; text annotating links</li>
-<li><code>heading</code> -- heading or top line of a Table in I7 source text</li>
-<li><code>i6code</code> -- verbatim I6 code in I7 source text</li>
-<li><code>notecue</code> -- footnote cues which annotate I7 source text</li>
-<li><code>notesheading</code> -- the little &quot;Notes&quot; subheading above the footnotes to source text</li>
-<li><code>notetext</code> -- texts of footnotes which annotate I7 source text</li>
-<li><code>quote</code> -- double-quoted text in I7 source text</li>
-<li><code>substitution</code> -- text substitution inside double-quoted text in I7 source text</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>style</th>
+<th>purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>columnhead</code></td>
+<td>the heading of a column in a Table in I7 source text</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>comments in I7 source text</td>
+</tr>
+<tr>
+<td><code>filetype</code></td>
+<td>the &quot;(pdf, 150KB)&quot; text annotating links</td>
+</tr>
+<tr>
+<td><code>heading</code></td>
+<td>heading or top line of a Table in I7 source text</td>
+</tr>
+<tr>
+<td><code>i6code</code></td>
+<td>verbatim I6 code in I7 source text</td>
+</tr>
+<tr>
+<td><code>notecue</code></td>
+<td>footnote cues which annotate I7 source text</td>
+</tr>
+<tr>
+<td><code>notesheading</code></td>
+<td>the little &quot;Notes&quot; subheading above the footnotes to source text</td>
+</tr>
+<tr>
+<td><code>notetext</code></td>
+<td>texts of footnotes which annotate I7 source text</td>
+</tr>
+<tr>
+<td><code>quote</code></td>
+<td>double-quoted text in I7 source text</td>
+</tr>
+<tr>
+<td><code>substitution</code></td>
+<td>text substitution inside double-quoted text in I7 source text</td>
+</tr>
+</tbody>
+</table>
 <p>In addition it must provide paragraph classes <code>indent0</code> to <code>indent9</code> for code
 which begins at tab positions 0 to 9 (see below). Although &quot;Standard.css&quot;
 contains other names of classes, these are only needed because &quot;Standard.html&quot;
@@ -394,7 +429,7 @@ HTML pages.</p>
 for each line in the source, and <code>Websites::scan_source_line</code> looks only at a single line
 and at the current table, heading and segment.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_SOURCE_TEXT_LINES</span> <span class="constant-syntax">2000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">/* enough for 300 copies of the Linux kernel source -- plenty! */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_SOURCE_TEXT_LINES</span> <span class="constant-syntax">2000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">/* enough for 300 copies of the Linux kernel source... */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Websites::scan_source_text</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Websites::scan_source_text</span></span>:<br/><a href="3-wm.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
@@ -414,7 +449,7 @@ and at the current table, heading and segment.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1. </b>  Suppose our source contains only headings at levels 3 and 4: we can reduce these
 to levels 0 and 1 without disturbing their relative importance, and that makes it
-easier for us to typeset them in a sensible way -- there's no point making any
+easier for us to typeset them in a sensible way — there's no point making any
 typographic allowance for three sizes of headings greater than are found anywhere
 in the source text.</p>
 </div>
@@ -844,11 +879,11 @@ won't be needed.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1. </b>  Recall that the source text is divided into an initial portion containing
-no headings -- the &quot;preface&quot; -- and then segments, each of which begins with
+no headings — the &quot;preface&quot; — and then segments, each of which begins with
 a heading.</p>
 <p>Here we are handling the case of typesetting the preface. We allow the line
 to appear as normal if it is before the first segment; once we reach the
-first segment -- if there's a first segment to reach -- we then typeset the
+first segment — if there's a first segment to reach — we then typeset the
 contents listing. (If there's no first segment, then there are no headings,
 and there's no need for a contents listing.) If we've output the contents
 listing then we are finished writing the preface and don't need to read the
@@ -989,11 +1024,11 @@ must be colour, since that may change in the course of the line.</p>
 line is underlined; and the material inside appears in an HTML table, with
 <code>tabulate</code> mode set.</p>
 <p>The <code>while</code> loop here needs a careful look, since on the face of it this
-could mean \INWEBMATH(O(N)\INWEBMATH) iterations -- since the number of tables is probably
-proportional to \INWEBMATH(N\INWEBMATH) -- made in the course of the current &quot;[SOURCE]&quot;
+could mean \INWEBMATH(O(N)\INWEBMATH) iterations — since the number of tables is probably
+proportional to \INWEBMATH(N\INWEBMATH) — made in the course of the current &quot;[SOURCE]&quot;
 expansion. Since the number of &quot;[SOURCE]&quot; expansions needed to make the
-website is also \INWEBMATH(O(N)\INWEBMATH) -- the number of HTML pages in the site is proportional
-to the number of headings, which is also proportional to \INWEBMATH(N\INWEBMATH) -- there's a
+website is also \INWEBMATH(O(N)\INWEBMATH) — the number of HTML pages in the site is proportional
+to the number of headings, which is also proportional to \INWEBMATH(N\INWEBMATH) — there's a
 risk that this <code>while</code> loop makes the whole website algorithm \INWEBMATH(O(N^2)\INWEBMATH).
 This is why, on each &quot;[SOURCE]&quot; expansion, <code>latest_table</code> is initialised
 not to the first table but to the most recent one at the start position of
@@ -1119,7 +1154,7 @@ space and we turn it into a single space.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP22_4_7_2" class="paragraph-anchor"></a><b>&#167;22.4.7.2. </b>  The following enters or exits quoted-matter mode, and is structured so that
-the quotation marks are not coloured -- only the material inside them.</p>
+the quotation marks are not coloured — only the material inside them.</p>
 <p>Our code in handling quoted and comment matter is greatly simplified by the
 fact that a valid Inform text cannot contain mismatched square brackets;
 however, as Dave Chapeskie points out, a valid comment can contain mismatched
@@ -1204,7 +1239,7 @@ span <code>notecue</code> if we have CSS, and otherwise render in grey superscri
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7_3">&#167;22.4.7.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  That just leaves the little contents listings -- one for the source, and
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  That just leaves the little contents listings — one for the source, and
 another for the documentation (if any).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1231,7 +1266,7 @@ another for the documentation (if any).</p>
 it never changes to a value lower than 0 except when returning to \INWEBMATH(b-1\INWEBMATH) at
 the end, we are always inside at least the outermost <code>&lt;ul&gt;</code>, and since the
 net change over the whole process is 0, there must be as many steps upward
-as downward -- so every <code>&lt;ul&gt;</code> is closed by a matching <code>&lt;/ul&gt;</code>.</p>
+as downward — so every <code>&lt;ul&gt;</code> is closed by a matching <code>&lt;/ul&gt;</code>.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Open or close UL tags to move to the new heading level</span><span class="named-paragraph-number">23.1</span></span> =</p>
 
@@ -1241,7 +1276,7 @@ as downward -- so every <code>&lt;ul&gt;</code> is closed by a matching <code>&l
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP23">&#167;23</a> (twice).</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-tmp.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-rls.html">rls</a></li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresscurrent">wm</li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-bs6.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-tmp.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-rls.html">rls</a></li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresscurrent">wm</li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-bs6.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

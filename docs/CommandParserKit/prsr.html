@@ -81,8 +81,8 @@ are stored in single bytes in a 16-bit world, but will occupy words in a
 <p>There are also minor differences in how the Z-machine stores the result of
 identifying dictionary words in typed commands.</p>
 <p>In general, though, <code>#Iftrue CHARSIZE == 1;</code> will be used to conditionally
-compile code for the 16-bit parser, and its alternative -- that <code>CHARSIZE</code>
-equals <code>WORDSIZE</code> -- will mean the 32-bit parser.</p>
+compile code for the 16-bit parser, and its alternative — that <code>CHARSIZE</code>
+equals <code>WORDSIZE</code> — will mean the 32-bit parser.</p>
 <p>Only when genuinely using some feature of the 16-bit architecture (i.e., of
 the Z-machine) will we write <code>#Ifdef TARGET_ZCODE;</code>. But this is only a
 convention: <code>TARGET_ZCODE</code> is defined here if and only if <code>CHARSIZE</code> is 1,
@@ -522,9 +522,9 @@ the main text window.</p>
 words in <code>a_buffer</code> and their dictionary addresses in <code>a_table</code>. It is
 assumed that the table is the same one on each (standard) call. Much
 of the code handles the OOPS and UNDO commands, which are not actions and
-do not pass through the rest of the parser. The undo state is saved --
+do not pass through the rest of the parser. The undo state is saved —
 it is essentially an internal saved game, in the VM interpreter's memory
-rather than in an external file -- and note that this is therefore also
+rather than in an external file — and note that this is therefore also
 where execution picks up if an UNDO has been typed. Since UNDO recreates
 the former machine state perfectly, it might seem impossible to tell that
 an UNDO had occurred, but in fact the VM passes information back in the
@@ -1128,8 +1128,8 @@ the result of parsing another token later, and these two cases (multiexcept
 and multiinside tokens) are helped by a quick look ahead, to work out the
 future token now. We can only carry this out in the simple (but by far the
 most common) case:</p>
-<pre><code>`multiexcept &lt;one or more prepositions&gt; noun`
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">`</span><span class="identifier-syntax">multiexcept</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">prepositions</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">noun</span><span class="plain-syntax">`
+</span></pre>
 <p>and similarly for <code>multiinside</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1849,14 +1849,14 @@ break down others into elementary tokens</li>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="comment-syntax">! There are now three possible ways we can be here:</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing an elementary token other than &quot;special&quot; or &quot;number&quot;;
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">parsing</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">elementary</span><span class="plain-syntax"> </span><span class="identifier-syntax">token</span><span class="plain-syntax"> </span><span class="identifier-syntax">other</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="string-syntax">"special"</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="string-syntax">"number"</span><span class="plain-syntax">;
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing a scope token;
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">parsing</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope</span><span class="plain-syntax"> </span><span class="identifier-syntax">token</span><span class="plain-syntax">;
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> parsing a noun-filter token (either by routine or attribute).
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">parsing</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax">-</span><span class="identifier-syntax">filter</span><span class="plain-syntax"> </span><span class="identifier-syntax">token</span><span class="plain-syntax"> (</span><span class="identifier-syntax">either</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">routine</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">attribute</span><span class="plain-syntax">).
+</span></pre>
 </span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! In each case, token holds the type of elementary parse to</span>
@@ -2043,14 +2043,14 @@ break down others into elementary tokens</li>
 <span class="plain-syntax">        </span><span class="comment-syntax">! it on the right word afterwards).</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! The point of this last rule is that a sequence like</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">!</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> &gt; read newspaper
-</code></pre>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> &gt; </span><span class="reserved-syntax">read</span><span class="plain-syntax"> </span><span class="identifier-syntax">newspaper</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> (taking the newspaper first)
-</code></pre>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> (</span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">newspaper</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax">)
+</span></pre>
 </span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre><code> The dwarf unexpectedly prevents you from taking the newspaper!
-</code></pre>
+<span class="plain-syntax">        </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">dwarf</span><span class="plain-syntax"> </span><span class="identifier-syntax">unexpectedly</span><span class="plain-syntax"> </span><span class="identifier-syntax">prevents</span><span class="plain-syntax"> </span><span class="identifier-syntax">you</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">newspaper</span><span class="comment-syntax">!</span><span class="plain-syntax">
+</span></pre>
 </span>
 <span class="plain-syntax">        </span><span class="comment-syntax">!</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">! should not be allowed to go into an infinite repeat - read becomes</span>
@@ -2068,12 +2068,12 @@ break down others into elementary tokens</li>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! The following moves the word marker to just past the named object...</span>
 
-<span class="comment-syntax">!	<pre><code>if (match_from ~= oops_from) print match_from, &quot; vs &quot;, oops_from, &quot;^&quot;;
-</code></pre>
+<span class="comment-syntax">!	<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">match_from</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_from</span><span class="plain-syntax">, </span><span class="string-syntax">" vs "</span><span class="plain-syntax">, </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax">, </span><span class="string-syntax">"^"</span><span class="plain-syntax">;
+</span></pre>
 </span>
 
-<span class="comment-syntax">!    <pre><code>wn = oops_from + match_length;
-</code></pre>
+<span class="comment-syntax">!    <pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">oops_from</span><span class="plain-syntax"> + </span><span class="identifier-syntax">match_length</span><span class="plain-syntax">;
+</span></pre>
 </span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">match_from</span><span class="plain-syntax"> + </span><span class="identifier-syntax">match_length</span><span class="plain-syntax">;</span>
 </pre>
@@ -2313,8 +2313,8 @@ the tokens &quot;[someone]&quot;, &quot;[somebody]&quot;, &quot;[anyone]&quot; a
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Noun Domain.</b>  <code>NounDomain</code> does the most substantial part of parsing an object name.
-It is given two &quot;domains&quot; -- usually a location and then the actor who is
-looking -- and a context (i.e. token type), and returns:</p>
+It is given two &quot;domains&quot; — usually a location and then the actor who is
+looking — and a context (i.e. token type), and returns:</p>
 <ul>
 <li>0 if no match at all could be made,</li>
 <li>1 if a multiple object was made,</li>
@@ -2430,12 +2430,12 @@ because we want to allow duplicates).</p>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! If i is non-zero here, one of two things is happening: either</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (a) an inference has been successfully made that object i is</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> the intended one from the user's specification, or
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">intended</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">user</span><span class="character-syntax">'s specification, or</span><span class="plain-syntax">
+</span></pre>
 </span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (b) the user finished typing some time ago, but we've decided</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> on i because it's the only possible choice.
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">because</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="character-syntax">'s the only possible choice.</span><span class="plain-syntax">
+</span></pre>
 </span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! In either case we have to keep the pattern up to date,</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! note that an inference has been made and return.</span>
@@ -2546,11 +2546,11 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">! Now we insert the answer into the original typed command, as</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! words additionally describing the same object</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! (eg, &gt; take red button</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre><code>  Which one, ...
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  </span><span class="identifier-syntax">Which</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax">, ...
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre><code>  &gt; music
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!      <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  &gt; </span><span class="identifier-syntax">music</span><span class="plain-syntax">
+</span></pre>
 </span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! becomes &quot;take music red button&quot;.  The parser will thus have three</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">! words to work from next time, not two.)</span>
@@ -2720,8 +2720,8 @@ because we want to allow duplicates).</p>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! CHARSIZE</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">! (3) we fill up the buffer with spaces, which is unnecessary, but may</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> help incorrectly-written interpreters to cope.
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">help</span><span class="plain-syntax"> </span><span class="identifier-syntax">incorrectly</span><span class="plain-syntax">-</span><span class="identifier-syntax">written</span><span class="plain-syntax"> </span><span class="identifier-syntax">interpreters</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">cope</span><span class="plain-syntax">.
+</span></pre>
 </span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -2739,9 +2739,9 @@ because we want to allow duplicates).</p>
 faced with a list of objects (the <code>match_list</code>) each of which matches the
 player's specification equally well. To do this it makes use of the <code>context</code>
 (the token type being worked on).</p>
-<p>It counts up the number of obvious choices for the given context -- all to
+<p>It counts up the number of obvious choices for the given context — all to
 do with where a candidate is, except for 6 (<code>animate</code>) which is to
-do with whether it is animate or not -- and then:</p>
+do with whether it is animate or not — and then:</p>
 <ul>
 <li>if only one obvious choice is found, that is returned;</li>
 <li>if we are in indefinite mode (don't care which) one of the obvious choices
@@ -3119,11 +3119,11 @@ evaluate the possibilities is discussed in detail in the DM4.)</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">number_matched</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">match_list</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> = </span><span class="reserved-syntax">parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">); </span><span class="identifier-syntax">its_score</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">met</span><span class="plain-syntax">=0;</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax">!      <pre><code>  if (indef_type &amp; OTHER_BIT ~= 0
-</code></pre>
+<span class="plain-syntax">        </span><span class="comment-syntax">!      <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">OTHER_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="plain-syntax">        </span><span class="comment-syntax">!          <pre><code>      &amp;&amp;  obj ~= itobj or himobj or herobj) met++;
-</code></pre>
+<span class="plain-syntax">        </span><span class="comment-syntax">!          <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">      &amp;&amp;  </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">itobj</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">himobj</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">herobj</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;
+</span></pre>
 </span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">MY_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> == </span><span class="identifier-syntax">actor</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_type</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">THAT_BIT</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">its_owner</span><span class="plain-syntax"> == </span><span class="identifier-syntax">actors_location</span><span class="plain-syntax">) </span><span class="identifier-syntax">met</span><span class="plain-syntax">++;</span>
@@ -3240,20 +3240,20 @@ for some function \INWEBMATH(f\INWEBMATH).)</p>
 <span class="plain-syntax">    </span><span class="comment-syntax">!  different.  If they have the same routine (which they probably got from</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!  a class definition) then the decision process is as follows:</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">!</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre><code> the routine is called (with self being o1, not that it matters)
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!     <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">routine</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> (</span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">self</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">o1</span><span class="plain-syntax">, </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">matters</span><span class="plain-syntax">)
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   with noun and second being set to o1 and o2, and action being set
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">   </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">set</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">o2</span><span class="plain-syntax">, </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">set</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   to the fake action TheSame.  If it returns -1, they are found
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">   </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">fake</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheSame</span><span class="plain-syntax">.  </span><span class="identifier-syntax">If</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">returns</span><span class="plain-syntax"> </span><span class="constant-syntax">-1</span><span class="plain-syntax">, </span><span class="identifier-syntax">they</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">found</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   identical; if -2, different; and if &gt;=0, then the usual method
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">   </span><span class="identifier-syntax">identical</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> </span><span class="constant-syntax">-2</span><span class="plain-syntax">, </span><span class="identifier-syntax">different</span><span class="plain-syntax">; </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> &gt;=0, </span><span class="identifier-syntax">then</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">usual</span><span class="plain-syntax"> </span><span class="identifier-syntax">method</span><span class="plain-syntax">
+</span></pre>
 </span>
-<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre><code>   is used instead.
-</code></pre>
+<span class="plain-syntax">    </span><span class="comment-syntax">!       <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">   </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">used</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax">.
+</span></pre>
 </span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">parse_name</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -3296,7 +3296,7 @@ for some function \INWEBMATH(f\INWEBMATH).)</p>
 <p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Print Command.</b>  <code>PrintCommand</code> reconstructs the command as it presently reads, from the
 pattern which has been built up.</p>
 <p>If <code>from</code> is 0, it starts with the verb: then it goes through the pattern.</p>
-<p>The other parameter is <code>emptyf</code> -- a flag: if 0, it goes up to <code>pcount</code>:
+<p>The other parameter is <code>emptyf</code> — a flag: if 0, it goes up to <code>pcount</code>:
 if 1, it goes up to <code>pcount</code>-1.</p>
 <p>Note that verbs and prepositions are printed out of the dictionary:
 and that since the dictionary may only preserve the first six characters
@@ -3465,12 +3465,12 @@ activity via the I7 &quot;place the contents of X in scope&quot; phrase. It call
 contents and component parts of the object. The I7 phrase &quot;place X in
 scope&quot; uses this routine.</p>
 <p>(4) <code>DoScopeAction</code> simply visits a single object, taking whatever action
-is needed there -- which will depend on the <code>scope_reason</code>. The only use
+is needed there — which will depend on the <code>scope_reason</code>. The only use
 made by the parser of <code>TryGivenObject</code>, which tries to match command text
 against the name of a given object, is from here. The I7 phrase &quot;place X
 in scope, but not its contents&quot; uses this routine.</p>
 <p>Two routines are provided for code external to the parser to modify the
-scope. They should be called only during scope deliberations -- i.e.,
+scope. They should be called only during scope deliberations — i.e.,
 in <code>scope=...</code> tokens or in rules for the &quot;deciding the scope of&quot;
 activity. (At present, <code>AddToScope</code> is not used in I7 at all.) Note
 that this I7 form of <code>PlaceInScope</code> has a slightly different specification
@@ -3980,7 +3980,7 @@ are parsed.)</p>
 <p class="commentary firstcommentary"><a id="SP59" class="paragraph-anchor"></a><b>&#167;59. Gender.</b>  <code>GetGender</code> returns 0 if the given animate object is female, and 1 if male,
 and is abstracted as a routine in case something more elaborate is ever
 needed.</p>
-<p>For GNAs -- gender/noun/animation combinations -- see the <em>Inform Designer's
+<p>For GNAs — gender/noun/animation combinations — see the <em>Inform Designer's
 Manual</em>, 4th edition.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -4197,7 +4197,7 @@ The I6 parser leaves it to the user to provide a <code>ChooseObjects</code> rout
 to decide between possibilities when the situation is ambiguous. For I7
 use, we provide a <code>ChooseObjects</code> which essentially runs the &quot;does the
 player mean&quot; rulebook to decide, though this is not obvious from the
-code below because it is hidden in the <code>CheckDPMR</code> routine -- which
+code below because it is hidden in the <code>CheckDPMR</code> routine — which
 is defined in the Standard Rules, not here.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -4361,7 +4361,7 @@ question is a text: &quot;A flowerpot is a kind of thing. A flowerpot
 has a text called pattern. Understand the pattern property as
 describing a flowerpot.&quot; When the player types EXAMINE STRIPED FLOWERPOT,
 and there is a flowerpot in scope, the following routine is called to
-test whether its pattern property -- a text -- matches any words
+test whether its pattern property — a text — matches any words
 at the position STRIPED FLOWERPOT. Assuming a pot does indeed have the
 pattern &quot;striped&quot;, the routine advances <code>wn</code> by 1 and returns
 <code>GPR_PREPOSITION</code> to indicate a match.</p>

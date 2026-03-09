@@ -6,7 +6,7 @@ objects or values.
 @h Relationship nodes.
 Here we have a relationship between subtrees $T_X$ and $T_Y$, where $T_X$
 must be a list of values or objects (joined into an `AND_NT` tree), and
-$T_Y$ must be a `RELATIONSHIP_NT` subtree -- which is usually a node
+$T_Y$ must be a `RELATIONSHIP_NT` subtree — which is usually a node
 annotated with the predicate meant, and beneath that another list of
 objects or values, but there are two exceptional cases to take care of.
 

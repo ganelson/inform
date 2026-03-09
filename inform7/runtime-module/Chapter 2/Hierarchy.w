@@ -14,9 +14,11 @@ This section makes extensive use of //building: Hierarchy Locations//, which
 provides a general way to set up Inter hierarchies.
 
 Adding this to the source text of a project:
-= (text as Inform 7)
+
+``` Inform7
 Include Inter hierarchy in the debugging log.
-=
+```
+
 causes the following function to log the Inter hierarchy before and after
 linking the kits:
 
@@ -57,14 +59,14 @@ be numbered in sequence `name_0`, `name_1` and so on), and they have `type`
 as their package type.
 
 For example, this:
-= (text as InC)
+
 	submodule_identity *activities = LargeScale::register_submodule_identity(I"activities");
 	H_BEGIN(LocationRequirements::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
 			...
 		H_END
 	H_END
-=
+
 declares that each compilation unit will have a package called `activities` of
 type `_submodule`. Inside that will be a numbered series of packages called
 `activity_0`, `activity_1`, ..., each one of type `_activity`. And inside each
@@ -2075,7 +2077,7 @@ the easiest way to avoid it is to force the issue now:
 	InterNames::to_symbol(Hierarchy::find(NULL_HL));
 
 @ Heaven knows, that all seems like plenty, but there's one final case. Neptune
-files inside kits -- which define built-in kinds like "number" -- need to make
+files inside kits — which define built-in kinds like "number" — need to make
 reference to constants in those kits which give their default values. For
 example, the "description of K" kind constructor is created by //BasicInformKit//,
 and its default value compiles to the value `Prop_Falsity`. This is a function
@@ -2150,18 +2152,18 @@ inter_name *Hierarchy::find(int id) {
 }
 
 @ That's fine for one-off inames. But now suppose we have this:
-= (text as InC)
+
 		H_BEGIN_AP(EXTERNAL_FILES_HAP,        I"external_file", I"_external_file")
 			H_C_U(FILE_HL,                    I"file")
 			H_C_U(IFID_HL,                    I"ifid")
 		H_END
-=
+
 ...and we are compiling a file, so that we need a `FILE_HL` iname. To get that,
 we call `Hierarchy::make_iname_in(FILE_HL, P)`, where `P` represents the `_external_file`
 package holding it. (`P` can in turn be obtained using the functions below.)
 
-If this is called where `P` is some other package -- i.e., not of package type
-`_external_file` -- an internal error is thrown, in order to enforce the rules.
+If this is called where `P` is some other package — i.e., not of package type
+`_external_file` — an internal error is thrown, in order to enforce the rules.
 
 =
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
@@ -2251,13 +2253,13 @@ void Hierarchy::make_available_one_per_name_only(inter_name *iname) {
 
 @h Adding packages at attachment points.
 Consider the following example piece of declaration:
-= (text as InC)
+
 	H_BEGIN(LocationRequirements::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
 			...
 		H_END
 	H_END
-=
+
 Here, the "attachment point" (AP) is a place where multiple packages can be
 placed, each with the same internal structure (defined by the `...` part
 omitted here). `kinds` is a submodule name, and the "local" part means that
@@ -2300,14 +2302,14 @@ package_request *Hierarchy::completion_package(int hap_id) {
 
 @ Attachment points do not always have to be at the top level of submodules,
 as the `KIND_HAP` example was. For example:
-= (text as InC)
+
 		H_BEGIN_AP(VERBS_HAP,                 I"verb", I"_verb")
 			...
 			H_BEGIN_AP(VERB_FORMS_HAP,        I"form", I"_verb_form")
 				...
 			H_END
 		H_END
-=
+
 Here a `_verb_form` package has to be created inside a `_verb` package. Calling
 `Hierarchy::package_within(VERB_FORMS_HAP, P)` indeed constructs a new one
 inside the package `P`; if `P` does not have type `_verb`, an internal error

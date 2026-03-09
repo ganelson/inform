@@ -85,17 +85,11 @@ MathJax = {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Top level.</b>  The purpose of this section is to write <a href="4-prf.html#SP1" class="internal">Preform::parse_nt_against_word_range</a>,
 the function which is called whenever Preform grammar is matched against a
 wording: the <a href="../inweb/index.html" class="internal">inweb</a> preprocessor converts code like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;aquarium-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;aquarium-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) ...
+</span></pre>
 <p>into</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Preform</span><span class="plain-syntax">::</span><span class="identifier-syntax">parse_nt_against_word_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">aquarium_name_NTM</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Preform::parse_nt_against_word_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">aquarium_name_NTM</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) ...
+</span></pre>
 <p>Those last two parameters, <code>result</code> and <code>result_p</code>, are set only when we are
 recursively calling the function from inside itself. Recall that a match against
 a NT either succeeds or fails, and that produces the return value of this
@@ -323,7 +317,7 @@ intermediate results into a final result. If <a href="../inweb/index.html" class
 function for the nonterminal, we call it.</p>
 <p>If there's no compositor then the integer result is the production's number,
 and the pointer result is null.</p>
-<p>This is the range of fail nonterminal values -- <code>FAIL_NONTERMINAL</code> to one
+<p>This is the range of fail nonterminal values — <code>FAIL_NONTERMINAL</code> to one
 less than <code>FAIL_NONTERMINAL_TO</code>:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FAIL_NONTERMINAL</span> <span class="constant-syntax">-100000</span>
@@ -408,11 +402,8 @@ The strategy is:</p>
 <li>then making sure brackets match, if there were any.</li>
 </ul>
 <p>For example, if the production is</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">adjust</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;achingly-slow&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;exhaustive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">once</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">adjust</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;achingly-slow&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;exhaustive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">once</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>then the fast scan verifies the presence of &quot;adjust the&quot; and &quot;at once&quot;;
 the slow scan next looks for all occurrences of &quot;to the&quot;, the single strut
 for this production; and only then does it test the two slow nonterminals
@@ -684,11 +675,8 @@ as possible, and to calculate that, we must either be at the end of the run,
 or else know exactly where the next ptoken starts: because its position is
 known, or because it's a strut.</p>
 <p>This is why two elastic nonterminals in a row won't parse correctly:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">frog</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;amphibian&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;pond-preference&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">toad</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">frog</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;amphibian&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;pond-preference&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">toad</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>Preform is unable to work out where the central boundary will occur. In theory
 it should try every possibility. But that's inefficient: in practice the
 solution is to write the grammar to minimise these cases, and then to set up
@@ -735,11 +723,8 @@ probably gives the wrong answer.)</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Here we find the next possible match position for the strut beginning <code>start</code>
 and of width <code>len</code> in words, which begins at word <code>from</code> or after. Note that
 the strut might run up right to the end of the input text: for example, in</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">neckties</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tied</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="Preform-displayed-code all-displayed-code code-font"><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">neckties</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tied</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">
+</span></pre>
 <p>the word &quot;tied&quot; is a strut, because the <code>***</code> makes its position uncertain,
 but since <code>***</code> might match the empty text, &quot;tied&quot; might legally be the
 last word in the input text.</p>

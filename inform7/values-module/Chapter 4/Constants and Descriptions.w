@@ -188,8 +188,8 @@ parsing an adjective list and transforms the result to make it a description
 of thing, mostly because of deficiencies in English to do with words like
 "scenery" and "clothing" which can't be used as count nouns even though,
 logically, they should be. Inform implements them adjectivally, but this means
-that "scenery" -- an adjective list with one entry -- is sometimes a
-description on a par with "door" -- a common noun. In effect, "scenery"
+that "scenery" — an adjective list with one entry — is sometimes a
+description on a par with "door" — a common noun. In effect, "scenery"
 is read as if it were "scenery thing".
 
 =
@@ -369,7 +369,7 @@ Not every value known to Inform can be qualified as a noun: in fact, very few
 can be. This prevents us from writing "even 3", that is, the number 3 as
 a noun qualified by the adjective "even"; doctrinally, Inform takes the
 line that adjectives applied to values like 3 will never vary in their
-applicability -- 3 is always odd -- so that it makes no sense to test for
+applicability — 3 is always odd — so that it makes no sense to test for
 them with conditions like
 
 > if N is an even 3, ...
@@ -419,8 +419,8 @@ For the most part the sequence must be (a), (b), (c), (d), as in:
 
 > six of the / open / containers / in the Attic
 
-but the composite words made up from quantifiers and kinds -- something,
-anywhere, everybody, and such -- force us to make an exception to this:
+but the composite words made up from quantifiers and kinds — something,
+anywhere, everybody, and such — force us to make an exception to this:
 
 > something / open / in the Attic
 

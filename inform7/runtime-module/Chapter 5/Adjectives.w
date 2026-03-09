@@ -14,11 +14,10 @@ typedef struct adjective_compilation_data {
 	struct wording index_wording;
 } adjective_compilation_data;
 
-typedef struct adjective_iname_holder {
+classdef adjective_iname_holder {
 	struct kind *weakened_domain;
 	struct inter_name *task_fn_iname;
-	CLASS_DEFINITION
-} adjective_iname_holder;
+}
 
 @ This is added in the //linguistics// module, where `adjective` is defined.
 
@@ -34,8 +33,8 @@ void RTAdjectives::initialise_compilation_data(adjective *adj, wording W) {
 	adj->adjective_compilation.index_wording = W;
 }
 
-@ An adjective can be defined in multiple senses -- "empty" for containers does
-not mean the same thing as "empty" for rulebooks -- and so the following can
+@ An adjective can be defined in multiple senses — "empty" for containers does
+not mean the same thing as "empty" for rulebooks — and so the following can
 return a variety of different runtime functions.
 
 The following generates names for functions to carry out adjective tasks on
@@ -193,8 +192,8 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 might not, be such that adjective($x$) is true. We allow this to be called
 "it", though it can also have a calling name in some cases (see below).
 
-Clearly it ought to have the kind which defines the domain -- so it's a rulebook
-if the domain is all rulebooks, and so on -- but it doesn't always do so. The
+Clearly it ought to have the kind which defines the domain — so it's a rulebook
+if the domain is all rulebooks, and so on — but it doesn't always do so. The
 exception is that it is bogusly given the kind "number" if the adjective is
 being defined only by I6 routines. This is done to avoid compiling very
 inefficient code from the Standard Rules. For instance, the SR reads, in

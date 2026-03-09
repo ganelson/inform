@@ -49,7 +49,7 @@ int MakeSynopticModuleStage::run(pipeline_step *step) {
 types: for example, we can ask it to hold a list of `_activity` packages.
 
 =
-typedef struct tree_inventory {
+classdef tree_inventory {
 	struct inter_tree *of_tree;
 	struct linked_list *items; /* of `tree_inventory_item` */
 	inter_node_array *text_nodes;
@@ -87,14 +87,12 @@ typedef struct tree_inventory {
 	inter_node_array *equation_nodes;
 	inter_node_array *heading_nodes;
 	inter_node_array *multiplication_rule_nodes;
-	CLASS_DEFINITION
-} tree_inventory;
+}
 
-typedef struct tree_inventory_item {
+classdef tree_inventory_item {
 	struct inter_node_array *node_list;
 	struct inter_symbol *required_ptype;
-	CLASS_DEFINITION
-} tree_inventory_item;
+}
 
 @ Creating one of these is quick enough: when created, it's just a list of
 requirements.

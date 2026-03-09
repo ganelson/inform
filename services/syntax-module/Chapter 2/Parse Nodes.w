@@ -7,7 +7,7 @@ a given piece of text.
 Each node is an instance of this:
 
 =
-typedef struct parse_node {
+classdef parse_node {
 	struct wording text_parsed; /* the text being interpreted by this node */
 	node_type_t node_type; /* what the node basically represents */
 	struct parse_node_annotation *annotations; /* see //Node Annotations// */
@@ -18,8 +18,7 @@ typedef struct parse_node {
 
 	int score; /* scratch storage for choosing between interpretations */
 	int last_seen_on_traverse; /* scratch storage for detecting accidental loops */
-	CLASS_DEFINITION
-} parse_node;
+}
 
 @h Creation.
 

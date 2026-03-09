@@ -47,8 +47,8 @@ inter_name *NounIdentifiers::iname(noun *t) {
 	return t->compilation_data.nt_iname;
 }
 
-@ If a noun is given an explicit Inter identifier -- for example, if the
-player's avatar is given the identifier `selfobj` rather than, say, `I_yourself` --
+@ If a noun is given an explicit Inter identifier — for example, if the
+player's avatar is given the identifier `selfobj` rather than, say, `I_yourself` —
 then we need to change the textual identifier, and also the translation of
 the iname. We also want it to be visible to the linker, and we know that the
 name will be unique in the global namespace, so we tell the linker not to

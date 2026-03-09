@@ -393,7 +393,7 @@ However, the reversals are easier and execute more quickly, because whereas X
 can potentially carry many possible things P, Q, R, ..., it can only be carried
 by at most one: P.
 
-For this to be consistent in the world model, X must not have the "worn" property --
+For this to be consistent in the world model, X must not have the "worn" property —
 because then, of course, it would be worn by P and not carried by P:
 
 @<Extra test for a reverse carrying relation token@> =
@@ -511,7 +511,7 @@ properties rather than the object tree implement the relation.
 relation. Here X will relate to some collection P, Q, R, ... of possibilities,
 and we loop through them. There are three different implementations of the
 loop head, which manages the "through them" part, and then a common implementation
-of what to do in the loop -- i.e., test the possibility and jump to `success_label`
+of what to do in the loop — i.e., test the possibility and jump to `success_label`
 if it works.
 
 @<Main test for a more general relation token@> =

@@ -16,12 +16,11 @@ always begin with `__`.
 @e TEXTUAL_IATYPE
 
 =
-typedef struct inter_annotation_form {
+classdef inter_annotation_form {
 	inter_ti annotation_ID;
 	int iatype; /* one of the `*_IATYPE` constants above */
 	struct text_stream *annotation_keyword;
-	CLASS_DEFINITION
-} inter_annotation_form;
+}
 
 @ We need rapid conversion between the annotation ID numbers, which range from
 0 upwards, to their corresponding //inter_annotation_form//s.
@@ -180,10 +179,10 @@ We can express an annotation either with an //inter_annotation// structure or
 with a pair of `inter_ti` values:
 
 =
-typedef struct inter_annotation {
+classdef inter_annotation in 8192s {
 	struct inter_annotation_form *annot;
 	inter_ti annot_value;
-} inter_annotation;
+}
 
 inter_annotation SymbolAnnotation::value_annotation(inter_annotation_form *IAF, inter_ti V) {
 	inter_annotation IA;

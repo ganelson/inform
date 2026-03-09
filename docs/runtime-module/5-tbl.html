@@ -342,8 +342,8 @@ to look up two parallel structures each time we want to access the cell. So a
 blank cell is represented as both the value <code>TABLE_NOVALUE</code>, chosen so that it
 is very unlikely ever to occur as a genuine table value (currently it's the
 picturesque hexadecimal value <code>0xDEADCE11</code>), and also as a blank bit set in
-the blanks array. This makes a negative check -- that something is not blank
--- very quick, since only in the very rare case when the value does coincide
+the blanks array. This makes a negative check — that something is not blank
+— very quick, since only in the very rare case when the value does coincide
 with <code>TABLE_NOVALUE</code> do we need to check the blanks array. A positive check
 necessarily takes longer, but this cannot be helped.</p>
 <p>With some kinds it is possible to prove that <code>TABLE_NOVALUE</code> cannot be a legal

@@ -29,8 +29,8 @@ don't need to deal with any of that. For //core//, the business starts when
 run as a production line: see //How To Compile// for a detailed list of steps,
 but roughly:
 
-- The //assertions// module converts top-level declarations -- sentences like
-"The cat is in the hat" or "A truck is a kind of vehicle", for example -- into
+- The //assertions// module converts top-level declarations — sentences like
+"The cat is in the hat" or "A truck is a kind of vehicle", for example — into
 a series of logical propositions, making heavy use of the //linguistics// and
 //calculus// service modules.
 

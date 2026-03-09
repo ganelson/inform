@@ -193,8 +193,8 @@ then the visibility parent of `o` is its actual parent.
 
 @h Find Visibility Levels.
 The following routine sets the pair of variables `visibility_ceiling`, the
-highest visible point in the object tree above the player -- or `thedark`
-if the player cannot see at all -- and `visibility_levels`, the number of
+highest visible point in the object tree above the player — or `thedark`
+if the player cannot see at all — and `visibility_levels`, the number of
 steps of `VisibilityParent` needed to reach this ceiling; or 0 if the
 player cannot see at all.
 

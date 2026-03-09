@@ -222,22 +222,21 @@ A "rubric" is a freestanding piece of text written on the map. Typically
 it will be a title, or "Here Be Monsters", or something like that.
 
 =
-typedef struct rubric_holder {
+classdef rubric_holder {
 	struct text_stream *annotation;
 	int point_size;
 	struct text_stream *font;
 	struct text_stream *colour;
 	int at_offset;
 	struct faux_instance *offset_from;
-	CLASS_DEFINITION
-} rubric_holder;
+}
 
 @h EPS definitions.
 Each horizontal level of the EPS map needs its own storage, not least to
 hold the applicable mapping parameters.
 
 =
-typedef struct EPS_map_level {
+classdef EPS_map_level {
 	int width;
 	int actual_height;
 	int height;
@@ -250,8 +249,7 @@ typedef struct EPS_map_level {
 	int contains_titling;
 	int eps_origin;
 	struct map_parameter_scope map_parameters;
-	CLASS_DEFINITION
-} EPS_map_level;
+}
 
 @ The following are the directions at which arrows for UP, DOWN, IN and OUT
 are drawn on EPS maps.

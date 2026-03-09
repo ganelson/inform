@@ -51,7 +51,8 @@ the remainder, some are marked as proven to be correct, some as unproven.
 Unproven means is that we cannot tell at compile-time whether the usage
 is valid, but that we will be able to tell at run-time. Consider this
 //notorious iteration -> https://en.wikipedia.org/wiki/Collatz_conjecture//:
-= (text as Inform 7)
+
+``` Inform7
 To decide which number is next after (N - an even number):
 	let T be given by T = N/2 where T is a number;
 	decide on T.
@@ -65,7 +66,8 @@ To begin:
 		now M is next after N;
 		say "[N] goes to [M].";
 		now N is M.
-=
+```
+
 The difficulty here is the invocation "next after N". The compiler can prove
 that N is of kind "number", but there is no way to know at compile-time whether
 it will be even or odd: probably it will be sometimes even and sometimes odd.
@@ -83,7 +85,7 @@ int Invocations::is_marked_unproven(parse_node *inv) {
 
 @h Save self annotation.
 This is less often used, and marks an invocation as needing its own implicit
-understanding of what "self" -- i.e., the implied owner of a property -- is.
+understanding of what "self" — i.e., the implied owner of a property — is.
 It's used for an invocation of a phrase to say a property value: see //Dash//.
 
 =
@@ -98,26 +100,30 @@ int Invocations::is_marked_to_save_self(parse_node *inv) {
 @h Attaching tokens.
 The "tokens" of a phrase are the flexibly-worded parts corresponding to the
 bracketed clauses in its prototype. In:
-= (text as Inform 7)
+
+``` Inform7
 To advance (the piece - a chess piece) by (N - a number):
 	...
-=
+```
+
 the prototype is `advance (the piece - a chess piece) by (N - a number)`, and
 an invocation of this should therefore have two tokens. For the invocation
 `advance the pawn by 2`, those tokens will be `the pawn` and `2`.
 
 Tokens are represented in the parse tree as children of the `INVOCATION_NT`
 node:
-= (text)
+
+``` None
 	INVOCATION_NT "advance the pawn by 2"
 		RVALUE_CONTEXT_NT "the pawn"          <--- Node for token 0
 			CONSTANT_NT "the pawn"            <--- Token as parsed
 		RVALUE_CONTEXT_NT "2"                 <--- Node for token 1
 			CONSTANT_NT "2"                   <--- Token as parsed
-=
+```
+
 Each token node represents what we expect to find at that position, while its
 child node represents what we actually found. Token nodes can have a variety
-of types -- any of the `*_CONTEXT_NT` types -- reflecting the surprising range
+of types — any of the `*_CONTEXT_NT` types — reflecting the surprising range
 of possibilities in phrase prototypes, but `RVALUE_CONTEXT_NT` is the commonest.
 
 @ The following function might become more interesting if we ever allowed
@@ -265,10 +271,10 @@ this packet records the text "with newlines" along with its translation
 as a run-time bitmap (with just one bit set, since only one option is used).
 
 =
-typedef struct invocation_options {
+classdef invocation_options in 100s {
 	int options; /* bitmap of any phrase options appended */
 	struct wording options_invoked_text; /* text of any phrase options appended */
-} invocation_options;
+}
 
 invocation_options *Invocations::create_invo(parse_node *inv) {
 	invocation_options *invo = CREATE(invocation_options);

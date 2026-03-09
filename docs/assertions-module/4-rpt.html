@@ -60,7 +60,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#4">Chapter 4: Assertions</a></li><li><b>Refine Parse Tree</b></li></ul></div>
 <p class="purpose">To determine which subjects are referred to by noun phrases such as "the table" or "a paper cup" found in assertion sentences.</p>
 
-<ul class="toc"><li><a href="4-rpt.html#SP1">&#167;1. How individual nouns are represented after refinement</a></li><li><a href="4-rpt.html#SP4">&#167;4. The player is not yourself</a></li><li><a href="4-rpt.html#SP5">&#167;5. Representation of single adjectives</a></li><li><a href="4-rpt.html#SP7">&#167;7. Simple descriptions</a></li><li><a href="4-rpt.html#SP8">&#167;8. Refining couplings</a></li><li><a href="4-rpt.html#SP9">&#167;9. The refinery itself</a></li><li><a href="4-rpt.html#SP13">&#167;13. About surgeries</a></li><li><a href="4-rpt.html#SP15">&#167;15. Un-WITH</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="4-rpt.html#SP1">&#167;1. How individual nouns are represented after refinement</a></li><li><a href="4-rpt.html#SP4">&#167;4. The player is not yourself</a></li><li><a href="4-rpt.html#SP5">&#167;5. Representation of single adjectives</a></li><li><a href="4-rpt.html#SP7">&#167;7. Simple descriptions</a></li><li><a href="4-rpt.html#SP8">&#167;8. Refining couplings</a></li><li><a href="4-rpt.html#SP9">&#167;9. The refinery itself</a></li><li><a href="4-rpt.html#SP12">&#167;12. About surgeries</a></li><li><a href="4-rpt.html#SP14">&#167;14. Un-WITH</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. How individual nouns are represented after refinement.</b> </p>
@@ -75,17 +75,17 @@ the number 33, but has no subject.</li>
 <li>If the noun phrase gives a number of items, the <code>multiplicity</code> annotation
 records how many; thus, for &quot;six lorries&quot; it would be 6.</li>
 <li>If the noun phrase describes some properties or relations which must be
-true -- &quot;an open door&quot;, say, or &quot;a woman in London&quot; -- these are recorded
+true — &quot;an open door&quot;, say, or &quot;a woman in London&quot; — these are recorded
 in a <code>creation_proposition</code> annotation.</li>
 </ul>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::give_subject_to_noun</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Refiner::give_subject_to_noun</span></span>:<br/><a href="4-rpt.html#SP4">&#167;4</a>, <a href="4-rpt.html#SP7_1">&#167;7.1</a>, <a href="4-rpt.html#SP11_5_1">&#167;11.5.1</a>, <a href="4-rpt.html#SP11_7">&#167;11.7</a><br/>The Creator - <a href="4-tc.html#SP4_3">&#167;4.3</a>, <a href="4-tc.html#SP8_4">&#167;8.4</a>, <a href="4-tc.html#SP8_4_1">&#167;8.4.1</a><br/>Assemblies - <a href="4-ass2.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::give_subject_to_noun</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Refiner::give_subject_to_noun</span></span>:<br/><a href="4-rpt.html#SP4">&#167;4</a>, <a href="4-rpt.html#SP7_1">&#167;7.1</a>, <a href="4-rpt.html#SP11_5_1">&#167;11.5.1</a>, <a href="4-rpt.html#SP11_7">&#167;11.7</a><br/>The Creator - <a href="4-tc.html#SP4_4">&#167;4.4</a>, <a href="4-tc.html#SP7_4">&#167;7.4</a>, <a href="4-tc.html#SP7_4_1">&#167;7.4.1</a><br/>Assemblies - <a href="4-ass2.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eval</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InferenceSubjects::as_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make a common or proper noun as appropriate</span></span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::give_spec_to_noun</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Refiner::give_spec_to_noun</span></span>:<br/><a href="4-rpt.html#SP6">&#167;6</a>, <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>, <a href="4-rpt.html#SP11_8_2_4">&#167;11.8.2.4</a><br/>Define by Table Requests - <a href="3-dbtr.html#SP4_1_3">&#167;4.1.3</a>, <a href="3-dbtr.html#SP4_2_3_1">&#167;4.2.3.1</a><br/>The Creator - <a href="4-tc.html#SP4_3">&#167;4.3</a>, <a href="4-tc.html#SP4_3_1_1">&#167;4.3.1.1</a><br/>Relation Knowledge - <a href="4-rk.html#SP2">&#167;2</a><br/>Tables - <a href="7-tbl.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eval</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::give_spec_to_noun</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Refiner::give_spec_to_noun</span></span>:<br/><a href="4-rpt.html#SP6">&#167;6</a>, <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>, <a href="4-rpt.html#SP11_8_2_5">&#167;11.8.2.5</a><br/>Define by Table Requests - <a href="3-dbtr.html#SP4_1_3">&#167;4.1.3</a>, <a href="3-dbtr.html#SP4_2_3_1">&#167;4.2.3.1</a><br/>The Creator - <a href="4-tc.html#SP4_4">&#167;4.4</a>, <a href="4-tc.html#SP4_4_1_1">&#167;4.4.1.1</a><br/>Relation Knowledge - <a href="4-rk.html#SP2">&#167;2</a><br/>Tables - <a href="7-tbl.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eval</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">eval</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make a common or proper noun as appropriate</span></span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -167,7 +167,7 @@ details to the nodes so that sentences like this one...</p>
 </blockquote>
 <p>...can work; here &quot;scenery&quot;, though an adjective, is effectively a common
 noun in disguise. (It's a deficiency of English that a surprising number of
-common objects, which ought to have count nouns, in fact have mass nouns --
+common objects, which ought to have count nouns, in fact have mass nouns —
 compare &quot;clothing&quot; and &quot;clothes&quot;, which has no adequate singular.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -212,7 +212,7 @@ object) or a <code>PROPER_NOUN_NT</code> (where the headword is a specific objec
 where the adjectives each become <code>ADJECTIVE_NT</code> nodes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::refine_from_simple_description</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Refiner::refine_from_simple_description</span></span>:<br/><a href="4-rpt.html#SP11_8_2_4_1">&#167;11.8.2.4.1</a><br/>Assemblies - <a href="4-ass2.html#SP8_3">&#167;8.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">desc</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::refine_from_simple_description</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Refiner::refine_from_simple_description</span></span>:<br/><a href="4-rpt.html#SP11_8_2_5_1">&#167;11.8.2.5.1</a><br/>Assemblies - <a href="4-ass2.html#SP8_3">&#167;8.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">desc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Set the attachment node to the headword, if there is one</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Descriptions::number_of_adjectives_applied_to</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -223,12 +223,12 @@ where the adjectives each become <code>ADJECTIVE_NT</code> nodes.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>  Crucially, the headword node gets one extra annotation: its &quot;full phrase
-evaluation&quot;, which retains the original description information -- in
+evaluation&quot;, which retains the original description information — in
 particular, quantification data such as that in &quot;four doors&quot;, which
 would be lost if we simply applied <code>Refiner::give_subject_to_noun</code> to the inference
 subject for &quot;door&quot;.</p>
 <p>If <code>head</code> is not set, it doesn't matter what we do, because there'll be
-no headword node -- this is why we don't bother to find any subject to
+no headword node — this is why we don't bother to find any subject to
 set for it.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the attachment node to the headword, if there is one</span><span class="named-paragraph-number">7.1</span></span> =</p>
@@ -252,7 +252,7 @@ set for it.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b>  We put a WITH node in the attachment position, displacing the headword
 content to its first child, and making its second child the new attachment
-position -- so that that is where the adjectives subtree will go.</p>
+position — so that that is where the adjectives subtree will go.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert a WITH node joining adjective tree to headword</span><span class="named-paragraph-number">7.2</span></span> =</p>
 
@@ -308,8 +308,8 @@ refine them.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::refine_coupling</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Refiner::refine_coupling</span></span>:<br/>Passes through Major Nodes - <a href="2-ptmn.html#SP3_1_2_2">&#167;3.1.2.2</a><br/>Classifying Sentences - <a href="2-cs.html#SP7">&#167;7</a><br/>Define by Table Requests - <a href="3-dbtr.html#SP4_1_3">&#167;4.1.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">logging</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="4-rpt.html#SP15" class="function-link"><span class="function-syntax">Refiner::un_with</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="4-rpt.html#SP15" class="function-link"><span class="function-syntax">Refiner::un_with</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="4-rpt.html#SP14" class="function-link"><span class="function-syntax">Refiner::un_with</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="4-rpt.html#SP14" class="function-link"><span class="function-syntax">Refiner::un_with</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="constant-syntax">ALLOW_CREATION</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="constant-syntax">ALLOW_CREATION</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">pc</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -386,7 +386,7 @@ subtree.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2. </b>  <code>WITH_NT</code> is used to create something with a list of properties. This
-leads to some awkward cases -- for instance, where a &quot;with&quot; in an action
+leads to some awkward cases — for instance, where a &quot;with&quot; in an action
 pattern like &quot;doing something with the bucket&quot; has been misinterpreted.
 We fix those cases by hand, by reconstructing the text before it was
 divided, then parsing it as an action pattern; if that works, that reading
@@ -396,7 +396,7 @@ is allowed to stand.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">creation_rule</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="4-rpt.html#SP14" class="function-link"><span class="function-syntax">Refiner::perform_with_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="4-rpt.html#SP13" class="function-link"><span class="function-syntax">Refiner::perform_with_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">WITH_NT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">)),</span>
@@ -419,7 +419,7 @@ is allowed to stand.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">creation_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-rpt.html#SP10" class="function-link"><span class="function-syntax">Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">creation_rule</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="4-rpt.html#SP13" class="function-link"><span class="function-syntax">Refiner::perform_and_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="4-rpt.html#SP12" class="function-link"><span class="function-syntax">Refiner::perform_and_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11">&#167;11</a>.</li></ul>
 <div class="lsmarkdown">
@@ -492,7 +492,7 @@ direction object for &quot;north&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11_6" class="paragraph-anchor"></a><b>&#167;11.6. </b>  A <code>KIND_NT</code> node may have no children, and if so it represents the bare
 word &quot;kind&quot;: the reference must be to the kind &quot;kind&quot; itself.
-Otherwise it has one child -- the name of an existing kind of value or
+Otherwise it has one child — the name of an existing kind of value or
 object. After refinement, it will be annotated with a valid non-null
 inference subject representing the domain to which any new kind would belong.</p>
 </div>
@@ -625,15 +625,15 @@ is active, and &quot;nowhere&quot; if the spatial one is.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse the noun phrase as a value property name</span></span><span class="named-paragraph-number">11.8.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse the noun phrase as a value</span></span><span class="named-paragraph-number">11.8.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse the noun phrase as a value</span></span><span class="named-paragraph-number">11.8.2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">NONLOCAL_VARIABLE_NT</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONSTANT_NT</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><a href="4-rpt.html#SP1" class="function-link"><span class="function-syntax">Refiner::give_spec_to_noun</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Specifications::is_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on a description used as a noun phrase</span></span><span class="named-paragraph-number">11.8.2.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on an action pattern used as a noun phrase</span></span><span class="named-paragraph-number">11.8.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on a description used as a noun phrase</span></span><span class="named-paragraph-number">11.8.2.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on an action pattern used as a noun phrase</span></span><span class="named-paragraph-number">11.8.2.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8">&#167;11.8</a>.</li></ul>
 <div class="lsmarkdown">
@@ -649,7 +649,7 @@ property name meaning, not as the name of a kind of value.)</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::from_property</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_VagueVariable problem</span><span class="named-paragraph-number">12.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP11_8_2_2_1" class="paragraph-anchor"></a><b>&#167;11.8.2.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_VagueVariable problem</span><span class="named-paragraph-number">11.8.2.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_VagueVariable</span><span class="plain-syntax">),</span>
@@ -659,9 +659,9 @@ property name meaning, not as the name of a kind of value.)</p>
 <span class="plain-syntax">        </span><span class="string-syntax">"need - would be much clearer."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">-</span><span class="plain-syntax"> };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP12">&#167;12</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2_2">&#167;11.8.2.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  When a noun phrase in an assertion represents a value, it's normally a
+<p class="commentary firstcommentary"><a id="SP11_8_2_2" class="paragraph-anchor"></a><b>&#167;11.8.2.2. </b>  When a noun phrase in an assertion represents a value, it's normally a
 constant (&quot;13&quot;) or else something like a description of values (&quot;a number&quot;).
 It wouldn't make sense to refer to a temporary value like a local variable,
 but a global (&quot;player&quot; or &quot;time of day&quot;) is possible.</p>
@@ -671,13 +671,13 @@ a noun instead of a condition testing the current action.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;assertion-np-as-value&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">variable</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP12_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_VagueVariable problem</span></span><span class="named-paragraph-number">12.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">variable</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_VagueVariable problem</span></span><span class="named-paragraph-number">11.8.2.2.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-explicit-action&gt;</span><span class="Preform-plain-syntax">   </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, RP[1] }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-descriptive-type-expression&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, RP[1] }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-global-variable&gt;</span><span class="Preform-plain-syntax">                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, RP[1] }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_8_2_2" class="paragraph-anchor"></a><b>&#167;11.8.2.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the noun phrase as a value</span><span class="named-paragraph-number">11.8.2.2</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP11_8_2_3" class="paragraph-anchor"></a><b>&#167;11.8.2.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the noun phrase as a value</span><span class="named-paragraph-number">11.8.2.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;assertion-np-as-value&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">))) {</span>
@@ -687,11 +687,11 @@ a noun instead of a condition testing the current action.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::new_UNKNOWN</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Descriptions::get_quantifier</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Check that this noun phrase is allowed a quantifier</span></span><span class="named-paragraph-number">11.8.2.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Check that this noun phrase is allowed a quantifier</span></span><span class="named-paragraph-number">11.8.2.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">NOUN_RESOLUTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Noun phrase %W parsed as value: $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_8_2_2_1" class="paragraph-anchor"></a><b>&#167;11.8.2.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that this noun phrase is allowed a quantifier</span><span class="named-paragraph-number">11.8.2.2.1</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP11_8_2_3_1" class="paragraph-anchor"></a><b>&#167;11.8.2.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that this noun phrase is allowed a quantifier</span><span class="named-paragraph-number">11.8.2.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Quantifiers::can_be_used_in_assertions</span><span class="plain-syntax">(</span><span class="identifier-syntax">Descriptions::get_quantifier</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
@@ -725,18 +725,18 @@ a noun instead of a condition testing the current action.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2_2">&#167;11.8.2.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2_3">&#167;11.8.2.3</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_8_2_3" class="paragraph-anchor"></a><b>&#167;11.8.2.3. </b>  If the noun phrase is a valid action pattern, such as &quot;taking something&quot;,
+<p class="commentary firstcommentary"><a id="SP11_8_2_4" class="paragraph-anchor"></a><b>&#167;11.8.2.4. </b>  If the noun phrase is a valid action pattern, such as &quot;taking something&quot;,
 we change it to a new node type to mark this. We don't keep the pattern:
 it will be reparsed much later on.</p>
 <p>We have to be a little cautious, because of the way English allows participles
-as nouns to mean the result of some action having taken place on something --
+as nouns to mean the result of some action having taken place on something —
 consider &quot;the scoring&quot;, for instance, in the sense of a mark scored on a
 piece of wood. So we parse action patterns with a lower priority than values
 here, given that we know we are looking for a noun.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on an action pattern used as a noun phrase</span><span class="named-paragraph-number">11.8.2.3</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on an action pattern used as a noun phrase</span><span class="named-paragraph-number">11.8.2.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
@@ -750,13 +750,13 @@ here, given that we know we are looking for a noun.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_8_2_4" class="paragraph-anchor"></a><b>&#167;11.8.2.4. </b>  This case has been left to last, since it's so much the most difficult.
+<p class="commentary firstcommentary"><a id="SP11_8_2_5" class="paragraph-anchor"></a><b>&#167;11.8.2.5. </b>  This case has been left to last, since it's so much the most difficult.
 Descriptions have to be converted into a surprising range of different
-subtrees -- otherwise it will not be possible to issue a wide range of
+subtrees — otherwise it will not be possible to issue a wide range of
 to-the-point problem messages for badly constructed sentences.</p>
 <p>Oddly, it's not the complicated descriptions which give trouble...</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on a description used as a noun phrase</span><span class="named-paragraph-number">11.8.2.4</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on a description used as a noun phrase</span><span class="named-paragraph-number">11.8.2.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
@@ -764,11 +764,11 @@ to-the-point problem messages for badly constructed sentences.</p>
 <span class="plain-syntax">        </span><a href="4-rpt.html#SP1" class="function-link"><span class="function-syntax">Refiner::give_spec_to_noun</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on a simple description</span></span><span class="named-paragraph-number">11.8.2.4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-rpt.html#SP11_8_2_5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Act on a simple description</span></span><span class="named-paragraph-number">11.8.2.5.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2">&#167;11.8.2</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11_8_2_4_1" class="paragraph-anchor"></a><b>&#167;11.8.2.4.1. </b>  ...it's the shorter phrases where, perversely, the risk of a
+<p class="commentary firstcommentary"><a id="SP11_8_2_5_1" class="paragraph-anchor"></a><b>&#167;11.8.2.5.1. </b>  ...it's the shorter phrases where, perversely, the risk of a
 misunderstanding is higher. For one thing, we deliberately ignore a valid
 description in two cases:</p>
 <ul>
@@ -780,7 +780,7 @@ kettle which can be in several states, described adjectivally, and one of
 those is &quot;heating&quot;. This means the S-parser reads &quot;heating kettle&quot; as if it
 meant &quot;the kettle when in the heating state&quot;. But we don't want this to be
 recognised in an assertion, because it's not useful to talk about individual
-objects in particular states when setting up the initial state -- the kettle
+objects in particular states when setting up the initial state — the kettle
 either starts out as heating, or it doesn't. Moreover, we don't want to
 misread a line like:</p>
 <blockquote>
@@ -790,12 +790,12 @@ misread a line like:</p>
 similar ambiguities, we ignore the S-parser's recommendation of reading
 adjective(s) plus proper noun as a reference to that noun in a special state.</p>
 <p>Case (b) comes out of a point of difference between proper and common nouns:
-use of an indefinite article is fine with common nouns -- &quot;a container&quot;, for
-example -- but not with proper nouns: talking about &quot;a silver bar&quot; suggests
+use of an indefinite article is fine with common nouns — &quot;a container&quot;, for
+example — but not with proper nouns: talking about &quot;a silver bar&quot; suggests
 that this is not the same silver bar referred to in some previous
 sentence.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on a simple description</span><span class="named-paragraph-number">11.8.2.4.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on a simple description</span><span class="named-paragraph-number">11.8.2.5.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!((</span><span class="identifier-syntax">Descriptions::to_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -805,9 +805,9 @@ sentence.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2_4">&#167;11.8.2.4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8_2_5">&#167;11.8.2.5</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. About surgeries.</b>  The rest of this section is taken up with local surgical operations
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. About surgeries.</b>  The rest of this section is taken up with local surgical operations
 performed on the tree in the light of what we can now see.</p>
 <p>&quot;And surgery&quot; is a fiddly operation to correct the parse tree after
 resolution of all the nouns in a phrase which involves both &quot;and&quot; and
@@ -825,25 +825,19 @@ resolution of all the nouns in a phrase which involves both &quot;and&quot; and
 <p>which, we notice, has exactly the same grammatical structure as the first of
 the two sentences above, yet a very different meaning, since &quot;openable&quot; is a
 property whereas &quot;bat&quot; was an object. We perform surgery on:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">AND_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"openable"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WITH_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">COMMON_NOUN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"door"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	AND_NT
+	    ADJECTIVE_NT "openable"
+	    WITH_NT
+	        COMMON_NOUN_NT "door"
+	        ADJECTIVE_NT "open"
+</span></pre>
 <p>to restructure the nodes as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">WITH_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">COMMON_NOUN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"door"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">AND_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"openable"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	WITH_NT
+	    COMMON_NOUN_NT "door"
+	    AND_NT
+	        ADJECTIVE_NT "openable"
+	        ADJECTIVE_NT "open"
+</span></pre>
 <p>This innocent-looking little function involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.</p>
 </div>
@@ -869,34 +863,30 @@ on the back of an envelope. Change at your peril.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  &quot;With surgery&quot; is a less traumatic operation, motivated by sentences like:</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  &quot;With surgery&quot; is a less traumatic operation, motivated by sentences like:</p>
 <blockquote>
 <p>In the Pitch is an open container with description &quot;The box of stumps and bails.&quot;</p>
 </blockquote>
 <p>The initial parse tree for such a sentence will have two nested <code>WITH_NT</code>
-clauses, which is arguably correct -- &quot;a (container with property open)
-with description ...&quot; -- but which is inconvenient for our implementation
+clauses, which is arguably correct — &quot;a (container with property open)
+with description ...&quot; — but which is inconvenient for our implementation
 of <code>WITH_NT</code> later on. So we construe the sentence instead with a single
 &quot;with&quot;, as &quot;a container with properties open and description ...&quot; In
 terms of the tree,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">WITH_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WITH_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">COMMON_NOUN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"container"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">PROPERTY_LIST_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"The box..."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	WITH_NT
+	    WITH_NT
+	        COMMON_NOUN_NT "container"
+	        ADJECTIVE_NT "open"
+	    PROPERTY_LIST_NT "The box..."
+</span></pre>
 <p>is reconstructed as:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	WITH_NT
+	    COMMON_NOUN_NT "container"
+	    AND_NT
+	        ADJECTIVE_NT "open"
+	        PROPERTY_LIST_NT "The box..."
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">WITH_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">COMMON_NOUN_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"container"</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">AND_NT</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">ADJECTIVE_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"open"</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">PROPERTY_LIST_NT</span><span class="plain-syntax"> </span><span class="string-syntax">"The box..."</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Refiner::perform_with_surgery</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Refiner::perform_with_surgery</span></span>:<br/><a href="4-rpt.html#SP11_2">&#167;11.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst</span><span class="plain-syntax">, *</span><span class="identifier-syntax">prop_1</span><span class="plain-syntax">, *</span><span class="identifier-syntax">prop_2</span><span class="plain-syntax">;</span>
@@ -912,8 +902,8 @@ terms of the tree,</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Un-WITH.</b>  We may subsequently learn that what appeared to be a property setting was
-actually some other noun phrase containing the word &quot;with&quot; -- a particular
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Un-WITH.</b>  We may subsequently learn that what appeared to be a property setting was
+actually some other noun phrase containing the word &quot;with&quot; — a particular
 issue for sentences like:</p>
 <blockquote>
 <p>The agreeing with policy action has an object called the hat.</p>

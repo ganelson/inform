@@ -83,7 +83,7 @@ supplied at the command line; `ext` is a substring of it, and is its extension
 not a file, false if we know the reverse, and otherwise not applicable.
 
 An extension, for us, needs to be a file with extension `i7x`, but it needs
-also to scan properly -- which means the top line of the file has to be right.
+also to scan properly — which means the top line of the file has to be right.
 So we'll open it and look.
 
 =
@@ -232,7 +232,7 @@ thanks to including other extensions, and because of that we have to read the
 source text before we can do anything with the graph.
 
 We don't do this at the going operational stage because that would be
-inefficient and might cause VM-related problems -- it would mean that many
+inefficient and might cause VM-related problems — it would mean that many
 extraneous extensions, discovered only when scanning some directory, would
 be read in as source text; and some of those might not be compatible with
 the current VM settings.

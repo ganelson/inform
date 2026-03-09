@@ -4,7 +4,7 @@ A handful of bare minimum Preform syntax.
 
 @h Nonterminal names.
 This is a typical internal nonterminal being defined, though it's a bit more
-meta than most -- it's a nonterminal which matches against the name of any
+meta than most — it's a nonterminal which matches against the name of any
 nonterminal. (This is used only to parse inclusion requests for the debugging
 log.)
 

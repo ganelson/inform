@@ -11,7 +11,7 @@ subtree, and also sentences like
 
 > A fruit has a colour.
 
-in which there's only a leaf on the left-hand-side -- in fact an `PROPER_NOUN_NT`
+in which there's only a leaf on the left-hand-side — in fact an `PROPER_NOUN_NT`
 node, though of course it's not an object. This is most neatly handled with
 a recursive traverse of the left-hand subtree.
 

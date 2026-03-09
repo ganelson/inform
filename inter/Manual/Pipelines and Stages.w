@@ -15,33 +15,43 @@ and sets its initial value to "zooge".
 
 Of course, this has no practical effect unless the pipeline we are running
 makes use of such a variable. But we might imagine running:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inter/Tangled/inter my.intert -pipeline-file mypl.interpipeline -variable '*textual=v1.intert' -variable '*binary=v2.interb'
-=
+```
+
 where `mypl.interpipeline` reads:
-= (text)
+
+``` None
 read <- *in
 generate text -> *textual
 generate binary -> *binary
-=
+```
+
 This will then write out the same Inter program in two different formats, to
 two different files.
 
 @ Variables hold only text, and generally represent filenames. Variable names
 begin with a star `*`. When a pipeline runs, the value of a variable is
 substituted for its name. For example,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inter/Tangled/inter -variable '*X=ex/why' -pipeline-file mypl.interpipeline
-=
+```
+
 creates the variable `*X` with the textual contents `ex/why` before running
 the given pipeline. Inside the pipeline, a line such as:
-= (text as Inter Pipeline)
+
+``` None
 	generate inform6 -> *X
-=
+```
+
 would then be read as:
-= (text as Inter Pipeline)
+
+``` None
 	generate inform6 -> ex/why
-=
+```
+
 After variable substitution like this, filenames inside the pipeline
 description are interpreted as follows:
 
@@ -58,20 +68,22 @@ the Inter command line changes that.
 A command to write a text file to `*log` is interpreted instead to mean
 "spool the output you would otherwise write to the debugging log instead".
 For example,
-= (text as Inter Pipeline)
+
+``` None
 	generate inventory -> *log
+```
 
 @h Pipelines run by Inform.
 To Inbuild and Inform, pipelines are resources in their own right, rather
 like extensions or kits. So, for example, the standard distribution includes
-= (text)
+
 	inform7/Internal/Pipelines/compile.interpipeline
-=
+
 which is the one used for standard compilation runs. A project's Materials
 folder is free to provide a replacement:
-= (text)
+
 	Strange.materials/Pipelines/compile.interpipeline
-=
+
 ...and then this will be used instead when compiling `Strange.inform`.
 
 1.	This sentence in Inform source text:
@@ -87,27 +99,32 @@ folder is free to provide a replacement:
 	> Use inter pipeline "mypipeline".
 
 	And then store the actual pipeline file as:
-= (text)
-	Example Work.materials/Pipelines/mypipeline.interpipeline
-=
 
-2. You don't need the Use... sentence, though, if you're willing to choose
-on the command line instead:
-= (text as ConsoleText)
-	$ inform7/Tangled/inform7 ... -pipeline NAME
-=
-Or, if you want to name a file explicitly, not have it looked for by name:
-= (text as ConsoleText)
-	$ inform7/Tangled/inform7 ... -pipeline-file FILE
-=
-3. Finally, you can also give Inform 7 an explicit pipeline in textual form:
-= (text as ConsoleText)
-	$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'
-=
-Note that Inbuild and Inform 7 respond to all three of `-pipeline`,
-`-pipeline-file` and `-pipeline-text`, whereas Inter responds only to the
-last two. (It can't find pipelines by name because it doesn't contain the
-supervisor module for sorting out resources.)
+		Example Work.materials/Pipelines/mypipeline.interpipeline
+
+2.	You don't need the Use... sentence, though, if you're willing to choose
+	on the command line instead:
+
+	``` ConsoleText
+		$ inform7/Tangled/inform7 ... -pipeline NAME
+	```
+
+	Or, if you want to name a file explicitly, not have it looked for by name:
+
+	``` ConsoleText
+		$ inform7/Tangled/inform7 ... -pipeline-file FILE
+	```
+
+3.	Finally, you can also give Inform 7 an explicit pipeline in textual form:
+
+	``` ConsoleText
+		$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'
+	```
+	
+	Note that Inbuild and Inform 7 respond to all three of `-pipeline`,
+	`-pipeline-file` and `-pipeline-text`, whereas Inter responds only to the
+	last two. (It can't find pipelines by name because it doesn't contain the
+	supervisor module for sorting out resources.)
 
 @h Syntax of pipeline descriptions.
 Pipelines are, roughly speaking, just lists of steps. Each step occupies a single
@@ -118,14 +135,16 @@ A step description is often as simple as being the name of a stage, but
 sometimes that name is accompanied by parameters.
 
 The difference between a step and a stage is illustrated by this example:
-= (text as Inter Pipeline)
+
+``` None
 	! This is a comment
 
 	read <- *in
 
 	generate text -> *tout
 	generate binary -> *bout
-=
+```
+
 Here there are three steps. The first uses the `read` stage; the second and
 third use the `generate` stage, but with different parameters.
 
@@ -133,19 +152,23 @@ There are three sorts of stage description: those involving material coming
 in, denoted by a left arrow, those involving some external file being written
 out, denoted by a right arrow, and those which just process what we have.
 These take the following forms:
-= (text as Inter Pipeline)
+
+``` None
 	STAGENAME [TREE] <- SOURCE
 	STAGENAME [TREE] [FORMAT] -> DESTINATION
 	STAGENAME [TREE]
-=
+```
+
 The `STAGENAME` never contains white space; hyphens are used instead. So, for
 example, `eliminate-redundant-labels` is a valid `STAGENAME`.
 
 The `[TREE]` is optional. For example:
-= (text as Inter Pipeline)
+
+``` None
 	read 2 <- *in
 	generate 3 -> *out
-=
+```
+
 Pipeline descriptions allow us to manage up to 10 different Inter trees, and
 these are called `0` to `9`. These are all initially empty. Any stage which
 doesn't specify a tree is considered to apply to `0`; so pipelines often never
@@ -154,10 +177,12 @@ mention the digits `0` to `9` at all because they always work inside `0`.
 Another optional feature, not currently made use of by any stages, is that
 the description can specify an exact package in a tree, giving its name in URL
 form. Thus:
-= (text as Inter Pipeline)
+
+``` None
 	hypothetical-stage /main/whatever
 	hypothetical-stage 6:/main/whatever
-=
+```
+
 The stages currently built in to //inter// do not work on individual packages,
 but they did at one time in the past, and the infrastructure for it remains
 in case useful in future.
@@ -169,9 +194,11 @@ or by the tool calling for the pipeline to be run, e.g., the //supervisor//
 module inside Inform 7.
 
 @ Pipelines can also include each other. For example, the step:
-= (text as Inter Pipeline)
+
+``` None
 	run pipeline assimilate
-=
+```
+
 causes the whole `assimilate` pipeline to be run at that point. Indeed, Inform 7's
 main pipeline `compile` uses this to break its task into subtasks:
 
@@ -271,8 +298,8 @@ For the implementation, see //pipeline: Parsing Stages//.
 Ensures that symbols marked as needing to be unique will be translated, during
 any use of `generate`, to identifiers which are all different from each other
 across the entire tree. (In effect, this stage is needed because Inter has
-private namespaces within packages, whereas the languages we are transpiling to --
-to some extent C, but certainly Inform 6 -- have a single global namespace,
+private namespaces within packages, whereas the languages we are transpiling to —
+to some extent C, but certainly Inform 6 — have a single global namespace,
 where collisions of identifiers would be very unfortunate.)
 
 At the end of this stage, no symbol still has the `MAKE_NAME_UNIQUE_ISYMF` flag.
@@ -356,19 +383,22 @@ such as `#ifdef`, `#ifndef`, `#endif`; it then detects whether the relevant
 symbols are defined, or looks at their values, and deletes sections of code not
 to be compiled. At the end of this stage, there are no conditional compilation
 splats left in the tree. For example:
-= (text as Inter)
+
+``` Inter
 	constant (int32) MAGIC = 12345
 	splat IFTRUE &"#iftrue MAGIC == 12345;\n"
 	constant (int32) WIZARD = 5
 	splat IFNOT &"#ifnot;\n"
 	constant (int32) MUGGLE = 0
 	splat ENDIF &"#endif;\n"
-=
+```
+
 is resolved to:
-= (text as Inter)
+
+``` Inter
 	constant (int32) MAGIC = 12345
 	constant (int32) WIZARD = 5
-=
+```
 
 For the implementation, see //pipeline: Resolve Conditional Compilation Stage//.
 

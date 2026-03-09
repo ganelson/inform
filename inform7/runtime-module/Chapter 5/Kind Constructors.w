@@ -76,8 +76,8 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 }
 
 @h The package.
-The Inter package for a kind constructor -- either a base kind, like "door"
-or "number", or a derived kind like "list of ..." -- can appear more or less
+The Inter package for a kind constructor — either a base kind, like "door"
+or "number", or a derived kind like "list of ..." — can appear more or less
 anywhere in the Inter tree without making any real difference to the meaning
 of the program, but we try to be tidy about where to put it.
 
@@ -147,8 +147,8 @@ inter_name *RTKindConstructors::xref_iname(kind_constructor *kc) {
 
 @h Iname for the weak ID.
 The "weak ID" for a kind is a runtime value identifying only its constructor.
-This distinguishes base kinds -- for example, "number" and "text" have different
-weak IDs -- but not derived kinds -- for example, "list of numbers" and
+This distinguishes base kinds — for example, "number" and "text" have different
+weak IDs — but not derived kinds — for example, "list of numbers" and
 "list of texts" have the same weak ID. (For that, the "strong ID" is needed.)
 
 An identifier like `NUMBER_TY`, then, begins life in a definition inside an
@@ -361,7 +361,7 @@ inter_name *RTKindConstructors::instances_array_iname(kind *K) {
 }
 
 @ Sometimes we want to cache the constant list produced by "list of doors",
-say -- an Inform 7 list. This means that if there are multiple mentions of
+say — an Inform 7 list. This means that if there are multiple mentions of
 the "list of doors", we will only compile the constant once. It goes here:
 
 =
@@ -644,7 +644,7 @@ void RTKindConstructors::make_enumeration_entries(kind *K) {
 
 @h Assigning declaration sequence numbers.
 These provide a sequencing useful to code-generators, with superkinds earlier
-in the sequence than subkinds -- which may not be true of source code ordering.
+in the sequence than subkinds — which may not be true of source code ordering.
 
 =
 inter_ti kind_sequence_counter = 0;

@@ -7,7 +7,7 @@ For example, "odd" in the sense of numbers is a single meaning. Each meaning
 is an instance of:
 
 =
-typedef struct adjective_meaning {
+classdef adjective_meaning {
 	struct adjective *owning_adjective; /* of which this is a meaning */
 
 	struct adjective_domain_data domain; /* to what can this meaning be applied? */
@@ -23,11 +23,9 @@ typedef struct adjective_meaning {
 	struct adjective_task_data task_data[NO_ATOM_TASKS + 1]; /* see below */
 
 	int has_been_compiled_in_support_function; /* which may never happen */
+}
 
-	CLASS_DEFINITION
-} adjective_meaning;
-
-@ This can be created in two ways: straightforwardly --
+@ This can be created in two ways: straightforwardly —
 
 =
 adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
@@ -76,7 +74,7 @@ adjective_meaning *AdjectiveMeanings::negate(adjective_meaning *other) {
 @h Task data.
 When Inform needs to compile code for testing if an adjective is true as
 applied to something, or to make it now true (or false), it does this by
-compiling code for the associated unary predicate -- see
+compiling code for the associated unary predicate — see
 //The Adjectival Predicates//. What to compile depends on the meaning or
 meanings which might apply; if it's this meaning, then we will need an
 I6 schema to carry out one of three tasks, `TEST_ATOM_TASK`,
@@ -134,7 +132,7 @@ Those strategies correspond to the three `*_TASKMODE` constants.
 By default, an adjective meaning is unable to perform any of the three tasks,
 and the creator of it has to call //AdjectiveMeanings::make_schema// to say
 otherwise. This puts us by default into `DIRECT_TASKMODE`, unless we're working
-in the world of objects where run-time typechecking will be needed -- in which
+in the world of objects where run-time typechecking will be needed — in which
 case `VIA_SUPPORT_FUNCTION_TASKMODE`. But the creator can insist on the latter
 anyway with a subsequent call to //AdjectiveMeanings::perform_task_via_function//.
 
@@ -212,11 +210,10 @@ adjective meanings in "families".
 Each family is represented by an instance of the following:
 
 =
-typedef struct adjective_meaning_family {
+classdef adjective_meaning_family {
 	struct method_set *methods;
 	int definition_claim_priority; /* 0 to 9: lower is better */
-	CLASS_DEFINITION
-} adjective_meaning_family;
+}
 
 adjective_meaning_family *AdjectiveMeanings::new_family(int N) {
 	adjective_meaning_family *f = CREATE(adjective_meaning_family);
@@ -319,7 +316,7 @@ void AdjectiveMeanings::prepare_schemas(adjective_meaning *am, int task) {
 
 @ `GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID` offers a way to bypass the usual code
 generation process. It is called on only when //runtime: Adjectives// is
-compiling a support function -- and therefore it will never be called on if
+compiling a support function — and therefore it will never be called on if
 the adjective doesn't perform this task with a support function; see above.
 
 It is called twice, first with `emit_flag` set to `FALSE`; it should do nothing,
@@ -367,7 +364,7 @@ int AdjectiveMeanings::nscg_inner(adjective_meaning *am, int T, int emit_flag,
 }
 
 @ Because we are inside the support function, we need to call 
-//AdjectiveMeanings::get_schema_without_call// not //AdjectiveMeanings::get_schema// --
+//AdjectiveMeanings::get_schema_without_call// not //AdjectiveMeanings::get_schema// —
 otherwise, we would be given the schema for a function call to the very thing
 we are now trying to compile, and the result would be code which recursed
 forever.

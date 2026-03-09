@@ -111,13 +111,10 @@ that we then don't need to worry about code-ordering when compiling calls to it:
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  And this expresses what the C prototype for that function will be. For example,
 suppose we have an Inter function which arises from a kit function reading like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [ </span><span class="identifier-syntax">HelloThere</span><span class="plain-syntax"> </span><span class="identifier-syntax">greeting</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    ];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[ </span><span class="identifier-syntax">HelloThere</span><span class="plain-syntax"> </span><span class="identifier-syntax">greeting</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">;
+		...
+	];
+</span></pre>
 <p>Now in practice this function may always be called as <code>HelloThere(&quot;Aloha!&quot;)</code> or
 similar, with the local variable <code>greeting</code> being an argument, and the other two
 locals <code>x</code> and <code>y</code> being used only internally. But Inter does not distinguish between
@@ -128,14 +125,11 @@ and results in <code>x</code> initially being 31 rather than 0.</p>
 arguments. Now, of course, C does have a crude mechanism for this (used for <code>printf</code>
 and similar), but it's nowhere near flexible enough to handle what we need.
 Instead we declare our C function like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_fn_HelloThere</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_greeting</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_x</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="identifier-syntax">word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_y</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_fn_HelloThere</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_greeting</span><span class="plain-syntax">,
+		</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_x</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="identifier-syntax">word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_y</span><span class="plain-syntax">) {
+		...
+	}
+</span></pre>
 <p>And we then make calls like <code>i7_fn_HelloThere(proc, X, 0, 0)</code> or
 <code>i7_fn_HelloThere(proc, X, Y, 0)</code> to simulate calling this with one or two
 arguments respectively. Because unsupplied arguments are filled in as 0, we achieve
@@ -213,7 +207,7 @@ is known at run-time, and is passed to us as <code>vf</code>.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">", "</span><span class="plain-syntax">); </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">", "</span><span class="plain-syntax">); </span><a href="2-vnl.html#SP3" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">c</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; </span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">max_arity</span><span class="plain-syntax">; </span><span class="identifier-syntax">c</span><span class="plain-syntax">++) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">", 0"</span><span class="plain-syntax">);</span>
@@ -222,19 +216,16 @@ is known at run-time, and is passed to us as <code>vf</code>.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b>  A handful of functions, always supplied by kits (i.e., never compiled directly
 by Inform 7), use a stack-based calling mechanism instead. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">whatever</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ...</span>
-<span class="plain-syntax">];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[ </span><span class="identifier-syntax">whatever</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;
+    ...
+];
+</span></pre>
 <p>The significant thing here is that the first local variable is called <code>_vararg_count</code>.
 The Inform 6 compiler reacts to that by using a different function call mechanism;
 the function call <code>whatever(x, y, z)</code> will then result in <code>x</code>, <code>y</code>, <code>z</code> being pushed
 onto the stack, while execution in the function begins with <code>_vararg_count</code> equal
 to 3 (the number of things pushed), and <code>ret</code> equal to 0.</p>
-<p>Note that the arguments must be pushed in reverse order -- <code>z</code>, <code>y</code>, <code>x</code> -- in
+<p>Note that the arguments must be pushed in reverse order — <code>z</code>, <code>y</code>, <code>x</code> — in
 order to ensure that the first one, <code>x</code>, is at the top of the stack when execution
 of the function begins.</p>
 <p>But of course a C compiler will not automatically do that just because the first
@@ -254,7 +245,7 @@ restrictive.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">", ("</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">c</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">--) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7_push(proc, "</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
+<span class="plain-syntax">        </span><a href="2-vnl.html#SP3" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"), "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
@@ -273,15 +264,12 @@ that is what we must now compile:</p>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
 <div class="lsmarkdown">
 <p>The structure is basically one big switch. In simplified pseudocode it looks like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">function_id_number</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">id1</span><span class="plain-syntax">: </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn1</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg1</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">id2</span><span class="plain-syntax">: </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn2</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg1</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg2</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg3</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">function_id_number</span><span class="plain-syntax">) {
+		</span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">id1</span><span class="plain-syntax">: </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn1</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg1</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;
+		</span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">id2</span><span class="plain-syntax">: </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn2</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg1</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg2</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg3</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;
+		...
+	}
+</span></pre>
 <p>That seems inefficient: instead, why not store the addresses of the relevant
 functions in a lookup table? After all, the case ID numbers are just a consecutive
 run of integers.</p>
@@ -409,7 +397,7 @@ look much like <a href="5-cfm.html#SP3" class="internal">CFunctionModel::C_funct
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">fndata</span><span class="plain-syntax">.</span><span class="element-syntax">compiling_function</span><span class="plain-syntax">) = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="2-vnl.html#SP4" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_body</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-vnl.html#SP3" class="function-link"><span class="function-syntax">Vanilla::node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_body</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">fndata</span><span class="plain-syntax">.</span><span class="element-syntax">compiling_function</span><span class="plain-syntax">) = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"return 1;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n}\n\n"</span><span class="plain-syntax">);</span>
@@ -608,8 +596,8 @@ for the wrapper.</p>
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Primitives for indirect or external function calls.</b>  Most function calls are made explicitly: see <a href="5-cfm.html#SP5" class="internal">CFunctionModel::invoke_function</a>
 above. But the Inter primitives below offer a way to call functions whose identities
 are not known at compile time, or which are not even part of the Inter program.</p>
-<p>The following primitives all simply call functions <code>i7_call_0</code>, and so on -- see
-below for their definitions -- except for <code>!externalcall</code>.</p>
+<p>The following primitives all simply call functions <code>i7_call_0</code>, and so on — see
+below for their definitions — except for <code>!externalcall</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CFunctionModel::invoke_primitive</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">CFunctionModel::invoke_primitive</span></span>:<br/>C Program Control - <a href="5-cpc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">bip</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>

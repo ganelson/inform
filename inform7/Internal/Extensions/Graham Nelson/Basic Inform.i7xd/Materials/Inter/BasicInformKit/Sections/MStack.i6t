@@ -54,7 +54,7 @@ As sketched above, the same creator function and ID number are passed to
 the following routine to destroy the frame again. It takes the stack down
 to the level of the most recently created frame with this ID number: note
 that each action, for instance, has its own ID number for this purpose,
-but can be taking place several times in a nested fashion -- one taking
+but can be taking place several times in a nested fashion — one taking
 action might have caused another taking action which caused a third,
 for instance, so that there are three incomplete taking actions at once.
 In that case, there will be three independent sets of taking action
@@ -80,7 +80,7 @@ is destroyed.
 We return the position on the M-stack of the most recently created frame
 with the given ID number (see above), or 0 if no such frame exists; the
 size is stored in the global variable `MStack_Frame_Extent`. (Because word 0
-on the stack is used as a sentinel -- all frames are placed above it -- no frame
+on the stack is used as a sentinel — all frames are placed above it — no frame
 can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
 
 =
@@ -147,7 +147,7 @@ the offset is within range.
 @h Access to Nonexistent Variables.
 A long-standing point where I7 is not as strict in type-checking as it might
 be occurs when checking rule preambles like "Before going to a dead end...".
-Such a preamble must be checked whatever the current action is -- in many
+Such a preamble must be checked whatever the current action is — in many
 cases, it will not be a going action at all; which means that "room gone to",
 a value implied by the "to" clause, will not exist. If the type-checking
 were stricter, it would be a nuisance for authors, and instead we relax a

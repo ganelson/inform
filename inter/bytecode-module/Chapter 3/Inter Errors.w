@@ -43,12 +43,11 @@ higher up the call stack before being issued, and can be issued in a variety
 of ways.)
 
 =
-typedef struct inter_error_message {
+classdef inter_error_message {
 	struct inter_error_location error_at;
 	struct text_stream *error_body;
 	struct text_stream *error_quote;
-	CLASS_DEFINITION
-} inter_error_message;
+}
 
 @ There are just two sorts of message: those quoting some text, and those not.
 

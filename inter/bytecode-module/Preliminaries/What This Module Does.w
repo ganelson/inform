@@ -21,8 +21,8 @@ This module is concerned with managing the //inter_tree// data structure in
 memory, and with reading and writing it from and to the filing system.
 
 An Inter tree is an expression of a single program. It's an intermediate state
-between the source code for that program -- perhaps Inform 7 source text,
-perhaps Inform 6-syntax source for a kit -- and the so-called "final" output,
+between the source code for that program — perhaps Inform 7 source text,
+perhaps Inform 6-syntax source for a kit — and the so-called "final" output,
 typically a C or I6 program.
 
 In conventional compiler design, a high-level language such as Swift or C# is
@@ -32,9 +32,11 @@ what everything in it means. This AST is then compiled down to an intermediate
 representation, an "IR", which is a sort of structured list of still-abstract
 operations to perform. The IR is then further converted to produce the compiler's
 actual output. Thus:
-= (text as BoxArt)
+
+``` BoxArt
   source  ---->   AST   ------------>   IR  ---->  output (e.g., assembly language)
-=
+```
+
 In the Inform family of tools, two languages have to be compiled: natural
 language by //inform7// and more conventional C-like code by //inter//.
 Having very different syntaxes, these have different ASTs:
@@ -42,9 +44,10 @@ Having very different syntaxes, these have different ASTs:
 - For I7, a `parse_node_tree`, managed by the //syntax// module.
 - For Inter, an `inter_schema`, managed by the //building// module.
 
-But these two compiler flows share the same IR -- an //inter_tree// provides the
+But these two compiler flows share the same IR — an //inter_tree// provides the
 intermediate representation for both:[1]
-= (text as BoxArt)
+
+``` BoxArt
                  "AST"                 "IR"
   source        syntax   
   text    --->   tree -------+
@@ -55,7 +58,8 @@ intermediate representation for both:[1]
   kit           Inter         /
   source  --->  schemas -----+
           INTER
-=
+```
+
 Because we want to work with hybrid programs, part compiled by one flow and
 part by the other, Inter is not quite as low-level as most IRs.[2] It still
 contains a great deal of semantic markup, making analysis and optimisation
@@ -72,11 +76,12 @@ highly structured object-oriented way.
 
 @h Textual, Binary, Memory.
 Inter code has three representations: as a binary file, as a textual file,
-and in memory -- a sort of cross-referenced form of binary. Binary or
+and in memory — a sort of cross-referenced form of binary. Binary or
 textual inter files can be read in as memory inter, and memory inter can
 be written out as either binary or textual files. Any inter program can
 faithfully be represented in any of these forms:
-= (text as BoxArt)
+
+``` BoxArt
   textual                                  textual
   inter   ---+                       +---> inter
               \                     /
@@ -85,7 +90,8 @@ faithfully be represented in any of these forms:
                /       inter       \
   binary      /                     \      binary
   inter   ---+                       +---> inter
-=
+```
+
 Textual Inter is human-readable, but binary Inter loads quickly. Either form,
 as stored on an external file whose provenance we do not know, has to be treated
 as suspect:
@@ -107,17 +113,20 @@ changed. See //The Inter Version//.
 @h What textual Inter looks like.
 There is a manual for writing //inter: Textual Inter//, and this may now be
 worth skimming through. But here is a minimal example:
-= (text as Inter)
+
+``` Inter
 package main _plain
 	package Main _code
 		code
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-=
+```
+
 If we read this in and then write it out again, we find, perhaps surprisingly,
 four extra instructions:
-= (text as Inter)
+
+``` Inter
 packagetype _plain
 packagetype _code
 primitive !enableprinting void -> void
@@ -128,7 +137,8 @@ package main _plain
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-=
+```
+
 This is because `packagetype` and `primitive` instructions are optional in textual
 Inter. When we read `package Main _code`, for example, we deduce that a `_code`
 package type is needed, and so we automatically declare it if it is not there
@@ -139,8 +149,8 @@ are printed out when we write it back as textual Inter.
 
 `packagetype`, `primitive`, `package`, `code`, `inv` and so on are all examples
 of //Inter Constructs//. Each has its own textual syntax. Most constructs give
-rise to instructions -- for example, every line using the `val` construct
-results in a single `VAL_IST` instruction in the program -- but just a few
+rise to instructions — for example, every line using the `val` construct
+results in a single `VAL_IST` instruction in the program — but just a few
 "pseudo-constructs" such as `version` specify something else.
 
 So it is not true that lines in textual Inter correspond exactly to the
@@ -153,7 +163,8 @@ in to memory.
 The main organising idea of Inter trees is the //inter_package//. //Packages// are
 like nested boxes: each one can hold either more packages, or Inter instructions
 providing code or data, or both. In the case of "hello world": 
-= (text as BoxArt)
+
+``` BoxArt
 ....................................................
 .  top-level material                              .
 .  +--------------------------------------------+  .
@@ -164,7 +175,8 @@ providing code or data, or both. In the case of "hello world":
 .  |   +-------------------------------------+  |  .
 .  +--------------------------------------------+  .
 ....................................................
-=
+```
+
 Each package has a name, and its location can be identified by a "URL". For
 example, `/main/BasicInformKit/properties` means "the package `properties`
 inside the package `BasicInformKit` inside the package `main`". Every package
@@ -188,8 +200,8 @@ used: for example, if this is `PACKAGE_IST` then the instruction is a `package`.
 What the remaining words mean depends on the construct, but here are some
 typical ingredients:
 
-- Many constructs -- `constant`, for example -- define a new symbol.
-If so, the symbol ID -- or SID -- will be stored in one of the words;
+- Many constructs — `constant`, for example — define a new symbol.
+If so, the symbol ID — or SID — will be stored in one of the words;
 this is the ID of the symbol in the //inter_symbols_table// belonging
 to the package containing the instruction. Some constructs also contain
 SIDs for other reasons: for example, `propertyvalue` needs to store the
@@ -208,16 +220,19 @@ in just one?
 In both cases the solution is the same: to use `constant` or `typename` to
 assign a symbol to anything complicated, and then refer to that symbol. For
 example, we can't have this:
-= (text as Inter)
+
+``` Inter
 	val (list of int32) { 2, 3, 5, 7, 11, 13, 17, 19 }
-=
+```
+
 because both the type and the value are too complicated. But we can have:
-= (text as Inter)
+
+``` Inter
 	typename list_of_integers = list of int32
 	constant (list_of_integers) primes = { 2, 3, 5, 7, 11, 13, 17, 19 }
 	...
 		val (list_of_integers) primes
-=
+```
 
 [1] The term "bytecode" is a misnomer, since this is word-based, not byte-based.
 But it is traditional and seems to have been used as far back as the mid-1960s.
@@ -225,14 +240,16 @@ But it is traditional and seems to have been used as far back as the mid-1960s.
 @ Constants are useful also for providing metadata about the program. This
 is not simply commentary: what makes it "meta" is that it does not literally
 compile into the final output. For example:
-= (text as Inter)
+
+``` Inter
 	constant lucky_number = 7
 	constant ^special_constant = lucky_number
-=
+```
+
 Here `lucky_number` can be used in the program whenever a value is needed. But
 `^special_constant`, whose name begins with the magic metadata caret `^`, cannot
 be used as a value. Instead, the idea is that it communicates something to the
-code-generation code in //pipeline// and //final// -- indicating the significance,
+code-generation code in //pipeline// and //final// — indicating the significance,
 purpose or origins of something in the program. (//inform7// produces a lot
 of metadata like this.)
 
@@ -246,7 +263,8 @@ table, recording symbols and their meanings within that package. For example,
 if a package `X` contains a definition of a constant called `pi`, then the
 definition will occupy an Inter instruction inside the package, and the
 identifier name `pi` will be an //inter_symbol// recorded in its //inter_symbols_table//.
-= (text as BoxArt)
+
+``` BoxArt
     +-----------------+ 
     | Package X       | 
     |                 | 
@@ -254,13 +272,14 @@ identifier name `pi` will be an //inter_symbol// recorded in its //inter_symbols
     | .....           |
     | constant pi = 3 |
     +-----------------+
-=
+```
+
 The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
 by Inter itself, such as the identities of primitives like `!add` or
 `!printnumber`. In some sense, they specify the kind of Inter tree we have,
 rather than anything about the program it represents. Material from that
-program -- a variable, say, or a function -- is not allowed at the root level.
+program — a variable, say, or a function — is not allowed at the root level.
 
 Symbols can be annotated in various ways. See //Annotations//. They also come
 in several types, see //InterSymbol::get_type//, and can have a few flags,
@@ -302,29 +321,35 @@ cut and reorder code; the binary bytecode storage is quick to load from a file.
 Still, the result is an unusual hybrid of a data structure.
 
 For example, the tree might start out like this:
-= (text as BoxArt)
+
+``` BoxArt
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
 		node2  -------------------------------> [.....]
 		node3  ---------------------------------------> [.........]
-=
+```
+
 Here `node1` represents an instruction, with the details stored at bytecode
 locations 103 to 105; `node2` points to bytecode at 106 to 107, and so on.
 But then we could decide, when optimising code, that we want instructions
 `node2` and `node3` performed the other way round. Simple amendments to
 the tree structure achieve this without needing to edit the bytecode:
-= (text as BoxArt)
+
+``` BoxArt
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
 		node3  ---------------------------------------> [.........]
 		node2  -------------------------------> [.....]
-=
+```
+
 Indeed, we could decide that the instruction at `node2` is redundant and cut it:
-= (text)
+
+``` BoxArt
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
 		node3  ---------------------------------------> [.........]
-=
+```
+
 It doesn't matter that the resulting bytecode storage is all mixed up in
 sequencing; the tree is what gives us the sequence of instructions, and the
 order of words in bytecode memory is only significant within a single
@@ -358,7 +383,8 @@ variables, constants and functions.
 But that is not true because symbols in one package can be "wired" to symbols
 in another:[1] see //The Wiring//. We write `S ~~> T` if the symbol `S` is "wired to"
 `T`, and we understand this as meaning that `S` means whatever `T` does.
-= (text as BoxArt)
+
+``` BoxArt
     +-----------------+        +-------------------------------+
     | Package X       |        | Package Y                     |
     |                 |        |                               |
@@ -366,7 +392,8 @@ in another:[1] see //The Wiring//. We write `S ~~> T` if the symbol `S` is "wire
     +-----------------+        | .....                         |
                                | variable earth = 7            |
                                +-------------------------------+
-=
+```
+
 In this example, the symbol `earth` in package `X` is undefined. Instead it is
 wired to a different symbol of the same name in package `Y`, which is defined
 as the name of a variable declared in that package. (The names do not have to
@@ -390,18 +417,21 @@ into it later on.
 For example, //inform7// compiles a tree of Inter, but then //inter// links
 this with a separately compiled Inter tree from //BasicInformKit//. Each both
 imports from and exports to the other.
-= (text as BoxArt)
+
+``` BoxArt
     .....................           .......................
     .  Main tree        . ~~~~~~~~> . BasicInformKit tree .
     .                   .           .                     .
     .                   . <~~~~~~~~ .                     .
     .....................           .......................
-=
+```
+
 It would be chaotic[1] to allow random symbols in packages all over each tree
 to be wired directly to symbols in the other. Instead, every tree has a sort
 of embassy package `/main/connectors` (a package called `connectors` which is
 a subpackage of `main`) which acts as an intermediary.
-= (text as BoxArt)
+
+``` BoxArt
     ...............................       ..................................
     .  Main tree                  .       .  BasicInformKit tree           .
     .              +------------+ .       . +------------+                 .
@@ -410,7 +440,8 @@ a subpackage of `main`) which acts as an intermediary.
     .            <~~~~ sockets <~~~~~~~~~~~~~~ plugs <~~~~~~~~~ packages   .
     .              +------------+ .       . +------------+                 .
     ...............................       ..................................
-=
+```
+
 The connectors package contains only symbols, and they are all either "plugs" or
 "sockets". A "plug" is made for every external meaning needed by a tree; a
 "socket" is made for each meaning that the tree declares itself but wants to
@@ -428,14 +459,15 @@ when (part of) one tree is merged into another, in what is called //Transmigrati
 
 Transmigration is by definition the process of moving a package from one tree
 to another. Almost the whole design of Inter is motivated by the need to make this
-fast -- the hierarchies of packages, the use of wiring, and the existence of sockets
+fast — the hierarchies of packages, the use of wiring, and the existence of sockets
 and plugs all came about working backwards from the goal of implementing
 transmigration efficiently.
 
 Transmigration is how the //pipeline// for processing Inter links a tree
 produced by //inform7// to trees from kits produced by //inter//. This
 diagram is also a little simplified, but the idea is right. We start with:
-= (text as BoxArt)
+
+``` BoxArt
     .........................         .........................
     .  Main tree            .         . BasicInformKit tree   .
     .  main                 .         . main                  .
@@ -444,11 +476,13 @@ diagram is also a little simplified, but the idea is right. We start with:
     .    source_text        .         .    connectors         .
     .    connectors         .         .                       .
     .........................         .........................
-=
+```
+
 where all of the substantive content of the BasicInformKit tree is in its
 package `/main/BasicInformKit`. Transmigration simply moves that package,
 the result being:
-= (text)
+
+``` BoxArt
     .........................         .........................
     .  Main tree            .         . BasicInformKit tree   .
     .  main                 .         . main                  .
@@ -458,7 +492,8 @@ the result being:
     .    BasicInformKit     .         .                       .
     .    connectors         .         .                       .
     .........................         .........................
-=
+```
+
 The original BasicInformKit tree is reduced to a husk and can be discarded.
 
 Plugs and sockets are important here because when BasicInformKit moves to the

@@ -275,10 +275,10 @@ in translating this nonterminal to other languages.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The opening sentence.</b>  The following is called in response to the bibliographic sentence -- the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The opening sentence.</b>  The following is called in response to the bibliographic sentence — the
 optional one at the start of a source text which gives its title and author.
 This isn't handled by the special meaning machinery above because it really
-isn't a conventional sentence at all -- there's no verb. Instead, <a href="../assertions-module/index.html" class="internal">assertions</a>
+isn't a conventional sentence at all — there's no verb. Instead, <a href="../assertions-module/index.html" class="internal">assertions</a>
 calls this function directly on pass 2.</p>
 <p>Should either title or author be unspecified, we use whatever the <a href="../supervisor-module/index.html" class="internal">supervisor</a>
 module thought was the title or author.</p>
@@ -580,11 +580,8 @@ arrive at a sequence of ASCII characters. Each run of whitespace is also
 converted to a single space. If this would result in an empty text or only
 a single space, we return the text &quot;story&quot; instead.</p>
 <p>Our example (if not truncated) then emerges as:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">St</span><span class="plain-syntax">- </span><span class="identifier-syntax">Bartholemew</span><span class="character-syntax">'s Fair- Etude for a Push-Me-Pull-You Machine</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	St- Bartholemew's Fair- Etude for a Push-Me-Pull-You Machine
+</span></pre>
 <p>Note that we do not write any filename extension (e.g., <code>.z5</code>) here.</p>
 <p>We change possible filename separators or extension indicators to hyphens,
 and remove accents from each possible ISO Latin-1 accented letter. This does

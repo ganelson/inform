@@ -104,13 +104,15 @@ a kit, like so:
 then how do we accommodate that? We cannot change the foreign function, so
 instead we route execution through a "shell function" to test those
 constraints. In pseudocode:
-= (text)
+
+``` None
 SHELL() {
 	if (not (eating the lollipop)) {
 		RULE();
 	}
 }
-=
+```
+
 The following provides an iname for that shell, constructed only if needed.
 
 =
@@ -125,7 +127,8 @@ inter_name *RTRules::shell_iname(rule *R) {
 @ Note that the response handler function must be made available to the linker,
 because the idea is that the kit function will use it. For example, the code
 in the kit might read like so:
-= (text as Inform 6)
+
+``` Inform6
 [ MY_FOREIGN_R;
 	...
 	MY_FOREIGN_RM('A');
@@ -133,7 +136,8 @@ in the kit might read like so:
 	MY_FOREIGN_RM('B');
 	...
 ];
-=
+```
+
 This code is making calls to a function `MY_FOREIGN_RM` which does not exist
 in the kit; it's the handler function, which we will define here. But in order
 for the references in the kit to match up correctly, we must therefore make
@@ -195,7 +199,7 @@ rule *RTRules::rule_currently_being_compiled(void) {
 }
 
 @ This compiles (almost) everything needed for a single rule: the exception being
-response handlers for foreign rules -- see //Responses::via_Inter_compilation_agent//.
+response handlers for foreign rules — see //Responses::via_Inter_compilation_agent//.
 
 =
 void RTRules::compilation_agent(compilation_subtask *t) {
@@ -393,7 +397,8 @@ Each rule compiles to a function, and that function is called whenever the
 opportunity might exist for the rule to fire: but it still sometimes won't
 fire, because the conditions might not be met. In pseudocode, the function
 looks like this:
-= (text)
+
+``` None
 	if (firing-condition-1) {
 		if (firing-condition-2) {
 			...
@@ -404,7 +409,8 @@ looks like this:
 	} else {
 		fail 1
 	}
-=
+```
+
 Everything before the `...` is "head", and everything after is the "tail".
 The return statement isn't necessarily reached, because even if the firing
 condition holds, the `...` code may decide to return in some other way.

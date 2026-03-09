@@ -114,7 +114,7 @@ single values. These are, for some reason, called &quot;inline arrays&quot;. The
 generator is going to take advantage of this feature: if it sees that a
 property is actually an address of a small array, it will compile that array
 directly into the body of the relevant object or class declaration. It therefore
-does not need to declare the name of this small array, and so --</p>
+does not need to declare the name of this small array, and so —</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Leave undeclared any array used as a value of a property</span><span class="named-paragraph-number">2.1</span></span> =</p>
 
@@ -266,17 +266,11 @@ they were any other arrays. Here goes:</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1. </b>  When an action is named in a <code>Verb</code> directive, it appears without its <code>##</code> prefix;
 so the following ensures that we write, say,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="character-syntax">'help'</span><span class="plain-syntax"> * </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">Help</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="character-syntax">'help'</span><span class="plain-syntax"> * </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">Help</span><span class="plain-syntax">;
+</span></pre>
 <p>rather than</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="character-syntax">'help'</span><span class="plain-syntax"> * </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; ##</span><span class="identifier-syntax">Help</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="character-syntax">'help'</span><span class="plain-syntax"> * </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; ##</span><span class="identifier-syntax">Help</span><span class="plain-syntax">;
+</span></pre>
 <p>which would be a more consistent design, but is a syntax error in I6.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write without sharps</span><span class="named-paragraph-number">3.1.1</span></span> =</p>
@@ -290,27 +284,20 @@ so the following ensures that we write, say,</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b>  Enough of verbs. A general array is more straightforward, except for a quirk
 (read: blunder) in I6 syntax. In I6,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span><span class="plain-syntax">;
+</span></pre>
 <p>makes a table array with three entries, so that <code>X</code> ends up as a pointer to a
 block of four words in memory: <code>3, 10, 20, 30</code>. However,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">;
+</span></pre>
 <p>makes a table with 10 entries, initially zeroes, so that <code>X</code> points to the
 block <code>10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</code>. We do not want this: there are times
 when we genuinely need a 1-entry table array. So we use the alternate syntax,
 provided by Inform 6 since at least 2000 but for some reason not documented in
 the DM4:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> [ </span><span class="constant-syntax">10</span><span class="plain-syntax"> ];
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> [ </span><span class="constant-syntax">10</span><span class="plain-syntax"> ];</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin an I6 Array directive</span><span class="named-paragraph-number">3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -332,24 +319,18 @@ the DM4:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c.html#SP3">&#167;3</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  A further quirk (again, blunder) is that I6 has no delimiter syntax to mark
-off one entry from the next -- in most languages, such as C, a comma would be
+off one entry from the next — in most languages, such as C, a comma would be
 used, but I6 uses only white space.</p>
 <p>That's fine until entries begin with operators which are ambiguously unary
-or binary -- in other words, with minus signs. In I6, this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="constant-syntax">-5</span><span class="plain-syntax"> ];</span>
-</pre>
-<div class="lsmarkdown">
+or binary — in other words, with minus signs. In I6, this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="constant-syntax">-5</span><span class="plain-syntax"> ];
+</span></pre>
 <p>makes a two-element array, with <code>X</code> pointing to <code>2, -1</code>, because <code>4 -5</code> is
 read as a binary operation (subtraction), not as 4 followed by a unary
 operation (negation) applied to 5.</p>
 <p>We avoid this by placing semicolons after every entry, just in case:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="constant-syntax">4</span><span class="plain-syntax">; </span><span class="constant-syntax">-5</span><span class="plain-syntax">; ];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="constant-syntax">4</span><span class="plain-syntax">; </span><span class="constant-syntax">-5</span><span class="plain-syntax">; ];
+</span></pre>
 <p>Again, though undocumented in the DM4, this is a long-established syntax in I6.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -409,7 +390,7 @@ by Inter, so we need do nothing to modify it here.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Dictionary words -- those used in the command parser grammar -- are written in
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Dictionary words — those used in the command parser grammar — are written in
 single quotation marks and have their own peculiar syntax: see the Inform
 Designer's Manual, 4th edition, for more. In particular note that we compile
 a one-character dword to, say, <code>'z//'</code> not <code>'z'</code>: the double-slash is meaningless

@@ -64,21 +64,21 @@ function togglePopup(material_id) {
 code-base had to be turned around. Pre-2017, Inform generated code by writing
 Inform 6 syntax out by hand: but post-2019, Inter bytecode was generated instead.
 Hundreds of subsystems had to be rewritten, a process taking over a year, and
-during this time the compiler had to work in a piebald sort of way -- some
+during this time the compiler had to work in a piebald sort of way — some
 systems generating bytecode, others still pouring our raw I6 as text.</p>
 <p>The <a href="3-vh.html#SP1" class="internal">value_holster</a> was invented as a way to manage this. It allows the caller
 of a compilation function to ask for code to be made in a particular way: this
 is the <code>vhmode_wanted</code> field. These ways are:</p>
 <ul>
 <li>
-<p><code>INTER_VAL_VHMODE</code> -- generate Inter bytecode inside a function, producing a value</p>
+<p><code>INTER_VAL_VHMODE</code> — generate Inter bytecode inside a function, producing a value</p>
 </li>
 <li>
-<p><code>INTER_VOID_VHMODE</code> -- generate Inter bytecode inside a function but in
+<p><code>INTER_VOID_VHMODE</code> — generate Inter bytecode inside a function but in
 void context, i.e., not producing a value</p>
 </li>
 <li>
-<p><code>INTER_DATA_VHMODE</code> -- encode a constant value as a pair of Inter values,
+<p><code>INTER_DATA_VHMODE</code> — encode a constant value as a pair of Inter values,
 for use in, say, an array entry.</p>
 </li>
 </ul>

@@ -193,10 +193,10 @@ void CMemoryModel::end_array(code_generator *gtr, code_generation *gen, int form
 
 @ The primitives for byte and word lookup have the signatures:
 
-= (text)
+``` None
 primitive !lookup val val -> val
 primitive !lookupbyte val val -> val
-=
+```
 
 =
 int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {

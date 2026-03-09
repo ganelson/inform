@@ -81,14 +81,11 @@ function togglePopup(material_id) {
 not in a way which exactly matches their similarly-named I7 features. So for
 clarity we will call them VN-properties, VM-attributes, VM-objects and VM-classes
 in this section of code. For example, this I6 code:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">mandrake_root</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">class</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mandragora</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">potency</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">edible</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">mandrake_root</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">class</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mandragora</span><span class="plain-syntax">
+	</span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">potency</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax">,
+	</span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">edible</span><span class="plain-syntax">;
+</span></pre>
 <p>creates a VM-object <code>mandrake_root</code> of VM-class <code>Mandragora</code>, which has the
 VM-property <code>potency</code> set to 10, and the VM-attribute <code>edible</code> set.</p>
 </div>
@@ -103,7 +100,7 @@ either-or properties in VM-attributes: there might be too many.</p>
 undeclared ones).</p>
 <p>(c) But VM-attributes, and declared VM-properties, can be accessed just a
 little faster at runtime, and take just a little less storage.</p>
-<p>Because of (c) we don't want to do the simplest possible thing -- i.e., to
+<p>Because of (c) we don't want to do the simplest possible thing — i.e., to
 make everything an undeclared VM-property and be done with it. Instead, we
 do use our limited supplies of (a) and (b), prioritising properties which
 come from kits because that will include all the most frequently-used ones.</p>
@@ -117,19 +114,16 @@ in a VM-property&quot; or &quot;store in a VM-attribute&quot;, respectively. Wor
 then be the choice of VM-property or VM-attribute in question. For example,
 hypothetical I7 properties &quot;potency&quot; and &quot;edible&quot; might have metadata arrays
 like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">A_potency</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span>
-<span class="plain-syntax">                  </span><span class="identifier-syntax">potency</span>
-<span class="plain-syntax">                  </span><span class="constant-syntax">0</span><span class="plain-syntax">   (</span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="string-syntax">"not either-or"</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                  ... (</span><span class="identifier-syntax">permissions</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">A_edible</span><span class="plain-syntax">  </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">2</span>
-<span class="plain-syntax">                  </span><span class="identifier-syntax">edible</span>
-<span class="plain-syntax">                  </span><span class="constant-syntax">1</span><span class="plain-syntax">   (</span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="string-syntax">"either-or"</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                  ... (</span><span class="identifier-syntax">permissions</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<p>Note that at runtime VM-property and VM-attribute numbers may overlap -- so
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	A_potency --&gt; 1
+	              potency
+	              0	  (means "not either-or")
+	              ... (permissions)
+	A_edible  --&gt; 2
+	              edible
+	              1   (means "either-or")
+	              ... (permissions)
+</span></pre>
+<p>Note that at runtime VM-property and VM-attribute numbers may overlap — so
 there is no way to tell from word 1 alone whether it is intended to be a
 VM-property number or a VM-attribute number. Indeed, <code>potency</code> might compile
 to the same number as <code>edible</code>. So word 0 is certainly necessary.</p>
@@ -197,12 +191,9 @@ that definition to be the true one.</p>
 of non-object kinds are not going to be implemented as VM-objects. So if a
 property needs to be given to such a kind, we cannot store it in a VM-attribute.
 For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">red</span><span class="plain-syntax">, </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">blue</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">colour</span>
-<span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">garish</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">dowdy</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">red</span><span class="plain-syntax">, </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">blue</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">colour</span><span class="plain-syntax">
+</span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">garish</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">dowdy</span><span class="plain-syntax">.
+</span></pre>
 <p>Here &quot;red&quot;, &quot;green&quot; and &quot;blue&quot; are not going to be represented by VM-objects
 at runtime: they will be the numbers 1, 2, and 3. So the property &quot;garish&quot;
 cannot be a VM-attribute. (Numbers can't, of course, have VM-properties
@@ -278,25 +269,19 @@ We give it the property's &quot;inner name&quot;: see <a href="2-vo.html" class=
 VM-property: so why is there code here? In fact, old-time Inform 6 coders will
 recognise this situation. Suppose we have a property called <code>example</code>, and
 we have some I6 code making reference to it:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">EnthuseOver</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">example</span><span class="plain-syntax">) </span><span class="string-syntax">"Hey, the example property! How about that!"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"Shucks, just another anonymous property for the pile."</span>
-<span class="plain-syntax">];</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[ </span><span class="identifier-syntax">EnthuseOver</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;
+	</span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">example</span><span class="plain-syntax">) </span><span class="string-syntax">"Hey, the example property! How about that!"</span><span class="plain-syntax">;
+	</span><span class="string-syntax">"Shucks, just another anonymous property for the pile."</span><span class="plain-syntax">
+];
+</span></pre>
 <p>But now suppose that the I6 user has this code available but has, in fact,
 never actually given the <code>example</code> property to any object. That means it is
 never implicitly declared as a VM-property; and so it does not exist as an
 identifier name, which leads to the <code>EnthuseOver</code> function failing to compile.
 We get around this with a trick called &quot;stubbing the property&quot;: placing the
-following precautionary code at the end of the program --</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax">; </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+following precautionary code at the end of the program —</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax">; </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;
+</span></pre>
 <p>Now <code>example</code> exists. It's not a valid VM-property, so it will never be seen
 in the wild. <code>EnthuseOver</code> will never really enthuse, but won't throw syntax
 errors either.</p>
@@ -316,18 +301,12 @@ odd-looking way because of yet another oddity in the I6 compiler whereby not all
 VM-property names can be used as array entries, whereas they can all be used
 as values of defined <code>Constant</code>s. (This in particular is true of the special
 property <code>name</code>.) So we define</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">subterfuge_20</span><span class="plain-syntax"> = </span><span class="identifier-syntax">example</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">P_edible</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">subterfuge_20</span><span class="plain-syntax"> ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">subterfuge_20</span><span class="plain-syntax"> = </span><span class="identifier-syntax">example</span><span class="plain-syntax">;
+</span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">P_edible</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">subterfuge_20</span><span class="plain-syntax"> ...
+</span></pre>
 <p>rather than:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">P_edible</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax"> ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">P_edible</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax"> ...
+</span></pre>
 <p>The intent of these is the same, of course.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the two opening words of the property metadata</span><span class="named-paragraph-number">4.6</span></span> =</p>
@@ -442,11 +421,8 @@ to the VPH VM-object.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b>  And instances of enumerated kinds are simply declared as constant values,
 equal to their enumeration numbers. So for e.g.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">Red</span><span class="plain-syntax">, </span><span class="identifier-syntax">blue</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Colour</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">Red</span><span class="plain-syntax">, </span><span class="identifier-syntax">blue</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">green</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">colours</span><span class="plain-syntax">.
+</span></pre>
 <p>...we would declare the constant <code>I_blue</code> as being equal to 2, Inform having
 enumerated these colours as 1, 2, 3.</p>
 </div>
@@ -479,7 +455,7 @@ If the spatial feature wasn't loaded then we have no notion of containment,
 all arrow counts are 0, and we define a flat sequence of free-standing objects.</p>
 <p>One last oddball thing is that direction objects have to be compiled in I6
 as if they were spatially inside a special VM-object called <code>Compass</code>. This
-doesn't really make much conceptual sense, and I7 dropped the idea -- it has no
+doesn't really make much conceptual sense, and I7 dropped the idea — it has no
 &quot;compass&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -530,13 +506,10 @@ people to create no further pseudo-objects.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  That just leaves property values. The wrinkle here is the peculiar syntax
 used for I6's inline property arrays, which look like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="character-syntax">'hoochie'</span><span class="plain-syntax"> </span><span class="character-syntax">'coochie'</span><span class="plain-syntax"> </span><span class="character-syntax">'band'</span><span class="plain-syntax">,</span>
-</pre>
-<div class="lsmarkdown">
-<p>At the Inter level, this is represented by having the property value -- i.e.
-the pair <code>val1</code>, <code>val2</code> below -- refer to a constant list containing three
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="character-syntax">'hoochie'</span><span class="plain-syntax"> </span><span class="character-syntax">'coochie'</span><span class="plain-syntax"> </span><span class="character-syntax">'band'</span><span class="plain-syntax">,
+</span></pre>
+<p>At the Inter level, this is represented by having the property value — i.e.
+the pair <code>val1</code>, <code>val2</code> below — refer to a constant list containing three
 entries (the three dictionary words above). But if we compiled that directly,
 then an attempt to look up the property address <code>obj.&amp;name</code> would return the
 address of the address of the array, not the address of the array itself. So

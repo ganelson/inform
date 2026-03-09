@@ -78,8 +78,8 @@ location_requirement LocationRequirements::plug(void) {
 
 @ "You must put me in a submodule, identified by `sid`, of some module." In
 practice, //inform7// uses this to place material in the module associated with
-the compilation unit where the material came from -- the source text, or a
-particular extension -- and this is why the term "local" is used.
+the compilation unit where the material came from — the source text, or a
+particular extension — and this is why the term "local" is used.
 
 =
 location_requirement LocationRequirements::local_submodule(submodule_identity *sid) {

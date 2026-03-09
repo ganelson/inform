@@ -83,14 +83,11 @@ MathJax = {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Adjectives can have multiple meanings. For example, it is legal to define
 both of these in the same source text:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">.
 
-<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span>
-<span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">filled</span><span class="plain-syntax"> </span><span class="identifier-syntax">rows</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">empty</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax">
+</span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">filled</span><span class="plain-syntax"> </span><span class="identifier-syntax">rows</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">.
+</span></pre>
 <p>This gives two different meanings to both &quot;empty&quot; and &quot;non-empty&quot;. We can
 only work out which meaning is intended by looking at the context, that is,
 at the kind of whatever it is applied to. For a text, the first sense applies,
@@ -116,7 +113,7 @@ and for a table name, the second.</p>
 appropriate APH (creating if necessary) and then add the new meaning to the
 end of its unsorted meaning list.</p>
 <p>We eventually need to sort this list of definitions into logical priority
-order -- so that a definition applying to just Count Dracula precedes one
+order — so that a definition applying to just Count Dracula precedes one
 applying to men, which in turn precedes one applying to things. (Priority
 order is irrelevant when two senses apply to domains with no overlap, as
 in the case of texts and table names.) It's convenient and costs little
@@ -151,12 +148,12 @@ object \INWEBMATH(X\INWEBMATH), when does that make sense?</p>
 <p>We can only find out by checking every possible meaning of &quot;open&quot; to see
 if it can accommodate the kind of value of \INWEBMATH(X\INWEBMATH). But this time we use weak
 checking, and make it weaker still since a null kind is taken to mean &quot;any
-object&quot;, either in the AM's definition -- which can happen if we are very
-early in Inform's run -- or because the caller doesn't actually know the
+object&quot;, either in the AM's definition — which can happen if we are very
+early in Inform's run — or because the caller doesn't actually know the
 kind of value of \INWEBMATH(X\INWEBMATH). (In other words, adjectives tend to assume they apply
 to objects rather than other values.) This means we will accept some
-logically impossible outcomes -- we would say that it's acceptable to apply
-&quot;open&quot; to an animal, say -- but that is actually a good thing. It means
+logically impossible outcomes — we would say that it's acceptable to apply
+&quot;open&quot; to an animal, say — but that is actually a good thing. It means
 that &quot;list of open things&quot; or &quot;something open&quot; are allowed. Source text
 such as:</p>
 <blockquote>

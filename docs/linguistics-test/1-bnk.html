@@ -65,7 +65,7 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Keeping the syntax module happy.</b>  We are going to need to use the sentence-breaking apparatus from the <a href="../syntax-module/index.html" class="internal">syntax</a>
 module, which means that the following four nonterminals need to exist. But in
-fact they are really just placeholders -- they are wired so that they can never
+fact they are really just placeholders — they are wired so that they can never
 match any text.</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -113,15 +113,12 @@ sentence.</p>
 below. This is not parsed by the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module at all: we do it all
 with the facilities offered by the <a href="../syntax-module/index.html" class="internal">syntax</a> and <a href="../words-module/index.html" class="internal">words</a> modules.</p>
 <p>Typical lines in the vocabulary look like this:</p>
-</div>
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">CARRIES</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">relationship</span><span class="Preform-plain-syntax">.</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">be</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">copular</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">with</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">priority</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">2</span><span class="Preform-plain-syntax">.</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax">- </span><span class="Preform-identifier-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax">- = </span><span class="Preform-identifier-syntax">CARRIES</span><span class="Preform-plain-syntax">-</span><span class="Preform-identifier-syntax">reversed</span><span class="Preform-plain-syntax">.</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">Beth</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">feminine</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">proper</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">noun</span><span class="Preform-plain-syntax">.</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">sailor</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">neuter</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">common</span><span class="Preform-plain-syntax"> </span><span class="Preform-type-syntax">noun</span><span class="Preform-plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	CARRIES = relationship.
+	be = copular verb with priority 2.
+	-- be on -- = CARRIES-reversed.
+	Beth = feminine proper noun.
+	sailor = neuter common noun.
+</span></pre>
 <p>And these are parsed by the following simple Preform grammar:</p>
 </div>
 <pre class="Preform-displayed-code all-displayed-code code-font">

@@ -85,16 +85,13 @@ ask for data or action.</p>
 <p>The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @d EXPRESS_SURPRISE_CALCULUS_CALLBACK Emotions::zowie</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	@d EXPRESS_SURPRISE_CALCULUS_CALLBACK Emotions::zowie
 
-<span class="plain-syntax">    =</span>
-<span class="plain-syntax">    void Emotions::zowie(text_stream *OUT) {</span>
-<span class="plain-syntax">        WRITE("Zowie!\n");</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+	=
+	void Emotions::zowie(text_stream *OUT) {
+	    WRITE("Zowie!\n");
+	}
+</span></pre>
 <p>The calculus module has only a few callbacks and all are optional. The
 following alphabetical list has references to fuller explanations:</p>
 <ul>
@@ -117,7 +114,7 @@ error message: see <a href="4-tcp.html#SP11" class="internal">TypecheckPropositi
 </li>
 <li>
 <p><code>PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK</code> can provide the <code>nothing</code> constant;
-see above, and see <a href="5-smp.html#SP15" class="internal">Simplifications::not_related_to_something</a>.</p>
+see above, and see <a href="5-smp.html#SP14" class="internal">Simplifications::not_related_to_something</a>.</p>
 </li>
 </ul>
 </div>

@@ -20,7 +20,7 @@ void EvaluationInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of an `evaluation` instruction is laid out with just the two
-compulsory words -- see //Inter Nodes//.
+compulsory words — see //Inter Nodes//.
 
 =
 inter_error_message *EvaluationInstruction::new(inter_bookmark *IBM, int level,

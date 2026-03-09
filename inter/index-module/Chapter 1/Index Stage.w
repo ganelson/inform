@@ -13,7 +13,7 @@ void IndexStage::create_pipeline_stage(void) {
 }
 
 @ The implementation here needs an `inform_project` structure to work from,
-and that exists only in the //supervisor// module -- which is not a part of
+and that exists only in the //supervisor// module — which is not a part of
 the Inter stand-alone tool. So running `inter` at the command line does not
 allow the indexer to do anything.
 

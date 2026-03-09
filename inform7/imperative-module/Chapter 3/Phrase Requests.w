@@ -40,10 +40,12 @@ inter_name *PhraseRequests::complex_request(id_body *idb, kind *req_kind,
 }
 
 @ Suppose the phrase is defined inline, like so:
-= (text as Inform 7)
+
+``` Inform7
 To judge (V - a value) against (W - a value):
 	(- JudgeAgainst({V}, {W}); -)
-=
+```
+
 We then assume that `JudgeAgainst` is provided by some kit of Inter code, and
 can handle values of any kind which this may produce. So we return its iname,
 and do not make a request. If the definition is any more complex than this,
@@ -87,14 +89,13 @@ we simply give in and throw a problem.
 for the request needed.
 
 =
-typedef struct to_phrase_request {
+classdef to_phrase_request {
 	struct id_body *compile_from;
 	struct kind *req_kind;
 	struct kind *kv_interpretation[27];
 	struct inter_name *req_iname;
 	struct inter_name *md_iname;
-	CLASS_DEFINITION
-} to_phrase_request;
+}
 
 to_phrase_request *PhraseRequests::request_inner(id_body *idb, kind *K,
 	kind_variable_declaration *kvd, wording W) {

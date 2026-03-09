@@ -9,11 +9,10 @@ assimilating a binary for a kit is a skill.
 Each different skill is an instance of:
 
 =
-typedef struct build_skill {
+classdef build_skill {
 	struct text_stream *name;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} build_skill;
+}
 
 build_skill *BuildSteps::new_skill(text_stream *name) {
 	build_skill *S = CREATE(build_skill);
@@ -44,15 +43,14 @@ for us using only the contextual information in this structure, without having
 to access any of `inbuild`'s variables directly.
 
 =
-typedef struct build_step {
+classdef build_step {
 	struct build_skill *what_to_do;
 	struct build_vertex *vertex; /* what to do it to */
 	struct target_vm *for_vm;
 	struct inter_architecture *for_arch;
 	int for_release;
 	struct inbuild_copy *associated_copy; /* e.g., the Inform project causing this work */
-	CLASS_DEFINITION
-} build_step;
+}
 
 @ We build scripts for a vertex by attaching one step at a time to it:
 

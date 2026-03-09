@@ -69,7 +69,7 @@ void UsingProblems::final_report(int disaster_struck, int problems_count) {
 @ One of the slightly annoying things about internal errors is that Inform's
 users persistently refer to them as "crashes" on bug report forms. I mean,
 the effort we go to! These are entirely clean exits from the program! The
-ingratitude of some -- oh, all right.
+ingratitude of some — oh, all right.
 
 @<Issue problem summary for an internal error@> =
 	Sequence::backtrace(); /* to the debugging log */
@@ -111,15 +111,15 @@ ingratitude of some -- oh, all right.
 @ The success message needs to take different forms in `stdout` and in
 the Problems log file. In the latter, we write as though the subsequent
 conversion of Inform's output to a story file via Inform 6 had already been
-completed successfully -- this is because the Problems log is intended
+completed successfully — this is because the Problems log is intended
 to be viewed inside the Inform application, which will instead divert to
 an error page if I6 should fail. So although the Problems file contains
 an unwarranted claim, if not an actual falsehood, no human eye should see
 it unless and until it comes true.
 
-We don't want to make similar claims on `stdout`, where the user -- who
+We don't want to make similar claims on `stdout`, where the user — who
 might well not be running in the Inform application, but only on the
-command line -- deserves the truth.
+command line — deserves the truth.
 
 @<Issue problem summaries for a run without problems@> =
 	text_stream *OUT = ProblemBuffer::redirect_problem_stream(problems_file);
@@ -231,8 +231,8 @@ void UsingProblems::outcome_image_tail(OUTPUT_STREAM) {
 used when an assertion sentence has gone wrong. Experience from the early
 builds of the Public Beta showed that many people tried syntaxes which
 Inform did not recognise, and which cause Inform to misread the primary
-verb of the sentence. It would then issue a Problem -- because the sentence
-would be peculiar -- but this problem report would itself be odd, and
+verb of the sentence. It would then issue a Problem — because the sentence
+would be peculiar — but this problem report would itself be odd, and
 make little sense to the user. So we look to see if the current sentence
 is an assertion with a primary verb: and if it is, we hunt through it
 for alternative verbs which might have been intended, and try to produce

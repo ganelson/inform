@@ -17,11 +17,13 @@ void I6TargetCode::create_generator(code_generator *gtr) {
 @h Functions.
 Inform 6 originated as an assembler briefly called "zass", and its assembly-language
 character can still be seen in the way functions are declared:
-= (text as Inform 6)
+
+``` Inform6
 [ FunctionName local1 local2 local3 ... localn;
 	...
 ];
-=
+```
+
 Here `local1`, `local2`, ..., `localn` are all of the local variables accessible
 from the function; the earliest will be used as call parameters, all subsequent
 ones being initially zero.
@@ -121,8 +123,8 @@ be done except for a slight slowdown.
 At the suggestion of Adrian Welcker, the code below uses the new accelerated
 function numbers 8 to 13 in place of the previously valid 2 to 7, which are new
 in Glulx 3.1.3. This is a trade-off: it means they behave correctly if the
-Inform 6 constant `NUM_ATTR_BYTES` is altered -- in effect, it's getting around
-a bug in the previous Glulx spec -- but on the other hand, these accelerated
+Inform 6 constant `NUM_ATTR_BYTES` is altered — in effect, it's getting around
+a bug in the previous Glulx spec — but on the other hand, these accelerated
 functions do not exist in earlier Glulx implementations. However, takeup of
 3.1.3 has been swift. (See Jira bug I7-2328 and I7-1162.)
 
@@ -155,12 +157,14 @@ functions do not exist in earlier Glulx implementations. However, takeup of
 @h Labels.
 Labels in Inform 6 are `jump` destinations, much as in C they are `goto` destinations.
 A full stop indicates where they are positioned:
-= (text as Inform 6)
+
+``` Inform6
 	if (whatever) jump Catastrophe;
 		...
 	.Catastrophe;
 		...
-=
+```
+
 Inter identifiers for labels also start with full stops. So:
 
 =
@@ -299,8 +303,8 @@ void I6TargetCode::invoke_primitive(code_generator *gtr, code_generation *gen,
 @ Mostly easy, because the Inter primitives here were so closely modelled on
 their Inform 6 analogues in the first place.
 
-For example, although `!alternative` is a very unusual linguistic feature --
-it allows alternatives in several conditions, e.g., `if (x == 1 or 2 or 3) ...` --
+For example, although `!alternative` is a very unusual linguistic feature —
+it allows alternatives in several conditions, e.g., `if (x == 1 or 2 or 3) ...` —
 it corresponds directly to the `or` keyword of Inform 6, so generating it is trivial.
 
 @<Basic arithmetic and logical operations@> =
@@ -360,12 +364,14 @@ is a known infelicity of the I6 syntax analyser that it won't always allow the
 serial comma to be mixed in the same expression with the function argument
 comma: for example in the case `(a(b, c), d)`, where the first comma constructs
 a list of arguments and the second is the operator. (Many such expressions work
-fine in I6 -- but not all.)
+fine in I6 — but not all.)
 
 That being so, we use the following circumlocution:
-= (text as Inform 6)
+
+``` Inform6
 	(c) + 0*((b) + (a))
-=
+```
+
 Because I6 evaluates the leaves in an expression tree right-to-left, not
 left-to-right, the parameter assignments happen first, then the conditions,
 then the result.
@@ -439,8 +445,8 @@ also be cases where P cannot be identified at compile-time, so that we have no
 way to know whether it will be stored as a VM-attribute or not.
 
 To handle these two cases, then, we will compile an attempt to store or modify
-a property value either as a `give` statement -- if we can prove P is being
-stored in a VM-attribute -- or else as a function call to a general-purpose
+a property value either as a `give` statement — if we can prove P is being
+stored in a VM-attribute — or else as a function call to a general-purpose
 function called `_final_change_property`.
 
 @<Alter a property value@> =
@@ -525,23 +531,27 @@ what is definitely a VM-object. This optimisation results in faster code.
 @ In the most general case of `!propertyvalue`, we will end up calling the function
 `_final_propertyvalue`. But we don't do so right away because, annoyingly, `!propertyvalue`
 can have `!alternative` children supplied. We might find this, for example:
-= (text as Inter)
+
+``` Inter
 inv !if
 	inv !propertyvalue
 		val K_object harmonium
 		inv !alternative
 		    val K_value P_sonorous
 		    val K_value P_muted
-=
+```
+
 ...arising from kit code such as `if (harmonium has sonorous or muted) ...`.
 This only seldom arises, so perhaps we can be given for handling it less than
 optimally in all cases. We turn it into:
-= (text as Inform 6)
+
+``` Inform6
 	if (((or_tmp_var = harmonium) && (or_tmp_var has sonorous)) ||
 		(or_tmp_var has muted))
-=
+```
+
 Note that `or_tmp_var` is used here so that the left operand, i.e., the object,
-is evaluated only once -- in case there are side-effects of the evaluation.
+is evaluated only once — in case there are side-effects of the evaluation.
 
 =
 void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K, 

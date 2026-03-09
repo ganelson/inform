@@ -7,9 +7,11 @@ text, and word inflection.
 Our main operation here is a "merge". This extracts the text from a production,
 substituting the ingredient text in place of any `...` it finds. (Other
 wildcards and nonterminals are ignored.) For example, merging the production
-= (text as Preform)
+
+``` Preform
 	fried ... tomatoes
-=
+```
+
 with "orange" results in "fried orange tomatoes".
 
 =
@@ -120,15 +122,17 @@ single avinue.
 
 @ Each production contains one or two tokens. There are four possibilities for
 the production:
-= (text)
+
+``` None
 	(1)   ... <some-nonterminal>
 	(2)   <some-nonterminal> ...
 	(3)   <some-nonterminal>
 	(4)   pattern-word instructions-word
-=
+```
+
 Cases (1), (2) and (3) are allowed only in list grammars; case (4) is allowed
 only in content grammars. The `...` indicates whether the trie in the named
-nonterminal will act on the start or end of a word -- this is needed only to
+nonterminal will act on the start or end of a word — this is needed only to
 override the normal convention.
 
 @<Consider the one- or two-token production in this nonterminal@> =
@@ -195,8 +199,8 @@ void PreformUtilities::log_avinues(void) {
 
 @h Errors.
 People are going to get their tries wrong; it's a very hard notation
-to learn. No end users of Inform will ever write them at all -- this is a
-low-level feature for translators only -- but translators need all the help
+to learn. No end users of Inform will ever write them at all — this is a
+low-level feature for translators only — but translators need all the help
 they can get, so we'll try to provide good problem messages.
 
 =

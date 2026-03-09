@@ -6,7 +6,7 @@ instruction in bytecode being a usage of one of them.
 @ Each different construct is represented by an instance of the following:
 
 =
-typedef struct inter_construct {
+classdef inter_construct {
 	inter_ti construct_ID; /* used to identify this in bytecode */
 	struct text_stream *construct_name;
 
@@ -23,9 +23,7 @@ typedef struct inter_construct {
 	int TID_field; /* if this instruction declares a symbol with a type, -1 otherwise */
 
 	struct method_set *methods; /* what it does is entirely specified by these */
-
-	CLASS_DEFINITION
-} inter_construct;
+}
 
 inter_construct *InterInstruction::create_construct(inter_ti ID, text_stream *name) {
 	inter_construct *IC = CREATE(inter_construct);
@@ -50,7 +48,7 @@ inter_construct *InterInstruction::create_construct(inter_ti ID, text_stream *na
 
 @ Numerous constructs are for instructions which define symbols, and sometimes
 those have a data type attached. If so, the symbol ID will live in one field
-of an instruction made with that construct, and the data type (in TID form --
+of an instruction made with that construct, and the data type (in TID form —
 see //Inter Data Types//) will live in another.
 
 =
@@ -64,7 +62,7 @@ using this construct can appear. `min_level` to `max_level`, inclusive, give
 the range of hierarchical levels within their packages which such instructions
 can occur at.
 
-By default, note that a construct can only be used at the top level of a package --
+By default, note that a construct can only be used at the top level of a package —
 min and max both equal 0; and by default, it has no usage permissions at all.
 Those must be explicitly granted when a new construct is created.
 
@@ -129,7 +127,7 @@ int InterInstruction::allows(inter_construct *IC, int icup) {
 	return FALSE;
 }
 
-@ Second, for a proposed use of node not yet in position -- this is used when
+@ Second, for a proposed use of node not yet in position — this is used when
 reading textual inter, hence the message about indentation:
 
 =

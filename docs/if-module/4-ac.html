@@ -64,13 +64,10 @@ function togglePopup(material_id) {
 write &quot;if taking or dropping something&quot;, for example, and this is implicitly
 a test of what the current action is.</p>
 <p>This is represented in the parse tree as the twig:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEST_VALUE_NT</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CONSTANT_NT</span>
-</pre>
-<div class="lsmarkdown">
-<p>where the constant below is the action seen as a noun -- linguistically, a
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	TEST_VALUE_NT
+		CONSTANT_NT
+</span></pre>
+<p>where the constant below is the action seen as a noun — linguistically, a
 &quot;gerund&quot;. It will always have the kind <code>K_stored_action</code> or <code>K_description_of_action</code>,
 depending on whether the test is against an explicit action or something vaguer.</p>
 <p>Here we create and test for such twigs:</p>

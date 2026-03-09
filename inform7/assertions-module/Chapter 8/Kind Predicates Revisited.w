@@ -16,14 +16,16 @@ void KindPredicatesRevisited::start(void) {
 	METHOD_ADD(kind_up_family, SCHEMA_UPF_MTID, KindPredicatesRevisited::get_schema);
 }
 
-@ We will reject any "kind" applied to a constant if it necessarily fails --
+@ We will reject any "kind" applied to a constant if it necessarily fails —
 even when the sense of the proposition is arguably correct. For example:
-= (text)
+
+``` None
 	1. 100 is not a text
 	<< NOT< text('100') NOT> >>
 	Failed: proposition would not type-check
 	Term '100' is number not text
-=
+```
+
 "100 is not a number" would pass, on the other hand. It is obviously false,
 but not meaningless.
 

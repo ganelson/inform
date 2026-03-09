@@ -28,13 +28,12 @@ Each kind (in this example "container") keeps a linked list of the
 generalisations which apply to it.
 
 =
-typedef struct generalisation {
+classdef generalisation {
 	struct parse_node *look_for; /* prototype situation to look for */
 	struct parse_node *what_to_make; /* subtree for what to assemble */
 	struct parse_node *substitute_at; /* position under `look_for` of the EVERY node */
 	struct generalisation *next; /* next in list of generalisations about kind */
-	CLASS_DEFINITION
-} generalisation;
+}
 
 @ For reasons to do with timing, each object needs to keep track of which
 generalisations have and have not yet applied to it. In practice, this is
@@ -42,11 +41,11 @@ a list of pairs $(K, g)$ where $K$ is a kind and $g$ is the most recent one
 applied from $K$'s list.
 
 =
-typedef struct application {
+classdef application in 100s {
 	struct inference_subject *generalisation_owner;
 	struct generalisation *latest_applied;
 	struct application *next;
-} application;
+}
 
 @ These structures are combined in the following packet of data attached to
 each inference subject:
@@ -277,8 +276,8 @@ which is significantly better than a bitmap recording all pairs of generalisatio
 and objects (which would be $O(GN)$). The running time of `Assertions::Assemblies::satisfies_generalisations`
 applied to object $X$ is $O(G_X H^2)$, where $G_X$ is the number of generalisations
 which can be applied to $X$. In the course of compilation this is called once
-each time the kind of $X$ is changed -- at most $H$ times -- and once each time
-a new generalisation applicable to $X$ is added -- at most $G_X$ times. So we
+each time the kind of $X$ is changed — at most $H$ times — and once each time
+a new generalisation applicable to $X$ is added — at most $G_X$ times. So we
 have a total time consumption of $O(G_X^2 H^2 + G_X H^3)$. In practice the
 constants are low, $G_X$ is very small compared to the size of the source
 text, and so is $H$.

@@ -132,7 +132,7 @@ page to a new state. This routine goes to state (1):
 	WRITE("	}\n");
 
 @ This routine goes to state (2), where the `id` is the ID of the content
-element -- `segment1`, `segment2`, ...
+element — `segment1`, `segment2`, ...
 
 @<Write Javascript code for showing only one element on the page@> =
 	WRITE("function show_only_one_element(id) {\n");

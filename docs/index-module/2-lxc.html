@@ -83,7 +83,7 @@ under a single umbrella:</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MVERB_TLEXE</span> <span class="constant-syntax">9</span><span class="plain-syntax"> </span><span class="comment-syntax">/* a meaningless verb */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lemma</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">part_of_speech</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of those above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">category</span><span class="plain-syntax">; </span><span class="comment-syntax">/* textual description of said, e.g., <code>&quot;adjective&quot;</code> */</span>
@@ -93,8 +93,7 @@ under a single umbrella:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">link_to</span><span class="plain-syntax">; </span><span class="comment-syntax">/* word number in source text */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reduced_to_lower_case</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text converted to lower case for sorting */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sorted_next</span><span class="plain-syntax">; </span><span class="comment-syntax">/* next in lexicographic order */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure index_lexicon_entry is accessed in 3/ve2 and here.</li></ul>
 <div class="lsmarkdown">
@@ -102,18 +101,17 @@ under a single umbrella:</p>
 order, then sorted.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inter_lexicon</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inter_lexicon</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unsorted</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first</span><span class="plain-syntax">; </span><span class="comment-syntax">/* head of list in lexicographic order */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">inter_lexicon</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_lexicon is accessed in 3/ve2 and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Creating a lexicon.</b>  And this is where that happens:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">inter_lexicon</span><span class="plain-syntax"> *</span><span class="function-syntax">IndexLexicon::stock</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">IndexLexicon::stock</span></span>:<br/>Indexing API - <a href="1-ia.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree_inventory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_lexicon</span><span class="plain-syntax"> *</span><span class="function-syntax">IndexLexicon::stock</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">IndexLexicon::stock</span></span>:<br/>Indexing API - <a href="1-ia.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree_inventory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_lexicon</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lexicon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">inter_lexicon</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lexicon</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lexicon</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unsorted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="type-syntax">index_lexicon_entry</span><span class="plain-syntax">);</span>
@@ -294,11 +292,8 @@ indentation and no interparagraph spacing, so we need to insert regular
 paragraphs between the As and the Bs, then between the Bs and the Cs, and so on.
 Each entry consists of the wording, then maybe some icons, then an explanation
 of what it is: for instance,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">player</span><span class="character-syntax">'s holdall [icon]    noun, a kind of container</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">player's holdall [icon]    noun, a kind of container
+</span></pre>
 <p>In a few cases, there is a further textual gloss to add.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

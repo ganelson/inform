@@ -68,22 +68,19 @@ symbol in one package to connect to a symbol in the other.</p>
 <p>For example, suppose the variable <code>draconia</code> is defined in package <code>Y</code>, but
 needs to be referred to in <code>X</code>. Then <code>X</code> will also contain a symbol <code>draconia</code>,
 but rather than being defined there, it is wired to the one in <code>Y</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    +-----------------+        +-------------------------------+</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">       |        | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax">                     |</span>
-<span class="plain-syntax">    |                 |        |                               |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">draconia</span><span class="plain-syntax"> ~~~~~~~~~~~~+~~~~~&gt; </span><span class="identifier-syntax">draconia</span><span class="plain-syntax">                    |</span>
-<span class="plain-syntax">    +-----------------+   /    | .....                         |</span>
-<span class="plain-syntax">                          |    | </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_int32</span><span class="plain-syntax"> </span><span class="identifier-syntax">draconia</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">                          |    +-------------------------------+</span>
-<span class="plain-syntax">    +-----------------+   |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">       |   |</span>
-<span class="plain-syntax">    |                 |   |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">draconia</span><span class="plain-syntax"> ~~~~~~~~~~~/</span>
-<span class="plain-syntax">    +-----------------+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    +-----------------+        +-------------------------------+
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |        | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">                     |
+    |                 |        |                               |
+    | </span><span class="element-syntax">draconia</span><span class="plain-syntax"> ~~~~~~~~~~~~+~~~~~&gt; </span><span class="element-syntax">draconia</span><span class="plain-syntax">                    |
+    +-----------------+   /    | .....                         |
+                          |    | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">K_int32</span><span class="plain-syntax"> </span><span class="element-syntax">draconia</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |
+                          |    +-------------------------------+
+    +-----------------+   |
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">W</span><span class="plain-syntax">       |   |
+	|                 |   |
+    | </span><span class="element-syntax">draconia</span><span class="plain-syntax"> ~~~~~~~~~~~/
+    +-----------------+
+</span></pre>
 <p>We write <code>A ~~&gt; B</code> as a picturesque notation; the wiring is supposed to look
 coiled, or something like that. As this diagram shows, it can happen that more
 than one symbol is wired to the same destination; but each individual symbol
@@ -109,7 +106,7 @@ can wire to at most one other.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  If <code>A ~~&gt; B</code> then <code>A</code> is said to be &quot;wired&quot;, and <code>B</code> is what it is wired to.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Wiring::is_wired</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Wiring::is_wired</span></span>:<br/><a href="2-tw2.html#SP12">&#167;12</a>, <a href="2-tw2.html#SP15">&#167;15</a>, <a href="2-tw2.html#SP17">&#167;17</a><br/>Symbols - <a href="2-sym.html#SP18">&#167;18</a><br/>Transmigration - <a href="2-trn.html#SP5_2_2">&#167;5.2.2</a>, <a href="2-trn.html#SP6">&#167;6</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_2_4">&#167;10.2.4</a><br/>Inter in Text Files - <a href="3-iitf.html#SP10">&#167;10</a><br/>Verifying Inter - <a href="3-vi.html#SP1_2_1">&#167;1.2.1</a><br/>The Plug Construct - <a href="6-tpc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Wiring::is_wired</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Wiring::is_wired</span></span>:<br/><a href="2-tw2.html#SP12">&#167;12</a>, <a href="2-tw2.html#SP15">&#167;15</a>, <a href="2-tw2.html#SP17">&#167;17</a><br/>Symbols - <a href="2-sym.html#SP18">&#167;18</a><br/>Transmigration - <a href="2-trn.html#SP4_2_2">&#167;4.2.2</a>, <a href="2-trn.html#SP5">&#167;5</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_2_4">&#167;10.2.4</a><br/>Inter in Text Files - <a href="3-iitf.html#SP10">&#167;10</a><br/>Verifying Inter - <a href="3-vi.html#SP1_2_1">&#167;1.2.1</a><br/>The Plug Construct - <a href="6-tpc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-tw2.html#SP2" class="function-link"><span class="function-syntax">Wiring::wired_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -120,14 +117,14 @@ can wire to at most one other.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  This metaphor only goes so far: wiring is directional -- if A is wired to B then
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  This metaphor only goes so far: wiring is directional — if A is wired to B then
 B is not by virtue of that wired to A; and indeed, circuits are forbidden.</p>
 <p>Nevertheless it does happen that we have a sequence of symbols each wired to
 the next: <code>A ~~&gt; B ~~&gt; C ~~&gt; ... ~~&gt; X</code>. Following such cables, we must always
 reach an end. On all these symbols, <a href="2-tw2.html#SP3" class="internal">Wiring::cable_end</a> returns <code>X</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::cable_end</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Wiring::cable_end</span></span>:<br/><a href="2-tw2.html#SP6">&#167;6</a>, <a href="2-tw2.html#SP12">&#167;12</a><br/>Symbols Tables - <a href="2-st.html#SP5_2">&#167;5.2</a>, <a href="2-st.html#SP13">&#167;13</a><br/>Transmigration - <a href="2-trn.html#SP3_5">&#167;3.5</a>, <a href="2-trn.html#SP3_5_1">&#167;3.5.1</a>, <a href="2-trn.html#SP5_2_2">&#167;5.2.2</a>, <a href="2-trn.html#SP6">&#167;6</a><br/>Inter in Text Files - <a href="3-iitf.html#SP10">&#167;10</a><br/>Verifying Inter - <a href="3-vi.html#SP1_2_1">&#167;1.2.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::cable_end</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Wiring::cable_end</span></span>:<br/><a href="2-tw2.html#SP6">&#167;6</a>, <a href="2-tw2.html#SP12">&#167;12</a><br/>Symbols Tables - <a href="2-st.html#SP5_2">&#167;5.2</a>, <a href="2-st.html#SP13">&#167;13</a><br/>Transmigration - <a href="2-trn.html#SP3_6">&#167;3.6</a>, <a href="2-trn.html#SP3_6_1">&#167;3.6.1</a>, <a href="2-trn.html#SP4_2_2">&#167;4.2.2</a>, <a href="2-trn.html#SP5">&#167;5</a><br/>Inter in Text Files - <a href="3-iitf.html#SP10">&#167;10</a><br/>Verifying Inter - <a href="3-vi.html#SP1_2_1">&#167;1.2.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">S</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wiring</span><span class="plain-syntax">.</span><span class="element-syntax">connects_to</span><span class="plain-syntax">)) </span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wiring</span><span class="plain-syntax">.</span><span class="element-syntax">connects_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -153,7 +150,7 @@ of the program must not be changed by their removal.</p>
 <p>Note that <code>S</code> may be unwired by calling <code>Wiring::wire_to(S, NULL)</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Wiring::wire_to</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Wiring::wire_to</span></span>:<br/><a href="2-tw2.html#SP6">&#167;6</a>, <a href="2-tw2.html#SP7">&#167;7</a>, <a href="2-tw2.html#SP13">&#167;13</a>, <a href="2-tw2.html#SP16">&#167;16</a><br/>Symbols Tables - <a href="2-st.html#SP16_1_2">&#167;16.1.2</a>, <a href="2-st.html#SP21">&#167;21</a><br/>Transmigration - <a href="2-trn.html#SP3_5_1">&#167;3.5.1</a>, <a href="2-trn.html#SP5_2_2_1">&#167;5.2.2.1</a>, <a href="2-trn.html#SP5_2_2_2">&#167;5.2.2.2</a>, <a href="2-trn.html#SP5_2_2_3">&#167;5.2.2.3</a>, <a href="2-trn.html#SP6_1">&#167;6.1</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_4">&#167;10.1.4</a><br/>Inter in Text Files - <a href="3-iitf.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Wiring::wire_to</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Wiring::wire_to</span></span>:<br/><a href="2-tw2.html#SP6">&#167;6</a>, <a href="2-tw2.html#SP7">&#167;7</a>, <a href="2-tw2.html#SP13">&#167;13</a>, <a href="2-tw2.html#SP16">&#167;16</a><br/>Symbols Tables - <a href="2-st.html#SP16_1_2">&#167;16.1.2</a>, <a href="2-st.html#SP21">&#167;21</a><br/>Transmigration - <a href="2-trn.html#SP3_6_1">&#167;3.6.1</a>, <a href="2-trn.html#SP4_2_2_1">&#167;4.2.2.1</a>, <a href="2-trn.html#SP4_2_2_2">&#167;4.2.2.2</a>, <a href="2-trn.html#SP4_2_2_3">&#167;4.2.2.3</a>, <a href="2-trn.html#SP5_1">&#167;5.1</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_1_4">&#167;10.1.4</a><br/>Inter in Text Files - <a href="3-iitf.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"null symbol cannot be wired"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="2-sym.html#SP10" class="function-link"><span class="function-syntax">InterSymbol::is_metadata_key</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">)) || ((</span><span class="identifier-syntax">T</span><span class="plain-syntax">) &amp;&amp; (</span><a href="2-sym.html#SP10" class="function-link"><span class="function-syntax">InterSymbol::is_metadata_key</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">))))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"metadata keys cannot be wired"</span><span class="plain-syntax">);</span>
@@ -215,7 +212,7 @@ and that for <code>X</code> increment.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Wiring to names.</b>  It is also possible to say that a symbol has a meaning whose location is not
-yet known -- we can't have <code>A ~~&gt; B</code> because we don't know where <code>B</code> is, and
+yet known — we can't have <code>A ~~&gt; B</code> because we don't know where <code>B</code> is, and
 maybe it does not even exist yet. All we know is that it will have a given
 name, <code>T</code>. In this case, we write <code>A ~~&gt; &quot;ogron&quot;</code> to say that <code>A</code> should one
 day be wired to a <code>B</code> called <code>&quot;ogron&quot;</code>.</p>
@@ -237,7 +234,7 @@ made.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::wired_to_name</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Wiring::wired_to_name</span></span>:<br/><a href="2-tw2.html#SP15">&#167;15</a><br/>Symbols Tables - <a href="2-st.html#SP20">&#167;20</a><br/>Transmigration - <a href="2-trn.html#SP5_2_2_2">&#167;5.2.2.2</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_2_3_2_2">&#167;10.2.3.2.2</a><br/>Inter in Text Files - <a href="3-iitf.html#SP5_1">&#167;5.1</a>, <a href="3-iitf.html#SP7_1">&#167;7.1</a><br/>The Plug Construct - <a href="6-tpc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::wired_to_name</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Wiring::wired_to_name</span></span>:<br/><a href="2-tw2.html#SP15">&#167;15</a><br/>Symbols Tables - <a href="2-st.html#SP20">&#167;20</a><br/>Transmigration - <a href="2-trn.html#SP4_2_2_2">&#167;4.2.2.2</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP10_2_3_2_2">&#167;10.2.3.2.2</a><br/>Inter in Text Files - <a href="3-iitf.html#SP5_1">&#167;5.1</a>, <a href="3-iitf.html#SP7_1">&#167;7.1</a><br/>The Plug Construct - <a href="6-tpc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wiring</span><span class="plain-syntax">.</span><span class="element-syntax">wants_to_connect_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -253,32 +250,26 @@ a &quot;plug&quot; in a special package of the tree at <code>/main/connectors</c
 (See <a href="../building-module/1-ls.html" class="internal">Large-Scale Structure (in building)</a> for more on this package.) That plug
 is left dangling, in the sense that it is wired to the name <code>&quot;CreatePV&quot;</code>,
 but that this name is unresolved.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">MAIN</span><span class="plain-syntax"> </span><span class="identifier-syntax">TREE</span>
-<span class="plain-syntax">    +-----------------+      +--------------------------+</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">       |      | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">connectors</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    |                 |      |                          |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~&gt; </span><span class="identifier-syntax">_plug_BlkValueCreate</span><span class="plain-syntax"> ~~~~~~~&gt; </span><span class="string-syntax">"CreatePV"</span>
-<span class="plain-syntax">    +-----------------+      +--------------------------+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="function-syntax">MAIN</span><span class="plain-syntax"> </span><span class="function-syntax">TREE</span><span class="plain-syntax">
+    +-----------------+      +--------------------------+
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |      | </span><span class="element-syntax">Package</span><span class="plain-syntax"> /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">connectors</span><span class="plain-syntax"> |
+    |                 |      |                          |
+    | </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">_plug_BlkValueCreate</span><span class="plain-syntax"> ~~~~~~~&gt; "</span><span class="element-syntax">CreatePV</span><span class="plain-syntax">"
+    +-----------------+      +--------------------------+
+</span></pre>
 <p>Meanwhile, suppose a second tree holds <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>. This looks like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">BASICINFORMKIT</span><span class="plain-syntax"> </span><span class="identifier-syntax">TREE</span>
-<span class="plain-syntax">    +-------------------+      +--------------------------+</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax">         |      | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">connectors</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    |                   |      |                          |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~ </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~~~ </span><span class="string-syntax">"CreatePV"</span>
-<span class="plain-syntax">    | .....             |      +--------------------------+</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">defn</span><span class="plain-syntax">     |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax">       |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">defn</span><span class="plain-syntax">     |</span>
-<span class="plain-syntax">    | </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">SecretFunction</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    +-------------------+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="function-syntax">BASICINFORMKIT</span><span class="plain-syntax"> </span><span class="function-syntax">TREE</span><span class="plain-syntax">
+    +-------------------+      +--------------------------+
+    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">         |      | </span><span class="element-syntax">Package</span><span class="plain-syntax"> /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">connectors</span><span class="plain-syntax"> |
+    |                   |      |                          |
+    | </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~ </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~~~ "</span><span class="element-syntax">CreatePV</span><span class="plain-syntax">"
+    | .....             |      +--------------------------+
+    | </span><span class="element-syntax">function</span><span class="plain-syntax"> </span><span class="element-syntax">defn</span><span class="plain-syntax">     |
+    | </span><span class="element-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">CreatePV</span><span class="plain-syntax">       |
+    | </span><span class="element-syntax">function</span><span class="plain-syntax"> </span><span class="element-syntax">defn</span><span class="plain-syntax">     |
+    | </span><span class="element-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">SecretFunction</span><span class="plain-syntax"> |
+    +-------------------+
+</span></pre>
 <p>Package <code>Y</code> in this tree holds two function definitions, let's say: <code>CreatePV</code>
 and <code>SecretFunction</code>. The latter is private to BasicInformKit, in that the linking
 process in <a href="../pipeline-module/index.html" class="internal">pipeline</a> does not allow symbols in other trees to be wired to it.
@@ -294,28 +285,25 @@ and no socket names do.</p>
 tree like so, which has merged the connectors from the two original trees,
 and which now contains both <code>X</code> and <code>Y</code>. We can npw connect the plug
 <code>_plug_BlkValueCreate</code> with the socket <code>CreatePV</code>:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">.. </span><span class="identifier-syntax">MERGED</span><span class="plain-syntax"> </span><span class="identifier-syntax">TREE</span><span class="plain-syntax"> ................................................</span>
-<span class="plain-syntax">.  +-----------------+      +--------------------------+      .</span>
-<span class="plain-syntax">.  | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax">       |      | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> /</span><span class="identifier-syntax">main</span><span class="plain-syntax">/</span><span class="identifier-syntax">connectors</span><span class="plain-syntax"> |      .</span>
-<span class="plain-syntax">.  |                 |      |                          |      .</span>
-<span class="plain-syntax">.  | </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> ~~~~~~~~~~~~~~&gt; </span><span class="identifier-syntax">_plug_BlkValueCreate</span><span class="plain-syntax"> ~~~~~~~\   .</span>
-<span class="plain-syntax">.  +-----------------+      |                          |   \  .</span>
-<span class="plain-syntax">.                           |                          |    | .</span>
-<span class="plain-syntax">.  +-----------------+      |                          |    | .</span>
-<span class="plain-syntax">.  | </span><span class="identifier-syntax">Package</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax">       |      |                          |    | .</span>
-<span class="plain-syntax">.  |                 |      |                          |   /  .</span>
-<span class="plain-syntax">.  | </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~ </span><span class="identifier-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~~/   .</span>
-<span class="plain-syntax">.  | .....           |      +--------------------------+      .</span>
-<span class="plain-syntax">.  | </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">defn</span><span class="plain-syntax">   |                                        .</span>
-<span class="plain-syntax">.  +-----------------+                                        .</span>
-<span class="plain-syntax">...............................................................</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">.. </span><span class="function-syntax">MERGED</span><span class="plain-syntax"> </span><span class="function-syntax">TREE</span><span class="plain-syntax"> ................................................
+.  +-----------------+      +--------------------------+      .
+.  | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |      | </span><span class="element-syntax">Package</span><span class="plain-syntax"> /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">connectors</span><span class="plain-syntax"> |      .
+.  |                 |      |                          |      .
+.  | </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> ~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">_plug_BlkValueCreate</span><span class="plain-syntax"> ~~~~~~~\   .
+.  +-----------------+      |                          |   \  .
+.                           |                          |    | .
+.  +-----------------+      |                          |    | .
+.  | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">       |      |                          |    | .
+.  |                 |      |                          |   /  .
+.  | </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~ </span><span class="element-syntax">CreatePV</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~~~~/   .
+.  | .....           |      +--------------------------+      .
+.  | </span><span class="element-syntax">function</span><span class="plain-syntax"> </span><span class="element-syntax">defn</span><span class="plain-syntax">   |                                        .
+.  +-----------------+                                        .
+...............................................................
+</span></pre>
 <p>The cable end from <code>CreatePV</code> in <code>X</code> is indeed the definition in <code>Y</code>,
 and all is well.</p>
-<p>Some sockets may never be used -- that would be a situation where one tree
+<p>Some sockets may never be used — that would be a situation where one tree
 offers a meaning as being available to other trees, but where nobody takes
 up the offer. The only essential thing is that all plugs must find a socket.</p>
 </div>
@@ -328,9 +316,9 @@ it will one day be wired to a socket of that name.</li>
 <li>All uses of, say, <code>CreatePV</code> in the main tree are wired to a single
 plug in its <code>/main/connectors</code> package.</li>
 <li>By looking at the incoming count of a plug or socket, we can see if it is
-still needed -- if the count falls to 0, it is not.</li>
+still needed — if the count falls to 0, it is not.</li>
 <li>Connecting plugs to sockets is relatively fast, because only one package's
-symbols table needs to be searched -- <code>/main/connectors</code>.</li>
+symbols table needs to be searched — <code>/main/connectors</code>.</li>
 <li>Each tree can offer any number of meanings to other trees, but they are
 identified by name only. If two packages in a tree both define functions called
 <code>hulke</code>, then they cannot both be &quot;exported&quot; in this way, because the connectors
@@ -347,7 +335,7 @@ where that will come from.</li>
 identifier name.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::find_socket</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Wiring::find_socket</span></span>:<br/><a href="2-tw2.html#SP16">&#167;16</a><br/>Transmigration - <a href="2-trn.html#SP3_5_1">&#167;3.5.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::find_socket</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Wiring::find_socket</span></span>:<br/><a href="2-tw2.html#SP16">&#167;16</a><br/>Transmigration - <a href="2-trn.html#SP3_6_1">&#167;3.6.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">connectors</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LargeScale::connectors_package_if_it_exists</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_symbols_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CT</span><span class="plain-syntax"> = </span><a href="2-pck.html#SP10" class="function-link"><span class="function-syntax">InterPackage::scope</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">connectors</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">connectors</span><span class="plain-syntax">) {</span>
@@ -369,7 +357,7 @@ one tree is wired to a socket in another; this is the only time a socket can
 be wired to another connector.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::socket</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Wiring::socket</span></span>:<br/>Transmigration - <a href="2-trn.html#SP3_5_1">&#167;3.5.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defn</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::socket</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Wiring::socket</span></span>:<br/>Transmigration - <a href="2-trn.html#SP3_6_1">&#167;3.6.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-tw2.html#SP12" class="function-link"><span class="function-syntax">Wiring::socket_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::socket_one_per_name_only</span><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">,</span>
@@ -433,7 +421,7 @@ should only be used immediately after the symbol has been created.</p>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  And similarly for plugs:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::plug</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Wiring::plug</span></span>:<br/>Transmigration - <a href="2-trn.html#SP5_2_2_2">&#167;5.2.2.2</a>, <a href="2-trn.html#SP5_2_2_3">&#167;5.2.2.3</a>, <a href="2-trn.html#SP6_1">&#167;6.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wanted</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">Wiring::plug</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Wiring::plug</span></span>:<br/>Transmigration - <a href="2-trn.html#SP4_2_2_2">&#167;4.2.2.2</a>, <a href="2-trn.html#SP4_2_2_3">&#167;4.2.2.3</a>, <a href="2-trn.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wanted</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">connectors</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LargeScale::ensure_connectors_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inter_symbols_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CT</span><span class="plain-syntax"> = </span><a href="2-pck.html#SP10" class="function-link"><span class="function-syntax">InterPackage::scope</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">connectors</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
@@ -458,7 +446,7 @@ should only be used immediately after the symbol has been created.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  An unwired plug -- i.e., wired to a name but not to an actual symbol -- is
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  An unwired plug — i.e., wired to a name but not to an actual symbol — is
 said to be &quot;loose&quot;.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

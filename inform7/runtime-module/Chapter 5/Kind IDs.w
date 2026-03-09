@@ -100,10 +100,12 @@ the array `LIST_OF_TY 1 TEXT_TY`.
 for constructions like "list of numbers", where the strong and weak IDs are
 different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:
-= (text as Inform 6)
+
+``` Inform6
 	if ((strong >= 0) && (strong < BASE_KIND_HWM)) weak = strong;
 	else weak = strong-->0;
-=
+```
+
 We must be careful with comparisons because a strong ID may be numerically
 negative if it's a pointer into the upper half of virtual machine memory.
 
@@ -112,7 +114,7 @@ value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:
 
 =
-typedef struct runtime_kind_structure {
+classdef runtime_kind_structure {
 	struct kind *kind_described;
 	struct parse_node *default_requested_here;
 	int make_default;
@@ -120,8 +122,7 @@ typedef struct runtime_kind_structure {
 	struct inter_name *rks_iname;
 	int default_created;
 	struct inter_name *rks_dv_iname;
-	CLASS_DEFINITION
-} runtime_kind_structure;
+}
 
 @ In order to make sure each distinct kind has a unique strong ID, we must
 ensure that we always point to the same array every time the same construction
@@ -156,12 +157,12 @@ void RTKindIDs::define_constant_as_strong_id(inter_name *iname, kind *K) {
 }
 
 @ Thus the following routine must return `NULL` if $K$ is a kind whose weak
-ID is the same as its strong ID -- if it's a base kind, in other words --
+ID is the same as its strong ID — if it's a base kind, in other words —
 and otherwise return a pointer to a unique `runtime_kind_structure` for $K$.
 
 Note that a `CON_TUPLE_ENTRY` node is recursed downwards through, to ensure
 that its leaves are passed through `RTKindIDs::get_rks`, but no RKS structure is made
-for it -- this is because none is needed, since we're going to roll up
+for it — this is because none is needed, since we're going to roll up
 tuple subtrees into flat arrays. Recall that `CON_TUPLE_ENTRY` nodes are
 "punctuation", not base kinds in their own right. We can never see them
 here except as a result of recursion.
@@ -196,7 +197,7 @@ runtime_kind_structure *RTKindIDs::get_rks(kind *K) {
 @ The following implies a quadratic running time in the number of distinct
 constructed kinds of value seen across the source text, which may become a
 performance problem later on. But at present this number is surprisingly
-small -- often less than 10. On the principle that premature optimisation
+small — often less than 10. On the principle that premature optimisation
 is the root of all evil, I'm leaving it quadratic.
 
 @<Find or make a runtime kind structure for the kind@> =
@@ -244,8 +245,8 @@ inter_name *RTKindIDs::default_value_from_rks(runtime_kind_structure *rks) {
 of value and compiled pointers to arrays representing them. But we haven't
 compiled the arrays themselves; so we do that now.
 
-Because these are recursive structures -- the array for a strong ID often
-contains references to other strong ID arrays -- it may look as if there's
+Because these are recursive structures — the array for a strong ID often
+contains references to other strong ID arrays — it may look as if there's
 a risk of further RKS structures being generated, which might make the loop
 behave oddly. But this doesn't happen because `RTKindIDs::get_rks` has already
 recursively scanned through for us, so that if we have seen a construction
@@ -332,7 +333,7 @@ void RTKindIDs::compile_structures(void) {
 Our runtime code is only capable of very limited introspection: given a
 value known to be some kind of object, it can test what kind that is. This
 is done with Inter's `OFCLASS_BIP` primitive, and note that this refers to
-the kind the way that Inter does -- i.e., by means of the symbol used as
+the kind the way that Inter does — i.e., by means of the symbol used as
 an identifier in the declaration of that kind.
 
 Testing `X ofclass ID`, where `ID` is either the strong or the weak ID, does
@@ -345,7 +346,7 @@ This function, then, would have `subj` equal to the subject for the kind
 `TRUE` if code was required to perform that test, `FALSE` if the test was
 already true and required no code. That will in fact happen if `subj` is
 not a kind of object, because then the typechecker will have proved already
-that the value $x$ has this kind -- in other words, the checking will have
+that the value $x$ has this kind — in other words, the checking will have
 been done at compile time.
 
 =

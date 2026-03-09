@@ -155,14 +155,13 @@ int Figures::figures_new_base_kind_notify(kind *new_base, text_stream *name, wor
 This structure of additional data is attached to each figure instance:
 
 =
-typedef struct figures_data {
+classdef figures_data {
 	struct wording name; /* text of name */
 	struct filename *filename_of_image_file;
 	int figure_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
 	struct instance *as_instance;
-	CLASS_DEFINITION
-} figures_data;
+}
 
 figures_data *F_cover_art = NULL;
 

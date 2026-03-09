@@ -63,25 +63,22 @@ having I7 look at where the cursor currently is (at the start of a line or
 not) and whether a line has just been skipped. In fact, the virtual machines
 simply do not offer facilities like that, and so we have to use our own
 book-keeping. Given the huge number of ways in which text can be printed,
-this is a delicate business. For some years now, &quot;spacing bugs&quot; -- those
+this is a delicate business. For some years now, &quot;spacing bugs&quot; — those
 where a spurious extra skipped line appears in a paragraph break, or
-where, conversely, no line is skipped at all -- have been the least
+where, conversely, no line is skipped at all — have been the least
 welcome in the Inform bugs database.</p>
 <p>The basic method is to set <code>say__p</code>, the paragraph flag, when we print any
-matter; every so often we reach a &quot;divide paragraph&quot; point -- for instance
-when one rule has finished and before another is about to start -- and at
+matter; every so often we reach a &quot;divide paragraph&quot; point — for instance
+when one rule has finished and before another is about to start — and at
 those positions we look for <code>say__p</code>, and print a skipped line (and clear
 <code>say__p</code> again) if we find it. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">WAIT</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">clock</span><span class="plain-syntax"> </span><span class="identifier-syntax">ticks</span><span class="plain-syntax"> </span><span class="identifier-syntax">ominously</span><span class="plain-syntax">.  ...</span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span>
-<span class="plain-syntax">                         ...</span><span class="identifier-syntax">skipped</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">printed</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">Divide</span><span class="plain-syntax"> </span><span class="identifier-syntax">Paragraph</span><span class="plain-syntax"> </span><span class="identifier-syntax">point</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Mme</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tourmalet</span><span class="plain-syntax"> </span><span class="identifier-syntax">rises</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">her</span><span class="plain-syntax"> </span><span class="identifier-syntax">chair</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">slips</span><span class="plain-syntax"> </span><span class="identifier-syntax">out</span><span class="plain-syntax">.   ...</span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span>
-<span class="plain-syntax">                         ...</span><span class="identifier-syntax">skipped</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">printed</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">Divide</span><span class="plain-syntax"> </span><span class="identifier-syntax">Paragraph</span><span class="plain-syntax"> </span><span class="identifier-syntax">point</span>
-<span class="plain-syntax">    &gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; WAIT
+	The clock ticks ominously.  ...first rule
+	                     ...skipped line printed at a Divide Paragraph point
+	Mme Tourmalet rises from her chair and slips out.   ...second rule
+	                     ...skipped line printed at a Divide Paragraph point
+	&gt;
+</span></pre>
 <p>A divide paragraph point occurs between any two rules in an action rulebook,
 but not an activity rulebook: many activities exist to print text, such as
 the names of objects, and there would be wild spacing accidents if paragraphs
@@ -90,31 +87,22 @@ were divided there. Inform places DPPs elsewhere, too: and the text substitution
 <p>A traditional layout convention handed down from Infocom makes an exception
 of the first paragraph to appear after the prompt, but only in one situation.
 Ordinarily, the first paragraph of any turn appears straight after the prompt:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">EXAMINE</span><span class="plain-syntax"> </span><span class="identifier-syntax">DOG</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Mme</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tourmalet</span><span class="character-syntax">'s borzoi looks as if it means fashion, not business.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; EXAMINE DOG
+	Mme Tourmalet's borzoi looks as if it means fashion, not business.
+</span></pre>
 <p>The command is echoed on screen as the player types, but this doesn't set the
 paragraph flag, which is still clear when the text &quot;Mme Tourmalet's...&quot;
 begins to be printed. The single exception occurs when the command calls for
 the player to go to a new location, when a skipped line is printed before the
 room description for the new room. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">SOUTH</span>
-<span class="plain-syntax">        ...</span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="string-syntax">"going look break"</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rocky</span><span class="plain-syntax"> </span><span class="identifier-syntax">Beach</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; SOUTH
+	    ...the "going look break" here
+	Rocky Beach
+</span></pre>
 <p>(Note that this is not inherent in the looking action:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">LOOK</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rocky</span><span class="plain-syntax"> </span><span class="identifier-syntax">Beach</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; LOOK
+	Rocky Beach
+</span></pre>
 <p>...which obeys the standard paragraphing conventions.)</p>
 <p>So much for automatic paragraph breaks. However, we need a variety of different
 ways explicitly to control paragraphs, in order to accommodate traditional
@@ -123,54 +111,39 @@ layout conventions handed down from Infocom.</p>
 clarification break&quot;, in which a single new-line is printed but there is
 no skipped line: as the name implies, it's traditionally used when a
 command such as OPEN DOOR is clarified. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (</span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlocking</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">oak</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">)   ...</span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">clarification</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">You</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">oak</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	(first unlocking the oak door)   ...now a command clarification break
+	You open the oak door.
+</span></pre>
 <p>This is not quite the same thing as a &quot;run paragraph on&quot; break, in which
 we also deliberately suppress the skipped line, but make an exception for
 the skipped line which ought to appear last before the prompt: the idea is
 to merge two or more paragraphs together.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">TAKE</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALL</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">marmot</span><span class="plain-syntax">: </span><span class="identifier-syntax">Taken</span><span class="plain-syntax">.   ...</span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">run</span><span class="plain-syntax"> </span><span class="identifier-syntax">paragraph</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">weasel</span><span class="plain-syntax">: </span><span class="identifier-syntax">Taken</span><span class="plain-syntax">.   ...</span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">also</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span>
-<span class="plain-syntax">                     ...</span><span class="identifier-syntax">despite</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">final</span><span class="plain-syntax"> </span><span class="identifier-syntax">skip</span><span class="plain-syntax"> </span><span class="identifier-syntax">does</span><span class="plain-syntax"> </span><span class="identifier-syntax">occur</span>
-<span class="plain-syntax">    &gt;                ...</span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">next</span><span class="plain-syntax"> </span><span class="identifier-syntax">prompt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; TAKE ALL
+	marmot: Taken.   ...we run paragraph on here
+	weasel: Taken.   ...and also here
+	                 ...despite which the final skip does occur
+	&gt;                ...before the next prompt
+</span></pre>
 <p>A more complicated case is &quot;special look spacing&quot;, used for the break which
 occurs after the (boldface) short name of a room description is printed. This
 is tricky because it is sometimes followed directly by a long description, and
 we don't want a skipped line:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Villa</span><span class="plain-syntax"> </span><span class="identifier-syntax">Christiane</span><span class="plain-syntax">    ...</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">special</span><span class="plain-syntax"> </span><span class="identifier-syntax">look</span><span class="plain-syntax"> </span><span class="identifier-syntax">spacing</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">walled</span><span class="plain-syntax"> </span><span class="identifier-syntax">garden</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">villa</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">Cap</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="character-syntax">'Agde.</span>
-<span class="character-syntax">                        ...a Divide Paragraph break</span>
-<span class="character-syntax">    Mme Tourmalet'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">borzoi</span><span class="plain-syntax"> </span><span class="identifier-syntax">lazes</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">long</span><span class="plain-syntax"> </span><span class="identifier-syntax">grass</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Villa Christiane    ...a special look spacing break
+	The walled garden of a villa in Cap d'Agde.
+	                    ...a Divide Paragraph break
+	Mme Tourmalet's borzoi lazes in the long grass.
+</span></pre>
 <p>But sometimes it is followed directly by a subsequent paragraph, and again
 we want no skip:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Villa</span><span class="plain-syntax"> </span><span class="identifier-syntax">Christiane</span><span class="plain-syntax">    ...</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">special</span><span class="plain-syntax"> </span><span class="identifier-syntax">look</span><span class="plain-syntax"> </span><span class="identifier-syntax">spacing</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Mme</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tourmalet</span><span class="character-syntax">'s borzoi lazes in the long grass.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Villa Christiane    ...a special look spacing break
+	Mme Tourmalet's borzoi lazes in the long grass.
+</span></pre>
 <p>And sometimes it is the only content of the room description and is followed
 only by the prompt:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Villa</span><span class="plain-syntax"> </span><span class="identifier-syntax">Christiane</span><span class="plain-syntax">    ...</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">special</span><span class="plain-syntax"> </span><span class="identifier-syntax">look</span><span class="plain-syntax"> </span><span class="identifier-syntax">spacing</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span>
-<span class="plain-syntax">                        ...</span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span><span class="plain-syntax"> </span><span class="identifier-syntax">inserted</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">prompt</span>
-<span class="plain-syntax">    &gt;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Villa Christiane    ...a special look spacing break
+	                    ...a break inserted before the prompt
+	&gt;
+</span></pre>
 <p>To recap, we have five kinds of paragraph break:</p>
 <ul>
 <li>Standard breaks at &quot;divide paragraph points&quot;, used between rules.</li>
@@ -221,7 +194,7 @@ only and never across turn boundaries, prompts and so on.)</li>
 <li><code>PARA_CONTENTEXPECTED</code> is set after a paragraph division as a signal
 that if any contents looks likely to be printed soon then <code>say__p</code> needs
 to be set, because a successor paragraph will then have started. This
-is checked by calling <code>ParaContent()</code> -- while it's slow to have to call
+is checked by calling <code>ParaContent()</code> — while it's slow to have to call
 this routine so often, that's better than compiling inline code with the
 same effect, because minimising compiled code size is more important, and
 speed is never a big deal when printing.</li>

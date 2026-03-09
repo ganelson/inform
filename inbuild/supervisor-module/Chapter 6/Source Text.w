@@ -8,7 +8,7 @@ data type to use when referencing natural languages.
 
 @d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language
 
-@ Lexical errors -- overly long words, half-open quotations, and such -- are
+@ Lexical errors — overly long words, half-open quotations, and such — are
 converted into copy errors and attached to the copy currently being worked on.
 The following callback function performs that service.
 
@@ -99,9 +99,11 @@ source_file *SourceText::read_file(inbuild_copy *C, ls_web *W, filename *F,
 			}
 
 @ This is where messages like
-= (text as ConsoleText)
+
+``` ConsoleText
 	I've also read Standard Rules by Graham Nelson, which is 27204 words long.
-=
+```
+
 are printed to `stdout` (not `stderr`), though occasionally I think silence is
 golden and that these messages could go. It's a moot point for almost all users,
 though, because the console output is concealed from them by the Inform UI
@@ -337,7 +339,7 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 	use ... language element/elements              ==> { -1, - }
 
 @ The following callback function is called by //syntax// when it breaks a
-sentence of type `BEGINHERE_NT` or `ENDHERE_NT` -- i.e., the beginning or end
+sentence of type `BEGINHERE_NT` or `ENDHERE_NT` — i.e., the beginning or end
 of an extension.
 
 @d BEGIN_OR_END_HERE_SYNTAX_CALLBACK SourceText::new_beginend

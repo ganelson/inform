@@ -59,20 +59,14 @@ applications, the Source panel opens at the appropriate line.</p>
 <p>This is done with a non-standard HTML protocol called <code>source:</code>, one of
 two which the Inform UI apps must provide special handling for. For instance,
 line 21 of file <code>Bits and Pieces/marbles.txt</code> has URL:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">source:Bits</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pieces</span><span class="plain-syntax">/</span><span class="identifier-syntax">marbles</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span><span class="plain-syntax">#</span><span class="identifier-syntax">line14</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	source:Bits and Pieces/marbles.txt#line14
+</span></pre>
 <p>When an Inform app is viewing an extension project, there can also be
 references to individual examples in that extension, and these are referred
 to as &quot;cases&quot; since they are test cases when the app is testing the extension.
 For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">source:Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7x</span><span class="plain-syntax">?</span><span class="reserved-syntax">case</span><span class="plain-syntax">=</span><span class="identifier-syntax">B</span><span class="plain-syntax">#</span><span class="identifier-syntax">line7</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	source:Locksmith.i7x?case=B#line7
+</span></pre>
 <p>refers to line 7 of Example B of <code>Locksmith.i7x</code>.</p>
 </div>
 <div class="lsmarkdown">
@@ -82,11 +76,8 @@ subfolder of the project bundle. (Thus it is not possible to have a
 source link to a source file at the root of the project bundle: but this is
 no loss, since source is not allowed to be kept there.) For instance,
 line 14 of file <code>Source/story.ni</code> has URL</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">source:story</span><span class="plain-syntax">.</span><span class="identifier-syntax">ni</span><span class="plain-syntax">#</span><span class="identifier-syntax">line14</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	source:story.ni#line14
+</span></pre>
 <p>The following routine writes the clickable source-reference icon, and
 is the only place in Inform where <code>source:</code> URLs are generated.</p>
 </div>
