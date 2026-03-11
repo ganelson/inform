@@ -135,23 +135,22 @@ test, whose output uses our notation:</p>
 <a href="../calculus-test/index.html" class="internal">calculus-test</a> tool. As with <a href="../kinds-test/index.html" class="internal">kinds-test</a>, this is a REPL: that is,
 a read-evaluate-print-loop tool, which reads in calculations, performs them,
 and prints the result.</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; kind = number (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; even (12) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even('12') &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (x == 7) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; (x == '7') &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; sees (x, y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; sees(x, y) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ even (x) ^ NOT&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; even(x) NOT&gt; &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; DoesNotExist x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; DoesNotExist x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Card= 6 x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Card=6 x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (12) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even('12') &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == 7) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; (x == '7') &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; sees (x, y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; sees(x, y) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ even (x) ^ NOT&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; even(x) NOT&gt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; DoesNotExist x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; DoesNotExist x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Card= 6 x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Card=6 x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Formal description.</b> </p>
 <ol>

@@ -68,7 +68,7 @@ But a much easier way to test the functions in this module is to use the
 a read-evaluate-print-loop tool, which reads in calculations, performs them,
 and prints the result.
 
-= (text from Figures/notation.txt as REPL)
+![text as REPL](Figures/notation.txt)
 
 @h Formal description.
 1. A "term" is any of the following:

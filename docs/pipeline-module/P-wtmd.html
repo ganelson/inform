@@ -136,67 +136,56 @@ for where the final code is to be written. By default <code>*tout</code> is not 
 when the Inform 7 GUI app is being used, but it's sometimes set when testing
 at the command line. If it is set, then the final state of the Inter tree
 will be written out in a readable text format.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">read </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*in</span>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">read </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*in</span><span class="plain-syntax">
 
-<span class="plain-syntax">run pipeline assimilate</span>
-<span class="plain-syntax">run pipeline link</span>
-<span class="plain-syntax">run pipeline optimise</span>
+run pipeline assimilate
+run pipeline link
+run pipeline optimise
 
-<span class="comment-syntax">! The following does nothing if the variable *tout does not exist and it</span>
-<span class="comment-syntax">! will exist only when debugging:</span>
-<span class="plain-syntax">optionally-generate text </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*tout</span>
+</span><span class="comment-syntax">! The following does nothing if the variable *tout does not exist and it</span><span class="plain-syntax">
+</span><span class="comment-syntax">! will exist only when debugging:</span><span class="plain-syntax">
+optionally-generate text </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*tout</span><span class="plain-syntax">
 
-<span class="plain-syntax">generate </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span>
-<span class="plain-syntax">index</span>
-</pre>
-<div class="lsmarkdown">
+generate </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span><span class="plain-syntax">
+index</span></pre>
+</p>
 <p>Similarly, here is <code>build-kit</code>:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">new
+load-kit-source </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*kit</span><span class="plain-syntax">
+run pipeline assimilate
+generate binary </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">new</span>
-<span class="plain-syntax">load-kit-source </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*kit</span>
-<span class="plain-syntax">run pipeline assimilate</span>
-<span class="plain-syntax">generate binary </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  These of course use three subsidiary pipelines. The <code>assimilate</code> pipeline
 turns raw Inform 6-syntax source code into Inter material: so it does a great
 deal of work when <code>build-kit</code> is running, but only a very little for <code>compile</code>,
 when all it needs to worry about will be a few scraps of I6 code compiled
 by <a href="../inform7/index.html" class="internal">inform7</a> from uses of the low-level <code>Include (-</code> ... <code>-)</code> feature.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">parse-insertions</span>
-<span class="plain-syntax">resolve-conditional-compilation</span>
-<span class="plain-syntax">compile-splats</span>
-</pre>
-<div class="lsmarkdown">
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">parse-insertions
+resolve-conditional-compilation
+compile-splats</span></pre>
+</p>
 <p>The <code>link</code> pipeline sorts out cross-references between Inter code made by
 <a href="../inform7/index.html" class="internal">inform7</a>, and Inter code loaded in from kits. Each side may need to call
 functions or access variables in the other. This process is more active
 and less symmetrical than linking would be for a C-like language, but &quot;linking&quot;
 is probably still the nearest word for it.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">load-binary-kits</span>
-<span class="plain-syntax">make-synoptic-module</span>
-<span class="plain-syntax">shorten-wiring</span>
-<span class="plain-syntax">detect-indirect-calls</span>
-<span class="plain-syntax">make-identifiers-unique</span>
-<span class="plain-syntax">reconcile-verbs</span>
-</pre>
-<div class="lsmarkdown">
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">load-binary-kits
+make-synoptic-module
+shorten-wiring
+detect-indirect-calls
+make-identifiers-unique
+reconcile-verbs</span></pre>
+</p>
 <p>Finally, the <code>optimisation</code> pipeline is a chance to simplify the Inter tree
 without changing its meaning, so that equivalent but faster or smaller final
 code is generated. At present this does relatively little, but it's a start.</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">eliminate-redundant-labels
+</span><span class="comment-syntax">! eliminate-redundant-matter</span><span class="plain-syntax">
+eliminate-redundant-operations</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">eliminate-redundant-labels</span>
-<span class="comment-syntax">! eliminate-redundant-matter</span>
-<span class="plain-syntax">eliminate-redundant-operations</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  To create a new stage, you may want to copy a simple existing one — say,
 the <a href="6-erls.html" class="internal">Eliminate Redundant Labels Stage</a> — as a model. Note that a stage

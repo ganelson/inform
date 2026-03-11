@@ -20,7 +20,8 @@ variable of any quantifier;
 - it is free if it is used but not bound.
 
 The following shows some examples of operations on variables:
-= (text from Figures/binding.txt as REPL)
+
+![text as REPL](Figures/binding.txt)
 
 It might seem logical to have a function which takes a proposition $\phi$
 and a variable $v$ and returns its status — unused, free or bound. But this
@@ -231,7 +232,8 @@ general become propositions with no free variables, while descriptions such as
 only variable 0, `x`, is free.
 
 Here we see two ways to remove a free variable from a proposition:
-= (text from Figures/binding2.txt as REPL)
+
+![text as REPL](Figures/binding2.txt)
 
 @ The first way is "binding". Suppose `x` is free and we do not know its
 value. We can at least put `Exists x :` at the front of the proposition, thus

@@ -107,4 +107,4 @@ is appreciably larger than the number with correct ones; and
 - Optimisation is efficient if the number of attempts with correct hash codes is
 close to the number of successes.
 
-= (hyperlinked undisplayed text from Figures/excerpts-diagnostics.txt)
+![text](Figures/excerpts-diagnostics.txt)

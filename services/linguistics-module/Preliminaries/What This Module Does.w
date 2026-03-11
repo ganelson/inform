@@ -215,4 +215,4 @@ The following tabulates the linguistic stock accumulated by a typical Inform 7
 compilation (the same one used to generate the data in //inform7: Performance Metrics//).
 Within each category, items are listed in order of creation.
 
-= (hyperlinked undisplayed text from Figures/stock-diagnostics.txt)
+![text](Figures/stock-diagnostics.txt)

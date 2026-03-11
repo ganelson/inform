@@ -205,7 +205,9 @@ and one way to toy with it in isolation is to run test "programs" through the
 //kinds-test// tool. This is like a calculator, but for kinds and not values.
 A "program" is a series of descriptions of kinds, and the output consists of
 their evaluations. As a simple example:
-= (text from Figures/basics.txt as REPL)
+
+![text as REPL](Figures/basics.txt)
+
 This is more of a test than it appears. In each line //kinds-test// has read in
 the textual description in quotes, parsed it into a //kind// object using the <k-kind>
 Preform nonterminal, then printed it out with //Kinds::Textual::write// (or
@@ -214,7 +216,7 @@ in fact by using the `%u` string escape, which amounts to the same thing).
 @ In //kinds-test//, the 26 variables are initially unset, but can be given
 values by writing `K = number`, or similar. For example:
 
-= (text from Figures/variables.txt as REPL)
+![text as REPL](Figures/variables.txt)
 
 @h Overview of facilities.
 A kind is represented by a `kind *` pointer. These actually point to

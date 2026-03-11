@@ -44,16 +44,16 @@ the language of lattices — hence, words like "join" and "meet" — as a guide.
 @ Conformance is tested with the function //Kinds::conforms_to//, and the
 following shows it in action.
  
-= (text from Figures/conformance.txt as REPL)
+![text as REPL](Figures/conformance.txt)
 
 @ The indefinite `arithmetic kind` used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:
  
-= (text from Figures/av-conformance.txt as REPL)
+![text as REPL](Figures/av-conformance.txt)
 
 @ Here we see covariance versus contravariance:
  
-= (text from Figures/variance.txt as REPL)
+![text as REPL](Figures/variance.txt)
 
 - A constructor $\phi$ is "covariant" — meaning, goes the same way — if
 $K\leq L$ means $\phi(K)\leq\phi(L)$. 
@@ -205,7 +205,7 @@ run time rather than compile time.
 
 Conformance implies compatibility but not vice versa. For example:
 
-= (text from Figures/compatibility.txt as REPL)
+![text as REPL](Figures/compatibility.txt)
 
 Note that `number` is compatible with `real number`. Run-time code will be
 needed to convert the value, but the answer is "always". We also see that

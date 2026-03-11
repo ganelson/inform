@@ -56,7 +56,8 @@ classdef pcalc_func in 1000s {
 }
 
 @ Terms are really quite simple, as the following //calculus-test// exercise shows:
-= (text from Figures/terms.txt as REPL)
+
+![text as REPL](Figures/terms.txt)
 
 @h Creating new terms.
 

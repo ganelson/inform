@@ -275,28 +275,27 @@ could <code>EVERYWHERE(x)</code> possibly mean?)</p>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The following tests only (ii), validity. <a href="../calculus-test/index.html" class="internal">calculus-test</a> is unable to make
 atoms which fail to pass <a href="4-ap.html#SP13" class="internal">Atoms::validate</a>, nor can it make some of the
 misconstructions tested for below, but numerous other defects can be tested:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">new binary sees (none, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; kind = number (x) ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; sees (4, 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (4 == 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (x == 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (10 == x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (y == x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&lt; kind = number (x) ^ even (x) NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Exists x: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - nonexistential quantifier without domain</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; ForAll x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&gt; ^ NOT&gt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - 2 group(s) open</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - group nesting too deep</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; sees (4, 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (4 == 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == 10) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (10 == x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (y == x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; kind = number (x) ^ even (x) NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - nonexistential quantifier without domain</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&gt; ^ NOT&gt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - 2 group(s) open</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ NOT&lt; ^ even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - group nesting too deep</span>
-</pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_PROPOSITION_GROUP_NESTING</span> <span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="comment-syntax">/* vastly more than could realistically be used */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -346,22 +345,21 @@ free variable has a given kind, or a given value. For example, &quot;a closed
 lockable door&quot; is a simple proposition, but &quot;four women in a lighted room&quot;
 is complex. The only simple binary predicate is one which assigns a definite
 value to <code>x</code>. Examples:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">new binary sees (none, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; kind = number (x) ^ even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; sees (4, 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (4 == 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (x == 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (10 == x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (y == x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; not&lt; kind = number (x) ^ even (x) not&gt; &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Exists x: even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) ^ even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; sees (4, 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (4 == 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == 10) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (10 == x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (y == x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; not&lt; kind = number (x) ^ even (x) not&gt; &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x: even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is complex</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::is_complex</span><span class="plain-syntax">(</span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
@@ -382,26 +380,23 @@ value to <code>x</code>. Examples:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Primitive operations on propositions.</b>  Now for some basic operations, as shown in the following examples:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - nonexistential quantifier without domain</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set A to &lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> a set to &lt;&lt; Exists x &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set B to &lt;&lt; Exists x: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> b set to &lt;&lt; Exists x : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists x : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists y : even(y) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> false - x used outside its binding</span>
-<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">copy of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">negation of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) NOT&gt; &gt;&gt;</span>
-</pre>
-<div class="lsmarkdown">
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - nonexistential quantifier without domain</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; ForAll x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">set A to &lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> a set to &lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">set B to &lt;&lt; Exists x: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> b set to &lt;&lt; Exists x : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">A concatenate B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists x : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">A conjoin B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists y : even(y) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">A concatenate B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">A conjoin B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">A concatenate B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> false - x used outside its binding</span><span class="plain-syntax">
+'</span><span class="element-syntax">A conjoin B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">copy of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">negation of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) NOT&gt; &gt;&gt;</span></pre>
+</p>
 <p>Note that the conjunction of A and B renamed the variable <code>x</code> in B to <code>y</code>,
 so that it no longer clashed with the meaning of <code>x</code> in A. The concatenation
 did not, simply writing one after the other.</p>
@@ -509,15 +504,14 @@ need to be careful in using this.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Inserting and deleting atoms.</b>  These operations do what they say, but the result is often syntactically
 invalid. Handle with care.</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">insert &lt;&lt; (1 == 2) &gt;&gt; at 0 in P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ('1' == '2') ^ ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">insert &lt;&lt; even (x) &gt;&gt; at 2 in P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; even(x) ^ kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">delete 0 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">delete 4 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; &gt;&gt;</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">insert &lt;&lt; (1 == 2) &gt;&gt; at 0 in P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ('1' == '2') ^ ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">insert &lt;&lt; even (x) &gt;&gt; at 2 in P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; even(x) ^ kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">delete 0 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">delete 4 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; &gt;&gt;</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  Here we insert an atom at a given position, or at the front if the position
 is <code>NULL</code>.</p>
@@ -553,26 +547,25 @@ is <code>NULL</code>.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Miscellaneous further operations.</b>  The rest of this section is given over to miscellaneous utility functions:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">copy of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">set Q to negation of P</span><span class="plain-syntax">':</span><span class="string-syntax"> q set to &lt;&lt; NOT&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) NOT&gt; &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">P is a group</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">Q is a group</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">unnegation of Q</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">remove universal quantifier from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) ^ even(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">set R to delete 4 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> r set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">remove close domain from R</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) &gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">P contains quantifier</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">P contains relation</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (1 == 2) &gt;&gt; contains relation</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span><span class="plain-syntax">
+'</span><span class="element-syntax">&lt;&lt; (1 == 2) ^ even (x) &gt;&gt; contains quantifier</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">term first cited in &lt;&lt; even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> x</span><span class="plain-syntax">
+'</span><span class="element-syntax">term first cited in &lt;&lt; not&lt; sees (56, 2) not&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> '56'</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set P to &lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> p set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">copy of P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set Q to negation of P</span><span class="plain-syntax">':</span><span class="string-syntax"> q set to &lt;&lt; NOT&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) NOT&gt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">P is a group</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">Q is a group</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">unnegation of Q</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">remove universal quantifier from P</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) ^ even(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">set R to delete 4 from P</span><span class="plain-syntax">':</span><span class="string-syntax"> r set to &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">remove close domain from R</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">P contains quantifier</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">P contains relation</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (1 == 2) &gt;&gt; contains relation</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (1 == 2) ^ even (x) &gt;&gt; contains quantifier</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term first cited in &lt;&lt; even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> x</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term first cited in &lt;&lt; not&lt; sees (56, 2) not&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> '56'</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Inspecting contents.</b>  First, we count the number of atoms in a given proposition. This is used by
 other parts of Inform as a crude measure of how complicated it is; though in

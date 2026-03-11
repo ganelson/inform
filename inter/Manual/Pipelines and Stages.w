@@ -202,7 +202,7 @@ module inside Inform 7.
 causes the whole `assimilate` pipeline to be run at that point. Indeed, Inform 7's
 main pipeline `compile` uses this to break its task into subtasks:
 
-= (text from Figures/compile.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/compile.interpipeline)
 
 @h Dictionary of stages.
 The following gives a brief guide to the available stages, in alphabetical

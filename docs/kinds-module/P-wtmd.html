@@ -282,16 +282,13 @@ and one way to toy with it in isolation is to run test &quot;programs&quot; thro
 <a href="../kinds-test/index.html" class="internal">kinds-test</a> tool. This is like a calculator, but for kinds and not values.
 A &quot;program&quot; is a series of descriptions of kinds, and the output consists of
 their evaluations. As a simple example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">number</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
-<span class="plain-syntax">'</span><span class="element-syntax">list of texts</span><span class="plain-syntax">':</span><span class="string-syntax"> list of texts</span>
-<span class="plain-syntax">'</span><span class="element-syntax">phrase number -&gt; text</span><span class="plain-syntax">':</span><span class="string-syntax"> phrase number -&gt; text</span>
-<span class="plain-syntax">'</span><span class="element-syntax">arithmetic value</span><span class="plain-syntax">':</span><span class="string-syntax"> arithmetic value</span>
-<span class="plain-syntax">'</span><span class="element-syntax">relation of numbers to truth states</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers to truth states</span>
-<span class="plain-syntax">'</span><span class="element-syntax">relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span>
-</pre>
-<div class="lsmarkdown">
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">number</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span><span class="plain-syntax">
+'</span><span class="element-syntax">list of texts</span><span class="plain-syntax">':</span><span class="string-syntax"> list of texts</span><span class="plain-syntax">
+'</span><span class="element-syntax">phrase number -&gt; text</span><span class="plain-syntax">':</span><span class="string-syntax"> phrase number -&gt; text</span><span class="plain-syntax">
+'</span><span class="element-syntax">arithmetic value</span><span class="plain-syntax">':</span><span class="string-syntax"> arithmetic value</span><span class="plain-syntax">
+'</span><span class="element-syntax">relation of numbers to truth states</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers to truth states</span><span class="plain-syntax">
+'</span><span class="element-syntax">relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span></pre>
+</p>
 <p>This is more of a test than it appears. In each line <a href="../kinds-test/index.html" class="internal">kinds-test</a> has read in
 the textual description in quotes, parsed it into a <a href="2-knd.html#SP1" class="internal">kind</a> object using the <k-kind>
 Preform nonterminal, then printed it out with <a href="2-dk.html#SP22" class="internal">Kinds::Textual::write</a> (or
@@ -300,18 +297,17 @@ in fact by using the <code>%u</code> string escape, which amounts to the same th
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  In <a href="../kinds-test/index.html" class="internal">kinds-test</a>, the 26 variables are initially unset, but can be given
 values by writing <code>K = number</code>, or similar. For example:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">Q</span><span class="plain-syntax">':</span><span class="string-syntax"> Q</span><span class="plain-syntax">
+'</span><span class="element-syntax">list of relations of Q to R</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of Qs to Rs</span><span class="plain-syntax">
+'</span><span class="element-syntax">substitute number for Q in Q</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span><span class="plain-syntax">
+'</span><span class="element-syntax">substitute number for Q in list of Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">substitute number for Q in list of relations of Q to Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">X = relation of Y to Y</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of Ys</span><span class="plain-syntax">
+'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span><span class="plain-syntax">
+'</span><span class="element-syntax">X = relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">Q</span><span class="plain-syntax">':</span><span class="string-syntax"> Q</span>
-<span class="plain-syntax">'</span><span class="element-syntax">list of relations of Q to R</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of Qs to Rs</span>
-<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in Q</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
-<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in list of Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in list of relations of Q to Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">X = relation of Y to Y</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of Ys</span>
-<span class="plain-syntax">'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
-<span class="plain-syntax">'</span><span class="element-syntax">X = relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Overview of facilities.</b>  A kind is represented by a <code>kind *</code> pointer. These actually point to
 small trees of <a href="2-knd.html#SP1" class="internal">kind</a> objects — see <a href="index.html" class="internal">kinds</a> — because many kinds are

@@ -10,7 +10,7 @@ If you are interested in using //linguistics// in some context other than Inform
 @ Every example sentence in this section was passed in turn to the <sentence>
 nonterminal, and the trees displayed below were the result. For example:
 
-= (undisplayed text from Figures/simple-raw.txt)
+![text](Figures/simple-raw.txt)
 
 Sentence (1) here made no sense: there was no verb. It was therefore left as
 a single `SENTENCE_NT` node with no children. In all other cases, as in (2),
@@ -50,7 +50,7 @@ if it's a known common or proper noun, and amend it accordingly.
 The //linguistics-test// program does this automatically, so from here on,
 all examples shown will have that operation done. For example:
 
-= (undisplayed text from Figures/simple.txt)
+![text](Figures/simple.txt)
 
 Here the two `UNPARSED_NOUN_NT` nodes have been recognised as usages of a
 proper noun, Beth, and a common noun, sailor, respectively, and they are
@@ -61,7 +61,7 @@ two nouns do not inflect with case in English, but they are both singular.
 to do this, and in the test runs displayed in this section, it is using a
 very limited stock of nouns, verbs and prepositions as follows:
 
-= (undisplayed text from Figures/vocabulary.txt)
+![text](Figures/vocabulary.txt)
 
 We only know that Beth is feminine-gendered and sailor masculine-gendered[1]
 because the vocabulary being used by //linguistics-test// says so. It's
@@ -79,13 +79,13 @@ sentences involving the verb "to be", which equate two subjects rather
 than having a subject act upon an object. This is why one "ought to" say
 "The traitor is I" instead of "The traitor is me", although nobody does.
 
-= (undisplayed text from Figures/copular.txt)
+![text](Figures/copular.txt)
 
 @ Next, regular sentences, that is, those where the verb is not copular
 but instead expresses some relationship between a subject and an object
 which play different roles.
 
-= (undisplayed text from Figures/regular.txt)
+![text](Figures/regular.txt)
 
 Each `RELATIONSHIP_NT` node expresses that it, and the other term, are
 in some non-copular relation to each other. The annotation gives that
@@ -99,11 +99,11 @@ meanings they can carry which may not involve ownership as such (cf. French
 "j'ai trente ans", or English "I have mumps"). But syntactically they are
 just like other non-copular verbs, and we parse them as such.
 
-= (undisplayed text from Figures/possessive.txt)
+![text](Figures/possessive.txt)
 
 @ An unusual feature of English is its use of subject-verb inversion:
 
-= (undisplayed text from Figures/inversion.txt)
+![text](Figures/inversion.txt)
 
 It would be easy to auto-fix the inversion in sentence (1), by simply
 swapping the "on the table" and "Ming vase" subtrees over, but we want
@@ -115,7 +115,7 @@ allow that sort of thing in Inform (for e.g. "east of X is south of Y").
 @ Existential sentences, using the defective subject nounphrase "there", are
 marked with an additional annotation.
 
-= (undisplayed text from Figures/there.txt)
+![text](Figures/there.txt)
 
 In sentences (3) and (4) here, the resulting trees are essentially identical
 except for the existential annotation.
@@ -129,18 +129,18 @@ does not).
 are handled by making additional annotations to the verb node, not by adding
 fresh nodes:
 
-= (undisplayed text from Figures/usingadverbs.txt)
+![text](Figures/usingadverbs.txt)
 
 @ We can also support imperative verbs, with "special meanings" which are
 not necessarily relational, and do not always lead to `RELATIONSHIP_NT`
 subtrees. See //Special Meanings//.
 
-= (undisplayed text from Figures/imperatives.txt)
+![text](Figures/imperatives.txt)
 
 @ That shows the full range of what happens with verb nodes. Turning back
 to noun phrases, we can have serial lists:
 
-= (undisplayed text from Figures/composite.txt)
+![text](Figures/composite.txt)
 
 Note that `AND_NT` nodes always have exactly two children, and that the serial
 comma is allowed but not required.
@@ -162,15 +162,15 @@ by //linguistics//, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",
 for example.
 
-= (undisplayed text from Figures/usingpronouns.txt)
+![text](Figures/usingpronouns.txt)
 
 @ "Callings" use the special syntax "X called Y", which has to be handled
 here in the //linguistics// module so that Y can safely wording which would
 otherwise have a structural meaning. ("Called" is to Inform as the backslash
 character, making letters literal, is to C.)
 
-= (undisplayed text from Figures/callings.txt)
+![text](Figures/callings.txt)
 
 @ The word "with", often but not always used in conjunction with "kind of":
 
-= (undisplayed text from Figures/withs.txt)
+![text](Figures/withs.txt)

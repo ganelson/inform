@@ -183,16 +183,16 @@ object is attached to each copy of that genre, and where such metadata is
 handled. Note that the two Inform project genres — one for single files,
 one for whole bundles — share a metadata format: a project is a project,
 however it is managed on disc.
-= (hyperlinked text)
-	GENRE INSTANCE        WHOSE METHODS ARE AT     COPIES GET AN     WHICH IS HANDLED BY
-    extension_genre       //Extension Manager//        inform_extension  //Extension Services//        
-    kit_genre             //Kit Manager//              inform_kit        //Kit Services//
-    language_genre        //Language Manager//         inform_language   //Language Services//
-    pipeline_genre        //Pipeline Manager//         inform_pipeline   //Pipeline Services//
-    project_bundle_genre  //Project Bundle Manager//   inform_project    //Project Services//
-    project_file_genre    //Project File Manager//     inform_project    //Project Services//
-    template_genre        //Template Manager//         inform_template   //Template Services//
-=
+
+Genre instance       | whose methods are at       | copies get an    | which is handled by
+-------------------- | -------------------------- | ---------------- | --------------------
+extension_genre      | //Extension Manager//      | inform_extension | //Extension Services//        
+kit_genre            | //Kit Manager//            | inform_kit       | //Kit Services//
+language_genre       | //Language Manager//       | inform_language  | //Language Services//
+pipeline_genre       | //Pipeline Manager//       | inform_pipeline  | //Pipeline Services//
+project_bundle_genre | //Project Bundle Manager// | inform_project   | //Project Services//
+project_file_genre   | //Project File Manager//   | inform_project   | //Project Services//
+template_genre       | //Template Manager//       | inform_template  | //Template Services//
 
 @h Build graph.
 See //Build Graphs// for the infrastructure of how a dependency graph is stored.

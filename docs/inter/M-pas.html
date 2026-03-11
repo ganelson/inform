@@ -211,21 +211,20 @@ module inside Inform 7.</p>
 </span></pre>
 <p>causes the whole <code>assimilate</code> pipeline to be run at that point. Indeed, Inform 7's
 main pipeline <code>compile</code> uses this to break its task into subtasks:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">read </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*in</span><span class="plain-syntax">
+
+run pipeline assimilate
+run pipeline link
+run pipeline optimise
+
+</span><span class="comment-syntax">! The following does nothing if the variable *tout does not exist and it</span><span class="plain-syntax">
+</span><span class="comment-syntax">! will exist only when debugging:</span><span class="plain-syntax">
+optionally-generate text </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*tout</span><span class="plain-syntax">
+
+generate </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span><span class="plain-syntax">
+index</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">read </span><span class="type-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*in</span>
-
-<span class="plain-syntax">run pipeline assimilate</span>
-<span class="plain-syntax">run pipeline link</span>
-<span class="plain-syntax">run pipeline optimise</span>
-
-<span class="comment-syntax">! The following does nothing if the variable *tout does not exist and it</span>
-<span class="comment-syntax">! will exist only when debugging:</span>
-<span class="plain-syntax">optionally-generate text </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*tout</span>
-
-<span class="plain-syntax">generate </span><span class="type-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span>
-<span class="plain-syntax">index</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Dictionary of stages.</b>  The following gives a brief guide to the available stages, in alphabetical
 order. See also <a href="../pipeline-module/P-wtmd.html" class="internal">What This Module Does (in pipeline)</a> for how (some of) these

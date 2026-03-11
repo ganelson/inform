@@ -232,17 +232,61 @@ object is attached to each copy of that genre, and where such metadata is
 handled. Note that the two Inform project genres — one for single files,
 one for whole bundles — share a metadata format: a project is a project,
 however it is managed on disc.</p>
+<table>
+<thead>
+<tr>
+<th>Genre instance</th>
+<th>whose methods are at</th>
+<th>copies get an</th>
+<th>which is handled by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>extension_genre</td>
+<td><a href="4-em.html" class="internal">Extension Manager</a></td>
+<td>inform_extension</td>
+<td><a href="5-es.html" class="internal">Extension Services</a></td>
+</tr>
+<tr>
+<td>kit_genre</td>
+<td><a href="4-km.html" class="internal">Kit Manager</a></td>
+<td>inform_kit</td>
+<td><a href="5-ks.html" class="internal">Kit Services</a></td>
+</tr>
+<tr>
+<td>language_genre</td>
+<td><a href="4-lm.html" class="internal">Language Manager</a></td>
+<td>inform_language</td>
+<td><a href="5-ls.html" class="internal">Language Services</a></td>
+</tr>
+<tr>
+<td>pipeline_genre</td>
+<td><a href="4-pm.html" class="internal">Pipeline Manager</a></td>
+<td>inform_pipeline</td>
+<td><a href="5-ps.html" class="internal">Pipeline Services</a></td>
+</tr>
+<tr>
+<td>project_bundle_genre</td>
+<td><a href="4-pbm.html" class="internal">Project Bundle Manager</a></td>
+<td>inform_project</td>
+<td><a href="5-ps2.html" class="internal">Project Services</a></td>
+</tr>
+<tr>
+<td>project_file_genre</td>
+<td><a href="4-pfm.html" class="internal">Project File Manager</a></td>
+<td>inform_project</td>
+<td><a href="5-ps2.html" class="internal">Project Services</a></td>
+</tr>
+<tr>
+<td>template_genre</td>
+<td><a href="4-tm.html" class="internal">Template Manager</a></td>
+<td>inform_template</td>
+<td><a href="5-ts.html" class="internal">Template Services</a></td>
+</tr>
+</tbody>
+</table>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">GENRE</span><span class="plain-syntax"> </span><span class="identifier-syntax">INSTANCE</span><span class="plain-syntax">        </span><span class="identifier-syntax">WHOSE</span><span class="plain-syntax"> </span><span class="identifier-syntax">METHODS</span><span class="plain-syntax"> </span><span class="identifier-syntax">ARE</span><span class="plain-syntax"> </span><span class="identifier-syntax">AT</span><span class="plain-syntax">     </span><span class="identifier-syntax">COPIES</span><span class="plain-syntax"> </span><span class="identifier-syntax">GET</span><span class="plain-syntax"> </span><span class="identifier-syntax">AN</span><span class="plain-syntax">     </span><span class="identifier-syntax">WHICH</span><span class="plain-syntax"> </span><span class="identifier-syntax">IS</span><span class="plain-syntax"> </span><span class="identifier-syntax">HANDLED</span><span class="plain-syntax"> </span><span class="identifier-syntax">BY</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">extension_genre</span><span class="plain-syntax">       </span><span class="comment-syntax">//Extension Manager//        inform_extension  //Extension Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">kit_genre</span><span class="plain-syntax">             </span><span class="comment-syntax">//Kit Manager//              inform_kit        //Kit Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">language_genre</span><span class="plain-syntax">        </span><span class="comment-syntax">//Language Manager//         inform_language   //Language Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">pipeline_genre</span><span class="plain-syntax">        </span><span class="comment-syntax">//Pipeline Manager//         inform_pipeline   //Pipeline Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">project_bundle_genre</span><span class="plain-syntax">  </span><span class="comment-syntax">//Project Bundle Manager//   inform_project    //Project Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">project_file_genre</span><span class="plain-syntax">    </span><span class="comment-syntax">//Project File Manager//     inform_project    //Project Services//</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">template_genre</span><span class="plain-syntax">        </span><span class="comment-syntax">//Template Manager//         inform_template   //Template Services//</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Build graph.</b>  See <a href="3-bg.html" class="internal">Build Graphs</a> for the infrastructure of how a dependency graph is stored.
 Basically these consist of <a href="3-bg.html#SP1" class="internal">build_vertex</a> objects joined together by edges,

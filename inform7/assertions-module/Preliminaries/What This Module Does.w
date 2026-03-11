@@ -72,7 +72,7 @@ pronouns such as "it". See //Anaphoric References//, but don't expect much.
 	time is able to draw out relationships between values: for example, that the
 	hat is indeed spatially on top of the can.
 
-= (undisplayed text from Figures/Refine--I.txt)
+![text](Figures/Refine--I.txt)
 
 [1] There really is an Ubuntu cola; it's a fair-trade product which it amuses my
 more Linux-aware students to drink.

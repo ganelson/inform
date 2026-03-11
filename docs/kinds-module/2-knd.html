@@ -119,25 +119,24 @@ but &quot;list of ...&quot; is not. We call constructors of higher arity &quot;p
 it has &quot;functions&quot; to extract the first and second term of a construction.
 (The REPL language of <a href="../kinds-test/index.html" class="internal">kinds-test</a> has quite a number of functions like
 this, for testing different features of <a href="index.html" class="internal">kinds</a>.)</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">X = object</span><span class="plain-syntax">':</span><span class="string-syntax"> object</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of X</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of X</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span><span class="plain-syntax">
+'</span><span class="element-syntax">Y = list of numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> list of numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of Y</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of Y</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span><span class="plain-syntax">
+'</span><span class="element-syntax">Z = relation of texts to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of Z</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of Z</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span><span class="plain-syntax">
+'</span><span class="element-syntax">W = phrase (relation of texts to numbers, text) -&gt; truth state</span><span class="plain-syntax">':</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers, text</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers</span><span class="plain-syntax">
+'</span><span class="element-syntax">first term of first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span><span class="plain-syntax">
+'</span><span class="element-syntax">second term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> truth state</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">X = object</span><span class="plain-syntax">':</span><span class="string-syntax"> object</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of X</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of X</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span>
-<span class="plain-syntax">'</span><span class="element-syntax">Y = list of numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> list of numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of Y</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of Y</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span>
-<span class="plain-syntax">'</span><span class="element-syntax">Z = relation of texts to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of Z</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of Z</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
-<span class="plain-syntax">'</span><span class="element-syntax">W = phrase (relation of texts to numbers, text) -&gt; truth state</span><span class="plain-syntax">':</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers, text</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="plain-syntax">'</span><span class="element-syntax">first term of first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of first term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of first term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> text</span>
-<span class="plain-syntax">'</span><span class="element-syntax">second term of W</span><span class="plain-syntax">':</span><span class="string-syntax"> truth state</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of

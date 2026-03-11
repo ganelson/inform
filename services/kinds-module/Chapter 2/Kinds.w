@@ -43,7 +43,7 @@ it has "functions" to extract the first and second term of a construction.
 (The REPL language of //kinds-test// has quite a number of functions like
 this, for testing different features of //kinds//.)
 
-= (text from Figures/construction.txt as REPL)
+![text as REPL](Figures/construction.txt)
 
 @ In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of

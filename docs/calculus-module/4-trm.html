@@ -137,21 +137,20 @@ field is</li>
 <ul class="endnotetexts"><li>The structure pcalc_func is accessed in 4/bas, 4/tcp, 5/smp and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Terms are really quite simple, as the following <a href="../calculus-test/index.html" class="internal">calculus-test</a> exercise shows:</p>
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">new binary knows (knows-f0, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span><span class="plain-syntax">
+'</span><span class="element-syntax">term 7</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span><span class="plain-syntax">
+'</span><span class="element-syntax">term z</span><span class="plain-syntax">':</span><span class="string-syntax"> z</span><span class="plain-syntax">
+'</span><span class="element-syntax">term sees-f1 (7)</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;sees-f1(*1) : '7'&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">term knows-f0 (sees-f1 (x))</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;knows-f0(*1) : &lt;sees-f1(*1) : x&gt;&gt;</span><span class="plain-syntax">
+'</span><span class="element-syntax">constant underlying 7</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span><span class="plain-syntax">
+'</span><span class="element-syntax">constant underlying y</span><span class="plain-syntax">':</span><span class="string-syntax"> --</span><span class="plain-syntax">
+'</span><span class="element-syntax">constant underlying sees-f1 (7)</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span><span class="plain-syntax">
+'</span><span class="element-syntax">variable underlying 7</span><span class="plain-syntax">':</span><span class="string-syntax"> --</span><span class="plain-syntax">
+'</span><span class="element-syntax">variable underlying y</span><span class="plain-syntax">':</span><span class="string-syntax"> y</span><span class="plain-syntax">
+'</span><span class="element-syntax">variable underlying knows-f0 (sees-f1 (x))</span><span class="plain-syntax">':</span><span class="string-syntax"> x</span></pre>
+</p>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary knows (knows-f0, none)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term 7</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term z</span><span class="plain-syntax">':</span><span class="string-syntax"> z</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term sees-f1 (7)</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;sees-f1(*1) : '7'&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">term knows-f0 (sees-f1 (x))</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;knows-f0(*1) : &lt;sees-f1(*1) : x&gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">constant underlying 7</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span>
-<span class="plain-syntax">'</span><span class="element-syntax">constant underlying y</span><span class="plain-syntax">':</span><span class="string-syntax"> --</span>
-<span class="plain-syntax">'</span><span class="element-syntax">constant underlying sees-f1 (7)</span><span class="plain-syntax">':</span><span class="string-syntax"> '7'</span>
-<span class="plain-syntax">'</span><span class="element-syntax">variable underlying 7</span><span class="plain-syntax">':</span><span class="string-syntax"> --</span>
-<span class="plain-syntax">'</span><span class="element-syntax">variable underlying y</span><span class="plain-syntax">':</span><span class="string-syntax"> y</span>
-<span class="plain-syntax">'</span><span class="element-syntax">variable underlying knows-f0 (sees-f1 (x))</span><span class="plain-syntax">':</span><span class="string-syntax"> x</span>
-</pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Creating new terms.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">

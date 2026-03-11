@@ -210,7 +210,8 @@ could `EVERYWHERE(x)` possibly mean?)
 @ The following tests only (ii), validity. //calculus-test// is unable to make
 atoms which fail to pass //Atoms::validate//, nor can it make some of the
 misconstructions tested for below, but numerous other defects can be tested:
-= (text from Figures/validity.txt as REPL)
+
+![text as REPL](Figures/validity.txt)
 
 @d MAX_PROPOSITION_GROUP_NESTING 100 /* vastly more than could realistically be used */
 
@@ -261,7 +262,8 @@ free variable has a given kind, or a given value. For example, "a closed
 lockable door" is a simple proposition, but "four women in a lighted room"
 is complex. The only simple binary predicate is one which assigns a definite
 value to `x`. Examples:
-= (text from Figures/complexity.txt as REPL)
+
+![text as REPL](Figures/complexity.txt)
 
 =
 int Propositions::is_complex(pcalc_prop *prop) {
@@ -283,7 +285,8 @@ int Propositions::is_complex(pcalc_prop *prop) {
 
 @h Primitive operations on propositions.
 Now for some basic operations, as shown in the following examples:
-= (text from Figures/operations.txt as REPL)
+
+![text as REPL](Figures/operations.txt)
 
 Note that the conjunction of A and B renamed the variable `x` in B to `y`,
 so that it no longer clashed with the meaning of `x` in A. The concatenation
@@ -385,7 +388,8 @@ pcalc_prop *Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *domain,
 @h Inserting and deleting atoms.
 These operations do what they say, but the result is often syntactically
 invalid. Handle with care.
-= (text from Figures/editing.txt as REPL)
+
+![text as REPL](Figures/editing.txt)
 
 @ Here we insert an atom at a given position, or at the front if the position
 is `NULL`.
@@ -420,7 +424,8 @@ pcalc_prop *Propositions::delete_atom(pcalc_prop *prop, pcalc_prop *position) {
 
 @h Miscellaneous further operations.
 The rest of this section is given over to miscellaneous utility functions:
-= (text from Figures/miscellaneous.txt as REPL)
+
+![text as REPL](Figures/miscellaneous.txt)
 
 @h Inspecting contents.
 First, we count the number of atoms in a given proposition. This is used by

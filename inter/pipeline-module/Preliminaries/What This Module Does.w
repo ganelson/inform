@@ -87,11 +87,11 @@ when the Inform 7 GUI app is being used, but it's sometimes set when testing
 at the command line. If it is set, then the final state of the Inter tree
 will be written out in a readable text format.
 
-= (text from Figures/compile.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/compile.interpipeline)
 
 Similarly, here is `build-kit`:
 
-= (text from Figures/build-kit.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/build-kit.interpipeline)
 
 @ These of course use three subsidiary pipelines. The `assimilate` pipeline
 turns raw Inform 6-syntax source code into Inter material: so it does a great
@@ -99,7 +99,7 @@ deal of work when `build-kit` is running, but only a very little for `compile`,
 when all it needs to worry about will be a few scraps of I6 code compiled
 by //inform7// from uses of the low-level `Include (-` ... `-)` feature.
 
-= (text from Figures/assimilate.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/assimilate.interpipeline)
 
 The `link` pipeline sorts out cross-references between Inter code made by
 //inform7//, and Inter code loaded in from kits. Each side may need to call
@@ -107,13 +107,13 @@ functions or access variables in the other. This process is more active
 and less symmetrical than linking would be for a C-like language, but "linking"
 is probably still the nearest word for it.
 
-= (text from Figures/link.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/link.interpipeline)
 
 Finally, the `optimisation` pipeline is a chance to simplify the Inter tree
 without changing its meaning, so that equivalent but faster or smaller final
 code is generated. At present this does relatively little, but it's a start.
 
-= (text from Figures/optimise.interpipeline as Inter Pipeline)
+![text as Inter Pipeline](Figures/optimise.interpipeline)
 
 @ To create a new stage, you may want to copy a simple existing one — say,
 the //Eliminate Redundant Labels Stage// — as a model. Note that a stage

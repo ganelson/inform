@@ -80,7 +80,7 @@ int VerbPhrases::tracing(int A) {
 
 @ The following shows two simple sentences parsed with tracing on:
 
-= (undisplayed text from Figures/simple-trace.txt)
+![text](Figures/simple-trace.txt)
 
 @ The following function is only recursive to at most one level. It's used either
 to parse a whole sentence, or is called from within itself to deal with the
@@ -91,12 +91,12 @@ preposition.
 
 For example, here is a case where recursion occurs and succeeds:
 
-= (undisplayed text from Figures/recursive-good-trace.txt)
+![text](Figures/recursive-good.txt)
 
 And here is a case where recursion is tried but does not provide the solution,
 so that we have to soldier on regardless:
 
-= (undisplayed text from Figures/recursive-bad-trace.txt)
+![text](Figures/recursive-bad-trace.txt)
 
 =
 int VerbPhrases::seek(wording W, int *X, void **XP, int existential_OP_edge,
@@ -130,7 +130,7 @@ int VerbPhrases::seek_inner(wording W, int *X, void **XP, int existential_OP_edg
 @ The "viability map" assigns a score to each word in the sentence. Here
 are some example viability maps:
 
-= (undisplayed text from Figures/solomon-viability.txt)
+![text](Figures/solomon-viability.txt)
 
 The scoring system is:
 
@@ -644,7 +644,7 @@ int VerbPhrases::allow_of_surgery(wording PW, wording OW) {
 
 It performs a transformation on the tree like so:
 
-= (undisplayed text from Figures/location-surgery.txt)
+![text](Figures/location-surgery.txt)
 
 Looks easy, doesn't it? You will implement it wrongly the first six times you try.
 
