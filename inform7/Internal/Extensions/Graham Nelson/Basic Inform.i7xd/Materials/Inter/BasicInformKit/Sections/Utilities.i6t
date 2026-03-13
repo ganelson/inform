@@ -45,8 +45,6 @@ Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
 
 Global standard_interpreter = 0;
 
-Default LanguageCases 1;
-
 @h Final Code Dependencies.
 This function definition is a little misleading. The idea is that the
 final code-generator can inject code of its own into the body here: for example,
