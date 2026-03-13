@@ -65,7 +65,7 @@ Carry out taking inventory (this is the print empty inventory rule):
 
 Carry out taking inventory (this is the print standard inventory rule):
 	say "[We] [are] carrying:[line break]" (A);
-	now all things enclosed by the player are unmarked for listing;
+	now all things are unmarked for listing;
 	now all things held by the player are marked for listing;
 	list the contents of the player, with newlines, indented, giving inventory information, with extra indentation, listing marked items only, not listing concealed items, including contents.
 
