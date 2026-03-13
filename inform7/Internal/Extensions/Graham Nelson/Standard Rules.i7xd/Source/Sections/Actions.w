@@ -920,7 +920,7 @@ Check an actor exiting (this is the can't exit when not inside anything rule):
 Check an actor exiting (this is the can't exit closed containers rule):
 	if the actor is in a closed container (called the cage):
 		if the player is the actor:
-			say "You can't get out of the closed [cage]." (A);
+			say "[We] [can't] get out of the closed [cage]." (A);
 		stop the action.
 
 Check an actor exiting (this is the convert exit into get off rule):
