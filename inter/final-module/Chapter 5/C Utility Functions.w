@@ -5,12 +5,11 @@ Rounding out the C library with a few functions intended for external code to us
 @ We will frequently need to reinterpret `i7word_t` values as `i7float_t`,
 or vice versa. The following functions must be perfect inverses of each other.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_encode_float(i7float_t val);
 i7float_t i7_decode_float(i7word_t val);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_encode_float(i7float_t val) {
     i7word_t res;
     *(i7float_t *)(&res) = val;
@@ -22,36 +21,32 @@ i7float_t i7_decode_float(i7word_t val) {
     *(i7word_t *)(&res) = val;
     return res;
 }
-=
 
 @ These two functions allow external C code to read to, or write from, an
 Inform 7 variable inside a currently running process.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
 void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
 	return proc->state.variables[var_id];
 }
 void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
 	proc->state.variables[var_id] = val;
 }
-=
 
 @ Text values extracted from such variables would be difficult to interpret
 from the outside because of the complex way in which text is stored within an
 Inform 7 process, so the following functions allow text inside the process
 to be converted to or from null-terminated C strings.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
 i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect);
@@ -92,16 +87,14 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 	}
 	#endif
 }
-=
 
 @ And similarly for list values, which we convert to and from C arrays.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_fn_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
 i7word_t i7_fn_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_newsize, i7word_t i7_mgl_local_this_way_only,
@@ -139,17 +132,15 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 	}
 	#endif
 }
-=
 
 @ Lastly, this function allows an action to be tried — something which is only
 meaningful in an Inform project which uses WorldModelKit: it will fail in a
 Basic Inform only project.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 #ifdef i7_mgl_TryAction
 i7word_t i7_fn_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,
 	i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n,
@@ -160,16 +151,13 @@ i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
 	return i7_fn_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
 }
 #endif
-=
 
 @ Because the C library file and its header are both wrapped inside conditional
 compilations to guard against errors if they are included more than once, those
 conditionals both need to be ended. So this is the bottom of both files: finis.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #endif
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 #endif
-=

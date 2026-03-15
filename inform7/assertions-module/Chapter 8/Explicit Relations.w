@@ -8,9 +8,11 @@ The relations created in this section belong to the "explicit" family,
 named so because their definitions are explicit in the source text. Initially,
 there are none.
 
-= (early code)
+@<Global variable definitions@> +=
 bp_family *explicit_bp_family = NULL;
 bp_family *by_function_bp_family = NULL;
+
+@ =
 classdef explicit_bp_data {
 	int form_of_relation; /* one of the `Relation_*` constants defined below */
 	struct property *i6_storage_property; /* provides run-time storage */

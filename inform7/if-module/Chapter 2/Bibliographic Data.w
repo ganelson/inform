@@ -119,7 +119,7 @@ Most of the bibliographic data on a story is kept in global variables, however,
 which are used to build the iFiction record and the releasing blurb at the end
 of a successful compilation. They are:
 
-= (early code)
+@<Global variable definitions@> +=
 nonlocal_variable *story_title_VAR = NULL;
 nonlocal_variable *story_author_VAR = NULL;
 nonlocal_variable *story_headline_VAR = NULL;

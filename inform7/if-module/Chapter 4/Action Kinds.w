@@ -5,7 +5,7 @@ Three action-related kinds of value.
 @ The following represent action names, stored actions and descriptions of
 actions respectively: see //Actions Plugin// for what these terms mean.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_action_name = NULL;
 kind *K_stored_action = NULL;
 kind *K_description_of_action = NULL;

@@ -58,7 +58,7 @@ opcodes but return values rather than copying to pointers.
 The implementations of `@div` and `@mod` are borrowed from the glulxe
 reference code, to be sure that we have the right sign conventions.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_sub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_neg(i7process_t *proc, i7word_t x, i7word_t *y);
@@ -68,9 +68,8 @@ void i7_opcode_mod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 
 i7word_t i7_div(i7process_t *proc, i7word_t x, i7word_t y);
 i7word_t i7_mod(i7process_t *proc, i7word_t x, i7word_t y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = x + y;
 }
@@ -133,7 +132,6 @@ i7word_t i7_mod(i7process_t *proc, i7word_t x, i7word_t y) {
 	i7_opcode_mod(proc, x, y, &z);
 	return z;
 }
-=
 
 @h fadd, fsub, fmul, fdiv, fmod.
 The remaining opcodes are for floating-point arithmetic, and it all seems
@@ -141,15 +139,14 @@ straightforward, since we just want to use standard C `float` arithmetic
 throughout, but the devil is in the details. The code below is heavily
 indebted to Andrew Plotkin.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_fadd(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_fsub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_fmul(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_fdiv(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_fmod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z, i7word_t *w);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_fadd(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	*z = i7_encode_float(i7_decode_float(x) + i7_decode_float(y));
 }
@@ -179,15 +176,14 @@ void i7_opcode_fmod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z, i7wo
 @h floor, ceil, ftonumn, ftonumz, numtof.
 All of which are conversions between integer and floating-point values.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_floor(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_ceil(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_ftonumn(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_ftonumz(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_numtof(i7process_t *proc, i7word_t x, i7word_t *y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_floor(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(floorf(i7_decode_float(x)));
 }
@@ -234,18 +230,16 @@ void i7_opcode_ftonumz(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_numtof(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float((float) x);
 }
-=
 
 @h exp, log, pow, sqrt.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_exp(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_log(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_pow(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_sqrt(i7process_t *proc, i7word_t x, i7word_t *y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_exp(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(expf(i7_decode_float(x)));
 }
@@ -265,20 +259,18 @@ void i7_opcode_pow(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 void i7_opcode_sqrt(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(sqrtf(i7_decode_float(x)));
 }
-=
 
 @h sin, cos, tan, asin, acos, atan.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_sin(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_cos(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_tan(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_asin(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_acos(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_atan(i7process_t *proc, i7word_t x, i7word_t *y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_sin(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(sinf(i7_decode_float(x)));
 }
@@ -298,7 +290,6 @@ void i7_opcode_acos(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_atan(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(atanf(i7_decode_float(x)));
 }
-=
 
 @h jfeq. jfne, jfge, jflt, jisinf, jisnan.
 These are branch instructions of the kind which spook anybody who's never
@@ -306,16 +297,15 @@ looked at how floating-point arithmetic is actually done. Once you stop
 thinking of a `float` as a number and start thinking of it as a sort of fuzzy
 uncertainty range all of this becomes more explicable, but still.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_opcode_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
 int i7_opcode_jfne(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
 int i7_opcode_jfge(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jflt(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jisinf(i7process_t *proc, i7word_t x);
 int i7_opcode_jisnan(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_opcode_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 	int result;
 	if ((z & 0x7F800000) == 0x7F800000 && (z & 0x007FFFFF) != 0) {
@@ -373,4 +363,3 @@ int i7_opcode_jisnan(i7process_t *proc, i7word_t x) {
     if ((x & 0x7F800000) == 0x7F800000 && (x & 0x007FFFFF) != 0) return 1;
 	return 0;
 }
-=

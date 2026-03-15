@@ -57,7 +57,7 @@ void CalculusModule::write_subject_term_ANNOT(text_stream *OUT, parse_node *p) {
 @ We also have to make annotation functions for one special annotation needed
 by //linguistics//:
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 
 @ =

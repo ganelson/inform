@@ -27,7 +27,7 @@ int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequenc
 in bug reports asking why it wouldn't change in play. "Score", of course, is
 more evidently variable.
 
-= (early code)
+@<Global variable definitions@> +=
 nonlocal_variable *score_VAR = NULL;
 nonlocal_variable *max_score_VAR = NULL;
 

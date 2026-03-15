@@ -127,7 +127,7 @@ void Sounds::register_sound(wording W, wording FN) {
 
 @h One significant kind.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_sound_name = NULL;
 
 @ This is created by an Inter kit early in Inform's run; the function below

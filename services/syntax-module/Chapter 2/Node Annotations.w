@@ -249,6 +249,11 @@ constructs them:
 void Node::set_##annotation_name(parse_node *pn, pointer_type *bp);
 pointer_type *Node::get_##annotation_name(parse_node *pn);
 
+@ And these will be expanded in this holon:
+
+@<Predeclarations of node annotation functions@> (webwide and tangled early) =
+	/* none are made in this section, but later sections will extend this */
+
 @h Copying annotations.
 For the most part, an annotation can be copied directly from one node to
 another: if it's an integer, or a pointer to an immutable sort of object.

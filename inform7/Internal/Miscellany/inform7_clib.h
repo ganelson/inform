@@ -1,6 +1,4 @@
-/* This is a header file for using a library of C code to support Inter code
-   compiled to ANSI C. It was generated mechanically from the Inter source code,
-   so to change this material, edit that and not this file. */
+
 
 #ifndef I7_CLIB_H_INCLUDED
 #define I7_CLIB_H_INCLUDED 1
@@ -76,8 +74,8 @@ void i7_set_process_glk_implementation(i7process_t *proc,
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
-void i7_initialiser(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
-void i7_initialise_object_tree(i7process_t *proc); /* ditto */
+void i7_initialiser(i7process_t *proc); 
+void i7_initialise_object_tree(i7process_t *proc); 
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -434,7 +432,6 @@ void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varar
 #define i7_gestalt_Sound2						21
 #define i7_gestalt_ResourceStream				22
 #define i7_gestalt_GraphicsCharInput			23
-
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g);
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c);
 i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c);
@@ -488,16 +485,16 @@ typedef struct i7_mg_event_t {
 #define I7_MINIGLK_RING_BUFFER_SIZE 32
 
 typedef struct miniglk_data {
-	/* streams */
+	
 	i7_mg_stream_t memory_streams[I7_MINIGLK_MAX_STREAMS];
 	i7word_t stdout_stream_id, stderr_stream_id;
-	/* files */
+	
 	i7_mg_file_t files[I7_MINIGLK_MAX_FILES + 32];
 	int no_files;
-	/* windows */
+	
 	i7_mg_window_t windows[I7_MINIGLK_MAX_WINDOWS];
 	int no_windows;
-	/* events */
+	
 	i7_mg_event_t events_ring_buffer[I7_MINIGLK_RING_BUFFER_SIZE];
 	int rb_back, rb_front;
 	int no_line_events;
@@ -555,3 +552,4 @@ i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
 #endif
+

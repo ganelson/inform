@@ -75,14 +75,13 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 @ See //C Literals// for the implementation of `i7_print_dword`: it funnels
 through to `i7_print_char`, and so do all of these:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_print_C_string(i7process_t *proc, char *c_string);
 void i7_print_decimal(i7process_t *proc, i7word_t x);
 void i7_print_object(i7process_t *proc, i7word_t x);
 void i7_print_box(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_print_C_string(i7process_t *proc, char *c_string) {
 	if (c_string)
 		for (int i=0; c_string[i]; i++)
@@ -103,15 +102,13 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_print_box.\n");
 	i7_fatal_exit(proc);
 }
-=
 
 @ Which in turn uses the `@glk` opcode:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_print_char(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
 	i7_push(proc, x);
@@ -120,7 +117,6 @@ void i7_print_char(i7process_t *proc, i7word_t x) {
 	i7_push(proc, current);
 	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
 }
-=
 
 @ At this point, then, all of our I/O needs will be handled if we can just
 define two functions: `i7_styling`, for setting the font style, and `i7_opcode_glk`.
@@ -130,16 +126,15 @@ But in fact we route both of these functions through hooks which the user can
 provide, so that the user can change the entire I/O model (if she is willing to
 code up an alternative):
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_styling(i7process_t *proc, i7word_t which, i7word_t what);
 void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what);
 void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
 	i7word_t *z);
 void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
 	i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_styling(i7process_t *proc, i7word_t which, i7word_t what) {
 	(proc->stylist)(proc, which, what);
 }
@@ -147,7 +142,6 @@ void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t vararg
 	i7word_t *z) {
 	(proc->glk_implementation)(proc, glk_api_selector, varargc, z);
 }
-=
 
 @ What makes this more burdensome is that `@glk` is not so much a single opcode
 as an entire instruction set: it is an compendium of over 120 disparate operations.
@@ -155,7 +149,7 @@ Indeed, the `glk_api_selector` argument to `i7_opcode_glk` chooses which one is
 being used. For convenience, we define a set of names for them all — which does
 not imply any commitment to implement them all.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -279,9 +273,8 @@ not imply any commitment to implement them all.
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-=
 
-A few other constants will also be useful. These are the window IDs for the
+@ A few other constants will also be useful. These are the window IDs for the
 three Glk windows used by the standard Inform 7 kits: `I7_BODY_TEXT_ID` is
 where text is regularly printed; `I7_STATUS_TEXT_ID` is for the "status line"
 at the top of a traditional interactive fiction display, but can simply be
@@ -289,15 +282,14 @@ ignored for non-IF purposes; and `I7_BOX_TEXT_ID` is where box quotations
 would be displayed over the top of text, though C projects probably should
 not use this, and the default Glk implementation here ignores it.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define I7_BODY_TEXT_ID          201
 #define I7_STATUS_TEXT_ID        202
 #define I7_BOX_TEXT_ID           203
-=
 
-These are needed for different forms of file I/O:
+@ These are needed for different forms of file I/O:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_fileusage_Data        0x00
 #define i7_fileusage_SavedGame   0x01
 #define i7_fileusage_Transcript  0x02
@@ -310,19 +302,17 @@ These are needed for different forms of file I/O:
 #define i7_filemode_Read         0x02
 #define i7_filemode_ReadWrite    0x03
 #define i7_filemode_WriteAppend  0x05
-=
 
-And these are modes for seeking a position in a file:
+@ And these are modes for seeking a position in a file:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_seekmode_Start (0)
 #define i7_seekmode_Current (1)
 #define i7_seekmode_End (2)
-=
 
-And these are "event types":
+@ And these are "event types":
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_evtype_None           0
 #define i7_evtype_Timer          1
 #define i7_evtype_CharInput      2
@@ -333,12 +323,11 @@ And these are "event types":
 #define i7_evtype_SoundNotify    7
 #define i7_evtype_Hyperlink      8
 #define i7_evtype_VolumeNotify   9
-=
 
-Finally, these are the gestalt values: that is, the selection of bells and
+@ Finally, these are the gestalt values: that is, the selection of bells and
 whistles which a Glk implementation can offer —
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_gestalt_Version						0
 #define i7_gestalt_CharInput					1
 #define i7_gestalt_LineInput					2

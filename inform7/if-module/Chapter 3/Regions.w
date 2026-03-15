@@ -28,7 +28,7 @@ void Regions::start(void) {
 @ There is one kind of interest: "region", of course. It is recognised by the English
 name in the Standard Rules. (So there is no need to translate this to other languages.)
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_region = NULL;
 inference_subject *infs_region = NULL;
 
@@ -245,7 +245,7 @@ int Regions::complete_model(int stage) {
 @ The relation "R in S" behaves so differently for regions that we need to
 define it separately, even though there's no difference in English syntax. So:
 
-= (early code)
+@<Global variable definitions@> +=
 binary_predicate *R_regional_containment = NULL;
 
 @ =

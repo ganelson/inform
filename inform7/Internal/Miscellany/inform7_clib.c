@@ -1,9 +1,9 @@
-/* This is a library of C code to support Inter code compiled to ANSI C. It was
-   generated mechanically from the Inter source code, so to change this material,
-   edit that and not this file. */
+#line 331 "inter/final-module/Chapter 5/Final C.w"
+
 
 #ifndef I7_CLIB_C_INCLUDED
 #define I7_CLIB_C_INCLUDED 1
+#line 451 "inter/final-module/Chapter 5/Final C.w"
 i7state_t i7_new_state(void) {
 	i7state_t S;
 	S.memory = NULL;
@@ -36,6 +36,7 @@ i7process_t i7_new_process(void) {
 	i7_initialise_miniglk_data(&proc);
 	return proc;
 }
+#line 502 "inter/final-module/Chapter 5/Final C.w"
 void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
@@ -51,6 +52,7 @@ char *i7_default_sender(int count) {
 	i7_default_sender_buffer[pos++] = 0;
 	return i7_default_sender_buffer;
 }
+#line 527 "inter/final-module/Chapter 5/Final C.w"
 int i7_default_main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_run_process(&proc);
@@ -60,6 +62,7 @@ int i7_default_main(int argc, char **argv) {
 	}
 	return proc.termination_code;
 }
+#line 547 "inter/final-module/Chapter 5/Final C.w"
 void i7_set_process_receiver(i7process_t *proc,
 	void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
@@ -68,6 +71,7 @@ void i7_set_process_receiver(i7process_t *proc,
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
 }
+#line 567 "inter/final-module/Chapter 5/Final C.w"
 void i7_set_process_stylist(i7process_t *proc,
 	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what)) {
 	proc->stylist = stylist;
@@ -77,12 +81,13 @@ void i7_set_process_glk_implementation(i7process_t *proc,
 		i7word_t varargc, i7word_t *z)) {
 	proc->glk_implementation = glk_implementation;
 }
+#line 599 "inter/final-module/Chapter 5/Final C.w"
 i7word_t i7_fn_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
 	int tc = setjmp(proc->execution_env);
 	if (tc) {
-		if (tc == 2) proc->termination_code = 0; /* terminated mid-stream but benignly */
-		else proc->termination_code = tc; /* terminated mid-stream with a fatal error */
+		if (tc == 2) proc->termination_code = 0; 
+		else proc->termination_code = tc; 
     } else {
 		i7_initialise_memory_and_stack(proc);
 		i7_initialise_variables(proc);
@@ -91,25 +96,27 @@ int i7_run_process(i7process_t *proc) {
 		i7_initialise_object_tree(proc);
 		i7_initialise_miniglk(proc);
 		i7_fn_Main(proc);
-		proc->termination_code = 0; /* terminated because the program completed */
+		proc->termination_code = 0; 
     }
     return proc->termination_code;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
-//  Uncomment the next line to force a crash so that the stack can be inspected in a debugger
-//	int x = 0; printf("%d", 1/x);
+
+
 	longjmp(proc->execution_env, 1);
 }
 
 void i7_benign_exit(i7process_t *proc) {
 	longjmp(proc->execution_env, 2);
 }
+#line 141 "inter/final-module/Chapter 5/C Global Variables.w"
 void i7_initialise_variables(i7process_t *proc) {
 	proc->state.variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
 	for (int i=0; i<i7_no_variables; i++)
 		proc->state.variables[i] = i7_initial_variable_values[i];
 }
+#line 244 "inter/final-module/Chapter 5/C Memory Model.w"
 void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
 	void *p = calloc(how_many, of_size);
 	if (p == NULL) {
@@ -143,6 +150,7 @@ void i7_initialise_memory_and_stack(i7process_t *proc) {
 	proc->state.himem = i7_static_himem;
 	proc->state.stack_pointer = 0;
 }
+#line 292 "inter/final-module/Chapter 5/C Memory Model.w"
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
 	return proc->state.memory[address];
 }
@@ -170,6 +178,7 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 		      0x10000U*((i7word_t) data[byte_position + 1]) +
 		    0x1000000U*((i7word_t) data[byte_position + 0]);
 }
+#line 340 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
 }
@@ -186,6 +195,7 @@ void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
 	proc->state.memory[byte_position+2] = I7BYTE_2(new_val);
 	proc->state.memory[byte_position+3] = I7BYTE_3(new_val);
 }
+#line 374 "inter/final-module/Chapter 5/C Memory Model.w"
 i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
 	i7byte_t old_val = i7_read_byte(proc, address);
 	i7byte_t return_val = new_val;
@@ -217,6 +227,7 @@ i7word_t i7_change_word(i7process_t *proc, i7word_t array_address, i7word_t arra
 	i7_write_word(proc, array_address, array_index, new_val);
 	return return_val;
 }
+#line 415 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_debug_stack(char *N) {
 	#ifdef I7_LOG_STACK_STATE
 	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
@@ -241,6 +252,7 @@ void i7_push(i7process_t *proc, i7word_t x) {
 	}
 	proc->state.stack[proc->state.stack_pointer++] = x;
 }
+#line 457 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
 	to->himem = from->himem;
 	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
@@ -271,6 +283,7 @@ void i7_destroy_state(i7process_t *proc, i7state_t *s) {
 	free(s->object_tree_sibling);
 	free(s->variables);
 }
+#line 496 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *unwanted) {
 	i7_destroy_state(proc, &(unwanted->then));
 	unwanted->valid = 0;
@@ -283,6 +296,7 @@ void i7_destroy_latest_snapshot(i7process_t *proc) {
 		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
 	proc->snapshot_pos = will_be;
 }
+#line 518 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_save_snapshot(i7process_t *proc) {
 	if (proc->snapshots[proc->snapshot_pos].valid)
 		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
@@ -293,11 +307,13 @@ void i7_save_snapshot(i7process_t *proc) {
 	proc->snapshot_pos++;
 	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
 }
+#line 538 "inter/final-module/Chapter 5/C Memory Model.w"
 int i7_has_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	return proc->snapshots[will_be].valid;
 }
+#line 549 "inter/final-module/Chapter 5/C Memory Model.w"
 void i7_restore_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
@@ -311,15 +327,18 @@ void i7_restore_snapshot(i7process_t *proc) {
 	int was = proc->snapshot_pos;
 	proc->snapshot_pos = will_be;
 }
+#line 380 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull(proc);
 	i7word_t rv = i7_gen_call(proc, fn_ref, args, varargc);
 	if (z) *z = rv;
 }
+#line 397 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y) {
 	if (y) *y = x;
 }
+#line 409 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_word(proc, x, y);
 }
@@ -331,17 +350,18 @@ void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_byte(proc, x+y);
 }
+#line 428 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
 	if ((y >= 0) && (y < 32)) value = (x << y);
 	if (z) *z = value;
 }
-
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
 	if ((y >= 0) && (y < 32)) value = (x >> y);
 	if (z) *z = value;
 }
+#line 453 "inter/final-module/Chapter 5/C Assembly.w"
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y) {
 	if (x == y) return 1;
 	return 0;
@@ -363,6 +383,7 @@ int i7_opcode_jz(i7process_t *proc, i7word_t x) {
 	if (x == 0) return 1;
 	return 0;
 }
+#line 487 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_nop(i7process_t *proc) {
 }
 
@@ -373,6 +394,7 @@ void i7_opcode_quit(i7process_t *proc) {
 void i7_opcode_verify(i7process_t *proc, i7word_t *z) {
 	if (z) *z = 0;
 }
+#line 519 "inter/final-module/Chapter 5/C Assembly.w"
 #ifdef i7_mgl_DealWithUndo
 i7word_t i7_fn_DealWithUndo(i7process_t *proc);
 #endif
@@ -402,6 +424,7 @@ void i7_opcode_hasundo(i7process_t *proc, i7word_t *x) {
 void i7_opcode_discardundo(i7process_t *proc) {
 	i7_destroy_latest_snapshot(proc);
 }
+#line 568 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_restart(i7process_t *proc) {
 	printf("(RESTART is not implemented on this C program.)\n");
 }
@@ -413,6 +436,7 @@ void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
+#line 588 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {
 	i7_print_decimal(proc, x);
 }
@@ -424,15 +448,15 @@ void i7_opcode_streamchar(i7process_t *proc, i7word_t x) {
 void i7_opcode_streamunichar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
-
+#line 624 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	i7word_t start, i7word_t structsize, i7word_t numstructs, i7word_t keyoffset,
 	i7word_t options, i7word_t *s1) {
 
-	if (s1 == NULL) return; /* Do not spend any time if the result is to be ignored */
+	if (s1 == NULL) return; 
 
 
-	/* If the key size is 4 or fewer, copy it directly into the keybuf array */
+	
 	unsigned char keybuf[4];
     if (options & serop_KeyIndirect) {
 		if (keysize <= 4)
@@ -450,13 +474,13 @@ void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
         }
     }
 
-	i7word_t bot = 0, top = numstructs; /* Initial search range, including bot but not top */
-	while (bot < top) { /* I.e., while the search range is not empty */
-		/* Find the structure at the midpoint of the search range */
+	i7word_t bot = 0, top = numstructs; 
+	while (bot < top) { 
+		
 		i7word_t val = (top+bot) / 2;
 		i7word_t addr = start + val * structsize;
 
-		/* Compute cmp = 0 if the key matches this, -1 if it precedes, 1 if it follows */
+		
 		int cmp = 0;
 		if (keysize <= 4) {
 			for (int ix=0; (!cmp) && ix<keysize; ix++) {
@@ -475,18 +499,19 @@ void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 		}
 
 		if (cmp == 0) {
-			/* Success! */
+			
 			if (options & serop_ReturnIndex) *s1 = val; else *s1 = addr;
 			return;
 		}
 
-		if (cmp < 0) bot = val+1; /* Chop search range to the second half */
-		else top = val; /* Chop search range to the first half */
+		if (cmp < 0) bot = val+1; 
+		else top = val; 
 	}
 
-	/* Failure! */
+	
 	if (options & serop_ReturnIndex) *s1 = -1; else *s1 = 0;
 }
+#line 700 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
 		for (i7word_t i=0; i<x; i++)
@@ -509,6 +534,7 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
+#line 740 "inter/final-module/Chapter 5/C Assembly.w"
 i7rngseed_t i7_initial_rng_seed(void) {
 	i7rngseed_t seed;
 	seed.A = 1;
@@ -545,29 +571,32 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 		proc->state.seed.interval = 0;
     }
 }
+#line 786 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 }
+#line 797 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	int r = 0;
 	switch (x) {
-		case 0: r = 0x00030103; break; /* Say that the Glulx version is v3.1.3 */
-		case 1: r = 1;          break; /* Say that the interpreter version is 1 */
-		case 2: r = 0;          break; /* We do not (yet) support @setmemsize */
-		case 3: r = 1;          break; /* We do support UNDO */
-		case 4: if (y == 2) r = 1;     /* We do support Glk */
-				       else r = 0;     /* But not any other I/O system */
+		case 0: r = 0x00030103; break; 
+		case 1: r = 1;          break; 
+		case 2: r = 0;          break; 
+		case 3: r = 1;          break; 
+		case 4: if (y == 2) r = 1;     
+				       else r = 0;     
 			    break;
-		case 5: r = 1;          break; /* We do support Unicode operations */
-		case 6: r = 1;          break; /* We do support @mzero and @mcopy */
-		case 7: r = 0;          break; /* We do not (yet) support @malloc or @mfree */
-		case 8: r = 0;          break; /* Since we do not support @malloc */
-		case 9: r = 0;          break; /* We do not support @accelfunc pr @accelparam */
-		case 10: r = 0;         break; /* And therefore provide none of their accelerants */
-		case 11: r = 1;         break; /* We do support floating-point maths operations */
-		case 12: r = 1;         break; /* We do support @hasundo and @discardundo */
+		case 5: r = 1;          break; 
+		case 6: r = 1;          break; 
+		case 7: r = 0;          break; 
+		case 8: r = 0;          break; 
+		case 9: r = 0;          break; 
+		case 10: r = 0;         break; 
+		case 11: r = 1;         break; 
+		case 12: r = 1;         break; 
 	}
 	if (z) *z = r;
 }
+#line 73 "inter/final-module/Chapter 5/C Arithmetic.w"
 void i7_opcode_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = x + y;
 }
@@ -630,6 +659,7 @@ i7word_t i7_mod(i7process_t *proc, i7word_t x, i7word_t y) {
 	i7_opcode_mod(proc, x, y, &z);
 	return z;
 }
+#line 150 "inter/final-module/Chapter 5/C Arithmetic.w"
 void i7_opcode_fadd(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	*z = i7_encode_float(i7_decode_float(x) + i7_decode_float(y));
 }
@@ -648,14 +678,14 @@ void i7_opcode_fmod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z, i7wo
 	i7word_t quot = i7_encode_float(fquot);
 	i7word_t rem = i7_encode_float((fx-fquot) / fy);
 	if (rem == 0x0 || rem == 0x80000000) {
-		/* When the quotient is zero, the sign has been lost in the
-		 shuffle. We'll set that by hand, based on the original arguments. */
+		
+
 		rem = (x ^ y) & 0x80000000;
 	}
 	if (z) *z = quot;
 	if (w) *w = rem;
 }
-
+#line 187 "inter/final-module/Chapter 5/C Arithmetic.w"
 void i7_opcode_floor(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(floorf(i7_decode_float(x)));
 }
@@ -702,6 +732,7 @@ void i7_opcode_ftonumz(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_numtof(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float((float) x);
 }
+#line 243 "inter/final-module/Chapter 5/C Arithmetic.w"
 void i7_opcode_exp(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(expf(i7_decode_float(x)));
 }
@@ -721,6 +752,7 @@ void i7_opcode_pow(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 void i7_opcode_sqrt(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(sqrtf(i7_decode_float(x)));
 }
+#line 274 "inter/final-module/Chapter 5/C Arithmetic.w"
 void i7_opcode_sin(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(sinf(i7_decode_float(x)));
 }
@@ -740,15 +772,16 @@ void i7_opcode_acos(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_atan(i7process_t *proc, i7word_t x, i7word_t *y) {
 	*y = i7_encode_float(atanf(i7_decode_float(x)));
 }
+#line 309 "inter/final-module/Chapter 5/C Arithmetic.w"
 int i7_opcode_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 	int result;
 	if ((z & 0x7F800000) == 0x7F800000 && (z & 0x007FFFFF) != 0) {
-		/* The delta is NaN, which can never match. */
+		
 		result = 0;
 	} else if ((x == 0x7F800000 || x == 0xFF800000)
 			&& (y == 0x7F800000 || y == 0xFF800000)) {
-		/* Both are infinite. Opposite infinities are never equal,
-		even if the difference is infinite, so this is easy. */
+		
+
 		result = (x == y);
 	} else {
 		float fx = i7_decode_float(y) - i7_decode_float(x);
@@ -762,12 +795,12 @@ int i7_opcode_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 int i7_opcode_jfne(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 	int result;
 	if ((z & 0x7F800000) == 0x7F800000 && (z & 0x007FFFFF) != 0) {
-		/* The delta is NaN, which can never match. */
+		
 		result = 0;
 	} else if ((x == 0x7F800000 || x == 0xFF800000)
 			&& (y == 0x7F800000 || y == 0xFF800000)) {
-		/* Both are infinite. Opposite infinities are never equal,
-		even if the difference is infinite, so this is easy. */
+		
+
 		result = (x == y);
 	} else {
 		float fx = i7_decode_float(y) - i7_decode_float(x);
@@ -797,10 +830,12 @@ int i7_opcode_jisnan(i7process_t *proc, i7word_t x) {
     if ((x & 0x7F800000) == 0x7F800000 && (x & 0x007FFFFF) != 0) return 1;
 	return 0;
 }
+#line 99 "inter/final-module/Chapter 5/C Literals.w"
 char *i7_texts[];
 char *i7_text_to_C_string(i7word_t str) {
 	return i7_texts[str - I7VAL_STRINGS_BASE];
 }
+#line 262 "inter/final-module/Chapter 5/C Literals.w"
 void i7_print_dword(i7process_t *proc, i7word_t at) {
 	for (i7byte_t i=1; i<=i7_mgl_DICT_WORD_SIZE; i++) {
 		i7word_t c = i7_read_word(proc, at, i);
@@ -808,12 +843,14 @@ void i7_print_dword(i7process_t *proc, i7word_t at) {
 		i7_print_char(proc, c);
 	}
 }
+#line 118 "inter/final-module/Chapter 5/C Object Model.w"
 i7word_t i7_metaclass(i7process_t *proc, i7word_t id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
 	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
 	return i7_metaclass_of[id];
 }
+#line 198 "inter/final-module/Chapter 5/C Object Model.w"
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	if ((id <= 0) || (cl_id <= 0)) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) {
@@ -839,6 +876,7 @@ int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	}
 	return 0;
 }
+#line 232 "inter/final-module/Chapter 5/C Object Model.w"
 void i7_empty_object_tree(i7process_t *proc) {
 	proc->state.object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
 	proc->state.object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
@@ -849,6 +887,7 @@ void i7_empty_object_tree(i7process_t *proc) {
 		proc->state.object_tree_sibling[i] = 0;
 	}
 }
+#line 810 "inter/final-module/Chapter 5/C Object Model.w"
 i7_property_set i7_properties[i7_max_objects];
 
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_array) {
@@ -864,7 +903,7 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_a
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return i7_properties[(int) obj].address[(int) pr];
 }
-
+#line 833 "inter/final-module/Chapter 5/C Object Model.w"
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
@@ -875,6 +914,7 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	}
 	return 0;
 }
+#line 852 "inter/final-module/Chapter 5/C Object Model.w"
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
 	int p = proc->state.object_tree_parent[obj];
@@ -899,6 +939,7 @@ void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 		proc->state.object_tree_child[to] = obj;
 	}
 }
+#line 886 "inter/final-module/Chapter 5/C Object Model.w"
 i7word_t i7_parent(i7process_t *proc, i7word_t id) {
 	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_parent[id];
@@ -919,12 +960,14 @@ i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
 	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_sibling[id];
 }
+#line 913 "inter/final-module/Chapter 5/C Object Model.w"
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
 	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
 	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
+#line 929 "inter/final-module/Chapter 5/C Object Model.w"
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
@@ -973,6 +1016,7 @@ i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr,
 	}
 	return new_val;
 }
+#line 1047 "inter/final-module/Chapter 5/C Object Model.w"
 int i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
 	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
@@ -1027,6 +1071,7 @@ void i7_change_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7
         	i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form);
     }
 }
+#line 608 "inter/final-module/Chapter 5/C Function Model.w"
 i7word_t i7_call_0(i7process_t *proc, i7word_t id) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	return i7_gen_call(proc, id, args, 0);
@@ -1059,6 +1104,7 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2,
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
 	return i7_gen_call(proc, id, args, 5);
 }
+#line 659 "inter/final-module/Chapter 5/C Function Model.w"
 i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	i7word_t saved = proc->state.variables[i7_var_self];
@@ -1103,6 +1149,7 @@ i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
+#line 85 "inter/final-module/Chapter 5/C Input-Output Model.w"
 void i7_print_C_string(i7process_t *proc, char *c_string) {
 	if (c_string)
 		for (int i=0; c_string[i]; i++)
@@ -1123,6 +1170,7 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_print_box.\n");
 	i7_fatal_exit(proc);
 }
+#line 112 "inter/final-module/Chapter 5/C Input-Output Model.w"
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
 	i7_push(proc, x);
@@ -1131,6 +1179,7 @@ void i7_print_char(i7process_t *proc, i7word_t x) {
 	i7_push(proc, current);
 	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
 }
+#line 138 "inter/final-module/Chapter 5/C Input-Output Model.w"
 void i7_styling(i7process_t *proc, i7word_t which, i7word_t what) {
 	(proc->stylist)(proc, which, what);
 }
@@ -1138,6 +1187,7 @@ void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t vararg
 	i7word_t *z) {
 	(proc->glk_implementation)(proc, glk_api_selector, varargc, z);
 }
+#line 40 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
 	i7_debug_stack("i7_opcode_glk");
 	i7word_t a[5] = { 0, 0, 0, 0, 0 }, argc = 0;
@@ -1152,7 +1202,7 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 		case i7_glk_gestalt:
 			rv = i7_miniglk_gestalt(proc, a[0]); break;
 
-		/* Characters */
+		
 		case i7_glk_char_to_lower:
 			rv = i7_miniglk_char_to_lower(proc, a[0]); break;
 		case i7_glk_char_to_upper:
@@ -1164,18 +1214,18 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			}
 			rv = a[2]; break;
 		case i7_glk_buffer_canon_normalize_uni:
-			rv = a[2]; break; /* Ignore this one */
+			rv = a[2]; break; 
 
-		/* File handling */
+		
 		case i7_glk_fileref_create_by_name:
 			rv = i7_miniglk_fileref_create_by_name(proc, a[0], a[1], a[2]); break;
 		case i7_glk_fileref_does_file_exist:
 			rv = i7_miniglk_fileref_does_file_exist(proc, a[0]); break;
-		/* And we ignore: */
+		
 		case i7_glk_fileref_destroy: rv = 0; break;
 		case i7_glk_fileref_iterate: rv = 0; break;
 
-		/* Stream handling */
+		
 		case i7_glk_stream_get_position:
 			rv = i7_miniglk_stream_get_position(proc, a[0]); break;
 		case i7_glk_stream_close:
@@ -1205,10 +1255,10 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 				}
 			}
 			rv = 0; break;
-		/* And we ignore: */
+		
 		case i7_glk_stream_iterate: rv = 0; break;
 
-		/* Window handling */
+		
 		case i7_glk_window_open:
 			rv = i7_miniglk_window_open(proc, a[0], a[1], a[2], a[3], a[4]); break;
 		case i7_glk_set_window:
@@ -1217,11 +1267,11 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_mg_get_window_rock(proc, a[0]); break;
 		case i7_glk_window_get_size:
 			rv = i7_miniglk_window_get_size(proc, a[0], a[1], a[2]); break;
-		/* And we ignore: */
+		
 		case i7_glk_window_iterate: rv = 0; break;
 		case i7_glk_window_move_cursor: rv = 0; break;
 
-		/* Event handling */
+		
 		case i7_glk_request_line_event:
 			rv = i7_miniglk_request_line_event(proc, a[0], a[1], a[2], a[3]); break;
 		case i7_glk_request_line_event_uni:
@@ -1229,7 +1279,7 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 		case i7_glk_select:
 			rv = i7_miniglk_select(proc, a[0]); break;
 
-		/* Other selectors we recognise, but then ignore: */
+		
 		case i7_glk_set_style: rv = 0; break;
 		case i7_glk_stylehint_set: rv = 0; break;
 		case i7_glk_schannel_create: rv = 0; break;
@@ -1242,7 +1292,7 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 	}
 	if (z) *z = rv;
 }
-
+#line 153 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 	switch (g) {
 		case i7_gestalt_Version:
@@ -1275,7 +1325,7 @@ i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 	}
 	return 0;
 }
-
+#line 194 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c) {
 	if (((c >= 0x41) && (c <= 0x5A)) ||
 		((c >= 0xC0) && (c <= 0xD6)) ||
@@ -1289,6 +1339,7 @@ i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c) {
 		((c >= 0xF8) && (c <= 0xFE))) c -= 32;
 	return c;
 }
+#line 281 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk = malloc(sizeof(miniglk_data));
 	if (proc->miniglk == NULL) {
@@ -1303,7 +1354,7 @@ void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk->rb_front = 0;
 	proc->miniglk->no_line_events = 0;
 }
-
+#line 303 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_initialise_miniglk(i7process_t *proc) {
 	for (int i=0; i<I7_MINIGLK_MAX_STREAMS; i++)
 		proc->miniglk->memory_streams[i] = i7_mg_new_stream(proc, NULL, 0);
@@ -1317,6 +1368,7 @@ void i7_initialise_miniglk(i7process_t *proc) {
 	proc->miniglk->memory_streams[proc->miniglk->stderr_stream_id] = stderr_stream;
 	i7_miniglk_stream_set_current(proc, proc->miniglk->stdout_stream_id);
 }
+#line 329 "inter/final-module/Chapter 5/C Miniglk.w"
 int i7_mg_new_file(i7process_t *proc) {
 	if (proc->miniglk->no_files >= I7_MINIGLK_MAX_FILES) {
 		fprintf(stderr, "Out of files\n"); i7_fatal_exit(proc);
@@ -1404,6 +1456,7 @@ int i7_mg_fgetc(i7process_t *proc, int id) {
 	int c = fgetc(proc->miniglk->files[id].handle);
 	return c;
 }
+#line 425 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
 	i7word_t name, i7word_t rock) {
 	int id = i7_mg_new_file(proc);
@@ -1430,6 +1483,7 @@ i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id) {
 	}
 	return 0;
 }
+#line 460 "inter/final-module/Chapter 5/C Miniglk.w"
 i7_mg_stream_t i7_mg_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	i7_mg_stream_t S;
 	S.to_file = F;
@@ -1465,6 +1519,7 @@ i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id) {
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
 	return 0;
 }
+#line 508 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock) {
 	if (fmode != i7_filemode_Write) {
@@ -1500,7 +1555,7 @@ i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	if (i7_mg_fopen(proc, fileref, usage) == 0) return 0;
 	return id;
 }
-
+#line 553 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
 	i7word_t seekmode) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
@@ -1532,6 +1587,7 @@ i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id) {
 	}
 	return (i7word_t) S->memory_used;
 }
+#line 593 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_stream_get_current(i7process_t *proc) {
 	return proc->state.current_output_stream_ID;
 }
@@ -1542,6 +1598,7 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id) {
 	}
 	proc->state.current_output_stream_ID = id;
 }
+#line 612 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c) {
 	i7_mg_stream_t *S =
 		&(proc->miniglk->memory_streams[proc->state.current_output_stream_ID]);
@@ -1557,7 +1614,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 		if (win_id >= 1) rock = i7_mg_get_window_rock(proc, win_id);
 		unsigned int c = (unsigned int) x;
 		if (proc->use_UTF8) {
-			if (c >= 0x200000) { /* invalid Unicode */
+			if (c >= 0x200000) { 
 				i7_mg_put_to_stream(proc, rock, '?');
 			} else if (c >= 0x10000) {
 				i7_mg_put_to_stream(proc, rock, 0xF0 + (c >> 18));
@@ -1593,7 +1650,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 		S->to_memory[S->memory_used++] = (wchar_t) x;
 	}
 }
-
+#line 671 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	i7_mg_stream_t *S = &(proc->miniglk->memory_streams[stream_id]);
 	if (S->to_file_id >= 0) {
@@ -1602,7 +1659,7 @@ i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	}
 	return 0;
 }
-
+#line 688 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
 		fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc);
@@ -1641,7 +1698,7 @@ void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	S->active = 0;
 	S->memory_used = 0;
 }
-
+#line 750 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
 	i7word_t size, i7word_t wintype, i7word_t rock) {
 	if (proc->miniglk->no_windows >= 128) {
@@ -1675,6 +1732,7 @@ i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
 	if (a2) i7_write_word(proc, a2, 0, 8);
 	return 0;
 }
+#line 795 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_mg_add_event_to_buffer(i7process_t *proc, i7_mg_event_t e) {
 	proc->miniglk->events_ring_buffer[proc->miniglk->rb_front] = e;
 	proc->miniglk->rb_front++;
@@ -1690,6 +1748,7 @@ i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc) {
 		proc->miniglk->rb_back = 0;
 	return e;
 }
+#line 819 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	i7_mg_event_t *e = i7_mg_get_event_from_buffer(proc);
 	if (e == NULL) {
@@ -1710,7 +1769,7 @@ i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	}
 	return 0;
 }
-
+#line 852 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len) {
 	i7_mg_event_t e;
@@ -1764,7 +1823,7 @@ i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id
 	}
 	return 0;
 }
-
+#line 915 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
 	i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize,
 	i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
@@ -1801,6 +1860,7 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
 	}
 }
+#line 13 "inter/final-module/Chapter 5/C Utility Functions.w"
 i7word_t i7_encode_float(i7float_t val) {
     i7word_t res;
     *(i7float_t *)(&res) = val;
@@ -1812,12 +1872,14 @@ i7float_t i7_decode_float(i7word_t val) {
     *(i7word_t *)(&res) = val;
     return res;
 }
+#line 33 "inter/final-module/Chapter 5/C Utility Functions.w"
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
 	return proc->state.variables[var_id];
 }
 void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
 	proc->state.variables[var_id] = val;
 }
+#line 50 "inter/final-module/Chapter 5/C Utility Functions.w"
 i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
 i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect);
@@ -1858,6 +1920,7 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 	}
 	#endif
 }
+#line 98 "inter/final-module/Chapter 5/C Utility Functions.w"
 i7word_t i7_fn_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
 i7word_t i7_fn_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_newsize, i7word_t i7_mgl_local_this_way_only,
@@ -1895,6 +1958,7 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 	}
 	#endif
 }
+#line 144 "inter/final-module/Chapter 5/C Utility Functions.w"
 #ifdef i7_mgl_TryAction
 i7word_t i7_fn_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,
 	i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n,
@@ -1905,4 +1969,6 @@ i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
 	return i7_fn_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
 }
 #endif
+#line 163 "inter/final-module/Chapter 5/C Utility Functions.w"
 #endif
+

@@ -6,7 +6,7 @@ To define the unary predicates for some anaphoric location adjectives.
 to the English words "everywhere", "nowhere" and "here". Each one of these
 is the singleton member of its own predicate family.
 
-= (early code)
+@<Global variable definitions@> +=
 up_family *everywhere_up_family = NULL;
 up_family *nowhere_up_family = NULL;
 up_family *here_up_family = NULL;

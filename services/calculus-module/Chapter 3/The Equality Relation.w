@@ -6,7 +6,7 @@ less noble sidekick, the "has" relation.
 @ Equality is the only relation in its family; but in Inform, there will be other
 relations besides "has" in the spatial family.
 
-= (early code)
+@<Global variable definitions@> +=
 bp_family *equality_bp_family = NULL;
 bp_family *spatial_bp_family = NULL;
 bp_family *dialogue_bp_family = NULL;

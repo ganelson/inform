@@ -5,7 +5,7 @@ To define the predicates causing instances to be created.
 @ This predicate plays a very special role in our calculus, and must always
 exist.
 
-= (early code)
+@<Global variable definitions@> +=
 up_family *calling_up_family = NULL;
 up_family *is_a_var_up_family = NULL;
 up_family *is_a_const_up_family = NULL;

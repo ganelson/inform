@@ -137,7 +137,7 @@ void Figures::register_figure(wording W, wording FN) {
 
 @h One significant kind.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_figure_name = NULL;
 
 @ This is created by an Inter kit early in Inform's run; the function below

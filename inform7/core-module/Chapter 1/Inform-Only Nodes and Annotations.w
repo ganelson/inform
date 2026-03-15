@@ -264,7 +264,7 @@ which compilation unit the node belongs.
 
 @e unit_ANNOT /* `compilation_unit` */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
 
 @ =
@@ -299,7 +299,7 @@ void CoreSyntax::grant_unit_permissions(void) {
 @e verb_problem_issued_ANNOT /* `int`: has a problem message about the primary verb been issued already? */
 @e you_can_ignore_ANNOT /* `int`: for assertions now drained of meaning */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
 DECLARE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 DECLARE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
@@ -439,7 +439,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
 @e turned_already_ANNOT /* `int`: aliasing like "player" to "yourself" performed already */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(corresponding_kind, kind)
 DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
@@ -671,7 +671,7 @@ void CoreSyntax::grant_L3_permissions(void) {
 @e token_to_be_parsed_against_ANNOT /* `parse_node`: what if anything is returned */
 @e unproven_ANNOT /* `int`: this invocation needs run-time typechecking */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(kind_of_new_variable, kind)
@@ -946,7 +946,7 @@ void CoreSyntax::grant_code_permissions(void) {
 @e tense_marker_ANNOT /* `grammatical_usage`: for specification nodes */
 @e text_unescaped_ANNOT /* `int`: flag used only for literal texts */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 DECLARE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(constant_constant_phrase, constant_phrase)

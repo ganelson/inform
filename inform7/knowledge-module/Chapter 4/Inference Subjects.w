@@ -79,7 +79,7 @@ but of course it includes instances and much else as well.
 @ The top of the inference hierarchy is essentially fixed, and contains a number
 of "fundamental" subjects:
 
-= (early code)
+@<Global variable definitions@> +=
 inference_subject *model_world = NULL;
 inference_subject *global_variables = NULL;
 inference_subject *global_constants = NULL;

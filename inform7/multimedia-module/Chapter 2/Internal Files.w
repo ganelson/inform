@@ -25,7 +25,7 @@ int InternalFiles::production_line(int stage, int debugging,
 
 @h One significant kind.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_internal_file = NULL;
 
 @ =

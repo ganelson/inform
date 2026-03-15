@@ -36,7 +36,7 @@ no store to take place.
 The code below can only be understood with the Glk reference documentation to
 hand, and we won't try to duplicate that here.
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
 	i7_debug_stack("i7_opcode_glk");
 	i7word_t a[5] = { 0, 0, 0, 0, 0 }, argc = 0;
@@ -146,11 +146,10 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 The following is overdone, really: the standard Inform kits ask only about
 `i7_gestalt_Unicode`, `i7_gestalt_Sound` and `i7_gestalt_Graphics`.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 	switch (g) {
 		case i7_gestalt_Version:
@@ -187,12 +186,11 @@ i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 @h Characters.
 These need only be performed on the ISO Latin-1 range, so are easy.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c);
 i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c) {
 	if (((c >= 0x41) && (c <= 0x5A)) ||
 		((c >= 0xC0) && (c <= 0xD6)) ||
@@ -206,13 +204,12 @@ i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c) {
 		((c >= 0xF8) && (c <= 0xFE))) c -= 32;
 	return c;
 }
-=
 
 @h Miniglk data.
 Each process needs to keep track of its own files, streams, windows and events,
 which are wrapped up in a `miniglk_data` structure as follows:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define I7_MINIGLK_LEAFNAME_LENGTH 128
 
 typedef struct i7_mg_file_t {
@@ -279,9 +276,8 @@ typedef struct miniglk_data {
 } miniglk_data;
 
 void i7_initialise_miniglk_data(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk = malloc(sizeof(miniglk_data));
 	if (proc->miniglk == NULL) {
@@ -300,11 +296,10 @@ void i7_initialise_miniglk_data(i7process_t *proc) {
 @ Each process starts with two streams already open for text output: `stdout`
 and `stderr`, and the former is selected as current.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_initialise_miniglk(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_initialise_miniglk(i7process_t *proc) {
 	for (int i=0; i<I7_MINIGLK_MAX_STREAMS; i++)
 		proc->miniglk->memory_streams[i] = i7_mg_new_stream(proc, NULL, 0);
@@ -318,11 +313,10 @@ void i7_initialise_miniglk(i7process_t *proc) {
 	proc->miniglk->memory_streams[proc->miniglk->stderr_stream_id] = stderr_stream;
 	i7_miniglk_stream_set_current(proc, proc->miniglk->stdout_stream_id);
 }
-=
 
 @h File-handling.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_mg_new_file(i7process_t *proc);
 int i7_mg_fseek(i7process_t *proc, int id, int pos, int origin);
 int i7_mg_ftell(i7process_t *proc, int id);
@@ -330,9 +324,8 @@ int i7_mg_fopen(i7process_t *proc, int id, int mode);
 void i7_mg_fclose(i7process_t *proc, int id);
 void i7_mg_fputc(i7process_t *proc, int c, int id);
 int i7_mg_fgetc(i7process_t *proc, int id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_mg_new_file(i7process_t *proc) {
 	if (proc->miniglk->no_files >= I7_MINIGLK_MAX_FILES) {
 		fprintf(stderr, "Out of files\n"); i7_fatal_exit(proc);
@@ -420,17 +413,15 @@ int i7_mg_fgetc(i7process_t *proc, int id) {
 	int c = fgetc(proc->miniglk->files[id].handle);
 	return c;
 }
-=
 
 @ This allows us to implement `glk_fileref_create_by_name` and `glk_fileref_does_file_exist`.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
 	i7word_t name, i7word_t rock);
 i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
 	i7word_t name, i7word_t rock) {
 	int id = i7_mg_new_file(proc);
@@ -457,17 +448,15 @@ i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id) {
 	}
 	return 0;
 }
-=
 
 @h Streams.
 These are channels for input/output, carrying bytes (which are usually characters).
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7_mg_stream_t i7_mg_new_stream(i7process_t *proc, FILE *F, int win_id);
 i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7_mg_stream_t i7_mg_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	i7_mg_stream_t S;
 	S.to_file = F;
@@ -503,21 +492,19 @@ i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id) {
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
 	return 0;
 }
-=
 
 @ This allows us to implement `glk_stream_open_memory` and its Unicode-text
 analogue `glk_stream_open_memory_uni`, and `glk_stream_open_file`.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock);
 i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock);
 i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	i7word_t usage, i7word_t rock);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock) {
 	if (fmode != i7_filemode_Write) {
@@ -557,13 +544,12 @@ i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 @ `glk_stream_set_position` and `glk_stream_get_position` are essentially for
 moving to the start or end of a file, at least for our purposes.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
 	i7word_t seekmode);
 i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
 	i7word_t seekmode) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
@@ -595,17 +581,15 @@ i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id) {
 	}
 	return (i7word_t) S->memory_used;
 }
-=
 
 @ Each process has a current stream, and `glk_stream_get_current` and
 `glk_stream_set_current` give access to this.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
 void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_stream_get_current(i7process_t *proc) {
 	return proc->state.current_output_stream_ID;
 }
@@ -616,17 +600,15 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id) {
 	}
 	proc->state.current_output_stream_ID = id;
 }
-=
 
 @ The thing which is "current" about the current stream is that this is where
 characters are written to. The following implements `glk_put_char_stream`.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c);
 void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c) {
 	i7_mg_stream_t *S =
 		&(proc->miniglk->memory_streams[proc->state.current_output_stream_ID]);
@@ -682,11 +664,10 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 @ Note that the current stream is irrelevant to reading characters, where we
 have to specify exactly which stream is intended. Here's `glk_get_char_stream`:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	i7_mg_stream_t *S = &(proc->miniglk->memory_streams[stream_id]);
 	if (S->to_file_id >= 0) {
@@ -700,11 +681,10 @@ i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 we may have to close a file on disc, or we may have to copy a memory buffer into
 process memory.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
 		fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc);
@@ -758,16 +738,15 @@ way anyway.
 
 Note that we shamelessly claim that all windows are 80 x 8 characters.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
 	i7word_t size, i7word_t wintype, i7word_t rock);
 i7word_t i7_miniglk_set_window(i7process_t *proc, i7word_t id);
 i7word_t i7_mg_get_window_rock(i7process_t *proc, i7word_t id);
 i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
 	i7word_t a2);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
 	i7word_t size, i7word_t wintype, i7word_t rock) {
 	if (proc->miniglk->no_windows >= 128) {
@@ -801,7 +780,6 @@ i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
 	if (a2) i7_write_word(proc, a2, 0, 8);
 	return 0;
 }
-=
 
 @h Events.
 Pending events are stored in a ring buffer, where the valid pending events are
@@ -809,12 +787,11 @@ those between the `rb_back` and `rb_front` markers, modulo `I7_MINIGLK_RING_BUFF
 (In practice, this is more than we need for the very simple use that the standard
 I7 kits make of events. Still, it does no harm.)
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_mg_add_event_to_buffer(i7process_t *proc, i7_mg_event_t e);
 i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_mg_add_event_to_buffer(i7process_t *proc, i7_mg_event_t e) {
 	proc->miniglk->events_ring_buffer[proc->miniglk->rb_front] = e;
 	proc->miniglk->rb_front++;
@@ -830,17 +807,15 @@ i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc) {
 		proc->miniglk->rb_back = 0;
 	return e;
 }
-=
 
 @ That enables `glk_select`, an operation by which the caller can choose to
 pull an event from the buffer and (optionally) copy its data ihto process
 memory.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	i7_mg_event_t *e = i7_mg_get_event_from_buffer(proc);
 	if (e == NULL) {
@@ -867,14 +842,13 @@ compose a command (terminated by 0 or a newline), then makes that it into a
 line event and pushes it to the event buffer. The caller can then use `glk_select`
 to find out what the command was.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len);
 i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len) {
 	i7_mg_event_t e;
@@ -937,7 +911,7 @@ When `which` is 1, we're essentially emulating Inform 6's `font` statement; when
 it is 2, we're emulation `style`, though an enhanced version capable of more than
 the three built-in styles `bold`, `italic` and `reverse`.
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
 	i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize,
 	i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
@@ -974,4 +948,3 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
 	}
 }
-=

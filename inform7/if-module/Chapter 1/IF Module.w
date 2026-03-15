@@ -73,7 +73,7 @@ Except for the current minimal section of code, the //if// module is comprised
 of the following features. They all belong to an "if" feature, but that does
 nothing except to be a parent to them; it has no activation function.
 
-= (early code)
+@<Global variable definitions@> +=
 compiler_feature *actions_feature, *going_feature,
 	*backdrops_feature, *bibliographic_feature, *chronology_feature,
 	*devices_feature, *map_feature, *parsing_feature, *persons_feature, *player_feature,

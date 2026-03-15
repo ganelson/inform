@@ -10,7 +10,7 @@ have more than one comparative (a property such as "height" might have
 relations for both "shorter" and "taller"). So comparative relations do not
 correspond exactly with properties.
 
-= (early code)
+@<Global variable definitions@> +=
 bp_family *property_comparison_bp_family = NULL;
 
 @ =

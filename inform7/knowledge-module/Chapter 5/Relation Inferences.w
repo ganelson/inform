@@ -7,7 +7,7 @@ subjects or values are related by it. Thus, if Charles "knows" Sebastian,
 this fact is an inference about the knowledge relation, not about either
 Charles or Sebastian, who are only the terms listed in its data.
 
-= (early code)
+@<Global variable definitions@> +=
 inference_family *relation_inf = NULL;
 
 @ =

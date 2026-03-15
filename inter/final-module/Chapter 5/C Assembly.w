@@ -373,18 +373,16 @@ such as `@fmul`.
 To begin, here is a `@call`, which performs a function call to a perhaps computed
 address:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull(proc);
 	i7word_t rv = i7_gen_call(proc, fn_ref, args, varargc);
 	if (z) *z = rv;
 }
-=
 
 @h copy.
 Though it doesn't look it, this is one of the main ways Glulx assembly language
@@ -392,25 +390,22 @@ programs push or pull to the stack — `@copy sp x` pulls the stack to `x`;
 `@copy sp 0` pops the stack; `@copy x sp` pushes `x` to the stack. But all of
 that is handled by the general mechanism above.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y) {
 	if (y) *y = x;
 }
-=
 
 @h aload, aloads, aloadb.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_word(proc, x, y);
 }
@@ -422,28 +417,24 @@ void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_byte(proc, x+y);
 }
-=
 
 @h ushiftr, shiftl.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
 	if ((y >= 0) && (y < 32)) value = (x << y);
 	if (z) *z = value;
 }
-
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
 	if ((y >= 0) && (y < 32)) value = (x >> y);
 	if (z) *z = value;
 }
-=
 
 @h jeq, jleu, jnz, jz.
 These are branch opcodes and return an `int`.
@@ -452,14 +443,13 @@ The implementation of `@jleu` here is modelled on the one from `dumb-glulxe`.
 Writing code like `*((i7word_t *) &ux) = x` really makes you proud to have chosen
 C as your programming language, but it works.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jleu(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jnz(i7process_t *proc, i7word_t x);
 int i7_opcode_jz(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y) {
 	if (x == y) return 1;
 	return 0;
@@ -481,7 +471,6 @@ int i7_opcode_jz(i7process_t *proc, i7word_t x) {
 	if (x == 0) return 1;
 	return 0;
 }
-=
 
 @h nop, quit, verify.
 There is no real meaning for `@verify` in this situation: it's supposed to
@@ -489,13 +478,12 @@ check the checksum for the contents of a virtual machine, to protect against
 the (entirely likely) scenario of a floppy disk sector going bad in 1983.
 So we unconditionally store the "okay" result.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_nop(i7process_t *proc);
 void i7_opcode_quit(i7process_t *proc);
 void i7_opcode_verify(i7process_t *proc, i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_nop(i7process_t *proc) {
 }
 
@@ -506,7 +494,6 @@ void i7_opcode_quit(i7process_t *proc) {
 void i7_opcode_verify(i7process_t *proc, i7word_t *z) {
 	if (z) *z = 0;
 }
-=
 
 @h restoreundo, saveundo, hasundo, discardundo.
 This all works, but we do something pretty inelegant to support `@restoreundo`:
@@ -522,14 +509,13 @@ Correspondingly, our implementation of `@saveundo` always stores the result
 value 0. The result value 1 would indicate that execution had switched there
 from a successful `@restoreundo`: but, as noted, that never happens.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x);
 void i7_opcode_saveundo(i7process_t *proc, i7word_t *x);
 void i7_opcode_hasundo(i7process_t *proc, i7word_t *x);
 void i7_opcode_discardundo(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 #ifdef i7_mgl_DealWithUndo
 i7word_t i7_fn_DealWithUndo(i7process_t *proc);
 #endif
@@ -559,7 +545,6 @@ void i7_opcode_hasundo(i7process_t *proc, i7word_t *x) {
 void i7_opcode_discardundo(i7process_t *proc) {
 	i7_destroy_latest_snapshot(proc);
 }
-=
 
 @h restart, restore, save.
 For the moment, at least, we intentionally do not implement these. It seems
@@ -574,13 +559,12 @@ essentially to reboot the virtual machine and start over: here, though, we
 have a real machine. It's easy enough to reinitialise the process state,
 but not so simple to restart execution as if from a clean process start.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_restart(i7process_t *proc);
 void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_restart(i7process_t *proc) {
 	printf("(RESTART is not implemented on this C program.)\n");
 }
@@ -592,17 +576,15 @@ void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
-=
 
 @h streamchar, streamnum, streamunichar.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_streamnum(i7process_t *proc, i7word_t x);
 void i7_opcode_streamchar(i7process_t *proc, i7word_t x);
 void i7_opcode_streamunichar(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {
 	i7_print_decimal(proc, x);
 }
@@ -630,16 +612,15 @@ just `serop_KeyIndirect`, but `keysize` will be more than 4, so that the elabora
 speed optimisation for keys of size 1, 2 and 4, and thus `keybuf`, are never used.
 But we may as well have the full functionality here.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define serop_KeyIndirect        1
 #define serop_ZeroKeyTerminates  2
 #define serop_ReturnIndex        4
 void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	i7word_t start, i7word_t structsize, i7word_t numstructs, i7word_t keyoffset,
 	i7word_t options, i7word_t *s1);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	i7word_t start, i7word_t structsize, i7word_t numstructs, i7word_t keyoffset,
 	i7word_t options, i7word_t *s1) {
@@ -702,7 +683,6 @@ void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	/* Failure! */
 	if (options & serop_ReturnIndex) *s1 = -1; else *s1 = 0;
 }
-=
 
 @h mcopy, mzero, malloc, mfree.
 A Glulx assembly opcode is provided for fast memory copies, which we must
@@ -710,14 +690,13 @@ implement. We're choosing not to implement the Glulx `@malloc` or `@mfree`
 opcodes for now, but that will surely need to change in due course. (When that
 does change, we will need also to change `@gestalt`.)
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
 void i7_opcode_mzero(i7process_t *proc, i7word_t x, i7word_t y);
 void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y);
 void i7_opcode_mfree(i7process_t *proc, i7word_t x);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
 		for (i7word_t i=0; i<x; i++)
@@ -740,7 +719,6 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
-=
 
 @h random, setrandom.
 Note that the `random(...)` function built in to Inform is just a name for the
@@ -753,13 +731,12 @@ generator is seeded with the same value. To that end, we borrow the algorithm
 used by the `frotz` Z-machine interpreter, which in turn is based on suggestions
 in the Z-machine standards document.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7rngseed_t i7_initial_rng_seed(void);
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7rngseed_t i7_initial_rng_seed(void) {
 	i7rngseed_t seed;
 	seed.A = 1;
@@ -796,31 +773,27 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 		proc->state.seed.interval = 0;
     }
 }
-=
 
 @h setiosys.
 This opcode in principle allows a story file to select the input-output system
 it will use. But the Inform kits only use system 2, called Glk, and this is the
 only system we support, so we will simply ignore this.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 }
-=
 
 @h gestalt.
 This opcode allows a story file to ask the Glulx interpreter running it whether
 or not the interpreter can perform certain tasks.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	int r = 0;
 	switch (x) {
@@ -842,4 +815,3 @@ void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	}
 	if (z) *z = r;
 }
-=

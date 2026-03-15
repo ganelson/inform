@@ -171,7 +171,7 @@ There aren't actually many possibilities.
 @ We keep track of the newest-created base kind of value (which isn't a kind
 of object) here:
 
-= (early code)
+@<Global kind variables@> +=
 kind *latest_base_kind_of_value = NULL;
 
 @ Arithmetic schemas record:

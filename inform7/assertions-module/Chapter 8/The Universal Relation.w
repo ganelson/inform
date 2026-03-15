@@ -7,7 +7,7 @@ subsumes all other relations.
 
 @d VERB_MEANING_UNIVERSAL_CALCULUS_RELATION R_universal
 
-= (early code)
+@<Global variable definitions@> +=
 binary_predicate *R_universal = NULL;
 binary_predicate *R_meaning = NULL;
 

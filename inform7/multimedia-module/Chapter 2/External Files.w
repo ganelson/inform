@@ -226,7 +226,7 @@ by an unspecified other project, or by a project identified by its IFID.
 
 @h One significant kind.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_external_file = NULL;
 
 @ =

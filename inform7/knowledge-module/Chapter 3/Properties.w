@@ -164,7 +164,7 @@ something.
 @ A few properties have special significance to core Inform, though features
 are interested in many others:
 
-= (early code)
+@<Global variable definitions@> +=
 property *P_description = NULL; /* a text property for holding annotations */
 property *P_specification = NULL; /* a pseudo-property for indexing kinds */
 property *P_indefinite_appearance_text = NULL; /* quoted text which seems to describe this */

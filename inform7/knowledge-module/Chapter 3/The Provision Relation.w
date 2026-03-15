@@ -7,7 +7,7 @@ can be held by which objects.
 duration") generate propositions which assert that a subject, here "scene",
 provides a property, here "expected duration". The relation needed is:
 
-= (early code)
+@<Global variable definitions@> +=
 binary_predicate *R_provision = NULL;
 
 @h Family.

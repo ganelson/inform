@@ -92,18 +92,16 @@ entry in the `i7_texts` array, which can be accessed using the
 addresses of compressed text in memory, so that the values are not consecutive
 and the range they spread out over can be very large.)
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 char *i7_text_to_C_string(i7word_t str);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 char *i7_texts[];
 char *i7_text_to_C_string(i7word_t str) {
 	return i7_texts[str - I7VAL_STRINGS_BASE];
 }
-=
 
-The `i7_texts` array is written one entry at a time as we go along, and is
+@ The `i7_texts` array is written one entry at a time as we go along, and is
 started here:
 
 =
@@ -257,11 +255,10 @@ Inter provides a primitive to do that, and here is the implementation.
 [1] It would get every word in this footnote right except for dictionary, which
 would print as dictionar.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_print_dword(i7process_t *proc, i7word_t at);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_print_dword(i7process_t *proc, i7word_t at) {
 	for (i7byte_t i=1; i<=i7_mgl_DICT_WORD_SIZE; i++) {
 		i7word_t c = i7_read_word(proc, at, i);
@@ -269,7 +266,6 @@ void i7_print_dword(i7process_t *proc, i7word_t at) {
 		i7_print_char(proc, c);
 	}
 }
-=
 
 @ We will use the convenient Vanilla mechanism for compiling dictionary words,
 so there is very little to do:

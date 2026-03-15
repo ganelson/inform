@@ -31,7 +31,7 @@ time period]", for "3 HOURS".
 @ This section of code is a feature: that is, it can be deactivated, removing
 support for times of day from the Inform language. If so, `K_time` remains null.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_time = NULL;
 kind *K_time_period = NULL;
 

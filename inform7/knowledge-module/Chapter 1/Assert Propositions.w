@@ -13,7 +13,7 @@ consequence of these. For example, //Instances::new// is defended this way.
 	if (assert_recursion_depth == 0)
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
-= (early code)
+@<Global variable definitions@> +=
 int assert_recursion_depth = 0; /* depth of recursion of `Assert::inner_slated` */
 
 @h Entrance.
@@ -46,7 +46,7 @@ parse_node **current_interpretation_as_spec = NULL;
 or uncertainty about the information implied by it, and this is stored in the
 following global variable:
 
-= (early code)
+@<Global variable definitions@> +=
 int prevailing_mood = UNKNOWN_CE;
 
 @ The true entrance, then, keeps track of the recursion depth but also ensures

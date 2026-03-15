@@ -42,7 +42,7 @@ int Player::production_line(int stage, int debugging,
 identity in order to find out if the author is setting an initial time of day.
 "Player", though, behaves quite unusually: see above.
 
-= (early code)
+@<Global variable definitions@> +=
 nonlocal_variable *player_VAR = NULL;
 nonlocal_variable *time_of_day_VAR = NULL;
 
@@ -75,7 +75,7 @@ int Player::new_variable_notify(nonlocal_variable *nlv) {
 Altogether we keep track of four instances, though the first pair often coincide,
 and so do the second pair.
 
-= (early code)
+@<Global variable definitions@> +=
 instance *start_room = NULL; /* room in which play begins: e.g., Barber's Shop */
 instance *start_object = NULL; /* object in which play begins: e.g., a barber's chair */
 

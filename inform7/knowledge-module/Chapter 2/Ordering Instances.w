@@ -11,7 +11,7 @@ They are stored as a linked list with the links in an array indexed by the
 allocation IDs of the objects. This could all now alternatively be done with
 the `linked_list` type provided by //foundation//, but never mind: it works.
 
-= (early code)
+@<Global variable definitions@> +=
 instance *first_instance_in_list = NULL;
 instance **next_instance_in_current_list = NULL;
 instance *last_instance_in_list = NULL;

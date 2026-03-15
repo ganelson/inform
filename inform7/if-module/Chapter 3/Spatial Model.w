@@ -47,9 +47,7 @@ Rules. (So there is no need to translate this to other languages.)
 	person |
 	player's holdall
 
-@ 
-
-= (early code)
+@<Global variable definitions@> +=
 kind *K_room = NULL;
 kind *K_thing = NULL;
 kind *K_container = NULL;
@@ -146,7 +144,7 @@ timing issue with that: the kinds will not exist until Inform's run is fairly
 advanced, since they are created by source text. We need the subjects earlier
 than that, and so we have to have placeholders until the real thing is ready:
 
-= (early code)
+@<Global variable definitions@> +=
 inference_subject *infs_room = NULL;
 inference_subject *infs_thing = NULL;
 inference_subject *infs_supporter = NULL;
@@ -183,7 +181,7 @@ int Spatial::name_to_early_infs(wording W, inference_subject **infs) {
 
 @h Properties of interest.
 
-= (early code)
+@<Global variable definitions@> +=
 property *P_initial_appearance = NULL;
 property *P_wearable = NULL;
 property *P_fixed_in_place = NULL;

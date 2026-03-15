@@ -230,7 +230,7 @@ of A to Z in a single array.
 
 @d MAX_KIND_VARIABLES 27 /* we number them from 1 (A) to 26 (Z) */
 
-= (early code)
+@<Global kind variables@> +=
 kind *values_of_kind_variables[MAX_KIND_VARIABLES];
 
 @ In theory the kind-checker only needs to read the values of `A` to `Z`, not

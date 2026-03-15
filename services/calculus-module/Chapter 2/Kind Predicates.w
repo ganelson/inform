@@ -5,7 +5,7 @@ To define the predicates for membership of a kind.
 @ For every kind `K`, the //calculus// module provides a unary predicate `kind=K`,
 and these all belong to the family:
 
-= (early code)
+@<Global variable definitions@> +=
 up_family *kind_up_family = NULL;
 
 @ At startup, the //calculus// module calls:

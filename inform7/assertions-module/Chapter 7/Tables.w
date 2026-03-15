@@ -45,7 +45,7 @@ classdef table_contribution in 100s {
 
 @ These are convenient during parsing.
 
-= (early code)
+@<Global variable definitions@> +=
 parse_node *table_cell_node = NULL;
 int table_cell_row = -1;
 int table_cell_col = -1;

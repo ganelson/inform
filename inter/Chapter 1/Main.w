@@ -235,7 +235,7 @@ We are required to create a `kind` type, in order for `kinds` to compile;
 but no instances of this kind will ever in fact exist. `K_value` is a
 global constant meaning "any kind at all", and that also must exist.
 
-= (early code)
+@<Global variable definitions@> +=
 typedef void kind;
 kind *K_value = NULL;
 

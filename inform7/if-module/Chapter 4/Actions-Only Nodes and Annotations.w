@@ -12,7 +12,7 @@ Additional syntax tree node and annotation types used by the actions feature.
 @e constant_explicit_action_ANNOT /* `explicit_action`: for constant values */
 @e constant_named_action_pattern_ANNOT /* `named_action_pattern`: for constant values */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
 DECLARE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
 DECLARE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)

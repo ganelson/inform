@@ -5,7 +5,7 @@ Inferences that a property of something is true, or has a particular value.
 @ Property inferences say that the subject has a property, which can be
 either-or or valued.
 
-= (early code)
+@<Global variable definitions@> +=
 inference_family *property_inf = NULL;
 
 @ =

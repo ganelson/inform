@@ -88,7 +88,7 @@ While we could probably represent map knowledge using relation inferences
 in connection with the "mapped D of" relations, it's altogether easier and
 makes for more legible code if we use a special inference family of our own:
 
-= (early code)
+@<Global variable definitions@> +=
 inference_family *direction_inf = NULL; /* where do map connections from O lead? */
 
 @ =
@@ -153,7 +153,7 @@ void Map::get_map_references(inference *i,
 @h Special kinds.
 It's obvious why the kinds direction and door are special.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_direction = NULL;
 kind *K_door = NULL;
 
@@ -281,7 +281,7 @@ they have linguistic features not shared by lateral directions. "Above the
 garden is the treehouse", for instance, does not directly refer to either
 direction, but implies both.
 
-= (early code)
+@<Global variable definitions@> +=
 instance *I_up = NULL;
 instance *I_down = NULL;
 
@@ -380,7 +380,7 @@ These are property names to do with mapping which Inform provides special
 support for. Two are visible to I7 authors, and the others are low-level
 properties needed for the run-time implementation.
 
-= (early code)
+@<Global variable definitions@> +=
 property *P_other_side = NULL; /* a value property for the other side of a door */
 property *P_opposite = NULL; /* a value property for the reverse of a direction */
 

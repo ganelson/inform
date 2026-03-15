@@ -72,7 +72,7 @@ for what they have instead.)
 The "waiting" action is sacred, because it is the default value for
 `K_action_name` values: waiting is the zero of actions.
 
-= (early code)
+@<Global variable definitions@> +=
 action_name *waiting_action = NULL;
 
 @ This is recognised by its English name when defined by the Standard Rules.

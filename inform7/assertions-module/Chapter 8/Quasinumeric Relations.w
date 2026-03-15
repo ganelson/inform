@@ -15,7 +15,7 @@ of them names.
 There is no numerical equality relation $=$ as such: numbers use the same
 equality BP as everything else.
 
-= (early code)
+@<Global variable definitions@> +=
 binary_predicate *R_numerically_greater_than = NULL;
 binary_predicate *R_numerically_less_than = NULL;
 binary_predicate *R_numerically_greater_than_or_equal_to = NULL;

@@ -6,9 +6,7 @@ What shall we test?
 
 @d PROGRAM_NAME "building-test"
 
-@
-
-= (early code)
+@<Global variable definitions@> +=
 typedef void kind;
 kind *K_value = NULL;
 

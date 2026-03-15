@@ -204,11 +204,10 @@ time, but which is identified only as a runtime value which will be one of the
 numbers defined above. This is done with a function called `i7_gen_call`, and
 that is what we must now compile:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_gen_call(i7process_t *proc, i7word_t id, i7word_t *args, int argc);
-=
 
-The structure is basically one big switch. In simplified pseudocode it looks like so:
+@ The structure is basically one big switch. In simplified pseudocode it looks like so:
 
 ``` C
 	switch (function_id_number) {
@@ -591,7 +590,7 @@ int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_t
 @ The following functions implement the above. `i7_call_N` provides a general
 way to call an Inter function with `N` arguments, up to 5.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_call_0(i7process_t *proc, i7word_t id);
 i7word_t i7_call_1(i7process_t *proc, i7word_t id, i7word_t v);
 i7word_t i7_call_2(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2);
@@ -600,13 +599,12 @@ i7word_t i7_call_4(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7wo
 	i7word_t v4);
 i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7word_t v3,
 	i7word_t v4, i7word_t v5);
-=
 
-But these are not really different from each other: they all simply call `i7_gen_call`,
+@ But these are not really different from each other: they all simply call `i7_gen_call`,
 the function we compiled laboriously in //CFunctionModel::write_gen_call// above,
 to do the actual business.
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_call_0(i7process_t *proc, i7word_t id) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	return i7_gen_call(proc, id, args, 0);
@@ -649,16 +647,15 @@ variable has to be set to that object when the function is running (and restored
 back to its previous value afterwards). Again, we use `i7_gen_call` to do the
 actual work.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop);
 i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
 i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	i7word_t v2, i7word_t v3);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	i7word_t saved = proc->state.variables[i7_var_self];
@@ -703,4 +700,3 @@ i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
-=

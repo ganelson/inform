@@ -2,14 +2,10 @@
 
 To define the predicates connected to linguistic adjectives.
 
-@
-
-= (early code)
+@<Global variable definitions@> +=
 up_family *adjectival_up_family = NULL;
 
-@
-
-=
+@ =
 void AdjectivalPredicates::start(void) {
 	adjectival_up_family = UnaryPredicateFamilies::new();
 	METHOD_ADD(adjectival_up_family, TYPECHECK_UPF_MTID, AdjectivalPredicates::typecheck);

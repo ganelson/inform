@@ -19,7 +19,7 @@ void PerformanceStyles::start(void) {
 Neptune file belonging to //DialogueKit//, and this is recognised by its Inter
 identifier `PERFORMANCE_STYLE_TY`.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_performance_style = NULL;
 
 @ =
@@ -64,7 +64,7 @@ int PerformanceStyles::compare_CONSTANT(parse_node *spec1, parse_node *spec2, in
 
 @e constant_performance_style_ANNOT /* `performance_style`: for constant values */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(constant_performance_style, performance_style)
 
 @ =

@@ -4,7 +4,7 @@ Binary predicates for spatial relationships.
 
 @ So this section of code is all about the following:
 
-= (early code)
+@<Global variable definitions@> +=
 /* fundamental spatial relationships */
 binary_predicate *R_containment = NULL;
 binary_predicate *R_support = NULL;

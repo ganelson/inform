@@ -8,7 +8,7 @@ modified, rather than having their current contents read.
 There are seven possible ways to modify something identified by a reference,
 and we need constants to identify these ways in the code we generate:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -16,7 +16,6 @@ and we need constants to identify these ways in the code we generate:
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-=
 
 @ Those seven ways correspond to seven Inter primitives, with the following
 signatures:

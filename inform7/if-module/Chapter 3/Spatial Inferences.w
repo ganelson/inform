@@ -5,7 +5,7 @@ Six families of inference used by the spatial feature.
 @ Spatial has no fewer than six of its own inference families, needed to store vague
 indications of spatial structure:
 
-= (early code)
+@<Global variable definitions@> +=
 inference_family *is_room_inf = NULL;           /* is O a room? */
 inference_family *contains_things_inf = NULL;   /* does O contain things? */
 inference_family *parentage_inf = NULL;         /* where is O located? */

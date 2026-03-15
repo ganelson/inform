@@ -15,7 +15,7 @@ class simply called `rel`.
 annotation it uses. (It can't do this itself without knowing the type.) But
 we don't need to create the annotation or give it permissions.
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(relationship, rel)
 
 @ =
@@ -47,7 +47,7 @@ these two macros:
 @d VERB_MEANING_EQUALITY R_equality
 @d VERB_MEANING_POSSESSION R_possession
 
-= (early code)
+@<Global variable definitions@> +=
 rel *R_equality = NULL;
 rel *R_possession = NULL;
 

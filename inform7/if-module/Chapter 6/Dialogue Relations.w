@@ -4,7 +4,7 @@ Binary predicates for spatial relationships.
 
 @ So this section of code is all about the following:
 
-= (early code)
+@<Global variable definitions@> +=
 binary_predicate *R_dialogue_containment = NULL;
 
 @ These relations are all hard-wired in:

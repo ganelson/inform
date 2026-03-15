@@ -25,7 +25,7 @@ void Scenes::start(void) {
 
 @e constant_scene_ANNOT /* `scene`: for constant values */
 
-= (early code)
+@<Predeclarations of node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
 
 @ =
@@ -44,7 +44,7 @@ void Scenes::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
 Neptune file belonging to //WorldModelKit//, and this is recognised by its
 Inter identifier `SCENE_TY`.
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_scene = NULL;
 
 @ =
@@ -84,7 +84,7 @@ int Scenes::new_named_instance_notify(instance *I) {
 
 @ The following either/or property needs some compiler support:
 
-= (early code)
+@<Global variable definitions@> +=
 property *P_recurring = NULL;
 
 @ This is a property name to do with scenes which Inform provides special

@@ -175,7 +175,7 @@ handled as a rulebook variable, but having it as a global is more efficient.)
 it is compiled in an unusual way, to achieve backwards compatibility with
 the code in //CommandParserKit//, which dates back to the era of Inform 1 to 6.
 
-= (early code)
+@<Global variable definitions@> +=
 nonlocal_variable *temporary_global_VAR = NULL;
 nonlocal_variable *Inter_nothing_VAR = NULL; /* the `nothing` constant */
 nonlocal_variable *command_prompt_VAR = NULL; /* the command prompt text */

@@ -48,7 +48,7 @@ This a kind name to do with backdrops which Inform provides special support
 for; it recognises the English name when defined by the Standard Rules. (So
 there is no need to translate this to other languages.)
 
-= (early code)
+@<Global variable definitions@> +=
 kind *K_backdrop = NULL;
 
 @ =
@@ -220,7 +220,7 @@ code, derived from the old I6 library, requires `absent` to be set. So:
 @h Inference families.
 Two sorts of inferences are used only for backdrops:
 
-= (early code)
+@<Global variable definitions@> +=
 inference_family *found_in_inf = NULL; /* for backdrop things in many places */
 inference_family *found_everywhere_inf = NULL; /* ditto */
 

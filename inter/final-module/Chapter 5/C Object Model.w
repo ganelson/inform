@@ -111,18 +111,16 @@ void CObjectModel::define_object_value_regions(code_generation *gen) {
 
 @ Those decisions give us the following `i7_metaclass` function:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_metaclass(i7process_t *proc, i7word_t id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_metaclass(i7process_t *proc, i7word_t id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
 	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
 	return i7_metaclass_of[id];
 }
-=
 
 @h Property owners.
 We use the term "property owner" to mean either a kind of object, or an instance
@@ -193,11 +191,10 @@ implement the primitive `!ofclass` reasonably efficiently. Note that it may need
 to recurse up the class hierarchy. If A is of class B whose superclass is C, then
 `i7_ofclass(A, B)` and `i7_ofclass(A, C)` are both true, as it `i7_ofclass(B, C)`.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	if ((id <= 0) || (cl_id <= 0)) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) {
@@ -223,17 +220,15 @@ int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	}
 	return 0;
 }
-=
 
 @ Here we compile code to initialise the tree. This happens in two stages: first
 the tree is blanked out so that nothing contains anything else, and that's done
 with an unchanging function in the C library:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_empty_object_tree(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_empty_object_tree(i7process_t *proc) {
 	proc->state.object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
 	proc->state.object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
@@ -244,7 +239,6 @@ void i7_empty_object_tree(i7process_t *proc) {
 		proc->state.object_tree_sibling[i] = 0;
 	}
 }
-=
 
 @ And secondly, there is dynamic code (i.e. different for different compilations)
 to store the initial values as recorded in the `initial_*` fields:
@@ -799,7 +793,7 @@ although multiple processes running the same I7 story would have multiple values
 for these properties, which likely differ at any given time, they would be at
 the same address and of the same length in each. 
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define I7_MAX_PROPERTY_IDS 1000
 typedef struct i7_property_set {
 	i7word_t address[I7_MAX_PROPERTY_IDS];
@@ -809,11 +803,10 @@ extern i7_property_set i7_properties[];
 
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
-=
 
-Lengths are returned in bytes, not words, hence the multiplication by 4.
+@ Lengths are returned in bytes, not words, hence the multiplication by 4.
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7_property_set i7_properties[i7_max_objects];
 
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_array) {
@@ -833,11 +826,10 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_a
 @ The address array can be used to determine whether a runtime object or class
 provides a given property: if the address is nonzero then it does.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
@@ -848,17 +840,15 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	}
 	return 0;
 }
-=
 
 @ Now `i7_move`, which moves `obj` in the object tree so that it becomes the
 eldest child of `to`, unless `to` is zero, in which case it is removed from
 the tree.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
 	int p = proc->state.object_tree_parent[obj];
@@ -883,18 +873,16 @@ void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 		proc->state.object_tree_child[to] = obj;
 	}
 }
-=
 
 @ Now the four ways to interrogate the object containment tree:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_parent(i7process_t *proc, i7word_t id);
 i7word_t i7_child(i7process_t *proc, i7word_t id);
 i7word_t i7_children(i7process_t *proc, i7word_t id);
 i7word_t i7_sibling(i7process_t *proc, i7word_t id);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_parent(i7process_t *proc, i7word_t id) {
 	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_parent[id];
@@ -915,33 +903,29 @@ i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
 	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_sibling[id];
 }
-=
 
 @ And the implementation of "is `obj1` directly a child of `obj2`?"
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
 	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
 	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
-=
 
 @h Reading, writing and changing object properties.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
 i7word_t i7_change_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
 	i7word_t val, int way);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
@@ -990,7 +974,6 @@ i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr,
 	}
 	return new_val;
 }
-=
 
 @h Reading, writing and changing general properties.
 And these are the exactly analogous functions which more generally read, write
@@ -1007,14 +990,13 @@ functions in our story-file C which supply the necessary information and then
 call clumsy but static functions in the C library; but this is all transparent
 to the user, who should call only these:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p);
 i7word_t i7_read_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 void i7_write_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
 	i7word_t val);
 void i7_change_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
 	i7word_t val, i7word_t form);
-=
 
 @ So here are the dynamic wrappers.
 
@@ -1047,7 +1029,7 @@ void CObjectModel::compile_gprop_functions(code_generation *gen) {
 
 @ And these are the static functions in the C library which they call: 
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
 	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
@@ -1060,9 +1042,8 @@ void i7_write_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7w
 void i7_change_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
 	i7word_t val, i7word_t form, i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
 	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
 	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
@@ -1117,4 +1098,3 @@ void i7_change_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7
         	i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form);
     }
 }
-=

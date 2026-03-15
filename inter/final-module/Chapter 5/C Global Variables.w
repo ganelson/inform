@@ -134,14 +134,12 @@ void CGlobals::evaluate_variable(code_generator *gtr, code_generation *gen,
 @ Finally, this function, part of the C library, initialises the variables for a
 newly-starting process.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_initialise_variables(i7process_t *proc);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_initialise_variables(i7process_t *proc) {
 	proc->state.variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
 	for (int i=0; i<i7_no_variables; i++)
 		proc->state.variables[i] = i7_initial_variable_values[i];
 }
-=
