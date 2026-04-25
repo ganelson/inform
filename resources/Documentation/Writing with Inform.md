@@ -18528,7 +18528,7 @@ This is the story of a typical hyperlink, which we can tell at three levels.
 
 The idea here is that the player sees that the words "big red button" are highlighted in some way, and may want to click on them. If so, the `splash rule` will run.
 
-**A mid-level explanation**. Under the hood, this is how that same hyperlink looks inside Inform's run-time facilities. When Inform says `"[link splash rule]big red button[end link]"`, it generates a value of a kind called `tagged hyperlink` to represent the "destination" of the link: that is, to represent what should happen if the link is clicked on. This is called "tagged" because it consists of both a "tag", meaning what to do, and a "value", meaning what to do it with. In this case, the tagged hyperlink is a combination of:
+**A mid-level explanation**. Under the hood, this is how that same hyperlink looks inside Inform's run-time facilities. When Inform says `"[link splash rule]big red button[end link]"`, it generates a value of a kind called `hyperlink token` to represent the "destination" of the link: that is, to represent what should happen if the link is clicked on. This is called a token it represents a value which is used when creating the actual hyperlink and which is returned when tthe player clicks on it. A hyperlink token consists of both a "tag", meaning what to do, and a "value", meaning what to do it with. In this case, the hyperlink token is a combination of:
 
 - the tag `rule hyperlink`, which is an instance of the kind `hyperlink tag`, with
 
@@ -18536,7 +18536,7 @@ The idea here is that the player sees that the words "big red button" are highli
 
 Inform provides four different `hyperlink tag` possibilities, of which `rule hyperlink` is only one. The others correspond to different ways that links can cause effects, and will come up later. Because Inform authors and extension writers can create new `hyperlink tag` values, this system is flexible enough to be built on in new ways.
 
-If the tag is clicked on, Inform receives a `hyperlink event` from Glk and handles it. What it does is to retrieve the tagged hyperlink and take the necessary action — in this case, to run the rule.
+If the tag is clicked on, Inform receives a `hyperlink event` from Glk and handles it. What it does is to retrieve the hyperlink token and take the necessary action — in this case, to run the rule.
 
 **A low-level explanation**. Still further under the hood, from the point of view of the Glk I/O system, all that happens is that Glk is told that certain printed words are part of a link with a given identification number — say, 17. If the player ever clicks on those words, Glk sends a `hyperlink event` with number 17 attached to it. Glk never knows what this number means, and never needs to know.
 
@@ -18546,7 +18546,7 @@ So, then, whereas Inform authors need to write handling rules to take care of ot
 
 To create a link, all that is necessary is to use the `[link]` and `[end link]` text substitutions:
 
-> phrase: say "[link (tagged hyperlink)]"
+> phrase: say "[link (hyperlink token)]"
 >
 > Starts a hyperlink with the given "destination", that is, with the given instruction on what to do if the link is clicked or tapped. No text will be printed yet, but anything said after this substitution will be part of the hyperlink. The link will continue until the next `[link ...]` or `[end link]`, either of which will end it. So it is impossible for one piece of hyperlinked text to contain another.
 
@@ -18554,14 +18554,14 @@ To create a link, all that is necessary is to use the `[link]` and `[end link]` 
 >
 > Ends the current hyperlink. Any subsequent printed text will just be regular text.
 
-The `[link ...]` substitution looks as if it comes in many variant versions, but in fact it doesn't: the variety in possible outcomes is because there are many ways to create the `tagged hyperlink` value which occupies the `...` part of `[link ...]`. In particular, Inform provides four out-of-the-box ways to create them:
+The `[link ...]` substitution looks as if it comes in many variant versions, but in fact it doesn't: the variety in possible outcomes is because there are many ways to create the `hyperlink token` value which occupies the `...` part of `[link ...]`. In particular, Inform provides four out-of-the-box ways to create them:
 
 -	**Command replacement**. For example,
 	
 		let command be "PRESS BUTTON";
 		say "Your eyes stray to the [link command replacement of command]pretty red button[end link].";
 
-	> phrase: command replacement of (text) ... tagged hyperlink
+	> phrase: command replacement of (text) ... hyperlink token
 	>
 	> A link given this outcome replaces an entire pending line input with the specified text and then submits it, as if the player had typed it themselves and then pressed enter.
 
@@ -18570,7 +18570,7 @@ The `[link ...]` substitution looks as if it comes in many variant versions, but
 		let extra text be " BUTTON";
 		say "Your eyes stray to the [link append extra text]pretty red button[end link].";
 
-	> phrase: append (text) ... tagged hyperlink
+	> phrase: append (text) ... hyperlink token
 	>
 	> A link given this outcome suspends line input, adds its text to the current line input, and then resumes line input. It's as if the player had typed the text in question.
 
@@ -18623,33 +18623,29 @@ Firstly, since this will mean a new type of hyperlink, we will have to assign a 
 
 Now we need a way to create hyperlinks of this type:
 
-	To decide what tagged hyperlink is examine (X - thing):
-		decide on tagged hyperlink of examination hyperlink with X.
+	To decide what hyperlink token is examine (X - thing):
+		decide on hyperlink token of examination hyperlink with X.
 
-Internally, a tagged hyperlink consists of a _tag_ plus (usually) a _value_. Here, the tag was `examination hyperlink` and the value was `X`, except that of course in the case of the Paint Machine, that will end up being the object `big red button`. We've used one of these creation phrases:
+Internally, a hyperlink token consists of a _tag_ plus (usually) a _value_. Here, the tag was `examination hyperlink` and the value was `X`, except that of course in the case of the Paint Machine, that will end up being the object `big red button`. We've used one of these creation phrases:
 
-> phrase: tagged hyperlink of (hyperlink tag) for/of/with (value) ... tagged hyperlink
+> phrase: hyperlink token of (hyperlink tag) for/of/with (value) ... hyperlink token
 >
-> Creates a new tagged hyperlink by combining a tag with a value.
+> Creates a new hyperlink token by combining a tag with a value.
 
-> phrase: tagged hyperlink of (hyperlink tag)
+> phrase: hyperlink token of (hyperlink tag)
 >
-> Creates a new tagged hyperlink which has a tag, but no value.
+> Creates a new hyperlink token which has a tag, but no value.
 
 Lastly, Inform needs to know what to do when a link of this type is clicked. In general, when any link is clicked, Glk sends a `hyperlink event`, but Inform handles this by then following the `hyperlink handling rules`. The basis of this rule book is the hyperlink tag of the event.
 
 To handle our new action links, all we need to do is write a new rule for this rulebook:
 
 	Hyperlink handling rule for examination hyperlink:
-		let the item be the hyperlink value as a thing;
+		let the item be the value of outcome as a thing;
 		try examining the item;
 		rule succeeds.
 
-This is using a phrase which only makes sense within the hyperlink handling rules:
-
-> phrase: hyperlink value as a (name of kind of value K) ... K
->
-> Extracts the hyperlink value as the specified kind of value. This must be used with great care so that the kind of value is correct, since Inform cannot check that. The important thing is to use this phrase on a hyperlink of type 
+This rulebook has a variable called `outcome`, which is the selected hyperlink token. You can get the value out of it with the `value of (hyperlink token) as a (name of kind)` phrase. This must be used with great care so that the kind of value is correct, since Inform cannot check that the value is of that actual type.
 
 In practice, using this system will work best if the usual command prompt is removed. Inform normally prints this each time it waits for keyboard input, but that means it's still present if the player clicks on a link which enters a command instead. So stories making heavy use of hypertext normally remove the prompt, like so:
 
@@ -18659,7 +18655,7 @@ In practice, using this system will work best if the usual command prompt is rem
 And some authors might also want to print something like so:
 
 	Hyperlink handling rule for examination hyperlink:
-		let the item be the hyperlink value as a thing;
+		let the item be the value of outcome as a thing;
 		say "(examining [the item])[command clarification break]";
 		try examining the item;
 		rule succeeds.
@@ -18678,10 +18674,10 @@ where no prompt or typing is visible, but where it's clear that a command has ne
 
 ### Dubious
 
-Hyperlink tags and their corresponding values are then combined into a kind called a `tagged hyperlink`. Even though Glk only allows hyperlinks to carry a single number, tagged hyperlinks can contain almost all kinds found in Inform, with the exception of real numbers. Authors must however be careful not to try to put an ephemeral value into a hyperlink, such as some local variables. The hyperlink phrases described below will display an error if it cannot safely put a value inside a tagged hyperlink.
+Hyperlink tags and their corresponding values are then combined into a kind called a `hyperlink token`. Even though Glk only allows hyperlinks to carry a single number, hyperlink tokens can contain almost all kinds found in Inform, with the exception of real numbers. Authors must however be careful not to try to put an ephemeral value into a hyperlink, such as some local variables. The hyperlink phrases described below will display an error if it cannot safely put a value inside a hyperlink token.
 
-> phrase: tag of (tagged hyperlink) ... hyperlink
-> phrase: value of (tagged hyperlink) as a (name of kind of value K) ... K
+> phrase: tag of (hyperlink token) ... hyperlink
+> phrase: value of (hyperlink token) as a (name of kind of value K) ... K
 >
 > These phrases will extract the hyperlink tag and value out of a hyperlink. Note that it is the author's responsibility to use the correct kind of value when extracting the value. Inform cannot detect if you use the wrong kind, but using a value extracted with the wrong kind could cause serious problems down the line.
 

@@ -717,7 +717,7 @@ masks and widths accordingly.
 Global hyperlink_payload_mask;
 Global hyperlink_tag_mask;
 Global hyperlink_tag_width;
-Global hyperlink_value;
+Global current_hyperlink_token;
 
 [ CALCULATE_HYPERLINK_TAG_WIDTH_R;
 	if (ICOUNT_HYPERLINK_TAG < 8) {
@@ -737,28 +737,28 @@ Global hyperlink_value;
 	rfalse;
 ];
 
-@ And now the implementation functions for the tagged hyperlink kind.
+@ And now the implementation functions for the hyperlink token kind.
 
-`TAGGED_HYPERLINK_TY_New` combines the tag and value into one 32 bit hyperlink ID,
+`HYPERLINK_TOKEN_TY_New` combines the tag and value into one 32 bit hyperlink ID,
 checking that the value is not a pointer to ephemeral data (on the stack). if
 `make_link` is true then it will also call `glk_set_hyperlink`.
 
-`TAGGED_HYPERLINK_TY_Say` prints a simple representation of the tagged hyperlink
+`HYPERLINK_TOKEN_TY_Say` prints a simple representation of the hyperlink token
 for debug purposes. It does not make an actual link.
 
-`TAGGED_HYPERLINK_TY_Tag` and `TAGGED_HYPERLINK_TY_Value` split a tagged hyperlink
+`HYPERLINK_TOKEN_TY_Tag` and `HYPERLINK_TOKEN_TY_Value` split a hyperlink token
 up into its parts again.
 
 =
-[ TAGGED_HYPERLINK_TY_New tag val kind make_link;
+[ HYPERLINK_TOKEN_TY_New tag val kind make_link;
 	if (kind == REAL_NUMBER_TY) {
-		IssueRTP("HyperlinkRealNumber", "TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain real numbers.", Architecture32KitRTPs);
+		IssueRTP("HyperlinkRealNumber", "HYPERLINK_TOKEN_TY_New: Hyperlink tokens cannot contain real numbers.", Architecture32KitRTPs);
 		return 0;
 	}
 	if (val >= blockv_stack && val < (blockv_stack + BLOCKV_STACK_SIZE * WORDSIZE)) {
 		if (kind) {
 			if (KindConformsTo_POINTER_VALUE_TY(kind)) {
-				IssueRTP("HyperlinkEphemeral", "TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain ephemeral values.", Architecture32KitRTPs);
+				IssueRTP("HyperlinkEphemeral", "HYPERLINK_TOKEN_TY_New: Hyperlink tokens cannot contain ephemeral values.", Architecture32KitRTPs);
 				return 0;
 			}
 		}
@@ -776,8 +776,8 @@ up into its parts again.
 	return val;
 ];
 
-[ TAGGED_HYPERLINK_TY_Say val tag;
-	print "tagged hyperlink (";
+[ HYPERLINK_TOKEN_TY_Say val tag;
+	print "hyperlink token (";
 	tag = val & hyperlink_tag_mask;
 	if (tag == 0) {
 		print "invalid";
@@ -788,34 +788,33 @@ up into its parts again.
 	print ")";
 ];
 
-[ TAGGED_HYPERLINK_TY_Tag val;
+[ HYPERLINK_TOKEN_TY_Tag val;
 	val = val & hyperlink_tag_mask;
 	if (val == 0 || val > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "TAGGED_HYPERLINK_TY_Tag: Cannot process an invalid tagged hyperlink.", Architecture32KitRTPs);
+		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Tag: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
 		return 0;
 	}
 	return val;
 ];
 
-[ TAGGED_HYPERLINK_TY_Value val tag;
+[ HYPERLINK_TOKEN_TY_Value val tag;
 	tag = val & hyperlink_tag_mask;
 	if (tag == 0 || tag > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "TAGGED_HYPERLINK_TY_Value: Cannot process an invalid tagged hyperlink.", Architecture32KitRTPs);
+		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Value: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
 		return 0;
 	}
 	@sshiftr val hyperlink_tag_width val;
 	return val;
 ];
 
-@ `HANDLE_HYPERLINK_R` processes a hyperlink Glk event, splitting the tagged
-hyperlink and calling the hyperlink handling rules.
+@ `HANDLE_HYPERLINK_R` processes calls the hyperlink handling rules for the
+chosen hyperlink token.
 
 =
-[ HANDLE_HYPERLINK_R val;
+[ HANDLE_HYPERLINK_R;
 	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_Hyperlink) {
-		val = current_glk_event-->GLK_EVENT_VALUE1_SF;
-		hyperlink_value = TAGGED_HYPERLINK_TY_Value(val);
-		FollowRulebook(HYPERLINK_HANDLING_RB, val & hyperlink_tag_mask, true);
+		current_hyperlink_token = current_glk_event-->GLK_EVENT_VALUE1_SF;
+		FollowRulebook(HYPERLINK_HANDLING_RB, current_hyperlink_token & hyperlink_tag_mask, true);
 	}
 	rfalse;
 ];

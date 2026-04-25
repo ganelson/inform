@@ -104,15 +104,15 @@ new base GLK_WINDOW_TYPE_TY {
 	instance: graphics window type    = wintype_Graphics_   = 5
 }
 
-new base TAGGED_HYPERLINK_TY {
+new base HYPERLINK_TOKEN_TY {
 	conforms-to: SAYABLE_VALUE_TY
-	singular: tagged hyperlink
-	plural: tagged hyperlinks
+	singular: hyperlink token
+	plural: hyperlink tokens
 
 	default-value: 0
-	say-function: TAGGED_HYPERLINK_TY_Say
+	say-function: HYPERLINK_TOKEN_TY_Say
 
-	specification-text: A tagged hyperlink combines a hyperlink tag and a value.
+	specification-text: A hyperlink token combines a hyperlink tag and a value.
 }
 
 new base TEXT_INPUT_STATUS_TY {
