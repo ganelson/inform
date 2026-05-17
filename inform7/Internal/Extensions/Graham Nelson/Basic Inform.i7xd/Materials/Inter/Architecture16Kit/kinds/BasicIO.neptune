@@ -17,8 +17,8 @@ new base BASIC_COLOUR_TY {
 
 new base ZMACHINE_WINDOW_TY {
 	conforms-to: ENUMERATED_VALUE_TY
-	singular: z-machine window
-	plural: z-machine windows
+	singular: IO window
+	plural: IO windows
 
 	specification-text: Represents one of the Z-Machine windows.
 

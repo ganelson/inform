@@ -44,32 +44,35 @@ To decide what version number is the interpreter version number/--:
 @h Glk windows.
 Minimal support for Glk windows. Other extensions may extend the kind.
 
+Note that the name of the Glk window kind is `IO window`. This allows us to
+design some phrases to be platform agnostic (with Z-Machine windows).
+
 =
 Chapter - Glk windows
 
-A Glk window is a kind of abstract object.
-The glk window kind is accessible to Inter as "K_Glk_Window".
-The specification of a glk window is "Models the Glk window system."
+An IO window is a kind of abstract object.
+The IO window kind is accessible to Inter as "K_Glk_Window".
+The specification of an IO window is "Models the Glk window system."
 
-A glk window has a glk window type called the window type.
+An IO window has a glk window type called the window type.
 The window type property translates into Inter as "glk_window_type".
 
-A glk window has a number called the rock number.
+An IO window has a number called the rock number.
 The rock number property translates into Inter as "glk_rock".
 
-A glk window has a number called the glk window handle.
+An IO window has a number called the glk window handle.
 The glk window handle property translates into Inter as "glk_ref".
 
-Definition: a glk window is on-screen rather than off-screen if the glk window handle of it is not 0.
+Definition: an IO window is on-screen rather than off-screen if the glk window handle of it is not 0.
 
 @ Setting window types is quite verbose, so we have some subkinds to make it easier.
 
 =
-A graphics window is a kind of glk window.
+A graphics window is a kind of IO window.
 The window type of a graphics window is graphics window type.
-A text buffer window is a kind of glk window.
+A text buffer window is a kind of IO window.
 The window type of a text buffer window is text buffer window type.
-A text grid window is a kind of glk window.
+A text grid window is a kind of IO window.
 The window type of a text grid window is text grid window type.
 
 @ Create objects for each of the built in windows.
@@ -91,11 +94,11 @@ require extensions.
 =
 Section - Glk windows
 
-To focus (win - a glk window)
+To focus (win - IO window)
 	(documented at ph_glkwindowfocus):
 	(- WindowFocus({win}); -).
 
-To set (win - a glk window) cursor to row (row - a number) and/-- column/col (col - a number)
+To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)
 	(documented at ph_glksetcursor):
 	(- WindowMoveCursor({win}, {col}, {row}); -).
 
@@ -118,35 +121,35 @@ To decide what glk event is (evtype - glk event type) glk event:
 
 To decide what glk event is a/-- character event with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event with (C - unicode character) in (win - glk window)
+To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)
 	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
 To decide what glk event is a/-- line event with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event with (T - text) in (win - glk window)
+To decide what glk event is a/-- line event with (T - text) in (win - IO window)
 	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
 To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/--:
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).
-To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - glk window):
+To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).
 To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).
-To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - glk window):
+To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).
 
 To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, 0, {val}) -).
-To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token) in (win - glk window):
+To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token) in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).
 
 To decide what glk event type is type of (ev - glk event)
 	(documented at ph_glkeventtype):
 	(- GLK_EVENT_TY_Type({ev}) -).
 
-To decide what glk window is window of (ev - glk event)
+To decide what IO window is window of (ev - glk event)
 	(documented at ph_glkeventwindow):
 	(- GLK_EVENT_TY_Window({ev}) -).
 
@@ -306,29 +309,29 @@ These properties and phrases allow the author to suspend and resume input reques
 =
 Chapter - Suspending and resuming input
 
-A glk window has a text input status.
+An IO window has a text input status.
 The text input status property translates into Inter as "text_input_status".
-A glk window can be requesting mouse input.
+An IO window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
 To suspend text input, without input echoing
 	(documented at ph_suspendtextinput):
 	(- SuspendTextInput(active_window, {phrase options}); -).
 
-To suspend text input in (win - a glk window), without input echoing:
+To suspend text input in (win - IO window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
 
 To resume text input
 	(documented at ph_resumetextinput):
 	(- ResumeTextInput(active_window); -).
 
-To resume text input in (win - a glk window):
+To resume text input in (win - IO window):
 	(- ResumeTextInput({win}); -).
 
-To decide what text is the current line input of (w - glk window):
+To decide what text is the current line input of (w - IO window):
 	(- WindowBufferCopyToText({w}, {-new:text}) -).
 
-To set the current line input of (w - glk window) to (t - text):
+To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
 @h Glk object recovery.

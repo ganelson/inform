@@ -133,7 +133,7 @@ new base TEXT_INPUT_STATUS_TY {
 	instance: suspended unicode character input = INPUT_STATUS_SUSPENDED_CHAR_UNI
 }
 
-properties of glk window {
+properties of IO window {
 	property: line_input_buffer_addr
 	property: line_input_buffer_curlen
 	property: line_input_buffer_maxlen
