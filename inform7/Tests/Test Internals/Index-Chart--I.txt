@@ -110,7 +110,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            glk window [3]&nbsp;<a href=#K102_glk_window><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            io window [3]&nbsp;<a href=#K102_io_window><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             main window&nbsp;
@@ -1255,7 +1255,7 @@ Objects are values intended to simulate physical things: places, people, things,
 conceptual, like ideas, or are needed for internal book-keeping.<br>
 </p>
 <p class="tightin2"></p>
-<p class="halftightin3"><a name=K102_glk_window></a><b>glk window</b> (<i>plural</i> glk windows)</p>
+<p class="halftightin3"><a name=K102_io_window></a><b>io window</b> (<i>plural</i> io windows)</p>
 <p class="tightin3">Models the Glk window system.<br>
 <i>Usually not</i> requesting mouse input.<br>
 <i>Can have</i> window type (<i>glk window type</i>), rock number (<i>number</i>), glk window handle (<i>number</i>), text input status (<i>text input status</i>).<br>

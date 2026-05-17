@@ -1892,7 +1892,7 @@ there's no decision.</p>
 (See the Glk Foundations for Glk-specific phrases.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 1 - Basic Window Effects (for Z-machine only)</span>
+<span class="plain-syntax">Section 1 - Basic Window Effects</span>
 
 <span class="plain-syntax">To clear the/-- whole/-- screen:</span>
 <span class="plain-syntax">    (- VM_ClearScreen(); -).</span>
@@ -1903,40 +1903,20 @@ there's no decision.</p>
 <span class="plain-syntax">To decide what number is the/-- screen width:</span>
 <span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
 
-<span class="plain-syntax">To clear (win - a z-machine window):</span>
+<span class="plain-syntax">To clear (win - IO window):</span>
 <span class="plain-syntax">    (- VM_ClearWindow({win}); -).</span>
 
-<span class="plain-syntax">To decide what number is the height of (win - a z-machine window):</span>
+<span class="plain-syntax">To decide what number is the height of (win - IO window):</span>
 <span class="plain-syntax">    (- VM_WindowHeight({win}) -).</span>
 
-<span class="plain-syntax">To decide what number is the width of (win - a z-machine window):</span>
-<span class="plain-syntax">    (- VM_WindowWidth({win}) -).</span>
-
-<span class="plain-syntax">Section 2 - Basic Window Effects (for Glulx only)</span>
-
-<span class="plain-syntax">To clear the/-- whole/-- screen:</span>
-<span class="plain-syntax">    (- VM_ClearScreen(); -).</span>
-
-<span class="plain-syntax">To decide what number is the/-- screen height:</span>
-<span class="plain-syntax">    (- VM_ScreenHeight() -).</span>
-
-<span class="plain-syntax">To decide what number is the/-- screen width:</span>
-<span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
-
-<span class="plain-syntax">To clear (win - a glk window):</span>
-<span class="plain-syntax">    (- VM_ClearWindow({win}); -).</span>
-
-<span class="plain-syntax">To decide what number is the height of (win - a glk window):</span>
-<span class="plain-syntax">    (- VM_WindowHeight({win}) -).</span>
-
-<span class="plain-syntax">To decide what number is the width of (win - a glk window):</span>
+<span class="plain-syntax">To decide what number is the width of (win - IO window):</span>
 <span class="plain-syntax">    (- VM_WindowWidth({win}) -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Customising the status line.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 3 - The Status Window</span>
+<span class="plain-syntax">Section 2 - The Status Window</span>
 
 <span class="plain-syntax">The status window table is a table-name that varies.</span>
 <span class="plain-syntax">The status window table variable translates into Inter as "status_window_table".</span>
@@ -1961,7 +1941,7 @@ there's no decision.</p>
 <p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 4 - Keyboard Input</span>
+<span class="plain-syntax">Section 3 - Keyboard Input</span>
 
 <span class="plain-syntax">To decide what unicode character is the next pressed key:</span>
 <span class="plain-syntax">    (- VM_KeyChar() -).</span>
@@ -2010,7 +1990,7 @@ private use area codes.</p>
 <p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. </b>  Pausing the game.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 5 - Pausing the game</span>
+<span class="plain-syntax">Section 4 - Pausing the game</span>
 
 <span class="plain-syntax">[ Exclude navigation keys ]</span>
 <span class="plain-syntax">To wait for any key:</span>

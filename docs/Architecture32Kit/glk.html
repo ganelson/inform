@@ -771,7 +771,7 @@ masks and widths accordingly.</p>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_payload_mask</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_value</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_hyperlink_token</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">CALCULATE_HYPERLINK_TAG_WIDTH_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ICOUNT_HYPERLINK_TAG</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">8</span><span class="plain-syntax">) {</span>
@@ -792,25 +792,25 @@ masks and widths accordingly.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And now the implementation functions for the tagged hyperlink kind.</p>
-<p><code>TAGGED_HYPERLINK_TY_New</code> combines the tag and value into one 32 bit hyperlink ID,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And now the implementation functions for the hyperlink token kind.</p>
+<p><code>HYPERLINK_TOKEN_TY_New</code> combines the tag and value into one 32 bit hyperlink ID,
 checking that the value is not a pointer to ephemeral data (on the stack). if
 <code>make_link</code> is true then it will also call <code>glk_set_hyperlink</code>.</p>
-<p><code>TAGGED_HYPERLINK_TY_Say</code> prints a simple representation of the tagged hyperlink
+<p><code>HYPERLINK_TOKEN_TY_Say</code> prints a simple representation of the hyperlink token
 for debug purposes. It does not make an actual link.</p>
-<p><code>TAGGED_HYPERLINK_TY_Tag</code> and <code>TAGGED_HYPERLINK_TY_Value</code> split a tagged hyperlink
+<p><code>HYPERLINK_TOKEN_TY_Tag</code> and <code>HYPERLINK_TOKEN_TY_Value</code> split a hyperlink token
 up into its parts again.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TAGGED_HYPERLINK_TY_New</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">make_link</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">HYPERLINK_TOKEN_TY_New</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">make_link</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> == </span><span class="identifier-syntax">REAL_NUMBER_TY</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkRealNumber"</span><span class="plain-syntax">, </span><span class="string-syntax">"TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain real numbers."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkRealNumber"</span><span class="plain-syntax">, </span><span class="string-syntax">"HYPERLINK_TOKEN_TY_New: Hyperlink tokens cannot contain real numbers."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">blockv_stack</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &lt; (</span><span class="identifier-syntax">blockv_stack</span><span class="plain-syntax"> + </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> * </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kind</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KindConformsTo_POINTER_VALUE_TY</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkEphemeral"</span><span class="plain-syntax">, </span><span class="string-syntax">"TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain ephemeral values."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkEphemeral"</span><span class="plain-syntax">, </span><span class="string-syntax">"HYPERLINK_TOKEN_TY_New: Hyperlink tokens cannot contain ephemeral values."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -828,8 +828,8 @@ up into its parts again.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TAGGED_HYPERLINK_TY_Say</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"tagged hyperlink ("</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">HYPERLINK_TOKEN_TY_Say</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"hyperlink token ("</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tag</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"invalid"</span><span class="plain-syntax">;</span>
@@ -840,19 +840,19 @@ up into its parts again.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">")"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TAGGED_HYPERLINK_TY_Tag</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">HYPERLINK_TOKEN_TY_Tag</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">ICOUNT_HYPERLINK_TAG</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkInvalid"</span><span class="plain-syntax">, </span><span class="string-syntax">"TAGGED_HYPERLINK_TY_Tag: Cannot process an invalid tagged hyperlink."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkInvalid"</span><span class="plain-syntax">, </span><span class="string-syntax">"HYPERLINK_TOKEN_TY_Tag: Cannot process an invalid hyperlink token."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TAGGED_HYPERLINK_TY_Value</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">HYPERLINK_TOKEN_TY_Value</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tag</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">ICOUNT_HYPERLINK_TAG</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkInvalid"</span><span class="plain-syntax">, </span><span class="string-syntax">"TAGGED_HYPERLINK_TY_Value: Cannot process an invalid tagged hyperlink."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkInvalid"</span><span class="plain-syntax">, </span><span class="string-syntax">"HYPERLINK_TOKEN_TY_Value: Cannot process an invalid hyperlink token."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">sshiftr</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
@@ -860,15 +860,14 @@ up into its parts again.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  <code>HANDLE_HYPERLINK_R</code> processes a hyperlink Glk event, splitting the tagged
-hyperlink and calling the hyperlink handling rules.</p>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  <code>HANDLE_HYPERLINK_R</code> processes calls the hyperlink handling rules for the
+chosen hyperlink token.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">HANDLE_HYPERLINK_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">HANDLE_HYPERLINK_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">hyperlink_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TAGGED_HYPERLINK_TY_Value</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">HYPERLINK_HANDLING_RB</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">current_hyperlink_token</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">HYPERLINK_HANDLING_RB</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_hyperlink_token</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
@@ -960,6 +959,10 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">len</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueRead</span><span class="plain-syntax">(</span><span class="identifier-syntax">txt</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowLineInputNewline"</span><span class="plain-syntax">, </span><span class="string-syntax">"Cannot set current line input of a window to a text containing a newline."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">uni</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">buf</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>

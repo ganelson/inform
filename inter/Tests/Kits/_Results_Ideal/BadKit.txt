@@ -5,9 +5,6 @@ inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 21: In
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 23: Inform 6 syntax error in function 'E5': 'for' header with too few clauses
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 25: Inform 6 syntax error in function 'E6': 'for' header with too many clauses
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 27: Inform 6 syntax error in function 'E7': unexpected '{ ... }' code block
-inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected '{'
-inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected use of reserved word 'print'
-inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected '}'
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 31: Inform 6 syntax error in function 'E9': no matching '#endif'
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 31: Inform 6 syntax error in function 'E9': misplaced directive
 inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 33: Inform 6 syntax error in function 'E10': unexpected ','

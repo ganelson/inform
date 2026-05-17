@@ -96,34 +96,36 @@ and so individual phrases are defined for them.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Glk windows.</b>  Minimal support for Glk windows. Other extensions may extend the kind.</p>
+<p>Note that the name of the Glk window kind is <code>IO window</code>. This allows us to
+design some phrases to be platform agnostic (with Z-Machine windows).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Glk windows</span>
 
-<span class="plain-syntax">A Glk window is a kind of abstract object.</span>
-<span class="plain-syntax">The glk window kind is accessible to Inter as "K_Glk_Window".</span>
-<span class="plain-syntax">The specification of a glk window is "Models the Glk window system."</span>
+<span class="plain-syntax">An IO window is a kind of abstract object.</span>
+<span class="plain-syntax">The IO window kind is accessible to Inter as "K_Glk_Window".</span>
+<span class="plain-syntax">The specification of an IO window is "Models the Glk window system."</span>
 
-<span class="plain-syntax">A glk window has a glk window type called the window type.</span>
+<span class="plain-syntax">An IO window has a glk window type called the window type.</span>
 <span class="plain-syntax">The window type property translates into Inter as "glk_window_type".</span>
 
-<span class="plain-syntax">A glk window has a number called the rock number.</span>
+<span class="plain-syntax">An IO window has a number called the rock number.</span>
 <span class="plain-syntax">The rock number property translates into Inter as "glk_rock".</span>
 
-<span class="plain-syntax">A glk window has a number called the glk window handle.</span>
+<span class="plain-syntax">An IO window has a number called the glk window handle.</span>
 <span class="plain-syntax">The glk window handle property translates into Inter as "glk_ref".</span>
 
-<span class="plain-syntax">Definition: a glk window is on-screen rather than off-screen if the glk window handle of it is not 0.</span>
+<span class="plain-syntax">Definition: an IO window is on-screen rather than off-screen if the glk window handle of it is not 0.</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Setting window types is quite verbose, so we have some subkinds to make it easier.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">A graphics window is a kind of glk window.</span>
+<span class="plain-syntax">A graphics window is a kind of IO window.</span>
 <span class="plain-syntax">The window type of a graphics window is graphics window type.</span>
-<span class="plain-syntax">A text buffer window is a kind of glk window.</span>
+<span class="plain-syntax">A text buffer window is a kind of IO window.</span>
 <span class="plain-syntax">The window type of a text buffer window is text buffer window type.</span>
-<span class="plain-syntax">A text grid window is a kind of glk window.</span>
+<span class="plain-syntax">A text grid window is a kind of IO window.</span>
 <span class="plain-syntax">The window type of a text grid window is text grid window type.</span>
 </pre>
 <div class="lsmarkdown">
@@ -146,11 +148,11 @@ require extensions.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section - Glk windows</span>
 
-<span class="plain-syntax">To focus (win - a glk window)</span>
+<span class="plain-syntax">To focus (win - IO window)</span>
 <span class="plain-syntax">    (documented at ph_glkwindowfocus):</span>
 <span class="plain-syntax">    (- WindowFocus({win}); -).</span>
 
-<span class="plain-syntax">To set (win - a glk window) cursor to row (row - a number) and/-- column/col (col - a number)</span>
+<span class="plain-syntax">To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)</span>
 <span class="plain-syntax">    (documented at ph_glksetcursor):</span>
 <span class="plain-syntax">    (- WindowMoveCursor({win}, {col}, {row}); -).</span>
 </pre>
@@ -173,35 +175,35 @@ require extensions.</p>
 
 <span class="plain-syntax">To decide what glk event is a/-- character event with (C - unicode character):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- character event with (C - unicode character) in (win - glk window)</span>
+<span class="plain-syntax">To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)</span>
 <span class="plain-syntax">    (documented at ph_glkcharacterevent):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).</span>
 
 <span class="plain-syntax">To decide what glk event is a/-- line event with (T - text):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- line event with (T - text) in (win - glk window)</span>
+<span class="plain-syntax">To decide what glk event is a/-- line event with (T - text) in (win - IO window)</span>
 <span class="plain-syntax">    (documented at ph_glklineevent):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).</span>
 
 <span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/--:</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - glk window):</span>
+<span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - IO window):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).</span>
 <span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - glk window):</span>
+<span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - IO window):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).</span>
 
-<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink):</span>
+<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, 0, {val}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink) in (win - glk window):</span>
+<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token) in (win - IO window):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).</span>
 
 <span class="plain-syntax">To decide what glk event type is type of (ev - glk event)</span>
 <span class="plain-syntax">    (documented at ph_glkeventtype):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Type({ev}) -).</span>
 
-<span class="plain-syntax">To decide what glk window is window of (ev - glk event)</span>
+<span class="plain-syntax">To decide what IO window is window of (ev - glk event)</span>
 <span class="plain-syntax">    (documented at ph_glkeventwindow):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Window({ev}) -).</span>
 
@@ -218,7 +220,7 @@ require extensions.</p>
 <span class="plain-syntax">To decide what number is the column/col of (ev - glk event):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).</span>
 
-<span class="plain-syntax">To decide what tagged hyperlink is the hyperlink value of (ev - glk event):</span>
+<span class="plain-syntax">To decide what hyperlink token is the hyperlink token value of (ev - glk event):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Value1({ev}, evtype_Hyperlink) -).</span>
 
 <span class="plain-syntax">To decide what text is the text of (ev - glk event)</span>
@@ -258,7 +260,7 @@ require extensions.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.</p>
 <p>Hyperlink tags represent each kind of hyperlink that we might want to use.</p>
-<p>Tagged hyperlinks then combine a hyperlink tag with a value.</p>
+<p>Hyperlink tokens then combine a hyperlink tag with a value.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Hyperlinks</span>
@@ -266,19 +268,19 @@ require extensions.</p>
 <span class="plain-syntax">A hyperlink tag is a kind of value.</span>
 <span class="plain-syntax">The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".</span>
 
-<span class="plain-syntax">To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag) for/of/with (V - value of kind K):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is hyperlink token of (T - hyperlink tag) for/of/with (V - value of kind K):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).</span>
 
-<span class="plain-syntax">To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New({T}, 0, NUMBER_TY); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is hyperlink token of (T - hyperlink tag):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New({T}, 0, NUMBER_TY); -).</span>
 
-<span class="plain-syntax">To decide what hyperlink tag is the tag of (tag - tagged hyperlink):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_Tag({tag}) -).</span>
+<span class="plain-syntax">To decide what hyperlink tag is the tag of (tag - hyperlink token):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_Tag({tag}) -).</span>
 
-<span class="plain-syntax">To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind of value K):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_Value({tag}) -).</span>
+<span class="plain-syntax">To decide what K is the value of (tag - hyperlink token) as a/an (name of kind of value K):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_Value({tag}) -).</span>
 
-<span class="plain-syntax">To say link (T - tagged hyperlink):</span>
+<span class="plain-syntax">To say link (T - hyperlink token):</span>
 <span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).</span>
 
 <span class="plain-syntax">To say end link:</span>
@@ -286,17 +288,23 @@ require extensions.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
-The tagged hyperlink will be automatically processed for the author.</p>
+The hyperlink token will be automatically processed for the author.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">The hyperlink handling rules is a hyperlink tag based rulebook.</span>
 <span class="plain-syntax">The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".</span>
 
+<span class="plain-syntax">The hyperlink handling rulebook has a hyperlink token called the outcome.</span>
+
+<span class="plain-syntax">The current hyperlink token is a hyperlink token variable.</span>
+<span class="plain-syntax">The current hyperlink token variable is defined by Inter as "current_hyperlink_token".</span>
+
+<span class="plain-syntax">Very first hyperlink handling rule for a hyperlink tag</span>
+<span class="plain-syntax">    (this is the set hyperlink handling variables rule):</span>
+<span class="plain-syntax">    now the outcome is the current hyperlink token.</span>
+
 <span class="plain-syntax">The handle hyperlinks rule is listed in the glk event handling rules.</span>
 <span class="plain-syntax">The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".</span>
-
-<span class="plain-syntax">To decide what K is hyperlink value as a/an (name of kind of value K):</span>
-<span class="plain-syntax">    (- (hyperlink_value) -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And some built-in hyperlink tags:</p>
@@ -316,40 +324,40 @@ other code you like.</li>
 <span class="plain-syntax">The command replacement value is accessible to Inter as "hyperlink_replace".</span>
 
 <span class="plain-syntax">To say link command/-- replacement of/-- (T - text):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
-<span class="plain-syntax">    replace current event with a line event with (hyperlink value as a text);</span>
+<span class="plain-syntax">    replace current event with a line event with (value of outcome as a text);</span>
 
 <span class="plain-syntax">Command appendment is a hyperlink tag.</span>
 <span class="plain-syntax">The command appendment value is accessible to Inter as "hyperlink_append".</span>
 
 <span class="plain-syntax">To say link append (T - text):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
-<span class="plain-syntax">    set the current line input of the main window to "[current line input of the main window] [hyperlink value as a text]";</span>
+<span class="plain-syntax">    set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";</span>
 <span class="plain-syntax">    resume text input in the main window;</span>
 
 <span class="plain-syntax">Keypress hyperlink is a hyperlink tag.</span>
 <span class="plain-syntax">The keypress hyperlink value is accessible to Inter as "hyperlink_keypress".</span>
 
 <span class="plain-syntax">To say link (C - unicode character):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):</span>
-<span class="plain-syntax">    replace current event with a character event with (hyperlink value as a unicode character);</span>
+<span class="plain-syntax">    replace current event with a character event with (value of outcome as a unicode character);</span>
 
 <span class="plain-syntax">Rule hyperlink is a hyperlink tag.</span>
 <span class="plain-syntax">The rule hyperlink value is accessible to Inter as "hyperlink_rule".</span>
 
 <span class="plain-syntax">To say link (R - rule):</span>
-<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):</span>
-<span class="plain-syntax">    follow hyperlink value as a rule;</span>
+<span class="plain-syntax">    follow value of outcome as a rule;</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
@@ -357,29 +365,29 @@ other code you like.</li>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Suspending and resuming input</span>
 
-<span class="plain-syntax">A glk window has a text input status.</span>
+<span class="plain-syntax">An IO window has a text input status.</span>
 <span class="plain-syntax">The text input status property translates into Inter as "text_input_status".</span>
-<span class="plain-syntax">A glk window can be requesting mouse input.</span>
+<span class="plain-syntax">An IO window can be requesting mouse input.</span>
 <span class="plain-syntax">The requesting mouse input property translates into Inter as "requesting_mouse".</span>
 
 <span class="plain-syntax">To suspend text input, without input echoing</span>
 <span class="plain-syntax">    (documented at ph_suspendtextinput):</span>
 <span class="plain-syntax">    (- SuspendTextInput(active_window, {phrase options}); -).</span>
 
-<span class="plain-syntax">To suspend text input in (win - a glk window), without input echoing:</span>
+<span class="plain-syntax">To suspend text input in (win - IO window), without input echoing:</span>
 <span class="plain-syntax">    (- SuspendTextInput({win}, {phrase options}); -).</span>
 
 <span class="plain-syntax">To resume text input</span>
 <span class="plain-syntax">    (documented at ph_resumetextinput):</span>
 <span class="plain-syntax">    (- ResumeTextInput(active_window); -).</span>
 
-<span class="plain-syntax">To resume text input in (win - a glk window):</span>
+<span class="plain-syntax">To resume text input in (win - IO window):</span>
 <span class="plain-syntax">    (- ResumeTextInput({win}); -).</span>
 
-<span class="plain-syntax">To decide what text is the current line input of (w - glk window):</span>
+<span class="plain-syntax">To decide what text is the current line input of (w - IO window):</span>
 <span class="plain-syntax">    (- WindowBufferCopyToText({w}, {-new:text}) -).</span>
 
-<span class="plain-syntax">To set the current line input of (w - glk window) to (t - text):</span>
+<span class="plain-syntax">To set the current line input of (w - IO window) to (t - text):</span>
 <span class="plain-syntax">    (- WindowBufferSet({w}, {-by-reference:t}); -).</span>
 </pre>
 <div class="lsmarkdown">

@@ -1417,7 +1417,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>main window</b></p>
+                <p class="tightin1">abstract object &gt; IO window &gt; text buffer window &gt; <b>main window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"main window"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -1429,7 +1429,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; Glk window &gt; text grid window &gt; <b>status window</b></p>
+                <p class="tightin1">abstract object &gt; IO window &gt; text grid window &gt; <b>status window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"status window"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>
@@ -1441,7 +1441,7 @@
     <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <p class="tightin1">abstract object &gt; Glk window &gt; text buffer window &gt; <b>boxed quotation window</b></p>
+                <p class="tightin1">abstract object &gt; IO window &gt; text buffer window &gt; <b>boxed quotation window</b></p>
                 <p class="hangingin1">printed name: <span class="indexdullblue">"boxed quotation window"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
             </td>

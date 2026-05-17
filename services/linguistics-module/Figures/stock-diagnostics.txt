@@ -1,12 +1,12 @@
 adjective: 148 items
 article: 2 items
-noun: 2599 items
+noun: 2601 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3558
+total in all categories: 3560
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -360,6 +360,7 @@ noun: proper: 'glk window handle'
 noun: proper: 'property glk window handle'
 noun: proper: 'set glk event processing variables rule'
 noun: proper: 'redraw the status line rule'
+noun: proper: 'set hyperlink handling variables rule'
 noun: proper: 'command replacement hyperlink rule'
 noun: proper: 'command appendment hyperlink rule'
 noun: proper: 'keypress hyperlink rule'
@@ -892,7 +893,7 @@ noun: proper: 'right key'
 noun: proper: 'tab key'
 noun: proper: 'unknown key'
 noun: proper: 'up key'
-noun: common: 'glk window'
+noun: common: 'io window'
 noun: common: 'graphics window'
 noun: common: 'text buffer window'
 noun: common: 'text grid window'
@@ -907,6 +908,7 @@ noun: common: 'hyperlink tag'
 noun: proper: 'hyperlink handling'
 noun: proper: 'hyperlink handling rules'
 noun: proper: 'hyperlink handling rulebook'
+noun: proper: 'current hyperlink token'
 noun: proper: 'handle hyperlinks rule'
 noun: proper: 'command replacement'
 noun: proper: 'command appendment'

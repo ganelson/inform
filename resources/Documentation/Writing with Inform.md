@@ -18155,14 +18155,6 @@ That main window/status window arrangement is the screen layout used by default 
 >
 > This phrase clears both the main window and the status window (and, if a boxed quotation is being displayed currently, that as well). On Glulx, it is possible to create multi-window layouts with additional elements (e.g., graphical panels): those would not be cleared, so this phrase is best thought of as clearing the main textual part of the play area.
 
-> phrase: clear only the main screen
->
-> Clears the main screen, leaving the status window unchanged.
-
-> phrase: clear only the status window
->
-> Clears the status window, leaving the main screen unchanged.
-
 > phrase: the screen height ... number
 >
 > The height of the screen in characters, that is, in lines of text. This includes the status line or lines. On Glulx, properly speaking, it's the height of the main window plus that of the status window. In the default page layout, this is the same thing, but it would be possible to construct more elaborate multi-window layouts (for example where a graphics area is above the text) where `the screen height` is measuring the height of the main textual part of the play area.
@@ -18220,23 +18212,23 @@ Still more variety is possible by writing hand-made rules for the `constructing 
 
 On Glulx, but not the Z-machine, the screen can be divided up in many different ways.
 
-The windows into which it is divided must all be declared explicitly in the source text, except that three are declared for us already in Basic Inform. Readers of the previous section might have expected just two, the main window and the status window, but there's also an ephemeral window to hold boxed quotations, which sometimes pops up for a while and then scrolls away. That counts as a `glk window`, too.
+The windows into which it is divided must all be declared explicitly in the source text, except that three are declared for us already in Basic Inform. Readers of the previous section might have expected just two, the main window and the status window, but there's also an ephemeral window to hold boxed quotations, which sometimes pops up for a while and then scrolls away. That counts as an `IO window`, too.
 
-So by default, `showme the list of glk windows` produces:
+So by default, `showme the list of IO windows` produces:
 
 ``` transcript
-"list of glk windows" = list of glk windows: {main window, status window, boxed quotation window}
+"list of IO windows" = list of IO windows: {main window, status window, boxed quotation window}
 ```
 
-In fact, `glk window` has three subkinds, which represent the different sorts of window we might need: `text buffer window`, `text grid window` and `graphics window`; and it is itself a kind of `abstract object`, which is a kind of `object`. Thus we have:
+In fact, `IO window` has three subkinds, which represent the different sorts of window we might need: `text buffer window`, `text grid window` and `graphics window`; and it is itself a kind of `abstract object`, which is a kind of `object`. Thus we have:
 
-- `object` ▸ `abstract object` ▸ `glk window` ▸ `text buffer window` ▹ main window, boxed quotation window
+- `object` ▸ `abstract object` ▸ `IO window` ▸ `text buffer window` ▹ main window, boxed quotation window
 
-- `object` ▸ `abstract object` ▸ `glk window` ▸ `text grid window` ▹ status window
+- `object` ▸ `abstract object` ▸ `IO window` ▸ `text grid window` ▹ status window
 
-So we could write, say, `if W is a text grid window` to test which kind the window `W` is. But it's also sometimes convenient to use a property of `glk window` called `glk window type`. If we run:
+So we could write, say, `if W is a text grid window` to test which kind the window `W` is. But it's also sometimes convenient to use a property of `IO window` called `glk window type`. If we run:
 
-	repeat with W running through glk windows:
+	repeat with W running through IO windows:
 		say "[W]: [window type of W].";
 
 then we get, assuming we haven't created any extra windows,
@@ -18257,20 +18249,24 @@ So, what goes on here?
 
 There's also a third glk window type, `graphics window`, but in the default setup stories are pure textual and no window exists with this type. That doesn't mean that the main window can't display pictures, or emoji: but only a `graphics` window can plot arbitrary shapes or designs. Inform doesn't provide phrases for doing that in its basic installation, but extensions do.
 
-> phrase: {ph_glkwindowheight} height of (glk window) ... number
+> phrase: {ph_glkwindowheight} height of (IO window) ... number
 >
 > The current height of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size.
 >
 > If the window is closed, this returns 0 whatever the type.
 >
+> Unlike most phrases to do with IO windows, this one works on the Z-machine as well as Glulx.
+>
 > > [!WARNING]
 > > A known bug in the MacOS Inform app's Story panel version of Glk means that it reports `text buffer window` widths in pixels, not characters. That likely affects the story only when running in the app, not when Released.
 
-> phrase: {ph_glkwindowwidth} width of (glk window) ... number
+> phrase: {ph_glkwindowwidth} width of (IO window) ... number
 >
 > The current width of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size.
 >
 > If the window is closed, this returns 0 whatever the type.
+>
+> Unlike most phrases to do with IO windows, this one works on the Z-machine as well as Glulx.
 >
 > > [!WARNING]
 > > A known bug in the MacOS Inform app's Story panel version of Glk means that it reports `text buffer window` widths in pixels, not characters. That likely affects the story only when running in the app, not when Released.
@@ -18279,17 +18275,19 @@ The basic installation of Inform does not contain phrases to open or close windo
 
 However, even an unextended Inform allows the following:
 
-> phrase: {ph_glkwindowclear} clear (glk window)
+> phrase: {ph_glkwindowclear} clear (IO window)
 >
 > If the window is closed, nothing happens. If it is open, then what happens depends on the window type. A text grid is erased to a grid of spaces. A graphics window is filled with its background colour. Exactly what happens to a text buffer depends on the platform. In most modern situations that too will be erased, but a story playing in a so-called dumb terminal may do something more primitive, such as throwing many blank lines of output.
+>
+> Unlike most phrases to do with IO windows, this one works on the Z-machine as well as Glulx. Thus, `clear main window` and `clear status window` behave similarly on both platforms.
 
-> phrase: {ph_glkwindowfocus} focus (glk window)
+> phrase: {ph_glkwindowfocus} focus (IO window)
 >
 > When a `say` text is printed, which window is it printed into? The answer is whichever window has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch. (For example, this is used when updating the status window.) The window must be open, or a run-time problem will be thrown.
 >
 > While it is technically legal to focus a `graphics window`, any text sent to it will be humanely destroyed, so in practice this phrase should be used only with `text grid windows` or `text buffer windows`.
 
-> phrase: {ph_glksetcursor} set (glk window) cursor to row (number) and column (number)
+> phrase: {ph_glksetcursor} set (IO window) cursor to row (number) and column (number)
 >
 > The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
 >
@@ -18300,7 +18298,10 @@ However, even an unextended Inform allows the following:
 > - if the row is a negative value or zero, a run-time problem is thrown;
 > - if the row exceeds the height of the grid, the cursor is allowed to occupy this off-the-bottom position, but any text printed there is thrown away without being displayed.
 
-Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
+IO windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. An IO window has handle 0 if and only if it is closed.
+
+> [!NOTE]
+> The Z-machine supports very little of the above, so a project for the Z-machine cannot use it. There _is_ still a kind called `IO window`, but it is a fixed enumeration, not an abstract object: it has just two values, `main window` and `status window`.
 
 ## Pausing for keystrokes or commands
 
@@ -18418,7 +18419,7 @@ Events of different event types work differently, and have to be handled in diff
 
 Inform provides the adjective `windowed` to determine whether a `glk event` (or a `glk event type`) is associated with a window: at present the windowed events are the character events, line events, hyperlink events and mouse events.
 
-> phrase: {ph_glkeventwindow} window of (glk event) ... glk window
+> phrase: {ph_glkeventwindow} window of (glk event) ... IO window
 >
 > For a windowed event, this gives the window where the event is taking place. If used on events which are not windowed, a run-time problem is issued. So for example, the following uses the phrase safely:
 >
@@ -18458,13 +18459,13 @@ Both character and line events are tied to windows, because players who type are
 
 Some types of event can be created even though they haven't happened yet, and the two keyboard types are a case in point. It may seem peculiar to create fictitious Glk events, but it turns out be very useful in order to, say, treat mouse clicks as if they were keypresses or commands, as we shall see. Here are the phrases to create such events:
 
-> phrase: {ph_glkcharacterevent} character event with (unicode character) in (glk window) ... glk event
+> phrase: {ph_glkcharacterevent} character event with (unicode character) in (IO window) ... glk event
 >
 > This produces an event value exactly like that which would have been generated by glk if a key with the given character had been typed in the given window.
 > 
-> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
+> The `in (IO window)` can be omitted, in which case the event is in the `main window`.
 
-> phrase: {ph_glklineevent} line event with (text) in (glk window) ... glk event
+> phrase: {ph_glklineevent} line event with (text) in (IO window) ... glk event
 >
 > This produces an event value exactly like that which would have been generated by glk if the given whole command had been typed in the given window. There's no necessity for the text to be in upper case, or for that matter in lower case. These all produce different events:
 >
@@ -18474,7 +18475,7 @@ Some types of event can be created even though they haven't happened yet, and th
 >
 > Though the Inform command parser would treat all three commands just the same, that all happens much higher up than in this input-output layer. The texts are different, so the events are different.
 > 
-> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
+> The `in (IO window)` can be omitted, in which case the event is in the `main window`.
 
 ## Timer events
 
@@ -18509,7 +18510,7 @@ prints back only ``Ping! timer event.``, because there are no other details atta
 
 ## Hyperlinks 
 
-"Hypertext" is a term coined in 1965 for a text which contains "hyperlinks" to other passages of text. This idea, long nascent, led directly to technologies like _The Interactive Encyclopaedia System_ ("HyperTIES", 1983), the creative playground _HyperCard_ (1987), the world wide web (1989), and in perhaps its purest expression, _Wikipedia_ (2001). In all these systems, clicking on a "linked" button or phrase moves the reader to a new part of the text.
+"Hypertext" is a term coined in 1965 for a text which contains "hyperlinks" to other passages of text. This idea, long nascent, led directly to technologies like _The Interactive Encyclopaedia System_ ("HyperTIES", 1983), the creative playground _HyperCard_ (1987), the world wide web (1989), and _Wikipedia_ (2001). In all these systems, clicking on a "linked" button or phrase moves the reader to a new part of the text.
 
 But Inform stories are interactive, and non-linear. They are not divided up into pages in the way that Wikipedia, for example, is. In an interactive story, links are instead active gadgets. Clicking on them does something to change the state of the story, and that then has the effect of moving the reader along. Whereas links in Wikipedia are almost all "go to new page X", Inform links might want to do all sorts of things: behave like commands, behave like typed characters, behave like rules firing, and so on.
 
@@ -18563,7 +18564,7 @@ The `[link ...]` substitution looks as if it comes in many variant versions, but
 
 	> phrase: command replacement of (text) ... hyperlink token
 	>
-	> A link given this outcome replaces an entire pending line input with the specified text and then submits it, as if the player had typed it themselves and then pressed enter.
+	> A link given this outcome replaces an entire pending line input with the specified text and then submits it, as if the player had typed it themselves and then pressed enter. The text must not contain a line break: if it does, a run-time problem will be issued.
 
 -	**Command appendment**. For example,
 	
@@ -18572,7 +18573,7 @@ The `[link ...]` substitution looks as if it comes in many variant versions, but
 
 	> phrase: append (text) ... hyperlink token
 	>
-	> A link given this outcome suspends line input, adds its text to the current line input, and then resumes line input. It's as if the player had typed the text in question.
+	> A link given this outcome suspends line input, adds its text to the current line input, and then resumes line input. It's as if the player had typed the text in question. The text must not contain a line break: if it does, a run-time problem will be issued.
 
 -	**Keypress**. For example,
 	
@@ -18631,6 +18632,9 @@ Internally, a hyperlink token consists of a _tag_ plus (usually) a _value_. Here
 > phrase: hyperlink token of (hyperlink tag) for/of/with (value) ... hyperlink token
 >
 > Creates a new hyperlink token by combining a tag with a value.
+> 
+> > [!CAUTION]
+> > Hyperlink tokens can contain values of many of the kinds found in Inform, but there are exceptions (such as `real number`), and authors must be careful not to try to put an ephemeral value into a hyperlink, such as some local variables. It is not enough for the value to exist when a hyperlink is created: it must still exist when the link is clicked. This phrase produces a run-time problem if it is asked to attach such a value to a token.
 
 > phrase: hyperlink token of (hyperlink tag)
 >
@@ -18645,14 +18649,39 @@ To handle our new action links, all we need to do is write a new rule for this r
 		try examining the item;
 		rule succeeds.
 
-This rulebook has a variable called `outcome`, which is the selected hyperlink token. You can get the value out of it with the `value of (hyperlink token) as a (name of kind)` phrase. This must be used with great care so that the kind of value is correct, since Inform cannot check that the value is of that actual type.
+This rulebook has a variable called `outcome`, which is the token belonging to the link which was clicked. In the same way that an address in a link on a web page tells a web browser where to go next, the token contains information within it which tells the handling rule what should happen. Firstly, it contains a tag saying broadly what kind of link this is:
 
-In practice, using this system will work best if the usual command prompt is removed. Inform normally prints this each time it waits for keyboard input, but that means it's still present if the player clicks on a link which enters a command instead. So stories making heavy use of hypertext normally remove the prompt, like so:
+> phrase: tag of (hyperlink token) ... hyperlink tag
+>
+> Extracts the hyperlink tag from a token.
+
+For example, in the body of the `Hyperlink handling rule for examination hyperlink` above, `tag of the outcome` would always be `examination hyperlink`.
+
+> phrase: value of (hyperlink token) as a (name of kind of value K) ... K
+>
+> Extracts the value out of a hyperlink.
+>
+> > [!CAUTION]
+> > This must be used with great care so that the kind of value matches the kind used when the token was created, since Inform cannot check that the value is of that actual type. For example, if the token `T` was created by `hyperlink token of command replacement with "EXAMINE WALL"`, and then Inform is later asked for `value of T as an object`, a crash will likely ensue.
+
+So, for example, this rule would not be safe:
+
+	Hyperlink handling rule:
+		showme value of the outcome as a thing.
+
+This rule casually assumes that the value attached to the hyperlink clicked is a thing, and it might not be. On the other hand, this _would_ be safe:
+
+	Hyperlink handling rule for examination hyperlink:
+		showme value of the outcome as a thing.
+
+because now the rule applies only to links tagged as `examination hyperlink`, and we know that all of those links have tokens with things attached.
+
+In effect, hyperlinks bypass and sometimes replace the usual way that commands are typed in. Because of that, they work best if the usual command prompt is removed. Inform normally prints the prompt each time it waits for keyboard input, but that means it's still present if the player clicks on a link which enters a command instead, like a question forever left unanswered. So stories making heavy use of hypertext normally remove the prompt, like so:
 
 	When play begins:
 		now the command prompt is "".
 
-And some authors might also want to print something like so:
+On the other hand, that may mean that the textual transcript of play contains no evidence that a command has taken place at all. So this amendment might be wise:
 
 	Hyperlink handling rule for examination hyperlink:
 		let the item be the value of outcome as a thing;
@@ -18660,26 +18689,17 @@ And some authors might also want to print something like so:
 		try examining the item;
 		rule succeeds.
 
-This would result in a transcript like so:
+Which would result in a transcript like so:
 
 ``` transcript
 Churchyard
 You can see a sturdy oak here.
 
 (examining the sturdy oak)
-You see nothing special about the sturdy oak
+You see nothing special about the sturdy oak.
 ```
 
-where no prompt or typing is visible, but where it's clear that a command has nevertheless been entered.
-
-### Dubious
-
-Hyperlink tags and their corresponding values are then combined into a kind called a `hyperlink token`. Even though Glk only allows hyperlinks to carry a single number, hyperlink tokens can contain almost all kinds found in Inform, with the exception of real numbers. Authors must however be careful not to try to put an ephemeral value into a hyperlink, such as some local variables. The hyperlink phrases described below will display an error if it cannot safely put a value inside a hyperlink token.
-
-> phrase: tag of (hyperlink token) ... hyperlink
-> phrase: value of (hyperlink token) as a (name of kind of value K) ... K
->
-> These phrases will extract the hyperlink tag and value out of a hyperlink. Note that it is the author's responsibility to use the correct kind of value when extracting the value. Inform cannot detect if you use the wrong kind, but using a value extracted with the wrong kind could cause serious problems down the line.
+Although no prompt or typing is visible, it's now clear that the story was given a command, and what that command was.
 
 ## Suspending text input while handling events
 
@@ -18698,7 +18718,7 @@ The Glk interface allows us to instead _suspend_ text input. We can then output 
 > >
 > >     Use manual line input echoing.
 
-> phrase: suspend text input in (glk window)
+> phrase: suspend text input in (IO window)
 >
 > Suspends any text input in the specified window. Again, this supports the `without input echoing` phrase option.
 
@@ -18706,19 +18726,19 @@ The Glk interface allows us to instead _suspend_ text input. We can then output 
 >
 > If text input in the currently active window was suspended, this resumes it. If not, this does nothing.
 
-> phrase: resume text input in (glk window)
+> phrase: resume text input in (IO window)
 >
 > If text input in the given window was suspended, this resumes it. If not, this does nothing.
 
 Suspended character input is simple enough, but what about line input: what happens to what the player has already typed? This can be accessed and even changed, provided input is suspended:
 
-> phrase: current line input of (glk window) ... text
+> phrase: current line input of (IO window) ... text
 >
 > Extracts the current line input of a suspended Glk window and returns it to the player.
 
-> phrase: set the current line input of (glk window) to (text)
+> phrase: set the current line input of (IO window) to (text)
 >
-> Updates the current line input of a suspended Glk window. A run-time problem is issued if the window has either never requested line input, or is currently not suspended.
+> Updates the current line input of a suspended IO window. A run-time problem is issued if the window has either never requested line input, or is currently not suspended.
 
 ## Other Glk event types
 
