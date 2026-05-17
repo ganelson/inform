@@ -744,7 +744,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            tagged hyperlink&nbsp;<a href=#A52><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            hyperlink token&nbsp;<a href=#A52><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             --&nbsp;
@@ -1508,9 +1508,9 @@ Type of a Glk event.<br>
 Type of a Glk window.<br>
 <p class="tightin1"><span class="indexgrey">text buffer window type</span>, <span class="indexgrey">text grid window type</span>, <span class="indexgrey">graphics window type</span></p>
 </p>
-<p class="halftightin1"><a name=A52></a><b>tagged hyperlink</b> (<i>plural</i> tagged hyperlinks)</p>
+<p class="halftightin1"><a name=A52></a><b>hyperlink token</b> (<i>plural</i> hyperlink tokens)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
-A tagged hyperlink combines a hyperlink tag and a value.<br>
+A hyperlink token combines a hyperlink tag and a value.<br>
 </p>
 <p class="halftightin1"><a name=A53></a><b>text input status</b> (<i>plural</i> text input statuses)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>

@@ -44,32 +44,35 @@ To decide what version number is the interpreter version number/--:
 @h Glk windows.
 Minimal support for Glk windows. Other extensions may extend the kind.
 
+Note that the name of the Glk window kind is `IO window`. This allows us to
+design some phrases to be platform agnostic (with Z-Machine windows).
+
 =
 Chapter - Glk windows
 
-A Glk window is a kind of abstract object.
-The glk window kind is accessible to Inter as "K_Glk_Window".
-The specification of a glk window is "Models the Glk window system."
+An IO window is a kind of abstract object.
+The IO window kind is accessible to Inter as "K_Glk_Window".
+The specification of an IO window is "Models the Glk window system."
 
-A glk window has a glk window type called the window type.
+An IO window has a glk window type called the window type.
 The window type property translates into Inter as "glk_window_type".
 
-A glk window has a number called the rock number.
+An IO window has a number called the rock number.
 The rock number property translates into Inter as "glk_rock".
 
-A glk window has a number called the glk window handle.
+An IO window has a number called the glk window handle.
 The glk window handle property translates into Inter as "glk_ref".
 
-Definition: a glk window is on-screen rather than off-screen if the glk window handle of it is not 0.
+Definition: an IO window is on-screen rather than off-screen if the glk window handle of it is not 0.
 
 @ Setting window types is quite verbose, so we have some subkinds to make it easier.
 
 =
-A graphics window is a kind of glk window.
+A graphics window is a kind of IO window.
 The window type of a graphics window is graphics window type.
-A text buffer window is a kind of glk window.
+A text buffer window is a kind of IO window.
 The window type of a text buffer window is text buffer window type.
-A text grid window is a kind of glk window.
+A text grid window is a kind of IO window.
 The window type of a text grid window is text grid window type.
 
 @ Create objects for each of the built in windows.
@@ -91,11 +94,11 @@ require extensions.
 =
 Section - Glk windows
 
-To focus (win - a glk window)
+To focus (win - IO window)
 	(documented at ph_glkwindowfocus):
 	(- WindowFocus({win}); -).
 
-To set (win - a glk window) cursor to row (row - a number) and/-- column/col (col - a number)
+To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)
 	(documented at ph_glksetcursor):
 	(- WindowMoveCursor({win}, {col}, {row}); -).
 
@@ -118,35 +121,35 @@ To decide what glk event is (evtype - glk event type) glk event:
 
 To decide what glk event is a/-- character event with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event with (C - unicode character) in (win - glk window)
+To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)
 	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
 To decide what glk event is a/-- line event with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event with (T - text) in (win - glk window)
+To decide what glk event is a/-- line event with (T - text) in (win - IO window)
 	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
 To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/--:
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).
-To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - glk window):
+To decide what glk event is a/-- mouse event for/of/with x (x - number) and/-- y (y - a number) coordinates/-- in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).
 To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, 0, {x}, {y}) -).
-To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - glk window):
+To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).
 
-To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink):
+To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, 0, {val}) -).
-To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink) in (win - glk window):
+To decide what glk event is a/-- hyperlink event for/of/with (val - hyperlink token) in (win - IO window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).
 
 To decide what glk event type is type of (ev - glk event)
 	(documented at ph_glkeventtype):
 	(- GLK_EVENT_TY_Type({ev}) -).
 
-To decide what glk window is window of (ev - glk event)
+To decide what IO window is window of (ev - glk event)
 	(documented at ph_glkeventwindow):
 	(- GLK_EVENT_TY_Window({ev}) -).
 
@@ -163,7 +166,7 @@ To decide what number is the row of (ev - glk event):
 To decide what number is the column/col of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).
 
-To decide what tagged hyperlink is the hyperlink value of (ev - glk event):
+To decide what hyperlink token is the hyperlink token value of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}, evtype_Hyperlink) -).
 
 To decide what text is the text of (ev - glk event)
@@ -204,7 +207,7 @@ A simple framework for handling hyperlinks in an interoperable manner.
 
 Hyperlink tags represent each kind of hyperlink that we might want to use.
 
-Tagged hyperlinks then combine a hyperlink tag with a value.
+Hyperlink tokens then combine a hyperlink tag with a value.
 
 =
 Chapter - Hyperlinks
@@ -212,36 +215,42 @@ Chapter - Hyperlinks
 A hyperlink tag is a kind of value.
 The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".
 
-To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag) for/of/with (V - value of kind K):
-	(- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).
+To decide what hyperlink token is hyperlink token of (T - hyperlink tag) for/of/with (V - value of kind K):
+	(- HYPERLINK_TOKEN_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).
 
-To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag):
-	(- TAGGED_HYPERLINK_TY_New({T}, 0, NUMBER_TY); -).
+To decide what hyperlink token is hyperlink token of (T - hyperlink tag):
+	(- HYPERLINK_TOKEN_TY_New({T}, 0, NUMBER_TY); -).
 
-To decide what hyperlink tag is the tag of (tag - tagged hyperlink):
-	(- TAGGED_HYPERLINK_TY_Tag({tag}) -).
+To decide what hyperlink tag is the tag of (tag - hyperlink token):
+	(- HYPERLINK_TOKEN_TY_Tag({tag}) -).
 
-To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind of value K):
-	(- TAGGED_HYPERLINK_TY_Value({tag}) -).
+To decide what K is the value of (tag - hyperlink token) as a/an (name of kind of value K):
+	(- HYPERLINK_TOKEN_TY_Value({tag}) -).
 
-To say link (T - tagged hyperlink):
+To say link (T - hyperlink token):
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
 
 To say end link:
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
 
 @ The hyperlink handling rules are how hyperlinks will generally be handled.
-The tagged hyperlink will be automatically processed for the author.
+The hyperlink token will be automatically processed for the author.
 
 =
 The hyperlink handling rules is a hyperlink tag based rulebook.
 The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
 
+The hyperlink handling rulebook has a hyperlink token called the outcome.
+
+The current hyperlink token is a hyperlink token variable.
+The current hyperlink token variable is defined by Inter as "current_hyperlink_token".
+
+Very first hyperlink handling rule for a hyperlink tag
+	(this is the set hyperlink handling variables rule):
+	now the outcome is the current hyperlink token.
+
 The handle hyperlinks rule is listed in the glk event handling rules.
 The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
-
-To decide what K is hyperlink value as a/an (name of kind of value K):
-	(- (hyperlink_value) -).
 
 @ And some built-in hyperlink tags:
 
@@ -259,40 +268,40 @@ Command replacement is a hyperlink tag.
 The command replacement value is accessible to Inter as "hyperlink_replace".
 
 To say link command/-- replacement of/-- (T - text):
-	(- TAGGED_HYPERLINK_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).
 
 Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):
 	suspend text input in the main window, without input echoing;
-	replace current event with a line event with (hyperlink value as a text);
+	replace current event with a line event with (value of outcome as a text);
 
 Command appendment is a hyperlink tag.
 The command appendment value is accessible to Inter as "hyperlink_append".
 
 To say link append (T - text):
-	(- TAGGED_HYPERLINK_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).
 
 Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):
 	suspend text input in the main window, without input echoing;
-	set the current line input of the main window to "[current line input of the main window] [hyperlink value as a text]";
+	set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";
 	resume text input in the main window;
 
 Keypress hyperlink is a hyperlink tag.
 The keypress hyperlink value is accessible to Inter as "hyperlink_keypress".
 
 To say link (C - unicode character):
-	(- TAGGED_HYPERLINK_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
 
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
-	replace current event with a character event with (hyperlink value as a unicode character);
+	replace current event with a character event with (value of outcome as a unicode character);
 
 Rule hyperlink is a hyperlink tag.
 The rule hyperlink value is accessible to Inter as "hyperlink_rule".
 
 To say link (R - rule):
-	(- TAGGED_HYPERLINK_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).
 
 Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
-	follow hyperlink value as a rule;
+	follow value of outcome as a rule;
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
@@ -300,29 +309,29 @@ These properties and phrases allow the author to suspend and resume input reques
 =
 Chapter - Suspending and resuming input
 
-A glk window has a text input status.
+An IO window has a text input status.
 The text input status property translates into Inter as "text_input_status".
-A glk window can be requesting mouse input.
+An IO window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
 To suspend text input, without input echoing
 	(documented at ph_suspendtextinput):
 	(- SuspendTextInput(active_window, {phrase options}); -).
 
-To suspend text input in (win - a glk window), without input echoing:
+To suspend text input in (win - IO window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
 
 To resume text input
 	(documented at ph_resumetextinput):
 	(- ResumeTextInput(active_window); -).
 
-To resume text input in (win - a glk window):
+To resume text input in (win - IO window):
 	(- ResumeTextInput({win}); -).
 
-To decide what text is the current line input of (w - glk window):
+To decide what text is the current line input of (w - IO window):
 	(- WindowBufferCopyToText({w}, {-new:text}) -).
 
-To set the current line input of (w - glk window) to (t - text):
+To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
 @h Glk object recovery.

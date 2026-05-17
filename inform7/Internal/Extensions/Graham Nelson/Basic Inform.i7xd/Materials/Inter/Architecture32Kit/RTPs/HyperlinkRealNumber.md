@@ -1,3 +1,3 @@
-# Tagged hyperlinks cannot contain real numbers
+# Hyperlink tokens cannot contain real numbers
 
-While tagged hyperlinks can contain most kinds, real numbers are an exception.
+While hyperlink tokens can contain most kinds, real numbers are an exception.
