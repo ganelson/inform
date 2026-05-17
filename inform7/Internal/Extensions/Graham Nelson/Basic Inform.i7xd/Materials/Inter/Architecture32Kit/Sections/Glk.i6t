@@ -905,6 +905,10 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 	for (i = 0: i < len: i++) {
 		ch = BlkValueRead(txt, i);
 		if (ch == 0) break;
+		if (ch == 10) {
+			IssueRTP("WindowLineInputNewline", "Cannot set current line input of a window to a text containing a newline.", Architecture32KitRTPs);
+			return;
+		}
 		if (uni) {
 			buf-->i = ch;
 		}
