@@ -1,3 +1,27 @@
+:root {
+    --popup-text: #1E2228;
+    --ruled-line: #D0D0D0;
+    --slight-tint-bg: #E0E0FF;
+    --darker-tint-bg: #B0B0CF;
+    --chapter-tint-bg: #E0FFE0;
+    --darker-chapter-tint-bg: #B0CFB0;
+    --arrow-tint-bg: #FFE0E0;
+    --darker-arrow-tint-bg: #DFB0B0;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --popup-text: #E6E6E6;
+        --ruled-line: #2A2A2E;
+        --slight-tint-bg: #1A1A1E;
+		--darker-tint-bg: #303040;
+		--chapter-tint-bg: #200020;
+		--darker-chapter-tint-bg: #400040;
+		--arrow-tint-bg: #002020;
+		--darker-arrow-tint-bg: #204040;
+   }
+}
+
 nav[role="progress"] {
 	position: -webkit-sticky; /* Safari */
 	position: sticky;
@@ -26,47 +50,52 @@ nav[role="progress"] ul li {
 	display: inline;
     padding: 7px;
     margin: 2px;
-    background: #E0E0FF;
+    background: var(--slight-tint-bg);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 nav[role="progress"] ul li.progresschapter {
-    background: #E0FFE0;
+    background: var(--chapter-tint-bg);
     margin-left: 7px;
     margin-right: 7px;
 }
 
 nav[role="progress"] ul li.progresscurrentchapter {
-    background: #B0CFB0;
+    background: var(--darker-chapter-tint-bg);
     margin-left: 7px;
     margin-right: 2px;
 }
 
+nav[role="progress"] ul li.progresssection {
+    position: relative;
+}
+
 nav[role="progress"] ul li.progresscurrent {
-    background: #B0B0CF;
+    background: var(--darker-tint-bg);
+    position: relative;
 }
 
 nav[role="progress"] ul li.progressprev {
-    background: #FFE0E0;
+    background: var(--arrow-tint-bg);
     margin-left: 10px;
     margin-right: 10px;
 }
 
 nav[role="progress"] ul li.progressprevoff {
-    background: #DFB0B0;
+    background: var(--darker-arrow-tint-bg);
     margin-left: 10px;
     margin-right: 10px;
 }
 
 nav[role="progress"] ul li.progressnext {
-    background: #FFE0E0;
+    background: var(--arrow-tint-bg);
     margin-left: 10px;
     margin-right: 10px;
 }
 
 nav[role="progress"] ul li.progressnextoff {
-    background: #DFB0B0;
+    background: var(--darker-arrow-tint-bg);
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -109,4 +138,83 @@ nav[role="progress"] ul li a:hover {
 	nav[role="progress"] {
 		display: none;
 	}
+}
+
+nav[role="progress"] ul li .fullname-popup {
+    background: var(--slight-tint-bg);
+}
+
+nav[role="progress"] ul li .current-fullname-popup {
+    background: var(--darker-tint-bg);
+}
+
+nav[role="progress"] ul li .c-fullname-popup {
+    background: var(--chapter-tint-bg);
+}
+
+nav[role="progress"] ul li .current-c-fullname-popup {
+    background: var(--darker-chapter-tint-bg);
+}
+
+nav[role="progress"] ul li .nav-popup {
+    background: var(--arrow-tint-bg);
+}
+
+nav[role="progress"] ul li .fullname-popup, .current-fullname-popup, .c-fullname-popup, .current-c-fullname-popup, .nav-popup {
+    display: none;
+    position: absolute;
+    bottom: 66%;
+    padding: 0.4em 0.4em;
+    font-size: 0.85em;
+    white-space: nowrap;
+    border: 1px solid var(--ruled-line);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    z-index: 20;
+    text-transform: none;
+    letter-spacing: 0px;
+}
+
+nav[role="progress"] ul li:hover > .fullname-popup {
+    display: inline-block;
+}
+
+nav[role="progress"] ul li:hover > .current-fullname-popup {
+    display: inline-block;
+}
+
+nav[role="progress"] ul li:hover > .c-fullname-popup {
+    display: inline-block;
+}
+
+nav[role="progress"] ul li:hover > .current-c-fullname-popup {
+    display: inline-block;
+}
+
+nav[role="progress"] ul li:hover > .nav-popup {
+    display: inline-block;
+}
+
+nav[role="progress"] ul li .fullname-popup::before {
+    content: "";
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0.5em;
+    height: 0.5em;
+}
+
+nav[role="progress"] ul li .fullname-popup a {
+    display: block;
+    padding: 0.15em 0.15em;
+    color: var(--popup-text);
+    text-decoration: none;
+}
+
+nav[role="progress"] ul li .fullname-popup a:visited {
+    color: var(--popup-text);
+}
+
+nav[role="progress"] ul li .fullname-popup a:hover {
+    background: var(--ruled-line);
 }
