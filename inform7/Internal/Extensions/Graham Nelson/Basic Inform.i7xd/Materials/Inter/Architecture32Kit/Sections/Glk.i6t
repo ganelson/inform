@@ -776,16 +776,11 @@ up into its parts again.
 	return val;
 ];
 
-[ HYPERLINK_TOKEN_TY_Say val tag;
-	print "hyperlink token (";
-	tag = val & hyperlink_tag_mask;
-	if (tag == 0) {
-		print "invalid";
-	}
-	else {
-		SayKindValuePair(HYPERLINK_TAG_TY, tag);
-	}
-	print ")";
+[ HYPERLINK_TOKEN_TY_Say val old_token;
+	old_token = current_hyperlink_token;
+	current_hyperlink_token = val;
+	FollowRulebook(HYPERLINK_REPRESENTATION_RB, current_hyperlink_token & hyperlink_tag_mask, true);
+	current_hyperlink_token = old_token;
 ];
 
 [ HYPERLINK_TOKEN_TY_Tag val;

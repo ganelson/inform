@@ -315,6 +315,7 @@
 %Index.Elements.St.GlkObjectUpdatingRules = Glk object updating rules
 %Index.Elements.St.GlkEventHandlingRules = Glk event handling rules
 %Index.Elements.St.HyperlinkHandlingRules = Hyperlink handling rules
+%Index.Elements.St.HyperlinkRepresentationRules = Hyperlink representation rules
 
 %Index.Elements.St.CheckRules =
 	Check rules are tied to specific actions, and there are too many to index here.
