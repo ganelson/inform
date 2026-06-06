@@ -14333,21 +14333,21 @@ which produces, for instance,
 
 (Note that this activity does not come in different forms for different dark rooms: the wording is fixed at `printing the description of a dark room`, and we are not allowed to substitute particular dark rooms or assign a `(called ...)` onto the mention of the dark room.)
 
-## Constructing the status line {act_csl}
+## Drawing the status window {act_csl}
 
 ^^{status line} ^^{screen top} ^^{left hand status line (- text)+glob+} ^^{right hand status line (- text)+glob+}
 
-**1. When it happens.** Just before input is accepted from the keyboard, Inform constructs a "status line" at the top of the window which is normally displayed in reverse colours (white on black instead of black on white, say).
+**1. When it happens.** Just before input is accepted from the keyboard, Inform constructs a "status window" at the top of the window which is normally displayed in reverse colours (white on black instead of black on white, say).
 
-**2. The default behaviour.** Makes the status line up out of two pieces, the `left hand status line` and the `right hand status line`. Since these can freely be changed, note that the status line is already very customisable without using rules applied to this activity.
+**2. The default behaviour.** Makes the status window up out of two pieces, the `left hand status line` and the `right hand status line`. Since these can freely be changed, note that the status window is already very customisable without using rules applied to this activity.
 
-**3. Examples.** (a) The most useful thing about this activity is that it allows us to vary descriptions in the status line. This is especially helpful to abbreviate unduly long room names, which might not otherwise fit:
+**3. Examples.** (a) The most useful thing about this activity is that it allows us to vary descriptions in the status window. This is especially helpful to abbreviate unduly long room names, which might not otherwise fit:
 
-	The Temple Of A Thousand Mightily Peeved Deities is a room. Rule for printing the name of the Temple while constructing the status line: say "Temple".
+	The Temple Of A Thousand Mightily Peeved Deities is a room. Rule for printing the name of the Temple while drawing the status window: say "Temple".
 
 (b) Again, it's usually not necessary to apply activity rules to this, but occasionally amusing effects are possible if we do:
 
-	{*}The blindfold is wearable and carried. Rule for constructing the status line while the blindfold is worn: do nothing.
+	{*}The blindfold is wearable and carried. Rule for drawing the status window while the blindfold is worn: do nothing.
 
 ## Writing a paragraph about {act_wpa}
 

@@ -464,7 +464,7 @@ The return value is the number of words typed.
 
 		! Print the prompt, and read in the words and dictionary addresses
 		PrintPrompt();
-		KeyboardPrimitive(a_buffer, a_table, DrawStatusLine);
+		KeyboardPrimitive(a_buffer, a_table);
 
 		! Set nw to the number of words
 		#Iftrue CHARSIZE == 1;
@@ -3956,8 +3956,7 @@ Manual_, 4th edition.
 =
 [ YesOrNo i j;
     for (::) {
-        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
-        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
+        KeyboardPrimitive(buffer2, parse2);
         #Iftrue CHARSIZE == 1;
         j = parse2->1;
         #Ifnot;
@@ -3983,8 +3982,7 @@ this to be typed at the keyboard, then returns the choice made.
 	if (max <= 0) return 1;
     for (::) {
     	print ">";
-        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
-        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
+        KeyboardPrimitive(buffer2, parse2);
         #Iftrue CHARSIZE == 1;
         j = parse2->1;
 		wa = buffer2 + parse2->5;

@@ -303,6 +303,7 @@
 	better to leave them alone.
 %Index.Elements.St.StartupRules = Startup rules
 %Index.Elements.St.TurnSequenceRules = Turn sequence rules
+%Index.Elements.St.BeforeWaitingInput = Before waiting for the player's input rules
 %Index.Elements.St.ShutdownRules = Shutdown rules
 
 %Index.Elements.St.GlkHeading = Glk rules

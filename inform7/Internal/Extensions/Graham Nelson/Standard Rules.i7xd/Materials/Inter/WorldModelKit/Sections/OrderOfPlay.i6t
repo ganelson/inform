@@ -576,7 +576,7 @@ same buffers for the final question as for game commands.
 
 =
 [ READ_FINAL_ANSWER_R;
-	KeyboardPrimitive(buffer, parse, DrawStatusLine);
+	KeyboardPrimitive(buffer, parse);
 	players_command = 100 + WordCount();
 	num_words = WordCount();
 	wn = 1;

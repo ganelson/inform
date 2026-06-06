@@ -200,7 +200,7 @@ To replace current event with (ev - glk event):
 	(- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
-	redraw the status window;
+	follow the draw the status window rule;
 
 @h Hyperlinks.
 A simple framework for handling hyperlinks in an interoperable manner.

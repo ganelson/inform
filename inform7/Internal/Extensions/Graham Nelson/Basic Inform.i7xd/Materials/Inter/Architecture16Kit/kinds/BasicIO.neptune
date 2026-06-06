@@ -22,6 +22,6 @@ new base ZMACHINE_WINDOW_TY {
 
 	specification-text: Represents one of the Z-Machine windows.
 
-	instance: main window   = ZMACHINE_WINDOW_MAIN   = 0
-	instance: status window = ZMACHINE_WINDOW_STATUS = 1
+	instance: main window   = Main_Window   = 0
+	instance: status window = Status_Window = 1
 }
