@@ -720,11 +720,11 @@ Global hyperlink_tag_width;
 Global current_hyperlink_token;
 
 [ CALCULATE_HYPERLINK_TAG_WIDTH_R;
-	if (ICOUNT_HYPERLINK_TAG < 8) {
+	if (ICOUNT_HYPERLINK_TAG <= 8) {
 		hyperlink_tag_mask = $07;
 		hyperlink_tag_width = 3;
 	}
-	else if (ICOUNT_HYPERLINK_TAG < 16) {
+	else if (ICOUNT_HYPERLINK_TAG <= 16) {
 		hyperlink_tag_mask = $0F;
 		hyperlink_tag_width = 4;
 	}
@@ -785,19 +785,11 @@ up into its parts again.
 
 [ HYPERLINK_TOKEN_TY_Tag val;
 	val = val & hyperlink_tag_mask;
-	if (val == 0 || val > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Tag: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
-		return 0;
-	}
 	return val;
 ];
 
 [ HYPERLINK_TOKEN_TY_Value val tag;
 	tag = val & hyperlink_tag_mask;
-	if (tag == 0 || tag > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Value: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
-		return 0;
-	}
 	@sshiftr val hyperlink_tag_width val;
 	return val;
 ];

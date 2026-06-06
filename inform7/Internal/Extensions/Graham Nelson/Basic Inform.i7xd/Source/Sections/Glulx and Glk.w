@@ -212,9 +212,6 @@ Hyperlink tokens then combine a hyperlink tag with a value.
 =
 Chapter - Hyperlinks
 
-A hyperlink tag is a kind of value.
-The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".
-
 To decide what hyperlink token is hyperlink token of (T - hyperlink tag) for/of/with (V - value of kind K):
 	(- HYPERLINK_TOKEN_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).
 

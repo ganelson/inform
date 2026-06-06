@@ -104,6 +104,16 @@ new base GLK_WINDOW_TYPE_TY {
 	instance: graphics window type    = wintype_Graphics_   = 5
 }
 
+new base HYPERLINK_TAG_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: hyperlink tag
+	plural: hyperlink tags
+
+	specification-text: A hyperlink tag represents one type of hyperlink.
+
+	instance: null hyperlink = HYPERLINK_TAG_NULL = 0
+}
+
 new base HYPERLINK_TOKEN_TY {
 	conforms-to: SAYABLE_VALUE_TY
 	singular: hyperlink token
