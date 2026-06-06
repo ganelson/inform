@@ -1910,11 +1910,8 @@ Section 3 - Keyboard Input
 To decide what unicode character is the next pressed key:
 	(- VM_KeyChar() -).
 
-To prompt the player to enter a line of text:
-	(- VM_ReadKeyboard(buffer2); -).
-
-To say the/-- player's text input:
-	(- VM_PrintBuffer(buffer2); -).
+To decide what text is the next typed line:
+	(- ReadKeyboardIntoText({-new:text}) -).
 
 @ Function keys.
 Keyboard function keys are defined as unicode character constants. A mix of

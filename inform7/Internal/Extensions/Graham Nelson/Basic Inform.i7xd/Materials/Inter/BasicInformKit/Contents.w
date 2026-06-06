@@ -8,6 +8,7 @@ Sections
 	Definitions
 	Startup
 	Utilities
+	BasicIO
 	Paragraphing
 	Mathematics
 	Sort

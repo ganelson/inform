@@ -1,0 +1,18 @@
+BasicIO
+
+Support code for Basic IO phrases.
+
+@h Line input.
+Read from the keyboard and store in a text.
+
+=
+[ ReadKeyboardIntoText new_txt;
+	! Read from the keyboard
+	VM_ReadKeyboard(buffer2);
+	#iftrue WORDSIZE == 2;
+		BlkValueMassCopyFromArray(new_txt, buffer2 + 2, 1, buffer2->1);
+	#ifnot;
+		BlkValueMassCopyFromArray(new_txt, buffer2 + WORDSIZE, 4, buffer2-->0);
+	#endif;
+	return new_txt;
+];
