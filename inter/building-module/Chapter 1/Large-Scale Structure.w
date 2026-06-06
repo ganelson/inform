@@ -216,6 +216,7 @@ int LargeScale::is_veneer_symbol(inter_symbol *con_name) {
 	return FALSE;
 }
 
+
 @<Ensure the on-demand dictionary exists@> =
 	if (create_these_architectural_symbols_on_demand == NULL) {
 		create_these_architectural_symbols_on_demand = Dictionaries::new(16, TRUE);
@@ -227,6 +228,12 @@ int LargeScale::is_veneer_symbol(inter_symbol *con_name) {
 		Dictionaries::create(create_these_architectural_symbols_on_demand, I"String");
 		Dictionaries::create(create_these_architectural_symbols_on_demand, I"Class");
 		Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#classes_table");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"INDIV_PROP_START");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"NUM_ATTR_BYTES");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#cpv__start");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#dynam_string_table");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#identifiers_table");
 	}
 
 @ The other architectural constants are the ones depending on the architecture
