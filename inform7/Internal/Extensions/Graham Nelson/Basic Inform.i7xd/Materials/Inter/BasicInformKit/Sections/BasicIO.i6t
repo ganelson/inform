@@ -31,7 +31,7 @@ paragraph control system.
 	#endif;
 	@push say__p; @push say__pc;
 	VM_MoveCursorInStatusLine(1, 1);
-	CarryOutActivity(DRAWING_STATUS_WINDOW_ACT);
+	CarryOutActivity(CONSTRUCTING_STATUS_LINE_ACT);
 	VM_MainWindow();
 	ClearParagraphing(18);
 	@pull say__pc; @pull say__p;

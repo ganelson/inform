@@ -132,7 +132,7 @@ The right hand status line is a text that varies.
 The left hand status line variable is defined by Inter as "left_hand_status_line".
 The right hand status line variable is defined by Inter as "right_hand_status_line".
 
-The default status window rule is listed in the for drawing the status window rules.
+The default status window rule is listed in the for constructing the status line rules.
 The default status window rule is defined by Inter as "DEFAULT_STATUS_LINE_R".
 
 The listing group size is a number that varies.

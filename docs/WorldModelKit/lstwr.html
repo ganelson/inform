@@ -70,7 +70,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../kits.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>ListWriter</b></li></ul></div>
 <p class="purpose">ListWriter  A flexible object-lister taking care of plurals, inventory information, various formats and so on.</p>
 
-<ul class="toc"><li><a href="lstwr.html#SP1">&#167;1. Specification</a></li><li><a href="lstwr.html#SP2">&#167;2. Memory</a></li><li><a href="lstwr.html#SP3">&#167;3. WriteListOfMarkedObjects</a></li><li><a href="lstwr.html#SP4">&#167;4. List Number and Gender</a></li><li><a href="lstwr.html#SP5">&#167;5. List Writer Regard Storage</a></li><li><a href="lstwr.html#SP6">&#167;6. Response Printing</a></li><li><a href="lstwr.html#SP7">&#167;7. About Iterator Functions</a></li><li><a href="lstwr.html#SP8">&#167;8. Tracing</a></li><li><a href="lstwr.html#SP9">&#167;9. Marked List Iterator</a></li><li><a href="lstwr.html#SP10">&#167;10. Concealment</a></li><li><a href="lstwr.html#SP11">&#167;11. Having Evident Content</a></li><li><a href="lstwr.html#SP12">&#167;12. Coalesce Marked List</a></li><li><a href="lstwr.html#SP13">&#167;13. Object Tree Iterator</a></li><li><a href="lstwr.html#SP14">&#167;14. Coalesce Object Tree</a></li><li><a href="lstwr.html#SP15">&#167;15. GroupChildren</a></li><li><a href="lstwr.html#SP16">&#167;16. WriteListFrom</a></li><li><a href="lstwr.html#SP17">&#167;17. Standard Contents Listing Rule</a></li><li><a href="lstwr.html#SP18">&#167;18. Partitioning</a></li><li><a href="lstwr.html#SP19">&#167;19. Partition List</a></li><li><a href="lstwr.html#SP20">&#167;20. Equivalence Relation</a></li><li><a href="lstwr.html#SP21">&#167;21. Grouping</a></li><li><a href="lstwr.html#SP22">&#167;22. Write List Recursively</a></li><li><a href="lstwr.html#SP23">&#167;23. Write Multiple Class Group</a></li><li><a href="lstwr.html#SP24">&#167;24. Write Single Class Group</a></li><li><a href="lstwr.html#SP25">&#167;25. Write After Entry</a></li><li><a href="lstwr.html#SP26">&#167;26. Internal Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="lstwr.html#SP1">&#167;1. Specification</a></li><li><a href="lstwr.html#SP2">&#167;2. Memory</a></li><li><a href="lstwr.html#SP3">&#167;3. WriteListOfMarkedObjects</a></li><li><a href="lstwr.html#SP4">&#167;4. List Number and Gender</a></li><li><a href="lstwr.html#SP5">&#167;5. List Writer Regard Storage</a></li><li><a href="lstwr.html#SP6">&#167;6. About Iterator Functions</a></li><li><a href="lstwr.html#SP7">&#167;7. Tracing</a></li><li><a href="lstwr.html#SP8">&#167;8. Marked List Iterator</a></li><li><a href="lstwr.html#SP9">&#167;9. Concealment</a></li><li><a href="lstwr.html#SP10">&#167;10. Having Evident Content</a></li><li><a href="lstwr.html#SP11">&#167;11. Coalesce Marked List</a></li><li><a href="lstwr.html#SP12">&#167;12. Object Tree Iterator</a></li><li><a href="lstwr.html#SP13">&#167;13. Coalesce Object Tree</a></li><li><a href="lstwr.html#SP14">&#167;14. GroupChildren</a></li><li><a href="lstwr.html#SP15">&#167;15. WriteListFrom</a></li><li><a href="lstwr.html#SP16">&#167;16. Standard Contents Listing Rule</a></li><li><a href="lstwr.html#SP17">&#167;17. Partitioning</a></li><li><a href="lstwr.html#SP18">&#167;18. Partition List</a></li><li><a href="lstwr.html#SP19">&#167;19. Equivalence Relation</a></li><li><a href="lstwr.html#SP20">&#167;20. Grouping</a></li><li><a href="lstwr.html#SP21">&#167;21. Write List Recursively</a></li><li><a href="lstwr.html#SP22">&#167;22. Write Multiple Class Group</a></li><li><a href="lstwr.html#SP23">&#167;23. Write Single Class Group</a></li><li><a href="lstwr.html#SP24">&#167;24. Write After Entry</a></li><li><a href="lstwr.html#SP25">&#167;25. Internal Rule</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specification.</b>  The list-writer is called by one of the following function calls:</p>
@@ -306,18 +306,7 @@ prior named list number and gender for everything matching a description.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Response Printing.</b>  From which:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">ResponseViaActivity</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list_gender</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RegardingSingleObject</span><span class="plain-syntax">(</span><span class="reserved-syntax">nothing</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CarryOutActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRINTING_RESPONSE_ACT</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list_gender</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. About Iterator Functions.</b>  Suppose <code>Iter</code> is an iterator function and that we have a &quot;raw list&quot;
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. About Iterator Functions.</b>  Suppose <code>Iter</code> is an iterator function and that we have a &quot;raw list&quot;
 \INWEBMATH(x_1, x_2, ..., x_n\INWEBMATH) of objects. Of these, the iterator function will
 choose a sublist of &quot;qualifying&quot; objects. It is called with arguments</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="identifier-syntax">Iter</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">function</span><span class="plain-syntax">)
@@ -360,7 +349,7 @@ is non-zero then the iterator is required to disqualify any entry whose
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">START_ITF</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Tracing.</b>  Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Tracing.</b>  Uncomment this line and rebuild the kit to enable tracing of what the algorithm
 below is doing. (This constant should not be used anywhere except in this file,
 where <code>#Ifdef</code> on it will have the expected effect: elsewhere, it might not.)</p>
 </div>
@@ -368,7 +357,7 @@ where <code>#Ifdef</code> on it will have the expected effect: elsewhere, it mig
 <span class="comment-syntax">! Constant LKTRACE_LIST_WRITER;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Marked List Iterator.</b>  Here the raw list is provided by the <code>MarkedObjectArray</code>, which is convenient
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Marked List Iterator.</b>  Here the raw list is provided by the <code>MarkedObjectArray</code>, which is convenient
 for coalescing, but not so helpful for translating the <code>obj</code> parameter into
 the \INWEBMATH(i\INWEBMATH) such that it is \INWEBMATH(x_i\INWEBMATH). We simply search from the beginning to do
 this, which combined with other code using the iterator makes for some
@@ -403,7 +392,7 @@ very rapid anyway (because the player can only read very slowly).</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Concealment.</b>  This is the definition of concealment used by the list-writer, and means that,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Concealment.</b>  This is the definition of concealment used by the list-writer, and means that,
 for example, the &quot;deciding the concealed possessions&quot; activity is taken into
 account.</p>
 </div>
@@ -416,7 +405,7 @@ account.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Having Evident Content.</b>  This is true when something has at least one unconcealed thing in it.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Having Evident Content.</b>  This is true when something has at least one unconcealed thing in it.
 It's false when something is truly empty or when all the things in
 it are concealed or undescribed, and is used to ensure that output
 is consistent in both those cases. The player shouldn't count for
@@ -436,7 +425,7 @@ anyway.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Coalesce Marked List.</b>  The return value is the new first entry in the raw list.</p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Coalesce Marked List.</b>  The return value is the new first entry in the raw list.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">MarkedListCoalesce</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">lt</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax"> </span><span class="identifier-syntax">swap</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax">;</span>
@@ -466,7 +455,7 @@ anyway.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Object Tree Iterator.</b>  Here the raw list is the list of all children of a given parent: since the
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Object Tree Iterator.</b>  Here the raw list is the list of all children of a given parent: since the
 argument <code>obj</code> is required to be a member of the raw list, we can use
 <code>parent(obj)</code> to find it. Now seeking and advancing are fast, but coalescing
 is slower.</p>
@@ -493,7 +482,7 @@ is slower.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Coalesce Object Tree.</b>  Again, the return value is the new first entry in the raw list.</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Coalesce Object Tree.</b>  Again, the return value is the new first entry in the raw list.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ObjectTreeCoalesce</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">memb</span><span class="plain-syntax"> </span><span class="identifier-syntax">lt</span><span class="plain-syntax"> </span><span class="identifier-syntax">later</span><span class="plain-syntax">;</span>
@@ -529,7 +518,7 @@ is slower.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. GroupChildren.</b>  The following runs through the child-objects of <code>par</code> in the I6 object tree,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. GroupChildren.</b>  The following runs through the child-objects of <code>par</code> in the I6 object tree,
 and moves those having a given <code>list_property</code> property value together, to
 become the eldest children. It preserves the ordering in between those
 objects, and also in between those not having that property value.</p>
@@ -556,7 +545,7 @@ objects which in all other circumstances never have children in the tree.</p>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. WriteListFrom.</b>  And here we go at last. Or at any rate we initialise the quartet of global
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. WriteListFrom.</b>  And here we go at last. Or at any rate we initialise the quartet of global
 variables detailing the current list-writing process, and begin.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -592,7 +581,7 @@ variables detailing the current list-writing process, and begin.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Standard Contents Listing Rule.</b>  The default for the listing contents activity is to call this rule in its
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Standard Contents Listing Rule.</b>  The default for the listing contents activity is to call this rule in its
 &quot;for&quot; stage: note that this suppresses the use of the activity, to avoid
 an infinite regress. The activity is used only for the default
 <code>ObjectTreeIterator</code>, so there is no need to specify which is used.</p>
@@ -603,7 +592,7 @@ an infinite regress. The activity is used only for the default
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Partitioning.</b>  Given qualifying objects \INWEBMATH(x_1, ..., x_j\INWEBMATH), we partition them into classes of
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Partitioning.</b>  Given qualifying objects \INWEBMATH(x_1, ..., x_j\INWEBMATH), we partition them into classes of
 the equivalence relation \INWEBMATH(x_i\sim x_j\INWEBMATH) if and only</p>
 <ul>
 <li>they both have a <code>plural</code> property (not necessarily the same), and</li>
@@ -638,7 +627,7 @@ objects in this class.</p>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Partition List.</b>  The following creates the <code>partition_classes</code> and <code>partition_class_sizes</code>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Partition List.</b>  The following creates the <code>partition_classes</code> and <code>partition_class_sizes</code>
 accordingly. We return \INWEBMATH(n\INWEBMATH), the number of classes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -668,7 +657,7 @@ accordingly. We return \INWEBMATH(n\INWEBMATH), the number of classes.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Equivalence Relation.</b>  The above algorithm will fail unless <code>ListEqual</code> is indeed reflexive, symmetric
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Equivalence Relation.</b>  The above algorithm will fail unless <code>ListEqual</code> is indeed reflexive, symmetric
 and transitive, which ultimately depends on the care with which <code>Identical</code>
 is implemented, which in turn hangs on the <code>parse_noun</code> properties compiled
 by Inform. But this seems to be sound.</p>
@@ -695,7 +684,7 @@ by Inform. But this seems to be sound.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Grouping.</b>  A &quot;group&quot; is a maximally-sized run of one or more adjacent partition
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Grouping.</b>  A &quot;group&quot; is a maximally-sized run of one or more adjacent partition
 classes in the list whose first members have a common value of
 <code>list_together</code> which is a routine or string, and which is not equal to
 <code>lt_value</code>, the current grouping value. (As we see below, it's by setting
@@ -771,7 +760,7 @@ in the above sense.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Write List Recursively.</b>  The big one: <code>WriteListR</code> is the heart of the list-writer.</p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Write List Recursively.</b>  The big one: <code>WriteListR</code> is the heart of the list-writer.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WriteListR</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_start</span>
@@ -871,7 +860,7 @@ in the above sense.</p>
 <span class="plain-syntax">]; </span><span class="comment-syntax">! end of WriteListR</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Write Multiple Class Group.</b>  The text of a single group which contains more than one partition class.
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Write Multiple Class Group.</b>  The text of a single group which contains more than one partition class.
 We carry out the &quot;grouping together&quot; activity, so that the user can add
 text fore and aft — this is how groups of objects such as &quot;X, Y and Z&quot;
 can be fluffed up to &quot;the letters X, Y and Z from a Scrabble set&quot; —
@@ -944,7 +933,7 @@ below, and <em>that</em> is where they are printed.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Write Single Class Group.</b>  The text of a single group which contains exactly one partition class.
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Write Single Class Group.</b>  The text of a single group which contains exactly one partition class.
 Because of the way the multiple-class case recurses, every class ends up
 in this routine sooner or later; this is the place where the actual
 name of an object is printed, at long last.</p>
@@ -982,7 +971,7 @@ name of an object is printed, at long last.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Write After Entry.</b>  Each entry can be followed by supplementary, usually parenthetical, information:
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Write After Entry.</b>  Each entry can be followed by supplementary, usually parenthetical, information:
 exactly what, depends on the style. The extreme case is when the style, and
 the object, call for recursion to list the object-tree contents: this is
 achieved by calling <code>WriteListR</code>, using the <code>ObjectTreeIterator</code> (whatever
@@ -1109,7 +1098,7 @@ the iterator used at the top level) and increasing the depth by 1.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Internal Rule.</b>  This rule does nothing in itself; it exists as a placeholder for the
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Internal Rule.</b>  This rule does nothing in itself; it exists as a placeholder for the
 response texts used by the list-writer.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1121,7 +1110,7 @@ response texts used by the list-writer.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="lght.html">&#10094;</a></li><li class="progresssection"><a href="mscll.html">mscll</a></li><li class="progresssection"><a href="stt.html">stt</a></li><li class="progresssection"><a href="lght.html">lght</a></li><li class="progresscurrent">lstwr</li><li class="progresssection"><a href="ordrf.html">ordrf</a></li><li class="progresssection"><a href="actns.html">actns</a></li><li class="progresssection"><a href="fgrs.html">fgrs</a></li><li class="progresssection"><a href="otfwr.html">otfwr</a></li><li class="progresssection"><a href="prntn.html">prntn</a></li><li class="progresssection"><a href="wrldm.html">wrldm</a></li><li class="progresssection"><a href="mprtf.html">mprtf</a></li><li class="progresssection"><a href="tm.html">tm</a></li><li class="progresssection"><a href="tsts.html">tsts</a></li><li class="progresssection"><a href="chrnl.html">chrnl</a></li><li class="progresssection"><a href="strdc.html">strdc</a></li><li class="progressnext"><a href="ordrf.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Light</span><a href="lght.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Miscellany</span><a href="mscll.html">mscll</a></li><li class="progresssection"><span class="fullname-popup">State</span><a href="stt.html">stt</a></li><li class="progresssection"><span class="fullname-popup">Light</span><a href="lght.html">lght</a></li><li class="progresscurrent"><span class="current-fullname-popup">ListWriter</span>lstwr</li><li class="progresssection"><span class="fullname-popup">OrderOfPlay</span><a href="ordrf.html">ordrf</a></li><li class="progresssection"><span class="fullname-popup">Actions</span><a href="actns.html">actns</a></li><li class="progresssection"><span class="fullname-popup">Figures</span><a href="fgrs.html">fgrs</a></li><li class="progresssection"><span class="fullname-popup">OutOfWorld</span><a href="otfwr.html">otfwr</a></li><li class="progresssection"><span class="fullname-popup">Printing</span><a href="prntn.html">prntn</a></li><li class="progresssection"><span class="fullname-popup">WorldModel</span><a href="wrldm.html">wrldm</a></li><li class="progresssection"><span class="fullname-popup">MapRouteFinding</span><a href="mprtf.html">mprtf</a></li><li class="progresssection"><span class="fullname-popup">Time</span><a href="tm.html">tm</a></li><li class="progresssection"><span class="fullname-popup">Tests</span><a href="tsts.html">tsts</a></li><li class="progresssection"><span class="fullname-popup">Chronology</span><a href="chrnl.html">chrnl</a></li><li class="progresssection"><span class="fullname-popup">StoredAction</span><a href="strdc.html">strdc</a></li><li class="progressnext"><span class="nav-popup">OrderOfPlay</span><a href="ordrf.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

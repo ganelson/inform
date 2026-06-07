@@ -25,16 +25,6 @@ and we define:
 =
 Section 1 - Responses
 
-Issuing the response text of something -- hidden in RULES command -- -- documented at act_resp -- is an
-activity on responses.
-The issuing the response text activity is accessible to Inter as "PRINTING_RESPONSE_ACT".
-
-The standard issuing the response text rule is listed last in for issuing the
-response text.
-
-The standard issuing the response text rule is defined by Inter as
-"STANDARD_RESPONSE_ISSUING_R".
-
 @h Naming and listing.
 We start with a piece of unfinished business. The "printing the name"
 activity was created by Basic Inform, but we need to add a rule to its

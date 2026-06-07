@@ -5,7 +5,7 @@ language of play - <i>natural language</i><br>
 parameter-object - <i>object</i><br>
 </p>
 <p><b>The Status Window</b><br>
-status window table - <i>table name</i><br>
+temporary status window table - <i>table name</i><br>
 </p>
 <p><b>Keyboard Input</b><br>
 delete key - <i>unicode character</i><br>

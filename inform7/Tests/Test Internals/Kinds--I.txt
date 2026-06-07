@@ -31,7 +31,7 @@ description of values <= value, stored value
 property <= value, stored value
 table column <= value, stored value
 combination value and value <= value, stored value, sayable value, pointer value
-nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, basic colour, glk feature, glulx feature, glk event, glk event type, glk window type, hyperlink token, text input status, version number, described action, action, action name, time, time period, scene, figure name, sound name, topic, command parser error, abstract object, natural language, rgb colour, io window, graphics window, text buffer window, text grid window, hyperlink tag, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall
+nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, basic colour, glk feature, glulx feature, glk event, glk event type, glk window type, hyperlink tag, hyperlink token, text input status, version number, described action, action, action name, time, time period, scene, figure name, sound name, topic, command parser error, abstract object, natural language, rgb colour, io window, graphics window, text buffer window, text grid window, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall
  <= value
 nothing <= value
 value, value <= value
@@ -43,6 +43,7 @@ glulx feature <= value, stored value, sayable value, understandable value, enume
 glk event <= value, stored value, sayable value, pointer value
 glk event type <= value, stored value, sayable value, understandable value, enumerated value
 glk window type <= value, stored value, sayable value, understandable value, enumerated value
+hyperlink tag <= value, stored value, sayable value, understandable value, enumerated value
 hyperlink token <= value, stored value, sayable value
 text input status <= value, stored value, sayable value, understandable value, enumerated value
 version number <= value, stored value, sayable value, pointer value
@@ -63,7 +64,6 @@ io window <= value, stored value, sayable value, object, abstract object
 graphics window <= value, stored value, sayable value, object, abstract object, io window
 text buffer window <= value, stored value, sayable value, object, abstract object, io window
 text grid window <= value, stored value, sayable value, object, abstract object, io window
-hyperlink tag <= value, stored value, sayable value, understandable value, enumerated value
 grammatical tense <= value, stored value, sayable value, understandable value, enumerated value
 narrative viewpoint <= value, stored value, sayable value, understandable value, enumerated value
 grammatical case <= value, stored value, sayable value, understandable value, enumerated value
@@ -138,6 +138,7 @@ glulx feature -> enumerated value -> understandable value -> sayable value -> st
 glk event -> pointer value -> sayable value -> stored value -> value -> 
 glk event type -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 glk window type -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
+hyperlink tag -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 hyperlink token -> sayable value -> stored value -> value -> 
 text input status -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 version number -> pointer value -> sayable value -> stored value -> value -> 
@@ -158,7 +159,6 @@ io window -> abstract object -> object -> sayable value -> stored value -> value
 graphics window -> io window -> abstract object -> object -> sayable value -> stored value -> value -> 
 text buffer window -> io window -> abstract object -> object -> sayable value -> stored value -> value -> 
 text grid window -> io window -> abstract object -> object -> sayable value -> stored value -> value -> 
-hyperlink tag -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 grammatical tense -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 narrative viewpoint -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 grammatical case -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 

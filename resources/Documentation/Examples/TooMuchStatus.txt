@@ -27,7 +27,7 @@ With tables we can adjust how the status window is displayed. In this example we
 	"Inventory: [list of things carried by the player]"	--	"Time: [time of day]"
 	--	"Times jumped: [times jumped]"
 	
-	Rule for drawing the status window rule:
+	Rule for constructing the status line:
 		draw the status window with Table of Too Much Status Column Definitions;
 
 We can also use redraw the status window with a table only temporarily, after which it will return to the previous set of column definitions:

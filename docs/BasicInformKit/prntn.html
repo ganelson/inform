@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../kits.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Printing</b></li></ul></div>
 <p class="purpose">Printing  To handle the printing of names of objects.</p>
 
-<ul class="toc"><li><a href="prntn.html#SP1">&#167;1. Short Name Storage</a></li><li><a href="prntn.html#SP2">&#167;2. Object Names I</a></li><li><a href="prntn.html#SP3">&#167;3. Standard Name Printing Rule</a></li><li><a href="prntn.html#SP4">&#167;4. Object Names II</a></li><li><a href="prntn.html#SP5">&#167;5. Object Names III</a></li><li><a href="prntn.html#SP6">&#167;6. Printing in number bases</a></li><li><a href="prntn.html#SP8">&#167;8. Miscellaneous</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="prntn.html#SP1">&#167;1. Short Name Storage</a></li><li><a href="prntn.html#SP2">&#167;2. Object Names I</a></li><li><a href="prntn.html#SP3">&#167;3. Standard Name Printing Rule</a></li><li><a href="prntn.html#SP4">&#167;4. Object Names II</a></li><li><a href="prntn.html#SP5">&#167;5. Object Names III</a></li><li><a href="prntn.html#SP6">&#167;6. Printing in number bases</a></li><li><a href="prntn.html#SP8">&#167;8. Miscellaneous</a></li><li><a href="prntn.html#SP10">&#167;10. Response Printing</a></li><li><a href="prntn.html#SP11">&#167;11. Standard Response Issuing Rule</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Short Name Storage.</b>  None of the following functions should be called for the Z-machine if the
@@ -425,8 +425,28 @@ the <code>prior_named_noun</code>.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">case</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Response Printing.</b> </p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">ResponseViaActivity</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list_gender</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RegardingSingleObject</span><span class="plain-syntax">(</span><span class="reserved-syntax">nothing</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CarryOutActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRINTING_RESPONSE_ACT</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list_gender</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  This provides just a little of the list-writer.</p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Standard Response Issuing Rule.</b>  To print a response, we trigger off the response issuing activity. The following
+is the default &quot;for&quot; rule for that activity:</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">STANDARD_RESPONSE_ISSUING_R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RegardingSingleObject</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">(</span><span class="identifier-syntax">ResponseTexts</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">];</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  This provides just a little of the list-writer.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WriteListOfMarkedObjects</span><span class="plain-syntax"> </span><span class="identifier-syntax">in_style</span>
@@ -458,7 +478,7 @@ the <code>prior_named_noun</code>.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  These two functions are not really to do with printing, but are also stubs
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  These two functions are not really to do with printing, but are also stubs
 provided for Basic Inform only.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -468,7 +488,7 @@ provided for Basic Inform only.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="actvt.html">&#10094;</a></li><li class="progresssection"><a href="dfntn.html">dfntn</a></li><li class="progresssection"><a href="strtp.html">strtp</a></li><li class="progresssection"><a href="utlts.html">utlts</a></li><li class="progresssection"><a href="prgrp.html">prgrp</a></li><li class="progresssection"><a href="mthmt.html">mthmt</a></li><li class="progresssection"><a href="srt.html">srt</a></li><li class="progresssection"><a href="tbls.html">tbls</a></li><li class="progresssection"><a href="mstck.html">mstck</a></li><li class="progresssection"><a href="rlbks.html">rlbks</a></li><li class="progresssection"><a href="actvt.html">actvt</a></li><li class="progresscurrent">prntn</li><li class="progresssection"><a href="flx.html">flx</a></li><li class="progresssection"><a href="blckv.html">blckv</a></li><li class="progresssection"><a href="knds.html">knds</a></li><li class="progresssection"><a href="txt.html">txt</a></li><li class="progresssection"><a href="chr.html">chr</a></li><li class="progresssection"><a href="rgxp.html">rgxp</a></li><li class="progresssection"><a href="lsts.html">lsts</a></li><li class="progresssection"><a href="cmbnt.html">cmbnt</a></li><li class="progresssection"><a href="rltnk.html">rltnk</a></li><li class="progresssection"><a href="rltns.html">rltns</a></li><li class="progresssection"><a href="prprt.html">prprt</a></li><li class="progresssection"><a href="rtp.html">rtp</a></li><li class="progressnext"><a href="flx.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Activities</span><a href="actvt.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Definitions</span><a href="dfntn.html">dfntn</a></li><li class="progresssection"><span class="fullname-popup">Startup</span><a href="strtp.html">strtp</a></li><li class="progresssection"><span class="fullname-popup">Utilities</span><a href="utlts.html">utlts</a></li><li class="progresssection"><span class="fullname-popup">BasicIO</span><a href="bsc.html">bsc</a></li><li class="progresssection"><span class="fullname-popup">Paragraphing</span><a href="prgrp.html">prgrp</a></li><li class="progresssection"><span class="fullname-popup">Mathematics</span><a href="mthmt.html">mthmt</a></li><li class="progresssection"><span class="fullname-popup">Sort</span><a href="srt.html">srt</a></li><li class="progresssection"><span class="fullname-popup">Tables</span><a href="tbls.html">tbls</a></li><li class="progresssection"><span class="fullname-popup">MStack</span><a href="mstck.html">mstck</a></li><li class="progresssection"><span class="fullname-popup">Rulebooks</span><a href="rlbks.html">rlbks</a></li><li class="progresssection"><span class="fullname-popup">Activities</span><a href="actvt.html">actvt</a></li><li class="progresscurrent"><span class="current-fullname-popup">Printing</span>prntn</li><li class="progresssection"><span class="fullname-popup">Flex</span><a href="flx.html">flx</a></li><li class="progresssection"><span class="fullname-popup">BlockValues</span><a href="blckv.html">blckv</a></li><li class="progresssection"><span class="fullname-popup">Kinds</span><a href="knds.html">knds</a></li><li class="progresssection"><span class="fullname-popup">Text</span><a href="txt.html">txt</a></li><li class="progresssection"><span class="fullname-popup">Char</span><a href="chr.html">chr</a></li><li class="progresssection"><span class="fullname-popup">RegExp</span><a href="rgxp.html">rgxp</a></li><li class="progresssection"><span class="fullname-popup">Lists</span><a href="lsts.html">lsts</a></li><li class="progresssection"><span class="fullname-popup">Combinations</span><a href="cmbnt.html">cmbnt</a></li><li class="progresssection"><span class="fullname-popup">RelationKind</span><a href="rltnk.html">rltnk</a></li><li class="progresssection"><span class="fullname-popup">Relations</span><a href="rltns.html">rltns</a></li><li class="progresssection"><span class="fullname-popup">Properties</span><a href="prprt.html">prprt</a></li><li class="progresssection"><span class="fullname-popup">RTP</span><a href="rtp.html">rtp</a></li><li class="progressnext"><span class="nav-popup">Flex</span><a href="flx.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

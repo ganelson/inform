@@ -150,14 +150,3 @@ compile a `Story_Author`.
 [ Banner i serial;
    CarryOutActivity(PRINTING_BANNER_TEXT_ACT);
 ];
-
-@h Standard Response Issuing Rule.
-To print a response, we trigger off the response issuing activity. The following
-is the default "for" rule for that activity:
-
-=
-[ STANDARD_RESPONSE_ISSUING_R;
-	RegardingSingleObject();
-	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
-];
-

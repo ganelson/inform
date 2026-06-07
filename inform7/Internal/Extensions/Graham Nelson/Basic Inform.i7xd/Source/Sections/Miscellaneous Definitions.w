@@ -189,10 +189,10 @@ The before waiting for the player's input rulebook is accessible to Inter as "BE
 The draw the status window rule is listed in the before waiting for the player's input rules.
 The draw the status window rule is defined by Inter as "DRAW_STATUS_WINDOW_R".
 
-Drawing the status window (documented at act_csl) is an activity.
-The drawing the status window activity is accessible to Inter as "DRAWING_STATUS_WINDOW_ACT".
+Constructing the status line (documented at act_csl) is an activity.
+The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
 
-First for drawing the status window rule (this is the draw the status window with the temporary table rule):
+First for constructing the status line rule (this is the draw the status window with the temporary table rule):
 	let the default table be the default value of a table-name;
 	if the temporary status window table is not the default table:
 		draw the status window with the temporary status window table;
@@ -213,3 +213,13 @@ The standard printing the plural name rule is listed last in the for printing th
 plural name rulebook.
 The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
+
+Issuing the response text of something -- hidden in RULES command -- -- documented at act_resp -- is an
+activity on responses.
+The issuing the response text activity is accessible to Inter as "PRINTING_RESPONSE_ACT".
+
+The standard issuing the response text rule is listed last in for issuing the
+response text.
+
+The standard issuing the response text rule is defined by Inter as
+"STANDARD_RESPONSE_ISSUING_R".

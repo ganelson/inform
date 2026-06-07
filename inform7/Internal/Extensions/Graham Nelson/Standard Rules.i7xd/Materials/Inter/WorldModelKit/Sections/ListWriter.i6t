@@ -244,17 +244,6 @@ Array LWI_Storage --> 1 (-1) nothing;
 	prior_named_noun = LWI_Storage-->2;
 ];
 
-@h Response Printing.
-From which:
-
-=
-[ ResponseViaActivity R;
-	@push prior_named_noun; @push prior_named_list; @push prior_named_list_gender;
-	RegardingSingleObject(nothing);
-	CarryOutActivity(PRINTING_RESPONSE_ACT, R);
-	@pull prior_named_list_gender; @pull prior_named_list; @pull prior_named_noun;
-];
-
 @h About Iterator Functions.
 Suppose `Iter` is an iterator function and that we have a "raw list"
 $x_1, x_2, ..., x_n$ of objects. Of these, the iterator function will

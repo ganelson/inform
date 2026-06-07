@@ -375,6 +375,26 @@ the `prior_named_noun`.
     return case;
 ];
 
+@h Response Printing.
+
+=
+[ ResponseViaActivity R;
+	@push prior_named_noun; @push prior_named_list; @push prior_named_list_gender;
+	RegardingSingleObject(nothing);
+	CarryOutActivity(PRINTING_RESPONSE_ACT, R);
+	@pull prior_named_list_gender; @pull prior_named_list; @pull prior_named_noun;
+];
+
+@h Standard Response Issuing Rule.
+To print a response, we trigger off the response issuing activity. The following
+is the default "for" rule for that activity:
+
+=
+[ STANDARD_RESPONSE_ISSUING_R;
+	RegardingSingleObject();
+	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
+];
+
 @ This provides just a little of the list-writer.
 
 =

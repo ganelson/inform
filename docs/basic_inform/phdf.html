@@ -1918,24 +1918,19 @@ there's no decision.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 2 - The Status Window</span>
 
-<span class="plain-syntax">The status window table is a table-name that varies.</span>
-<span class="plain-syntax">The status window table variable translates into Inter as "status_window_table".</span>
-
-<span class="plain-syntax">To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:</span>
-<span class="plain-syntax">    let old status window table be the status window table;</span>
-<span class="plain-syntax">    now the status window table is new status table;</span>
-<span class="plain-syntax">    redraw the status window;</span>
-<span class="plain-syntax">    if once only:</span>
-<span class="plain-syntax">        now the status window table is the old status window table;</span>
-
 <span class="plain-syntax">To set the status bar/line/window to (rows - number) row/rows:</span>
 <span class="plain-syntax">    (- VM_StatusLineHeight({rows}); -).</span>
 
 <span class="plain-syntax">To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):</span>
 <span class="plain-syntax">    (- VM_MoveCursorInStatusLine({row}, {col}); -).</span>
 
-<span class="plain-syntax">To redraw the/-- status bar/line/window:</span>
-<span class="plain-syntax">    (- DrawStatusLine(); -).</span>
+<span class="plain-syntax">To draw the status window with (table - a table-name):</span>
+<span class="plain-syntax">    (- DrawStatusWindowFromTable({table}); -).</span>
+
+<span class="plain-syntax">The temporary status window table is a table-name variable.</span>
+
+<span class="plain-syntax">To draw the status window with (table - a table-name) once only:</span>
+<span class="plain-syntax">    now the temporary status window table is table;</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
@@ -1946,11 +1941,8 @@ there's no decision.</p>
 <span class="plain-syntax">To decide what unicode character is the next pressed key:</span>
 <span class="plain-syntax">    (- VM_KeyChar() -).</span>
 
-<span class="plain-syntax">To prompt the player to enter a line of text:</span>
-<span class="plain-syntax">    (- VM_ReadKeyboard(buffer2); -).</span>
-
-<span class="plain-syntax">To say the/-- player's text input:</span>
-<span class="plain-syntax">    (- VM_PrintBuffer(buffer2); -).</span>
+<span class="plain-syntax">To decide what text is the next typed line:</span>
+<span class="plain-syntax">    (- ReadKeyboardIntoText({-new:text}) -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP62" class="paragraph-anchor"></a><b>&#167;62. </b>  Function keys.
@@ -2021,7 +2013,10 @@ private use area codes.</p>
 <span class="plain-syntax">                break;</span>
 
 <span class="plain-syntax">To pause the game/story:</span>
-<span class="plain-syntax">    say "[paragraph break]Please press SPACE to continue.";</span>
+<span class="plain-syntax">    follow the standard pause the game rule;</span>
+
+<span class="plain-syntax">This is the standard pause the game rule:</span>
+<span class="plain-syntax">    say "[paragraph break]Please press SPACE to continue." (A);</span>
 <span class="plain-syntax">    wait for the space key;</span>
 <span class="plain-syntax">    clear the screen;</span>
 
@@ -2093,7 +2088,7 @@ simultaneously trying to access the same file.</p>
 <span class="plain-syntax">    (- USE_OPTION_VALUES--&gt;({U}) -).</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="msdf.html">&#10094;</a></li><li class="progresssection"><a href="prmbl.html">prmbl</a></li><li class="progresssection"><a href="msdf.html">msdf</a></li><li class="progresscurrent">phdf</li><li class="progresssection"><a href="gag.html">gag</a></li><li class="progresssection"><a href="addf.html">addf</a></li><li class="progressnext"><a href="gag.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Miscellaneous Definitions</span><a href="msdf.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Preamble</span><a href="prmbl.html">prmbl</a></li><li class="progresssection"><span class="fullname-popup">Miscellaneous Definitions</span><a href="msdf.html">msdf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Phrase Definitions</span>phdf</li><li class="progresssection"><span class="fullname-popup">Glulx and Glk</span><a href="gag.html">gag</a></li><li class="progresssection"><span class="fullname-popup">Adjectival Definitions</span><a href="addf.html">addf</a></li><li class="progressnext"><span class="nav-popup">Glulx and Glk</span><a href="gag.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

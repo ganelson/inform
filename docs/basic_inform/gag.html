@@ -255,7 +255,7 @@ require extensions.</p>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).</span>
 
 <span class="plain-syntax">Glk event handling rule for a screen resize event (this is the redraw the status line rule):</span>
-<span class="plain-syntax">    redraw the status window;</span>
+<span class="plain-syntax">    follow the draw the status window rule;</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.</p>
@@ -264,9 +264,6 @@ require extensions.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Hyperlinks</span>
-
-<span class="plain-syntax">A hyperlink tag is a kind of value.</span>
-<span class="plain-syntax">The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".</span>
 
 <span class="plain-syntax">To decide what hyperlink token is hyperlink token of (T - hyperlink tag) for/of/with (V - value of kind K):</span>
 <span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).</span>
@@ -280,7 +277,7 @@ require extensions.</p>
 <span class="plain-syntax">To decide what K is the value of (tag - hyperlink token) as a/an (name of kind of value K):</span>
 <span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_Value({tag}) -).</span>
 
-<span class="plain-syntax">To say link (T - hyperlink token):</span>
+<span class="plain-syntax">To say link to (T - hyperlink token):</span>
 <span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).</span>
 
 <span class="plain-syntax">To say end link:</span>
@@ -289,6 +286,8 @@ require extensions.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
 The hyperlink token will be automatically processed for the author.</p>
+<p>The hyperlink representation rules are for saying a hyperlink token (without
+actually generating a hyperlink).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">The hyperlink handling rules is a hyperlink tag based rulebook.</span>
@@ -305,6 +304,13 @@ The hyperlink token will be automatically processed for the author.</p>
 
 <span class="plain-syntax">The handle hyperlinks rule is listed in the glk event handling rules.</span>
 <span class="plain-syntax">The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".</span>
+
+<span class="plain-syntax">The hyperlink representation rules is a hyperlink tag based rulebook.</span>
+<span class="plain-syntax">The hyperlink representation rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".</span>
+<span class="plain-syntax">The hyperlink representation rules have default success.</span>
+
+<span class="plain-syntax">Last hyperlink representation rule for a hyperlink tag (called T) (this is the default hyperlink representation rule):</span>
+<span class="plain-syntax">    say "hyperlink token of [T]";</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And some built-in hyperlink tags:</p>
@@ -323,41 +329,65 @@ other code you like.</li>
 <span class="plain-syntax">Command replacement is a hyperlink tag.</span>
 <span class="plain-syntax">The command replacement value is accessible to Inter as "hyperlink_replace".</span>
 
-<span class="plain-syntax">To say link command/-- replacement of/-- (T - text):</span>
-<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is command replacement hyperlink token for (T - text):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY); -).</span>
+
+<span class="plain-syntax">To say link to command (T - text):</span>
+<span class="plain-syntax">    say link to command replacement hyperlink token for T;</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
 <span class="plain-syntax">    replace current event with a line event with (value of outcome as a text);</span>
 
+<span class="plain-syntax">Hyperlink representation rule for command replacement (this is the command replacement representation rule):</span>
+<span class="plain-syntax">    say "command replacement hyperlink token for '[value of current hyperlink token as a text]'";</span>
+
 <span class="plain-syntax">Command appendment is a hyperlink tag.</span>
 <span class="plain-syntax">The command appendment value is accessible to Inter as "hyperlink_append".</span>
 
-<span class="plain-syntax">To say link append (T - text):</span>
-<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is command appendment hyperlink token for (T - text):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY); -).</span>
+
+<span class="plain-syntax">To say link to type (T - text):</span>
+<span class="plain-syntax">    say link to command appendment hyperlink token for T;</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
 <span class="plain-syntax">    set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";</span>
 <span class="plain-syntax">    resume text input in the main window;</span>
 
+<span class="plain-syntax">Hyperlink representation rule for command appendment (this is the command appendment representation rule):</span>
+<span class="plain-syntax">    say "command appendment hyperlink token for '[value of current hyperlink token as a text]'";</span>
+
 <span class="plain-syntax">Keypress hyperlink is a hyperlink tag.</span>
 <span class="plain-syntax">The keypress hyperlink value is accessible to Inter as "hyperlink_keypress".</span>
 
-<span class="plain-syntax">To say link (C - unicode character):</span>
-<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is keypress hyperlink token for (C - unicode character):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY); -).</span>
+
+<span class="plain-syntax">To say link to press (C - unicode character):</span>
+<span class="plain-syntax">    say link to keypress hyperlink token for C;</span>
 
 <span class="plain-syntax">Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):</span>
 <span class="plain-syntax">    replace current event with a character event with (value of outcome as a unicode character);</span>
 
+<span class="plain-syntax">Hyperlink representation rule for keypress hyperlink (this is the keypress hyperlink representation rule):</span>
+<span class="plain-syntax">    say "keypress hyperlink token for [value of current hyperlink token as a unicode character]";</span>
+
 <span class="plain-syntax">Rule hyperlink is a hyperlink tag.</span>
 <span class="plain-syntax">The rule hyperlink value is accessible to Inter as "hyperlink_rule".</span>
 
-<span class="plain-syntax">To say link (R - rule):</span>
-<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).</span>
+<span class="plain-syntax">To decide what hyperlink token is rule hyperlink token for (R - rule):</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY); -).</span>
+
+<span class="plain-syntax">To say link to follow (R - rule):</span>
+<span class="plain-syntax">    say link to rule hyperlink token for R;</span>
 
 <span class="plain-syntax">Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):</span>
 <span class="plain-syntax">    follow value of outcome as a rule;</span>
+
+<span class="plain-syntax">Hyperlink representation rule for rule hyperlink (this is the rule hyperlink representation rule):</span>
+<span class="plain-syntax">    say "rule hyperlink token for [value of current hyperlink token as a rule]";</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
@@ -461,7 +491,7 @@ windows which should but currently do not.</p>
 <span class="plain-syntax">The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="phdf.html">&#10094;</a></li><li class="progresssection"><a href="prmbl.html">prmbl</a></li><li class="progresssection"><a href="msdf.html">msdf</a></li><li class="progresssection"><a href="phdf.html">phdf</a></li><li class="progresscurrent">gag</li><li class="progresssection"><a href="addf.html">addf</a></li><li class="progressnext"><a href="addf.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Phrase Definitions</span><a href="phdf.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Preamble</span><a href="prmbl.html">prmbl</a></li><li class="progresssection"><span class="fullname-popup">Miscellaneous Definitions</span><a href="msdf.html">msdf</a></li><li class="progresssection"><span class="fullname-popup">Phrase Definitions</span><a href="phdf.html">phdf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Glulx and Glk</span>gag</li><li class="progresssection"><span class="fullname-popup">Adjectival Definitions</span><a href="addf.html">addf</a></li><li class="progressnext"><span class="nav-popup">Adjectival Definitions</span><a href="addf.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>
