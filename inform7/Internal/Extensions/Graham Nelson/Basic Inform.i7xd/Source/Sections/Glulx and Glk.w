@@ -334,6 +334,9 @@ Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
 Hyperlink representation rule for rule hyperlink (this is the rule hyperlink representation rule):
 	say "rule hyperlink token for [value of current hyperlink token as a rule]";
 
+Hyperlink representation rule for null hyperlink (this is the null hyperlink representation rule):
+	say "null hyperlink token";
+
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
 

@@ -1892,20 +1892,17 @@ To move the status bar/line/window cursor to row (row - number) and/-- column/co
 To draw the status window with (table - a table-name):
 	(- DrawStatusWindowFromTable({table}); -).
 
-The temporary status window table is a table-name variable.
-
-To draw the status window with (table - a table-name) once only:
-	now the temporary status window table is table;
-
 @ Keyboard input phrases.
 
 =
 Section 3 - Keyboard Input
 
-To decide what unicode character is the next pressed key:
+To decide what unicode character is the next pressed key
+	(documented at phnextpressedkey):
 	(- VM_KeyChar() -).
 
-To decide what text is the next typed line:
+To decide what text is the next typed line
+	(documented at phnexttypedline):
 	(- ReadKeyboardIntoText({-new:text}) -).
 
 @ Function keys.

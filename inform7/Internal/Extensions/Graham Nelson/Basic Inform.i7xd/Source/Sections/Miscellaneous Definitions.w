@@ -192,14 +192,6 @@ The draw the status window rule is defined by Inter as "DRAW_STATUS_WINDOW_R".
 Constructing the status line (documented at act_csl) is an activity.
 The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
 
-First for constructing the status line rule (this is the draw the status window with the temporary table rule):
-	let the default table be the default value of a table-name;
-	if the temporary status window table is not the default table:
-		draw the status window with the temporary status window table;
-		now the temporary status window table is the default table;
-		rule succeeds;
-	continue the activity;
-
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 

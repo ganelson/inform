@@ -1926,11 +1926,6 @@ there's no decision.</p>
 
 <span class="plain-syntax">To draw the status window with (table - a table-name):</span>
 <span class="plain-syntax">    (- DrawStatusWindowFromTable({table}); -).</span>
-
-<span class="plain-syntax">The temporary status window table is a table-name variable.</span>
-
-<span class="plain-syntax">To draw the status window with (table - a table-name) once only:</span>
-<span class="plain-syntax">    now the temporary status window table is table;</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
@@ -1938,10 +1933,12 @@ there's no decision.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 3 - Keyboard Input</span>
 
-<span class="plain-syntax">To decide what unicode character is the next pressed key:</span>
+<span class="plain-syntax">To decide what unicode character is the next pressed key</span>
+<span class="plain-syntax">    (documented at phnextpressedkey):</span>
 <span class="plain-syntax">    (- VM_KeyChar() -).</span>
 
-<span class="plain-syntax">To decide what text is the next typed line:</span>
+<span class="plain-syntax">To decide what text is the next typed line</span>
+<span class="plain-syntax">    (documented at phnexttypedline):</span>
 <span class="plain-syntax">    (- ReadKeyboardIntoText({-new:text}) -).</span>
 </pre>
 <div class="lsmarkdown">

@@ -4131,6 +4131,8 @@ The text in the right hand status line should be kept no more than 14 letters lo
 
 - [Awarding points] for scoring.
 
+- [Constructing the status line] for an activity which allows much greater flexibility, and can make a status window larger than a single line.
+
 ## Change of either/or properties
 
 ^^{+to+now (a condition): changing either/or properties} ^^{properties: either/or properties: changing} ^^{either/or properties: changing} ^^{type-checking}
@@ -14333,21 +14335,55 @@ which produces, for instance,
 
 (Note that this activity does not come in different forms for different dark rooms: the wording is fixed at `printing the description of a dark room`, and we are not allowed to substitute particular dark rooms or assign a `(called ...)` onto the mention of the dark room.)
 
-## Drawing the status window {act_csl}
+## Constructing the status line {act_csl}
 
 ^^{status line} ^^{screen top} ^^{left hand status line (- text)+glob+} ^^{right hand status line (- text)+glob+}
 
-**1. When it happens.** Just before input is accepted from the keyboard, Inform constructs a "status window" at the top of the window which is normally displayed in reverse colours (white on black instead of black on white, say).
+**1. When it happens.** Just before input is accepted from the keyboard, Inform constructs a "status window" at the top of the window which is normally displayed in reverse colours (white on black instead of black on white, say). This was once just a single line, and the name of this activity is a reminder of those simpler times.
 
-**2. The default behaviour.** Makes the status window up out of two pieces, the `left hand status line` and the `right hand status line`. Since these can freely be changed, note that the status window is already very customisable without using rules applied to this activity.
+**2. The default behaviour.** Makes the status window up as a single line with two pieces, printed from the text variables `left hand status line` and the `right hand status line`. Since these can freely be changed, note that the status window is already very customisable without using rules applied to this activity. (See [Changing the status line].)
 
-**3. Examples.** (a) The most useful thing about this activity is that it allows us to vary descriptions in the status window. This is especially helpful to abbreviate unduly long room names, which might not otherwise fit:
+**3. Examples.** (a) One use for this activity is to vary location names in the status window. This is especially helpful to abbreviate unduly long names, which might not otherwise fit:
 
-	The Temple Of A Thousand Mightily Peeved Deities is a room. Rule for printing the name of the Temple while drawing the status window: say "Temple".
+	The Temple Of A Thousand Mightily Peeved Deities is a room. Rule for printing the name of the Temple while constructing the status line: say "Temple".
+
+Note that this works not by adding a rule to the activity, but by detecting whether or not it is currently running.
 
 (b) Again, it's usually not necessary to apply activity rules to this, but occasionally amusing effects are possible if we do:
 
-	{*}The blindfold is wearable and carried. Rule for drawing the status window while the blindfold is worn: do nothing.
+	{*}The blindfold is wearable and carried. Rule for constructing the status line while the blindfold is worn: do nothing.
+
+(c) More dramatically:
+
+	A room can be underwater or dry land. 
+	
+	The Beach is a room. South of the Beach is the Continental Shelf.
+	The Shelf is underwater.
+	
+	Oxygen remaining is a number that varies.
+	
+	Every turn while the player is in an underwater room:
+		decrement the oxygen remaining;
+		if the oxygen remaining is less than 0:
+			end the story saying "You have drowned".
+	
+	After going from a dry land room to an underwater room:
+		now the oxygen remaining is 5;
+		say "You hold your breath."
+	
+	After going from an underwater room to a dry land room:
+		now the oxygen remaining is 0;
+		say "You take a breath with great relief."
+	
+	Table of undersea status details
+	left column	middle column	right column
+	"[the player's surroundings]"	--	"[score]/[turn count]"
+	"[bold type]Submerged[roman type]"	"Oxygen: [oxygen remaining]"	"DANGER"
+	
+	Rule for constructing the status line while the player is in an underwater room:
+		draw the status window with the table of undersea status details.
+
+For further effects, see [The main screen and the status window].
 
 ## Writing a paragraph about {act_wpa}
 
@@ -18172,9 +18208,9 @@ The default Inform usage for the status window is to have just a status line, th
 
 But more elaborate arrangements are possible. The window can have additional rows, and/or can accommodate a third, centred, column, using the following:
 
-> phrase: fill the status window with (table name)
+> phrase: redraw the status window with (table name)
 >
-> This phrase redraws the status window using the contents of a table, and sets things so that whenever the status window is subsequently redrawn, the same table will be used. The table can have any number of rows, and the status window will adjust its height accordingly — though of course players on smaller devices may not be pleased by a huge status window consuming their limited screen space. The table should have one to three columns:
+> This phrase is intended for use within a rule for the `constructing the status line` activity, and redraws the status window using the contents of a table. The table can have any number of rows, and the status window will adjust its height accordingly — though of course players on smaller devices may not be pleased by a huge status window consuming their limited screen space. The table should have one to three columns:
 >
 > - If the table has 1 column, material in it is centred.
 > - If the table has 2 columns, column 1 is left-aligned and column 2 is right-aligned.
@@ -18185,17 +18221,7 @@ But more elaborate arrangements are possible. The window can have additional row
 > > [!WARNING]
 > > On a narrow screen, it's possible for these columns to overlap each other, especially if all three columns are used.
 
-> phrase: fill the status window with (table name), once only
->
-> This phrase redraws the status window using the contents of a table, but just once.
-
-The status window will usually be refreshed right at the end of the turn sequence before the player is asked to respond. But occasionally you may want to manually redraw it, particularly if you start using custom Glk event handler rules.
-
-> phrase: redraw the status window
->
-> Redraw the status window immediately.
-
-Still more variety is possible by writing hand-made rules for the `constructing the status line` activity (see [Constructing the status line]). In such rules, these low-level phrases may be useful:
+The table-based phrase above is convenient, but not compulsory, and the following low-level phrases may be useful in rules for the `constructing the status line` activity (see [Constructing the status line]) which go their own way:
 
 > phrase: set the status window to (number) row/rows
 >
@@ -18309,21 +18335,16 @@ IO windows have two `number` properties, `rock number` and `glk window handle`: 
 
 Inform stories ordinarily pause at the same point in each turn to wait for the player to type something which will be parsed as a command and turned into actions. But it's possible to pause at other times, or to get typed input for other reasons. The following phrases work on both Glulx and the Z-machine.
 
-> phrase: next pressed key ... unicode character
+> phrase: {phnextpressedkey} next pressed key ... unicode character
 >
 > This phrase pauses and waits for the player to press a single key.
 
 For more on the `unicode character` kind, see [Unicode characters]. In particular, see the list there of named values for keys which do not correspond to symbols as such: navigation keys like `page up key`, or function keys like `f5 key`.
 
-> phrase: prompt the player to enter a line of text
+> phrase: {phnexttypedline} next typed line ... text
 >
-> This phrase pauses and waits for the player to enter a whole line of text followed by the enter key. It does not parse the player's response or do anything with it.
-
-> phrase: say "[player's text input]"
->
-> This phrase will say the player's previously entered line of text. You can also use this to put it in a text variable:
->
->     let response be "[the player's text input]";
+> This phrase pauses and waits for the player to enter a whole line of text followed by the enter key. It does not parse the player's response, and simply
+returns what was typed in (without a final newline character).
 
 Inform includes a few utility phrases to handle pausing the game and waiting for the player to respond.
 
@@ -18337,7 +18358,9 @@ Inform includes a few utility phrases to handle pausing the game and waiting for
 
 > phrase: pause the game/story
 >
-> The previous two phrases do not print anything out. This phrase will say "Please press SPACE to continue." and then wait until the player presses the space key (or enter/return).
+> This phrase will say "Please press SPACE to continue." and then wait until the player presses the space key (or enter/return); after which, the screen is cleared, and then play resumes.
+>
+> Note that this is done by following the `standard pause the game rule`, and that the text "Please press SPACE to continue." is response (A) of that rule, and can therefore be changed as desired.
 
 > phrase: stop the game/story abruptly
 >
@@ -18522,20 +18545,20 @@ This is the story of a typical hyperlink, which we can tell at three levels.
 
 **A top level explanation**. This is how things look to the author of an Inform story:
 
-	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link splash rule]big red button[end link]."
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link to follow splash rule]big red button[end link]."
 
 	This is the splash rule:
 		say "The world goes red, or anyway the part of the world nearest the paint-throwing machine."
 
 The idea here is that the player sees that the words "big red button" are highlighted in some way, and may want to click on them. If so, the `splash rule` will run.
 
-**A mid-level explanation**. Under the hood, this is how that same hyperlink looks inside Inform's run-time facilities. When Inform says `"[link splash rule]big red button[end link]"`, it generates a value of a kind called `hyperlink token` to represent the "destination" of the link: that is, to represent what should happen if the link is clicked on. This is called a token it represents a value which is used when creating the actual hyperlink and which is returned when tthe player clicks on it. A hyperlink token consists of both a "tag", meaning what to do, and a "value", meaning what to do it with. In this case, the hyperlink token is a combination of:
+**A mid-level explanation**. Under the hood, this is how that same hyperlink looks inside Inform's run-time facilities. When Inform says `"[link to follow splash rule]big red button[end link]"`, it generates a value of a kind called `hyperlink token` to represent the "destination" of the link: that is, to represent what should happen if the link is clicked on. This is called a token it represents a value which is used when creating the actual hyperlink and which is returned when the player clicks on it. A hyperlink token consists of both a "tag", meaning what to do, and a "value", meaning what to do it with. In this case, the hyperlink token is a combination of:
 
 - the tag `rule hyperlink`, which is an instance of the kind `hyperlink tag`, with
 
 - the value `splash rule`, which is an instance of the kind `rule`.
 
-Inform provides four different `hyperlink tag` possibilities, of which `rule hyperlink` is only one. The others correspond to different ways that links can cause effects, and will come up later. Because Inform authors and extension writers can create new `hyperlink tag` values, this system is flexible enough to be built on in new ways.
+Inform provides four built-in `hyperlink tag` possibilities, of which `rule hyperlink` is only one. The others correspond to different ways that links can cause effects, and will come up later. Because Inform authors and extension writers can create new `hyperlink tag` values, this system is flexible enough to be built on in new ways.
 
 If the tag is clicked on, Inform receives a `hyperlink event` from Glk and handles it. What it does is to retrieve the hyperlink token and take the necessary action — in this case, to run the rule.
 
@@ -18545,57 +18568,55 @@ If the tag is clicked on, Inform receives a `hyperlink event` from Glk and handl
 
 So, then, whereas Inform authors need to write handling rules to take care of other types of Glk event, there is no need to think about a `hyperlink event` because Inform takes care of it automatically.
 
-To create a link, all that is necessary is to use the `[link]` and `[end link]` text substitutions:
+To create a link, all that is necessary is to use `[link to ...]` and `[end link]` text substitutions:
 
-> phrase: say "[link (hyperlink token)]"
+> phrase: say "[link to (hyperlink token)]"
 >
-> Starts a hyperlink with the given "destination", that is, with the given instruction on what to do if the link is clicked or tapped. No text will be printed yet, but anything said after this substitution will be part of the hyperlink. The link will continue until the next `[link ...]` or `[end link]`, either of which will end it. So it is impossible for one piece of hyperlinked text to contain another.
+> Starts a hyperlink with the given "destination", that is, with the given instruction on what to do if the link is clicked or tapped. No text will be printed yet, but anything said after this substitution will be part of the hyperlink. The link will continue until the next `[link to ...]` or `[end link]`, either of which will end it. So it is impossible for one piece of hyperlinked text to contain another.
 
 > phrase: say "[end link]"
 >
 > Ends the current hyperlink. Any subsequent printed text will just be regular text.
 
-The `[link ...]` substitution looks as if it comes in many variant versions, but in fact it doesn't: the variety in possible outcomes is because there are many ways to create the `hyperlink token` value which occupies the `...` part of `[link ...]`. In particular, Inform provides four out-of-the-box ways to create them:
+The four forms of link built in to Inform are:
 
 -	**Command replacement**. For example,
 	
-		let command be "PRESS BUTTON";
-		say "Your eyes stray to the [link command replacement of command]pretty red button[end link].";
+		say "Your eyes stray to the [link to command `PRESS BUTTON`]pretty red button[end link].";
 
-	> phrase: command replacement of (text) ... hyperlink token
+	> phrase: say "[link to command (text)]"
 	>
 	> A link given this outcome replaces an entire pending line input with the specified text and then submits it, as if the player had typed it themselves and then pressed enter. The text must not contain a line break: if it does, a run-time problem will be issued.
 
 -	**Command appendment**. For example,
 	
-		let extra text be " BUTTON";
-		say "Your eyes stray to the [link append extra text]pretty red button[end link].";
+		say "Your eyes stray to the [link to type `BUTTON`]pretty red button[end link].";
 
-	> phrase: append (text) ... hyperlink token
+	> phrase: say "[link to type (text)]"
 	>
 	> A link given this outcome suspends line input, adds its text to the current line input, and then resumes line input. It's as if the player had typed the text in question. The text must not contain a line break: if it does, a run-time problem will be issued.
 
 -	**Keypress**. For example,
 	
-		say "[link unicode space]Press SPACE to begin.[end link]";
+		say "[link to press space]Press SPACE to begin.[end link]";
 		wait for the space key;
 	
 	makes clicking on the text "Press SPACE to begin" as good as pressing SPACE.
 
-	> phrase: say "[link (unicode character)]"
+	> phrase: say "[link to press (unicode character)]"
 	>
 	> A link given this outcome issues a `character event` with the specified unicode character.
 
 -	**Rule or rulebook**. An example with a rule was given earlier. The same mechanism can just as easily link to a whole rulebook:
 
 		When play begins:
-			say "Wow! Just look at the [link sky rules]clear blue sky[end link].";
+			say "Wow! Just look at the [link to follow sky rules]clear blue sky[end link].";
 
 		The sky rules are a rulebook.
 
 		Sky rule: say "So blue!".
 
-	> phrase: say "[link (rule)]"
+	> phrase: say "[link to follow (rule)]"
 	>
 	> A link given this outcome follows the specified rule or rulebook. Any result of the rule (success or failure) is ignored.
 
@@ -18605,7 +18626,7 @@ Inform's system of hyperlinks is designed to be _incomplete_. The forms of link 
 
 As a first example, this section will create a sort of examine-this hyperlink: one where clicking on the link causes something in the room to be examined. Of course, the built-in system can already imitate this, more or less:
 
-	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link examine-me rule]big red button[end link]."
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link to follow examine-me rule]big red button[end link]."
 	
 	The big red button is part of the Paint Machine. "So shiny!";
 
@@ -18614,7 +18635,7 @@ As a first example, this section will create a sort of examine-this hyperlink: o
 
 But this is clumsy. What we want is this:
 
-	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link examine button]big red button[end link]."
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link to examine button]big red button[end link]."
 	
 	The big red button is part of the Paint Machine. "So shiny!";
 
@@ -18624,8 +18645,8 @@ Firstly, since this will mean a new type of hyperlink, we will have to assign a 
 
 Now we need a way to create hyperlinks of this type:
 
-	To decide what hyperlink token is examine (X - thing):
-		decide on hyperlink token of examination hyperlink with X.
+	To say link to examine (X - thing):
+		say link to hyperlink token of examination hyperlink with X.
 
 Internally, a hyperlink token consists of a _tag_ plus (usually) a _value_. Here, the tag was `examination hyperlink` and the value was `X`, except that of course in the case of the Paint Machine, that will end up being the object `big red button`. We've used one of these creation phrases:
 
@@ -18639,6 +18660,11 @@ Internally, a hyperlink token consists of a _tag_ plus (usually) a _value_. Here
 > phrase: hyperlink token of (hyperlink tag)
 >
 > Creates a new hyperlink token which has a tag, but no value.
+
+We want to give Inform the ability to say tokens like this, even though this is likely only to be seen in debugging the handling rule (on which, see below):
+
+	Hyperlink representation rule for examination hyperlink:
+		say "examination hyperlink token for [value of current hyperlink token as a thing]".
 
 Lastly, Inform needs to know what to do when a link of this type is clicked. In general, when any link is clicked, Glk sends a `hyperlink event`, but Inform handles this by then following the `hyperlink handling rules`. The basis of this rule book is the hyperlink tag of the event.
 

@@ -409,6 +409,8 @@ USAGE: ph_glkwindowwidth 0 0 0
 USAGE: ph_glkwindowclear 0 0 0
 USAGE: ph_glkwindowfocus 0 0 0
 USAGE: ph_glksetcursor 0 0 0
+USAGE: phnextpressedkey 0 0 0
+USAGE: phnexttypedline 0 0 0
 USAGE: ph_glkeventtype 0 0 0
 USAGE: ph_glkeventwindow 0 0 0
 USAGE: ph_glkeventcharactervalue 0 0 0
