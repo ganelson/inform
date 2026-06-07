@@ -1883,24 +1883,19 @@ To decide what number is the width of (win - IO window):
 =
 Section 2 - The Status Window
 
-The status window table is a table-name that varies.
-The status window table variable translates into Inter as "status_window_table".
-
-To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
-	let old status window table be the status window table;
-	now the status window table is new status table;
-	redraw the status window;
-	if once only:
-		now the status window table is the old status window table;
-
 To set the status bar/line/window to (rows - number) row/rows:
 	(- VM_StatusLineHeight({rows}); -).
 
 To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
-To redraw the/-- status bar/line/window:
-	(- DrawStatusLine(); -).
+To draw the status window with (table - a table-name):
+	(- DrawStatusWindowFromTable({table}); -).
+
+The temporary status window table is a table-name variable.
+
+To draw the status window with (table - a table-name) once only:
+	now the temporary status window table is table;
 
 @ Keyboard input phrases.
 
@@ -1910,11 +1905,8 @@ Section 3 - Keyboard Input
 To decide what unicode character is the next pressed key:
 	(- VM_KeyChar() -).
 
-To prompt the player to enter a line of text:
-	(- VM_ReadKeyboard(buffer2); -).
-
-To say the/-- player's text input:
-	(- VM_PrintBuffer(buffer2); -).
+To decide what text is the next typed line:
+	(- ReadKeyboardIntoText({-new:text}) -).
 
 @ Function keys.
 Keyboard function keys are defined as unicode character constants. A mix of
@@ -1983,7 +1975,10 @@ To wait for the/-- SPACE key/bar:
 				break;
 
 To pause the game/story:
-	say "[paragraph break]Please press SPACE to continue.";
+	follow the standard pause the game rule;
+
+This is the standard pause the game rule:
+	say "[paragraph break]Please press SPACE to continue." (A);
 	wait for the space key;
 	clear the screen;
 

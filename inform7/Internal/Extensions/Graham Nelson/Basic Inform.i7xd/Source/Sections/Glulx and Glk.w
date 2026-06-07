@@ -200,7 +200,7 @@ To replace current event with (ev - glk event):
 	(- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
-	redraw the status window;
+	follow the draw the status window rule;
 
 @h Hyperlinks.
 A simple framework for handling hyperlinks in an interoperable manner.
@@ -211,9 +211,6 @@ Hyperlink tokens then combine a hyperlink tag with a value.
 
 =
 Chapter - Hyperlinks
-
-A hyperlink tag is a kind of value.
-The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".
 
 To decide what hyperlink token is hyperlink token of (T - hyperlink tag) for/of/with (V - value of kind K):
 	(- HYPERLINK_TOKEN_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).
@@ -227,7 +224,7 @@ To decide what hyperlink tag is the tag of (tag - hyperlink token):
 To decide what K is the value of (tag - hyperlink token) as a/an (name of kind of value K):
 	(- HYPERLINK_TOKEN_TY_Value({tag}) -).
 
-To say link (T - hyperlink token):
+To say link to (T - hyperlink token):
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
 
 To say end link:
@@ -235,6 +232,9 @@ To say end link:
 
 @ The hyperlink handling rules are how hyperlinks will generally be handled.
 The hyperlink token will be automatically processed for the author.
+
+The hyperlink representation rules are for saying a hyperlink token (without
+actually generating a hyperlink).
 
 =
 The hyperlink handling rules is a hyperlink tag based rulebook.
@@ -252,6 +252,13 @@ Very first hyperlink handling rule for a hyperlink tag
 The handle hyperlinks rule is listed in the glk event handling rules.
 The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
 
+The hyperlink representation rules is a hyperlink tag based rulebook.
+The hyperlink representation rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".
+The hyperlink representation rules have default success.
+
+Last hyperlink representation rule for a hyperlink tag (called T) (this is the default hyperlink representation rule):
+	say "hyperlink token of [T]";
+
 @ And some built-in hyperlink tags:
 
 - A command replacement hyperlink replaces the entire pending line input with
@@ -267,41 +274,65 @@ The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
 Command replacement is a hyperlink tag.
 The command replacement value is accessible to Inter as "hyperlink_replace".
 
-To say link command/-- replacement of/-- (T - text):
-	(- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).
+To decide what hyperlink token is command replacement hyperlink token for (T - text):
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY); -).
+
+To say link to command (T - text):
+	say link to command replacement hyperlink token for T;
 
 Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):
 	suspend text input in the main window, without input echoing;
 	replace current event with a line event with (value of outcome as a text);
 
+Hyperlink representation rule for command replacement (this is the command replacement representation rule):
+	say "command replacement hyperlink token for '[value of current hyperlink token as a text]'";
+
 Command appendment is a hyperlink tag.
 The command appendment value is accessible to Inter as "hyperlink_append".
 
-To say link append (T - text):
-	(- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).
+To decide what hyperlink token is command appendment hyperlink token for (T - text):
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY); -).
+
+To say link to type (T - text):
+	say link to command appendment hyperlink token for T;
 
 Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):
 	suspend text input in the main window, without input echoing;
 	set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";
 	resume text input in the main window;
 
+Hyperlink representation rule for command appendment (this is the command appendment representation rule):
+	say "command appendment hyperlink token for '[value of current hyperlink token as a text]'";
+
 Keypress hyperlink is a hyperlink tag.
 The keypress hyperlink value is accessible to Inter as "hyperlink_keypress".
 
-To say link (C - unicode character):
-	(- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
+To decide what hyperlink token is keypress hyperlink token for (C - unicode character):
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY); -).
+
+To say link to press (C - unicode character):
+	say link to keypress hyperlink token for C;
 
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
 	replace current event with a character event with (value of outcome as a unicode character);
 
+Hyperlink representation rule for keypress hyperlink (this is the keypress hyperlink representation rule):
+	say "keypress hyperlink token for [value of current hyperlink token as a unicode character]";
+
 Rule hyperlink is a hyperlink tag.
 The rule hyperlink value is accessible to Inter as "hyperlink_rule".
 
-To say link (R - rule):
-	(- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).
+To decide what hyperlink token is rule hyperlink token for (R - rule):
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY); -).
+
+To say link to follow (R - rule):
+	say link to rule hyperlink token for R;
 
 Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
 	follow value of outcome as a rule;
+
+Hyperlink representation rule for rule hyperlink (this is the rule hyperlink representation rule):
+	say "rule hyperlink token for [value of current hyperlink token as a rule]";
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.

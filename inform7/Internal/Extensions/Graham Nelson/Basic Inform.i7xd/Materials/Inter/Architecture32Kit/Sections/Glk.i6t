@@ -542,20 +542,26 @@ events early and consistently.
 
 =
 [ glk_select event_struct;
+	! Disable rules debugging because it crashes if keyboard input events are pending
+	@push debug_rules; @push say__p; @push say__pc;
+	debug_rules = false; ClearParagraphing(1);
+
+	! Run the before waiting for the player's input rules
+	FollowRulebook(BEFORE_INPUT_RB, 0, true);
+
 	! Call the real glk_select
 	@push event_struct;
 	@glk 192 1 0;
 
 	GLK_EVENT_TY_From_Struct(current_glk_event, event_struct);
 
-	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
-	@push debug_rules; @push say__p; @push say__pc;
-	debug_rules = false; ClearParagraphing(1);
+	! Run the glk event handling rules, and rerun them if the event was replaced
 	do {
 		glk_event_handling_status = GLK_EVENT_HANDLING_ACTIVE;
 		FollowRulebook(GLK_EVENT_HANDLING_RB, current_glk_event-->GLK_EVENT_TYPE_SF, true);
 	} until (glk_event_handling_status == GLK_EVENT_HANDLING_ACTIVE);
 	glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
+
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
 	GLK_EVENT_TY_To_Struct(current_glk_event, event_struct);
@@ -720,11 +726,11 @@ Global hyperlink_tag_width;
 Global current_hyperlink_token;
 
 [ CALCULATE_HYPERLINK_TAG_WIDTH_R;
-	if (ICOUNT_HYPERLINK_TAG < 8) {
+	if (ICOUNT_HYPERLINK_TAG <= 8) {
 		hyperlink_tag_mask = $07;
 		hyperlink_tag_width = 3;
 	}
-	else if (ICOUNT_HYPERLINK_TAG < 16) {
+	else if (ICOUNT_HYPERLINK_TAG <= 16) {
 		hyperlink_tag_mask = $0F;
 		hyperlink_tag_width = 4;
 	}
@@ -776,33 +782,20 @@ up into its parts again.
 	return val;
 ];
 
-[ HYPERLINK_TOKEN_TY_Say val tag;
-	print "hyperlink token (";
-	tag = val & hyperlink_tag_mask;
-	if (tag == 0) {
-		print "invalid";
-	}
-	else {
-		SayKindValuePair(HYPERLINK_TAG_TY, tag);
-	}
-	print ")";
+[ HYPERLINK_TOKEN_TY_Say val old_token;
+	old_token = current_hyperlink_token;
+	current_hyperlink_token = val;
+	FollowRulebook(HYPERLINK_REPRESENTATION_RB, current_hyperlink_token & hyperlink_tag_mask, true);
+	current_hyperlink_token = old_token;
 ];
 
 [ HYPERLINK_TOKEN_TY_Tag val;
 	val = val & hyperlink_tag_mask;
-	if (val == 0 || val > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Tag: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
-		return 0;
-	}
 	return val;
 ];
 
 [ HYPERLINK_TOKEN_TY_Value val tag;
 	tag = val & hyperlink_tag_mask;
-	if (tag == 0 || tag > ICOUNT_HYPERLINK_TAG) {
-		IssueRTP("HyperlinkInvalid", "HYPERLINK_TOKEN_TY_Value: Cannot process an invalid hyperlink token.", Architecture32KitRTPs);
-		return 0;
-	}
 	@sshiftr val hyperlink_tag_width val;
 	return val;
 ];

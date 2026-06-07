@@ -128,6 +128,8 @@ to document all of that.
 
 =
 [ VM_KeyChar win  key;
+	! Run the before waiting for the player's input rules
+	FollowRulebook(BEFORE_INPUT_RB, 0, true);
 	if (win) @set_window win;
 	@read_char 1 -> key;
 	switch (key) {
@@ -159,12 +161,16 @@ to document all of that.
 ];
 
 [ VM_KeyDelay tenths  key;
+	! Run the before waiting for the player's input rules
+	FollowRulebook(BEFORE_INPUT_RB, 0, true);
     @read_char 1 tenths VM_KeyDelay_Interrupt -> key;
     return key;
 ];
 [ VM_KeyDelay_Interrupt; rtrue; ];
 
 [ VM_ReadKeyboard a_buffer a_table ix;
+	! Run the before waiting for the player's input rules
+	FollowRulebook(BEFORE_INPUT_RB, 0, true);
 	read a_buffer a_table;
 	for ( ix = 2 : ix <= (a_buffer->1) + 1 : ix++ )
 		if (((a_buffer->ix) < 32) || ((a_buffer->ix) == 160)) a_buffer->ix = 32;
@@ -327,7 +333,7 @@ specified window.
 ];
 
 [ VM_WindowHeight win;
-	if (win == ZMACHINE_WINDOW_MAIN) {
+	if (win == Main_Window) {
 		return (HDR_SCREENHLINES->0) - statuswin_cursize;
 	}
 	else {

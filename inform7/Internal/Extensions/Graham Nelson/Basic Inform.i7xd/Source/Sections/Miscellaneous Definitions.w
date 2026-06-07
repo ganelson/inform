@@ -176,14 +176,29 @@ The display captured startup text rule translates into Inter as "END_CAPTURE_STA
 However, there are a small number of printing related activities which are also
 functional in Basic Inform.
 
+The "before waiting for the player's input" can be used to do tasks right
+before the interpreter hands control over to the player for their response.
+For example, this is where Inform redraws the status window.
+
 =
 Chapter - Printing activities
 
-Constructing the status line (documented at act_csl) is an activity.
-The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
+The before waiting for the player's input rules are a rulebook.
+The before waiting for the player's input rulebook is accessible to Inter as "BEFORE_INPUT_RB".
 
-The standard redraw the status window from a table rule is listed in the for constructing the status line rules.
-The standard redraw the status window from a table rule is defined by Inter as "REDRAW_STATUS_WINDOW_R".
+The draw the status window rule is listed in the before waiting for the player's input rules.
+The draw the status window rule is defined by Inter as "DRAW_STATUS_WINDOW_R".
+
+Drawing the status window (documented at act_csl) is an activity.
+The drawing the status window activity is accessible to Inter as "DRAWING_STATUS_WINDOW_ACT".
+
+First for drawing the status window rule (this is the draw the status window with the temporary table rule):
+	let the default table be the default value of a table-name;
+	if the temporary status window table is not the default table:
+		draw the status window with the temporary status window table;
+		now the temporary status window table is the default table;
+		rule succeeds;
+	continue the activity;
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
