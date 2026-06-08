@@ -286,7 +286,7 @@ require extensions.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
 The hyperlink token will be automatically processed for the author.</p>
-<p>The hyperlink representation rules are for saying a hyperlink token (without
+<p>The hyperlink printing rules are for saying a hyperlink token (without
 actually generating a hyperlink).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -305,11 +305,11 @@ actually generating a hyperlink).</p>
 <span class="plain-syntax">The handle hyperlinks rule is listed in the glk event handling rules.</span>
 <span class="plain-syntax">The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".</span>
 
-<span class="plain-syntax">The hyperlink representation rules is a hyperlink tag based rulebook.</span>
-<span class="plain-syntax">The hyperlink representation rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".</span>
-<span class="plain-syntax">The hyperlink representation rules have default success.</span>
+<span class="plain-syntax">The hyperlink printing rules is a hyperlink tag based rulebook.</span>
+<span class="plain-syntax">The hyperlink printing rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".</span>
+<span class="plain-syntax">The hyperlink printing rules have default success.</span>
 
-<span class="plain-syntax">Last hyperlink representation rule for a hyperlink tag (called T) (this is the default hyperlink representation rule):</span>
+<span class="plain-syntax">Last hyperlink printing rule for a hyperlink tag (called T) (this is the default hyperlink printing rule):</span>
 <span class="plain-syntax">    say "hyperlink token of [T]";</span>
 </pre>
 <div class="lsmarkdown">
@@ -339,7 +339,7 @@ other code you like.</li>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
 <span class="plain-syntax">    replace current event with a line event with (value of outcome as a text);</span>
 
-<span class="plain-syntax">Hyperlink representation rule for command replacement (this is the command replacement representation rule):</span>
+<span class="plain-syntax">Hyperlink printing rule for command replacement (this is the command replacement representation rule):</span>
 <span class="plain-syntax">    say "command replacement hyperlink token for '[value of current hyperlink token as a text]'";</span>
 
 <span class="plain-syntax">Command appendment is a hyperlink tag.</span>
@@ -356,7 +356,7 @@ other code you like.</li>
 <span class="plain-syntax">    set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";</span>
 <span class="plain-syntax">    resume text input in the main window;</span>
 
-<span class="plain-syntax">Hyperlink representation rule for command appendment (this is the command appendment representation rule):</span>
+<span class="plain-syntax">Hyperlink printing rule for command appendment (this is the command appendment representation rule):</span>
 <span class="plain-syntax">    say "command appendment hyperlink token for '[value of current hyperlink token as a text]'";</span>
 
 <span class="plain-syntax">Keypress hyperlink is a hyperlink tag.</span>
@@ -371,7 +371,7 @@ other code you like.</li>
 <span class="plain-syntax">Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):</span>
 <span class="plain-syntax">    replace current event with a character event with (value of outcome as a unicode character);</span>
 
-<span class="plain-syntax">Hyperlink representation rule for keypress hyperlink (this is the keypress hyperlink representation rule):</span>
+<span class="plain-syntax">Hyperlink printing rule for keypress hyperlink (this is the keypress hyperlink printing rule):</span>
 <span class="plain-syntax">    say "keypress hyperlink token for [value of current hyperlink token as a unicode character]";</span>
 
 <span class="plain-syntax">Rule hyperlink is a hyperlink tag.</span>
@@ -386,10 +386,10 @@ other code you like.</li>
 <span class="plain-syntax">Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):</span>
 <span class="plain-syntax">    follow value of outcome as a rule;</span>
 
-<span class="plain-syntax">Hyperlink representation rule for rule hyperlink (this is the rule hyperlink representation rule):</span>
+<span class="plain-syntax">Hyperlink printing rule for rule hyperlink (this is the rule hyperlink printing rule):</span>
 <span class="plain-syntax">    say "rule hyperlink token for [value of current hyperlink token as a rule]";</span>
 
-<span class="plain-syntax">Hyperlink representation rule for null hyperlink (this is the null hyperlink representation rule):</span>
+<span class="plain-syntax">Hyperlink printing rule for null hyperlink (this is the null hyperlink printing rule):</span>
 <span class="plain-syntax">    say "null hyperlink token";</span>
 </pre>
 <div class="lsmarkdown">

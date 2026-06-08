@@ -1975,7 +1975,7 @@ To pause the game/story:
 	follow the standard pause the game rule;
 
 This is the standard pause the game rule:
-	say "[paragraph break]Please press SPACE to continue." (A);
+	say "[conditional paragraph break]Please press SPACE to continue." (A);
 	wait for the space key;
 	clear the screen;
 

@@ -3,7 +3,7 @@
   
   Space Patrol #57 - 1953-10-31 - Stranded on Jupiter!
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Red Spot
   You are in the middle of a vast red oval plain. Overhead, the thick Jovian clouds swirl menacingly, and a fine acrid dust falls instead of rain.
@@ -34,6 +34,5 @@
   
   
                                                                                                  *** We'll be back in just a moment! ***
-  
   Please press SPACE to continue.
 ) 

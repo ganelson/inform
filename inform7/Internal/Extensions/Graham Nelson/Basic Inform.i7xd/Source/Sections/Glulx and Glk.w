@@ -233,7 +233,7 @@ To say end link:
 @ The hyperlink handling rules are how hyperlinks will generally be handled.
 The hyperlink token will be automatically processed for the author.
 
-The hyperlink representation rules are for saying a hyperlink token (without
+The hyperlink printing rules are for saying a hyperlink token (without
 actually generating a hyperlink).
 
 =
@@ -252,11 +252,11 @@ Very first hyperlink handling rule for a hyperlink tag
 The handle hyperlinks rule is listed in the glk event handling rules.
 The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
 
-The hyperlink representation rules is a hyperlink tag based rulebook.
-The hyperlink representation rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".
-The hyperlink representation rules have default success.
+The hyperlink printing rules is a hyperlink tag based rulebook.
+The hyperlink printing rules is accessible to Inter as "HYPERLINK_REPRESENTATION_RB".
+The hyperlink printing rules have default success.
 
-Last hyperlink representation rule for a hyperlink tag (called T) (this is the default hyperlink representation rule):
+Last hyperlink printing rule for a hyperlink tag (called T) (this is the default hyperlink printing rule):
 	say "hyperlink token of [T]";
 
 @ And some built-in hyperlink tags:
@@ -284,7 +284,7 @@ Hyperlink handling rule for command replacement (this is the command replacement
 	suspend text input in the main window, without input echoing;
 	replace current event with a line event with (value of outcome as a text);
 
-Hyperlink representation rule for command replacement (this is the command replacement representation rule):
+Hyperlink printing rule for command replacement (this is the command replacement representation rule):
 	say "command replacement hyperlink token for '[value of current hyperlink token as a text]'";
 
 Command appendment is a hyperlink tag.
@@ -301,7 +301,7 @@ Hyperlink handling rule for command appendment (this is the command appendment h
 	set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";
 	resume text input in the main window;
 
-Hyperlink representation rule for command appendment (this is the command appendment representation rule):
+Hyperlink printing rule for command appendment (this is the command appendment representation rule):
 	say "command appendment hyperlink token for '[value of current hyperlink token as a text]'";
 
 Keypress hyperlink is a hyperlink tag.
@@ -316,7 +316,7 @@ To say link to press (C - unicode character):
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
 	replace current event with a character event with (value of outcome as a unicode character);
 
-Hyperlink representation rule for keypress hyperlink (this is the keypress hyperlink representation rule):
+Hyperlink printing rule for keypress hyperlink (this is the keypress hyperlink printing rule):
 	say "keypress hyperlink token for [value of current hyperlink token as a unicode character]";
 
 Rule hyperlink is a hyperlink tag.
@@ -331,10 +331,10 @@ To say link to follow (R - rule):
 Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
 	follow value of outcome as a rule;
 
-Hyperlink representation rule for rule hyperlink (this is the rule hyperlink representation rule):
+Hyperlink printing rule for rule hyperlink (this is the rule hyperlink printing rule):
 	say "rule hyperlink token for [value of current hyperlink token as a rule]";
 
-Hyperlink representation rule for null hyperlink (this is the null hyperlink representation rule):
+Hyperlink printing rule for null hyperlink (this is the null hyperlink printing rule):
 	say "null hyperlink token";
 
 @h Suspending input.

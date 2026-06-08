@@ -18208,7 +18208,7 @@ The default Inform usage for the status window is to have just a status line, th
 
 But more elaborate arrangements are possible. The window can have additional rows, and/or can accommodate a third, centred, column, using the following:
 
-> phrase: redraw the status window with (table name)
+> phrase: draw the status window with (table name)
 >
 > This phrase is intended for use within a rule for the `constructing the status line` activity, and redraws the status window using the contents of a table. The table can have any number of rows, and the status window will adjust its height accordingly — though of course players on smaller devices may not be pleased by a huge status window consuming their limited screen space. The table should have one to three columns:
 >
@@ -18661,10 +18661,17 @@ Internally, a hyperlink token consists of a _tag_ plus (usually) a _value_. Here
 >
 > Creates a new hyperlink token which has a tag, but no value.
 
-We want to give Inform the ability to say tokens like this, even though this is likely only to be seen in debugging the handling rule (on which, see below):
+We want to give Inform the ability to say tokens like this:
 
-	Hyperlink representation rule for examination hyperlink:
+	Hyperlink printing rule for examination hyperlink:
 		say "examination hyperlink token for [value of current hyperlink token as a thing]".
+
+The `hyperlink printing rulebook` is run whenever Inform wants to print out a hyperlink token as text. There's actually not very need to do this, except perhaps as a debugging aid (for example, adding the line `showme the outcome` to a handling rule like the ones below); but in general all Inform values ought to be sayable whenever possible. In this rulebook, the variable `current hyperlink token` is the token to be printed: the focus of the rulebook is just the tag part, which is why the rule above applies to all hyperlink tokens whose tag is `examination hyperlink`.
+
+By convention, though it is not compulsory, the textual representation produced by the `hyperlink printing rulebook` should be Inform source text which, if used somewhere in the story source, would recreate the same token. Now, the rule above produces text such as ``examination hyperlink token for big red button``: so it would be good to be able to recognise that...
+
+	To decide what hyperlink token is examination hyperlink token for (X - thing):
+		decide on hyperlink token of examination hyperlink with X.
 
 Lastly, Inform needs to know what to do when a link of this type is clicked. In general, when any link is clicked, Glk sends a `hyperlink event`, but Inform handles this by then following the `hyperlink handling rules`. The basis of this rule book is the hyperlink tag of the event.
 
