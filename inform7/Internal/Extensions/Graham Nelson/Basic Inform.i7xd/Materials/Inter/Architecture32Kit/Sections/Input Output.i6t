@@ -145,7 +145,7 @@ Global gg_backgroundchan = 0;
 
 Constant INPUT_BUFFER_LEN = 260;    ! No extra byte necessary
 Constant MAX_BUFFER_WORDS = 20;
-Constant PARSE_BUFFER_LEN = 61;
+Constant PARSE_BUFFER_LEN = (3 * MAX_BUFFER_WORDS) + 1;
 
 Array  buffer   --> INPUT_BUFFER_LEN;
 Array  buffer2  --> INPUT_BUFFER_LEN;
