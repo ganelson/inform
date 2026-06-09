@@ -42,8 +42,8 @@ We can also use redraw the status window with a table only temporarily, after wh
 		say "You have a quick nap...";
 		now the player is sleepy;
 		wait for any key;
+		now the player is awake;
 		increase score by one;
 	
 	Rule for constructing the status line while the player is sleepy:
 		draw the status window with Table of Sleep;
-		now the player is awake.

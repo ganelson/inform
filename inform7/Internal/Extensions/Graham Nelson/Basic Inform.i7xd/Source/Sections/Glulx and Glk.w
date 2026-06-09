@@ -278,7 +278,7 @@ To decide what hyperlink token is command replacement hyperlink token for (T - t
 	(- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY); -).
 
 To say link to command (T - text):
-	say link to command replacement hyperlink token for T;
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).
 
 Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):
 	suspend text input in the main window, without input echoing;
@@ -294,11 +294,12 @@ To decide what hyperlink token is command appendment hyperlink token for (T - te
 	(- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY); -).
 
 To say link to type (T - text):
-	say link to command appendment hyperlink token for T;
+	(- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).
 
 Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):
 	suspend text input in the main window, without input echoing;
-	set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";
+	let current input be the current line input of the main window;
+	set the current line input of the main window to "[unless current input is empty][current input] [end if][value of outcome as a text]";
 	resume text input in the main window;
 
 Hyperlink printing rule for command appendment (this is the command appendment representation rule):
