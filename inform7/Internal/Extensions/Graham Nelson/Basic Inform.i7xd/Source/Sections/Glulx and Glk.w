@@ -408,6 +408,59 @@ To decide what text is the current line input of (w - IO window):
 To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
+@h External Files.
+Inform has a quirky level of support for file-handling, which comes out of what
+the Glulx virtual machine will support.
+
+See test case `BIP-Files-G`, which has no Z-machine counterpart.
+
+=
+Chapter - External Files
+
+Section 1 - Files of Text
+
+To write (T - text) to (FN - external file)
+	(documented at ph_writetext):
+	(- FileIO_PutContents({FN}, {T}, false); -).
+To append (T - text) to (FN - external file)
+	(documented at ph_appendtext):
+	(- FileIO_PutContents({FN}, {T}, true); -).
+To say text of (FN - external file)
+	(documented at ph_saytext):
+	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+@ See test case `BIP-FilesOfTables-G`, which has no Z-machine counterpart.
+
+=
+Section 2 - Files of Data
+
+To read (filename - external file) into (T - table name)
+	(documented at ph_readtable):
+	(- FileIO_GetTable({filename}, {T}); -).
+To write (filename - external file) from (T - table name)
+	(documented at ph_writetable):
+	(- FileIO_PutTable({filename}, {T}); -).
+
+@ These are hardly used phrases which are difficult to test convincingly
+in our framework, since they defend against independent Inform programs
+simultaneously trying to access the same file.
+
+=
+Section 3 - File Handling
+
+To decide if (filename - external file) exists
+	(documented at ph_fileexists):
+	(- (FileIO_Exists({filename}, false)) -).
+To decide if ready to read (filename - external file)
+	(documented at ph_fileready):
+	(- (FileIO_Ready({filename}, false)) -).
+To mark (filename - external file) as ready to read
+	(documented at ph_markfileready):
+	(- FileIO_MarkReady({filename}, true); -).
+To mark (filename - external file) as not ready to read
+	(documented at ph_markfilenotready):
+	(- FileIO_MarkReady({filename}, false); -).
+
 @h Glk object recovery.
 These rules are a low level system for managing Glk references. When a Glulx
 game restarts and restores, the current Glk IO state is not reset. All the old

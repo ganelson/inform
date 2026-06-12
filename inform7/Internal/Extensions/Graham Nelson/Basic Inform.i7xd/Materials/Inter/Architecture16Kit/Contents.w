@@ -11,5 +11,4 @@ Sections
 	Mathematics
 	Character Set
 	Input Output
-	File Input Output 
 	Veneer

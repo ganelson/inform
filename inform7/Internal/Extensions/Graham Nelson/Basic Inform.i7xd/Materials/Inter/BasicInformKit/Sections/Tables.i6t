@@ -848,6 +848,7 @@ stream will be an external file rather than the screen when this routine
 is called.
 
 =
+#ifdef TARGET_GLULX;
 [ TablePrint tab i j k row col v tc kov;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
@@ -873,11 +874,13 @@ is called.
 	}
 	rfalse;
 ];
+#endif; ! TARGET_GLULX
 
 @h Read Table from File.
 And this is how we unserialise again. It makes sense only on Glulx.
 
 =
+#ifdef TARGET_GLULX;
 [ TableRead tab auxf row maxrow col ch v sgn dg j tc kov;
 	for (col=1:col<=tab-->0:col++) {
 		j = tab-->col; ! Address of column table
@@ -963,6 +966,7 @@ And this is how we unserialise again. It makes sense only on Glulx.
 		(PrintTableName) tab, "'.^";
 	rtrue;
 ];
+#endif; ! TARGET_GLULX
 
 @h Debugging.
 Routines to print the state of a table, for debugging purposes only.
