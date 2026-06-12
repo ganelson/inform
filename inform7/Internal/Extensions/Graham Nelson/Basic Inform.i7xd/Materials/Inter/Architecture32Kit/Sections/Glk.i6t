@@ -312,15 +312,14 @@ Constant GLK_EVENT_TEXT_SF = 6;
 [ GLK_EVENT_TY_Say ev
 		evtype win_obj;
 	evtype = ev-->GLK_EVENT_TYPE_SF;
-	SayKindValuePair(GLK_EVENT_TYPE_TY, evtype);
 	if (evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
 		win_obj = ev-->GLK_EVENT_WINDOW_SF;
-		print " (";
 		switch (evtype) {
 			evtype_CharInput:
+				print "character event for ";
 				glk_put_char_uni(MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF));
 			evtype_LineInput:
-				print "~";
+				print "line event for ~";
 				if (ev-->GLK_EVENT_TEXT_SF) {
 					TEXT_TY_Say(ev-->GLK_EVENT_TEXT_SF);
 				}
@@ -334,16 +333,22 @@ Constant GLK_EVENT_TEXT_SF = 6;
 				}
 				print "~";
 			evtype_MouseInput:
+				print "mouse event for ";
 				if (win_obj.glk_window_type == wintype_TextGrid) {
-					print (ev-->GLK_EVENT_VALUE1_SF + 1), ", ", (ev-->GLK_EVENT_VALUE2_SF + 1);
+					print "row ", (ev-->GLK_EVENT_VALUE2_SF + 1), " and column ", (ev-->GLK_EVENT_VALUE1_SF + 1);
 				}
 				else {
-					print ev-->GLK_EVENT_VALUE1_SF, ", ", ev-->GLK_EVENT_VALUE2_SF;
+					print "x ", ev-->GLK_EVENT_VALUE1_SF, " and y ", ev-->GLK_EVENT_VALUE2_SF;
 				}
 			evtype_Hyperlink:
-				SayKindValuePair(HYPERLINK_TAG_TY, ((ev-->GLK_EVENT_VALUE1_SF) & hyperlink_tag_mask));
+				print "hyperlink event for ";
+				HYPERLINK_TOKEN_TY_Say(ev-->GLK_EVENT_VALUE1_SF);
 		}
-		print ") in ", (the) win_obj;
+		print " in ", (the) win_obj;
+	}
+	else {
+		SayKindValuePair(GLK_EVENT_TYPE_TY, evtype);
+		print " glk event";
 	}
 ];
 

@@ -121,15 +121,15 @@ Definition: a glk event is windowed if the type of it is windowed.
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
 
-To decide what glk event is a/-- character event with (C - unicode character):
+To decide what glk event is a/-- character event for/of/with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)
+To decide what glk event is a/-- character event for/of/with (C - unicode character) in (win - IO window)
 	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
-To decide what glk event is a/-- line event with (T - text):
+To decide what glk event is a/-- line event for/of/with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event with (T - text) in (win - IO window)
+To decide what glk event is a/-- line event for/of/with (T - text) in (win - IO window)
 	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
@@ -190,10 +190,10 @@ To wait for (evtype - glk event type):
 To wait for (evtype - glk event type) in (win - IO window):
 	(- GLK_EVENT_TY_Wait_For({evtype}, {win}); -).
 
-To decide what glk event is the next (evtype - glk event type):
+To decide what glk event is the next (evtype - glk event type) to occur:
 	(- GLK_EVENT_TY_Wait_For({evtype}, 0, 0, {-new: glk event}); -).
 
-To decide what glk event is the next (evtype - glk event type) in (win - IO window):
+To decide what glk event is the next (evtype - glk event type) to occur in (win - IO window):
 	(- GLK_EVENT_TY_Wait_For({evtype}, {win}, 0, {-new: glk event}); -).
 
 Before waiting for a glk event (this is the draw the status window before waiting for a Glk event rule):
