@@ -87,21 +87,6 @@ The status window object is accessible to Inter as "Status_Window".
 The boxed quotation window is a text buffer window.
 The boxed quotation window object is accessible to Inter as "Quote_Window".
 
-@h Basic window functions.
-Some basic Glk window functions will be supported out of the box, but others will
-require extensions.
-
-=
-Section - Glk windows
-
-To focus (win - IO window)
-	(documented at ph_glkwindowfocus):
-	(- WindowFocus({win}); -).
-
-To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)
-	(documented at ph_glksetcursor):
-	(- WindowMoveCursor({win}, {col}, {row}); -).
-
 @h Glk events.
 Glk events are now represented with an I7 (block value) kind.
 They can be requested with the waiting for a Glk event activity, and handled with

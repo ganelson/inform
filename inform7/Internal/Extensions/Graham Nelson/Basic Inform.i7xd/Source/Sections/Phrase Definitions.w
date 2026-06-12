@@ -1870,13 +1870,23 @@ To decide what number is the/-- screen width:
 	(- VM_ScreenWidth() -).
 
 To clear (win - IO window):
-	(- VM_ClearWindow({win}); -).
+	(- VM_WindowClear({win}); -).
+
+To focus (win - IO window):
+	(- VM_WindowFocus({win}); -).
 
 To decide what number is the height of (win - IO window):
 	(- VM_WindowHeight({win}) -).
 
 To decide what number is the width of (win - IO window):
 	(- VM_WindowWidth({win}) -).
+
+To set the height of (win - IO window) to (rows - number):
+	(- VM_WindowSetHeight({win}, {rows}); -).
+
+To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)
+	(documented at ph_glksetcursor):
+	(- VM_WindowSetCursor({win}, {row}, {col}); -).
 
 @ Customising the status line.
 
@@ -1885,12 +1895,6 @@ Section 2 - The Status Window
 
 To draw/redraw the status window/bar/line:
 	(- DrawStatusLine(); -).
-
-To set the status bar/line/window to (rows - number) row/rows:
-	(- VM_StatusLineHeight({rows}); -).
-
-To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):
-	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
 To draw the status window with (table - a table-name):
 	(- DrawStatusWindowFromTable({table}); -).

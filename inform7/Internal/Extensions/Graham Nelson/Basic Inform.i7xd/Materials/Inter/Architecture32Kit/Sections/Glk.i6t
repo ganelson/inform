@@ -88,7 +88,6 @@ Global current_glk_object_reference = 0;
 	gg_scriptfref = 0;
 	gg_scriptstr = 0;
 	gg_savestr = 0;
-	statuswin_cursize = 0;
 	gg_foregroundchan = 0;
 	gg_backgroundchan = 0;
 #Ifdef COMMAND_STREAM;
@@ -203,47 +202,6 @@ Functions for minimal Glk windows support.
 	}
 	glk_set_style(style_Normal);
 	glk_put_char(10); ! newline
-];
-
-[ WindowFocus win;
-	if (win) {
-		if (win.glk_ref) {
-			glk_set_window(win.glk_ref);
-		}
-		else {
-			IssueRTP("WindowIsClosed", "WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
-		}
-	}
-	else {
-		IssueRTP("WindowIsNothing", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
-	}
-];
-
-[ WindowMoveCursor win col row;
-	if (win) {
-		if (win.glk_ref) {
-			if (win.glk_window_type == wintype_TextGrid) {
-				if (col < 1) {
-					col = 1;
-				}
-				if (row > 0) {
-					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
-				}
-				else {
-					IssueRTP("WindowBadGridCursor", "WindowMoveCursor: Grid window cursor row must be >= 1.", Architecture32KitRTPs);
-				}
-			}
-			else {
-				IssueRTP("WindowIsWrongType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
-			}
-		}
-		else {
-			IssueRTP("WindowIsClosed", "WindowMoveCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
-		}
-	}
-	else {
-		IssueRTP("WindowIsNothing", "WindowMoveCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
-	}
 ];
 
 @h Glk events.

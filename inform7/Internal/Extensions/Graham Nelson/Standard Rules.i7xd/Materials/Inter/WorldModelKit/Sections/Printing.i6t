@@ -86,19 +86,17 @@ system from Basic Inform.
 
 =
 [ DEFAULT_STATUS_LINE_R width posb;
-	VM_StatusLineHeight(1);
-	VM_MoveCursorInStatusLine(1, 1);
-	if (statuswin_current) {
-		width = VM_ScreenWidth();
-		posb = width - 15;
-		spaces width;
-		ClearParagraphing(17);
-		VM_MoveCursorInStatusLine(1, 2);
-		TEXT_TY_Say(left_hand_status_line);
-		VM_MoveCursorInStatusLine(1, posb);
-		TEXT_TY_Say(right_hand_status_line);
-		VM_MoveCursorInStatusLine(1, 1);
-	}
+	VM_WindowSetHeight(Status_Window, 1);
+	VM_WindowSetCursor(Status_Window, 1, 1);
+	width = VM_ScreenWidth();
+	posb = width - 15;
+	spaces width;
+	ClearParagraphing(17);
+	VM_WindowSetCursor(Status_Window, 1, 2);
+	TEXT_TY_Say(left_hand_status_line);
+	VM_WindowSetCursor(Status_Window, 1, posb);
+	TEXT_TY_Say(right_hand_status_line);
+	VM_WindowSetCursor(Status_Window, 1, 1);
 	rtrue;
 ];
 

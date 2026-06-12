@@ -301,10 +301,19 @@ fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.
 
-`VM_ClearWindow`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
+`VM_WindowClear`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
 specified window.
 
+`VM_WindowSetCursor` uses 1-based co-ordinates.
+
+`VM_WindowSetHeight` sets the height of the status window.
+
 =
+Global current_window = Main_Window;
+Global statuswin_cursize = 0;
+Global statuswin_cursor_col = 0;
+Global statuswin_cursor_row = 0;
+
 [ VM_ClearScreen;
 	@erase_window -2;
 ];
@@ -317,8 +326,27 @@ specified window.
 	return HDR_SCREENWCHARS->0;
 ];
 
-[ VM_ClearWindow win;
+[ VM_WindowClear win;
 	@erase_window win;
+];
+
+[ VM_WindowFocus win;
+	if (current_window ~= win) {
+		current_window = win;
+		@set_window win;
+		if (win == Main_Window) {
+			style roman;
+		}
+		else {
+			style reverse;
+			! Use a stored cursor
+			if (statuswin_cursor_row) {
+				@set_cursor statuswin_cursor_row statuswin_cursor_col;
+				statuswin_cursor_col = 0;
+				statuswin_cursor_row = 0;
+			}
+		}
+	}
 ];
 
 [ VM_WindowHeight win;
@@ -327,6 +355,41 @@ specified window.
 	}
 	else {
 		return statuswin_cursize;
+	}
+];
+
+[ VM_WindowSetCursor win row col;
+	if (win == Main_Window) {
+		IssueRTP("WindowIsWrongType", "VM_WindowSetCursor: Wrong window type for this window operation.", BasicInformKitRTPs);
+	}
+	else {
+		if (col < 1) {
+			col = 1;
+		}
+		if (row > 0) {
+			if (current_window == Main_Window) {
+				statuswin_cursor_col = col;
+				statuswin_cursor_row = row;
+			}
+			else {
+				@set_cursor row col;
+			}
+		}
+		else {
+			IssueRTP("WindowBadGridCursor", "VM_WindowSetCursor: Grid window cursor row must be >= 1.", BasicInformKitRTPs);
+		}
+	}
+];
+
+[ VM_WindowSetHeight win height;
+	if (win == Main_Window) {
+		IssueRTP("VM_WindowSetHeight", "VM_WindowSetHeight: Wrong window type for this window operation.", BasicInformKitRTPs);
+	}
+	else {
+		if (statuswin_cursize ~= height) {
+			@split_window height;
+			statuswin_cursize = height;
+		}
 	}
 ];
 
@@ -351,59 +414,4 @@ colours have been set.
 	else {
 		@set_text_style 0;
 	}
-];
-
-@h Main Window.
-The part of the screen on which commands and responses are printed, which
-ordinarily occupies almost all of the screen area.
-
-`VM_MainWindow()` switches printing back from another window, usually the
-status line, to the main window. Note that the Z-machine implementation
-emulates the Glulx model of window rather than text colours.
-
-=
-[ VM_MainWindow;
-    if (statuswin_current) {
-        style roman;
-        @set_window 0;
-    }
-    statuswin_current = false;
-];
-
-@h Status Line.
-Despite the name, the status line need not be a single line at the top of
-the screen: that's only the conventional default arrangement. It can expand
-to become the equivalent of an old-fashioned VT220 terminal, with menus
-and grids and mazes displayed lovingly in character graphics, or it can
-close up to invisibility.
-
-`VM_StatusLineHeight(n)` sets the status line to have a height of `n` lines
-of type. (The width of the status line is always the width of the whole
-screen, and the position is always at the top, so the height is the only
-controllable aspect.) The $n=0$ case makes the status line disappear.
-
-`VM_MoveCursorInStatusLine(line, column)` switches printing to the status line,
-positioning the "cursor" — the position at which printing will begin —
-at the given character grid position $(line, column)$. Line 1 represents the top
-line; line 2 is underneath, and so on; columns are similarly numbered from
-1 at the left.
-
-=
-[ VM_MoveCursorInStatusLine line column; ! 1-based position on text grid
-    if (~~statuswin_current) {
-         @set_window 1;
-         style reverse;
-    }
-    if (line == 0) {
-        line = 1;
-        column = 1;
-    }
-    @set_cursor line column;
-	statuswin_current = true;
-];
-
-[ VM_StatusLineHeight height  wx wy x y charh;
-    if (statuswin_cursize ~= height)
-        @split_window height;
-    statuswin_cursize = height;
 ];

@@ -563,8 +563,13 @@ fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.
 
-`VM_ClearWindow`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
+`VM_WindowClear`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
 specified window.
+
+`VM_WindowSetCursor` uses 1-based co-ordinates.
+
+In Glk `VM_WindowSetHeight` will work on any window type, but it does assume
+the window is positioned above.
 
 =
 [ VM_ClearScreen win;
@@ -594,10 +599,25 @@ specified window.
 	return gg_arguments-->0;
 ];
 
-[ VM_ClearWindow win;
+[ VM_WindowClear win;
 	if (win && win.glk_ref) {
 		glk_window_clear(win.glk_ref);
 	}
+];
+
+[ VM_WindowFocus win;
+	if (win) {
+		if (win.glk_ref) {
+			glk_set_window(win.glk_ref);
+		}
+		else {
+			IssueRTP("WindowIsClosed", "VM_WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+		}
+	}
+	else {
+		IssueRTP("WindowIsNothing", "VM_WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+	}
+
 ];
 
 [ VM_WindowHeight win;
@@ -606,6 +626,47 @@ specified window.
 		return gg_arguments-->0;
 	}
 	return 0;
+];
+
+[ VM_WindowSetCursor win row col;
+	if (win) {
+		if (win.glk_ref) {
+			if (win.glk_window_type == wintype_TextGrid) {
+				if (col < 1) {
+					col = 1;
+				}
+				if (row > 0) {
+					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
+				}
+				else {
+					IssueRTP("WindowBadGridCursor", "VM_WindowSetCursor: Grid window cursor row must be >= 1.", BasicInformKitRTPs);
+				}
+			}
+			else {
+				IssueRTP("WindowIsWrongType", "VM_WindowSetCursor: Wrong window type for this window operation.", BasicInformKitRTPs);
+			}
+		}
+		else {
+			IssueRTP("WindowIsClosed", "VM_WindowSetCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+		}
+	}
+	else {
+		IssueRTP("WindowIsNothing", "VM_WindowSetCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+	}
+];
+
+[ VM_WindowSetHeight win height;
+	if (win) {
+		if (win.glk_ref) {
+			glk_window_set_arrangement(glk_window_get_parent(win.glk_ref), winmethod_Fixed + winmethod_Above, height, 0);
+		}
+		else {
+			IssueRTP("WindowIsClosed", "VM_WindowSetHeight: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
+		}
+	}
+	else {
+		IssueRTP("WindowIsNothing", "VM_WindowSetHeight: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+	}
 ];
 
 [ VM_WindowWidth win;
@@ -632,56 +693,6 @@ colours have been set.
 	if (Cached_Glk_Gestalts-->gestalt_GarglkText_FAKE) {
 		garglk_set_reversevideo(val);
 	}
-];
-
-@h Main Window.
-The part of the screen on which commands and responses are printed, which
-ordinarily occupies almost all of the screen area.
-
-`VM_MainWindow()` switches printing back from another window, usually the
-status line, to the main window.
-
-=
-[ VM_MainWindow;
-	glk_set_window(active_window.glk_ref); ! set_window
-	statuswin_current = 0;
-];
-
-@h Status Line.
-Despite the name, the status line need not be a single line at the top of
-the screen: that's only the conventional default arrangement. It can expand
-to become the equivalent of an old-fashioned VT220 terminal, with menus
-and grids and mazes displayed lovingly in character graphics, or it can
-close up to invisibility.
-
-`VM_StatusLineHeight(n)` sets the status line to have a height of `n` lines
-of type. (The width of the status line is always the width of the whole
-screen, and the position is always at the top, so the height is the only
-controllable aspect.) The $n=0$ case makes the status line disappear.
-
-`VM_MoveCursorInStatusLine(line, column)` switches printing to the status line,
-positioning the "cursor" — the position at which printing will begin —
-at the given character grid position $(line, column)$. Line 1 represents the top
-line; line 2 is underneath, and so on; columns are similarly numbered from
-1 at the left.
-
-=
-[ VM_StatusLineHeight hgt;
-	if (Status_Window.glk_ref == 0) return;
-	if (hgt == statuswin_cursize) return;
-	glk_window_set_arrangement(glk_window_get_parent(Status_Window.glk_ref), winmethod_Fixed + winmethod_Above, hgt, 0);
-	statuswin_cursize = hgt;
-];
-
-[ VM_MoveCursorInStatusLine line column;
-	if (Status_Window.glk_ref == 0) return;
-	glk_set_window(Status_Window.glk_ref);
-	if (line == 0) {
-		line = 1;
-		column = 1;
-	}
-	glk_window_move_cursor(Status_Window.glk_ref, column - 1, line - 1);
-	statuswin_current = 1;
 ];
 
 @h Quotation Boxes.
