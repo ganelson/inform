@@ -1896,7 +1896,7 @@ Section 2 - The Status Window
 To draw/redraw the status window/bar/line:
 	(- DrawStatusLine(); -).
 
-To draw the status window with (table - a table-name):
+To draw/redraw the status window with (table - a table-name):
 	(- DrawStatusWindowFromTable({table}); -).
 
 @ Keyboard input phrases.

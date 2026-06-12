@@ -12,7 +12,7 @@ Building a menu is moderately tedious, so we will rely on the standard menu exte
 
 	{*}"Xerxes"
 	
-	Include Basic Screen Effects by Emily Short. Include Menus by Emily Short.
+	Include Menus by Emily Short.
 	
 	Table of Amusing Matter
 	title	subtable	description	toggle

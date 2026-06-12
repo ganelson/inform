@@ -11,7 +11,7 @@ For: Z-Machine
 
 	{*}"Food Network Interactive"
 	
-	Include Basic Screen Effects by Emily Short. Include Menus by Emily Short. Include Basic Help Menu by Emily Short.
+	Include Menus by Emily Short. Include Basic Help Menu by Emily Short.
 	
 	Table of Basic Help Options (continued)
 	title	subtable	description	toggle

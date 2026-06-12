@@ -124,6 +124,8 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_window_get_size(proc, a[0], a[1], a[2]); break;
 		/* And we ignore: */
 		case i7_glk_window_iterate: rv = 0; break;
+		case i7_glk_window_set_arrangement: rv = 0; break;
+		case i7_glk_window_get_parent: rv = 0; break;
 		case i7_glk_window_move_cursor: rv = 0; break;
 
 		/* Event handling */

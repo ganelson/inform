@@ -15,8 +15,6 @@ We can tidy this up in the `starting the virtual machine` activity, by temporari
 
 	{*}"Blankness"
 	
-	Include Basic Screen Effects by Emily Short.
-	
 	When play begins:
 		say "take me home";
 		wait for any key;

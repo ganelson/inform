@@ -7,7 +7,7 @@ For: Z-Machine
 
 ^^{Status line with centered text, the easy way}
 
-If we want to lay out the status line in some other way than with left-hand and right-hand entries, it is possible to do this as well. Later we will learn about the `rule for constructing the status line`, but here is a basic effect using this rule and an Inform extension called Basic Screen Effects.
+If we want to lay out the status line in some other way than with left-hand and right-hand entries, it is possible to do this as well. Later we will learn about the `rule for constructing the status line`, but here is a basic effect using this rule and the `draw the status window with (table)` phrase.
 
 	{*}"Centered"
 	
@@ -18,13 +18,11 @@ If we want to lay out the status line in some other way than with left-hand and 
 	
 	At the center of the Earth hangs a dense black sun."
 	
-	Include Basic Screen Effects by Emily Short.
+	Table of Centred Status
+	middle
+	"[location]"
 	
 	Rule for constructing the status line:
-		center "[location]" at row 1;
-		rule succeeds.
+		draw the status window with the Table of Centred Status;
 	
 	Test me with "look".
-
-Basic Screen Effects also provides a mechanism for building complicated status lines of more than one row. To read its documentation, we include the extension, press Go!, and then consult the contents index that results.
-
