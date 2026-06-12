@@ -33,9 +33,7 @@ void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 	StandardsElement::activity(OUT, inv, I"PRINTING_BANNER_TEXT_ACT", 2, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.TurnSequenceRules", NULL,
 		IndexRules::find_rulebook(inv, I"TURN_SEQUENCE_RB"), NULL, 1, TRUE, session);
-	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.BeforeWaitingInput", NULL,
-		IndexRules::find_rulebook(inv, I"BEFORE_INPUT_RB"), NULL, 2, TRUE, session);
-	StandardsElement::activity(OUT, inv, I"CONSTRUCTING_STATUS_LINE_ACT", 3, session);
+	StandardsElement::activity(OUT, inv, I"CONSTRUCTING_STATUS_LINE_ACT", 2, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ShutdownRules", NULL,
 		IndexRules::find_rulebook(inv, I"SHUTDOWN_RB"), NULL, 1, TRUE, session);
 	StandardsElement::activity(OUT, inv, I"AMUSING_A_VICTORIOUS_PLAYER_ACT", 2, session);
@@ -57,10 +55,11 @@ void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 		IndexRules::find_rulebook(inv, I"IDENTIFY_SCHANNELS_RB"), NULL, 1, TRUE, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkObjectUpdatingRules", NULL,
 		IndexRules::find_rulebook(inv, I"GLK_OBJECT_UPDATING_RB"), NULL, 1, TRUE, session);
+	StandardsElement::activity(OUT, inv, I"GLK_EVENT_WAITING_ACT", 1, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkEventHandlingRules", NULL,
-		IndexRules::find_rulebook(inv, I"GLK_EVENT_HANDLING_RB"), NULL, 1, TRUE, session);
+		IndexRules::find_rulebook(inv, I"GLK_EVENT_HANDLING_RB"), NULL, 2, TRUE, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.HyperlinkHandlingRules", NULL,
-		IndexRules::find_rulebook(inv, I"HYPERLINK_HANDLING_RB"), NULL, 2, TRUE, session);
+		IndexRules::find_rulebook(inv, I"HYPERLINK_HANDLING_RB"), NULL, 3, TRUE, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.HyperlinkRepresentationRules", NULL,
 		IndexRules::find_rulebook(inv, I"HYPERLINK_REPRESENTATION_RB"), NULL, 1, TRUE, session);
 

@@ -1883,6 +1883,9 @@ To decide what number is the width of (win - IO window):
 =
 Section 2 - The Status Window
 
+To draw/redraw the status window/bar/line:
+	(- DrawStatusLine(); -).
+
 To set the status bar/line/window to (rows - number) row/rows:
 	(- VM_StatusLineHeight({rows}); -).
 

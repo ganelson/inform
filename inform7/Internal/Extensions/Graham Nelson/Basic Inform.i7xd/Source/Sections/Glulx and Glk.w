@@ -103,7 +103,9 @@ To set (win - IO window) cursor to row (row - a number) and/-- column/col (col -
 	(- WindowMoveCursor({win}, {col}, {row}); -).
 
 @h Glk events.
-Glk events can be handled with the glk event handling rules.
+Glk events are now represented with an I7 (block value) kind.
+They can be requested with the waiting for a Glk event activity, and handled with
+the glk event handling rules.
 
 =
 Chapter - Glk events
@@ -173,6 +175,42 @@ To decide what text is the text of (ev - glk event)
 	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
 
+@ The waiting for a glk event activity allows you to wait for a specific Glk event type. It is
+also designed such that calls to Glk events can be safely nested.
+
+=
+Section - Requesting and handling events
+
+Waiting for a glk event of something is an activity on glk event types.
+The waiting for a glk event activity is accessible to Inter as "GLK_EVENT_WAITING_ACT".
+
+To wait for (evtype - glk event type):
+	(- GLK_EVENT_TY_Wait_For({evtype}); -).
+
+To wait for (evtype - glk event type) in (win - IO window):
+	(- GLK_EVENT_TY_Wait_For({evtype}, {win}); -).
+
+To decide what glk event is the next (evtype - glk event type):
+	(- GLK_EVENT_TY_Wait_For({evtype}, 0, 0, {-new: glk event}); -).
+
+To decide what glk event is the next (evtype - glk event type) in (win - IO window):
+	(- GLK_EVENT_TY_Wait_For({evtype}, {win}, 0, {-new: glk event}); -).
+
+Before waiting for a glk event (this is the draw the status window before waiting for a Glk event rule):
+	draw the status window;
+
+The request keyboard input rule is listed last in the before waiting for a glk event rules.
+The request keyboard input rule translates into Inter as "REQUEST_KEYBOARD_INPUT_R".
+
+The manually echo line input rule is listed in the after waiting for a glk event rules.
+The manually echo line input rule translates into Inter as "MANUALLY_ECHO_LINE_INPUT_R".
+
+The normalise line input whitespace rule is listed in the after waiting for a glk event rules.
+The normalise line input whitespace rule translates into Inter as "NORMALISE_LINE_INPUT_R".
+
+@ A couple of phrases for timer events
+
+=
 To request timer events every (N - number) milliseconds
 	(documented at ph_requesttimer):
 	(- glk_request_timer_events({N}); -).
@@ -181,7 +219,8 @@ To cancel timer events
 	(documented at ph_canceltimer):
 	(- glk_request_timer_events(0); -).
 
-@ And now the glk event handling rules themselves.
+@ Events are handled within glk_select through the glk event handling rules.
+Note that these rules can be run more than once per waiting activity.
 
 =
 The glk event handling rules is a glk event type based rulebook.
@@ -199,8 +238,8 @@ Very first glk event handling rule for a glk event type
 To replace current event with (ev - glk event):
 	(- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).
 
-Glk event handling rule for a screen resize event (this is the redraw the status line rule):
-	follow the draw the status window rule;
+Glk event handling rule for a screen resize event (this is the redraw the status window after the screen is resized rule):
+	draw the status window;
 
 @h Hyperlinks.
 A simple framework for handling hyperlinks in an interoperable manner.

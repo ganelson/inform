@@ -118,8 +118,6 @@ The VM must provide three routines for keyboard input:
 - `VM_KeyChar()` waits for a key to be pressed and then returns the
 character chosen as a ZSCII character. Function keys are mapped to unicode
 characters so that Z-Machine and Glulxe key input can be handled the same.
-- `VM_KeyDelay(N)` waits up to $N/10$ seconds for a key to be pressed,
-returning the ZSCII character if so, or 0 if not.
 - `VM_ReadKeyboard(b, t)` reads a whole newline-terminated command
 into the buffer `b`. If the `t` parser table is specified then it also parses it.
 
@@ -127,10 +125,9 @@ There are elaborations to due with mouse clicks, but this isn't the place
 to document all of that.
 
 =
-[ VM_KeyChar win  key;
-	! Run the before waiting for the player's input rules
-	FollowRulebook(BEFORE_INPUT_RB, 0, true);
-	if (win) @set_window win;
+[ VM_KeyChar key;
+	! Draw the status line
+	DrawStatusLine();
 	@read_char 1 -> key;
 	switch (key) {
 		8: key = KEY_DELETE;
@@ -160,17 +157,9 @@ to document all of that.
 	return key;
 ];
 
-[ VM_KeyDelay tenths  key;
-	! Run the before waiting for the player's input rules
-	FollowRulebook(BEFORE_INPUT_RB, 0, true);
-    @read_char 1 tenths VM_KeyDelay_Interrupt -> key;
-    return key;
-];
-[ VM_KeyDelay_Interrupt; rtrue; ];
-
 [ VM_ReadKeyboard a_buffer a_table ix;
-	! Run the before waiting for the player's input rules
-	FollowRulebook(BEFORE_INPUT_RB, 0, true);
+	! Draw the status line
+	DrawStatusLine();
 	read a_buffer a_table;
 	for ( ix = 2 : ix <= (a_buffer->1) + 1 : ix++ )
 		if (((a_buffer->ix) < 32) || ((a_buffer->ix) == 160)) a_buffer->ix = 32;
