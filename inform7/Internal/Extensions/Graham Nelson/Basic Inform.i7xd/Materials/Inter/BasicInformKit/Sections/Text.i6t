@@ -461,6 +461,7 @@ them.
 
 =
 [ TEXT_TY_Unserialise txt auxf ch i v dg pos tsize p;
+#ifdef TARGET_GLULX;
 	if (ch == -1) rtrue;
 	TEXT_TY_Transmute(txt);
 	tsize = PVFieldCapacity(txt);
@@ -480,6 +481,7 @@ them.
 		}
 	}
 	WritePVField(txt, pos, 0);
+#endif; ! TARGET_GLULX
 	return txt;
 ];
 

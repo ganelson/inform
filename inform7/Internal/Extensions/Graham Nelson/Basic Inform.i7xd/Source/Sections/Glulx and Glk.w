@@ -87,23 +87,10 @@ The status window object is accessible to Inter as "Status_Window".
 The boxed quotation window is a text buffer window.
 The boxed quotation window object is accessible to Inter as "Quote_Window".
 
-@h Basic window functions.
-Some basic Glk window functions will be supported out of the box, but others will
-require extensions.
-
-=
-Section - Glk windows
-
-To focus (win - IO window)
-	(documented at ph_glkwindowfocus):
-	(- WindowFocus({win}); -).
-
-To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)
-	(documented at ph_glksetcursor):
-	(- WindowMoveCursor({win}, {col}, {row}); -).
-
 @h Glk events.
-Glk events can be handled with the glk event handling rules.
+Glk events are now represented with an I7 (block value) kind.
+They can be requested with the waiting for a Glk event activity, and handled with
+the glk event handling rules.
 
 =
 Chapter - Glk events
@@ -119,15 +106,15 @@ Definition: a glk event is windowed if the type of it is windowed.
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
 
-To decide what glk event is a/-- character event with (C - unicode character):
+To decide what glk event is a/-- character event for/of/with (C - unicode character):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).
-To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)
+To decide what glk event is a/-- character event for/of/with (C - unicode character) in (win - IO window)
 	(documented at ph_glkcharacterevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).
 
-To decide what glk event is a/-- line event with (T - text):
+To decide what glk event is a/-- line event for/of/with (T - text):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).
-To decide what glk event is a/-- line event with (T - text) in (win - IO window)
+To decide what glk event is a/-- line event for/of/with (T - text) in (win - IO window)
 	(documented at ph_glklineevent):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).
 
@@ -173,6 +160,42 @@ To decide what text is the text of (ev - glk event)
 	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
 
+@ The waiting for a glk event activity allows you to wait for a specific Glk event type. It is
+also designed such that calls to Glk events can be safely nested.
+
+=
+Section - Requesting and handling events
+
+Waiting for a glk event of something is an activity on glk event types.
+The waiting for a glk event activity is accessible to Inter as "GLK_EVENT_WAITING_ACT".
+
+To wait for (evtype - glk event type):
+	(- GLK_EVENT_TY_Wait_For({evtype}); -).
+
+To wait for (evtype - glk event type) in (win - IO window):
+	(- GLK_EVENT_TY_Wait_For({evtype}, {win}); -).
+
+To decide what glk event is the next (evtype - glk event type) to occur:
+	(- GLK_EVENT_TY_Wait_For({evtype}, 0, 0, {-new: glk event}); -).
+
+To decide what glk event is the next (evtype - glk event type) to occur in (win - IO window):
+	(- GLK_EVENT_TY_Wait_For({evtype}, {win}, 0, {-new: glk event}); -).
+
+Before waiting for a glk event (this is the draw the status window before waiting for a Glk event rule):
+	draw the status window;
+
+The request keyboard input rule is listed last in the before waiting for a glk event rules.
+The request keyboard input rule translates into Inter as "REQUEST_KEYBOARD_INPUT_R".
+
+The manually echo line input rule is listed in the after waiting for a glk event rules.
+The manually echo line input rule translates into Inter as "MANUALLY_ECHO_LINE_INPUT_R".
+
+The normalise line input whitespace rule is listed in the after waiting for a glk event rules.
+The normalise line input whitespace rule translates into Inter as "NORMALISE_LINE_INPUT_R".
+
+@ A couple of phrases for timer events
+
+=
 To request timer events every (N - number) milliseconds
 	(documented at ph_requesttimer):
 	(- glk_request_timer_events({N}); -).
@@ -181,7 +204,8 @@ To cancel timer events
 	(documented at ph_canceltimer):
 	(- glk_request_timer_events(0); -).
 
-@ And now the glk event handling rules themselves.
+@ Events are handled within glk_select through the glk event handling rules.
+Note that these rules can be run more than once per waiting activity.
 
 =
 The glk event handling rules is a glk event type based rulebook.
@@ -199,8 +223,8 @@ Very first glk event handling rule for a glk event type
 To replace current event with (ev - glk event):
 	(- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).
 
-Glk event handling rule for a screen resize event (this is the redraw the status line rule):
-	follow the draw the status window rule;
+Glk event handling rule for a screen resize event (this is the redraw the status window after the screen is resized rule):
+	draw the status window;
 
 @h Hyperlinks.
 A simple framework for handling hyperlinks in an interoperable manner.
@@ -368,6 +392,59 @@ To decide what text is the current line input of (w - IO window):
 
 To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
+
+@h External Files.
+Inform has a quirky level of support for file-handling, which comes out of what
+the Glulx virtual machine will support.
+
+See test case `BIP-Files-G`, which has no Z-machine counterpart.
+
+=
+Chapter - External Files
+
+Section 1 - Files of Text
+
+To write (T - text) to (FN - external file)
+	(documented at ph_writetext):
+	(- FileIO_PutContents({FN}, {T}, false); -).
+To append (T - text) to (FN - external file)
+	(documented at ph_appendtext):
+	(- FileIO_PutContents({FN}, {T}, true); -).
+To say text of (FN - external file)
+	(documented at ph_saytext):
+	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+@ See test case `BIP-FilesOfTables-G`, which has no Z-machine counterpart.
+
+=
+Section 2 - Files of Data
+
+To read (filename - external file) into (T - table name)
+	(documented at ph_readtable):
+	(- FileIO_GetTable({filename}, {T}); -).
+To write (filename - external file) from (T - table name)
+	(documented at ph_writetable):
+	(- FileIO_PutTable({filename}, {T}); -).
+
+@ These are hardly used phrases which are difficult to test convincingly
+in our framework, since they defend against independent Inform programs
+simultaneously trying to access the same file.
+
+=
+Section 3 - File Handling
+
+To decide if (filename - external file) exists
+	(documented at ph_fileexists):
+	(- (FileIO_Exists({filename}, false)) -).
+To decide if ready to read (filename - external file)
+	(documented at ph_fileready):
+	(- (FileIO_Ready({filename}, false)) -).
+To mark (filename - external file) as ready to read
+	(documented at ph_markfileready):
+	(- FileIO_MarkReady({filename}, true); -).
+To mark (filename - external file) as not ready to read
+	(documented at ph_markfilenotready):
+	(- FileIO_MarkReady({filename}, false); -).
 
 @h Glk object recovery.
 These rules are a low level system for managing Glk references. When a Glulx

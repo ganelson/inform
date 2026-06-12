@@ -29,11 +29,7 @@ Another point that might be slightly less obvious: sometimes we want to announce
 
 And let's say that we also want to announce each new scene as another "chapter" of the game in play, with a pause before the scene begins.
 
-Here we include `Basic Screen Effects` because it will allow us to pause the game for a keypress, then clear the screen before each new chapter:
-
-	{**}Include Basic Screen Effects by Emily Short.
-	
-	The chapter counter is a number that varies.
+	{**}The chapter counter is a number that varies.
 	
 	First when a scene (called the current scene) which is not the Entire Game begins:
 		if chapter counter is greater than 0:
