@@ -97,7 +97,7 @@ The rationale for asking the question this way, and not another, is that novices
 
 The suggestion about asking for help is no good unless we provide some. This might take any of a number of forms, but for the sake of example we'll use an easy way out:
 
-	{**}Include Basic Screen Effects by Emily Short. Include Menus by Emily Short. Include Basic Help Menu by Emily Short.
+	{**}Include Menus by Emily Short. Include Basic Help Menu by Emily Short.
 	
 	After taking inventory when novice mode is true: say "To get rid of any of these objects, [bold type]drop[roman type] it."
 	

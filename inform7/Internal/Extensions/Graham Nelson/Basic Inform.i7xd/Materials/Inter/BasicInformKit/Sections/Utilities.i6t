@@ -29,11 +29,9 @@ Global property_to_be_totalled; ! used to implement "total P of..."
 Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
 Global suppress_scope_loops;
 Global temporary_value; ! can be used anywhere side-effects can't occur
-Global statuswin_current; ! if writing to top window
 Global suppress_text_substitution = false;
 Global deadflag = 0;
 
-Global statuswin_cursize = 0;
 Global statuswin_size = 1;
 
 Global debug_dialogue = 0;

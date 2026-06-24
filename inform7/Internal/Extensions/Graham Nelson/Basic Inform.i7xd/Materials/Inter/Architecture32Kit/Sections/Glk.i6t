@@ -88,7 +88,6 @@ Global current_glk_object_reference = 0;
 	gg_scriptfref = 0;
 	gg_scriptstr = 0;
 	gg_savestr = 0;
-	statuswin_cursize = 0;
 	gg_foregroundchan = 0;
 	gg_backgroundchan = 0;
 #Ifdef COMMAND_STREAM;
@@ -193,45 +192,16 @@ Functions for minimal Glk windows support.
 	return nothing;
 ];
 
-[ WindowFocus win;
-	if (win) {
-		if (win.glk_ref) {
-			glk_set_window(win.glk_ref);
-		}
-		else {
-			IssueRTP("WindowIsClosed", "WindowFocus: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
-		}
+[ WindowEchoBuffer win;
+	glk_set_style(style_Input);
+	if (win.line_input_buffer_uni) {
+		glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
 	}
 	else {
-		IssueRTP("WindowIsNothing", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
+		glk_put_buffer(win.line_input_buffer_addr, win.line_input_buffer_curlen);
 	}
-];
-
-[ WindowMoveCursor win col row;
-	if (win) {
-		if (win.glk_ref) {
-			if (win.glk_window_type == wintype_TextGrid) {
-				if (col < 1) {
-					col = 1;
-				}
-				if (row > 0) {
-					glk_window_move_cursor(win.glk_ref, col - 1, row - 1);
-				}
-				else {
-					IssueRTP("WindowBadGridCursor", "WindowMoveCursor: Grid window cursor row must be >= 1.", Architecture32KitRTPs);
-				}
-			}
-			else {
-				IssueRTP("WindowIsWrongType", "WindowMoveCursor: Wrong window type for this Glk window operation.", Architecture32KitRTPs);
-			}
-		}
-		else {
-			IssueRTP("WindowIsClosed", "WindowMoveCursor: Cannot perform this Glk window operation on a closed window.", Architecture32KitRTPs);
-		}
-	}
-	else {
-		IssueRTP("WindowIsNothing", "WindowMoveCursor: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
-	}
+	glk_set_style(style_Normal);
+	glk_put_char(10); ! newline
 ];
 
 @h Glk events.
@@ -300,15 +270,14 @@ Constant GLK_EVENT_TEXT_SF = 6;
 [ GLK_EVENT_TY_Say ev
 		evtype win_obj;
 	evtype = ev-->GLK_EVENT_TYPE_SF;
-	SayKindValuePair(GLK_EVENT_TYPE_TY, evtype);
 	if (evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
 		win_obj = ev-->GLK_EVENT_WINDOW_SF;
-		print " (";
 		switch (evtype) {
 			evtype_CharInput:
+				print "character event for ";
 				glk_put_char_uni(MapGlkKeyCodeToUnicode(ev-->GLK_EVENT_VALUE1_SF));
 			evtype_LineInput:
-				print "~";
+				print "line event for ~";
 				if (ev-->GLK_EVENT_TEXT_SF) {
 					TEXT_TY_Say(ev-->GLK_EVENT_TEXT_SF);
 				}
@@ -322,16 +291,22 @@ Constant GLK_EVENT_TEXT_SF = 6;
 				}
 				print "~";
 			evtype_MouseInput:
+				print "mouse event for ";
 				if (win_obj.glk_window_type == wintype_TextGrid) {
-					print (ev-->GLK_EVENT_VALUE1_SF + 1), ", ", (ev-->GLK_EVENT_VALUE2_SF + 1);
+					print "row ", (ev-->GLK_EVENT_VALUE2_SF + 1), " and column ", (ev-->GLK_EVENT_VALUE1_SF + 1);
 				}
 				else {
-					print ev-->GLK_EVENT_VALUE1_SF, ", ", ev-->GLK_EVENT_VALUE2_SF;
+					print "x ", ev-->GLK_EVENT_VALUE1_SF, " and y ", ev-->GLK_EVENT_VALUE2_SF;
 				}
 			evtype_Hyperlink:
-				SayKindValuePair(HYPERLINK_TAG_TY, ((ev-->GLK_EVENT_VALUE1_SF) & hyperlink_tag_mask));
+				print "hyperlink event for ";
+				HYPERLINK_TOKEN_TY_Say(ev-->GLK_EVENT_VALUE1_SF);
 		}
-		print ") in ", (the) win_obj;
+		print " in ", (the) win_obj;
+	}
+	else {
+		SayKindValuePair(GLK_EVENT_TYPE_TY, evtype);
+		print " glk event";
 	}
 ];
 
@@ -537,31 +512,118 @@ Global glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
 	glk_event_handling_status = GLK_EVENT_HANDLING_REPLACED;
 ];
 
+@h Waiting for Glk events.
+We provide an activity to allow the author to wait for a particular Glk event type.
+
+=
+Global current_glk_window;
+[ GLK_EVENT_TY_Wait_For evtype window event_struct return_event  allocated;
+	! If a window was provided for a non-windowed event, clear it
+	if (~~(evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink)) {
+		window = 0;
+	}
+	current_glk_window = window;
+	! Allocate an event_struct if it was not provided
+	if (~~event_struct) {
+		allocated = 1;
+		@malloc 16 event_struct;
+	}
+	! Run the activity (but disable rules debugging because it crashes if keyboard input events are pending)
+	@push debug_rules; @push say__p; @push say__pc;
+	debug_rules = false; ClearParagraphing(1);
+	BeginActivity(GLK_EVENT_WAITING_ACT, evtype);
+	if (~~(ForActivity(GLK_EVENT_WAITING_ACT, evtype))) {
+		while (true) {
+			glk_select(event_struct);
+			if (event_struct-->0 == evtype) {
+				if (window == 0 || event_struct-->1 == window.glk_ref) {
+					break;
+				}
+			}
+		}
+	}
+	GLK_EVENT_TY_From_Struct(current_glk_event, event_struct);
+	EndActivity(GLK_EVENT_WAITING_ACT, evtype);
+	@pull say__pc; @pull say__p; @pull debug_rules;
+
+	if (allocated) {
+		@mfree event_struct;
+	}
+
+	if (return_event) {
+		GLK_EVENT_TY_Copy(return_event, current_glk_event);
+		return return_event;
+	}
+];
+
+[ REQUEST_KEYBOARD_INPUT_R win;
+	if (parameter_value == evtype_CharInput or evtype_LineInput) {
+		win = active_window;
+		if (current_glk_window) {
+			win = current_glk_window;
+		}
+		if (win.glk_ref && win.text_input_status < INPUT_STATUS_ACTIVE_LINE) {
+			if (parameter_value == evtype_LineInput) {
+				glk_request_line_event_uni(win.glk_ref, buffer2 + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
+			}
+			if (parameter_value == evtype_CharInput) {
+				glk_request_char_event(win.glk_ref);
+			}
+		}
+	}
+	rfalse;
+];
+
+[ MANUALLY_ECHO_LINE_INPUT_R;
+	! Manually echo the command if required
+	if (parameter_value == evtype_LineInput && BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
+		WindowEchoBuffer(current_glk_event-->GLK_EVENT_WINDOW_SF);
+	}
+	rfalse;
+];
+
+Array UnicodeWhitespace --> 133 160 5760 8232 8233 8239 8287 12288;
+Constant UnicodeWhitespaceLen = 8;
+[ NORMALISE_LINE_INPUT_R buf chr ix len win;
+	if (parameter_value == evtype_LineInput) {
+		! Normalise whitespace
+		win = current_glk_event-->GLK_EVENT_WINDOW_SF;
+		buf = win.line_input_buffer_addr;
+		len = win.line_input_buffer_curlen;
+		for (ix = 1: ix <= len: ix++) {
+			chr = buf-->ix;
+			if ((chr <= 32) || (((chr >= 8192) && (chr <= 8202))))
+				buf-->ix = 32;
+			else {
+				@binarysearch chr WORDSIZE UnicodeWhitespace WORDSIZE UnicodeWhitespaceLen 0 0 chr;
+				if (chr) {
+					buf-->ix = 32;
+				}
+			}
+		}
+	}
+	rfalse;
+];
+
 @ To handle events we intercept the `glk_select` function. This allows us to handle
 events early and consistently.
 
 =
 [ glk_select event_struct;
-	! Disable rules debugging because it crashes if keyboard input events are pending
-	@push debug_rules; @push say__p; @push say__pc;
-	debug_rules = false; ClearParagraphing(1);
-
-	! Run the before waiting for the player's input rules
-	FollowRulebook(BEFORE_INPUT_RB, 0, true);
-
 	! Call the real glk_select
 	@push event_struct;
 	@glk 192 1 0;
 
 	GLK_EVENT_TY_From_Struct(current_glk_event, event_struct);
 
-	! Run the glk event handling rules, and rerun them if the event was replaced
+	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
+	@push debug_rules; @push say__p; @push say__pc;
+	debug_rules = false; ClearParagraphing(1);
 	do {
 		glk_event_handling_status = GLK_EVENT_HANDLING_ACTIVE;
 		FollowRulebook(GLK_EVENT_HANDLING_RB, current_glk_event-->GLK_EVENT_TYPE_SF, true);
 	} until (glk_event_handling_status == GLK_EVENT_HANDLING_ACTIVE);
 	glk_event_handling_status = GLK_EVENT_HANDLING_INACTIVE;
-
 	@pull say__pc; @pull say__p; @pull debug_rules;
 
 	GLK_EVENT_TY_To_Struct(current_glk_event, event_struct);
@@ -618,7 +680,7 @@ requested.
 	@glk 211 1 0;
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
-		win_obj.text_input_status = win_obj.text_input_status + 4;
+		win_obj.text_input_status = win_obj.text_input_status - 4;
 	}
 	return 0;
 ];
@@ -632,7 +694,7 @@ requested.
 	@glk 209 2 0;
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
-		win_obj.text_input_status = win_obj.text_input_status + 4;
+		win_obj.text_input_status = win_obj.text_input_status - 4;
 		win_obj.line_input_buffer_curlen = event_struct-->2;
 	}
 	return 0;
@@ -827,10 +889,7 @@ input requests.
 			glk_cancel_line_event(win.glk_ref);
 			! Manually echo the command if required
 			if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho && no_input_echoing == 0) {
-				glk_set_style(style_Input);
-				glk_put_buffer_uni(win.line_input_buffer_addr, win.line_input_buffer_curlen);
-				glk_set_style(style_Normal);
-				glk_put_char(10); ! newline
+				WindowEchoBuffer(win);
 			}
 			rtrue;
 		}

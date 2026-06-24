@@ -103,16 +103,14 @@ And just for fun, this time we'll make the grid prettier, too; but this will wor
 	
 	LC50 is a concentration that varies. LC50 is 300.0ppm. [Concentration at which 50 percent of test subjects die of exposure, usually expressed in terms of time and body weight; in our LC50 these are factored in for the player's weight for one minute.]
 	
-	Include Basic Screen Effects by Emily Short.
-	
 	To say state of (space - a room):
-		if the current concentration of space is less than TLV, say blue letters;
-		if the current concentration of space is TLV, say blue letters;
-		if the current concentration of space is greater than TLV, say green letters;
-		if the current concentration of space is greater than TLV-STEL, say yellow letters;
-		if the current concentration of space is greater than TLV-C, say red letters;
+		if the current concentration of space is less than TLV, say basic blue letters;
+		if the current concentration of space is TLV, say basic blue letters;
+		if the current concentration of space is greater than TLV, say basic green letters;
+		if the current concentration of space is greater than TLV-STEL, say basic yellow letters;
+		if the current concentration of space is greater than TLV-C, say basic red letters;
 		say "[unicode square with diagonal crosshatch fill]";
-		say default letters;
+		say default colours;
 		say "[unicode box drawings light vertical]".
 	
 	Test me with "z / z / z / z / z / z / z / z".

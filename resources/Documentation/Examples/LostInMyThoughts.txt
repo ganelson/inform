@@ -20,6 +20,7 @@ Now all we need to do is create an event handler, and then start the timer. 500m
 
 	{**}Glk event handling rule for a timer event:
 		increase the time of day by 1 minute;
+		draw the status window;
 	
 	When play begins:
 		request timer events every 500 milliseconds.

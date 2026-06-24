@@ -4,8 +4,6 @@ Version 3 of Menus by Emily Short begins here.
 
 Use authorial modesty.
 
-Include Basic Screen Effects by Emily Short.
-
 Section 1
 
 Menu depth is a number that varies. Menu depth is 0.
@@ -23,18 +21,18 @@ Current menu is a table name that varies. The current menu is the Table of Sampl
 Current menu selection is a number that varies. Current menu selection is 1.
 
 Table of Menu Commands
-number	effect
-78	move down rule
-110	move down rule
-80	move up rule
-112	move up rule
-81	quit rule
-113	quit rule
-13	select rule
-32	select rule
-130	move down rule
-129	move up rule
-27	quit rule
+key	effect
+unicode "N"	move down rule
+unicode "n"	move down rule
+unicode "P"	move up rule
+unicode "p"	move up rule
+unicode "Q"	quit rule
+unicode "q"	quit rule
+return key	select rule
+unicode " "	select rule
+down key	move down rule
+up key	move up rule
+escape key	quit rule
 
 This is the quit rule:  
 	decrease the menu depth by 1;
@@ -66,27 +64,23 @@ This is the select rule:
 			let the temporary title be the current menu title;
 			now the current menu title is title entry;
 			now the endnode flag is 1;
-			redraw status line;
+			redraw the status window;
 			now the endnode flag is 0;
-			clear only the main screen;
+			clear the main window;
 			say "[variable letter spacing][description entry][paragraph break]";
 			pause the game;
 			now the current menu title is temporary title;
 			reprint the current menu;
 		end if;
 	end if.
-	
-
-To redraw status line:
-	(- DrawStatusLine(); -)
 
 Displaying is an activity.
 
 To reprint (selected menu - a table name):
-	redraw status line;
+	redraw the status window;
 	say fixed letter spacing;
 	let __index be 1;
-	clear only the main screen;
+	clear the main window;
 	repeat through selected menu
 	begin;
 		if __index is current menu selection, say " >"; otherwise say "  ";
@@ -100,7 +94,6 @@ To show menu contents:
 	let temporary depth be the menu depth;
 	let temporary menu be the current menu;
 	let temporary title be the current menu title;
-	let __x be 0;
 	let __index be 0;
 	while __index is not 1
 	begin;
@@ -113,8 +106,8 @@ To show menu contents:
 		end repeat;
 		now the current menu title is the temporary title; 
 		reprint current menu;
-		let __x be the chosen letter;
-		if __x is a number listed in the Table of Menu Commands
+		let __x be the next pressed key;
+		if __x is a key listed in the Table of Menu Commands
 		begin;
 			follow the effect entry; 
 			if temporary depth > menu depth
@@ -130,8 +123,8 @@ Rule for displaying (this is the basic menu contents rule):
 
 Rule for constructing the status line while displaying (this is the constructing status line while displaying rule):  
 	if the endnode flag is 0,
-		fill status bar with Table of Deep Menu Status;
-	otherwise fill status bar with Table of Shallow Menu Status; 
+		draw the status window with Table of Deep Menu Status;
+	otherwise draw the status window with Table of Shallow Menu Status; 
 	rule succeeds.
 
 Table of Shallow Menu Status
@@ -152,7 +145,7 @@ hint	used
 
 To say known hints from (hint booklet - table name):
 	let __index be 0;
-	clear only the main screen; 
+	clear the main window; 
 	repeat through hint booklet
 	begin;
 		increase __index by 1;
@@ -172,7 +165,7 @@ To say known hints from (hint booklet - table name):
 
 To say hints from (hint booklet - table name): 
 	let __index be 0;
-	clear only the main screen; 
+	clear the main window;
 	repeat through hint booklet
 	begin;
 		increase __index by 1;
@@ -193,15 +186,15 @@ This is the hint toggle rule:
 	let the temporary title be the current menu title;
 	now the current menu title is title entry;
 	now the endnode flag is 1;
-	redraw status line;
+	redraw the status window;
 	now the endnode flag is 0;
 	say known hints from the subtable entry; 
 	let __index be 0;
 	while __index < 1
 	begin;
-		let __x be the chosen letter;
-		if __x is 13 or __x is 31 or __x is 32, let __index be 1;
-		if __x is 72 or __x is 104, say hints from the subtable entry;
+		let __x be the next pressed key;
+		if __x is return key or __x is unicode " ", let __index be 1;
+		if __x is unicode "H" or __x is unicode "h", say hints from the subtable entry;
 	end while;
 	now the current menu title is temporary title.
 

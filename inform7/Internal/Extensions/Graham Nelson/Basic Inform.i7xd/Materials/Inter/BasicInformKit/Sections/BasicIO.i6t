@@ -30,16 +30,12 @@ paragraph control system.
 		if (Status_Window.glk_ref == 0) return;
 	#endif;
 	@push say__p; @push say__pc;
-	VM_MoveCursorInStatusLine(1, 1);
+	VM_WindowFocus(Status_Window);
+	VM_WindowSetCursor(Status_Window, 1, 1);
 	CarryOutActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	VM_MainWindow();
+	VM_WindowFocus(Main_Window);
 	ClearParagraphing(18);
 	@pull say__pc; @pull say__p;
-];
-
-[ DRAW_STATUS_WINDOW_R;
-	DrawStatusLine();
-	rfalse;
 ];
 
 ! A little helper text for getting the length of a value
@@ -59,8 +55,8 @@ Global status_window_table_value;
 		return;
 	}
 	rows = TableRows(tab);
-	VM_StatusLineHeight(rows);
-	VM_ClearWindow(Status_Window);
+	VM_WindowSetHeight(Status_Window, rows);
+	VM_WindowClear(Status_Window);
 	! Cache the column details in case we have a lot of rows
 	switch (tab-->0) {
 		1:
@@ -87,7 +83,8 @@ Global status_window_table_value;
 		if (col_num_left) {
 			status_window_table_value = (tab-->col_num_left)-->(row + COL_HSIZE);
 			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(tab, col_num_left, row))) {
-				VM_MoveCursorInStatusLine(row, 2);
+				VM_WindowSetCursor(Status_Window, row, 2);
+				
 				SayKindValuePair(col_kov_left, status_window_table_value);
 			}
 		}
@@ -96,7 +93,7 @@ Global status_window_table_value;
 			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(tab, col_num_right, row))) {
 				status_window_table_kov = col_kov_right;
 				chars = TEXT_TY_BlobAccess(status_window_table_temp_text, CHR_BLOB);
-				VM_MoveCursorInStatusLine(row, width - chars);
+				VM_WindowSetCursor(Status_Window, row, width - chars);
 				SayKindValuePair(col_kov_right, status_window_table_value);
 			}
 		}
@@ -105,7 +102,7 @@ Global status_window_table_value;
 			if ((status_window_table_value ~= TABLE_NOVALUE) || ~~(CheckTableEntryIsBlank(tab, col_num_middle, row))) {
 				status_window_table_kov = col_kov_middle;
 				chars = TEXT_TY_BlobAccess(status_window_table_temp_text, CHR_BLOB);
-				VM_MoveCursorInStatusLine(row, ((width - chars) / 2) + 1);
+				VM_WindowSetCursor(Status_Window, row, ((width - chars) / 2) + 1);
 				SayKindValuePair(col_kov_middle, status_window_table_value);
 			}
 		}

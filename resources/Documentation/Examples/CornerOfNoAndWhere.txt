@@ -44,6 +44,3 @@ Note that this example _only_ works if the Settings for it are set to the Z-mach
 	-)
 	
 	Test me with "w / e".
-
-More such modifications to the display behaviour are possible using an extension called `Basic Screen Effects`.
-

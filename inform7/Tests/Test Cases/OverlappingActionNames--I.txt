@@ -59,5 +59,4 @@
   [Rule "note object acquisitions rule" applies.]
   [Rule "notify score changes rule" applies.]
   [Rule "parse command rule" applies.]
-  >[Rule "draw the status window rule" applies.]
 > 
