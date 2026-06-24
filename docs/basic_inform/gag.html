@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">Basic Inform</a></li><li><b>Glulx and Glk</b></li></ul></div>
 <p class="purpose">Support for Glulx and Glk interpreter systems.</p>
 
-<ul class="toc"><li><a href="gag.html#SP2">&#167;2. Version numbering</a></li><li><a href="gag.html#SP3">&#167;3. Feature testing</a></li><li><a href="gag.html#SP4">&#167;4. Glk windows</a></li><li><a href="gag.html#SP7">&#167;7. Basic window functions</a></li><li><a href="gag.html#SP8">&#167;8. Glk events</a></li><li><a href="gag.html#SP10">&#167;10. Hyperlinks</a></li><li><a href="gag.html#SP13">&#167;13. Suspending input</a></li><li><a href="gag.html#SP14">&#167;14. Glk object recovery</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="gag.html#SP2">&#167;2. Version numbering</a></li><li><a href="gag.html#SP3">&#167;3. Feature testing</a></li><li><a href="gag.html#SP4">&#167;4. Glk windows</a></li><li><a href="gag.html#SP7">&#167;7. Glk events</a></li><li><a href="gag.html#SP11">&#167;11. Hyperlinks</a></li><li><a href="gag.html#SP14">&#167;14. Suspending input</a></li><li><a href="gag.html#SP15">&#167;15. External Files</a></li><li><a href="gag.html#SP18">&#167;18. Glk object recovery</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b> </p>
 
@@ -142,22 +142,9 @@ design some phrases to be platform agnostic (with Z-Machine windows).</p>
 <span class="plain-syntax">The boxed quotation window object is accessible to Inter as "Quote_Window".</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Basic window functions.</b>  Some basic Glk window functions will be supported out of the box, but others will
-require extensions.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section - Glk windows</span>
-
-<span class="plain-syntax">To focus (win - IO window)</span>
-<span class="plain-syntax">    (documented at ph_glkwindowfocus):</span>
-<span class="plain-syntax">    (- WindowFocus({win}); -).</span>
-
-<span class="plain-syntax">To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)</span>
-<span class="plain-syntax">    (documented at ph_glksetcursor):</span>
-<span class="plain-syntax">    (- WindowMoveCursor({win}, {col}, {row}); -).</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Glk events.</b>  Glk events can be handled with the glk event handling rules.</p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Glk events.</b>  Glk events are now represented with an I7 (block value) kind.
+They can be requested with the waiting for a Glk event activity, and handled with
+the glk event handling rules.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Glk events</span>
@@ -173,15 +160,15 @@ require extensions.</p>
 <span class="plain-syntax">To decide what glk event is (evtype - glk event type) glk event:</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).</span>
 
-<span class="plain-syntax">To decide what glk event is a/-- character event with (C - unicode character):</span>
+<span class="plain-syntax">To decide what glk event is a/-- character event for/of/with (C - unicode character):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, 0, MapUnicodeToGlkKeyCode({C})) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- character event with (C - unicode character) in (win - IO window)</span>
+<span class="plain-syntax">To decide what glk event is a/-- character event for/of/with (C - unicode character) in (win - IO window)</span>
 <span class="plain-syntax">    (documented at ph_glkcharacterevent):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_CharInput, {win}, MapUnicodeToGlkKeyCode({C})) -).</span>
 
-<span class="plain-syntax">To decide what glk event is a/-- line event with (T - text):</span>
+<span class="plain-syntax">To decide what glk event is a/-- line event for/of/with (T - text):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, 0, 0, 0, {-by-reference:T}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- line event with (T - text) in (win - IO window)</span>
+<span class="plain-syntax">To decide what glk event is a/-- line event for/of/with (T - text) in (win - IO window)</span>
 <span class="plain-syntax">    (documented at ph_glklineevent):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_LineInput, {win}, 0, 0, {-by-reference:T}) -).</span>
 
@@ -226,7 +213,45 @@ require extensions.</p>
 <span class="plain-syntax">To decide what text is the text of (ev - glk event)</span>
 <span class="plain-syntax">    (documented at ph_glkeventtextvalue):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Text({ev}, {-new: text}) -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The waiting for a glk event activity allows you to wait for a specific Glk event type. It is
+also designed such that calls to Glk events can be safely nested.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section - Requesting and handling events</span>
 
+<span class="plain-syntax">Waiting for a glk event of something is an activity on glk event types.</span>
+<span class="plain-syntax">The waiting for a glk event activity is accessible to Inter as "GLK_EVENT_WAITING_ACT".</span>
+
+<span class="plain-syntax">To wait for (evtype - glk event type):</span>
+<span class="plain-syntax">    (- GLK_EVENT_TY_Wait_For({evtype}); -).</span>
+
+<span class="plain-syntax">To wait for (evtype - glk event type) in (win - IO window):</span>
+<span class="plain-syntax">    (- GLK_EVENT_TY_Wait_For({evtype}, {win}); -).</span>
+
+<span class="plain-syntax">To decide what glk event is the next (evtype - glk event type) to occur:</span>
+<span class="plain-syntax">    (- GLK_EVENT_TY_Wait_For({evtype}, 0, 0, {-new: glk event}); -).</span>
+
+<span class="plain-syntax">To decide what glk event is the next (evtype - glk event type) to occur in (win - IO window):</span>
+<span class="plain-syntax">    (- GLK_EVENT_TY_Wait_For({evtype}, {win}, 0, {-new: glk event}); -).</span>
+
+<span class="plain-syntax">Before waiting for a glk event (this is the draw the status window before waiting for a Glk event rule):</span>
+<span class="plain-syntax">    draw the status window;</span>
+
+<span class="plain-syntax">The request keyboard input rule is listed last in the before waiting for a glk event rules.</span>
+<span class="plain-syntax">The request keyboard input rule translates into Inter as "REQUEST_KEYBOARD_INPUT_R".</span>
+
+<span class="plain-syntax">The manually echo line input rule is listed in the after waiting for a glk event rules.</span>
+<span class="plain-syntax">The manually echo line input rule translates into Inter as "MANUALLY_ECHO_LINE_INPUT_R".</span>
+
+<span class="plain-syntax">The normalise line input whitespace rule is listed in the after waiting for a glk event rules.</span>
+<span class="plain-syntax">The normalise line input whitespace rule translates into Inter as "NORMALISE_LINE_INPUT_R".</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  A couple of phrases for timer events</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">To request timer events every (N - number) milliseconds</span>
 <span class="plain-syntax">    (documented at ph_requesttimer):</span>
 <span class="plain-syntax">    (- glk_request_timer_events({N}); -).</span>
@@ -236,7 +261,8 @@ require extensions.</p>
 <span class="plain-syntax">    (- glk_request_timer_events(0); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And now the glk event handling rules themselves.</p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Events are handled within glk_select through the glk event handling rules.
+Note that these rules can be run more than once per waiting activity.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">The glk event handling rules is a glk event type based rulebook.</span>
@@ -254,11 +280,11 @@ require extensions.</p>
 <span class="plain-syntax">To replace current event with (ev - glk event):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).</span>
 
-<span class="plain-syntax">Glk event handling rule for a screen resize event (this is the redraw the status line rule):</span>
-<span class="plain-syntax">    follow the draw the status window rule;</span>
+<span class="plain-syntax">Glk event handling rule for a screen resize event (this is the redraw the status window after the screen is resized rule):</span>
+<span class="plain-syntax">    draw the status window;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.</p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.</p>
 <p>Hyperlink tags represent each kind of hyperlink that we might want to use.</p>
 <p>Hyperlink tokens then combine a hyperlink tag with a value.</p>
 </div>
@@ -284,7 +310,7 @@ require extensions.</p>
 <span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
 The hyperlink token will be automatically processed for the author.</p>
 <p>The hyperlink printing rules are for saying a hyperlink token (without
 actually generating a hyperlink).</p>
@@ -313,7 +339,7 @@ actually generating a hyperlink).</p>
 <span class="plain-syntax">    say "hyperlink token of [T]";</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And some built-in hyperlink tags:</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  And some built-in hyperlink tags:</p>
 <ul>
 <li>A command replacement hyperlink replaces the entire pending line input with
 a specified text and then submits it, as if the player pressed enter.</li>
@@ -333,7 +359,7 @@ other code you like.</li>
 <span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY); -).</span>
 
 <span class="plain-syntax">To say link to command (T - text):</span>
-<span class="plain-syntax">    say link to command replacement hyperlink token for T;</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
@@ -349,11 +375,12 @@ other code you like.</li>
 <span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY); -).</span>
 
 <span class="plain-syntax">To say link to type (T - text):</span>
-<span class="plain-syntax">    say link to command appendment hyperlink token for T;</span>
+<span class="plain-syntax">    (- HYPERLINK_TOKEN_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).</span>
 
 <span class="plain-syntax">Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):</span>
 <span class="plain-syntax">    suspend text input in the main window, without input echoing;</span>
-<span class="plain-syntax">    set the current line input of the main window to "[current line input of the main window] [value of outcome as a text]";</span>
+<span class="plain-syntax">    let current input be the current line input of the main window;</span>
+<span class="plain-syntax">    set the current line input of the main window to "[unless current input is empty][current input] [end if][value of outcome as a text]";</span>
 <span class="plain-syntax">    resume text input in the main window;</span>
 
 <span class="plain-syntax">Hyperlink printing rule for command appendment (this is the command appendment representation rule):</span>
@@ -393,7 +420,7 @@ other code you like.</li>
 <span class="plain-syntax">    say "null hyperlink token";</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Suspending and resuming input</span>
@@ -424,7 +451,61 @@ other code you like.</li>
 <span class="plain-syntax">    (- WindowBufferSet({w}, {-by-reference:t}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Glk object recovery.</b>  These rules are a low level system for managing Glk references. When a Glulx
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. External Files.</b>  Inform has a quirky level of support for file-handling, which comes out of what
+the Glulx virtual machine will support.</p>
+<p>See test case <code>BIP-Files-G</code>, which has no Z-machine counterpart.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Chapter - External Files</span>
+
+<span class="plain-syntax">Section 1 - Files of Text</span>
+
+<span class="plain-syntax">To write (T - text) to (FN - external file)</span>
+<span class="plain-syntax">    (documented at ph_writetext):</span>
+<span class="plain-syntax">    (- FileIO_PutContents({FN}, {T}, false); -).</span>
+<span class="plain-syntax">To append (T - text) to (FN - external file)</span>
+<span class="plain-syntax">    (documented at ph_appendtext):</span>
+<span class="plain-syntax">    (- FileIO_PutContents({FN}, {T}, true); -).</span>
+<span class="plain-syntax">To say text of (FN - external file)</span>
+<span class="plain-syntax">    (documented at ph_saytext):</span>
+<span class="plain-syntax">    (- FileIO_PrintContents({FN}); say__p = 1; -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  See test case <code>BIP-FilesOfTables-G</code>, which has no Z-machine counterpart.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section 2 - Files of Data</span>
+
+<span class="plain-syntax">To read (filename - external file) into (T - table name)</span>
+<span class="plain-syntax">    (documented at ph_readtable):</span>
+<span class="plain-syntax">    (- FileIO_GetTable({filename}, {T}); -).</span>
+<span class="plain-syntax">To write (filename - external file) from (T - table name)</span>
+<span class="plain-syntax">    (documented at ph_writetable):</span>
+<span class="plain-syntax">    (- FileIO_PutTable({filename}, {T}); -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  These are hardly used phrases which are difficult to test convincingly
+in our framework, since they defend against independent Inform programs
+simultaneously trying to access the same file.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section 3 - File Handling</span>
+
+<span class="plain-syntax">To decide if (filename - external file) exists</span>
+<span class="plain-syntax">    (documented at ph_fileexists):</span>
+<span class="plain-syntax">    (- (FileIO_Exists({filename}, false)) -).</span>
+<span class="plain-syntax">To decide if ready to read (filename - external file)</span>
+<span class="plain-syntax">    (documented at ph_fileready):</span>
+<span class="plain-syntax">    (- (FileIO_Ready({filename}, false)) -).</span>
+<span class="plain-syntax">To mark (filename - external file) as ready to read</span>
+<span class="plain-syntax">    (documented at ph_markfileready):</span>
+<span class="plain-syntax">    (- FileIO_MarkReady({filename}, true); -).</span>
+<span class="plain-syntax">To mark (filename - external file) as not ready to read</span>
+<span class="plain-syntax">    (documented at ph_markfilenotready):</span>
+<span class="plain-syntax">    (- FileIO_MarkReady({filename}, false); -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Glk object recovery.</b>  These rules are a low level system for managing Glk references. When a Glulx
 game restarts and restores, the current Glk IO state is not reset. All the old
 windows, sound channels etc. will be kept as they were, even though the game file
 might be expecting a different state. This extension allows Inform 7 game files
@@ -469,7 +550,7 @@ windows which should but currently do not.</p>
 <span class="plain-syntax">The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB".</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And the standard rules, which may be replaced by extensions.</p>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  And the standard rules, which may be replaced by extensions.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">The reset glk references for built in objects rule is listed first in the reset glk references rules.</span>

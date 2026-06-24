@@ -123,15 +123,11 @@ nav[role="progress"] ul li span.unlink {
 }
 
 nav[role="progress"] ul li a:visited {
-    color: #333
-}
-
-nav[role="progress"] ul li a:active {
-    font-weight: 700
+    color: #333;
 }
 
 nav[role="progress"] ul li a:hover {
-    color: #dd2c0d
+    color: #dd2c0d;
 }
 
 @media print {

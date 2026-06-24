@@ -36,24 +36,19 @@ body {
 	}
 }
 a.function-link:active, a.function-link:hover {
-	font-weight: 700
+	text-decoration: red solid underline;
+	background-color: lightblue;
 }
 
 a.internal:link, a.internal:visited {
     color: #22E; text-decoration-style: dotted; text-decoration-line: underline;
-}
-a.internal:active {
-    font-weight: 700
-}
-a.internal:hover {
-    font-weight: 700;
 }
 
 a.external:link, a.external:visited {
     color: #22E; text-decoration: none;
 }
 a.external:active {
-    font-weight: 700
+    font-weight: 700;
 }
 a.external:hover {
     font-weight: 700;

@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../kits.html">Kits</a></li><li><a href="index.html">Architecture32Kit</a></li><li><b>Glk</b></li></ul></div>
 <p class="purpose">Glk  Glk is a fully-featured input-output model, designed by Andrew Plotkin for use with the Glulx virtual machine, but not used only for that. All 32-bit Inform programs use Glk.</p>
 
-<ul class="toc"><li><a href="glk.html#SP1">&#167;1. Glk definitions</a></li><li><a href="glk.html#SP2">&#167;2. Glk/Glulx gestalts</a></li><li><a href="glk.html#SP3">&#167;3. Glk object recovery</a></li><li><a href="glk.html#SP5">&#167;5. Glk windows</a></li><li><a href="glk.html#SP6">&#167;6. Glk events</a></li><li><a href="glk.html#SP12">&#167;12. Glk character event function keycodes</a></li><li><a href="glk.html#SP13">&#167;13. Tracking input requests</a></li><li><a href="glk.html#SP14">&#167;14. Hyperlinks</a></li><li><a href="glk.html#SP17">&#167;17. Suspending and resuming text input</a></li><li><a href="glk.html#SP19">&#167;19. Debugging verb</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="glk.html#SP1">&#167;1. Glk definitions</a></li><li><a href="glk.html#SP2">&#167;2. Glk/Glulx gestalts</a></li><li><a href="glk.html#SP3">&#167;3. Glk object recovery</a></li><li><a href="glk.html#SP5">&#167;5. Glk windows</a></li><li><a href="glk.html#SP6">&#167;6. Glk events</a></li><li><a href="glk.html#SP11">&#167;11. Waiting for Glk events</a></li><li><a href="glk.html#SP13">&#167;13. Glk character event function keycodes</a></li><li><a href="glk.html#SP14">&#167;14. Tracking input requests</a></li><li><a href="glk.html#SP15">&#167;15. Hyperlinks</a></li><li><a href="glk.html#SP18">&#167;18. Suspending and resuming text input</a></li><li><a href="glk.html#SP20">&#167;20. Debugging verb</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Glk definitions.</b>  General Glk definitions.</p>
@@ -138,7 +138,6 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_scriptfref</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_scriptstr</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_savestr</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_foregroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gg_backgroundchan</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMAND_STREAM</span><span class="plain-syntax">;</span>
@@ -243,45 +242,16 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">WindowFocus</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">glk_set_window</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsClosed"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowFocus: Cannot perform this Glk window operation on a closed window."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        }</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WindowEchoBuffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_set_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">style_Input</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_uni</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_put_buffer_uni</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_addr</span><span class="plain-syntax">, </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_curlen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsNothing"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowFocus: Cannot perform this Glk window operation on nothing."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_put_buffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_addr</span><span class="plain-syntax">, </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_curlen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">WindowMoveCursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_window_type</span><span class="plain-syntax"> == </span><span class="identifier-syntax">wintype_TextGrid</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">col</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">col</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                }</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">row</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">glk_window_move_cursor</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">row</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                }</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowBadGridCursor"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowMoveCursor: Grid window cursor row must be &gt;= 1."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                }</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsWrongType"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowMoveCursor: Wrong window type for this Glk window operation."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsClosed"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowMoveCursor: Cannot perform this Glk window operation on a closed window."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsNothing"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowMoveCursor: Cannot perform this Glk window operation on nothing."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_set_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">style_Normal</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_put_char</span><span class="plain-syntax">(10); </span><span class="comment-syntax">! newline</span>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
@@ -350,15 +320,14 @@ is used instead.</p>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Say</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SayKindValuePair</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_TYPE_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_MouseInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" ("</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">evtype</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"character event for "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">glk_put_char_uni</span><span class="plain-syntax">(</span><span class="identifier-syntax">MapGlkKeyCodeToUnicode</span><span class="plain-syntax">(</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"line event for ~"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TEXT_SF</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">(</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TEXT_SF</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                }</span>
@@ -372,16 +341,22 @@ is used instead.</p>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">evtype_MouseInput</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"mouse event for "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_window_type</span><span class="plain-syntax"> == </span><span class="identifier-syntax">wintype_TextGrid</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">), </span><span class="string-syntax">", "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"row "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">), </span><span class="string-syntax">" and column "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">, </span><span class="string-syntax">", "</span><span class="plain-syntax">, </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"x "</span><span class="plain-syntax">, </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">, </span><span class="string-syntax">" and y "</span><span class="plain-syntax">, </span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE2_SF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">SayKindValuePair</span><span class="plain-syntax">(</span><span class="identifier-syntax">HYPERLINK_TAG_TY</span><span class="plain-syntax">, ((</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"hyperlink event for "</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">HYPERLINK_TOKEN_TY_Say</span><span class="plain-syntax">(</span><span class="identifier-syntax">ev</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_VALUE1_SF</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">") in "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" in "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">SayKindValuePair</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_TYPE_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" glk event"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -592,31 +567,118 @@ new event is a keyboard event.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  To handle events we intercept the <code>glk_select</code> function. This allows us to handle
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Waiting for Glk events.</b>  We provide an activity to allow the author to wait for a particular Glk event type.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_glk_window</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">GLK_EVENT_TY_Wait_For</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> </span><span class="identifier-syntax">window</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">return_event</span><span class="plain-syntax">  </span><span class="identifier-syntax">allocated</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! If a window was provided for a non-windowed event, clear it</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">evtype</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_MouseInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_Hyperlink</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">window</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">current_glk_window</span><span class="plain-syntax"> = </span><span class="identifier-syntax">window</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Allocate an event_struct if it was not provided</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~</span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">allocated</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        @</span><span class="identifier-syntax">malloc</span><span class="plain-syntax"> </span><span class="constant-syntax">16</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Run the activity (but disable rules debugging because it crashes if keyboard input events are pending)</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="identifier-syntax">ClearParagraphing</span><span class="plain-syntax">(1);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BeginActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_WAITING_ACT</span><span class="plain-syntax">, </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~(</span><span class="identifier-syntax">ForActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_WAITING_ACT</span><span class="plain-syntax">, </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="reserved-syntax">true</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">glk_select</span><span class="plain-syntax">(</span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">--&gt;0 == </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">window</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax"> || </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">--&gt;1 == </span><span class="identifier-syntax">window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">GLK_EVENT_TY_From_Struct</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EndActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_WAITING_ACT</span><span class="plain-syntax">, </span><span class="identifier-syntax">evtype</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allocated</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        @</span><span class="identifier-syntax">mfree</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">return_event</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">GLK_EVENT_TY_Copy</span><span class="plain-syntax">(</span><span class="identifier-syntax">return_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">return_event</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">REQUEST_KEYBOARD_INPUT_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">active_window</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_glk_window</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_window</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">INPUT_STATUS_ACTIVE_LINE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">glk_request_line_event_uni</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">buffer2</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">, </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_CharInput</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">glk_request_char_event</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">MANUALLY_ECHO_LINE_INPUT_R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Manually echo the command if required</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">MANUAL_INPUT_ECHOING_CFGF</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">Cached_Glk_Gestalts</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">gestalt_LineInputEcho</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WindowEchoBuffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnicodeWhitespace</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">133</span><span class="plain-syntax"> </span><span class="constant-syntax">160</span><span class="plain-syntax"> </span><span class="constant-syntax">5760</span><span class="plain-syntax"> </span><span class="constant-syntax">8232</span><span class="plain-syntax"> </span><span class="constant-syntax">8233</span><span class="plain-syntax"> </span><span class="constant-syntax">8239</span><span class="plain-syntax"> </span><span class="constant-syntax">8287</span><span class="plain-syntax"> </span><span class="constant-syntax">12288</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnicodeWhitespaceLen</span><span class="plain-syntax"> = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">NORMALISE_LINE_INPUT_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">buf</span><span class="plain-syntax"> </span><span class="identifier-syntax">chr</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">evtype_LineInput</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">! Normalise whitespace</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_WINDOW_SF</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">buf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_addr</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_curlen</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">len</span><span class="plain-syntax">: </span><span class="identifier-syntax">ix</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">chr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">buf</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">chr</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">32</span><span class="plain-syntax">) || (((</span><span class="identifier-syntax">chr</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">8192</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">chr</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">8202</span><span class="plain-syntax">))))</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">buf</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                @</span><span class="identifier-syntax">binarysearch</span><span class="plain-syntax"> </span><span class="identifier-syntax">chr</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnicodeWhitespace</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnicodeWhitespaceLen</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">chr</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">chr</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">buf</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  To handle events we intercept the <code>glk_select</code> function. This allows us to handle
 events early and consistently.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">glk_select</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! Disable rules debugging because it crashes if keyboard input events are pending</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="identifier-syntax">ClearParagraphing</span><span class="plain-syntax">(1);</span>
-
-<span class="plain-syntax">    </span><span class="comment-syntax">! Run the before waiting for the player's input rules</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">BEFORE_INPUT_RB</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
-
 <span class="plain-syntax">    </span><span class="comment-syntax">! Call the real glk_select</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">192</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">GLK_EVENT_TY_From_Struct</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">! Run the glk event handling rules, and rerun them if the event was replaced</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="identifier-syntax">ClearParagraphing</span><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_ACTIVE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">GLK_EVENT_HANDLING_RB</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">GLK_EVENT_TYPE_SF</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">until</span><span class="plain-syntax"> (</span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> == </span><span class="identifier-syntax">GLK_EVENT_HANDLING_ACTIVE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">glk_event_handling_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GLK_EVENT_HANDLING_INACTIVE</span><span class="plain-syntax">;</span>
-
 <span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">GLK_EVENT_TY_To_Struct</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_glk_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">);</span>
@@ -624,7 +686,7 @@ events early and consistently.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Glk character event function keycodes.</b>  These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Glk character event function keycodes.</b>  These functions allow us to map the Glk function keycodes to our platform-agnostic unicode values.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FunctionKeyCodesCount</span><span class="plain-syntax"> = </span><span class="constant-syntax">25</span><span class="plain-syntax">;</span>
@@ -664,7 +726,7 @@ events early and consistently.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Tracking input requests.</b>  These replaced versions of the glk versions track which types of input have been
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Tracking input requests.</b>  These replaced versions of the glk versions track which types of input have been
 requested.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -673,7 +735,7 @@ requested.</p>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">211</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FindGlkWindowFromRefNum</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
@@ -687,7 +749,7 @@ requested.</p>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">glk</span><span class="plain-syntax"> </span><span class="constant-syntax">209</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FindGlkWindowFromRefNum</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">text_input_status</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">win_obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_curlen</span><span class="plain-syntax"> = </span><span class="identifier-syntax">event_struct</span><span class="plain-syntax">--&gt;2;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -766,7 +828,7 @@ requested.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.
 We combine a hyperlink tag with a payload in one 32-bit value. The tag is stored
 in the lowest bits, and the payload above it.</p>
 <p><code>CALCULATE_HYPERLINK_TAG_WIDTH_R</code> is a <code>before starting the virtual machine</code> rule,
@@ -798,7 +860,7 @@ masks and widths accordingly.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And now the implementation functions for the hyperlink token kind.</p>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  And now the implementation functions for the hyperlink token kind.</p>
 <p><code>HYPERLINK_TOKEN_TY_New</code> combines the tag and value into one 32 bit hyperlink ID,
 checking that the value is not a pointer to ephemeral data (on the stack). if
 <code>make_link</code> is true then it will also call <code>glk_set_hyperlink</code>.</p>
@@ -853,7 +915,7 @@ up into its parts again.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  <code>HANDLE_HYPERLINK_R</code> processes calls the hyperlink handling rules for the
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  <code>HANDLE_HYPERLINK_R</code> processes calls the hyperlink handling rules for the
 chosen hyperlink token.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -866,7 +928,7 @@ chosen hyperlink token.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Suspending and resuming text input.</b>  These functions allow the author to suspend and then resume a window's text
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Suspending and resuming text input.</b>  These functions allow the author to suspend and then resume a window's text
 input requests.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -880,10 +942,7 @@ input requests.</p>
 <span class="plain-syntax">            </span><span class="identifier-syntax">glk_cancel_line_event</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="comment-syntax">! Manually echo the command if required</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">MANUAL_INPUT_ECHOING_CFGF</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">Cached_Glk_Gestalts</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">gestalt_LineInputEcho</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">no_input_echoing</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">glk_set_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">style_Input</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">glk_put_buffer_uni</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_addr</span><span class="plain-syntax">, </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">line_input_buffer_curlen</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">glk_set_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">style_Normal</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">glk_put_char</span><span class="plain-syntax">(10); </span><span class="comment-syntax">! newline</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WindowEchoBuffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
@@ -907,7 +966,7 @@ input requests.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  These two phrases allow you to get and set the current line input of a window,
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  These two phrases allow you to get and set the current line input of a window,
 converting between Inform 7's texts, and the I6 buffers of the Glk API.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -975,7 +1034,7 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.</p>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Debugging verb.</b>  This powers the GLKLIST command, when there's a command parser to read it.</p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Debugging verb.</b>  This powers the GLKLIST command, when there's a command parser to read it.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">GlkDebuggingList</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>

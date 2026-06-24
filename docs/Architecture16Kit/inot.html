@@ -12,25 +12,6 @@
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-MathJax = {
-    options: {
-    	skipHtmlTags: {'[-]': ['pre']},
-    	processHtmlClass: 'mathjax_process'
-    },
-	loader: {load: ['[tex]/texhtml']},
-  	tex: {
-		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
-    	packages: {'[+]': ['texhtml']},
-    	allowTexHTML: true
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -70,7 +51,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../kits.html">Kits</a></li><li><a href="index.html">Architecture16Kit</a></li><li><b>Input Output</b></li></ul></div>
 <p class="purpose">Input Output  Access to the keyboard and to textual windows.</p>
 
-<ul class="toc"><li><a href="inot.html#SP1">&#167;1. Transcript support</a></li><li><a href="inot.html#SP2">&#167;2. Dictionary Parameters</a></li><li><a href="inot.html#SP3">&#167;3. Extracting Verb Numbers</a></li><li><a href="inot.html#SP4">&#167;4. Variables and Arrays</a></li><li><a href="inot.html#SP5">&#167;5. Dictionary words</a></li><li><a href="inot.html#SP6">&#167;6. Keyboard Input</a></li><li><a href="inot.html#SP7">&#167;7. Buffer Functions</a></li><li><a href="inot.html#SP8">&#167;8. Dictionary Functions</a></li><li><a href="inot.html#SP9">&#167;9. Command Tables</a></li><li><a href="inot.html#SP10">&#167;10. Action functions</a></li><li><a href="inot.html#SP11">&#167;11. The Screen</a></li><li><a href="inot.html#SP12">&#167;12. Window Colours</a></li><li><a href="inot.html#SP13">&#167;13. Main Window</a></li><li><a href="inot.html#SP14">&#167;14. Status Line</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="inot.html#SP1">&#167;1. Transcript support</a></li><li><a href="inot.html#SP2">&#167;2. Dictionary Parameters</a></li><li><a href="inot.html#SP3">&#167;3. Extracting Verb Numbers</a></li><li><a href="inot.html#SP4">&#167;4. Variables and Arrays</a></li><li><a href="inot.html#SP5">&#167;5. Dictionary words</a></li><li><a href="inot.html#SP6">&#167;6. Keyboard Input</a></li><li><a href="inot.html#SP7">&#167;7. Buffer Functions</a></li><li><a href="inot.html#SP8">&#167;8. Dictionary Functions</a></li><li><a href="inot.html#SP9">&#167;9. Command Tables</a></li><li><a href="inot.html#SP10">&#167;10. Action functions</a></li><li><a href="inot.html#SP11">&#167;11. The Screen</a></li><li><a href="inot.html#SP12">&#167;12. Window Colours</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Transcript support.</b>  This is a mode in which the transcript of text in the main window is being
@@ -186,8 +167,6 @@ the dictionary table, but mid-word) really do not matter.</p>
 <li><code>VM_KeyChar()</code> waits for a key to be pressed and then returns the
 character chosen as a ZSCII character. Function keys are mapped to unicode
 characters so that Z-Machine and Glulxe key input can be handled the same.</li>
-<li><code>VM_KeyDelay(N)</code> waits up to \INWEBMATH(N/10\INWEBMATH) seconds for a key to be pressed,
-returning the ZSCII character if so, or 0 if not.</li>
 <li><code>VM_ReadKeyboard(b, t)</code> reads a whole newline-terminated command
 into the buffer <code>b</code>. If the <code>t</code> parser table is specified then it also parses it.</li>
 </ul>
@@ -195,10 +174,9 @@ into the buffer <code>b</code>. If the <code>t</code> parser table is specified 
 to document all of that.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyChar</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">  </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! Run the before waiting for the player's input rules</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">BEFORE_INPUT_RB</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">) @</span><span class="identifier-syntax">set_window</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyChar</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Draw the status line</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DrawStatusLine</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">read_char</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">key</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="constant-syntax">8</span><span class="plain-syntax">: </span><span class="identifier-syntax">key</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KEY_DELETE</span><span class="plain-syntax">;</span>
@@ -228,17 +206,9 @@ to document all of that.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyDelay</span><span class="plain-syntax"> </span><span class="identifier-syntax">tenths</span><span class="plain-syntax">  </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! Run the before waiting for the player's input rules</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">BEFORE_INPUT_RB</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">read_char</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">tenths</span><span class="plain-syntax"> </span><span class="identifier-syntax">VM_KeyDelay_Interrupt</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_KeyDelay_Interrupt</span><span class="plain-syntax">; </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">; ];</span>
-
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ReadKeyboard</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_table</span><span class="plain-syntax"> </span><span class="identifier-syntax">ix</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">! Run the before waiting for the player's input rules</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">BEFORE_INPUT_RB</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">! Draw the status line</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DrawStatusLine</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">read</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> ( </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax"> : </span><span class="identifier-syntax">ix</span><span class="plain-syntax"> &lt;= (</span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;1) + </span><span class="constant-syntax">1</span><span class="plain-syntax"> : </span><span class="identifier-syntax">ix</span><span class="plain-syntax">++ )</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (((</span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax">) &lt; </span><span class="constant-syntax">32</span><span class="plain-syntax">) || ((</span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax">) == </span><span class="constant-syntax">160</span><span class="plain-syntax">)) </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ix</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
@@ -369,10 +339,17 @@ in Z-Machine <code>0</code> is the main window and <code>1</code> is the status 
 fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.</p>
-<p><code>VM_ClearWindow</code>, <code>VM_WindowHeight</code>, and <code>VM_WindowWidth</code> opperate on only the
+<p><code>VM_WindowClear</code>, <code>VM_WindowHeight</code>, and <code>VM_WindowWidth</code> opperate on only the
 specified window.</p>
+<p><code>VM_WindowSetCursor</code> uses 1-based co-ordinates.</p>
+<p><code>VM_WindowSetHeight</code> sets the height of the status window.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_window</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursor_col</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursor_row</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ClearScreen</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">erase_window</span><span class="plain-syntax"> </span><span class="constant-syntax">-2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
@@ -385,8 +362,27 @@ specified window.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENWCHARS</span><span class="plain-syntax">-&gt;0;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ClearWindow</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowClear</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">erase_window</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowFocus</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_window</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">win</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">current_window</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        @</span><span class="identifier-syntax">set_window</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> == </span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">roman</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">reverse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">! Use a stored cursor</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">statuswin_cursor_row</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                @</span><span class="identifier-syntax">set_cursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursor_row</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursor_col</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">statuswin_cursor_col</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">statuswin_cursor_row</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowHeight</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
@@ -395,6 +391,41 @@ specified window.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowSetCursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> == </span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsWrongType"</span><span class="plain-syntax">, </span><span class="string-syntax">"VM_WindowSetCursor: Wrong window type for this window operation."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">col</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">col</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">row</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_window</span><span class="plain-syntax"> == </span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">statuswin_cursor_col</span><span class="plain-syntax"> = </span><span class="identifier-syntax">col</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">statuswin_cursor_row</span><span class="plain-syntax"> = </span><span class="identifier-syntax">row</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                @</span><span class="identifier-syntax">set_cursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowBadGridCursor"</span><span class="plain-syntax">, </span><span class="string-syntax">"VM_WindowSetCursor: Grid window cursor row must be &gt;= 1."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowSetHeight</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> == </span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"VM_WindowSetHeight"</span><span class="plain-syntax">, </span><span class="string-syntax">"VM_WindowSetHeight: Wrong window type for this window operation."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            @</span><span class="identifier-syntax">split_window</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> = </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 
@@ -421,60 +452,8 @@ colours have been set.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Main Window.</b>  The part of the screen on which commands and responses are printed, which
-ordinarily occupies almost all of the screen area.</p>
-<p><code>VM_MainWindow()</code> switches printing back from another window, usually the
-status line, to the main window. Note that the Z-machine implementation
-emulates the Glulx model of window rather than text colours.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_MainWindow</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">roman</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">set_window</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Status Line.</b>  Despite the name, the status line need not be a single line at the top of
-the screen: that's only the conventional default arrangement. It can expand
-to become the equivalent of an old-fashioned VT220 terminal, with menus
-and grids and mazes displayed lovingly in character graphics, or it can
-close up to invisibility.</p>
-<p><code>VM_StatusLineHeight(n)</code> sets the status line to have a height of <code>n</code> lines
-of type. (The width of the status line is always the width of the whole
-screen, and the position is always at the top, so the height is the only
-controllable aspect.) The \INWEBMATH(n=0\INWEBMATH) case makes the status line disappear.</p>
-<p><code>VM_MoveCursorInStatusLine(line, column)</code> switches printing to the status line,
-positioning the &quot;cursor&quot; — the position at which printing will begin —
-at the given character grid position \INWEBMATH((line, column)\INWEBMATH). Line 1 represents the top
-line; line 2 is underneath, and so on; columns are similarly numbered from
-1 at the left.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_MoveCursorInStatusLine</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">column</span><span class="plain-syntax">; </span><span class="comment-syntax">! 1-based position on text grid</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~</span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">         @</span><span class="identifier-syntax">set_window</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">         </span><span class="reserved-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">reverse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">line</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">line</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">column</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">set_cursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">column</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_StatusLineHeight</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">  </span><span class="identifier-syntax">wx</span><span class="plain-syntax"> </span><span class="identifier-syntax">wy</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax"> </span><span class="identifier-syntax">charh</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">height</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">split_window</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_cursize</span><span class="plain-syntax"> = </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Character Set</span><a href="chrst.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Capabilities</span><a href="cpblt.html">cpblt</a></li><li class="progresssection"><span class="fullname-popup">Startup</span><a href="strtp.html">strtp</a></li><li class="progresssection"><span class="fullname-popup">State</span><a href="stt.html">stt</a></li><li class="progresssection"><span class="fullname-popup">Mathematics</span><a href="mthmt.html">mthmt</a></li><li class="progresssection"><span class="fullname-popup">Character Set</span><a href="chrst.html">chrst</a></li><li class="progresscurrent"><span class="current-fullname-popup">Input Output</span>inot</li><li class="progresssection"><span class="fullname-popup">File Input Output</span><a href="fio.html">fio</a></li><li class="progresssection"><span class="fullname-popup">Veneer</span><a href="vnr.html">vnr</a></li><li class="progressnext"><span class="nav-popup">File Input Output</span><a href="fio.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Character Set</span><a href="chrst.html">&#10094;</a></li><li class="progresssection"><span class="fullname-popup">Capabilities</span><a href="cpblt.html">cpblt</a></li><li class="progresssection"><span class="fullname-popup">Startup</span><a href="strtp.html">strtp</a></li><li class="progresssection"><span class="fullname-popup">State</span><a href="stt.html">stt</a></li><li class="progresssection"><span class="fullname-popup">Mathematics</span><a href="mthmt.html">mthmt</a></li><li class="progresssection"><span class="fullname-popup">Character Set</span><a href="chrst.html">chrst</a></li><li class="progresscurrent"><span class="current-fullname-popup">Input Output</span>inot</li><li class="progresssection"><span class="fullname-popup">Veneer</span><a href="vnr.html">vnr</a></li><li class="progressnext"><span class="nav-popup">Veneer</span><a href="vnr.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

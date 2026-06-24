@@ -899,6 +899,7 @@ stream will be an external file rather than the screen when this routine
 is called.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TablePrint</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> </span><span class="identifier-syntax">tc</span><span class="plain-syntax"> </span><span class="identifier-syntax">kov</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1:</span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;0:</span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">; </span><span class="comment-syntax">! Address of column table</span>
@@ -924,11 +925,13 @@ is called.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! TARGET_GLULX</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Read Table from File.</b>  And this is how we unserialise again. It makes sense only on Glulx.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TableRead</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">auxf</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax"> </span><span class="identifier-syntax">maxrow</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> </span><span class="identifier-syntax">sgn</span><span class="plain-syntax"> </span><span class="identifier-syntax">dg</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">tc</span><span class="plain-syntax"> </span><span class="identifier-syntax">kov</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">col</span><span class="plain-syntax">=1:</span><span class="identifier-syntax">col</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;0:</span><span class="identifier-syntax">col</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">col</span><span class="plain-syntax">; </span><span class="comment-syntax">! Address of column table</span>
@@ -1014,6 +1017,7 @@ is called.</p>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">PrintTableName</span><span class="plain-syntax">) </span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="string-syntax">"'.^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! TARGET_GLULX</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Debugging.</b>  Routines to print the state of a table, for debugging purposes only.</p>

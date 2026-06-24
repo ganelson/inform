@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">Basic Inform</a></li><li><b>Phrase Definitions</b></li></ul></div>
 <p class="purpose">The phrases making up the basic Inform language, and in terms of which all other phrases and rules are defined.</p>
 
-<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP15">&#167;15. Variables</a></li><li><a href="phdf.html#SP18">&#167;18. Arithmetic</a></li><li><a href="phdf.html#SP24">&#167;24. Control structures</a></li><li><a href="phdf.html#SP33">&#167;33. Values</a></li><li><a href="phdf.html#SP36">&#167;36. Text</a></li><li><a href="phdf.html#SP42">&#167;42. Adaptive text</a></li><li><a href="phdf.html#SP43">&#167;43. Data Structures</a></li><li><a href="phdf.html#SP46">&#167;46. Lists</a></li><li><a href="phdf.html#SP52">&#167;52. Functional Programming</a></li><li><a href="phdf.html#SP54">&#167;54. Rulebooks and Activities</a></li><li><a href="phdf.html#SP58">&#167;58. Basic IO</a></li><li><a href="phdf.html#SP64">&#167;64. External Files</a></li><li><a href="phdf.html#SP67">&#167;67. Use Options</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP15">&#167;15. Variables</a></li><li><a href="phdf.html#SP18">&#167;18. Arithmetic</a></li><li><a href="phdf.html#SP24">&#167;24. Control structures</a></li><li><a href="phdf.html#SP33">&#167;33. Values</a></li><li><a href="phdf.html#SP36">&#167;36. Text</a></li><li><a href="phdf.html#SP42">&#167;42. Adaptive text</a></li><li><a href="phdf.html#SP43">&#167;43. Data Structures</a></li><li><a href="phdf.html#SP46">&#167;46. Lists</a></li><li><a href="phdf.html#SP52">&#167;52. Functional Programming</a></li><li><a href="phdf.html#SP54">&#167;54. Rulebooks and Activities</a></li><li><a href="phdf.html#SP58">&#167;58. Basic IO</a></li><li><a href="phdf.html#SP64">&#167;64. Use Options</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  All phrases of the Inform language itself are defined here. The Standard
@@ -1904,13 +1904,23 @@ there's no decision.</p>
 <span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
 
 <span class="plain-syntax">To clear (win - IO window):</span>
-<span class="plain-syntax">    (- VM_ClearWindow({win}); -).</span>
+<span class="plain-syntax">    (- VM_WindowClear({win}); -).</span>
+
+<span class="plain-syntax">To focus (win - IO window):</span>
+<span class="plain-syntax">    (- VM_WindowFocus({win}); -).</span>
 
 <span class="plain-syntax">To decide what number is the height of (win - IO window):</span>
 <span class="plain-syntax">    (- VM_WindowHeight({win}) -).</span>
 
 <span class="plain-syntax">To decide what number is the width of (win - IO window):</span>
 <span class="plain-syntax">    (- VM_WindowWidth({win}) -).</span>
+
+<span class="plain-syntax">To set the height of (win - IO window) to (rows - number):</span>
+<span class="plain-syntax">    (- VM_WindowSetHeight({win}, {rows}); -).</span>
+
+<span class="plain-syntax">To set (win - IO window) cursor to row (row - a number) and/-- column/col (col - a number)</span>
+<span class="plain-syntax">    (documented at ph_glksetcursor):</span>
+<span class="plain-syntax">    (- VM_WindowSetCursor({win}, {row}, {col}); -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Customising the status line.</p>
@@ -1918,13 +1928,10 @@ there's no decision.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 2 - The Status Window</span>
 
-<span class="plain-syntax">To set the status bar/line/window to (rows - number) row/rows:</span>
-<span class="plain-syntax">    (- VM_StatusLineHeight({rows}); -).</span>
+<span class="plain-syntax">To draw/redraw the status window/bar/line:</span>
+<span class="plain-syntax">    (- DrawStatusLine(); -).</span>
 
-<span class="plain-syntax">To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):</span>
-<span class="plain-syntax">    (- VM_MoveCursorInStatusLine({row}, {col}); -).</span>
-
-<span class="plain-syntax">To draw the status window with (table - a table-name):</span>
+<span class="plain-syntax">To draw/redraw the status window with (table - a table-name):</span>
 <span class="plain-syntax">    (- DrawStatusWindowFromTable({table}); -).</span>
 </pre>
 <div class="lsmarkdown">
@@ -2020,66 +2027,12 @@ private use area codes.</p>
 <span class="plain-syntax">To stop the game/story abruptly:</span>
 <span class="plain-syntax">    (- quit; -).</span>
 </pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP64" class="paragraph-anchor"></a><b>&#167;64. External Files.</b>  Inform has a quirky level of support for file-handling, which comes out of what
-the Glulx virtual machine will support.</p>
-<p>See test case <code>BIP-Files-G</code>, which has no Z-machine counterpart.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Chapter 10 - External Files (not for Z-machine)</span>
-
-<span class="plain-syntax">Section 1 - Files of Text</span>
-
-<span class="plain-syntax">To write (T - text) to (FN - external file)</span>
-<span class="plain-syntax">    (documented at ph_writetext):</span>
-<span class="plain-syntax">    (- FileIO_PutContents({FN}, {T}, false); -).</span>
-<span class="plain-syntax">To append (T - text) to (FN - external file)</span>
-<span class="plain-syntax">    (documented at ph_appendtext):</span>
-<span class="plain-syntax">    (- FileIO_PutContents({FN}, {T}, true); -).</span>
-<span class="plain-syntax">To say text of (FN - external file)</span>
-<span class="plain-syntax">    (documented at ph_saytext):</span>
-<span class="plain-syntax">    (- FileIO_PrintContents({FN}); say__p = 1; -).</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP65" class="paragraph-anchor"></a><b>&#167;65. </b>  See test case <code>BIP-FilesOfTables-G</code>, which has no Z-machine counterpart.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 2 - Files of Data</span>
-
-<span class="plain-syntax">To read (filename - external file) into (T - table name)</span>
-<span class="plain-syntax">    (documented at ph_readtable):</span>
-<span class="plain-syntax">    (- FileIO_GetTable({filename}, {T}); -).</span>
-<span class="plain-syntax">To write (filename - external file) from (T - table name)</span>
-<span class="plain-syntax">    (documented at ph_writetable):</span>
-<span class="plain-syntax">    (- FileIO_PutTable({filename}, {T}); -).</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP66" class="paragraph-anchor"></a><b>&#167;66. </b>  These are hardly used phrases which are difficult to test convincingly
-in our framework, since they defend against independent Inform programs
-simultaneously trying to access the same file.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 3 - File Handling</span>
-
-<span class="plain-syntax">To decide if (filename - external file) exists</span>
-<span class="plain-syntax">    (documented at ph_fileexists):</span>
-<span class="plain-syntax">    (- (FileIO_Exists({filename}, false)) -).</span>
-<span class="plain-syntax">To decide if ready to read (filename - external file)</span>
-<span class="plain-syntax">    (documented at ph_fileready):</span>
-<span class="plain-syntax">    (- (FileIO_Ready({filename}, false)) -).</span>
-<span class="plain-syntax">To mark (filename - external file) as ready to read</span>
-<span class="plain-syntax">    (documented at ph_markfileready):</span>
-<span class="plain-syntax">    (- FileIO_MarkReady({filename}, true); -).</span>
-<span class="plain-syntax">To mark (filename - external file) as not ready to read</span>
-<span class="plain-syntax">    (documented at ph_markfilenotready):</span>
-<span class="plain-syntax">    (- FileIO_MarkReady({filename}, false); -).</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP67" class="paragraph-anchor"></a><b>&#167;67. Use Options.</b> </p>
+<p class="commentary firstcommentary"><a id="SP64" class="paragraph-anchor"></a><b>&#167;64. Use Options.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Chapter 11 - Use Options</span>
+<span class="plain-syntax">Chapter 10 - Use Options</span>
 
-<span class="plain-syntax">Section 1 - Numerical Value</span>
+<span class="plain-syntax">Section 1 - Numerical Value of Use Options</span>
 
 <span class="plain-syntax">To decide what number is the numerical value of (U - a use option):</span>
 <span class="plain-syntax">    (- USE_OPTION_VALUES--&gt;({U}) -).</span>

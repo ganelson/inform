@@ -4,6 +4,7 @@ div.breadcrumbs {
 	position: sticky;
 	background: #fff;
 	padding-bottom: 4px;
+	z-index: 1;
 }
 
 @media print {
