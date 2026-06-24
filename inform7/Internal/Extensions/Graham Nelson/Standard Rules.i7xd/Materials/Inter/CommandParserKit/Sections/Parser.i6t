@@ -625,20 +625,59 @@ fairly thorough description of its output, which is written into the
 `parser_results` array and also into several globals (see "OrderOfPlay.i6t").
 
 =
-[ Parser__parse
-	syntax line num_lines line_address i j k token l m inferred_go;
+Constant PARSER_STATE_RETURN = 2;
+Constant PARSER_STATE_RETYPE = 3;
+Constant PARSER_STATE_REPARSE = 4;
+Constant PARSER_STATE_ALMOST_REPARSE = 5;
+Constant PARSER_STATE_BEGIN_COMMAND = 6;
+Constant PARSER_STATE_PARSE_VERB = 7;
+
+Global parser_inferred_go;
+
+[ Parser__parse  next_stage;
 	cobj_flag = 0;
+	parser_inferred_go = 0;
 	parser_results-->ACTION_PRES = 0;
 	parser_results-->NO_INPS_PRES = 0;
 	parser_results-->INP1_PRES = 0;
 	parser_results-->INP2_PRES = 0;
 	meta = false;
 
-@h Parser Letter A.
+    if (held_back_mode) {
+		next_stage = Parser__HeldBackMode();
+	}
+	else {
+		next_stage = PARSER_STATE_RETYPE;
+	}
+
+	! The parser used to jump around freely. Now it is a collection of functions,
+	! so we will implement it as a state machine.
+	while (true) {
+		switch (next_stage) {
+			PARSER_STATE_RETURN:
+				rtrue;
+			PARSER_STATE_RETYPE:
+				next_stage = Parser__ReType();
+			PARSER_STATE_REPARSE:
+				next_stage = Parser__ReParse();
+			PARSER_STATE_ALMOST_REPARSE:
+				next_stage = Parser__AlmostReParse();
+			PARSER_STATE_BEGIN_COMMAND:
+				next_stage = Parser__BeginCommand();
+			PARSER_STATE_PARSE_VERB:
+				next_stage = Parser__ParseVerb();
+			! This shouldn't be possible, but just in case.
+			default:
+				print_ret "Parser__parse invalid state!^";
+		}
+	}
+];
+
+@h Parser: Held Back Mode.
 Get the input, do OOPS and AGAIN.
 
 =
-    if (held_back_mode) {
+[ Parser__HeldBackMode  i j;
         held_back_mode = false; wn = hb_wn;
         if (verb_wordnum > 0) i = WordAddress(verb_wordnum); else i = WordAddress(1);
         j = WordAddress(wn);
@@ -667,9 +706,13 @@ Get the input, do OOPS and AGAIN.
         }
 
         TokeniseInput(buffer, parse);
-        jump ReParse;
-    }
+	return Parser__ReParse();
+];
 
+@h Parser: Retype.
+
+=
+[ Parser__ReType;
   .ReType;
 
 	cobj_flag = 0;
@@ -678,15 +721,20 @@ Get the input, do OOPS and AGAIN.
 		Keyboard(buffer,parse);
 		num_words = WordCount(); players_command = 100 + num_words;
     } if (EndActivity(READING_A_COMMAND_ACT)) jump ReType;
-  .ReParse;
+	return Parser__ReParse();
+];
 
+@h Parser: Reparse.
+
+=
+[ Parser__ReParse  i j k l m;
     parser_inflection = name;
 
     ! Initially assume the command is aimed at the player, and the verb
     ! is the first word
 
     ! num_words = WordCount(); players_command = 100 + num_words;
-    wn = 1; inferred_go = false;
+    wn = 1; parser_inferred_go = false;
 
     LanguageToInformese();
     ! Re-tokenise:
@@ -726,24 +774,32 @@ Get the input, do OOPS and AGAIN.
     actor = player;
     actors_location = ScopeCeiling(player);
     usual_grammar_after = 0;
+	return Parser__AlmostReParse();
+];
 
-  .AlmostReParse;
-
+[ Parser__AlmostReParse;
     scope_token = 0;
     action_to_be = NULL;
+	return Parser__BeginCommand();
+];
 
+@h Parser: Begin Command.
+
+=
+[ Parser__BeginCommand  i j;
     ! Begin from what we currently think is the verb word
 
-  .BeginCommand;
     wn = verb_wordnum;
     verb_word = NextWordStopped();
     ! If there's no input here, we must have something like "person,".
 
     if (verb_word == -1) {
-        best_etype = STUCK_PE; jump GiveError;
+        best_etype = STUCK_PE;
+        return Parser__Error();
     }
 	if (verb_word == comma_word) {
-		best_etype = COMMABEGIN_PE; jump GiveError;
+        best_etype = COMMABEGIN_PE;
+        return Parser__Error();
 	}
 
     ! Now try for "again" or "g", which are special cases: don't allow "again" if nothing
@@ -753,17 +809,17 @@ Get the input, do OOPS and AGAIN.
     if (verb_word == AGAIN1__WD) {
         if (actor ~= player) {
             best_etype = ANIMAAGAIN_PE;
-            jump GiveError;
+            return Parser__Error();
         }
         #Iftrue CHARSIZE == 1;
         if (buffer3->1 == 0) {
             PARSER_COMMAND_INTERNAL_RM('D'); new_line;
-            jump ReType;
+            return PARSER_STATE_RETYPE;
         }
         #Ifnot;
         if (buffer3-->0 == 0) {
             PARSER_COMMAND_INTERNAL_RM('D'); new_line;
-            jump ReType;
+            return PARSER_STATE_RETYPE;
         }
         #Endif; ! CHARSIZE
         #Iftrue CHARSIZE == 1;
@@ -772,7 +828,7 @@ Get the input, do OOPS and AGAIN.
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer-->i = buffer3-->i;
         #Endif;
         TokeniseInput(buffer,parse);
-        jump ReParse;
+        return PARSER_STATE_REPARSE;
     }
 
     ! Save the present input in case of an "again" next time
@@ -804,17 +860,20 @@ Get the input, do OOPS and AGAIN.
             parser_results-->INP2_PRES = second;
             if (noun) parser_results-->NO_INPS_PRES = 1;
             if (second) parser_results-->NO_INPS_PRES = 2;
-            rtrue;
+            return PARSER_STATE_RETURN;
         }
         if (i ~= 0) { verb_word = i; wn--; verb_wordnum--; }
         else { wn = verb_wordnum; verb_word = NextWord(); }
     }
     else usual_grammar_after = 0;
+	return Parser__ImplicitGo();
+];
 
-@h Parser Letter B.
-Is the command a direction name, and so an implicit GO? If so, go to (K).
+@h Parser: Implicit Go.
+Is the command a direction name, and so an implicit GO? If so, go to Parser__LookForMore().
 
 =
+[ Parser__ImplicitGo  i l;
     if (verb_word == 0) {
         i = wn; verb_word = LanguageIsVerb(buffer, parse, verb_wordnum);
         wn = i;
@@ -835,7 +894,9 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
         actor = player; meta = false; action = ##Go; action_to_be = ##Go;
         l = NounDomain(Compass, 0, 0);
         @pull action_to_be; @pull action; @pull actor;
-        if (l == REPARSE_CODE) jump ReParse;
+        if (l == REPARSE_CODE) {
+            return PARSER_STATE_REPARSE;
+        }
 
         ! If it is a direction, send back the results:
         ! action=GoSub, no of arguments=1, argument 1=the direction.
@@ -844,16 +905,19 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
             parser_results-->ACTION_PRES = ##Go;
             parser_results-->NO_INPS_PRES = 1;
             parser_results-->INP1_PRES = l;
-            inferred_go = true;
-            jump LookForMore;
+            parser_inferred_go = true;
+            return Parser__LookForMore();
         }
 
     } ! end of first-word-not-a-verb
+	return Parser__Conversation();
+];
 
-@h Parser Letter C.
+@h Parser: Conversation.
 Is anyone being addressed?
 
 =
+[ Parser__Conversation  i j l;
 	! Only check for a comma (a "someone, do something" command) if we are
 	! not already in the middle of one.  (This simplification stops us from
 	! worrying about "robot, wizard, you are an idiot", telling the robot to
@@ -865,7 +929,7 @@ Is anyone being addressed?
 			if (i == comma_word) jump Conversation;
 		}
 	}
-	jump NotConversation;
+	return PARSER_STATE_PARSE_VERB;
 
 	! NextWord nudges the word number wn on by one each time, so we've now
 	! advanced past a comma.  (A comma is a word all on its own in the table.)
@@ -880,28 +944,36 @@ Is anyone being addressed?
 	scope_reason = TALKING_REASON;
 	l = NounDomain(player, actors_location, CREATURE_TOKEN);
 	scope_reason = PARSING_REASON;
-	if (l == REPARSE_CODE) jump ReParse;
-	if (l == 0) {
-		if (WordMarkedAsVerb(verb_word)) jump NotConversation;
-		best_etype = MISSINGPERSON_PE; jump GiveError;
+	if (l == REPARSE_CODE) {
+		return PARSER_STATE_REPARSE;
 	}
-
-	.Conversation2;
+	if (l == 0) {
+		if (WordMarkedAsVerb(verb_word)) {
+			return PARSER_STATE_PARSE_VERB;
+		}
+		best_etype = MISSINGPERSON_PE;
+		return Parser__Error();
+	}
 
 	! The object addressed must at least be "talkable" if not actually "animate"
 	! (the distinction allows, for instance, a microphone to be spoken to,
 	! without the parser thinking that the microphone is human).
 
 	if (l hasnt animate && l hasnt talkable) {
- 		best_etype = ANIMALISTEN_PE; noun = l; jump GiveError;
+		best_etype = ANIMALISTEN_PE;
+		noun = l;
+		return Parser__Error();
 	}
 
 	! Check that there aren't any mystery words between the end of the person's
 	! name and the comma (eg, throw out "dwarf sdfgsdgs, go north").
 
 	if (wn ~= j) {
-		if (WordMarkedAsVerb(verb_word)) jump NotConversation;
-		best_etype = TOTALK_PE; jump GiveError;
+		if (WordMarkedAsVerb(verb_word)) {
+			return PARSER_STATE_PARSE_VERB;
+		}
+		best_etype = TOTALK_PE;
+		return Parser__Error();
 	}
 
 	! The player has now successfully named someone.  Adjust "him", "her", "it":
@@ -919,7 +991,7 @@ Is anyone being addressed?
 		wn = verb_wordnum;
 		if (NextWordStopped() == AGAIN1__WD or AGAIN2__WD or AGAIN3__WD) {
 			best_etype = ANIMAAGAIN_PE;
-			jump GiveError;
+			return Parser__Error();
 		}
 	}
 
@@ -929,20 +1001,21 @@ Is anyone being addressed?
 	if (parser_trace >= 1)
 		print "[Actor is ", (the) actor, " in ", (name) actors_location, "]^";
 	#Endif; ! DEBUG
-	jump BeginCommand;
+	return PARSER_STATE_BEGIN_COMMAND;
+];
 
-@h Parser Letter D.
+@h Parser: Parse a verb.
 Get the verb: try all the syntax lines for that verb.
 
 =
-	.NotConversation;
+[ Parser__ParseVerb  i k l m line line_address num_lines res syntax token;
 	if (WordMarkedAsVerb(verb_word) == false) {
 		verb_word = UnknownVerb(verb_word);
-		if (verb_word ~= 0) jump VerbAccepted;
-		best_etype = VERB_PE;
-		jump GiveError;
+		if (verb_word == 0) {
+			best_etype = VERB_PE;
+			return Parser__Error();
+		}
 	}
-	.VerbAccepted;
 
     ! We now definitely have a verb, not a direction, whether we got here by the
     ! "take ..." or "person, take ..." method.
@@ -952,7 +1025,7 @@ Get the verb: try all the syntax lines for that verb.
     if (WordMarkedAsMeta(verb_word) && actor ~= player) {
         best_etype = VERB_PE;
         meta = 0;
-        jump GiveError;
+        return Parser__Error();
     }
 
     ! Now let i be the corresponding verb number...
@@ -1131,7 +1204,7 @@ and similarly for `multiinside`.
                                 }
                             }
                             #Endif; ! DEBUG
-                            if (l == REPARSE_CODE) jump ReParse;
+                            if (l == REPARSE_CODE) return PARSER_STATE_REPARSE;
                             if (l >= 2) advance_warning = l;
                         }
                     }
@@ -1243,7 +1316,7 @@ so that it may be reprinted by the parser later on.
                 }
                 #Endif; ! DEBUG
 
-                if (l == REPARSE_CODE) jump ReParse;
+                if (l == REPARSE_CODE) return PARSER_STATE_REPARSE;
                 if (l == false) break;
             }
             else {
@@ -1287,7 +1360,7 @@ so that it may be reprinted by the parser later on.
 	                 		if ((multi_context==MULTIEXCEPT_TOKEN && k == l) ||
 	                			((multi_context==MULTIINSIDE_TOKEN && k notin l && l notin k))) {
                 				best_etype = NOTHING_PE;
-                				parser_results-->ACTION_PRES = action_to_be; jump GiveError;
+                				parser_results-->ACTION_PRES = action_to_be; return Parser__Error();
                 			}
                 		}
                 	}
@@ -1298,12 +1371,12 @@ so that it may be reprinted by the parser later on.
 
                 if (take_all_rule == 2 && parser_results-->INP1_PRES == actor) {
                     best_etype = NOTHING_PE;
-                    jump GiveError;
+                    return Parser__Error();
                 }
 
 				if (multi_had > 1) {
                     best_etype = TOOFEW_PE;
-                    jump GiveError;
+                    return Parser__Error();
 				}
 
                 #Ifdef DEBUG;
@@ -1349,9 +1422,9 @@ so that it may be reprinted by the parser later on.
 
                 if (held_back_mode) {
                     wn=hb_wn;
-                    jump LookForMore;
+                    return Parser__LookForMore();
                 }
-                rtrue;
+                return PARSER_STATE_RETURN;
 
             } ! end of if(token ~= ENDIT_TOKEN) else
         } ! end of for(pcount++)
@@ -1371,8 +1444,10 @@ so that it may be reprinted by the parser later on.
     } ! end of for(line++)
 
     ! The grammar is exhausted: every line has failed to match.
+	return Parser__Error();
+];
 
-@h Parser Letter H.
+@ Parser Errors.
 Cheaply parse otherwise unrecognised conversation and return.
 
 (Errors are handled differently depending on who was talking. If the command
@@ -1395,13 +1470,12 @@ In order to assist people who do want to parse that type of mistyped command
 in extensions, wn is left pointing at the first word not parsed as a command.
 
 =
-  .GiveError;
-
+[ Parser__Error  m;
     etype = best_etype;
     if (actor ~= player) {
         if (usual_grammar_after ~= 0) {
             verb_wordnum = usual_grammar_after;
-            jump AlmostReParse;
+            return PARSER_STATE_ALMOST_REPARSE;
         }
         m = wn; ! Save wn so extension authors can parse command errors if they want to
         wn = 1;
@@ -1413,18 +1487,16 @@ in extensions, wn is left pointing at the first word not parsed as a command.
         actor = player;
         consult_from = wn; consult_words = num_words-consult_from+1;
         wn = m; ! Restore wn so extension authors can parse command errors if they want to
-        rtrue;
+        return PARSER_STATE_RETURN;
     }
 
-@h Parser Letter I.
-Print best possible error message.
-
-=
     ! If the player was the actor (eg, in "take dfghh") the error must be printed,
     ! and fresh input called for.  In three cases the oops word must be jiggled.
 
     if ((etype ofclass Routine) || (etype ofclass String)) {
-        if (ParserError(etype) ~= 0) jump ReType;
+        if (ParserError(etype) ~= 0) {
+            return PARSER_STATE_RETYPE;
+        }
     } else {
 		if (verb_wordnum == 0 && etype == CANTSEE_PE) etype = VERB_PE;
 		players_command = 100 + WordCount(); ! The snippet variable "player's command"
@@ -1437,7 +1509,7 @@ Print best possible error message.
     if (etype == UPTO_PE) {
         for (m=0 : m<32 : m++) pattern-->m = pattern2-->m;
         pcount = pcount2;
-    	if (inferred_go) {
+    	if (parser_inferred_go) {
     		PARSER_ERROR_INTERNAL_RM('C');
     		print (LanguageDirection) parser_results-->INP1_PRES;
     	} else {
@@ -1484,54 +1556,49 @@ Print best possible error message.
             best_etype = nextbest_etype;
             if (~~((etype ofclass Routine) || (etype ofclass String)))
             	EndActivity(PRINTING_A_PARSER_ERROR_ACT);
-            jump GiveError;
+            return Parser__Error();
         }
     }
 
     .SkipParserError;
-    if ((etype ofclass Routine) || (etype ofclass String)) jump ReType;
+	if ((etype ofclass Routine) || (etype ofclass String)) {
+		return PARSER_STATE_RETYPE;
+	}
     say__p = 1;
     EndActivity(PRINTING_A_PARSER_ERROR_ACT);
 
-@h Parser Letter J.
-Retry the whole lot.
-
-=
     ! And go (almost) right back to square one...
-
-    jump ReType;
-
     ! ...being careful not to go all the way back, to avoid infinite repetition
     ! of a deferred command causing an error.
 
-@h Parser Letter K.
+	return PARSER_STATE_RETYPE;
+];
+
+@h Parser: Look for more.
 Last thing: check for THEN and further instructions(s), return.
 
 =
+[ Parser__LookForMore i;
     ! At this point, the return value is all prepared, and we are only looking
     ! to see if there is a "then" followed by subsequent instruction(s).
 
-  .LookForMore;
-
-    if (wn > num_words) rtrue;
+	if (wn > num_words) {
+		return PARSER_STATE_RETURN;
+	}
 
     i = NextWord();
     if (i == THEN1__WD or THEN2__WD or THEN3__WD or comma_word) {
         if (wn > num_words) {
            held_back_mode = false;
-           return;
+			return PARSER_STATE_RETURN;
         }
         hb_wn = wn;
         held_back_mode = true;
-       return;
+		return PARSER_STATE_RETURN;
     }
     best_etype = UPTO_PE;
-    jump GiveError;
-
-@h End of Parser Proper.
-
-=
-]; ! end of Parser__parse
+	return Parser__Error();
+];
 
 @h Internal Rule.
 As a hook on which to hang responses.
