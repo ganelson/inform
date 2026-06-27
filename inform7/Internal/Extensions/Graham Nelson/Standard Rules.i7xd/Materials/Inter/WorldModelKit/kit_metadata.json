@@ -15,7 +15,7 @@
     "kit-details": {
         "has-priority": 2,
         "defines-Main": true,
-        "provides-kinds": [ "Actions.neptune", "Times.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ],
+        "provides-kinds": [ "Actions.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ],
         "indexes-with-structure": "Standard.indext",
         "configuration-values": [ "MULTI_OBJ_LIST_SIZE", "ROOM_DESC_DETAIL", "ROUTE_FINDING", "SCORING" ]
     }

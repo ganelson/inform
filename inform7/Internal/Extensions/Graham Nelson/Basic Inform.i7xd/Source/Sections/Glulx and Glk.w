@@ -84,7 +84,7 @@ The main window object is accessible to Inter as "Main_Window".
 The status window is a text grid window.
 The status window object is accessible to Inter as "Status_Window".
 
-The boxed quotation window is a text buffer window.
+The boxed quotation window is a text grid window.
 The boxed quotation window object is accessible to Inter as "Quote_Window".
 
 @h Glk events.
@@ -184,6 +184,9 @@ To decide what glk event is the next (evtype - glk event type) to occur in (win 
 Before waiting for a glk event (this is the draw the status window before waiting for a Glk event rule):
 	draw the status window;
 
+The display a pending boxed quotation rule is listed in the before waiting for a glk event rules.
+The display a pending boxed quotation rule translates into Inter as "DISPLAY_BOXED_QUOTATION_R".
+
 The request keyboard input rule is listed last in the before waiting for a glk event rules.
 The request keyboard input rule translates into Inter as "REQUEST_KEYBOARD_INPUT_R".
 
@@ -192,6 +195,9 @@ The manually echo line input rule translates into Inter as "MANUALLY_ECHO_LINE_I
 
 The normalise line input whitespace rule is listed in the after waiting for a glk event rules.
 The normalise line input whitespace rule translates into Inter as "NORMALISE_LINE_INPUT_R".
+
+The close the boxed quotation window rule is listed in the after waiting for a glk event rules.
+The close the boxed quotation window rule translates into Inter as "CLOSE_BOXED_QUOTATION_WINDOW_R".
 
 @ A couple of phrases for timer events
 
@@ -393,6 +399,18 @@ To decide what text is the current line input of (w - IO window):
 To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
+@h Real time clock.
+Glk lets us access the computer's clock.
+
+=
+Chapter - Real Time Clock
+
+To decide which time is the player's local time:
+	(- GlkClockGetTime(GLK_TIME_LOCAL, GLK_TIME_GET_TIME) -).
+
+To decide which time is Greenwich mean time:
+	(- GlkClockGetTime(GLK_TIME_UTC, GLK_TIME_GET_TIME) -).
+
 @h External Files.
 Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.
@@ -413,6 +431,17 @@ To append (T - text) to (FN - external file)
 To say text of (FN - external file)
 	(documented at ph_saytext):
 	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+@ And this loops through the lines of a text file stored internally.
+
+=
+To repeat with (loopvar - nonexisting text variable)
+	running through (F - internal file) begin -- end loop:
+	(-
+		for ({-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}): {-my:1}:
+			{-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}))
+			{-block}
+	-).
 
 @ See test case `BIP-FilesOfTables-G`, which has no Z-machine counterpart.
 

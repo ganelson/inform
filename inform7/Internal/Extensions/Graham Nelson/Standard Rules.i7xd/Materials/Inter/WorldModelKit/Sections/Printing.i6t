@@ -14,33 +14,7 @@ prompts him to type.
 	style roman;
 	EnsureBreakBeforePrompt();
 	TEXT_TY_Say(CommandPromptText());
-	ClearBoxedText();
 	ClearParagraphing(14);
-];
-
-@h Boxed Quotations.
-These appear once only, and happen outside of the paragraphing scheme: they
-are normally overlaid as windows on top of the regular text. We can request
-one at any time, but it will appear only at prompt time, when the screen is
-fairly well guaranteed not to be scrolling. (Only fairly well since it's just
-possible that _Border Zone_-like tricks with real-time play might be
-going on, but whatever happens, there is at least a human-appreciable pause
-in which the quotation can be read before being taken away again.)
-
-=
-Global pending_boxed_quotation; ! a routine to overlay the quotation on screen
-
-[ DisplayBoxedQuotation Q;
-	pending_boxed_quotation = Q;
-];
-
-[ ClearBoxedText i;
-	if (pending_boxed_quotation) {
-		ClearParagraphing(15);
-		pending_boxed_quotation();
-		ClearParagraphing(16);
-		pending_boxed_quotation = 0;
-	}
 ];
 
 @h Score Notification.

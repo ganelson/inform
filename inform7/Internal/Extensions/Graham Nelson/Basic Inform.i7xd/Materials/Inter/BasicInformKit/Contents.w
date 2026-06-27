@@ -21,6 +21,7 @@ Sections
 	BlockValues
 	Kinds
 	Text
+	Time
 	Char
 	RegExp
 	Lists

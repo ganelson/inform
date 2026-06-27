@@ -567,7 +567,7 @@ Global current_glk_window;
 				glk_request_line_event_uni(win.glk_ref, buffer2 + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
 			}
 			if (parameter_value == evtype_CharInput) {
-				glk_request_char_event(win.glk_ref);
+				glk_request_char_event_uni(win.glk_ref);
 			}
 		}
 	}
@@ -603,6 +603,13 @@ Constant UnicodeWhitespaceLen = 8;
 		}
 	}
 	rfalse;
+];
+
+[ CLOSE_BOXED_QUOTATION_WINDOW_R;
+	if (Quote_Window.glk_ref) {
+		glk_window_close(Quote_Window.glk_ref, GLK_NULL);
+		Quote_Window.glk_ref = 0;
+	}
 ];
 
 @ To handle events we intercept the `glk_select` function. This allows us to handle
@@ -976,6 +983,37 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 	! If the current event is a line input event in this window, update event val 1
 	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_LineInput && current_glk_event-->GLK_EVENT_WINDOW_SF == win) {
 		current_glk_event-->GLK_EVENT_VALUE1_SF = i;
+	}
+];
+
+@h Real Time Clock.
+Glk lets us access the computer's clock.
+
+=
+Array Glk_Current_Time_Struct --> 3;
+Array Glk_DateTime_Struct --> 8;
+Constant GLK_DATETIME_YEAR = 0;
+Constant GLK_DATETIME_MONTH = 1;
+Constant GLK_DATETIME_DAY = 2;
+Constant GLK_DATETIME_WEEKDAY = 3;
+Constant GLK_DATETIME_HOUR = 4;
+Constant GLK_DATETIME_MINUTE = 5;
+Constant GLK_DATETIME_SECOND = 6;
+Constant GLK_DATETIME_MICROSEC = 7;
+Constant GLK_TIME_UTC = 0;
+Constant GLK_TIME_LOCAL = 1;
+Constant GLK_TIME_GET_TIME = 0;
+
+[ GlkClockGetTime timezone request;
+	glk_current_time(Glk_Current_Time_Struct);
+	if (timezone == GLK_TIME_UTC) {
+		glk_time_to_date_utc(Glk_Current_Time_Struct, Glk_DateTime_Struct);
+	}
+	else {
+		glk_time_to_date_local(Glk_Current_Time_Struct, Glk_DateTime_Struct);
+	}
+	switch (request) {
+		GLK_TIME_GET_TIME: return (Glk_DateTime_Struct-->GLK_DATETIME_HOUR) * 60 + Glk_DateTime_Struct-->GLK_DATETIME_MINUTE;
 	}
 ];
 

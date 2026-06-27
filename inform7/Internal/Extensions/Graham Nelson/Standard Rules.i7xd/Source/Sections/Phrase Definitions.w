@@ -24,26 +24,10 @@ To say now
 	(documented at phs_now):
 	say "[if story tense is present tense]now[otherwise]then".
 
-@ The ability to put up a dinky reverse-video quotation as an epigraph
-has somehow survived for 36 years. The decision to continue to support it
-even in Inform 6 was critiqued as being an unnecessary throwback by Jimmy
-Maher in 2019; he was clearly right; and yet here we are, and it survives
-even the 2020 restructuring of Inform's language design.
-
-=
-Section 2 - Boxed quotations
-
-To display the/-- boxed quotation (Q - text)
-	(documented at ph_boxed):
-	(- DisplayBoxedQuotation({-box-quotation-text:Q}); -).
-
-To show the/-- current quotation:
-	(- ClearBoxedText(); -).
-
 @ And now some oddball special texts which must sometimes be said.
 
 =
-Section 3 - Some built-in texts
+Section 2 - Some built-in texts
 
 To say the/-- banner text
 	(documented at phs_banner):
@@ -68,7 +52,7 @@ To say command clarification break -- running on
 this phrase definition must similarly be here, not in Basic Inform.
 
 =
-Section 4 - Responses
+Section 3 - Responses
 
 To say the/-- text of (R - response)
 	(documented at phs_response):
@@ -80,7 +64,7 @@ piece of I6 code which now lives on as Inter code, in the `srules` template:
 see "ListWriter.i6t". The following phrases control it:
 
 =
-Section 5 - Saying lists of things
+Section 4 - Saying lists of things
 
 To list the/-- contents of (O - an object),
 	with newlines,
@@ -200,7 +184,7 @@ See the specifications of `list_together` and `c_style` in the DM4, which are
 still broadly accurate.
 
 =
-Section 6 - Group in and omit from lists
+Section 5 - Group in and omit from lists
 
 To group (OS - description of objects) together
 	(documented at ph_group): (-
@@ -236,7 +220,7 @@ of, or items supported by, something it lists. Here we can restrict to
 just those contents, or supportees, matching a description `D`.
 
 =
-Section 7 - Filtering contents of lists - Unindexed
+Section 6 - Filtering contents of lists - Unindexed
 
 To filter list recursion to (D - description of objects):
 	(- list_filter_routine = {D}; -).
