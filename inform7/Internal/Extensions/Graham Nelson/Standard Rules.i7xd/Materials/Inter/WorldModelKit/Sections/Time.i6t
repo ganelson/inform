@@ -1,53 +1,6 @@
 Time
 
-Support for parsing and printing times of day.
-
-@h Conversion To Number.
-
-=
-[ NUMBER_TY_to_TIME_TY n;
-	return CongruenceClass(n, 1440);
-];
-
-@h Digital Printing.
-For instance, "2:06 am".
-
-=
-[ PrintTimeOfDay t h aop;
-	if (t<0) { print "<no time>"; return; }
-	if (t >= TWELVE_HOURS) { aop = "pm"; t = t - TWELVE_HOURS; } else aop = "am";
-	h = t/ONE_HOUR; if (h==0) h=12;
-	print h, ":";
-	if (t%ONE_HOUR < 10) print "0"; print t%ONE_HOUR, " ", (string) aop;
-];
-
-[ PrintDuration t h m;
-	if (t<0) { print "minus "; t = -t; }
-	h = t/ONE_HOUR; m = t%ONE_HOUR;
-	if (h > 0) print h, " hour"; if (h > 1) print "s";
-	if (h > 0) print " ";
-	if (m == 1) print "1 minute";
-	else if ((h == 0) || (m > 0)) print m, " minutes";
-];
-
-@h Analogue Printing.
-For instance, "six minutes past two".
-
-=
-[ PrintTimeOfDayEnglish t h m dir aop;
-	h = (t/ONE_HOUR) % 12; m = t%ONE_HOUR; if (h==0) h=12;
-	if (m==0) { print (number) h, " o'clock"; return; }
-	dir = "past";
-	if (m > HALF_HOUR) { m = ONE_HOUR-m; h = (h+1)%12; if (h==0) h=12; dir = "to"; }
-	switch(m) {
-		QUARTER_HOUR: print "quarter"; HALF_HOUR: print "half";
-		default: print (number) m;
-		    if (m%5 ~= 0) {
-				if (m == 1) print " minute"; else print " minutes";
-		    }
-	}
-	print " ", (string) dir, " ", (number) h;
-];
+Support for parsing times of day.
 
 @h Understanding.
 This I6 grammar token converts words in the player's command to a valid

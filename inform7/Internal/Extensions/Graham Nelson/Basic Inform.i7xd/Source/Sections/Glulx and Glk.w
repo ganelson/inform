@@ -399,6 +399,18 @@ To decide what text is the current line input of (w - IO window):
 To set the current line input of (w - IO window) to (t - text):
 	(- WindowBufferSet({w}, {-by-reference:t}); -).
 
+@h Real time clock.
+Glk lets us access the computer's clock.
+
+=
+Chapter - Real Time Clock
+
+To decide which time is the player's local time:
+	(- GlkClockGetTime(GLK_TIME_LOCAL, GLK_TIME_GET_TIME) -).
+
+To decide which time is Greenwich mean time:
+	(- GlkClockGetTime(GLK_TIME_UTC, GLK_TIME_GET_TIME) -).
+
 @h External Files.
 Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.
@@ -419,6 +431,17 @@ To append (T - text) to (FN - external file)
 To say text of (FN - external file)
 	(documented at ph_saytext):
 	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+@ And this loops through the lines of a text file stored internally.
+
+=
+To repeat with (loopvar - nonexisting text variable)
+	running through (F - internal file) begin -- end loop:
+	(-
+		for ({-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}): {-my:1}:
+			{-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}))
+			{-block}
+	-).
 
 @ See test case `BIP-FilesOfTables-G`, which has no Z-machine counterpart.
 

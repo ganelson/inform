@@ -986,6 +986,37 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 	}
 ];
 
+@h Real Time Clock.
+Glk lets us access the computer's clock.
+
+=
+Array Glk_Current_Time_Struct --> 3;
+Array Glk_DateTime_Struct --> 8;
+Constant GLK_DATETIME_YEAR = 0;
+Constant GLK_DATETIME_MONTH = 1;
+Constant GLK_DATETIME_DAY = 2;
+Constant GLK_DATETIME_WEEKDAY = 3;
+Constant GLK_DATETIME_HOUR = 4;
+Constant GLK_DATETIME_MINUTE = 5;
+Constant GLK_DATETIME_SECOND = 6;
+Constant GLK_DATETIME_MICROSEC = 7;
+Constant GLK_TIME_UTC = 0;
+Constant GLK_TIME_LOCAL = 1;
+Constant GLK_TIME_GET_TIME = 0;
+
+[ GlkClockGetTime timezone request;
+	glk_current_time(Glk_Current_Time_Struct);
+	if (timezone == GLK_TIME_UTC) {
+		glk_time_to_date_utc(Glk_Current_Time_Struct, Glk_DateTime_Struct);
+	}
+	else {
+		glk_time_to_date_local(Glk_Current_Time_Struct, Glk_DateTime_Struct);
+	}
+	switch (request) {
+		GLK_TIME_GET_TIME: return (Glk_DateTime_Struct-->GLK_DATETIME_HOUR) * 60 + Glk_DateTime_Struct-->GLK_DATETIME_MINUTE;
+	}
+];
+
 @h Debugging verb.
 This powers the GLKLIST command, when there's a command parser to read it.
 
