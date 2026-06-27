@@ -567,7 +567,7 @@ Global current_glk_window;
 				glk_request_line_event_uni(win.glk_ref, buffer2 + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
 			}
 			if (parameter_value == evtype_CharInput) {
-				glk_request_char_event(win.glk_ref);
+				glk_request_char_event_uni(win.glk_ref);
 			}
 		}
 	}
@@ -603,6 +603,13 @@ Constant UnicodeWhitespaceLen = 8;
 		}
 	}
 	rfalse;
+];
+
+[ CLOSE_BOXED_QUOTATION_WINDOW_R;
+	if (Quote_Window.glk_ref) {
+		glk_window_close(Quote_Window.glk_ref, GLK_NULL);
+		Quote_Window.glk_ref = 0;
+	}
 ];
 
 @ To handle events we intercept the `glk_select` function. This allows us to handle

@@ -18248,9 +18248,9 @@ So by default, `showme the list of IO windows` produces:
 
 In fact, `IO window` has three subkinds, which represent the different sorts of window we might need: `text buffer window`, `text grid window` and `graphics window`; and it is itself a kind of `abstract object`, which is a kind of `object`. Thus we have:
 
-- `object` ▸ `abstract object` ▸ `IO window` ▸ `text buffer window` ▹ main window, boxed quotation window
+- `object` ▸ `abstract object` ▸ `IO window` ▸ `text buffer window` ▹ main window
 
-- `object` ▸ `abstract object` ▸ `IO window` ▸ `text grid window` ▹ status window
+- `object` ▸ `abstract object` ▸ `IO window` ▸ `text grid window` ▹ status window, boxed quotation window
 
 So we could write, say, `if W is a text grid window` to test which kind the window `W` is. But it's also sometimes convenient to use a property of `IO window` called `glk window type`. If we run:
 
@@ -18262,7 +18262,7 @@ then we get, assuming we haven't created any extra windows,
 ``` transcript
 main window: text buffer window type.
 status window: text grid window type.
-boxed quotation window: text buffer window type.
+boxed quotation window: text grid window type.
 ```
 
 So, what goes on here?
@@ -18271,7 +18271,7 @@ So, what goes on here?
 
 - The `status window` is a `text grid window`. This is traditionally a bar across the top line or two of the screen, which is a sort of summary of the situation. In an IF story it might show the current room name, and/or the score, number of turns played, or time of day. Being a `text grid window` means that text appears on it at regularly-spaced grid positions, rather like typewritten letters. Here a "w" will be the same width as an "i", or a space, or anything else.
 
-- The `boxed quotation window` is a `text buffer window`. This can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
+- The `boxed quotation window` is a `text grid window`. This can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
 
 There's also a third glk window type, `graphics window`, but in the default setup stories are pure textual and no window exists with this type. That doesn't mean that the main window can't display pictures, or emoji: but only a `graphics` window can plot arbitrary shapes or designs. Inform doesn't provide phrases for doing that in its basic installation, but extensions do.
 

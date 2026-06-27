@@ -1899,10 +1899,23 @@ To draw/redraw the status window/bar/line:
 To draw/redraw the status window with (table - a table-name):
 	(- DrawStatusWindowFromTable({table}); -).
 
+@ The ability to put up a dinky reverse-video quotation as an epigraph
+has somehow survived for 36 years. The decision to continue to support it
+even in Inform 6 was critiqued as being an unnecessary throwback by Jimmy
+Maher in 2019; he was clearly right; and yet here we are, and it survives
+even the 2020 restructuring of Inform's language design.
+
+=
+Section 3 - Boxed quotations
+
+To display the/-- boxed quotation (Q - text)
+	(documented at ph_boxed):
+	(- SetPendingBoxedQuotation({-box-quotation-text:Q}); -).
+
 @ Keyboard input phrases.
 
 =
-Section 3 - Keyboard Input
+Section 4 - Keyboard Input
 
 To decide what unicode character is the next pressed key
 	(documented at phnextpressedkey):
@@ -1948,7 +1961,7 @@ The up key is always unicode U+2191.
 @ Pausing the game.
 
 =
-Section 4 - Pausing the game
+Section 5 - Pausing the game
 
 [ Exclude navigation keys ]
 To wait for any key:

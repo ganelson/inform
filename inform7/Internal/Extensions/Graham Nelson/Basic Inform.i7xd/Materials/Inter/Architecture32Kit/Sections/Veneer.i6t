@@ -36,3 +36,51 @@ a highly undesirable and confusing error condition.
 [ RT__ChPrintC c;
 	@streamunichar c;
 ];
+
+@h Quotation Boxes.
+On the Z-machine, quotation boxes are produced by stretching the status line,
+but on Glulx they occupy a window of their own.
+
+=
+[ Box__Routine maxwidth arr  box_x ix lines parwin winheight;
+	lines = arr-->0;
+	winheight = lines + 6;
+
+	! Open the boxed quotation window, or resize it to the correct number of lines
+	if (Quote_Window.glk_ref == 0) {
+		! Ensure the boxed quotation style is reverse mode but not normal
+		glk_stylehint_set(wintype_TextGrid, style_Normal, stylehint_ReverseColor, 0);
+		glk_stylehint_set(wintype_TextGrid, style_BlockQuote, stylehint_ReverseColor, 1);
+		Quote_Window.glk_ref = glk_window_open(active_window.glk_ref,
+			winmethod_Fixed + winmethod_Above, winheight, wintype_TextGrid, GG_QUOTEWIN_ROCK);
+		glk_stylehint_clear(wintype_TextGrid, style_Normal, stylehint_ReverseColor);
+		glk_stylehint_clear(wintype_TextGrid, style_BlockQuote, stylehint_ReverseColor);
+	} else {
+		parwin = glk_window_get_parent(Quote_Window.glk_ref);
+		glk_window_set_arrangement(parwin, winmethod_Fixed + winmethod_Above, winheight, 0);
+	}
+	if (Quote_Window.glk_ref == 0) {
+		rfalse;
+	}
+
+	glk_window_clear(Quote_Window.glk_ref);
+	glk_set_window(Quote_Window.glk_ref);
+
+	! Print the whole box in reverse
+	glk_set_style(style_BlockQuote);
+	winheight = winheight - 2;
+	box_x = ((VM_WindowWidth(Quote_Window) - maxwidth) / 2) - 2;
+	for (ix = 2: ix < winheight: ix++) {
+		glk_window_move_cursor(Quote_Window.glk_ref, box_x, ix);
+		spaces (maxwidth + 4);
+	}
+
+	! Print the quotation
+	for (ix = 0: ix < lines: ix++) {
+		glk_window_move_cursor(Quote_Window.glk_ref, box_x + 2, ix + 3);
+		print (string) arr-->(ix + 1);
+	}
+
+	glk_set_style(style_Normal);
+	glk_set_window(active_window.glk_ref);
+];
