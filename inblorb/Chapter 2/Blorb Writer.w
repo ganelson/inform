@@ -195,6 +195,7 @@ char *legal_Blorb_chunk_types[] = {
 	"TEXT", "BINA", /* data files in different formats */
 	"ZCOD", "GLUL", /* story files in different formats */
 	"RDes", /* resource descriptions (added to the standard in March 2014) */
+	"MP3 ", /* MP3 sounds (added to the standard in May 2026) */
 	NULL };
 
 char *legal_Blorb_index_entries[] = {
