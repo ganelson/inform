@@ -104,7 +104,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	docket_state->provenance = InsertInstruction::provenance(P);
 	TEMPORARY_TEXT(tangled)
 	Tangler::tangle_code_with_docket(tangled, docket, insertion,
-		TextFiles::at(NULL, docket_state->provenance.line_number),
+		TextFiles::at(Provenance::get_filename(docket_state->provenance),
+			docket_state->provenance.line_number),
 		Languages::find_without_context(I"Inform 6"));
 	ParsingStages::receive_raw(tangled, docket);
 	DISCARD_TEXT(tangled)
@@ -217,13 +218,17 @@ void ParsingStages::receive_bplus(text_stream *material, tangle_docket *docket) 
 		"use of (+ ... +) in kit source has been withdrawn: '%S'", material);
 }
 
-@ This is used to place I6 comments showing the provenance of the tangled text:
+@ This is used to place I6 comments showing the provenance of the tangled text.
+The provenance has a file name if the text comes from a file, but if it comes
+from in-memory text, it only has a line number.
 
 =
 void ParsingStages::line_marker(text_stream *material, tangle_docket *docket) {
 	text_file_position *tfp = &(docket->at);
-	WRITE_TO(material, "! LINEMARKER %d %f\n",
-		TextFiles::get_line_count(tfp), TextFiles::get_filename(tfp));
+	filename *F = TextFiles::get_filename(tfp);
+	WRITE_TO(material, "! LINEMARKER %d", TextFiles::get_line_count(tfp));
+	if (F) WRITE_TO(material, " %f", F);
+	WRITE_TO(material, "\n");
 }
 
 @ We very much do not ignore the raw I6 code read in, though. When the reader
